@@ -6,19 +6,19 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "33ad6f2c-d077-4ddb-95c8-6693f60083cd",
+        "client-request-id": "80fc0ed3-99fa-4cd6-9673-89d05c756e2d",
         "Content-Length": "0",
-        "Date": "Mon, 11 Mar 2024 01:48:30 GMT",
+        "Date": "Wed, 27 Mar 2024 00:46:37 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 11 Mar 2024 01:48:34 GMT",
+        "Date": "Wed, 27 Mar 2024 00:46:38 GMT",
         "ETag": "0x8DBC52C54B88553",
         "Last-Modified": "Wed, 04 Oct 2023 22:50:39 GMT",
-        "request-id": "028dabff-8b1a-4cfa-ad08-1f4040db0ebf",
+        "request-id": "12f9075e-ec19-4d1c-ae62-cce8471a1eba",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -32,9 +32,9 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "a5a98678-86c3-47ab-876a-4f177bf9d42d",
+        "client-request-id": "7f4e63c3-00d5-4066-be8c-68f36aad837d",
         "Content-Length": "0",
-        "Date": "Mon, 11 Mar 2024 01:48:32 GMT",
+        "Date": "Wed, 27 Mar 2024 00:46:38 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": null,
@@ -42,10 +42,10 @@
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 11 Mar 2024 01:48:34 GMT",
+        "Date": "Wed, 27 Mar 2024 00:46:38 GMT",
         "ETag": "0x8DBC52C54B88553",
         "Last-Modified": "Wed, 04 Oct 2023 22:50:39 GMT",
-        "request-id": "de59cf2c-412d-4177-84fd-ce7a5a1dfa23",
+        "request-id": "7a02ce59-17a8-4a5b-a3f1-4ba73c429596",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -107,17 +107,17 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "1556566c-bdb6-4e4f-aa85-7c57d7d1c9d9",
+        "client-request-id": "1cd2166f-a195-4c3f-b404-a80999fd549b",
         "Content-Length": "0",
-        "Date": "Mon, 11 Mar 2024 01:48:32 GMT",
+        "Date": "Wed, 27 Mar 2024 00:46:39 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 404,
       "ResponseHeaders": {
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 11 Mar 2024 01:48:34 GMT",
-        "request-id": "5e8710dd-82d2-4f45-b8f1-e8d7b171ea26",
+        "Date": "Wed, 27 Mar 2024 00:46:39 GMT",
+        "request-id": "76211b31-f1c7-4483-9cef-2d0011735ff3",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -131,10 +131,10 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "f4b7c8b1-3d6a-40ff-af96-1ceddf9314d4",
+        "client-request-id": "77b8a82e-92fb-40ad-a03a-24323e3e96d0",
         "Content-Length": "569",
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 11 Mar 2024 01:48:34 GMT",
+        "Date": "Wed, 27 Mar 2024 00:46:41 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": {
@@ -170,8 +170,8 @@
         "Content-Length": "328",
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 11 Mar 2024 01:48:37 GMT",
-        "request-id": "89a9d6ed-979b-4b17-8270-e10aae8eff46",
+        "Date": "Wed, 27 Mar 2024 00:46:42 GMT",
+        "request-id": "eb63d3e6-3ced-4c9f-b5d8-57d4ae7e0f49",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff"
@@ -181,7 +181,7 @@
         "code": "PoolExists",
         "message": {
           "lang": "en-US",
-          "value": "The specified pool already exists.\nRequestId:89a9d6ed-979b-4b17-8270-e10aae8eff46\nTime:2024-03-11T01:48:37.5171882Z"
+          "value": "The specified pool already exists.\nRequestId:eb63d3e6-3ced-4c9f-b5d8-57d4ae7e0f49\nTime:2024-03-27T00:46:42.3943478Z"
         }
       }
     },
@@ -191,65 +191,341 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "08480e4e-b1ec-4c51-a0b5-03e932650a82",
+        "client-request-id": "aa7d5bd9-e638-4ee5-980d-147eaf98fe6c",
         "Content-Length": "5711",
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 11 Mar 2024 01:48:35 GMT",
+        "Date": "Wed, 27 Mar 2024 00:46:41 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": {
         "value": [
           {
-            "id": "mytask596",
-            "commandLine": "cmd /c echo hello 596"
+            "id": "mytask488",
+            "commandLine": "cmd /c echo hello 488"
+          },
+          {
+            "id": "mytask491",
+            "commandLine": "cmd /c echo hello 491"
+          },
+          {
+            "id": "mytask493",
+            "commandLine": "cmd /c echo hello 493"
+          },
+          {
+            "id": "mytask495",
+            "commandLine": "cmd /c echo hello 495"
+          },
+          {
+            "id": "mytask497",
+            "commandLine": "cmd /c echo hello 497"
+          },
+          {
+            "id": "mytask499",
+            "commandLine": "cmd /c echo hello 499"
+          },
+          {
+            "id": "mytask501",
+            "commandLine": "cmd /c echo hello 501"
+          },
+          {
+            "id": "mytask503",
+            "commandLine": "cmd /c echo hello 503"
+          },
+          {
+            "id": "mytask505",
+            "commandLine": "cmd /c echo hello 505"
+          },
+          {
+            "id": "mytask507",
+            "commandLine": "cmd /c echo hello 507"
+          },
+          {
+            "id": "mytask510",
+            "commandLine": "cmd /c echo hello 510"
+          },
+          {
+            "id": "mytask511",
+            "commandLine": "cmd /c echo hello 511"
+          },
+          {
+            "id": "mytask512",
+            "commandLine": "cmd /c echo hello 512"
+          },
+          {
+            "id": "mytask513",
+            "commandLine": "cmd /c echo hello 513"
+          },
+          {
+            "id": "mytask514",
+            "commandLine": "cmd /c echo hello 514"
+          },
+          {
+            "id": "mytask515",
+            "commandLine": "cmd /c echo hello 515"
+          },
+          {
+            "id": "mytask516",
+            "commandLine": "cmd /c echo hello 516"
+          },
+          {
+            "id": "mytask517",
+            "commandLine": "cmd /c echo hello 517"
+          },
+          {
+            "id": "mytask518",
+            "commandLine": "cmd /c echo hello 518"
+          },
+          {
+            "id": "mytask519",
+            "commandLine": "cmd /c echo hello 519"
+          },
+          {
+            "id": "mytask520",
+            "commandLine": "cmd /c echo hello 520"
+          },
+          {
+            "id": "mytask521",
+            "commandLine": "cmd /c echo hello 521"
+          },
+          {
+            "id": "mytask522",
+            "commandLine": "cmd /c echo hello 522"
+          },
+          {
+            "id": "mytask523",
+            "commandLine": "cmd /c echo hello 523"
+          },
+          {
+            "id": "mytask524",
+            "commandLine": "cmd /c echo hello 524"
+          },
+          {
+            "id": "mytask525",
+            "commandLine": "cmd /c echo hello 525"
+          },
+          {
+            "id": "mytask526",
+            "commandLine": "cmd /c echo hello 526"
+          },
+          {
+            "id": "mytask527",
+            "commandLine": "cmd /c echo hello 527"
+          },
+          {
+            "id": "mytask528",
+            "commandLine": "cmd /c echo hello 528"
+          },
+          {
+            "id": "mytask529",
+            "commandLine": "cmd /c echo hello 529"
+          },
+          {
+            "id": "mytask530",
+            "commandLine": "cmd /c echo hello 530"
+          },
+          {
+            "id": "mytask531",
+            "commandLine": "cmd /c echo hello 531"
+          },
+          {
+            "id": "mytask532",
+            "commandLine": "cmd /c echo hello 532"
+          },
+          {
+            "id": "mytask533",
+            "commandLine": "cmd /c echo hello 533"
+          },
+          {
+            "id": "mytask534",
+            "commandLine": "cmd /c echo hello 534"
+          },
+          {
+            "id": "mytask535",
+            "commandLine": "cmd /c echo hello 535"
+          },
+          {
+            "id": "mytask536",
+            "commandLine": "cmd /c echo hello 536"
+          },
+          {
+            "id": "mytask537",
+            "commandLine": "cmd /c echo hello 537"
+          },
+          {
+            "id": "mytask538",
+            "commandLine": "cmd /c echo hello 538"
+          },
+          {
+            "id": "mytask539",
+            "commandLine": "cmd /c echo hello 539"
+          },
+          {
+            "id": "mytask540",
+            "commandLine": "cmd /c echo hello 540"
+          },
+          {
+            "id": "mytask541",
+            "commandLine": "cmd /c echo hello 541"
+          },
+          {
+            "id": "mytask542",
+            "commandLine": "cmd /c echo hello 542"
+          },
+          {
+            "id": "mytask543",
+            "commandLine": "cmd /c echo hello 543"
+          },
+          {
+            "id": "mytask544",
+            "commandLine": "cmd /c echo hello 544"
+          },
+          {
+            "id": "mytask545",
+            "commandLine": "cmd /c echo hello 545"
+          },
+          {
+            "id": "mytask546",
+            "commandLine": "cmd /c echo hello 546"
+          },
+          {
+            "id": "mytask547",
+            "commandLine": "cmd /c echo hello 547"
+          },
+          {
+            "id": "mytask548",
+            "commandLine": "cmd /c echo hello 548"
+          },
+          {
+            "id": "mytask549",
+            "commandLine": "cmd /c echo hello 549"
+          },
+          {
+            "id": "mytask550",
+            "commandLine": "cmd /c echo hello 550"
+          },
+          {
+            "id": "mytask551",
+            "commandLine": "cmd /c echo hello 551"
+          },
+          {
+            "id": "mytask552",
+            "commandLine": "cmd /c echo hello 552"
+          },
+          {
+            "id": "mytask553",
+            "commandLine": "cmd /c echo hello 553"
+          },
+          {
+            "id": "mytask554",
+            "commandLine": "cmd /c echo hello 554"
+          },
+          {
+            "id": "mytask555",
+            "commandLine": "cmd /c echo hello 555"
+          },
+          {
+            "id": "mytask556",
+            "commandLine": "cmd /c echo hello 556"
+          },
+          {
+            "id": "mytask557",
+            "commandLine": "cmd /c echo hello 557"
+          },
+          {
+            "id": "mytask558",
+            "commandLine": "cmd /c echo hello 558"
+          },
+          {
+            "id": "mytask559",
+            "commandLine": "cmd /c echo hello 559"
+          },
+          {
+            "id": "mytask561",
+            "commandLine": "cmd /c echo hello 561"
+          },
+          {
+            "id": "mytask564",
+            "commandLine": "cmd /c echo hello 564"
+          },
+          {
+            "id": "mytask566",
+            "commandLine": "cmd /c echo hello 566"
+          },
+          {
+            "id": "mytask568",
+            "commandLine": "cmd /c echo hello 568"
+          },
+          {
+            "id": "mytask570",
+            "commandLine": "cmd /c echo hello 570"
+          },
+          {
+            "id": "mytask571",
+            "commandLine": "cmd /c echo hello 571"
+          },
+          {
+            "id": "mytask574",
+            "commandLine": "cmd /c echo hello 574"
+          },
+          {
+            "id": "mytask576",
+            "commandLine": "cmd /c echo hello 576"
+          },
+          {
+            "id": "mytask578",
+            "commandLine": "cmd /c echo hello 578"
+          },
+          {
+            "id": "mytask580",
+            "commandLine": "cmd /c echo hello 580"
+          },
+          {
+            "id": "mytask582",
+            "commandLine": "cmd /c echo hello 582"
+          },
+          {
+            "id": "mytask585",
+            "commandLine": "cmd /c echo hello 585"
+          },
+          {
+            "id": "mytask587",
+            "commandLine": "cmd /c echo hello 587"
+          },
+          {
+            "id": "mytask589",
+            "commandLine": "cmd /c echo hello 589"
+          },
+          {
+            "id": "mytask591",
+            "commandLine": "cmd /c echo hello 591"
+          },
+          {
+            "id": "mytask593",
+            "commandLine": "cmd /c echo hello 593"
+          },
+          {
+            "id": "mytask595",
+            "commandLine": "cmd /c echo hello 595"
           },
           {
             "id": "mytask597",
             "commandLine": "cmd /c echo hello 597"
           },
           {
-            "id": "mytask598",
-            "commandLine": "cmd /c echo hello 598"
-          },
-          {
             "id": "mytask599",
             "commandLine": "cmd /c echo hello 599"
-          },
-          {
-            "id": "mytask600",
-            "commandLine": "cmd /c echo hello 600"
           },
           {
             "id": "mytask601",
             "commandLine": "cmd /c echo hello 601"
           },
           {
-            "id": "mytask602",
-            "commandLine": "cmd /c echo hello 602"
-          },
-          {
             "id": "mytask603",
             "commandLine": "cmd /c echo hello 603"
           },
           {
-            "id": "mytask604",
-            "commandLine": "cmd /c echo hello 604"
-          },
-          {
             "id": "mytask605",
             "commandLine": "cmd /c echo hello 605"
-          },
-          {
-            "id": "mytask606",
-            "commandLine": "cmd /c echo hello 606"
-          },
-          {
-            "id": "mytask607",
-            "commandLine": "cmd /c echo hello 607"
-          },
-          {
-            "id": "mytask608",
-            "commandLine": "cmd /c echo hello 608"
           },
           {
             "id": "mytask609",
@@ -260,24 +536,12 @@
             "commandLine": "cmd /c echo hello 610"
           },
           {
-            "id": "mytask611",
-            "commandLine": "cmd /c echo hello 611"
-          },
-          {
             "id": "mytask612",
             "commandLine": "cmd /c echo hello 612"
           },
           {
-            "id": "mytask613",
-            "commandLine": "cmd /c echo hello 613"
-          },
-          {
             "id": "mytask614",
             "commandLine": "cmd /c echo hello 614"
-          },
-          {
-            "id": "mytask615",
-            "commandLine": "cmd /c echo hello 615"
           },
           {
             "id": "mytask616",
@@ -292,312 +556,48 @@
             "commandLine": "cmd /c echo hello 618"
           },
           {
-            "id": "mytask619",
-            "commandLine": "cmd /c echo hello 619"
-          },
-          {
             "id": "mytask620",
             "commandLine": "cmd /c echo hello 620"
-          },
-          {
-            "id": "mytask621",
-            "commandLine": "cmd /c echo hello 621"
           },
           {
             "id": "mytask622",
             "commandLine": "cmd /c echo hello 622"
           },
           {
-            "id": "mytask623",
-            "commandLine": "cmd /c echo hello 623"
-          },
-          {
             "id": "mytask624",
             "commandLine": "cmd /c echo hello 624"
-          },
-          {
-            "id": "mytask625",
-            "commandLine": "cmd /c echo hello 625"
           },
           {
             "id": "mytask626",
             "commandLine": "cmd /c echo hello 626"
           },
           {
-            "id": "mytask627",
-            "commandLine": "cmd /c echo hello 627"
-          },
-          {
             "id": "mytask628",
             "commandLine": "cmd /c echo hello 628"
-          },
-          {
-            "id": "mytask629",
-            "commandLine": "cmd /c echo hello 629"
           },
           {
             "id": "mytask630",
             "commandLine": "cmd /c echo hello 630"
           },
           {
-            "id": "mytask631",
-            "commandLine": "cmd /c echo hello 631"
-          },
-          {
             "id": "mytask632",
             "commandLine": "cmd /c echo hello 632"
-          },
-          {
-            "id": "mytask633",
-            "commandLine": "cmd /c echo hello 633"
           },
           {
             "id": "mytask634",
             "commandLine": "cmd /c echo hello 634"
           },
           {
-            "id": "mytask635",
-            "commandLine": "cmd /c echo hello 635"
-          },
-          {
-            "id": "mytask636",
-            "commandLine": "cmd /c echo hello 636"
-          },
-          {
             "id": "mytask637",
             "commandLine": "cmd /c echo hello 637"
-          },
-          {
-            "id": "mytask638",
-            "commandLine": "cmd /c echo hello 638"
           },
           {
             "id": "mytask639",
             "commandLine": "cmd /c echo hello 639"
           },
           {
-            "id": "mytask640",
-            "commandLine": "cmd /c echo hello 640"
-          },
-          {
             "id": "mytask641",
             "commandLine": "cmd /c echo hello 641"
-          },
-          {
-            "id": "mytask642",
-            "commandLine": "cmd /c echo hello 642"
-          },
-          {
-            "id": "mytask643",
-            "commandLine": "cmd /c echo hello 643"
-          },
-          {
-            "id": "mytask644",
-            "commandLine": "cmd /c echo hello 644"
-          },
-          {
-            "id": "mytask645",
-            "commandLine": "cmd /c echo hello 645"
-          },
-          {
-            "id": "mytask646",
-            "commandLine": "cmd /c echo hello 646"
-          },
-          {
-            "id": "mytask647",
-            "commandLine": "cmd /c echo hello 647"
-          },
-          {
-            "id": "mytask648",
-            "commandLine": "cmd /c echo hello 648"
-          },
-          {
-            "id": "mytask649",
-            "commandLine": "cmd /c echo hello 649"
-          },
-          {
-            "id": "mytask650",
-            "commandLine": "cmd /c echo hello 650"
-          },
-          {
-            "id": "mytask651",
-            "commandLine": "cmd /c echo hello 651"
-          },
-          {
-            "id": "mytask652",
-            "commandLine": "cmd /c echo hello 652"
-          },
-          {
-            "id": "mytask653",
-            "commandLine": "cmd /c echo hello 653"
-          },
-          {
-            "id": "mytask654",
-            "commandLine": "cmd /c echo hello 654"
-          },
-          {
-            "id": "mytask655",
-            "commandLine": "cmd /c echo hello 655"
-          },
-          {
-            "id": "mytask656",
-            "commandLine": "cmd /c echo hello 656"
-          },
-          {
-            "id": "mytask657",
-            "commandLine": "cmd /c echo hello 657"
-          },
-          {
-            "id": "mytask658",
-            "commandLine": "cmd /c echo hello 658"
-          },
-          {
-            "id": "mytask659",
-            "commandLine": "cmd /c echo hello 659"
-          },
-          {
-            "id": "mytask660",
-            "commandLine": "cmd /c echo hello 660"
-          },
-          {
-            "id": "mytask661",
-            "commandLine": "cmd /c echo hello 661"
-          },
-          {
-            "id": "mytask662",
-            "commandLine": "cmd /c echo hello 662"
-          },
-          {
-            "id": "mytask663",
-            "commandLine": "cmd /c echo hello 663"
-          },
-          {
-            "id": "mytask664",
-            "commandLine": "cmd /c echo hello 664"
-          },
-          {
-            "id": "mytask665",
-            "commandLine": "cmd /c echo hello 665"
-          },
-          {
-            "id": "mytask666",
-            "commandLine": "cmd /c echo hello 666"
-          },
-          {
-            "id": "mytask667",
-            "commandLine": "cmd /c echo hello 667"
-          },
-          {
-            "id": "mytask668",
-            "commandLine": "cmd /c echo hello 668"
-          },
-          {
-            "id": "mytask669",
-            "commandLine": "cmd /c echo hello 669"
-          },
-          {
-            "id": "mytask670",
-            "commandLine": "cmd /c echo hello 670"
-          },
-          {
-            "id": "mytask671",
-            "commandLine": "cmd /c echo hello 671"
-          },
-          {
-            "id": "mytask672",
-            "commandLine": "cmd /c echo hello 672"
-          },
-          {
-            "id": "mytask673",
-            "commandLine": "cmd /c echo hello 673"
-          },
-          {
-            "id": "mytask674",
-            "commandLine": "cmd /c echo hello 674"
-          },
-          {
-            "id": "mytask675",
-            "commandLine": "cmd /c echo hello 675"
-          },
-          {
-            "id": "mytask676",
-            "commandLine": "cmd /c echo hello 676"
-          },
-          {
-            "id": "mytask677",
-            "commandLine": "cmd /c echo hello 677"
-          },
-          {
-            "id": "mytask678",
-            "commandLine": "cmd /c echo hello 678"
-          },
-          {
-            "id": "mytask679",
-            "commandLine": "cmd /c echo hello 679"
-          },
-          {
-            "id": "mytask680",
-            "commandLine": "cmd /c echo hello 680"
-          },
-          {
-            "id": "mytask681",
-            "commandLine": "cmd /c echo hello 681"
-          },
-          {
-            "id": "mytask682",
-            "commandLine": "cmd /c echo hello 682"
-          },
-          {
-            "id": "mytask683",
-            "commandLine": "cmd /c echo hello 683"
-          },
-          {
-            "id": "mytask684",
-            "commandLine": "cmd /c echo hello 684"
-          },
-          {
-            "id": "mytask685",
-            "commandLine": "cmd /c echo hello 685"
-          },
-          {
-            "id": "mytask686",
-            "commandLine": "cmd /c echo hello 686"
-          },
-          {
-            "id": "mytask687",
-            "commandLine": "cmd /c echo hello 687"
-          },
-          {
-            "id": "mytask688",
-            "commandLine": "cmd /c echo hello 688"
-          },
-          {
-            "id": "mytask689",
-            "commandLine": "cmd /c echo hello 689"
-          },
-          {
-            "id": "mytask690",
-            "commandLine": "cmd /c echo hello 690"
-          },
-          {
-            "id": "mytask691",
-            "commandLine": "cmd /c echo hello 691"
-          },
-          {
-            "id": "mytask692",
-            "commandLine": "cmd /c echo hello 692"
-          },
-          {
-            "id": "mytask693",
-            "commandLine": "cmd /c echo hello 693"
-          },
-          {
-            "id": "mytask694",
-            "commandLine": "cmd /c echo hello 694"
-          },
-          {
-            "id": "mytask695",
-            "commandLine": "cmd /c echo hello 695"
           }
         ]
       },
@@ -606,8 +606,8 @@
         "Content-Length": "328",
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 11 Mar 2024 01:48:37 GMT",
-        "request-id": "9b202eaf-bca1-4c1c-8628-d311a7373147",
+        "Date": "Wed, 27 Mar 2024 00:46:42 GMT",
+        "request-id": "96950b5f-6be5-4d86-ac1b-2404e3fd5e1d",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff"
@@ -617,7 +617,7 @@
         "code": "JobNotFound",
         "message": {
           "lang": "en-US",
-          "value": "The specified job does not exist.\nRequestId:9b202eaf-bca1-4c1c-8628-d311a7373147\nTime:2024-03-11T01:48:37.7268529Z"
+          "value": "The specified job does not exist.\nRequestId:96950b5f-6be5-4d86-ac1b-2404e3fd5e1d\nTime:2024-03-27T00:46:42.6203358Z"
         }
       }
     },
@@ -627,14 +627,670 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "12e96eb0-4091-456a-ba70-ecbc3d124640",
+        "client-request-id": "5ab84986-b1be-445a-b609-157e13ca5904",
         "Content-Length": "5711",
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 11 Mar 2024 01:48:35 GMT",
+        "Date": "Wed, 27 Mar 2024 00:46:41 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": {
         "value": [
+          {
+            "id": "mytask100",
+            "commandLine": "cmd /c echo hello 100"
+          },
+          {
+            "id": "mytask101",
+            "commandLine": "cmd /c echo hello 101"
+          },
+          {
+            "id": "mytask102",
+            "commandLine": "cmd /c echo hello 102"
+          },
+          {
+            "id": "mytask103",
+            "commandLine": "cmd /c echo hello 103"
+          },
+          {
+            "id": "mytask104",
+            "commandLine": "cmd /c echo hello 104"
+          },
+          {
+            "id": "mytask105",
+            "commandLine": "cmd /c echo hello 105"
+          },
+          {
+            "id": "mytask106",
+            "commandLine": "cmd /c echo hello 106"
+          },
+          {
+            "id": "mytask107",
+            "commandLine": "cmd /c echo hello 107"
+          },
+          {
+            "id": "mytask108",
+            "commandLine": "cmd /c echo hello 108"
+          },
+          {
+            "id": "mytask109",
+            "commandLine": "cmd /c echo hello 109"
+          },
+          {
+            "id": "mytask110",
+            "commandLine": "cmd /c echo hello 110"
+          },
+          {
+            "id": "mytask111",
+            "commandLine": "cmd /c echo hello 111"
+          },
+          {
+            "id": "mytask112",
+            "commandLine": "cmd /c echo hello 112"
+          },
+          {
+            "id": "mytask113",
+            "commandLine": "cmd /c echo hello 113"
+          },
+          {
+            "id": "mytask114",
+            "commandLine": "cmd /c echo hello 114"
+          },
+          {
+            "id": "mytask115",
+            "commandLine": "cmd /c echo hello 115"
+          },
+          {
+            "id": "mytask116",
+            "commandLine": "cmd /c echo hello 116"
+          },
+          {
+            "id": "mytask117",
+            "commandLine": "cmd /c echo hello 117"
+          },
+          {
+            "id": "mytask118",
+            "commandLine": "cmd /c echo hello 118"
+          },
+          {
+            "id": "mytask119",
+            "commandLine": "cmd /c echo hello 119"
+          },
+          {
+            "id": "mytask120",
+            "commandLine": "cmd /c echo hello 120"
+          },
+          {
+            "id": "mytask121",
+            "commandLine": "cmd /c echo hello 121"
+          },
+          {
+            "id": "mytask122",
+            "commandLine": "cmd /c echo hello 122"
+          },
+          {
+            "id": "mytask123",
+            "commandLine": "cmd /c echo hello 123"
+          },
+          {
+            "id": "mytask124",
+            "commandLine": "cmd /c echo hello 124"
+          },
+          {
+            "id": "mytask125",
+            "commandLine": "cmd /c echo hello 125"
+          },
+          {
+            "id": "mytask126",
+            "commandLine": "cmd /c echo hello 126"
+          },
+          {
+            "id": "mytask127",
+            "commandLine": "cmd /c echo hello 127"
+          },
+          {
+            "id": "mytask128",
+            "commandLine": "cmd /c echo hello 128"
+          },
+          {
+            "id": "mytask129",
+            "commandLine": "cmd /c echo hello 129"
+          },
+          {
+            "id": "mytask130",
+            "commandLine": "cmd /c echo hello 130"
+          },
+          {
+            "id": "mytask131",
+            "commandLine": "cmd /c echo hello 131"
+          },
+          {
+            "id": "mytask132",
+            "commandLine": "cmd /c echo hello 132"
+          },
+          {
+            "id": "mytask133",
+            "commandLine": "cmd /c echo hello 133"
+          },
+          {
+            "id": "mytask134",
+            "commandLine": "cmd /c echo hello 134"
+          },
+          {
+            "id": "mytask135",
+            "commandLine": "cmd /c echo hello 135"
+          },
+          {
+            "id": "mytask136",
+            "commandLine": "cmd /c echo hello 136"
+          },
+          {
+            "id": "mytask137",
+            "commandLine": "cmd /c echo hello 137"
+          },
+          {
+            "id": "mytask138",
+            "commandLine": "cmd /c echo hello 138"
+          },
+          {
+            "id": "mytask139",
+            "commandLine": "cmd /c echo hello 139"
+          },
+          {
+            "id": "mytask140",
+            "commandLine": "cmd /c echo hello 140"
+          },
+          {
+            "id": "mytask141",
+            "commandLine": "cmd /c echo hello 141"
+          },
+          {
+            "id": "mytask142",
+            "commandLine": "cmd /c echo hello 142"
+          },
+          {
+            "id": "mytask143",
+            "commandLine": "cmd /c echo hello 143"
+          },
+          {
+            "id": "mytask144",
+            "commandLine": "cmd /c echo hello 144"
+          },
+          {
+            "id": "mytask145",
+            "commandLine": "cmd /c echo hello 145"
+          },
+          {
+            "id": "mytask146",
+            "commandLine": "cmd /c echo hello 146"
+          },
+          {
+            "id": "mytask147",
+            "commandLine": "cmd /c echo hello 147"
+          },
+          {
+            "id": "mytask148",
+            "commandLine": "cmd /c echo hello 148"
+          },
+          {
+            "id": "mytask149",
+            "commandLine": "cmd /c echo hello 149"
+          },
+          {
+            "id": "mytask150",
+            "commandLine": "cmd /c echo hello 150"
+          },
+          {
+            "id": "mytask151",
+            "commandLine": "cmd /c echo hello 151"
+          },
+          {
+            "id": "mytask152",
+            "commandLine": "cmd /c echo hello 152"
+          },
+          {
+            "id": "mytask153",
+            "commandLine": "cmd /c echo hello 153"
+          },
+          {
+            "id": "mytask154",
+            "commandLine": "cmd /c echo hello 154"
+          },
+          {
+            "id": "mytask155",
+            "commandLine": "cmd /c echo hello 155"
+          },
+          {
+            "id": "mytask156",
+            "commandLine": "cmd /c echo hello 156"
+          },
+          {
+            "id": "mytask157",
+            "commandLine": "cmd /c echo hello 157"
+          },
+          {
+            "id": "mytask158",
+            "commandLine": "cmd /c echo hello 158"
+          },
+          {
+            "id": "mytask159",
+            "commandLine": "cmd /c echo hello 159"
+          },
+          {
+            "id": "mytask160",
+            "commandLine": "cmd /c echo hello 160"
+          },
+          {
+            "id": "mytask161",
+            "commandLine": "cmd /c echo hello 161"
+          },
+          {
+            "id": "mytask162",
+            "commandLine": "cmd /c echo hello 162"
+          },
+          {
+            "id": "mytask163",
+            "commandLine": "cmd /c echo hello 163"
+          },
+          {
+            "id": "mytask164",
+            "commandLine": "cmd /c echo hello 164"
+          },
+          {
+            "id": "mytask165",
+            "commandLine": "cmd /c echo hello 165"
+          },
+          {
+            "id": "mytask166",
+            "commandLine": "cmd /c echo hello 166"
+          },
+          {
+            "id": "mytask167",
+            "commandLine": "cmd /c echo hello 167"
+          },
+          {
+            "id": "mytask168",
+            "commandLine": "cmd /c echo hello 168"
+          },
+          {
+            "id": "mytask169",
+            "commandLine": "cmd /c echo hello 169"
+          },
+          {
+            "id": "mytask170",
+            "commandLine": "cmd /c echo hello 170"
+          },
+          {
+            "id": "mytask171",
+            "commandLine": "cmd /c echo hello 171"
+          },
+          {
+            "id": "mytask172",
+            "commandLine": "cmd /c echo hello 172"
+          },
+          {
+            "id": "mytask173",
+            "commandLine": "cmd /c echo hello 173"
+          },
+          {
+            "id": "mytask174",
+            "commandLine": "cmd /c echo hello 174"
+          },
+          {
+            "id": "mytask175",
+            "commandLine": "cmd /c echo hello 175"
+          },
+          {
+            "id": "mytask176",
+            "commandLine": "cmd /c echo hello 176"
+          },
+          {
+            "id": "mytask177",
+            "commandLine": "cmd /c echo hello 177"
+          },
+          {
+            "id": "mytask178",
+            "commandLine": "cmd /c echo hello 178"
+          },
+          {
+            "id": "mytask179",
+            "commandLine": "cmd /c echo hello 179"
+          },
+          {
+            "id": "mytask180",
+            "commandLine": "cmd /c echo hello 180"
+          },
+          {
+            "id": "mytask181",
+            "commandLine": "cmd /c echo hello 181"
+          },
+          {
+            "id": "mytask182",
+            "commandLine": "cmd /c echo hello 182"
+          },
+          {
+            "id": "mytask183",
+            "commandLine": "cmd /c echo hello 183"
+          },
+          {
+            "id": "mytask184",
+            "commandLine": "cmd /c echo hello 184"
+          },
+          {
+            "id": "mytask185",
+            "commandLine": "cmd /c echo hello 185"
+          },
+          {
+            "id": "mytask186",
+            "commandLine": "cmd /c echo hello 186"
+          },
+          {
+            "id": "mytask187",
+            "commandLine": "cmd /c echo hello 187"
+          },
+          {
+            "id": "mytask188",
+            "commandLine": "cmd /c echo hello 188"
+          },
+          {
+            "id": "mytask189",
+            "commandLine": "cmd /c echo hello 189"
+          },
+          {
+            "id": "mytask190",
+            "commandLine": "cmd /c echo hello 190"
+          },
+          {
+            "id": "mytask191",
+            "commandLine": "cmd /c echo hello 191"
+          },
+          {
+            "id": "mytask192",
+            "commandLine": "cmd /c echo hello 192"
+          },
+          {
+            "id": "mytask193",
+            "commandLine": "cmd /c echo hello 193"
+          },
+          {
+            "id": "mytask194",
+            "commandLine": "cmd /c echo hello 194"
+          },
+          {
+            "id": "mytask195",
+            "commandLine": "cmd /c echo hello 195"
+          },
+          {
+            "id": "mytask196",
+            "commandLine": "cmd /c echo hello 196"
+          },
+          {
+            "id": "mytask197",
+            "commandLine": "cmd /c echo hello 197"
+          },
+          {
+            "id": "mytask198",
+            "commandLine": "cmd /c echo hello 198"
+          },
+          {
+            "id": "mytask199",
+            "commandLine": "cmd /c echo hello 199"
+          }
+        ]
+      },
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Content-Length": "328",
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Wed, 27 Mar 2024 00:46:41 GMT",
+        "request-id": "7f691f2b-ad45-4b7d-adda-dd0c44cad1f4",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element",
+        "code": "JobNotFound",
+        "message": {
+          "lang": "en-US",
+          "value": "The specified job does not exist.\nRequestId:7f691f2b-ad45-4b7d-adda-dd0c44cad1f4\nTime:2024-03-27T00:46:42.6325008Z"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/jobs/BatchUser-testAddMultiTasksWithError/addtaskcollection?api-version=2024-02-01.19.0",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "client-request-id": "1f5fff57-c8e2-40d2-8f47-53b071458a19",
+        "Content-Length": "5711",
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "Date": "Wed, 27 Mar 2024 00:46:41 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
+      },
+      "RequestBody": {
+        "value": [
+          {
+            "id": "mytask300",
+            "commandLine": "cmd /c echo hello 300"
+          },
+          {
+            "id": "mytask301",
+            "commandLine": "cmd /c echo hello 301"
+          },
+          {
+            "id": "mytask302",
+            "commandLine": "cmd /c echo hello 302"
+          },
+          {
+            "id": "mytask303",
+            "commandLine": "cmd /c echo hello 303"
+          },
+          {
+            "id": "mytask304",
+            "commandLine": "cmd /c echo hello 304"
+          },
+          {
+            "id": "mytask305",
+            "commandLine": "cmd /c echo hello 305"
+          },
+          {
+            "id": "mytask306",
+            "commandLine": "cmd /c echo hello 306"
+          },
+          {
+            "id": "mytask307",
+            "commandLine": "cmd /c echo hello 307"
+          },
+          {
+            "id": "mytask308",
+            "commandLine": "cmd /c echo hello 308"
+          },
+          {
+            "id": "mytask309",
+            "commandLine": "cmd /c echo hello 309"
+          },
+          {
+            "id": "mytask310",
+            "commandLine": "cmd /c echo hello 310"
+          },
+          {
+            "id": "mytask311",
+            "commandLine": "cmd /c echo hello 311"
+          },
+          {
+            "id": "mytask312",
+            "commandLine": "cmd /c echo hello 312"
+          },
+          {
+            "id": "mytask313",
+            "commandLine": "cmd /c echo hello 313"
+          },
+          {
+            "id": "mytask314",
+            "commandLine": "cmd /c echo hello 314"
+          },
+          {
+            "id": "mytask315",
+            "commandLine": "cmd /c echo hello 315"
+          },
+          {
+            "id": "mytask316",
+            "commandLine": "cmd /c echo hello 316"
+          },
+          {
+            "id": "mytask317",
+            "commandLine": "cmd /c echo hello 317"
+          },
+          {
+            "id": "mytask318",
+            "commandLine": "cmd /c echo hello 318"
+          },
+          {
+            "id": "mytask319",
+            "commandLine": "cmd /c echo hello 319"
+          },
+          {
+            "id": "mytask320",
+            "commandLine": "cmd /c echo hello 320"
+          },
+          {
+            "id": "mytask321",
+            "commandLine": "cmd /c echo hello 321"
+          },
+          {
+            "id": "mytask322",
+            "commandLine": "cmd /c echo hello 322"
+          },
+          {
+            "id": "mytask323",
+            "commandLine": "cmd /c echo hello 323"
+          },
+          {
+            "id": "mytask324",
+            "commandLine": "cmd /c echo hello 324"
+          },
+          {
+            "id": "mytask325",
+            "commandLine": "cmd /c echo hello 325"
+          },
+          {
+            "id": "mytask326",
+            "commandLine": "cmd /c echo hello 326"
+          },
+          {
+            "id": "mytask327",
+            "commandLine": "cmd /c echo hello 327"
+          },
+          {
+            "id": "mytask328",
+            "commandLine": "cmd /c echo hello 328"
+          },
+          {
+            "id": "mytask329",
+            "commandLine": "cmd /c echo hello 329"
+          },
+          {
+            "id": "mytask330",
+            "commandLine": "cmd /c echo hello 330"
+          },
+          {
+            "id": "mytask331",
+            "commandLine": "cmd /c echo hello 331"
+          },
+          {
+            "id": "mytask332",
+            "commandLine": "cmd /c echo hello 332"
+          },
+          {
+            "id": "mytask333",
+            "commandLine": "cmd /c echo hello 333"
+          },
+          {
+            "id": "mytask334",
+            "commandLine": "cmd /c echo hello 334"
+          },
+          {
+            "id": "mytask335",
+            "commandLine": "cmd /c echo hello 335"
+          },
+          {
+            "id": "mytask336",
+            "commandLine": "cmd /c echo hello 336"
+          },
+          {
+            "id": "mytask337",
+            "commandLine": "cmd /c echo hello 337"
+          },
+          {
+            "id": "mytask338",
+            "commandLine": "cmd /c echo hello 338"
+          },
+          {
+            "id": "mytask339",
+            "commandLine": "cmd /c echo hello 339"
+          },
+          {
+            "id": "mytask340",
+            "commandLine": "cmd /c echo hello 340"
+          },
+          {
+            "id": "mytask341",
+            "commandLine": "cmd /c echo hello 341"
+          },
+          {
+            "id": "mytask342",
+            "commandLine": "cmd /c echo hello 342"
+          },
+          {
+            "id": "mytask343",
+            "commandLine": "cmd /c echo hello 343"
+          },
+          {
+            "id": "mytask344",
+            "commandLine": "cmd /c echo hello 344"
+          },
+          {
+            "id": "mytask345",
+            "commandLine": "cmd /c echo hello 345"
+          },
+          {
+            "id": "mytask346",
+            "commandLine": "cmd /c echo hello 346"
+          },
+          {
+            "id": "mytask347",
+            "commandLine": "cmd /c echo hello 347"
+          },
+          {
+            "id": "mytask348",
+            "commandLine": "cmd /c echo hello 348"
+          },
+          {
+            "id": "mytask349",
+            "commandLine": "cmd /c echo hello 349"
+          },
+          {
+            "id": "mytask350",
+            "commandLine": "cmd /c echo hello 350"
+          },
+          {
+            "id": "mytask351",
+            "commandLine": "cmd /c echo hello 351"
+          },
+          {
+            "id": "mytask352",
+            "commandLine": "cmd /c echo hello 352"
+          },
+          {
+            "id": "mytask353",
+            "commandLine": "cmd /c echo hello 353"
+          },
+          {
+            "id": "mytask354",
+            "commandLine": "cmd /c echo hello 354"
+          },
           {
             "id": "mytask355",
             "commandLine": "cmd /c echo hello 355"
@@ -670,6 +1326,10 @@
           {
             "id": "mytask363",
             "commandLine": "cmd /c echo hello 363"
+          },
+          {
+            "id": "mytask364",
+            "commandLine": "cmd /c echo hello 364"
           },
           {
             "id": "mytask365",
@@ -810,230 +1470,6 @@
           {
             "id": "mytask399",
             "commandLine": "cmd /c echo hello 399"
-          },
-          {
-            "id": "mytask400",
-            "commandLine": "cmd /c echo hello 400"
-          },
-          {
-            "id": "mytask401",
-            "commandLine": "cmd /c echo hello 401"
-          },
-          {
-            "id": "mytask402",
-            "commandLine": "cmd /c echo hello 402"
-          },
-          {
-            "id": "mytask403",
-            "commandLine": "cmd /c echo hello 403"
-          },
-          {
-            "id": "mytask404",
-            "commandLine": "cmd /c echo hello 404"
-          },
-          {
-            "id": "mytask405",
-            "commandLine": "cmd /c echo hello 405"
-          },
-          {
-            "id": "mytask406",
-            "commandLine": "cmd /c echo hello 406"
-          },
-          {
-            "id": "mytask407",
-            "commandLine": "cmd /c echo hello 407"
-          },
-          {
-            "id": "mytask408",
-            "commandLine": "cmd /c echo hello 408"
-          },
-          {
-            "id": "mytask409",
-            "commandLine": "cmd /c echo hello 409"
-          },
-          {
-            "id": "mytask410",
-            "commandLine": "cmd /c echo hello 410"
-          },
-          {
-            "id": "mytask411",
-            "commandLine": "cmd /c echo hello 411"
-          },
-          {
-            "id": "mytask412",
-            "commandLine": "cmd /c echo hello 412"
-          },
-          {
-            "id": "mytask413",
-            "commandLine": "cmd /c echo hello 413"
-          },
-          {
-            "id": "mytask414",
-            "commandLine": "cmd /c echo hello 414"
-          },
-          {
-            "id": "mytask415",
-            "commandLine": "cmd /c echo hello 415"
-          },
-          {
-            "id": "mytask416",
-            "commandLine": "cmd /c echo hello 416"
-          },
-          {
-            "id": "mytask417",
-            "commandLine": "cmd /c echo hello 417"
-          },
-          {
-            "id": "mytask418",
-            "commandLine": "cmd /c echo hello 418"
-          },
-          {
-            "id": "mytask419",
-            "commandLine": "cmd /c echo hello 419"
-          },
-          {
-            "id": "mytask420",
-            "commandLine": "cmd /c echo hello 420"
-          },
-          {
-            "id": "mytask421",
-            "commandLine": "cmd /c echo hello 421"
-          },
-          {
-            "id": "mytask422",
-            "commandLine": "cmd /c echo hello 422"
-          },
-          {
-            "id": "mytask423",
-            "commandLine": "cmd /c echo hello 423"
-          },
-          {
-            "id": "mytask424",
-            "commandLine": "cmd /c echo hello 424"
-          },
-          {
-            "id": "mytask425",
-            "commandLine": "cmd /c echo hello 425"
-          },
-          {
-            "id": "mytask426",
-            "commandLine": "cmd /c echo hello 426"
-          },
-          {
-            "id": "mytask427",
-            "commandLine": "cmd /c echo hello 427"
-          },
-          {
-            "id": "mytask428",
-            "commandLine": "cmd /c echo hello 428"
-          },
-          {
-            "id": "mytask429",
-            "commandLine": "cmd /c echo hello 429"
-          },
-          {
-            "id": "mytask430",
-            "commandLine": "cmd /c echo hello 430"
-          },
-          {
-            "id": "mytask431",
-            "commandLine": "cmd /c echo hello 431"
-          },
-          {
-            "id": "mytask432",
-            "commandLine": "cmd /c echo hello 432"
-          },
-          {
-            "id": "mytask433",
-            "commandLine": "cmd /c echo hello 433"
-          },
-          {
-            "id": "mytask434",
-            "commandLine": "cmd /c echo hello 434"
-          },
-          {
-            "id": "mytask435",
-            "commandLine": "cmd /c echo hello 435"
-          },
-          {
-            "id": "mytask436",
-            "commandLine": "cmd /c echo hello 436"
-          },
-          {
-            "id": "mytask437",
-            "commandLine": "cmd /c echo hello 437"
-          },
-          {
-            "id": "mytask438",
-            "commandLine": "cmd /c echo hello 438"
-          },
-          {
-            "id": "mytask439",
-            "commandLine": "cmd /c echo hello 439"
-          },
-          {
-            "id": "mytask440",
-            "commandLine": "cmd /c echo hello 440"
-          },
-          {
-            "id": "mytask441",
-            "commandLine": "cmd /c echo hello 441"
-          },
-          {
-            "id": "mytask442",
-            "commandLine": "cmd /c echo hello 442"
-          },
-          {
-            "id": "mytask443",
-            "commandLine": "cmd /c echo hello 443"
-          },
-          {
-            "id": "mytask444",
-            "commandLine": "cmd /c echo hello 444"
-          },
-          {
-            "id": "mytask445",
-            "commandLine": "cmd /c echo hello 445"
-          },
-          {
-            "id": "mytask446",
-            "commandLine": "cmd /c echo hello 446"
-          },
-          {
-            "id": "mytask447",
-            "commandLine": "cmd /c echo hello 447"
-          },
-          {
-            "id": "mytask448",
-            "commandLine": "cmd /c echo hello 448"
-          },
-          {
-            "id": "mytask449",
-            "commandLine": "cmd /c echo hello 449"
-          },
-          {
-            "id": "mytask450",
-            "commandLine": "cmd /c echo hello 450"
-          },
-          {
-            "id": "mytask451",
-            "commandLine": "cmd /c echo hello 451"
-          },
-          {
-            "id": "mytask452",
-            "commandLine": "cmd /c echo hello 452"
-          },
-          {
-            "id": "mytask453",
-            "commandLine": "cmd /c echo hello 453"
-          },
-          {
-            "id": "mytask454",
-            "commandLine": "cmd /c echo hello 454"
-          },
-          {
-            "id": "mytask455",
-            "commandLine": "cmd /c echo hello 455"
           }
         ]
       },
@@ -1042,8 +1478,8 @@
         "Content-Length": "328",
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 11 Mar 2024 01:48:37 GMT",
-        "request-id": "3bd810eb-80b3-4ee6-8908-b8437672a557",
+        "Date": "Wed, 27 Mar 2024 00:46:41 GMT",
+        "request-id": "5e8ca6e6-f0ed-4664-a431-d2b21992d603",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff"
@@ -1053,7 +1489,7 @@
         "code": "JobNotFound",
         "message": {
           "lang": "en-US",
-          "value": "The specified job does not exist.\nRequestId:3bd810eb-80b3-4ee6-8908-b8437672a557\nTime:2024-03-11T01:48:37.7357384Z"
+          "value": "The specified job does not exist.\nRequestId:5e8ca6e6-f0ed-4664-a431-d2b21992d603\nTime:2024-03-27T00:46:42.6285137Z"
         }
       }
     },
@@ -1063,837 +1499,77 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "4efc251e-e6b3-48bd-8251-f5c5ffe004cb",
-        "Content-Length": "5651",
+        "client-request-id": "64159c85-3d15-44ae-89d0-02e0a8a397bf",
+        "Content-Length": "5711",
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 11 Mar 2024 01:48:35 GMT",
+        "Date": "Wed, 27 Mar 2024 00:46:41 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": {
         "value": [
           {
-            "id": "mytask32",
-            "commandLine": "cmd /c echo hello 32"
+            "id": "mytask800",
+            "commandLine": "cmd /c echo hello 800"
           },
           {
-            "id": "mytask36",
-            "commandLine": "cmd /c echo hello 36"
+            "id": "mytask801",
+            "commandLine": "cmd /c echo hello 801"
           },
           {
-            "id": "mytask39",
-            "commandLine": "cmd /c echo hello 39"
+            "id": "mytask802",
+            "commandLine": "cmd /c echo hello 802"
           },
           {
-            "id": "mytask41",
-            "commandLine": "cmd /c echo hello 41"
+            "id": "mytask803",
+            "commandLine": "cmd /c echo hello 803"
           },
           {
-            "id": "mytask43",
-            "commandLine": "cmd /c echo hello 43"
+            "id": "mytask804",
+            "commandLine": "cmd /c echo hello 804"
           },
           {
-            "id": "mytask45",
-            "commandLine": "cmd /c echo hello 45"
+            "id": "mytask805",
+            "commandLine": "cmd /c echo hello 805"
           },
           {
-            "id": "mytask47",
-            "commandLine": "cmd /c echo hello 47"
+            "id": "mytask806",
+            "commandLine": "cmd /c echo hello 806"
           },
           {
-            "id": "mytask49",
-            "commandLine": "cmd /c echo hello 49"
+            "id": "mytask807",
+            "commandLine": "cmd /c echo hello 807"
           },
           {
-            "id": "mytask52",
-            "commandLine": "cmd /c echo hello 52"
+            "id": "mytask808",
+            "commandLine": "cmd /c echo hello 808"
           },
           {
-            "id": "mytask56",
-            "commandLine": "cmd /c echo hello 56"
+            "id": "mytask809",
+            "commandLine": "cmd /c echo hello 809"
           },
           {
-            "id": "mytask60",
-            "commandLine": "cmd /c echo hello 60"
+            "id": "mytask810",
+            "commandLine": "cmd /c echo hello 810"
           },
           {
-            "id": "mytask64",
-            "commandLine": "cmd /c echo hello 64"
+            "id": "mytask812",
+            "commandLine": "cmd /c echo hello 812"
           },
           {
-            "id": "mytask67",
-            "commandLine": "cmd /c echo hello 67"
+            "id": "mytask813",
+            "commandLine": "cmd /c echo hello 813"
           },
           {
-            "id": "mytask68",
-            "commandLine": "cmd /c echo hello 68"
-          },
-          {
-            "id": "mytask70",
-            "commandLine": "cmd /c echo hello 70"
-          },
-          {
-            "id": "mytask74",
-            "commandLine": "cmd /c echo hello 74"
-          },
-          {
-            "id": "mytask75",
-            "commandLine": "cmd /c echo hello 75"
-          },
-          {
-            "id": "mytask77",
-            "commandLine": "cmd /c echo hello 77"
-          },
-          {
-            "id": "mytask79",
-            "commandLine": "cmd /c echo hello 79"
-          },
-          {
-            "id": "mytask81",
-            "commandLine": "cmd /c echo hello 81"
-          },
-          {
-            "id": "mytask83",
-            "commandLine": "cmd /c echo hello 83"
-          },
-          {
-            "id": "mytask85",
-            "commandLine": "cmd /c echo hello 85"
-          },
-          {
-            "id": "mytask87",
-            "commandLine": "cmd /c echo hello 87"
-          },
-          {
-            "id": "mytask89",
-            "commandLine": "cmd /c echo hello 89"
-          },
-          {
-            "id": "mytask91",
-            "commandLine": "cmd /c echo hello 91"
-          },
-          {
-            "id": "mytask93",
-            "commandLine": "cmd /c echo hello 93"
-          },
-          {
-            "id": "mytask95",
-            "commandLine": "cmd /c echo hello 95"
-          },
-          {
-            "id": "mytask97",
-            "commandLine": "cmd /c echo hello 97"
-          },
-          {
-            "id": "mytask98",
-            "commandLine": "cmd /c echo hello 98"
-          },
-          {
-            "id": "mytask99",
-            "commandLine": "cmd /c echo hello 99"
-          },
-          {
-            "id": "mytask100",
-            "commandLine": "cmd /c echo hello 100"
-          },
-          {
-            "id": "mytask101",
-            "commandLine": "cmd /c echo hello 101"
-          },
-          {
-            "id": "mytask102",
-            "commandLine": "cmd /c echo hello 102"
-          },
-          {
-            "id": "mytask103",
-            "commandLine": "cmd /c echo hello 103"
-          },
-          {
-            "id": "mytask104",
-            "commandLine": "cmd /c echo hello 104"
-          },
-          {
-            "id": "mytask105",
-            "commandLine": "cmd /c echo hello 105"
-          },
-          {
-            "id": "mytask106",
-            "commandLine": "cmd /c echo hello 106"
-          },
-          {
-            "id": "mytask107",
-            "commandLine": "cmd /c echo hello 107"
-          },
-          {
-            "id": "mytask109",
-            "commandLine": "cmd /c echo hello 109"
-          },
-          {
-            "id": "mytask112",
-            "commandLine": "cmd /c echo hello 112"
-          },
-          {
-            "id": "mytask113",
-            "commandLine": "cmd /c echo hello 113"
-          },
-          {
-            "id": "mytask116",
-            "commandLine": "cmd /c echo hello 116"
-          },
-          {
-            "id": "mytask118",
-            "commandLine": "cmd /c echo hello 118"
-          },
-          {
-            "id": "mytask119",
-            "commandLine": "cmd /c echo hello 119"
-          },
-          {
-            "id": "mytask120",
-            "commandLine": "cmd /c echo hello 120"
-          },
-          {
-            "id": "mytask121",
-            "commandLine": "cmd /c echo hello 121"
-          },
-          {
-            "id": "mytask122",
-            "commandLine": "cmd /c echo hello 122"
-          },
-          {
-            "id": "mytask123",
-            "commandLine": "cmd /c echo hello 123"
-          },
-          {
-            "id": "mytask124",
-            "commandLine": "cmd /c echo hello 124"
-          },
-          {
-            "id": "mytask125",
-            "commandLine": "cmd /c echo hello 125"
-          },
-          {
-            "id": "mytask126",
-            "commandLine": "cmd /c echo hello 126"
-          },
-          {
-            "id": "mytask127",
-            "commandLine": "cmd /c echo hello 127"
-          },
-          {
-            "id": "mytask128",
-            "commandLine": "cmd /c echo hello 128"
-          },
-          {
-            "id": "mytask129",
-            "commandLine": "cmd /c echo hello 129"
-          },
-          {
-            "id": "mytask130",
-            "commandLine": "cmd /c echo hello 130"
-          },
-          {
-            "id": "mytask131",
-            "commandLine": "cmd /c echo hello 131"
-          },
-          {
-            "id": "mytask132",
-            "commandLine": "cmd /c echo hello 132"
-          },
-          {
-            "id": "mytask133",
-            "commandLine": "cmd /c echo hello 133"
-          },
-          {
-            "id": "mytask135",
-            "commandLine": "cmd /c echo hello 135"
-          },
-          {
-            "id": "mytask137",
-            "commandLine": "cmd /c echo hello 137"
-          },
-          {
-            "id": "mytask139",
-            "commandLine": "cmd /c echo hello 139"
-          },
-          {
-            "id": "mytask141",
-            "commandLine": "cmd /c echo hello 141"
-          },
-          {
-            "id": "mytask143",
-            "commandLine": "cmd /c echo hello 143"
-          },
-          {
-            "id": "mytask146",
-            "commandLine": "cmd /c echo hello 146"
-          },
-          {
-            "id": "mytask151",
-            "commandLine": "cmd /c echo hello 151"
-          },
-          {
-            "id": "mytask154",
-            "commandLine": "cmd /c echo hello 154"
-          },
-          {
-            "id": "mytask159",
-            "commandLine": "cmd /c echo hello 159"
-          },
-          {
-            "id": "mytask161",
-            "commandLine": "cmd /c echo hello 161"
-          },
-          {
-            "id": "mytask163",
-            "commandLine": "cmd /c echo hello 163"
-          },
-          {
-            "id": "mytask165",
-            "commandLine": "cmd /c echo hello 165"
-          },
-          {
-            "id": "mytask166",
-            "commandLine": "cmd /c echo hello 166"
-          },
-          {
-            "id": "mytask167",
-            "commandLine": "cmd /c echo hello 167"
-          },
-          {
-            "id": "mytask169",
-            "commandLine": "cmd /c echo hello 169"
-          },
-          {
-            "id": "mytask172",
-            "commandLine": "cmd /c echo hello 172"
-          },
-          {
-            "id": "mytask174",
-            "commandLine": "cmd /c echo hello 174"
-          },
-          {
-            "id": "mytask176",
-            "commandLine": "cmd /c echo hello 176"
-          },
-          {
-            "id": "mytask180",
-            "commandLine": "cmd /c echo hello 180"
-          },
-          {
-            "id": "mytask184",
-            "commandLine": "cmd /c echo hello 184"
-          },
-          {
-            "id": "mytask186",
-            "commandLine": "cmd /c echo hello 186"
-          },
-          {
-            "id": "mytask188",
-            "commandLine": "cmd /c echo hello 188"
-          },
-          {
-            "id": "mytask192",
-            "commandLine": "cmd /c echo hello 192"
-          },
-          {
-            "id": "mytask195",
-            "commandLine": "cmd /c echo hello 195"
-          },
-          {
-            "id": "mytask197",
-            "commandLine": "cmd /c echo hello 197"
-          },
-          {
-            "id": "mytask199",
-            "commandLine": "cmd /c echo hello 199"
-          },
-          {
-            "id": "mytask203",
-            "commandLine": "cmd /c echo hello 203"
-          },
-          {
-            "id": "mytask206",
-            "commandLine": "cmd /c echo hello 206"
-          },
-          {
-            "id": "mytask209",
-            "commandLine": "cmd /c echo hello 209"
-          },
-          {
-            "id": "mytask216",
-            "commandLine": "cmd /c echo hello 216"
-          },
-          {
-            "id": "mytask219",
-            "commandLine": "cmd /c echo hello 219"
-          },
-          {
-            "id": "mytask222",
-            "commandLine": "cmd /c echo hello 222"
-          },
-          {
-            "id": "mytask225",
-            "commandLine": "cmd /c echo hello 225"
-          },
-          {
-            "id": "mytask228",
-            "commandLine": "cmd /c echo hello 228"
-          },
-          {
-            "id": "mytask230",
-            "commandLine": "cmd /c echo hello 230"
-          },
-          {
-            "id": "mytask235",
-            "commandLine": "cmd /c echo hello 235"
-          },
-          {
-            "id": "mytask239",
-            "commandLine": "cmd /c echo hello 239"
-          },
-          {
-            "id": "mytask241",
-            "commandLine": "cmd /c echo hello 241"
-          },
-          {
-            "id": "mytask244",
-            "commandLine": "cmd /c echo hello 244"
-          },
-          {
-            "id": "mytask247",
-            "commandLine": "cmd /c echo hello 247"
-          },
-          {
-            "id": "mytask250",
-            "commandLine": "cmd /c echo hello 250"
-          },
-          {
-            "id": "mytask253",
-            "commandLine": "cmd /c echo hello 253"
-          }
-        ]
-      },
-      "StatusCode": 404,
-      "ResponseHeaders": {
-        "Content-Length": "328",
-        "Content-Type": "application/json; odata=minimalmetadata",
-        "DataServiceVersion": "3.0",
-        "Date": "Mon, 11 Mar 2024 01:48:37 GMT",
-        "request-id": "9381c6fa-ed98-46d2-b0e0-37ed62b61da2",
-        "Server": "Microsoft-HTTPAPI/2.0",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "X-Content-Type-Options": "nosniff"
-      },
-      "ResponseBody": {
-        "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element",
-        "code": "JobNotFound",
-        "message": {
-          "lang": "en-US",
-          "value": "The specified job does not exist.\nRequestId:9381c6fa-ed98-46d2-b0e0-37ed62b61da2\nTime:2024-03-11T01:48:37.7306088Z"
-        }
-      }
-    },
-    {
-      "RequestUri": "https://REDACTED/jobs/BatchUser-testAddMultiTasksWithError/addtaskcollection?api-version=2024-02-01.19.0",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "client-request-id": "f1c9d2a0-38e0-4d20-b4b0-14f9f90f0697",
-        "Content-Length": "5613",
-        "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 11 Mar 2024 01:48:35 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
-      },
-      "RequestBody": {
-        "value": [
-          {
-            "id": "mytask0",
-            "commandLine": "cmd /c echo hello 0"
-          },
-          {
-            "id": "mytask2",
-            "commandLine": "cmd /c echo hello 2"
-          },
-          {
-            "id": "mytask3",
-            "commandLine": "cmd /c echo hello 3"
-          },
-          {
-            "id": "mytask4",
-            "commandLine": "cmd /c echo hello 4"
-          },
-          {
-            "id": "mytask5",
-            "commandLine": "cmd /c echo hello 5"
-          },
-          {
-            "id": "mytask6",
-            "commandLine": "cmd /c echo hello 6"
-          },
-          {
-            "id": "mytask7",
-            "commandLine": "cmd /c echo hello 7"
-          },
-          {
-            "id": "mytask8",
-            "commandLine": "cmd /c echo hello 8"
-          },
-          {
-            "id": "mytask9",
-            "commandLine": "cmd /c echo hello 9"
-          },
-          {
-            "id": "mytask10",
-            "commandLine": "cmd /c echo hello 10"
-          },
-          {
-            "id": "mytask11",
-            "commandLine": "cmd /c echo hello 11"
-          },
-          {
-            "id": "mytask12",
-            "commandLine": "cmd /c echo hello 12"
-          },
-          {
-            "id": "mytask13",
-            "commandLine": "cmd /c echo hello 13"
-          },
-          {
-            "id": "mytask14",
-            "commandLine": "cmd /c echo hello 14"
-          },
-          {
-            "id": "mytask15",
-            "commandLine": "cmd /c echo hello 15"
-          },
-          {
-            "id": "mytask16",
-            "commandLine": "cmd /c echo hello 16"
-          },
-          {
-            "id": "mytask17",
-            "commandLine": "cmd /c echo hello 17"
-          },
-          {
-            "id": "mytask18",
-            "commandLine": "cmd /c echo hello 18"
-          },
-          {
-            "id": "mytask19",
-            "commandLine": "cmd /c echo hello 19"
-          },
-          {
-            "id": "mytask20",
-            "commandLine": "cmd /c echo hello 20"
-          },
-          {
-            "id": "mytask21",
-            "commandLine": "cmd /c echo hello 21"
-          },
-          {
-            "id": "mytask22",
-            "commandLine": "cmd /c echo hello 22"
-          },
-          {
-            "id": "mytask23",
-            "commandLine": "cmd /c echo hello 23"
-          },
-          {
-            "id": "mytask24",
-            "commandLine": "cmd /c echo hello 24"
-          },
-          {
-            "id": "mytask25",
-            "commandLine": "cmd /c echo hello 25"
-          },
-          {
-            "id": "mytask26",
-            "commandLine": "cmd /c echo hello 26"
-          },
-          {
-            "id": "mytask27",
-            "commandLine": "cmd /c echo hello 27"
-          },
-          {
-            "id": "mytask29",
-            "commandLine": "cmd /c echo hello 29"
-          },
-          {
-            "id": "mytask30",
-            "commandLine": "cmd /c echo hello 30"
-          },
-          {
-            "id": "mytask31",
-            "commandLine": "cmd /c echo hello 31"
-          },
-          {
-            "id": "mytask34",
-            "commandLine": "cmd /c echo hello 34"
-          },
-          {
-            "id": "mytask46",
-            "commandLine": "cmd /c echo hello 46"
-          },
-          {
-            "id": "mytask50",
-            "commandLine": "cmd /c echo hello 50"
-          },
-          {
-            "id": "mytask54",
-            "commandLine": "cmd /c echo hello 54"
-          },
-          {
-            "id": "mytask57",
-            "commandLine": "cmd /c echo hello 57"
-          },
-          {
-            "id": "mytask59",
-            "commandLine": "cmd /c echo hello 59"
-          },
-          {
-            "id": "mytask62",
-            "commandLine": "cmd /c echo hello 62"
-          },
-          {
-            "id": "mytask65",
-            "commandLine": "cmd /c echo hello 65"
-          },
-          {
-            "id": "mytask71",
-            "commandLine": "cmd /c echo hello 71"
-          },
-          {
-            "id": "mytask73",
-            "commandLine": "cmd /c echo hello 73"
-          },
-          {
-            "id": "mytask108",
-            "commandLine": "cmd /c echo hello 108"
-          },
-          {
-            "id": "mytask110",
-            "commandLine": "cmd /c echo hello 110"
-          },
-          {
-            "id": "mytask111",
-            "commandLine": "cmd /c echo hello 111"
-          },
-          {
-            "id": "mytask114",
-            "commandLine": "cmd /c echo hello 114"
-          },
-          {
-            "id": "mytask115",
-            "commandLine": "cmd /c echo hello 115"
-          },
-          {
-            "id": "mytask117",
-            "commandLine": "cmd /c echo hello 117"
-          },
-          {
-            "id": "mytask145",
-            "commandLine": "cmd /c echo hello 145"
-          },
-          {
-            "id": "mytask147",
-            "commandLine": "cmd /c echo hello 147"
-          },
-          {
-            "id": "mytask149",
-            "commandLine": "cmd /c echo hello 149"
-          },
-          {
-            "id": "mytask152",
-            "commandLine": "cmd /c echo hello 152"
-          },
-          {
-            "id": "mytask155",
-            "commandLine": "cmd /c echo hello 155"
-          },
-          {
-            "id": "mytask157",
-            "commandLine": "cmd /c echo hello 157"
-          },
-          {
-            "id": "mytask160",
-            "commandLine": "cmd /c echo hello 160"
-          },
-          {
-            "id": "mytask162",
-            "commandLine": "cmd /c echo hello 162"
-          },
-          {
-            "id": "mytask164",
-            "commandLine": "cmd /c echo hello 164"
-          },
-          {
-            "id": "mytask364",
-            "commandLine": "cmd /c echo hello 364"
-          },
-          {
-            "id": "mytask456",
-            "commandLine": "cmd /c echo hello 456"
-          },
-          {
-            "id": "mytask457",
-            "commandLine": "cmd /c echo hello 457"
-          },
-          {
-            "id": "mytask458",
-            "commandLine": "cmd /c echo hello 458"
-          },
-          {
-            "id": "mytask459",
-            "commandLine": "cmd /c echo hello 459"
-          },
-          {
-            "id": "mytask460",
-            "commandLine": "cmd /c echo hello 460"
-          },
-          {
-            "id": "mytask462",
-            "commandLine": "cmd /c echo hello 462"
-          },
-          {
-            "id": "mytask463",
-            "commandLine": "cmd /c echo hello 463"
-          },
-          {
-            "id": "mytask464",
-            "commandLine": "cmd /c echo hello 464"
-          },
-          {
-            "id": "mytask466",
-            "commandLine": "cmd /c echo hello 466"
-          },
-          {
-            "id": "mytask468",
-            "commandLine": "cmd /c echo hello 468"
-          },
-          {
-            "id": "mytask470",
-            "commandLine": "cmd /c echo hello 470"
-          },
-          {
-            "id": "mytask472",
-            "commandLine": "cmd /c echo hello 472"
-          },
-          {
-            "id": "mytask475",
-            "commandLine": "cmd /c echo hello 475"
-          },
-          {
-            "id": "mytask477",
-            "commandLine": "cmd /c echo hello 477"
-          },
-          {
-            "id": "mytask479",
-            "commandLine": "cmd /c echo hello 479"
-          },
-          {
-            "id": "mytask481",
-            "commandLine": "cmd /c echo hello 481"
-          },
-          {
-            "id": "mytask483",
-            "commandLine": "cmd /c echo hello 483"
-          },
-          {
-            "id": "mytask485",
-            "commandLine": "cmd /c echo hello 485"
-          },
-          {
-            "id": "mytask486",
-            "commandLine": "cmd /c echo hello 486"
-          },
-          {
-            "id": "mytask487",
-            "commandLine": "cmd /c echo hello 487"
-          },
-          {
-            "id": "mytask489",
-            "commandLine": "cmd /c echo hello 489"
-          },
-          {
-            "id": "mytask491",
-            "commandLine": "cmd /c echo hello 491"
-          },
-          {
-            "id": "mytask493",
-            "commandLine": "cmd /c echo hello 493"
-          },
-          {
-            "id": "mytask538",
-            "commandLine": "cmd /c echo hello 538"
-          },
-          {
-            "id": "mytask540",
-            "commandLine": "cmd /c echo hello 540"
-          },
-          {
-            "id": "mytask542",
-            "commandLine": "cmd /c echo hello 542"
-          },
-          {
-            "id": "mytask582",
-            "commandLine": "cmd /c echo hello 582"
-          },
-          {
-            "id": "mytask583",
-            "commandLine": "cmd /c echo hello 583"
-          },
-          {
-            "id": "mytask584",
-            "commandLine": "cmd /c echo hello 584"
-          },
-          {
-            "id": "mytask585",
-            "commandLine": "cmd /c echo hello 585"
-          },
-          {
-            "id": "mytask586",
-            "commandLine": "cmd /c echo hello 586"
-          },
-          {
-            "id": "mytask587",
-            "commandLine": "cmd /c echo hello 587"
-          },
-          {
-            "id": "mytask588",
-            "commandLine": "cmd /c echo hello 588"
-          },
-          {
-            "id": "mytask589",
-            "commandLine": "cmd /c echo hello 589"
-          },
-          {
-            "id": "mytask590",
-            "commandLine": "cmd /c echo hello 590"
-          },
-          {
-            "id": "mytask591",
-            "commandLine": "cmd /c echo hello 591"
-          },
-          {
-            "id": "mytask592",
-            "commandLine": "cmd /c echo hello 592"
-          },
-          {
-            "id": "mytask593",
-            "commandLine": "cmd /c echo hello 593"
-          },
-          {
-            "id": "mytask594",
-            "commandLine": "cmd /c echo hello 594"
-          },
-          {
-            "id": "mytask595",
-            "commandLine": "cmd /c echo hello 595"
+            "id": "mytask815",
+            "commandLine": "cmd /c echo hello 815"
           },
           {
             "id": "mytask816",
             "commandLine": "cmd /c echo hello 816"
+          },
+          {
+            "id": "mytask818",
+            "commandLine": "cmd /c echo hello 818"
           },
           {
             "id": "mytask820",
@@ -1906,6 +1582,330 @@
           {
             "id": "mytask824",
             "commandLine": "cmd /c echo hello 824"
+          },
+          {
+            "id": "mytask826",
+            "commandLine": "cmd /c echo hello 826"
+          },
+          {
+            "id": "mytask828",
+            "commandLine": "cmd /c echo hello 828"
+          },
+          {
+            "id": "mytask831",
+            "commandLine": "cmd /c echo hello 831"
+          },
+          {
+            "id": "mytask833",
+            "commandLine": "cmd /c echo hello 833"
+          },
+          {
+            "id": "mytask835",
+            "commandLine": "cmd /c echo hello 835"
+          },
+          {
+            "id": "mytask837",
+            "commandLine": "cmd /c echo hello 837"
+          },
+          {
+            "id": "mytask839",
+            "commandLine": "cmd /c echo hello 839"
+          },
+          {
+            "id": "mytask841",
+            "commandLine": "cmd /c echo hello 841"
+          },
+          {
+            "id": "mytask843",
+            "commandLine": "cmd /c echo hello 843"
+          },
+          {
+            "id": "mytask845",
+            "commandLine": "cmd /c echo hello 845"
+          },
+          {
+            "id": "mytask847",
+            "commandLine": "cmd /c echo hello 847"
+          },
+          {
+            "id": "mytask850",
+            "commandLine": "cmd /c echo hello 850"
+          },
+          {
+            "id": "mytask852",
+            "commandLine": "cmd /c echo hello 852"
+          },
+          {
+            "id": "mytask854",
+            "commandLine": "cmd /c echo hello 854"
+          },
+          {
+            "id": "mytask856",
+            "commandLine": "cmd /c echo hello 856"
+          },
+          {
+            "id": "mytask858",
+            "commandLine": "cmd /c echo hello 858"
+          },
+          {
+            "id": "mytask860",
+            "commandLine": "cmd /c echo hello 860"
+          },
+          {
+            "id": "mytask862",
+            "commandLine": "cmd /c echo hello 862"
+          },
+          {
+            "id": "mytask864",
+            "commandLine": "cmd /c echo hello 864"
+          },
+          {
+            "id": "mytask866",
+            "commandLine": "cmd /c echo hello 866"
+          },
+          {
+            "id": "mytask870",
+            "commandLine": "cmd /c echo hello 870"
+          },
+          {
+            "id": "mytask872",
+            "commandLine": "cmd /c echo hello 872"
+          },
+          {
+            "id": "mytask874",
+            "commandLine": "cmd /c echo hello 874"
+          },
+          {
+            "id": "mytask876",
+            "commandLine": "cmd /c echo hello 876"
+          },
+          {
+            "id": "mytask878",
+            "commandLine": "cmd /c echo hello 878"
+          },
+          {
+            "id": "mytask880",
+            "commandLine": "cmd /c echo hello 880"
+          },
+          {
+            "id": "mytask882",
+            "commandLine": "cmd /c echo hello 882"
+          },
+          {
+            "id": "mytask884",
+            "commandLine": "cmd /c echo hello 884"
+          },
+          {
+            "id": "mytask886",
+            "commandLine": "cmd /c echo hello 886"
+          },
+          {
+            "id": "mytask888",
+            "commandLine": "cmd /c echo hello 888"
+          },
+          {
+            "id": "mytask890",
+            "commandLine": "cmd /c echo hello 890"
+          },
+          {
+            "id": "mytask892",
+            "commandLine": "cmd /c echo hello 892"
+          },
+          {
+            "id": "mytask894",
+            "commandLine": "cmd /c echo hello 894"
+          },
+          {
+            "id": "mytask896",
+            "commandLine": "cmd /c echo hello 896"
+          },
+          {
+            "id": "mytask898",
+            "commandLine": "cmd /c echo hello 898"
+          },
+          {
+            "id": "mytask900",
+            "commandLine": "cmd /c echo hello 900"
+          },
+          {
+            "id": "mytask902",
+            "commandLine": "cmd /c echo hello 902"
+          },
+          {
+            "id": "mytask904",
+            "commandLine": "cmd /c echo hello 904"
+          },
+          {
+            "id": "mytask906",
+            "commandLine": "cmd /c echo hello 906"
+          },
+          {
+            "id": "mytask908",
+            "commandLine": "cmd /c echo hello 908"
+          },
+          {
+            "id": "mytask910",
+            "commandLine": "cmd /c echo hello 910"
+          },
+          {
+            "id": "mytask912",
+            "commandLine": "cmd /c echo hello 912"
+          },
+          {
+            "id": "mytask914",
+            "commandLine": "cmd /c echo hello 914"
+          },
+          {
+            "id": "mytask916",
+            "commandLine": "cmd /c echo hello 916"
+          },
+          {
+            "id": "mytask918",
+            "commandLine": "cmd /c echo hello 918"
+          },
+          {
+            "id": "mytask964",
+            "commandLine": "cmd /c echo hello 964"
+          },
+          {
+            "id": "mytask965",
+            "commandLine": "cmd /c echo hello 965"
+          },
+          {
+            "id": "mytask966",
+            "commandLine": "cmd /c echo hello 966"
+          },
+          {
+            "id": "mytask967",
+            "commandLine": "cmd /c echo hello 967"
+          },
+          {
+            "id": "mytask968",
+            "commandLine": "cmd /c echo hello 968"
+          },
+          {
+            "id": "mytask969",
+            "commandLine": "cmd /c echo hello 969"
+          },
+          {
+            "id": "mytask970",
+            "commandLine": "cmd /c echo hello 970"
+          },
+          {
+            "id": "mytask971",
+            "commandLine": "cmd /c echo hello 971"
+          },
+          {
+            "id": "mytask972",
+            "commandLine": "cmd /c echo hello 972"
+          },
+          {
+            "id": "mytask973",
+            "commandLine": "cmd /c echo hello 973"
+          },
+          {
+            "id": "mytask974",
+            "commandLine": "cmd /c echo hello 974"
+          },
+          {
+            "id": "mytask975",
+            "commandLine": "cmd /c echo hello 975"
+          },
+          {
+            "id": "mytask976",
+            "commandLine": "cmd /c echo hello 976"
+          },
+          {
+            "id": "mytask977",
+            "commandLine": "cmd /c echo hello 977"
+          },
+          {
+            "id": "mytask978",
+            "commandLine": "cmd /c echo hello 978"
+          },
+          {
+            "id": "mytask979",
+            "commandLine": "cmd /c echo hello 979"
+          },
+          {
+            "id": "mytask980",
+            "commandLine": "cmd /c echo hello 980"
+          },
+          {
+            "id": "mytask981",
+            "commandLine": "cmd /c echo hello 981"
+          },
+          {
+            "id": "mytask982",
+            "commandLine": "cmd /c echo hello 982"
+          },
+          {
+            "id": "mytask983",
+            "commandLine": "cmd /c echo hello 983"
+          },
+          {
+            "id": "mytask984",
+            "commandLine": "cmd /c echo hello 984"
+          },
+          {
+            "id": "mytask985",
+            "commandLine": "cmd /c echo hello 985"
+          },
+          {
+            "id": "mytask986",
+            "commandLine": "cmd /c echo hello 986"
+          },
+          {
+            "id": "mytask987",
+            "commandLine": "cmd /c echo hello 987"
+          },
+          {
+            "id": "mytask988",
+            "commandLine": "cmd /c echo hello 988"
+          },
+          {
+            "id": "mytask989",
+            "commandLine": "cmd /c echo hello 989"
+          },
+          {
+            "id": "mytask990",
+            "commandLine": "cmd /c echo hello 990"
+          },
+          {
+            "id": "mytask991",
+            "commandLine": "cmd /c echo hello 991"
+          },
+          {
+            "id": "mytask992",
+            "commandLine": "cmd /c echo hello 992"
+          },
+          {
+            "id": "mytask993",
+            "commandLine": "cmd /c echo hello 993"
+          },
+          {
+            "id": "mytask994",
+            "commandLine": "cmd /c echo hello 994"
+          },
+          {
+            "id": "mytask995",
+            "commandLine": "cmd /c echo hello 995"
+          },
+          {
+            "id": "mytask996",
+            "commandLine": "cmd /c echo hello 996"
+          },
+          {
+            "id": "mytask997",
+            "commandLine": "cmd /c echo hello 997"
+          },
+          {
+            "id": "mytask998",
+            "commandLine": "cmd /c echo hello 998"
+          },
+          {
+            "id": "mytask999",
+            "commandLine": "cmd /c echo hello 999"
           }
         ]
       },
@@ -1914,8 +1914,8 @@
         "Content-Length": "328",
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 11 Mar 2024 01:48:37 GMT",
-        "request-id": "27af87d8-919e-4857-8647-c59f8f551a6b",
+        "Date": "Wed, 27 Mar 2024 00:46:41 GMT",
+        "request-id": "6f2f8c5c-31be-4e59-a75f-d0865b380c01",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff"
@@ -1925,7 +1925,7 @@
         "code": "JobNotFound",
         "message": {
           "lang": "en-US",
-          "value": "The specified job does not exist.\nRequestId:27af87d8-919e-4857-8647-c59f8f551a6b\nTime:2024-03-11T01:48:37.7438575Z"
+          "value": "The specified job does not exist.\nRequestId:6f2f8c5c-31be-4e59-a75f-d0865b380c01\nTime:2024-03-27T00:46:42.6218106Z"
         }
       }
     },
@@ -1935,30 +1935,14 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "0c8d5c66-bb3f-4a6a-a5a0-92182064767a",
+        "client-request-id": "a66be047-5c95-4acb-9b85-51ccfe147bd6",
         "Content-Length": "5711",
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 11 Mar 2024 01:48:35 GMT",
+        "Date": "Wed, 27 Mar 2024 00:46:41 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": {
         "value": [
-          {
-            "id": "mytask696",
-            "commandLine": "cmd /c echo hello 696"
-          },
-          {
-            "id": "mytask697",
-            "commandLine": "cmd /c echo hello 697"
-          },
-          {
-            "id": "mytask698",
-            "commandLine": "cmd /c echo hello 698"
-          },
-          {
-            "id": "mytask699",
-            "commandLine": "cmd /c echo hello 699"
-          },
           {
             "id": "mytask700",
             "commandLine": "cmd /c echo hello 700"
@@ -2342,6 +2326,22 @@
           {
             "id": "mytask795",
             "commandLine": "cmd /c echo hello 795"
+          },
+          {
+            "id": "mytask796",
+            "commandLine": "cmd /c echo hello 796"
+          },
+          {
+            "id": "mytask797",
+            "commandLine": "cmd /c echo hello 797"
+          },
+          {
+            "id": "mytask798",
+            "commandLine": "cmd /c echo hello 798"
+          },
+          {
+            "id": "mytask799",
+            "commandLine": "cmd /c echo hello 799"
           }
         ]
       },
@@ -2350,8 +2350,8 @@
         "Content-Length": "328",
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 11 Mar 2024 01:48:37 GMT",
-        "request-id": "d8037ce8-9a81-4f96-97a5-52567ec7ba25",
+        "Date": "Wed, 27 Mar 2024 00:46:41 GMT",
+        "request-id": "c459ce0a-00bb-4111-a813-767e7d087e4a",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff"
@@ -2361,7 +2361,7 @@
         "code": "JobNotFound",
         "message": {
           "lang": "en-US",
-          "value": "The specified job does not exist.\nRequestId:d8037ce8-9a81-4f96-97a5-52567ec7ba25\nTime:2024-03-11T01:48:37.7400365Z"
+          "value": "The specified job does not exist.\nRequestId:c459ce0a-00bb-4111-a813-767e7d087e4a\nTime:2024-03-27T00:46:42.6249482Z"
         }
       }
     },
@@ -2371,153 +2371,281 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "fe95f4d4-e158-477b-9968-01ec9bce7cee",
+        "client-request-id": "e1d967df-1dd3-40f8-a7fc-ae70ac03ecf4",
         "Content-Length": "5711",
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 11 Mar 2024 01:48:35 GMT",
+        "Date": "Wed, 27 Mar 2024 00:46:41 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": {
         "value": [
           {
-            "id": "mytask170",
-            "commandLine": "cmd /c echo hello 170"
-          },
-          {
-            "id": "mytask173",
-            "commandLine": "cmd /c echo hello 173"
-          },
-          {
-            "id": "mytask177",
-            "commandLine": "cmd /c echo hello 177"
-          },
-          {
-            "id": "mytask179",
-            "commandLine": "cmd /c echo hello 179"
-          },
-          {
-            "id": "mytask182",
-            "commandLine": "cmd /c echo hello 182"
-          },
-          {
-            "id": "mytask185",
-            "commandLine": "cmd /c echo hello 185"
-          },
-          {
-            "id": "mytask189",
-            "commandLine": "cmd /c echo hello 189"
-          },
-          {
-            "id": "mytask191",
-            "commandLine": "cmd /c echo hello 191"
-          },
-          {
-            "id": "mytask194",
-            "commandLine": "cmd /c echo hello 194"
-          },
-          {
-            "id": "mytask196",
-            "commandLine": "cmd /c echo hello 196"
-          },
-          {
-            "id": "mytask198",
-            "commandLine": "cmd /c echo hello 198"
+            "id": "mytask200",
+            "commandLine": "cmd /c echo hello 200"
           },
           {
             "id": "mytask201",
             "commandLine": "cmd /c echo hello 201"
           },
           {
+            "id": "mytask202",
+            "commandLine": "cmd /c echo hello 202"
+          },
+          {
+            "id": "mytask203",
+            "commandLine": "cmd /c echo hello 203"
+          },
+          {
+            "id": "mytask204",
+            "commandLine": "cmd /c echo hello 204"
+          },
+          {
             "id": "mytask205",
             "commandLine": "cmd /c echo hello 205"
+          },
+          {
+            "id": "mytask206",
+            "commandLine": "cmd /c echo hello 206"
+          },
+          {
+            "id": "mytask207",
+            "commandLine": "cmd /c echo hello 207"
           },
           {
             "id": "mytask208",
             "commandLine": "cmd /c echo hello 208"
           },
           {
+            "id": "mytask209",
+            "commandLine": "cmd /c echo hello 209"
+          },
+          {
+            "id": "mytask210",
+            "commandLine": "cmd /c echo hello 210"
+          },
+          {
             "id": "mytask211",
             "commandLine": "cmd /c echo hello 211"
+          },
+          {
+            "id": "mytask212",
+            "commandLine": "cmd /c echo hello 212"
           },
           {
             "id": "mytask213",
             "commandLine": "cmd /c echo hello 213"
           },
           {
+            "id": "mytask214",
+            "commandLine": "cmd /c echo hello 214"
+          },
+          {
             "id": "mytask215",
             "commandLine": "cmd /c echo hello 215"
+          },
+          {
+            "id": "mytask216",
+            "commandLine": "cmd /c echo hello 216"
+          },
+          {
+            "id": "mytask217",
+            "commandLine": "cmd /c echo hello 217"
           },
           {
             "id": "mytask218",
             "commandLine": "cmd /c echo hello 218"
           },
           {
+            "id": "mytask219",
+            "commandLine": "cmd /c echo hello 219"
+          },
+          {
+            "id": "mytask220",
+            "commandLine": "cmd /c echo hello 220"
+          },
+          {
             "id": "mytask221",
             "commandLine": "cmd /c echo hello 221"
+          },
+          {
+            "id": "mytask222",
+            "commandLine": "cmd /c echo hello 222"
           },
           {
             "id": "mytask223",
             "commandLine": "cmd /c echo hello 223"
           },
           {
+            "id": "mytask224",
+            "commandLine": "cmd /c echo hello 224"
+          },
+          {
+            "id": "mytask225",
+            "commandLine": "cmd /c echo hello 225"
+          },
+          {
+            "id": "mytask226",
+            "commandLine": "cmd /c echo hello 226"
+          },
+          {
             "id": "mytask227",
             "commandLine": "cmd /c echo hello 227"
+          },
+          {
+            "id": "mytask228",
+            "commandLine": "cmd /c echo hello 228"
+          },
+          {
+            "id": "mytask229",
+            "commandLine": "cmd /c echo hello 229"
+          },
+          {
+            "id": "mytask230",
+            "commandLine": "cmd /c echo hello 230"
           },
           {
             "id": "mytask231",
             "commandLine": "cmd /c echo hello 231"
           },
           {
+            "id": "mytask232",
+            "commandLine": "cmd /c echo hello 232"
+          },
+          {
             "id": "mytask233",
             "commandLine": "cmd /c echo hello 233"
+          },
+          {
+            "id": "mytask234",
+            "commandLine": "cmd /c echo hello 234"
+          },
+          {
+            "id": "mytask235",
+            "commandLine": "cmd /c echo hello 235"
           },
           {
             "id": "mytask236",
             "commandLine": "cmd /c echo hello 236"
           },
           {
+            "id": "mytask237",
+            "commandLine": "cmd /c echo hello 237"
+          },
+          {
             "id": "mytask238",
             "commandLine": "cmd /c echo hello 238"
+          },
+          {
+            "id": "mytask239",
+            "commandLine": "cmd /c echo hello 239"
+          },
+          {
+            "id": "mytask240",
+            "commandLine": "cmd /c echo hello 240"
+          },
+          {
+            "id": "mytask241",
+            "commandLine": "cmd /c echo hello 241"
           },
           {
             "id": "mytask242",
             "commandLine": "cmd /c echo hello 242"
           },
           {
+            "id": "mytask243",
+            "commandLine": "cmd /c echo hello 243"
+          },
+          {
+            "id": "mytask244",
+            "commandLine": "cmd /c echo hello 244"
+          },
+          {
+            "id": "mytask245",
+            "commandLine": "cmd /c echo hello 245"
+          },
+          {
             "id": "mytask246",
             "commandLine": "cmd /c echo hello 246"
+          },
+          {
+            "id": "mytask247",
+            "commandLine": "cmd /c echo hello 247"
+          },
+          {
+            "id": "mytask248",
+            "commandLine": "cmd /c echo hello 248"
           },
           {
             "id": "mytask249",
             "commandLine": "cmd /c echo hello 249"
           },
           {
+            "id": "mytask250",
+            "commandLine": "cmd /c echo hello 250"
+          },
+          {
+            "id": "mytask251",
+            "commandLine": "cmd /c echo hello 251"
+          },
+          {
             "id": "mytask252",
             "commandLine": "cmd /c echo hello 252"
+          },
+          {
+            "id": "mytask253",
+            "commandLine": "cmd /c echo hello 253"
+          },
+          {
+            "id": "mytask254",
+            "commandLine": "cmd /c echo hello 254"
           },
           {
             "id": "mytask255",
             "commandLine": "cmd /c echo hello 255"
           },
           {
+            "id": "mytask256",
+            "commandLine": "cmd /c echo hello 256"
+          },
+          {
             "id": "mytask257",
             "commandLine": "cmd /c echo hello 257"
+          },
+          {
+            "id": "mytask258",
+            "commandLine": "cmd /c echo hello 258"
           },
           {
             "id": "mytask259",
             "commandLine": "cmd /c echo hello 259"
           },
           {
+            "id": "mytask260",
+            "commandLine": "cmd /c echo hello 260"
+          },
+          {
             "id": "mytask261",
             "commandLine": "cmd /c echo hello 261"
+          },
+          {
+            "id": "mytask262",
+            "commandLine": "cmd /c echo hello 262"
           },
           {
             "id": "mytask263",
             "commandLine": "cmd /c echo hello 263"
           },
           {
+            "id": "mytask264",
+            "commandLine": "cmd /c echo hello 264"
+          },
+          {
             "id": "mytask265",
             "commandLine": "cmd /c echo hello 265"
+          },
+          {
+            "id": "mytask266",
+            "commandLine": "cmd /c echo hello 266"
           },
           {
             "id": "mytask267",
@@ -2528,256 +2656,128 @@
             "commandLine": "cmd /c echo hello 268"
           },
           {
+            "id": "mytask269",
+            "commandLine": "cmd /c echo hello 269"
+          },
+          {
             "id": "mytask270",
             "commandLine": "cmd /c echo hello 270"
+          },
+          {
+            "id": "mytask271",
+            "commandLine": "cmd /c echo hello 271"
           },
           {
             "id": "mytask272",
             "commandLine": "cmd /c echo hello 272"
           },
           {
+            "id": "mytask273",
+            "commandLine": "cmd /c echo hello 273"
+          },
+          {
             "id": "mytask274",
             "commandLine": "cmd /c echo hello 274"
+          },
+          {
+            "id": "mytask275",
+            "commandLine": "cmd /c echo hello 275"
           },
           {
             "id": "mytask276",
             "commandLine": "cmd /c echo hello 276"
           },
           {
+            "id": "mytask277",
+            "commandLine": "cmd /c echo hello 277"
+          },
+          {
+            "id": "mytask278",
+            "commandLine": "cmd /c echo hello 278"
+          },
+          {
+            "id": "mytask279",
+            "commandLine": "cmd /c echo hello 279"
+          },
+          {
+            "id": "mytask280",
+            "commandLine": "cmd /c echo hello 280"
+          },
+          {
+            "id": "mytask281",
+            "commandLine": "cmd /c echo hello 281"
+          },
+          {
+            "id": "mytask282",
+            "commandLine": "cmd /c echo hello 282"
+          },
+          {
             "id": "mytask283",
             "commandLine": "cmd /c echo hello 283"
+          },
+          {
+            "id": "mytask284",
+            "commandLine": "cmd /c echo hello 284"
           },
           {
             "id": "mytask285",
             "commandLine": "cmd /c echo hello 285"
           },
           {
+            "id": "mytask286",
+            "commandLine": "cmd /c echo hello 286"
+          },
+          {
             "id": "mytask287",
             "commandLine": "cmd /c echo hello 287"
           },
           {
+            "id": "mytask288",
+            "commandLine": "cmd /c echo hello 288"
+          },
+          {
+            "id": "mytask289",
+            "commandLine": "cmd /c echo hello 289"
+          },
+          {
+            "id": "mytask290",
+            "commandLine": "cmd /c echo hello 290"
+          },
+          {
+            "id": "mytask291",
+            "commandLine": "cmd /c echo hello 291"
+          },
+          {
+            "id": "mytask292",
+            "commandLine": "cmd /c echo hello 292"
+          },
+          {
+            "id": "mytask293",
+            "commandLine": "cmd /c echo hello 293"
+          },
+          {
+            "id": "mytask294",
+            "commandLine": "cmd /c echo hello 294"
+          },
+          {
+            "id": "mytask295",
+            "commandLine": "cmd /c echo hello 295"
+          },
+          {
+            "id": "mytask296",
+            "commandLine": "cmd /c echo hello 296"
+          },
+          {
+            "id": "mytask297",
+            "commandLine": "cmd /c echo hello 297"
+          },
+          {
+            "id": "mytask298",
+            "commandLine": "cmd /c echo hello 298"
+          },
+          {
             "id": "mytask299",
             "commandLine": "cmd /c echo hello 299"
-          },
-          {
-            "id": "mytask300",
-            "commandLine": "cmd /c echo hello 300"
-          },
-          {
-            "id": "mytask301",
-            "commandLine": "cmd /c echo hello 301"
-          },
-          {
-            "id": "mytask302",
-            "commandLine": "cmd /c echo hello 302"
-          },
-          {
-            "id": "mytask303",
-            "commandLine": "cmd /c echo hello 303"
-          },
-          {
-            "id": "mytask304",
-            "commandLine": "cmd /c echo hello 304"
-          },
-          {
-            "id": "mytask305",
-            "commandLine": "cmd /c echo hello 305"
-          },
-          {
-            "id": "mytask306",
-            "commandLine": "cmd /c echo hello 306"
-          },
-          {
-            "id": "mytask307",
-            "commandLine": "cmd /c echo hello 307"
-          },
-          {
-            "id": "mytask308",
-            "commandLine": "cmd /c echo hello 308"
-          },
-          {
-            "id": "mytask309",
-            "commandLine": "cmd /c echo hello 309"
-          },
-          {
-            "id": "mytask310",
-            "commandLine": "cmd /c echo hello 310"
-          },
-          {
-            "id": "mytask311",
-            "commandLine": "cmd /c echo hello 311"
-          },
-          {
-            "id": "mytask312",
-            "commandLine": "cmd /c echo hello 312"
-          },
-          {
-            "id": "mytask313",
-            "commandLine": "cmd /c echo hello 313"
-          },
-          {
-            "id": "mytask314",
-            "commandLine": "cmd /c echo hello 314"
-          },
-          {
-            "id": "mytask315",
-            "commandLine": "cmd /c echo hello 315"
-          },
-          {
-            "id": "mytask316",
-            "commandLine": "cmd /c echo hello 316"
-          },
-          {
-            "id": "mytask317",
-            "commandLine": "cmd /c echo hello 317"
-          },
-          {
-            "id": "mytask318",
-            "commandLine": "cmd /c echo hello 318"
-          },
-          {
-            "id": "mytask319",
-            "commandLine": "cmd /c echo hello 319"
-          },
-          {
-            "id": "mytask320",
-            "commandLine": "cmd /c echo hello 320"
-          },
-          {
-            "id": "mytask321",
-            "commandLine": "cmd /c echo hello 321"
-          },
-          {
-            "id": "mytask322",
-            "commandLine": "cmd /c echo hello 322"
-          },
-          {
-            "id": "mytask323",
-            "commandLine": "cmd /c echo hello 323"
-          },
-          {
-            "id": "mytask324",
-            "commandLine": "cmd /c echo hello 324"
-          },
-          {
-            "id": "mytask325",
-            "commandLine": "cmd /c echo hello 325"
-          },
-          {
-            "id": "mytask326",
-            "commandLine": "cmd /c echo hello 326"
-          },
-          {
-            "id": "mytask327",
-            "commandLine": "cmd /c echo hello 327"
-          },
-          {
-            "id": "mytask328",
-            "commandLine": "cmd /c echo hello 328"
-          },
-          {
-            "id": "mytask329",
-            "commandLine": "cmd /c echo hello 329"
-          },
-          {
-            "id": "mytask330",
-            "commandLine": "cmd /c echo hello 330"
-          },
-          {
-            "id": "mytask331",
-            "commandLine": "cmd /c echo hello 331"
-          },
-          {
-            "id": "mytask332",
-            "commandLine": "cmd /c echo hello 332"
-          },
-          {
-            "id": "mytask333",
-            "commandLine": "cmd /c echo hello 333"
-          },
-          {
-            "id": "mytask334",
-            "commandLine": "cmd /c echo hello 334"
-          },
-          {
-            "id": "mytask335",
-            "commandLine": "cmd /c echo hello 335"
-          },
-          {
-            "id": "mytask336",
-            "commandLine": "cmd /c echo hello 336"
-          },
-          {
-            "id": "mytask337",
-            "commandLine": "cmd /c echo hello 337"
-          },
-          {
-            "id": "mytask338",
-            "commandLine": "cmd /c echo hello 338"
-          },
-          {
-            "id": "mytask339",
-            "commandLine": "cmd /c echo hello 339"
-          },
-          {
-            "id": "mytask340",
-            "commandLine": "cmd /c echo hello 340"
-          },
-          {
-            "id": "mytask341",
-            "commandLine": "cmd /c echo hello 341"
-          },
-          {
-            "id": "mytask342",
-            "commandLine": "cmd /c echo hello 342"
-          },
-          {
-            "id": "mytask343",
-            "commandLine": "cmd /c echo hello 343"
-          },
-          {
-            "id": "mytask344",
-            "commandLine": "cmd /c echo hello 344"
-          },
-          {
-            "id": "mytask345",
-            "commandLine": "cmd /c echo hello 345"
-          },
-          {
-            "id": "mytask346",
-            "commandLine": "cmd /c echo hello 346"
-          },
-          {
-            "id": "mytask347",
-            "commandLine": "cmd /c echo hello 347"
-          },
-          {
-            "id": "mytask348",
-            "commandLine": "cmd /c echo hello 348"
-          },
-          {
-            "id": "mytask349",
-            "commandLine": "cmd /c echo hello 349"
-          },
-          {
-            "id": "mytask350",
-            "commandLine": "cmd /c echo hello 350"
-          },
-          {
-            "id": "mytask351",
-            "commandLine": "cmd /c echo hello 351"
-          },
-          {
-            "id": "mytask352",
-            "commandLine": "cmd /c echo hello 352"
-          },
-          {
-            "id": "mytask353",
-            "commandLine": "cmd /c echo hello 353"
-          },
-          {
-            "id": "mytask354",
-            "commandLine": "cmd /c echo hello 354"
           }
         ]
       },
@@ -2786,8 +2786,8 @@
         "Content-Length": "328",
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 11 Mar 2024 01:48:37 GMT",
-        "request-id": "71965e96-58c1-4bb7-9a23-48f2962e4630",
+        "Date": "Wed, 27 Mar 2024 00:46:41 GMT",
+        "request-id": "7239543a-603e-41ae-a4ca-cfaf20ffdc6a",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff"
@@ -2797,7 +2797,7 @@
         "code": "JobNotFound",
         "message": {
           "lang": "en-US",
-          "value": "The specified job does not exist.\nRequestId:71965e96-58c1-4bb7-9a23-48f2962e4630\nTime:2024-03-11T01:48:37.7350056Z"
+          "value": "The specified job does not exist.\nRequestId:7239543a-603e-41ae-a4ca-cfaf20ffdc6a\nTime:2024-03-27T00:46:42.6382589Z"
         }
       }
     },
@@ -2807,89 +2807,669 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "2d230627-9dde-49bc-a924-8fcba510e357",
+        "client-request-id": "ac11763c-76d3-46af-836f-74a44b41865e",
         "Content-Length": "5711",
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 11 Mar 2024 01:48:35 GMT",
+        "Date": "Wed, 27 Mar 2024 00:46:41 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": {
         "value": [
           {
-            "id": "mytask900",
-            "commandLine": "cmd /c echo hello 900"
+            "id": "mytask560",
+            "commandLine": "cmd /c echo hello 560"
+          },
+          {
+            "id": "mytask562",
+            "commandLine": "cmd /c echo hello 562"
+          },
+          {
+            "id": "mytask563",
+            "commandLine": "cmd /c echo hello 563"
+          },
+          {
+            "id": "mytask565",
+            "commandLine": "cmd /c echo hello 565"
+          },
+          {
+            "id": "mytask567",
+            "commandLine": "cmd /c echo hello 567"
+          },
+          {
+            "id": "mytask569",
+            "commandLine": "cmd /c echo hello 569"
+          },
+          {
+            "id": "mytask572",
+            "commandLine": "cmd /c echo hello 572"
+          },
+          {
+            "id": "mytask573",
+            "commandLine": "cmd /c echo hello 573"
+          },
+          {
+            "id": "mytask575",
+            "commandLine": "cmd /c echo hello 575"
+          },
+          {
+            "id": "mytask577",
+            "commandLine": "cmd /c echo hello 577"
+          },
+          {
+            "id": "mytask579",
+            "commandLine": "cmd /c echo hello 579"
+          },
+          {
+            "id": "mytask581",
+            "commandLine": "cmd /c echo hello 581"
+          },
+          {
+            "id": "mytask583",
+            "commandLine": "cmd /c echo hello 583"
+          },
+          {
+            "id": "mytask584",
+            "commandLine": "cmd /c echo hello 584"
+          },
+          {
+            "id": "mytask586",
+            "commandLine": "cmd /c echo hello 586"
+          },
+          {
+            "id": "mytask588",
+            "commandLine": "cmd /c echo hello 588"
+          },
+          {
+            "id": "mytask590",
+            "commandLine": "cmd /c echo hello 590"
+          },
+          {
+            "id": "mytask592",
+            "commandLine": "cmd /c echo hello 592"
+          },
+          {
+            "id": "mytask594",
+            "commandLine": "cmd /c echo hello 594"
+          },
+          {
+            "id": "mytask596",
+            "commandLine": "cmd /c echo hello 596"
+          },
+          {
+            "id": "mytask598",
+            "commandLine": "cmd /c echo hello 598"
+          },
+          {
+            "id": "mytask600",
+            "commandLine": "cmd /c echo hello 600"
+          },
+          {
+            "id": "mytask602",
+            "commandLine": "cmd /c echo hello 602"
+          },
+          {
+            "id": "mytask604",
+            "commandLine": "cmd /c echo hello 604"
+          },
+          {
+            "id": "mytask606",
+            "commandLine": "cmd /c echo hello 606"
+          },
+          {
+            "id": "mytask607",
+            "commandLine": "cmd /c echo hello 607"
+          },
+          {
+            "id": "mytask608",
+            "commandLine": "cmd /c echo hello 608"
+          },
+          {
+            "id": "mytask611",
+            "commandLine": "cmd /c echo hello 611"
+          },
+          {
+            "id": "mytask613",
+            "commandLine": "cmd /c echo hello 613"
+          },
+          {
+            "id": "mytask615",
+            "commandLine": "cmd /c echo hello 615"
+          },
+          {
+            "id": "mytask619",
+            "commandLine": "cmd /c echo hello 619"
+          },
+          {
+            "id": "mytask621",
+            "commandLine": "cmd /c echo hello 621"
+          },
+          {
+            "id": "mytask623",
+            "commandLine": "cmd /c echo hello 623"
+          },
+          {
+            "id": "mytask625",
+            "commandLine": "cmd /c echo hello 625"
+          },
+          {
+            "id": "mytask627",
+            "commandLine": "cmd /c echo hello 627"
+          },
+          {
+            "id": "mytask629",
+            "commandLine": "cmd /c echo hello 629"
+          },
+          {
+            "id": "mytask631",
+            "commandLine": "cmd /c echo hello 631"
+          },
+          {
+            "id": "mytask633",
+            "commandLine": "cmd /c echo hello 633"
+          },
+          {
+            "id": "mytask635",
+            "commandLine": "cmd /c echo hello 635"
+          },
+          {
+            "id": "mytask636",
+            "commandLine": "cmd /c echo hello 636"
+          },
+          {
+            "id": "mytask638",
+            "commandLine": "cmd /c echo hello 638"
+          },
+          {
+            "id": "mytask640",
+            "commandLine": "cmd /c echo hello 640"
+          },
+          {
+            "id": "mytask642",
+            "commandLine": "cmd /c echo hello 642"
+          },
+          {
+            "id": "mytask643",
+            "commandLine": "cmd /c echo hello 643"
+          },
+          {
+            "id": "mytask644",
+            "commandLine": "cmd /c echo hello 644"
+          },
+          {
+            "id": "mytask645",
+            "commandLine": "cmd /c echo hello 645"
+          },
+          {
+            "id": "mytask646",
+            "commandLine": "cmd /c echo hello 646"
+          },
+          {
+            "id": "mytask647",
+            "commandLine": "cmd /c echo hello 647"
+          },
+          {
+            "id": "mytask648",
+            "commandLine": "cmd /c echo hello 648"
+          },
+          {
+            "id": "mytask649",
+            "commandLine": "cmd /c echo hello 649"
+          },
+          {
+            "id": "mytask650",
+            "commandLine": "cmd /c echo hello 650"
+          },
+          {
+            "id": "mytask651",
+            "commandLine": "cmd /c echo hello 651"
+          },
+          {
+            "id": "mytask652",
+            "commandLine": "cmd /c echo hello 652"
+          },
+          {
+            "id": "mytask653",
+            "commandLine": "cmd /c echo hello 653"
+          },
+          {
+            "id": "mytask654",
+            "commandLine": "cmd /c echo hello 654"
+          },
+          {
+            "id": "mytask655",
+            "commandLine": "cmd /c echo hello 655"
+          },
+          {
+            "id": "mytask656",
+            "commandLine": "cmd /c echo hello 656"
+          },
+          {
+            "id": "mytask657",
+            "commandLine": "cmd /c echo hello 657"
+          },
+          {
+            "id": "mytask658",
+            "commandLine": "cmd /c echo hello 658"
+          },
+          {
+            "id": "mytask659",
+            "commandLine": "cmd /c echo hello 659"
+          },
+          {
+            "id": "mytask660",
+            "commandLine": "cmd /c echo hello 660"
+          },
+          {
+            "id": "mytask661",
+            "commandLine": "cmd /c echo hello 661"
+          },
+          {
+            "id": "mytask662",
+            "commandLine": "cmd /c echo hello 662"
+          },
+          {
+            "id": "mytask663",
+            "commandLine": "cmd /c echo hello 663"
+          },
+          {
+            "id": "mytask664",
+            "commandLine": "cmd /c echo hello 664"
+          },
+          {
+            "id": "mytask665",
+            "commandLine": "cmd /c echo hello 665"
+          },
+          {
+            "id": "mytask666",
+            "commandLine": "cmd /c echo hello 666"
+          },
+          {
+            "id": "mytask667",
+            "commandLine": "cmd /c echo hello 667"
+          },
+          {
+            "id": "mytask668",
+            "commandLine": "cmd /c echo hello 668"
+          },
+          {
+            "id": "mytask669",
+            "commandLine": "cmd /c echo hello 669"
+          },
+          {
+            "id": "mytask670",
+            "commandLine": "cmd /c echo hello 670"
+          },
+          {
+            "id": "mytask671",
+            "commandLine": "cmd /c echo hello 671"
+          },
+          {
+            "id": "mytask672",
+            "commandLine": "cmd /c echo hello 672"
+          },
+          {
+            "id": "mytask673",
+            "commandLine": "cmd /c echo hello 673"
+          },
+          {
+            "id": "mytask674",
+            "commandLine": "cmd /c echo hello 674"
+          },
+          {
+            "id": "mytask675",
+            "commandLine": "cmd /c echo hello 675"
+          },
+          {
+            "id": "mytask676",
+            "commandLine": "cmd /c echo hello 676"
+          },
+          {
+            "id": "mytask677",
+            "commandLine": "cmd /c echo hello 677"
+          },
+          {
+            "id": "mytask678",
+            "commandLine": "cmd /c echo hello 678"
+          },
+          {
+            "id": "mytask679",
+            "commandLine": "cmd /c echo hello 679"
+          },
+          {
+            "id": "mytask680",
+            "commandLine": "cmd /c echo hello 680"
+          },
+          {
+            "id": "mytask681",
+            "commandLine": "cmd /c echo hello 681"
+          },
+          {
+            "id": "mytask682",
+            "commandLine": "cmd /c echo hello 682"
+          },
+          {
+            "id": "mytask683",
+            "commandLine": "cmd /c echo hello 683"
+          },
+          {
+            "id": "mytask684",
+            "commandLine": "cmd /c echo hello 684"
+          },
+          {
+            "id": "mytask685",
+            "commandLine": "cmd /c echo hello 685"
+          },
+          {
+            "id": "mytask686",
+            "commandLine": "cmd /c echo hello 686"
+          },
+          {
+            "id": "mytask687",
+            "commandLine": "cmd /c echo hello 687"
+          },
+          {
+            "id": "mytask688",
+            "commandLine": "cmd /c echo hello 688"
+          },
+          {
+            "id": "mytask689",
+            "commandLine": "cmd /c echo hello 689"
+          },
+          {
+            "id": "mytask690",
+            "commandLine": "cmd /c echo hello 690"
+          },
+          {
+            "id": "mytask691",
+            "commandLine": "cmd /c echo hello 691"
+          },
+          {
+            "id": "mytask692",
+            "commandLine": "cmd /c echo hello 692"
+          },
+          {
+            "id": "mytask693",
+            "commandLine": "cmd /c echo hello 693"
+          },
+          {
+            "id": "mytask694",
+            "commandLine": "cmd /c echo hello 694"
+          },
+          {
+            "id": "mytask695",
+            "commandLine": "cmd /c echo hello 695"
+          },
+          {
+            "id": "mytask696",
+            "commandLine": "cmd /c echo hello 696"
+          },
+          {
+            "id": "mytask697",
+            "commandLine": "cmd /c echo hello 697"
+          },
+          {
+            "id": "mytask698",
+            "commandLine": "cmd /c echo hello 698"
+          },
+          {
+            "id": "mytask699",
+            "commandLine": "cmd /c echo hello 699"
+          }
+        ]
+      },
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Content-Length": "328",
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Wed, 27 Mar 2024 00:46:41 GMT",
+        "request-id": "452d1a4d-d959-4058-8bb5-96ed90382636",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element",
+        "code": "JobNotFound",
+        "message": {
+          "lang": "en-US",
+          "value": "The specified job does not exist.\nRequestId:452d1a4d-d959-4058-8bb5-96ed90382636\nTime:2024-03-27T00:46:42.6335138Z"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/jobs/BatchUser-testAddMultiTasksWithError/addtaskcollection?api-version=2024-02-01.19.0",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "client-request-id": "d0bbd880-a3d3-4abc-8f63-c6ae76807e20",
+        "Content-Length": "5711",
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "Date": "Wed, 27 Mar 2024 00:46:41 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
+      },
+      "RequestBody": {
+        "value": [
+          {
+            "id": "mytask811",
+            "commandLine": "cmd /c echo hello 811"
+          },
+          {
+            "id": "mytask814",
+            "commandLine": "cmd /c echo hello 814"
+          },
+          {
+            "id": "mytask817",
+            "commandLine": "cmd /c echo hello 817"
+          },
+          {
+            "id": "mytask819",
+            "commandLine": "cmd /c echo hello 819"
+          },
+          {
+            "id": "mytask821",
+            "commandLine": "cmd /c echo hello 821"
+          },
+          {
+            "id": "mytask823",
+            "commandLine": "cmd /c echo hello 823"
+          },
+          {
+            "id": "mytask825",
+            "commandLine": "cmd /c echo hello 825"
+          },
+          {
+            "id": "mytask827",
+            "commandLine": "cmd /c echo hello 827"
+          },
+          {
+            "id": "mytask829",
+            "commandLine": "cmd /c echo hello 829"
+          },
+          {
+            "id": "mytask830",
+            "commandLine": "cmd /c echo hello 830"
+          },
+          {
+            "id": "mytask832",
+            "commandLine": "cmd /c echo hello 832"
+          },
+          {
+            "id": "mytask834",
+            "commandLine": "cmd /c echo hello 834"
+          },
+          {
+            "id": "mytask836",
+            "commandLine": "cmd /c echo hello 836"
+          },
+          {
+            "id": "mytask838",
+            "commandLine": "cmd /c echo hello 838"
+          },
+          {
+            "id": "mytask840",
+            "commandLine": "cmd /c echo hello 840"
+          },
+          {
+            "id": "mytask842",
+            "commandLine": "cmd /c echo hello 842"
+          },
+          {
+            "id": "mytask844",
+            "commandLine": "cmd /c echo hello 844"
+          },
+          {
+            "id": "mytask846",
+            "commandLine": "cmd /c echo hello 846"
+          },
+          {
+            "id": "mytask848",
+            "commandLine": "cmd /c echo hello 848"
+          },
+          {
+            "id": "mytask849",
+            "commandLine": "cmd /c echo hello 849"
+          },
+          {
+            "id": "mytask851",
+            "commandLine": "cmd /c echo hello 851"
+          },
+          {
+            "id": "mytask853",
+            "commandLine": "cmd /c echo hello 853"
+          },
+          {
+            "id": "mytask855",
+            "commandLine": "cmd /c echo hello 855"
+          },
+          {
+            "id": "mytask857",
+            "commandLine": "cmd /c echo hello 857"
+          },
+          {
+            "id": "mytask859",
+            "commandLine": "cmd /c echo hello 859"
+          },
+          {
+            "id": "mytask861",
+            "commandLine": "cmd /c echo hello 861"
+          },
+          {
+            "id": "mytask863",
+            "commandLine": "cmd /c echo hello 863"
+          },
+          {
+            "id": "mytask865",
+            "commandLine": "cmd /c echo hello 865"
+          },
+          {
+            "id": "mytask867",
+            "commandLine": "cmd /c echo hello 867"
+          },
+          {
+            "id": "mytask868",
+            "commandLine": "cmd /c echo hello 868"
+          },
+          {
+            "id": "mytask869",
+            "commandLine": "cmd /c echo hello 869"
+          },
+          {
+            "id": "mytask871",
+            "commandLine": "cmd /c echo hello 871"
+          },
+          {
+            "id": "mytask873",
+            "commandLine": "cmd /c echo hello 873"
+          },
+          {
+            "id": "mytask875",
+            "commandLine": "cmd /c echo hello 875"
+          },
+          {
+            "id": "mytask877",
+            "commandLine": "cmd /c echo hello 877"
+          },
+          {
+            "id": "mytask879",
+            "commandLine": "cmd /c echo hello 879"
+          },
+          {
+            "id": "mytask881",
+            "commandLine": "cmd /c echo hello 881"
+          },
+          {
+            "id": "mytask883",
+            "commandLine": "cmd /c echo hello 883"
+          },
+          {
+            "id": "mytask885",
+            "commandLine": "cmd /c echo hello 885"
+          },
+          {
+            "id": "mytask887",
+            "commandLine": "cmd /c echo hello 887"
+          },
+          {
+            "id": "mytask889",
+            "commandLine": "cmd /c echo hello 889"
+          },
+          {
+            "id": "mytask891",
+            "commandLine": "cmd /c echo hello 891"
+          },
+          {
+            "id": "mytask893",
+            "commandLine": "cmd /c echo hello 893"
+          },
+          {
+            "id": "mytask895",
+            "commandLine": "cmd /c echo hello 895"
+          },
+          {
+            "id": "mytask897",
+            "commandLine": "cmd /c echo hello 897"
+          },
+          {
+            "id": "mytask899",
+            "commandLine": "cmd /c echo hello 899"
           },
           {
             "id": "mytask901",
             "commandLine": "cmd /c echo hello 901"
           },
           {
-            "id": "mytask902",
-            "commandLine": "cmd /c echo hello 902"
-          },
-          {
             "id": "mytask903",
             "commandLine": "cmd /c echo hello 903"
-          },
-          {
-            "id": "mytask904",
-            "commandLine": "cmd /c echo hello 904"
           },
           {
             "id": "mytask905",
             "commandLine": "cmd /c echo hello 905"
           },
           {
-            "id": "mytask906",
-            "commandLine": "cmd /c echo hello 906"
-          },
-          {
             "id": "mytask907",
             "commandLine": "cmd /c echo hello 907"
-          },
-          {
-            "id": "mytask908",
-            "commandLine": "cmd /c echo hello 908"
           },
           {
             "id": "mytask909",
             "commandLine": "cmd /c echo hello 909"
           },
           {
-            "id": "mytask910",
-            "commandLine": "cmd /c echo hello 910"
-          },
-          {
             "id": "mytask911",
             "commandLine": "cmd /c echo hello 911"
-          },
-          {
-            "id": "mytask912",
-            "commandLine": "cmd /c echo hello 912"
           },
           {
             "id": "mytask913",
             "commandLine": "cmd /c echo hello 913"
           },
           {
-            "id": "mytask914",
-            "commandLine": "cmd /c echo hello 914"
-          },
-          {
             "id": "mytask915",
             "commandLine": "cmd /c echo hello 915"
           },
           {
-            "id": "mytask916",
-            "commandLine": "cmd /c echo hello 916"
-          },
-          {
             "id": "mytask917",
             "commandLine": "cmd /c echo hello 917"
-          },
-          {
-            "id": "mytask918",
-            "commandLine": "cmd /c echo hello 918"
           },
           {
             "id": "mytask919",
@@ -3070,150 +3650,6 @@
           {
             "id": "mytask963",
             "commandLine": "cmd /c echo hello 963"
-          },
-          {
-            "id": "mytask964",
-            "commandLine": "cmd /c echo hello 964"
-          },
-          {
-            "id": "mytask965",
-            "commandLine": "cmd /c echo hello 965"
-          },
-          {
-            "id": "mytask966",
-            "commandLine": "cmd /c echo hello 966"
-          },
-          {
-            "id": "mytask967",
-            "commandLine": "cmd /c echo hello 967"
-          },
-          {
-            "id": "mytask968",
-            "commandLine": "cmd /c echo hello 968"
-          },
-          {
-            "id": "mytask969",
-            "commandLine": "cmd /c echo hello 969"
-          },
-          {
-            "id": "mytask970",
-            "commandLine": "cmd /c echo hello 970"
-          },
-          {
-            "id": "mytask971",
-            "commandLine": "cmd /c echo hello 971"
-          },
-          {
-            "id": "mytask972",
-            "commandLine": "cmd /c echo hello 972"
-          },
-          {
-            "id": "mytask973",
-            "commandLine": "cmd /c echo hello 973"
-          },
-          {
-            "id": "mytask974",
-            "commandLine": "cmd /c echo hello 974"
-          },
-          {
-            "id": "mytask975",
-            "commandLine": "cmd /c echo hello 975"
-          },
-          {
-            "id": "mytask976",
-            "commandLine": "cmd /c echo hello 976"
-          },
-          {
-            "id": "mytask977",
-            "commandLine": "cmd /c echo hello 977"
-          },
-          {
-            "id": "mytask978",
-            "commandLine": "cmd /c echo hello 978"
-          },
-          {
-            "id": "mytask979",
-            "commandLine": "cmd /c echo hello 979"
-          },
-          {
-            "id": "mytask980",
-            "commandLine": "cmd /c echo hello 980"
-          },
-          {
-            "id": "mytask981",
-            "commandLine": "cmd /c echo hello 981"
-          },
-          {
-            "id": "mytask982",
-            "commandLine": "cmd /c echo hello 982"
-          },
-          {
-            "id": "mytask983",
-            "commandLine": "cmd /c echo hello 983"
-          },
-          {
-            "id": "mytask984",
-            "commandLine": "cmd /c echo hello 984"
-          },
-          {
-            "id": "mytask985",
-            "commandLine": "cmd /c echo hello 985"
-          },
-          {
-            "id": "mytask986",
-            "commandLine": "cmd /c echo hello 986"
-          },
-          {
-            "id": "mytask987",
-            "commandLine": "cmd /c echo hello 987"
-          },
-          {
-            "id": "mytask988",
-            "commandLine": "cmd /c echo hello 988"
-          },
-          {
-            "id": "mytask989",
-            "commandLine": "cmd /c echo hello 989"
-          },
-          {
-            "id": "mytask990",
-            "commandLine": "cmd /c echo hello 990"
-          },
-          {
-            "id": "mytask991",
-            "commandLine": "cmd /c echo hello 991"
-          },
-          {
-            "id": "mytask992",
-            "commandLine": "cmd /c echo hello 992"
-          },
-          {
-            "id": "mytask993",
-            "commandLine": "cmd /c echo hello 993"
-          },
-          {
-            "id": "mytask994",
-            "commandLine": "cmd /c echo hello 994"
-          },
-          {
-            "id": "mytask995",
-            "commandLine": "cmd /c echo hello 995"
-          },
-          {
-            "id": "mytask996",
-            "commandLine": "cmd /c echo hello 996"
-          },
-          {
-            "id": "mytask997",
-            "commandLine": "cmd /c echo hello 997"
-          },
-          {
-            "id": "mytask998",
-            "commandLine": "cmd /c echo hello 998"
-          },
-          {
-            "id": "mytask999",
-            "commandLine": "cmd /c echo hello 999"
           }
         ]
       },
@@ -3222,8 +3658,8 @@
         "Content-Length": "328",
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 11 Mar 2024 01:48:37 GMT",
-        "request-id": "34fb3ff4-23fb-4507-88ac-244455325a5a",
+        "Date": "Wed, 27 Mar 2024 00:46:42 GMT",
+        "request-id": "65e74d44-ed06-4f86-a822-90b093986027",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff"
@@ -3233,7 +3669,7 @@
         "code": "JobNotFound",
         "message": {
           "lang": "en-US",
-          "value": "The specified job does not exist.\nRequestId:34fb3ff4-23fb-4507-88ac-244455325a5a\nTime:2024-03-11T01:48:37.7514912Z"
+          "value": "The specified job does not exist.\nRequestId:65e74d44-ed06-4f86-a822-90b093986027\nTime:2024-03-27T00:46:42.6374805Z"
         }
       }
     },
@@ -3243,469 +3679,305 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "fde194d8-2492-46be-aa87-fb56bfa3a2af",
-        "Content-Length": "5649",
-        "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 11 Mar 2024 01:48:35 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
-      },
-      "RequestBody": {
-        "value": [
-          {
-            "id": "mytask1",
-            "commandLine": "cmd /c echo hello 1"
-          },
-          {
-            "id": "mytask28",
-            "commandLine": "cmd /c echo hello 28"
-          },
-          {
-            "id": "mytask33",
-            "commandLine": "cmd /c echo hello 33"
-          },
-          {
-            "id": "mytask35",
-            "commandLine": "cmd /c echo hello 35"
-          },
-          {
-            "id": "mytask37",
-            "commandLine": "cmd /c echo hello 37"
-          },
-          {
-            "id": "mytask38",
-            "commandLine": "cmd /c echo hello 38"
-          },
-          {
-            "id": "mytask40",
-            "commandLine": "cmd /c echo hello 40"
-          },
-          {
-            "id": "mytask42",
-            "commandLine": "cmd /c echo hello 42"
-          },
-          {
-            "id": "mytask44",
-            "commandLine": "cmd /c echo hello 44"
-          },
-          {
-            "id": "mytask48",
-            "commandLine": "cmd /c echo hello 48"
-          },
-          {
-            "id": "mytask51",
-            "commandLine": "cmd /c echo hello 51"
-          },
-          {
-            "id": "mytask53",
-            "commandLine": "cmd /c echo hello 53"
-          },
-          {
-            "id": "mytask55",
-            "commandLine": "cmd /c echo hello 55"
-          },
-          {
-            "id": "mytask58",
-            "commandLine": "cmd /c echo hello 58"
-          },
-          {
-            "id": "mytask61",
-            "commandLine": "cmd /c echo hello 61"
-          },
-          {
-            "id": "mytask63",
-            "commandLine": "cmd /c echo hello 63"
-          },
-          {
-            "id": "mytask66",
-            "commandLine": "cmd /c echo hello 66"
-          },
-          {
-            "id": "mytask69",
-            "commandLine": "cmd /c echo hello 69"
-          },
-          {
-            "id": "mytask72",
-            "commandLine": "cmd /c echo hello 72"
-          },
-          {
-            "id": "mytask76",
-            "commandLine": "cmd /c echo hello 76"
-          },
-          {
-            "id": "mytask78",
-            "commandLine": "cmd /c echo hello 78"
-          },
-          {
-            "id": "mytask80",
-            "commandLine": "cmd /c echo hello 80"
-          },
-          {
-            "id": "mytask82",
-            "commandLine": "cmd /c echo hello 82"
-          },
-          {
-            "id": "mytask84",
-            "commandLine": "cmd /c echo hello 84"
-          },
-          {
-            "id": "mytask86",
-            "commandLine": "cmd /c echo hello 86"
-          },
-          {
-            "id": "mytask88",
-            "commandLine": "cmd /c echo hello 88"
-          },
-          {
-            "id": "mytask90",
-            "commandLine": "cmd /c echo hello 90"
-          },
-          {
-            "id": "mytask92",
-            "commandLine": "cmd /c echo hello 92"
-          },
-          {
-            "id": "mytask94",
-            "commandLine": "cmd /c echo hello 94"
-          },
-          {
-            "id": "mytask96",
-            "commandLine": "cmd /c echo hello 96"
-          },
-          {
-            "id": "mytask134",
-            "commandLine": "cmd /c echo hello 134"
-          },
-          {
-            "id": "mytask136",
-            "commandLine": "cmd /c echo hello 136"
-          },
-          {
-            "id": "mytask138",
-            "commandLine": "cmd /c echo hello 138"
-          },
-          {
-            "id": "mytask140",
-            "commandLine": "cmd /c echo hello 140"
-          },
-          {
-            "id": "mytask142",
-            "commandLine": "cmd /c echo hello 142"
-          },
-          {
-            "id": "mytask144",
-            "commandLine": "cmd /c echo hello 144"
-          },
-          {
-            "id": "mytask148",
-            "commandLine": "cmd /c echo hello 148"
-          },
-          {
-            "id": "mytask150",
-            "commandLine": "cmd /c echo hello 150"
-          },
-          {
-            "id": "mytask153",
-            "commandLine": "cmd /c echo hello 153"
-          },
-          {
-            "id": "mytask156",
-            "commandLine": "cmd /c echo hello 156"
-          },
-          {
-            "id": "mytask158",
-            "commandLine": "cmd /c echo hello 158"
-          },
-          {
-            "id": "mytask168",
-            "commandLine": "cmd /c echo hello 168"
-          },
-          {
-            "id": "mytask171",
-            "commandLine": "cmd /c echo hello 171"
-          },
-          {
-            "id": "mytask175",
-            "commandLine": "cmd /c echo hello 175"
-          },
-          {
-            "id": "mytask178",
-            "commandLine": "cmd /c echo hello 178"
-          },
-          {
-            "id": "mytask181",
-            "commandLine": "cmd /c echo hello 181"
-          },
-          {
-            "id": "mytask183",
-            "commandLine": "cmd /c echo hello 183"
-          },
-          {
-            "id": "mytask187",
-            "commandLine": "cmd /c echo hello 187"
-          },
-          {
-            "id": "mytask190",
-            "commandLine": "cmd /c echo hello 190"
-          },
-          {
-            "id": "mytask193",
-            "commandLine": "cmd /c echo hello 193"
-          },
-          {
-            "id": "mytask200",
-            "commandLine": "cmd /c echo hello 200"
-          },
-          {
-            "id": "mytask202",
-            "commandLine": "cmd /c echo hello 202"
-          },
-          {
-            "id": "mytask204",
-            "commandLine": "cmd /c echo hello 204"
-          },
-          {
-            "id": "mytask207",
-            "commandLine": "cmd /c echo hello 207"
-          },
-          {
-            "id": "mytask210",
-            "commandLine": "cmd /c echo hello 210"
-          },
-          {
-            "id": "mytask212",
-            "commandLine": "cmd /c echo hello 212"
-          },
-          {
-            "id": "mytask214",
-            "commandLine": "cmd /c echo hello 214"
-          },
-          {
-            "id": "mytask217",
-            "commandLine": "cmd /c echo hello 217"
-          },
-          {
-            "id": "mytask220",
-            "commandLine": "cmd /c echo hello 220"
-          },
-          {
-            "id": "mytask224",
-            "commandLine": "cmd /c echo hello 224"
-          },
-          {
-            "id": "mytask226",
-            "commandLine": "cmd /c echo hello 226"
-          },
-          {
-            "id": "mytask229",
-            "commandLine": "cmd /c echo hello 229"
-          },
-          {
-            "id": "mytask232",
-            "commandLine": "cmd /c echo hello 232"
-          },
-          {
-            "id": "mytask234",
-            "commandLine": "cmd /c echo hello 234"
-          },
-          {
-            "id": "mytask237",
-            "commandLine": "cmd /c echo hello 237"
-          },
-          {
-            "id": "mytask240",
-            "commandLine": "cmd /c echo hello 240"
-          },
-          {
-            "id": "mytask243",
-            "commandLine": "cmd /c echo hello 243"
-          },
-          {
-            "id": "mytask245",
-            "commandLine": "cmd /c echo hello 245"
-          },
-          {
-            "id": "mytask248",
-            "commandLine": "cmd /c echo hello 248"
-          },
-          {
-            "id": "mytask251",
-            "commandLine": "cmd /c echo hello 251"
-          },
-          {
-            "id": "mytask254",
-            "commandLine": "cmd /c echo hello 254"
-          },
-          {
-            "id": "mytask256",
-            "commandLine": "cmd /c echo hello 256"
-          },
-          {
-            "id": "mytask258",
-            "commandLine": "cmd /c echo hello 258"
-          },
-          {
-            "id": "mytask260",
-            "commandLine": "cmd /c echo hello 260"
-          },
-          {
-            "id": "mytask262",
-            "commandLine": "cmd /c echo hello 262"
-          },
-          {
-            "id": "mytask264",
-            "commandLine": "cmd /c echo hello 264"
-          },
-          {
-            "id": "mytask266",
-            "commandLine": "cmd /c echo hello 266"
-          },
-          {
-            "id": "mytask269",
-            "commandLine": "cmd /c echo hello 269"
-          },
-          {
-            "id": "mytask271",
-            "commandLine": "cmd /c echo hello 271"
-          },
-          {
-            "id": "mytask273",
-            "commandLine": "cmd /c echo hello 273"
-          },
-          {
-            "id": "mytask275",
-            "commandLine": "cmd /c echo hello 275"
-          },
-          {
-            "id": "mytask277",
-            "commandLine": "cmd /c echo hello 277"
-          },
-          {
-            "id": "mytask278",
-            "commandLine": "cmd /c echo hello 278"
-          },
-          {
-            "id": "mytask279",
-            "commandLine": "cmd /c echo hello 279"
-          },
-          {
-            "id": "mytask280",
-            "commandLine": "cmd /c echo hello 280"
-          },
-          {
-            "id": "mytask281",
-            "commandLine": "cmd /c echo hello 281"
-          },
-          {
-            "id": "mytask282",
-            "commandLine": "cmd /c echo hello 282"
-          },
-          {
-            "id": "mytask284",
-            "commandLine": "cmd /c echo hello 284"
-          },
-          {
-            "id": "mytask286",
-            "commandLine": "cmd /c echo hello 286"
-          },
-          {
-            "id": "mytask288",
-            "commandLine": "cmd /c echo hello 288"
-          },
-          {
-            "id": "mytask289",
-            "commandLine": "cmd /c echo hello 289"
-          },
-          {
-            "id": "mytask290",
-            "commandLine": "cmd /c echo hello 290"
-          },
-          {
-            "id": "mytask291",
-            "commandLine": "cmd /c echo hello 291"
-          },
-          {
-            "id": "mytask292",
-            "commandLine": "cmd /c echo hello 292"
-          },
-          {
-            "id": "mytask293",
-            "commandLine": "cmd /c echo hello 293"
-          },
-          {
-            "id": "mytask294",
-            "commandLine": "cmd /c echo hello 294"
-          },
-          {
-            "id": "mytask295",
-            "commandLine": "cmd /c echo hello 295"
-          },
-          {
-            "id": "mytask296",
-            "commandLine": "cmd /c echo hello 296"
-          },
-          {
-            "id": "mytask297",
-            "commandLine": "cmd /c echo hello 297"
-          },
-          {
-            "id": "mytask298",
-            "commandLine": "cmd /c echo hello 298"
-          }
-        ]
-      },
-      "StatusCode": 404,
-      "ResponseHeaders": {
-        "Content-Length": "328",
-        "Content-Type": "application/json; odata=minimalmetadata",
-        "DataServiceVersion": "3.0",
-        "Date": "Mon, 11 Mar 2024 01:48:37 GMT",
-        "request-id": "f758924f-a3d5-4f8f-b258-0effbfe2ca33",
-        "Server": "Microsoft-HTTPAPI/2.0",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "X-Content-Type-Options": "nosniff"
-      },
-      "ResponseBody": {
-        "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element",
-        "code": "JobNotFound",
-        "message": {
-          "lang": "en-US",
-          "value": "The specified job does not exist.\nRequestId:f758924f-a3d5-4f8f-b258-0effbfe2ca33\nTime:2024-03-11T01:48:37.7546836Z"
-        }
-      }
-    },
-    {
-      "RequestUri": "https://REDACTED/jobs/BatchUser-testAddMultiTasksWithError/addtaskcollection?api-version=2024-02-01.19.0",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "client-request-id": "27fe7895-e1dd-49f9-a92d-2102d02ad362",
+        "client-request-id": "b5e0cbf8-1521-4980-9df5-101cce20f1cc",
         "Content-Length": "5711",
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 11 Mar 2024 01:48:35 GMT",
+        "Date": "Wed, 27 Mar 2024 00:46:41 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": {
         "value": [
+          {
+            "id": "mytask400",
+            "commandLine": "cmd /c echo hello 400"
+          },
+          {
+            "id": "mytask401",
+            "commandLine": "cmd /c echo hello 401"
+          },
+          {
+            "id": "mytask402",
+            "commandLine": "cmd /c echo hello 402"
+          },
+          {
+            "id": "mytask403",
+            "commandLine": "cmd /c echo hello 403"
+          },
+          {
+            "id": "mytask404",
+            "commandLine": "cmd /c echo hello 404"
+          },
+          {
+            "id": "mytask405",
+            "commandLine": "cmd /c echo hello 405"
+          },
+          {
+            "id": "mytask406",
+            "commandLine": "cmd /c echo hello 406"
+          },
+          {
+            "id": "mytask407",
+            "commandLine": "cmd /c echo hello 407"
+          },
+          {
+            "id": "mytask408",
+            "commandLine": "cmd /c echo hello 408"
+          },
+          {
+            "id": "mytask409",
+            "commandLine": "cmd /c echo hello 409"
+          },
+          {
+            "id": "mytask410",
+            "commandLine": "cmd /c echo hello 410"
+          },
+          {
+            "id": "mytask411",
+            "commandLine": "cmd /c echo hello 411"
+          },
+          {
+            "id": "mytask412",
+            "commandLine": "cmd /c echo hello 412"
+          },
+          {
+            "id": "mytask413",
+            "commandLine": "cmd /c echo hello 413"
+          },
+          {
+            "id": "mytask414",
+            "commandLine": "cmd /c echo hello 414"
+          },
+          {
+            "id": "mytask415",
+            "commandLine": "cmd /c echo hello 415"
+          },
+          {
+            "id": "mytask416",
+            "commandLine": "cmd /c echo hello 416"
+          },
+          {
+            "id": "mytask417",
+            "commandLine": "cmd /c echo hello 417"
+          },
+          {
+            "id": "mytask418",
+            "commandLine": "cmd /c echo hello 418"
+          },
+          {
+            "id": "mytask419",
+            "commandLine": "cmd /c echo hello 419"
+          },
+          {
+            "id": "mytask420",
+            "commandLine": "cmd /c echo hello 420"
+          },
+          {
+            "id": "mytask421",
+            "commandLine": "cmd /c echo hello 421"
+          },
+          {
+            "id": "mytask422",
+            "commandLine": "cmd /c echo hello 422"
+          },
+          {
+            "id": "mytask423",
+            "commandLine": "cmd /c echo hello 423"
+          },
+          {
+            "id": "mytask424",
+            "commandLine": "cmd /c echo hello 424"
+          },
+          {
+            "id": "mytask425",
+            "commandLine": "cmd /c echo hello 425"
+          },
+          {
+            "id": "mytask426",
+            "commandLine": "cmd /c echo hello 426"
+          },
+          {
+            "id": "mytask427",
+            "commandLine": "cmd /c echo hello 427"
+          },
+          {
+            "id": "mytask428",
+            "commandLine": "cmd /c echo hello 428"
+          },
+          {
+            "id": "mytask429",
+            "commandLine": "cmd /c echo hello 429"
+          },
+          {
+            "id": "mytask430",
+            "commandLine": "cmd /c echo hello 430"
+          },
+          {
+            "id": "mytask431",
+            "commandLine": "cmd /c echo hello 431"
+          },
+          {
+            "id": "mytask432",
+            "commandLine": "cmd /c echo hello 432"
+          },
+          {
+            "id": "mytask433",
+            "commandLine": "cmd /c echo hello 433"
+          },
+          {
+            "id": "mytask434",
+            "commandLine": "cmd /c echo hello 434"
+          },
+          {
+            "id": "mytask435",
+            "commandLine": "cmd /c echo hello 435"
+          },
+          {
+            "id": "mytask436",
+            "commandLine": "cmd /c echo hello 436"
+          },
+          {
+            "id": "mytask437",
+            "commandLine": "cmd /c echo hello 437"
+          },
+          {
+            "id": "mytask438",
+            "commandLine": "cmd /c echo hello 438"
+          },
+          {
+            "id": "mytask439",
+            "commandLine": "cmd /c echo hello 439"
+          },
+          {
+            "id": "mytask440",
+            "commandLine": "cmd /c echo hello 440"
+          },
+          {
+            "id": "mytask441",
+            "commandLine": "cmd /c echo hello 441"
+          },
+          {
+            "id": "mytask442",
+            "commandLine": "cmd /c echo hello 442"
+          },
+          {
+            "id": "mytask443",
+            "commandLine": "cmd /c echo hello 443"
+          },
+          {
+            "id": "mytask444",
+            "commandLine": "cmd /c echo hello 444"
+          },
+          {
+            "id": "mytask445",
+            "commandLine": "cmd /c echo hello 445"
+          },
+          {
+            "id": "mytask446",
+            "commandLine": "cmd /c echo hello 446"
+          },
+          {
+            "id": "mytask447",
+            "commandLine": "cmd /c echo hello 447"
+          },
+          {
+            "id": "mytask448",
+            "commandLine": "cmd /c echo hello 448"
+          },
+          {
+            "id": "mytask449",
+            "commandLine": "cmd /c echo hello 449"
+          },
+          {
+            "id": "mytask450",
+            "commandLine": "cmd /c echo hello 450"
+          },
+          {
+            "id": "mytask451",
+            "commandLine": "cmd /c echo hello 451"
+          },
+          {
+            "id": "mytask452",
+            "commandLine": "cmd /c echo hello 452"
+          },
+          {
+            "id": "mytask453",
+            "commandLine": "cmd /c echo hello 453"
+          },
+          {
+            "id": "mytask454",
+            "commandLine": "cmd /c echo hello 454"
+          },
+          {
+            "id": "mytask455",
+            "commandLine": "cmd /c echo hello 455"
+          },
+          {
+            "id": "mytask456",
+            "commandLine": "cmd /c echo hello 456"
+          },
+          {
+            "id": "mytask457",
+            "commandLine": "cmd /c echo hello 457"
+          },
+          {
+            "id": "mytask458",
+            "commandLine": "cmd /c echo hello 458"
+          },
+          {
+            "id": "mytask459",
+            "commandLine": "cmd /c echo hello 459"
+          },
+          {
+            "id": "mytask460",
+            "commandLine": "cmd /c echo hello 460"
+          },
           {
             "id": "mytask461",
             "commandLine": "cmd /c echo hello 461"
+          },
+          {
+            "id": "mytask462",
+            "commandLine": "cmd /c echo hello 462"
+          },
+          {
+            "id": "mytask463",
+            "commandLine": "cmd /c echo hello 463"
+          },
+          {
+            "id": "mytask464",
+            "commandLine": "cmd /c echo hello 464"
           },
           {
             "id": "mytask465",
             "commandLine": "cmd /c echo hello 465"
           },
           {
+            "id": "mytask466",
+            "commandLine": "cmd /c echo hello 466"
+          },
+          {
             "id": "mytask467",
             "commandLine": "cmd /c echo hello 467"
+          },
+          {
+            "id": "mytask468",
+            "commandLine": "cmd /c echo hello 468"
           },
           {
             "id": "mytask469",
             "commandLine": "cmd /c echo hello 469"
           },
           {
+            "id": "mytask470",
+            "commandLine": "cmd /c echo hello 470"
+          },
+          {
             "id": "mytask471",
             "commandLine": "cmd /c echo hello 471"
+          },
+          {
+            "id": "mytask472",
+            "commandLine": "cmd /c echo hello 472"
           },
           {
             "id": "mytask473",
@@ -3716,28 +3988,60 @@
             "commandLine": "cmd /c echo hello 474"
           },
           {
+            "id": "mytask475",
+            "commandLine": "cmd /c echo hello 475"
+          },
+          {
             "id": "mytask476",
             "commandLine": "cmd /c echo hello 476"
+          },
+          {
+            "id": "mytask477",
+            "commandLine": "cmd /c echo hello 477"
           },
           {
             "id": "mytask478",
             "commandLine": "cmd /c echo hello 478"
           },
           {
+            "id": "mytask479",
+            "commandLine": "cmd /c echo hello 479"
+          },
+          {
             "id": "mytask480",
             "commandLine": "cmd /c echo hello 480"
+          },
+          {
+            "id": "mytask481",
+            "commandLine": "cmd /c echo hello 481"
           },
           {
             "id": "mytask482",
             "commandLine": "cmd /c echo hello 482"
           },
           {
+            "id": "mytask483",
+            "commandLine": "cmd /c echo hello 483"
+          },
+          {
             "id": "mytask484",
             "commandLine": "cmd /c echo hello 484"
           },
           {
-            "id": "mytask488",
-            "commandLine": "cmd /c echo hello 488"
+            "id": "mytask485",
+            "commandLine": "cmd /c echo hello 485"
+          },
+          {
+            "id": "mytask486",
+            "commandLine": "cmd /c echo hello 486"
+          },
+          {
+            "id": "mytask487",
+            "commandLine": "cmd /c echo hello 487"
+          },
+          {
+            "id": "mytask489",
+            "commandLine": "cmd /c echo hello 489"
           },
           {
             "id": "mytask490",
@@ -3752,56 +4056,28 @@
             "commandLine": "cmd /c echo hello 494"
           },
           {
-            "id": "mytask495",
-            "commandLine": "cmd /c echo hello 495"
-          },
-          {
             "id": "mytask496",
             "commandLine": "cmd /c echo hello 496"
-          },
-          {
-            "id": "mytask497",
-            "commandLine": "cmd /c echo hello 497"
           },
           {
             "id": "mytask498",
             "commandLine": "cmd /c echo hello 498"
           },
           {
-            "id": "mytask499",
-            "commandLine": "cmd /c echo hello 499"
-          },
-          {
             "id": "mytask500",
             "commandLine": "cmd /c echo hello 500"
-          },
-          {
-            "id": "mytask501",
-            "commandLine": "cmd /c echo hello 501"
           },
           {
             "id": "mytask502",
             "commandLine": "cmd /c echo hello 502"
           },
           {
-            "id": "mytask503",
-            "commandLine": "cmd /c echo hello 503"
-          },
-          {
             "id": "mytask504",
             "commandLine": "cmd /c echo hello 504"
           },
           {
-            "id": "mytask505",
-            "commandLine": "cmd /c echo hello 505"
-          },
-          {
             "id": "mytask506",
             "commandLine": "cmd /c echo hello 506"
-          },
-          {
-            "id": "mytask507",
-            "commandLine": "cmd /c echo hello 507"
           },
           {
             "id": "mytask508",
@@ -3810,282 +4086,6 @@
           {
             "id": "mytask509",
             "commandLine": "cmd /c echo hello 509"
-          },
-          {
-            "id": "mytask510",
-            "commandLine": "cmd /c echo hello 510"
-          },
-          {
-            "id": "mytask511",
-            "commandLine": "cmd /c echo hello 511"
-          },
-          {
-            "id": "mytask512",
-            "commandLine": "cmd /c echo hello 512"
-          },
-          {
-            "id": "mytask513",
-            "commandLine": "cmd /c echo hello 513"
-          },
-          {
-            "id": "mytask514",
-            "commandLine": "cmd /c echo hello 514"
-          },
-          {
-            "id": "mytask515",
-            "commandLine": "cmd /c echo hello 515"
-          },
-          {
-            "id": "mytask516",
-            "commandLine": "cmd /c echo hello 516"
-          },
-          {
-            "id": "mytask517",
-            "commandLine": "cmd /c echo hello 517"
-          },
-          {
-            "id": "mytask518",
-            "commandLine": "cmd /c echo hello 518"
-          },
-          {
-            "id": "mytask519",
-            "commandLine": "cmd /c echo hello 519"
-          },
-          {
-            "id": "mytask520",
-            "commandLine": "cmd /c echo hello 520"
-          },
-          {
-            "id": "mytask521",
-            "commandLine": "cmd /c echo hello 521"
-          },
-          {
-            "id": "mytask522",
-            "commandLine": "cmd /c echo hello 522"
-          },
-          {
-            "id": "mytask523",
-            "commandLine": "cmd /c echo hello 523"
-          },
-          {
-            "id": "mytask524",
-            "commandLine": "cmd /c echo hello 524"
-          },
-          {
-            "id": "mytask525",
-            "commandLine": "cmd /c echo hello 525"
-          },
-          {
-            "id": "mytask526",
-            "commandLine": "cmd /c echo hello 526"
-          },
-          {
-            "id": "mytask527",
-            "commandLine": "cmd /c echo hello 527"
-          },
-          {
-            "id": "mytask528",
-            "commandLine": "cmd /c echo hello 528"
-          },
-          {
-            "id": "mytask529",
-            "commandLine": "cmd /c echo hello 529"
-          },
-          {
-            "id": "mytask530",
-            "commandLine": "cmd /c echo hello 530"
-          },
-          {
-            "id": "mytask531",
-            "commandLine": "cmd /c echo hello 531"
-          },
-          {
-            "id": "mytask532",
-            "commandLine": "cmd /c echo hello 532"
-          },
-          {
-            "id": "mytask533",
-            "commandLine": "cmd /c echo hello 533"
-          },
-          {
-            "id": "mytask534",
-            "commandLine": "cmd /c echo hello 534"
-          },
-          {
-            "id": "mytask535",
-            "commandLine": "cmd /c echo hello 535"
-          },
-          {
-            "id": "mytask536",
-            "commandLine": "cmd /c echo hello 536"
-          },
-          {
-            "id": "mytask537",
-            "commandLine": "cmd /c echo hello 537"
-          },
-          {
-            "id": "mytask539",
-            "commandLine": "cmd /c echo hello 539"
-          },
-          {
-            "id": "mytask541",
-            "commandLine": "cmd /c echo hello 541"
-          },
-          {
-            "id": "mytask543",
-            "commandLine": "cmd /c echo hello 543"
-          },
-          {
-            "id": "mytask544",
-            "commandLine": "cmd /c echo hello 544"
-          },
-          {
-            "id": "mytask545",
-            "commandLine": "cmd /c echo hello 545"
-          },
-          {
-            "id": "mytask546",
-            "commandLine": "cmd /c echo hello 546"
-          },
-          {
-            "id": "mytask547",
-            "commandLine": "cmd /c echo hello 547"
-          },
-          {
-            "id": "mytask548",
-            "commandLine": "cmd /c echo hello 548"
-          },
-          {
-            "id": "mytask549",
-            "commandLine": "cmd /c echo hello 549"
-          },
-          {
-            "id": "mytask550",
-            "commandLine": "cmd /c echo hello 550"
-          },
-          {
-            "id": "mytask551",
-            "commandLine": "cmd /c echo hello 551"
-          },
-          {
-            "id": "mytask552",
-            "commandLine": "cmd /c echo hello 552"
-          },
-          {
-            "id": "mytask553",
-            "commandLine": "cmd /c echo hello 553"
-          },
-          {
-            "id": "mytask554",
-            "commandLine": "cmd /c echo hello 554"
-          },
-          {
-            "id": "mytask555",
-            "commandLine": "cmd /c echo hello 555"
-          },
-          {
-            "id": "mytask556",
-            "commandLine": "cmd /c echo hello 556"
-          },
-          {
-            "id": "mytask557",
-            "commandLine": "cmd /c echo hello 557"
-          },
-          {
-            "id": "mytask558",
-            "commandLine": "cmd /c echo hello 558"
-          },
-          {
-            "id": "mytask559",
-            "commandLine": "cmd /c echo hello 559"
-          },
-          {
-            "id": "mytask560",
-            "commandLine": "cmd /c echo hello 560"
-          },
-          {
-            "id": "mytask561",
-            "commandLine": "cmd /c echo hello 561"
-          },
-          {
-            "id": "mytask562",
-            "commandLine": "cmd /c echo hello 562"
-          },
-          {
-            "id": "mytask563",
-            "commandLine": "cmd /c echo hello 563"
-          },
-          {
-            "id": "mytask564",
-            "commandLine": "cmd /c echo hello 564"
-          },
-          {
-            "id": "mytask565",
-            "commandLine": "cmd /c echo hello 565"
-          },
-          {
-            "id": "mytask566",
-            "commandLine": "cmd /c echo hello 566"
-          },
-          {
-            "id": "mytask567",
-            "commandLine": "cmd /c echo hello 567"
-          },
-          {
-            "id": "mytask568",
-            "commandLine": "cmd /c echo hello 568"
-          },
-          {
-            "id": "mytask569",
-            "commandLine": "cmd /c echo hello 569"
-          },
-          {
-            "id": "mytask570",
-            "commandLine": "cmd /c echo hello 570"
-          },
-          {
-            "id": "mytask571",
-            "commandLine": "cmd /c echo hello 571"
-          },
-          {
-            "id": "mytask572",
-            "commandLine": "cmd /c echo hello 572"
-          },
-          {
-            "id": "mytask573",
-            "commandLine": "cmd /c echo hello 573"
-          },
-          {
-            "id": "mytask574",
-            "commandLine": "cmd /c echo hello 574"
-          },
-          {
-            "id": "mytask575",
-            "commandLine": "cmd /c echo hello 575"
-          },
-          {
-            "id": "mytask576",
-            "commandLine": "cmd /c echo hello 576"
-          },
-          {
-            "id": "mytask577",
-            "commandLine": "cmd /c echo hello 577"
-          },
-          {
-            "id": "mytask578",
-            "commandLine": "cmd /c echo hello 578"
-          },
-          {
-            "id": "mytask579",
-            "commandLine": "cmd /c echo hello 579"
-          },
-          {
-            "id": "mytask580",
-            "commandLine": "cmd /c echo hello 580"
-          },
-          {
-            "id": "mytask581",
-            "commandLine": "cmd /c echo hello 581"
           }
         ]
       },
@@ -4094,8 +4094,8 @@
         "Content-Length": "328",
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 11 Mar 2024 01:48:37 GMT",
-        "request-id": "dfd3be4d-4f59-49b8-887d-d753555caaeb",
+        "Date": "Wed, 27 Mar 2024 00:46:42 GMT",
+        "request-id": "f21f1b33-ad0b-4078-a97f-40c501fe55ad",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff"
@@ -4105,7 +4105,7 @@
         "code": "JobNotFound",
         "message": {
           "lang": "en-US",
-          "value": "The specified job does not exist.\nRequestId:dfd3be4d-4f59-49b8-887d-d753555caaeb\nTime:2024-03-11T01:48:37.7614780Z"
+          "value": "The specified job does not exist.\nRequestId:f21f1b33-ad0b-4078-a97f-40c501fe55ad\nTime:2024-03-27T00:46:42.6564749Z"
         }
       }
     },
@@ -4115,413 +4115,413 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "c19a04f9-fa53-4471-a208-802289903f8a",
-        "Content-Length": "5711",
+        "client-request-id": "dda2f19c-9d5e-4592-bba9-8333eade1831",
+        "Content-Length": "5491",
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 11 Mar 2024 01:48:35 GMT",
+        "Date": "Wed, 27 Mar 2024 00:46:41 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": {
         "value": [
           {
-            "id": "mytask796",
-            "commandLine": "cmd /c echo hello 796"
+            "id": "mytask0",
+            "commandLine": "cmd /c echo hello 0"
           },
           {
-            "id": "mytask797",
-            "commandLine": "cmd /c echo hello 797"
+            "id": "mytask1",
+            "commandLine": "cmd /c echo hello 1"
           },
           {
-            "id": "mytask798",
-            "commandLine": "cmd /c echo hello 798"
+            "id": "mytask2",
+            "commandLine": "cmd /c echo hello 2"
           },
           {
-            "id": "mytask799",
-            "commandLine": "cmd /c echo hello 799"
+            "id": "mytask3",
+            "commandLine": "cmd /c echo hello 3"
           },
           {
-            "id": "mytask800",
-            "commandLine": "cmd /c echo hello 800"
+            "id": "mytask4",
+            "commandLine": "cmd /c echo hello 4"
           },
           {
-            "id": "mytask801",
-            "commandLine": "cmd /c echo hello 801"
+            "id": "mytask5",
+            "commandLine": "cmd /c echo hello 5"
           },
           {
-            "id": "mytask802",
-            "commandLine": "cmd /c echo hello 802"
+            "id": "mytask6",
+            "commandLine": "cmd /c echo hello 6"
           },
           {
-            "id": "mytask803",
-            "commandLine": "cmd /c echo hello 803"
+            "id": "mytask7",
+            "commandLine": "cmd /c echo hello 7"
           },
           {
-            "id": "mytask804",
-            "commandLine": "cmd /c echo hello 804"
+            "id": "mytask8",
+            "commandLine": "cmd /c echo hello 8"
           },
           {
-            "id": "mytask805",
-            "commandLine": "cmd /c echo hello 805"
+            "id": "mytask9",
+            "commandLine": "cmd /c echo hello 9"
           },
           {
-            "id": "mytask806",
-            "commandLine": "cmd /c echo hello 806"
+            "id": "mytask10",
+            "commandLine": "cmd /c echo hello 10"
           },
           {
-            "id": "mytask807",
-            "commandLine": "cmd /c echo hello 807"
+            "id": "mytask11",
+            "commandLine": "cmd /c echo hello 11"
           },
           {
-            "id": "mytask808",
-            "commandLine": "cmd /c echo hello 808"
+            "id": "mytask12",
+            "commandLine": "cmd /c echo hello 12"
           },
           {
-            "id": "mytask809",
-            "commandLine": "cmd /c echo hello 809"
+            "id": "mytask13",
+            "commandLine": "cmd /c echo hello 13"
           },
           {
-            "id": "mytask810",
-            "commandLine": "cmd /c echo hello 810"
+            "id": "mytask14",
+            "commandLine": "cmd /c echo hello 14"
           },
           {
-            "id": "mytask811",
-            "commandLine": "cmd /c echo hello 811"
+            "id": "mytask15",
+            "commandLine": "cmd /c echo hello 15"
           },
           {
-            "id": "mytask812",
-            "commandLine": "cmd /c echo hello 812"
+            "id": "mytask16",
+            "commandLine": "cmd /c echo hello 16"
           },
           {
-            "id": "mytask813",
-            "commandLine": "cmd /c echo hello 813"
+            "id": "mytask17",
+            "commandLine": "cmd /c echo hello 17"
           },
           {
-            "id": "mytask814",
-            "commandLine": "cmd /c echo hello 814"
+            "id": "mytask18",
+            "commandLine": "cmd /c echo hello 18"
           },
           {
-            "id": "mytask815",
-            "commandLine": "cmd /c echo hello 815"
+            "id": "mytask19",
+            "commandLine": "cmd /c echo hello 19"
           },
           {
-            "id": "mytask817",
-            "commandLine": "cmd /c echo hello 817"
+            "id": "mytask20",
+            "commandLine": "cmd /c echo hello 20"
           },
           {
-            "id": "mytask818",
-            "commandLine": "cmd /c echo hello 818"
+            "id": "mytask21",
+            "commandLine": "cmd /c echo hello 21"
           },
           {
-            "id": "mytask819",
-            "commandLine": "cmd /c echo hello 819"
+            "id": "mytask22",
+            "commandLine": "cmd /c echo hello 22"
           },
           {
-            "id": "mytask821",
-            "commandLine": "cmd /c echo hello 821"
+            "id": "mytask23",
+            "commandLine": "cmd /c echo hello 23"
           },
           {
-            "id": "mytask823",
-            "commandLine": "cmd /c echo hello 823"
+            "id": "mytask24",
+            "commandLine": "cmd /c echo hello 24"
           },
           {
-            "id": "mytask825",
-            "commandLine": "cmd /c echo hello 825"
+            "id": "mytask25",
+            "commandLine": "cmd /c echo hello 25"
           },
           {
-            "id": "mytask826",
-            "commandLine": "cmd /c echo hello 826"
+            "id": "mytask26",
+            "commandLine": "cmd /c echo hello 26"
           },
           {
-            "id": "mytask827",
-            "commandLine": "cmd /c echo hello 827"
+            "id": "mytask27",
+            "commandLine": "cmd /c echo hello 27"
           },
           {
-            "id": "mytask828",
-            "commandLine": "cmd /c echo hello 828"
+            "id": "mytask28",
+            "commandLine": "cmd /c echo hello 28"
           },
           {
-            "id": "mytask829",
-            "commandLine": "cmd /c echo hello 829"
+            "id": "mytask29",
+            "commandLine": "cmd /c echo hello 29"
           },
           {
-            "id": "mytask830",
-            "commandLine": "cmd /c echo hello 830"
+            "id": "mytask30",
+            "commandLine": "cmd /c echo hello 30"
           },
           {
-            "id": "mytask831",
-            "commandLine": "cmd /c echo hello 831"
+            "id": "mytask31",
+            "commandLine": "cmd /c echo hello 31"
           },
           {
-            "id": "mytask832",
-            "commandLine": "cmd /c echo hello 832"
+            "id": "mytask32",
+            "commandLine": "cmd /c echo hello 32"
           },
           {
-            "id": "mytask833",
-            "commandLine": "cmd /c echo hello 833"
+            "id": "mytask33",
+            "commandLine": "cmd /c echo hello 33"
           },
           {
-            "id": "mytask834",
-            "commandLine": "cmd /c echo hello 834"
+            "id": "mytask34",
+            "commandLine": "cmd /c echo hello 34"
           },
           {
-            "id": "mytask835",
-            "commandLine": "cmd /c echo hello 835"
+            "id": "mytask35",
+            "commandLine": "cmd /c echo hello 35"
           },
           {
-            "id": "mytask836",
-            "commandLine": "cmd /c echo hello 836"
+            "id": "mytask36",
+            "commandLine": "cmd /c echo hello 36"
           },
           {
-            "id": "mytask837",
-            "commandLine": "cmd /c echo hello 837"
+            "id": "mytask37",
+            "commandLine": "cmd /c echo hello 37"
           },
           {
-            "id": "mytask838",
-            "commandLine": "cmd /c echo hello 838"
+            "id": "mytask38",
+            "commandLine": "cmd /c echo hello 38"
           },
           {
-            "id": "mytask839",
-            "commandLine": "cmd /c echo hello 839"
+            "id": "mytask39",
+            "commandLine": "cmd /c echo hello 39"
           },
           {
-            "id": "mytask840",
-            "commandLine": "cmd /c echo hello 840"
+            "id": "mytask40",
+            "commandLine": "cmd /c echo hello 40"
           },
           {
-            "id": "mytask841",
-            "commandLine": "cmd /c echo hello 841"
+            "id": "mytask41",
+            "commandLine": "cmd /c echo hello 41"
           },
           {
-            "id": "mytask842",
-            "commandLine": "cmd /c echo hello 842"
+            "id": "mytask42",
+            "commandLine": "cmd /c echo hello 42"
           },
           {
-            "id": "mytask843",
-            "commandLine": "cmd /c echo hello 843"
+            "id": "mytask43",
+            "commandLine": "cmd /c echo hello 43"
           },
           {
-            "id": "mytask844",
-            "commandLine": "cmd /c echo hello 844"
+            "id": "mytask44",
+            "commandLine": "cmd /c echo hello 44"
           },
           {
-            "id": "mytask845",
-            "commandLine": "cmd /c echo hello 845"
+            "id": "mytask45",
+            "commandLine": "cmd /c echo hello 45"
           },
           {
-            "id": "mytask846",
-            "commandLine": "cmd /c echo hello 846"
+            "id": "mytask46",
+            "commandLine": "cmd /c echo hello 46"
           },
           {
-            "id": "mytask847",
-            "commandLine": "cmd /c echo hello 847"
+            "id": "mytask47",
+            "commandLine": "cmd /c echo hello 47"
           },
           {
-            "id": "mytask848",
-            "commandLine": "cmd /c echo hello 848"
+            "id": "mytask48",
+            "commandLine": "cmd /c echo hello 48"
           },
           {
-            "id": "mytask849",
-            "commandLine": "cmd /c echo hello 849"
+            "id": "mytask49",
+            "commandLine": "cmd /c echo hello 49"
           },
           {
-            "id": "mytask850",
-            "commandLine": "cmd /c echo hello 850"
+            "id": "mytask50",
+            "commandLine": "cmd /c echo hello 50"
           },
           {
-            "id": "mytask851",
-            "commandLine": "cmd /c echo hello 851"
+            "id": "mytask51",
+            "commandLine": "cmd /c echo hello 51"
           },
           {
-            "id": "mytask852",
-            "commandLine": "cmd /c echo hello 852"
+            "id": "mytask52",
+            "commandLine": "cmd /c echo hello 52"
           },
           {
-            "id": "mytask853",
-            "commandLine": "cmd /c echo hello 853"
+            "id": "mytask53",
+            "commandLine": "cmd /c echo hello 53"
           },
           {
-            "id": "mytask854",
-            "commandLine": "cmd /c echo hello 854"
+            "id": "mytask54",
+            "commandLine": "cmd /c echo hello 54"
           },
           {
-            "id": "mytask855",
-            "commandLine": "cmd /c echo hello 855"
+            "id": "mytask55",
+            "commandLine": "cmd /c echo hello 55"
           },
           {
-            "id": "mytask856",
-            "commandLine": "cmd /c echo hello 856"
+            "id": "mytask56",
+            "commandLine": "cmd /c echo hello 56"
           },
           {
-            "id": "mytask857",
-            "commandLine": "cmd /c echo hello 857"
+            "id": "mytask57",
+            "commandLine": "cmd /c echo hello 57"
           },
           {
-            "id": "mytask858",
-            "commandLine": "cmd /c echo hello 858"
+            "id": "mytask58",
+            "commandLine": "cmd /c echo hello 58"
           },
           {
-            "id": "mytask859",
-            "commandLine": "cmd /c echo hello 859"
+            "id": "mytask59",
+            "commandLine": "cmd /c echo hello 59"
           },
           {
-            "id": "mytask860",
-            "commandLine": "cmd /c echo hello 860"
+            "id": "mytask60",
+            "commandLine": "cmd /c echo hello 60"
           },
           {
-            "id": "mytask861",
-            "commandLine": "cmd /c echo hello 861"
+            "id": "mytask61",
+            "commandLine": "cmd /c echo hello 61"
           },
           {
-            "id": "mytask862",
-            "commandLine": "cmd /c echo hello 862"
+            "id": "mytask62",
+            "commandLine": "cmd /c echo hello 62"
           },
           {
-            "id": "mytask863",
-            "commandLine": "cmd /c echo hello 863"
+            "id": "mytask63",
+            "commandLine": "cmd /c echo hello 63"
           },
           {
-            "id": "mytask864",
-            "commandLine": "cmd /c echo hello 864"
+            "id": "mytask64",
+            "commandLine": "cmd /c echo hello 64"
           },
           {
-            "id": "mytask865",
-            "commandLine": "cmd /c echo hello 865"
+            "id": "mytask65",
+            "commandLine": "cmd /c echo hello 65"
           },
           {
-            "id": "mytask866",
-            "commandLine": "cmd /c echo hello 866"
+            "id": "mytask66",
+            "commandLine": "cmd /c echo hello 66"
           },
           {
-            "id": "mytask867",
-            "commandLine": "cmd /c echo hello 867"
+            "id": "mytask67",
+            "commandLine": "cmd /c echo hello 67"
           },
           {
-            "id": "mytask868",
-            "commandLine": "cmd /c echo hello 868"
+            "id": "mytask68",
+            "commandLine": "cmd /c echo hello 68"
           },
           {
-            "id": "mytask869",
-            "commandLine": "cmd /c echo hello 869"
+            "id": "mytask69",
+            "commandLine": "cmd /c echo hello 69"
           },
           {
-            "id": "mytask870",
-            "commandLine": "cmd /c echo hello 870"
+            "id": "mytask70",
+            "commandLine": "cmd /c echo hello 70"
           },
           {
-            "id": "mytask871",
-            "commandLine": "cmd /c echo hello 871"
+            "id": "mytask71",
+            "commandLine": "cmd /c echo hello 71"
           },
           {
-            "id": "mytask872",
-            "commandLine": "cmd /c echo hello 872"
+            "id": "mytask72",
+            "commandLine": "cmd /c echo hello 72"
           },
           {
-            "id": "mytask873",
-            "commandLine": "cmd /c echo hello 873"
+            "id": "mytask73",
+            "commandLine": "cmd /c echo hello 73"
           },
           {
-            "id": "mytask874",
-            "commandLine": "cmd /c echo hello 874"
+            "id": "mytask74",
+            "commandLine": "cmd /c echo hello 74"
           },
           {
-            "id": "mytask875",
-            "commandLine": "cmd /c echo hello 875"
+            "id": "mytask75",
+            "commandLine": "cmd /c echo hello 75"
           },
           {
-            "id": "mytask876",
-            "commandLine": "cmd /c echo hello 876"
+            "id": "mytask76",
+            "commandLine": "cmd /c echo hello 76"
           },
           {
-            "id": "mytask877",
-            "commandLine": "cmd /c echo hello 877"
+            "id": "mytask77",
+            "commandLine": "cmd /c echo hello 77"
           },
           {
-            "id": "mytask878",
-            "commandLine": "cmd /c echo hello 878"
+            "id": "mytask78",
+            "commandLine": "cmd /c echo hello 78"
           },
           {
-            "id": "mytask879",
-            "commandLine": "cmd /c echo hello 879"
+            "id": "mytask79",
+            "commandLine": "cmd /c echo hello 79"
           },
           {
-            "id": "mytask880",
-            "commandLine": "cmd /c echo hello 880"
+            "id": "mytask80",
+            "commandLine": "cmd /c echo hello 80"
           },
           {
-            "id": "mytask881",
-            "commandLine": "cmd /c echo hello 881"
+            "id": "mytask81",
+            "commandLine": "cmd /c echo hello 81"
           },
           {
-            "id": "mytask882",
-            "commandLine": "cmd /c echo hello 882"
+            "id": "mytask82",
+            "commandLine": "cmd /c echo hello 82"
           },
           {
-            "id": "mytask883",
-            "commandLine": "cmd /c echo hello 883"
+            "id": "mytask83",
+            "commandLine": "cmd /c echo hello 83"
           },
           {
-            "id": "mytask884",
-            "commandLine": "cmd /c echo hello 884"
+            "id": "mytask84",
+            "commandLine": "cmd /c echo hello 84"
           },
           {
-            "id": "mytask885",
-            "commandLine": "cmd /c echo hello 885"
+            "id": "mytask85",
+            "commandLine": "cmd /c echo hello 85"
           },
           {
-            "id": "mytask886",
-            "commandLine": "cmd /c echo hello 886"
+            "id": "mytask86",
+            "commandLine": "cmd /c echo hello 86"
           },
           {
-            "id": "mytask887",
-            "commandLine": "cmd /c echo hello 887"
+            "id": "mytask87",
+            "commandLine": "cmd /c echo hello 87"
           },
           {
-            "id": "mytask888",
-            "commandLine": "cmd /c echo hello 888"
+            "id": "mytask88",
+            "commandLine": "cmd /c echo hello 88"
           },
           {
-            "id": "mytask889",
-            "commandLine": "cmd /c echo hello 889"
+            "id": "mytask89",
+            "commandLine": "cmd /c echo hello 89"
           },
           {
-            "id": "mytask890",
-            "commandLine": "cmd /c echo hello 890"
+            "id": "mytask90",
+            "commandLine": "cmd /c echo hello 90"
           },
           {
-            "id": "mytask891",
-            "commandLine": "cmd /c echo hello 891"
+            "id": "mytask91",
+            "commandLine": "cmd /c echo hello 91"
           },
           {
-            "id": "mytask892",
-            "commandLine": "cmd /c echo hello 892"
+            "id": "mytask92",
+            "commandLine": "cmd /c echo hello 92"
           },
           {
-            "id": "mytask893",
-            "commandLine": "cmd /c echo hello 893"
+            "id": "mytask93",
+            "commandLine": "cmd /c echo hello 93"
           },
           {
-            "id": "mytask894",
-            "commandLine": "cmd /c echo hello 894"
+            "id": "mytask94",
+            "commandLine": "cmd /c echo hello 94"
           },
           {
-            "id": "mytask895",
-            "commandLine": "cmd /c echo hello 895"
+            "id": "mytask95",
+            "commandLine": "cmd /c echo hello 95"
           },
           {
-            "id": "mytask896",
-            "commandLine": "cmd /c echo hello 896"
+            "id": "mytask96",
+            "commandLine": "cmd /c echo hello 96"
           },
           {
-            "id": "mytask897",
-            "commandLine": "cmd /c echo hello 897"
+            "id": "mytask97",
+            "commandLine": "cmd /c echo hello 97"
           },
           {
-            "id": "mytask898",
-            "commandLine": "cmd /c echo hello 898"
+            "id": "mytask98",
+            "commandLine": "cmd /c echo hello 98"
           },
           {
-            "id": "mytask899",
-            "commandLine": "cmd /c echo hello 899"
+            "id": "mytask99",
+            "commandLine": "cmd /c echo hello 99"
           }
         ]
       },
@@ -4530,8 +4530,8 @@
         "Content-Length": "328",
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 11 Mar 2024 01:48:37 GMT",
-        "request-id": "affc8d74-a77d-4423-a8d0-74b571c2bda4",
+        "Date": "Wed, 27 Mar 2024 00:46:41 GMT",
+        "request-id": "999397a9-79d9-43f2-97ab-d3f45f7a58ac",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff"
@@ -4541,7 +4541,7 @@
         "code": "JobNotFound",
         "message": {
           "lang": "en-US",
-          "value": "The specified job does not exist.\nRequestId:affc8d74-a77d-4423-a8d0-74b571c2bda4\nTime:2024-03-11T01:48:37.7587108Z"
+          "value": "The specified job does not exist.\nRequestId:999397a9-79d9-43f2-97ab-d3f45f7a58ac\nTime:2024-03-27T00:46:42.6677869Z"
         }
       }
     }
