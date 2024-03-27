@@ -141,7 +141,6 @@
     "sdk/cosmos/azure-cosmos-encryption/**",
     "sdk/cosmos/azure-cosmos-spark_3_2-12/**",
     "sdk/spring/azure-spring-data-cosmos/**",
-    "sdk/cosmos/azure-cosmos-kafka-connect/**",
     "sdk/deviceupdate/azure-iot-deviceupdate/**",
     "sdk/e2e/src/**",
     "sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents/**",
@@ -725,7 +724,7 @@
       "words": [
         "Pfast",
         "Pdirect",
-	    "Pmulti",
+	      "Pmulti",
         "Psplit",
         "Pquery",
         "Pcfp",
