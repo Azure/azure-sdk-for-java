@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.guava25.collect.Lists;
+import com.azure.cosmos.kafka.connect.implementation.guava25.collect.Lists;
 import com.azure.cosmos.models.SqlParameter;
 import org.testng.annotations.Test;
 

@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of AdaptiveNetworkHardenings. */
+/**
+ * Resource collection API of AdaptiveNetworkHardenings.
+ */
 public interface AdaptiveNetworkHardenings {
     /**
      * Gets a list of Adaptive Network Hardenings resources in scope of an extended resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -22,16 +24,16 @@ public interface AdaptiveNetworkHardenings {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Adaptive Network Hardenings resources in scope of an extended resource as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
-    PagedIterable<AdaptiveNetworkHardening> listByExtendedResource(
-        String resourceGroupName, String resourceNamespace, String resourceType, String resourceName);
+    PagedIterable<AdaptiveNetworkHardening> listByExtendedResource(String resourceGroupName, String resourceNamespace,
+        String resourceType, String resourceName);
 
     /**
      * Gets a list of Adaptive Network Hardenings resources in scope of an extended resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -40,16 +42,16 @@ public interface AdaptiveNetworkHardenings {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Adaptive Network Hardenings resources in scope of an extended resource as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
-    PagedIterable<AdaptiveNetworkHardening> listByExtendedResource(
-        String resourceGroupName, String resourceNamespace, String resourceType, String resourceName, Context context);
+    PagedIterable<AdaptiveNetworkHardening> listByExtendedResource(String resourceGroupName, String resourceNamespace,
+        String resourceType, String resourceName, Context context);
 
     /**
      * Gets a single Adaptive Network Hardening resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -60,19 +62,14 @@ public interface AdaptiveNetworkHardenings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single Adaptive Network Hardening resource along with {@link Response}.
      */
-    Response<AdaptiveNetworkHardening> getWithResponse(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String adaptiveNetworkHardeningResourceName,
-        Context context);
+    Response<AdaptiveNetworkHardening> getWithResponse(String resourceGroupName, String resourceNamespace,
+        String resourceType, String resourceName, String adaptiveNetworkHardeningResourceName, Context context);
 
     /**
      * Gets a single Adaptive Network Hardening resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -82,18 +79,14 @@ public interface AdaptiveNetworkHardenings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single Adaptive Network Hardening resource.
      */
-    AdaptiveNetworkHardening get(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String adaptiveNetworkHardeningResourceName);
+    AdaptiveNetworkHardening get(String resourceGroupName, String resourceNamespace, String resourceType,
+        String resourceName, String adaptiveNetworkHardeningResourceName);
 
     /**
      * Enforces the given rules on the NSG(s) listed in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -103,19 +96,14 @@ public interface AdaptiveNetworkHardenings {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void enforce(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String adaptiveNetworkHardeningResourceName,
-        AdaptiveNetworkHardeningEnforceRequest body);
+    void enforce(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName,
+        String adaptiveNetworkHardeningResourceName, AdaptiveNetworkHardeningEnforceRequest body);
 
     /**
      * Enforces the given rules on the NSG(s) listed in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -126,12 +114,6 @@ public interface AdaptiveNetworkHardenings {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void enforce(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String adaptiveNetworkHardeningResourceName,
-        AdaptiveNetworkHardeningEnforceRequest body,
-        Context context);
+    void enforce(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName,
+        String adaptiveNetworkHardeningResourceName, AdaptiveNetworkHardeningEnforceRequest body, Context context);
 }

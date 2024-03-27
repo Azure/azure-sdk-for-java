@@ -8,12 +8,14 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of WorkspaceSettings. */
+/**
+ * Resource collection API of WorkspaceSettings.
+ */
 public interface WorkspaceSettings {
     /**
      * Settings about where we should store your security data and logs. If the result is empty, it means that no
      * custom-workspace configuration was set.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of workspace settings response as paginated response with {@link PagedIterable}.
@@ -23,7 +25,7 @@ public interface WorkspaceSettings {
     /**
      * Settings about where we should store your security data and logs. If the result is empty, it means that no
      * custom-workspace configuration was set.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -35,7 +37,7 @@ public interface WorkspaceSettings {
     /**
      * Settings about where we should store your security data and logs. If the result is empty, it means that no
      * custom-workspace configuration was set.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -48,7 +50,7 @@ public interface WorkspaceSettings {
     /**
      * Settings about where we should store your security data and logs. If the result is empty, it means that no
      * custom-workspace configuration was set.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -59,7 +61,7 @@ public interface WorkspaceSettings {
 
     /**
      * Deletes the custom workspace settings for this subscription. new VMs will report to the default workspace.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -71,7 +73,7 @@ public interface WorkspaceSettings {
 
     /**
      * Deletes the custom workspace settings for this subscription. new VMs will report to the default workspace.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,7 +84,7 @@ public interface WorkspaceSettings {
     /**
      * Settings about where we should store your security data and logs. If the result is empty, it means that no
      * custom-workspace configuration was set.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -94,7 +96,7 @@ public interface WorkspaceSettings {
     /**
      * Settings about where we should store your security data and logs. If the result is empty, it means that no
      * custom-workspace configuration was set.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -106,7 +108,7 @@ public interface WorkspaceSettings {
 
     /**
      * Deletes the custom workspace settings for this subscription. new VMs will report to the default workspace.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -116,7 +118,7 @@ public interface WorkspaceSettings {
 
     /**
      * Deletes the custom workspace settings for this subscription. new VMs will report to the default workspace.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -128,7 +130,7 @@ public interface WorkspaceSettings {
 
     /**
      * Begins definition for a new WorkspaceSetting resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new WorkspaceSetting definition.
      */

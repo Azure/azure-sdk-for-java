@@ -6,39 +6,41 @@ package com.azure.resourcemanager.cosmosdbforpostgresql.models;
 
 import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.NameAvailabilityInner;
 
-/** An immutable client-side representation of NameAvailability. */
+/**
+ * An immutable client-side representation of NameAvailability.
+ */
 public interface NameAvailability {
     /**
      * Gets the message property: Error message.
-     *
+     * 
      * @return the message value.
      */
     String message();
 
     /**
      * Gets the nameAvailable property: Indicates whether the cluster name is available.
-     *
+     * 
      * @return the nameAvailable value.
      */
     Boolean nameAvailable();
 
     /**
      * Gets the name property: Name of the cluster.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: Type of the cluster.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the inner com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.NameAvailabilityInner object.
-     *
+     * 
      * @return the inner object.
      */
     NameAvailabilityInner innerModel();

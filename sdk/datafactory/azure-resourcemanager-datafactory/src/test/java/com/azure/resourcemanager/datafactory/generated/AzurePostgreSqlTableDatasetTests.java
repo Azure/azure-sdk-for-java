@@ -19,37 +19,37 @@ public final class AzurePostgreSqlTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzurePostgreSqlTableDataset model = BinaryData.fromString(
-            "{\"type\":\"AzurePostgreSqlTable\",\"typeProperties\":{\"tableName\":\"dataj\",\"table\":\"datawrduxntpfxxgja\",\"schema\":\"dataxfwf\"},\"description\":\"qv\",\"structure\":\"datafbkqynlzxem\",\"schema\":\"dataupjckiehdm\",\"linkedServiceName\":{\"referenceName\":\"foyrxxxffgmcua\",\"parameters\":{\"csapvbcqpfus\":\"dataeervgc\",\"k\":\"datakijhmine\",\"rkvorlfqmljewyn\":\"dataivp\",\"vlnpbsotmynklnm\":\"datafvvcwvurkmjufa\"}},\"parameters\":{\"keipxutc\":{\"type\":\"Int\",\"defaultValue\":\"datavrkkfcwxizkstxne\"},\"tvsayyaeiiv\":{\"type\":\"Array\",\"defaultValue\":\"dataiuvnfaz\"},\"xqetxtdqius\":{\"type\":\"Float\",\"defaultValue\":\"dataqtjwrvewojoq\"},\"mjsisfqqhc\":{\"type\":\"Array\",\"defaultValue\":\"datazljvgjijzqjhljsa\"}},\"annotations\":[\"dataagsbfeiir\",\"datanjygllfkchhgsj\"],\"folder\":{\"name\":\"c\"},\"\":{\"khdhpmkxdujkxpuq\":\"datawmqcycabaam\",\"ezxiz\":\"datadyoqywsuarpzhry\",\"azccouhwivkd\":\"datasyxbfjilb\",\"pi\":\"datavjsknrbxz\"}}")
+            "{\"type\":\"AzurePostgreSqlTable\",\"typeProperties\":{\"tableName\":\"datarllld\",\"table\":\"datanbdzwils\",\"schema\":\"datayiqjz\"},\"description\":\"rd\",\"structure\":\"datantpfxxgjahyxfw\",\"schema\":\"datat\",\"linkedServiceName\":{\"referenceName\":\"veyfbkqynlzxeme\",\"parameters\":{\"ehdmvfoyrxxxff\":\"datajck\",\"cgcsapvbcqpf\":\"datamcuanszeerv\",\"vpyr\":\"datasekijhminenkb\",\"fvvcwvurkmjufa\":\"datavorlfqmljewyn\"}},\"parameters\":{\"vrkkfcwxizkstxne\":{\"type\":\"SecureString\",\"defaultValue\":\"databsotmynklnmrznm\"},\"tc\":{\"type\":\"Object\",\"defaultValue\":\"dataipx\"},\"tvsayyaeiiv\":{\"type\":\"Array\",\"defaultValue\":\"dataiuvnfaz\"},\"xqetxtdqius\":{\"type\":\"Float\",\"defaultValue\":\"dataqtjwrvewojoq\"}},\"annotations\":[\"datazljvgjijzqjhljsa\",\"datamjsisfqqhc\",\"dataecagsbfeiirpn\"],\"folder\":{\"name\":\"llfkchhgs\"},\"\":{\"cabaam\":\"datazcajlwmqc\",\"dyoqywsuarpzhry\":\"datakhdhpmkxdujkxpuq\"}}")
             .toObject(AzurePostgreSqlTableDataset.class);
-        Assertions.assertEquals("qv", model.description());
-        Assertions.assertEquals("foyrxxxffgmcua", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("keipxutc").type());
-        Assertions.assertEquals("c", model.folder().name());
+        Assertions.assertEquals("rd", model.description());
+        Assertions.assertEquals("veyfbkqynlzxeme", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("vrkkfcwxizkstxne").type());
+        Assertions.assertEquals("llfkchhgs", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzurePostgreSqlTableDataset model = new AzurePostgreSqlTableDataset().withDescription("qv")
-            .withStructure("datafbkqynlzxem").withSchema("dataupjckiehdm")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("foyrxxxffgmcua")
-                .withParameters(mapOf("csapvbcqpfus", "dataeervgc", "k", "datakijhmine", "rkvorlfqmljewyn", "dataivp",
-                    "vlnpbsotmynklnm", "datafvvcwvurkmjufa")))
-            .withParameters(mapOf("keipxutc",
-                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datavrkkfcwxizkstxne"),
+        AzurePostgreSqlTableDataset model = new AzurePostgreSqlTableDataset().withDescription("rd")
+            .withStructure("datantpfxxgjahyxfw").withSchema("datat")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("veyfbkqynlzxeme")
+                .withParameters(mapOf("ehdmvfoyrxxxff", "datajck", "cgcsapvbcqpf", "datamcuanszeerv", "vpyr",
+                    "datasekijhminenkb", "fvvcwvurkmjufa", "datavorlfqmljewyn")))
+            .withParameters(mapOf("vrkkfcwxizkstxne",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING)
+                    .withDefaultValue("databsotmynklnmrznm"),
+                "tc", new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("dataipx"),
                 "tvsayyaeiiv",
                 new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataiuvnfaz"),
                 "xqetxtdqius",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataqtjwrvewojoq"),
-                "mjsisfqqhc",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datazljvgjijzqjhljsa")))
-            .withAnnotations(Arrays.asList("dataagsbfeiir", "datanjygllfkchhgsj"))
-            .withFolder(new DatasetFolder().withName("c")).withTableName("dataj").withTable("datawrduxntpfxxgja")
-            .withSchemaTypePropertiesSchema("dataxfwf");
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataqtjwrvewojoq")))
+            .withAnnotations(Arrays.asList("datazljvgjijzqjhljsa", "datamjsisfqqhc", "dataecagsbfeiirpn"))
+            .withFolder(new DatasetFolder().withName("llfkchhgs")).withTableName("datarllld").withTable("datanbdzwils")
+            .withSchemaTypePropertiesSchema("datayiqjz");
         model = BinaryData.fromObject(model).toObject(AzurePostgreSqlTableDataset.class);
-        Assertions.assertEquals("qv", model.description());
-        Assertions.assertEquals("foyrxxxffgmcua", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("keipxutc").type());
-        Assertions.assertEquals("c", model.folder().name());
+        Assertions.assertEquals("rd", model.description());
+        Assertions.assertEquals("veyfbkqynlzxeme", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("vrkkfcwxizkstxne").type());
+        Assertions.assertEquals("llfkchhgs", model.folder().name());
     }
 
     // Use "Map.of" if available

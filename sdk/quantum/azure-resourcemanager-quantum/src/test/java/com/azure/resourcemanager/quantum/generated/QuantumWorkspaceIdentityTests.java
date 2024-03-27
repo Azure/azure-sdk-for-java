@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class QuantumWorkspaceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuantumWorkspaceIdentity model =
-            BinaryData
-                .fromString("{\"principalId\":\"git\",\"tenantId\":\"qhabifpikxwcz\",\"type\":\"None\"}")
+        QuantumWorkspaceIdentity model
+            = BinaryData.fromString("{\"principalId\":\"nzwuxzd\",\"tenantId\":\"a\",\"type\":\"None\"}")
                 .toObject(QuantumWorkspaceIdentity.class);
         Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
     }

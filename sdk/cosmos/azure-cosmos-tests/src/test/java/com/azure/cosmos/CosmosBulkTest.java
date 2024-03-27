@@ -4,8 +4,8 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ISessionToken;
-import com.azure.cosmos.implementation.guava25.base.Function;
-import com.azure.cosmos.implementation.guava25.collect.Lists;
+import com.azure.cosmos.kafka.connect.implementation.guava25.base.Function;
+import com.azure.cosmos.kafka.connect.implementation.guava25.collect.Lists;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkItemRequestOptions;
 import com.azure.cosmos.models.CosmosBulkOperations;

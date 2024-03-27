@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
-import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.FeedRange;
 import org.apache.kafka.connect.storage.OffsetStorageReader;
 
 import java.util.Map;
@@ -38,7 +38,7 @@ public class CosmosSourceOffsetStorageReader {
     public FeedRangeContinuationTopicOffset getFeedRangeContinuationOffset(
         String databaseName,
         String collectionRid,
-        Range<String> feedRange) {
+        FeedRange feedRange) {
 
         Map<String, Object> topicOffsetMap =
             this.offsetStorageReader

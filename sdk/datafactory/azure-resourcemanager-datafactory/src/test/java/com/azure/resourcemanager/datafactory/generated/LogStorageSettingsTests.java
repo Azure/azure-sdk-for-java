@@ -15,20 +15,21 @@ public final class LogStorageSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogStorageSettings model = BinaryData.fromString(
-            "{\"linkedServiceName\":{\"referenceName\":\"gfvzvmtjcxig\",\"parameters\":{\"ivmbu\":\"dataxdbglceet\"}},\"path\":\"datazwyw\",\"logLevel\":\"datafptbdx\",\"enableReliableLogging\":\"datalpjulslfiuzytxe\",\"\":{\"cid\":\"datagmqntutetdt\",\"paqnfyhgrcmc\":\"datarjwiwou\",\"ubtwelutrvdz\":\"datappledxyect\",\"pscw\":\"datawp\"}}")
+            "{\"linkedServiceName\":{\"referenceName\":\"gdlgs\",\"parameters\":{\"stwcyigrhfevxy\":\"databoysquygokh\",\"rtcsucot\":\"dataqukcojyxhhvoo\",\"jnxzvjnmpvsblud\":\"datawyiq\"}},\"path\":\"datahzukrpfbhihd\",\"logLevel\":\"dataiuexyqyfkudmlqpw\",\"enableReliableLogging\":\"datadpwrm\",\"\":{\"k\":\"datais\",\"wsxnyockpcssus\":\"datasp\"}}")
             .toObject(LogStorageSettings.class);
-        Assertions.assertEquals("gfvzvmtjcxig", model.linkedServiceName().referenceName());
+        Assertions.assertEquals("gdlgs", model.linkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LogStorageSettings model = new LogStorageSettings()
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("gfvzvmtjcxig")
-                .withParameters(mapOf("ivmbu", "dataxdbglceet")))
-            .withPath("datazwyw").withLogLevel("datafptbdx").withEnableReliableLogging("datalpjulslfiuzytxe")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("gdlgs")
+                .withParameters(mapOf("stwcyigrhfevxy", "databoysquygokh", "rtcsucot", "dataqukcojyxhhvoo",
+                    "jnxzvjnmpvsblud", "datawyiq")))
+            .withPath("datahzukrpfbhihd").withLogLevel("dataiuexyqyfkudmlqpw").withEnableReliableLogging("datadpwrm")
             .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(LogStorageSettings.class);
-        Assertions.assertEquals("gfvzvmtjcxig", model.linkedServiceName().referenceName());
+        Assertions.assertEquals("gdlgs", model.linkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

@@ -10,7 +10,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
-import com.azure.cosmos.implementation.guava25.collect.Lists;
+import com.azure.cosmos.kafka.connect.implementation.guava25.collect.Lists;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedFlux;

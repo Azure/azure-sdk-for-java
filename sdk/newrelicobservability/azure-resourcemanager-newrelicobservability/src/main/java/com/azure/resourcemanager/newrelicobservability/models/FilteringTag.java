@@ -31,13 +31,15 @@ public final class FilteringTag {
     @JsonProperty(value = "action")
     private TagAction action;
 
-    /** Creates an instance of FilteringTag class. */
+    /**
+     * Creates an instance of FilteringTag class.
+     */
     public FilteringTag() {
     }
 
     /**
      * Get the name property: The name (also known as the key) of the tag.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -46,7 +48,7 @@ public final class FilteringTag {
 
     /**
      * Set the name property: The name (also known as the key) of the tag.
-     *
+     * 
      * @param name the name value to set.
      * @return the FilteringTag object itself.
      */
@@ -57,7 +59,7 @@ public final class FilteringTag {
 
     /**
      * Get the value property: The value of the tag.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -66,7 +68,7 @@ public final class FilteringTag {
 
     /**
      * Set the value property: The value of the tag.
-     *
+     * 
      * @param value the value value to set.
      * @return the FilteringTag object itself.
      */
@@ -77,7 +79,7 @@ public final class FilteringTag {
 
     /**
      * Get the action property: Valid actions for a filtering tag. Exclusion takes priority over inclusion.
-     *
+     * 
      * @return the action value.
      */
     public TagAction action() {
@@ -86,7 +88,7 @@ public final class FilteringTag {
 
     /**
      * Set the action property: Valid actions for a filtering tag. Exclusion takes priority over inclusion.
-     *
+     * 
      * @param action the action value to set.
      * @return the FilteringTag object itself.
      */
@@ -97,7 +99,7 @@ public final class FilteringTag {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.27 (Unreleased)
+## 1.0.0-beta.28 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,38 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.27 (2024-03-14)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.PostgreSqlV2TableDataset` was added
+
+* `models.ExpressionV2` was added
+
+* `models.GoogleBigQueryV2Source` was added
+
+* `models.PostgreSqlV2Source` was added
+
+* `models.ExpressionV2Type` was added
+
+* `models.ServiceNowV2LinkedService` was added
+
+* `models.ServiceNowV2ObjectDataset` was added
+
+* `models.ServiceNowV2Source` was added
+
+* `models.GoogleBigQueryV2AuthenticationType` was added
+
+* `models.GoogleBigQueryV2LinkedService` was added
+
+* `models.PostgreSqlV2LinkedService` was added
+
+* `models.ServiceNowV2AuthenticationType` was added
+
+* `models.GoogleBigQueryV2ObjectDataset` was added
 
 ## 1.0.0-beta.26 (2024-01-29)
 

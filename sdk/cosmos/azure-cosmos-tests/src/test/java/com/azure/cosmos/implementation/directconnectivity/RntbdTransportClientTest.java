@@ -59,8 +59,8 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponseDec
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdUUID;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdUtils;
-import com.azure.cosmos.implementation.guava25.base.Strings;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
+import com.azure.cosmos.kafka.connect.implementation.guava25.base.Strings;
+import com.azure.cosmos.kafka.connect.implementation.guava25.collect.ImmutableMap;
 import io.micrometer.core.instrument.Tag;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

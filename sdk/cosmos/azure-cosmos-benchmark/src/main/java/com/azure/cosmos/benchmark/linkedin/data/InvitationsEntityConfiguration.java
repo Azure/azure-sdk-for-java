@@ -7,7 +7,7 @@ import com.azure.cosmos.benchmark.Configuration;
 import com.azure.cosmos.benchmark.linkedin.data.entity.InvitationDataGenerator;
 import com.azure.cosmos.benchmark.linkedin.data.entity.InvitationsCollectionAttributes;
 import com.azure.cosmos.benchmark.linkedin.data.entity.InvitationsKeyGenerator;
-import com.azure.cosmos.implementation.guava25.base.Preconditions;
+import com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions;
 import java.util.function.Supplier;
 
 

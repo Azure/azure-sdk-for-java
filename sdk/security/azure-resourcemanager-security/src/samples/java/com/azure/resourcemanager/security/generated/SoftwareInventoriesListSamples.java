@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.security.generated;
 
-/** Samples for SoftwareInventories List. */
+/**
+ * Samples for SoftwareInventories List.
+ */
 public final class SoftwareInventoriesListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2021-05-01-preview/examples/SoftwareInventories/ListBySubscriptionSoftwareInventories_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2021-05-01-preview/examples/
+     * SoftwareInventories/ListBySubscriptionSoftwareInventories_example.json
      */
     /**
      * Sample code: Gets the software inventory of all virtual machines in the subscriptions.
-     *
+     * 
      * @param manager Entry point to SecurityManager.
      */
     public static void getsTheSoftwareInventoryOfAllVirtualMachinesInTheSubscriptions(

@@ -5,153 +5,152 @@
 package com.azure.resourcemanager.iotfirmwaredefense.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.iotfirmwaredefense.models.CanaryFlag;
-import com.azure.resourcemanager.iotfirmwaredefense.models.NxFlag;
-import com.azure.resourcemanager.iotfirmwaredefense.models.PieFlag;
-import com.azure.resourcemanager.iotfirmwaredefense.models.RelroFlag;
-import com.azure.resourcemanager.iotfirmwaredefense.models.StrippedFlag;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Binary hardening features. */
+/**
+ * Binary hardening features.
+ */
 @Fluent
 public final class BinaryHardeningFeatures {
     /*
-     * NX flag.
+     * NX (no-execute) flag.
      */
     @JsonProperty(value = "nx")
-    private NxFlag nx;
+    private Boolean nx;
 
     /*
-     * PIE flag.
+     * PIE (position independent executable) flag.
      */
     @JsonProperty(value = "pie")
-    private PieFlag pie;
+    private Boolean pie;
 
     /*
-     * RELRO flag.
+     * RELRO (relocation read-only) flag.
      */
     @JsonProperty(value = "relro")
-    private RelroFlag relro;
+    private Boolean relro;
 
     /*
-     * Canary flag.
+     * Canary (stack canaries) flag.
      */
     @JsonProperty(value = "canary")
-    private CanaryFlag canary;
+    private Boolean canary;
 
     /*
      * Stripped flag.
      */
     @JsonProperty(value = "stripped")
-    private StrippedFlag stripped;
+    private Boolean stripped;
 
-    /** Creates an instance of BinaryHardeningFeatures class. */
+    /**
+     * Creates an instance of BinaryHardeningFeatures class.
+     */
     public BinaryHardeningFeatures() {
     }
 
     /**
-     * Get the nx property: NX flag.
-     *
+     * Get the nx property: NX (no-execute) flag.
+     * 
      * @return the nx value.
      */
-    public NxFlag nx() {
+    public Boolean nx() {
         return this.nx;
     }
 
     /**
-     * Set the nx property: NX flag.
-     *
+     * Set the nx property: NX (no-execute) flag.
+     * 
      * @param nx the nx value to set.
      * @return the BinaryHardeningFeatures object itself.
      */
-    public BinaryHardeningFeatures withNx(NxFlag nx) {
+    public BinaryHardeningFeatures withNx(Boolean nx) {
         this.nx = nx;
         return this;
     }
 
     /**
-     * Get the pie property: PIE flag.
-     *
+     * Get the pie property: PIE (position independent executable) flag.
+     * 
      * @return the pie value.
      */
-    public PieFlag pie() {
+    public Boolean pie() {
         return this.pie;
     }
 
     /**
-     * Set the pie property: PIE flag.
-     *
+     * Set the pie property: PIE (position independent executable) flag.
+     * 
      * @param pie the pie value to set.
      * @return the BinaryHardeningFeatures object itself.
      */
-    public BinaryHardeningFeatures withPie(PieFlag pie) {
+    public BinaryHardeningFeatures withPie(Boolean pie) {
         this.pie = pie;
         return this;
     }
 
     /**
-     * Get the relro property: RELRO flag.
-     *
+     * Get the relro property: RELRO (relocation read-only) flag.
+     * 
      * @return the relro value.
      */
-    public RelroFlag relro() {
+    public Boolean relro() {
         return this.relro;
     }
 
     /**
-     * Set the relro property: RELRO flag.
-     *
+     * Set the relro property: RELRO (relocation read-only) flag.
+     * 
      * @param relro the relro value to set.
      * @return the BinaryHardeningFeatures object itself.
      */
-    public BinaryHardeningFeatures withRelro(RelroFlag relro) {
+    public BinaryHardeningFeatures withRelro(Boolean relro) {
         this.relro = relro;
         return this;
     }
 
     /**
-     * Get the canary property: Canary flag.
-     *
+     * Get the canary property: Canary (stack canaries) flag.
+     * 
      * @return the canary value.
      */
-    public CanaryFlag canary() {
+    public Boolean canary() {
         return this.canary;
     }
 
     /**
-     * Set the canary property: Canary flag.
-     *
+     * Set the canary property: Canary (stack canaries) flag.
+     * 
      * @param canary the canary value to set.
      * @return the BinaryHardeningFeatures object itself.
      */
-    public BinaryHardeningFeatures withCanary(CanaryFlag canary) {
+    public BinaryHardeningFeatures withCanary(Boolean canary) {
         this.canary = canary;
         return this;
     }
 
     /**
      * Get the stripped property: Stripped flag.
-     *
+     * 
      * @return the stripped value.
      */
-    public StrippedFlag stripped() {
+    public Boolean stripped() {
         return this.stripped;
     }
 
     /**
      * Set the stripped property: Stripped flag.
-     *
+     * 
      * @param stripped the stripped value to set.
      * @return the BinaryHardeningFeatures object itself.
      */
-    public BinaryHardeningFeatures withStripped(StrippedFlag stripped) {
+    public BinaryHardeningFeatures withStripped(Boolean stripped) {
         this.stripped = stripped;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

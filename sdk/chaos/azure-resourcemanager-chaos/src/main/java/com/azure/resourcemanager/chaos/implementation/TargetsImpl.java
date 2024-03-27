@@ -26,76 +26,36 @@ public final class TargetsImpl implements Targets {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Target> list(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName) {
-        PagedIterable<TargetInner> inner =
-            this
-                .serviceClient()
-                .list(resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName);
-        return Utils.mapPage(inner, inner1 -> new TargetImpl(inner1, this.manager()));
+    public PagedIterable<Target> list(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName) {
+        PagedIterable<TargetInner> inner = this.serviceClient().list(resourceGroupName, parentProviderNamespace,
+            parentResourceType, parentResourceName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TargetImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Target> list(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String continuationToken,
-        Context context) {
-        PagedIterable<TargetInner> inner =
-            this
-                .serviceClient()
-                .list(
-                    resourceGroupName,
-                    parentProviderNamespace,
-                    parentResourceType,
-                    parentResourceName,
-                    continuationToken,
-                    context);
-        return Utils.mapPage(inner, inner1 -> new TargetImpl(inner1, this.manager()));
+    public PagedIterable<Target> list(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String continuationToken, Context context) {
+        PagedIterable<TargetInner> inner = this.serviceClient().list(resourceGroupName, parentProviderNamespace,
+            parentResourceType, parentResourceName, continuationToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TargetImpl(inner1, this.manager()));
     }
 
-    public Response<Target> getWithResponse(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        Context context) {
-        Response<TargetInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(
-                    resourceGroupName,
-                    parentProviderNamespace,
-                    parentResourceType,
-                    parentResourceName,
-                    targetName,
-                    context);
+    public Response<Target> getWithResponse(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String targetName, Context context) {
+        Response<TargetInner> inner = this.serviceClient().getWithResponse(resourceGroupName, parentProviderNamespace,
+            parentResourceType, parentResourceName, targetName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new TargetImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Target get(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName) {
-        TargetInner inner =
-            this
-                .serviceClient()
-                .get(resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName);
+    public Target get(String resourceGroupName, String parentProviderNamespace, String parentResourceType,
+        String parentResourceName, String targetName) {
+        TargetInner inner = this.serviceClient().get(resourceGroupName, parentProviderNamespace, parentResourceType,
+            parentResourceName, targetName);
         if (inner != null) {
             return new TargetImpl(inner, this.manager());
         } else {
@@ -103,82 +63,34 @@ public final class TargetsImpl implements Targets {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(
-                resourceGroupName,
-                parentProviderNamespace,
-                parentResourceType,
-                parentResourceName,
-                targetName,
-                context);
+    public Response<Void> deleteWithResponse(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String targetName, Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, parentProviderNamespace, parentResourceType,
+            parentResourceName, targetName, context);
     }
 
-    public void delete(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName) {
-        this
-            .serviceClient()
-            .delete(resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName);
+    public void delete(String resourceGroupName, String parentProviderNamespace, String parentResourceType,
+        String parentResourceName, String targetName) {
+        this.serviceClient().delete(resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName,
+            targetName);
     }
 
-    public Response<Target> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        TargetInner target,
-        Context context) {
-        Response<TargetInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    parentProviderNamespace,
-                    parentResourceType,
-                    parentResourceName,
-                    targetName,
-                    target,
-                    context);
+    public Response<Target> createOrUpdateWithResponse(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String targetName, TargetInner target, Context context) {
+        Response<TargetInner> inner = this.serviceClient().createOrUpdateWithResponse(resourceGroupName,
+            parentProviderNamespace, parentResourceType, parentResourceName, targetName, target, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new TargetImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Target createOrUpdate(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        TargetInner target) {
-        TargetInner inner =
-            this
-                .serviceClient()
-                .createOrUpdate(
-                    resourceGroupName,
-                    parentProviderNamespace,
-                    parentResourceType,
-                    parentResourceName,
-                    targetName,
-                    target);
+    public Target createOrUpdate(String resourceGroupName, String parentProviderNamespace, String parentResourceType,
+        String parentResourceName, String targetName, TargetInner target) {
+        TargetInner inner = this.serviceClient().createOrUpdate(resourceGroupName, parentProviderNamespace,
+            parentResourceType, parentResourceName, targetName, target);
         if (inner != null) {
             return new TargetImpl(inner, this.manager());
         } else {

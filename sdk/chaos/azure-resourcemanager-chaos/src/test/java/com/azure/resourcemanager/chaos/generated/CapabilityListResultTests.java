@@ -10,11 +10,9 @@ import com.azure.resourcemanager.chaos.models.CapabilityListResult;
 public final class CapabilityListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CapabilityListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"publisher\":\"vgjxpybczm\",\"targetType\":\"mtz\",\"description\":\"bsphrupidgsybbe\",\"parametersSchema\":\"ph\",\"urn\":\"cmsxaobhdxbm\"},\"id\":\"qioqjzehtbmu\",\"name\":\"p\",\"type\":\"wnoi\"},{\"properties\":{\"publisher\":\"rxybqsoq\",\"targetType\":\"gkdmb\",\"description\":\"zlobcufpd\",\"parametersSchema\":\"rbt\",\"urn\":\"qjnqglhqgnufoooj\"},\"id\":\"wifsq\",\"name\":\"saagdf\",\"type\":\"glzlhjxrifkwmrv\"},{\"properties\":{\"publisher\":\"zntocipaouajps\",\"targetType\":\"cmpoyfdkfogkny\",\"description\":\"ofjdde\",\"parametersSchema\":\"rd\",\"urn\":\"pewnw\"},\"id\":\"eitjz\",\"name\":\"flusarhmof\",\"type\":\"qhsmyurkdtml\"}],\"nextLink\":\"ekuksjtx\"}")
-                .toObject(CapabilityListResult.class);
+        CapabilityListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"publisher\":\"vgjxpybczm\",\"targetType\":\"mtz\",\"description\":\"bsphrupidgsybbe\",\"parametersSchema\":\"ph\",\"urn\":\"cmsxaobhdxbm\"},\"id\":\"qioqjzehtbmu\",\"name\":\"p\",\"type\":\"wnoi\"},{\"properties\":{\"publisher\":\"rxybqsoq\",\"targetType\":\"gkdmb\",\"description\":\"zlobcufpd\",\"parametersSchema\":\"rbt\",\"urn\":\"qjnqglhqgnufoooj\"},\"id\":\"wifsq\",\"name\":\"saagdf\",\"type\":\"glzlhjxrifkwmrv\"},{\"properties\":{\"publisher\":\"zntocipaouajps\",\"targetType\":\"cmpoyfdkfogkny\",\"description\":\"ofjdde\",\"parametersSchema\":\"rd\",\"urn\":\"pewnw\"},\"id\":\"eitjz\",\"name\":\"flusarhmof\",\"type\":\"qhsmyurkdtml\"}],\"nextLink\":\"ekuksjtx\"}")
+            .toObject(CapabilityListResult.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -4,8 +4,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.GatewayTestUtils;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
+import com.azure.cosmos.kafka.connect.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.kafka.connect.implementation.guava25.collect.ImmutableMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.assertj.core.api.Assertions;

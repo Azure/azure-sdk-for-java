@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for InformationProtectionPolicyName. */
+/**
+ * Defines values for InformationProtectionPolicyName.
+ */
 public final class InformationProtectionPolicyName extends ExpandableStringEnum<InformationProtectionPolicyName> {
-    /** Static value effective for InformationProtectionPolicyName. */
+    /**
+     * Static value effective for InformationProtectionPolicyName.
+     */
     public static final InformationProtectionPolicyName EFFECTIVE = fromString("effective");
 
-    /** Static value custom for InformationProtectionPolicyName. */
+    /**
+     * Static value custom for InformationProtectionPolicyName.
+     */
     public static final InformationProtectionPolicyName CUSTOM = fromString("custom");
 
     /**
      * Creates a new instance of InformationProtectionPolicyName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class InformationProtectionPolicyName extends ExpandableStringEnum<
 
     /**
      * Creates or finds a InformationProtectionPolicyName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding InformationProtectionPolicyName.
      */
@@ -38,7 +44,7 @@ public final class InformationProtectionPolicyName extends ExpandableStringEnum<
 
     /**
      * Gets known InformationProtectionPolicyName values.
-     *
+     * 
      * @return known InformationProtectionPolicyName values.
      */
     public static Collection<InformationProtectionPolicyName> values() {

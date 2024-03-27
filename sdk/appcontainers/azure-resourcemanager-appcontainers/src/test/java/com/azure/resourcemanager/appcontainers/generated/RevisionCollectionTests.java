@@ -12,17 +12,15 @@ import java.util.Arrays;
 public final class RevisionCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RevisionCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"createdTime\":\"2021-02-22T10:12:12Z\",\"lastActiveTime\":\"2021-10-17T14:02:40Z\",\"fqdn\":\"vxwc\",\"template\":{\"revisionSuffix\":\"pcirelsfeaen\",\"terminationGracePeriodSeconds\":6089881890484118319,\"initContainers\":[{}],\"containers\":[{},{},{}],\"scale\":{\"minReplicas\":1993086714,\"maxReplicas\":863801878,\"rules\":[{},{}]},\"volumes\":[{},{},{},{}],\"serviceBinds\":[{}]},\"active\":false,\"replicas\":2046993019,\"trafficWeight\":443965325,\"provisioningError\":\"youlp\",\"healthState\":\"None\",\"provisioningState\":\"Deprovisioning\",\"runningState\":\"Stopped\"},\"id\":\"rvimjwosytxitcsk\",\"name\":\"cktqumiekkezzi\",\"type\":\"hlyfjhdgqgg\"},{\"properties\":{\"createdTime\":\"2021-11-21T10:43:47Z\",\"lastActiveTime\":\"2021-04-09T06:20:49Z\",\"fqdn\":\"aeqidbqfatpxll\",\"template\":{\"revisionSuffix\":\"yjmoadsu\",\"terminationGracePeriodSeconds\":1027634010219173638,\"initContainers\":[{},{},{},{}],\"containers\":[{},{}],\"scale\":{\"minReplicas\":1651100345,\"maxReplicas\":1483853053,\"rules\":[{},{}]},\"volumes\":[{},{},{}],\"serviceBinds\":[{},{}]},\"active\":true,\"replicas\":288329779,\"trafficWeight\":1115314881,\"provisioningError\":\"uhpkxkgymar\",\"healthState\":\"Unhealthy\",\"provisioningState\":\"Deprovisioning\",\"runningState\":\"Processing\"},\"id\":\"ugjhky\",\"name\":\"ubeddg\",\"type\":\"sofwqmzqalkrmnji\"}],\"nextLink\":\"xacqqudfnbyx\"}")
-                .toObject(RevisionCollection.class);
+        RevisionCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"createdTime\":\"2021-08-08T16:05:05Z\",\"lastActiveTime\":\"2021-11-22T09:46:17Z\",\"fqdn\":\"rjfut\",\"template\":{\"revisionSuffix\":\"ebjvewzcjzn\",\"terminationGracePeriodSeconds\":7534826156141275141,\"initContainers\":[{},{},{},{}],\"containers\":[{},{},{},{}],\"scale\":{\"minReplicas\":1437675806,\"maxReplicas\":1356605173,\"rules\":[{},{},{}]},\"volumes\":[{},{}],\"serviceBinds\":[{},{},{},{}]},\"active\":false,\"replicas\":240161872,\"trafficWeight\":279681197,\"provisioningError\":\"ziuxxpshnee\",\"healthState\":\"Healthy\",\"provisioningState\":\"Provisioning\",\"runningState\":\"Failed\"},\"id\":\"ubkwdle\",\"name\":\"rds\",\"type\":\"tujbazpju\"},{\"properties\":{\"createdTime\":\"2021-04-13T05:15:14Z\",\"lastActiveTime\":\"2021-04-06T17:16:51Z\",\"fqdn\":\"lnorwmdu\",\"template\":{\"revisionSuffix\":\"klvxwmyg\",\"terminationGracePeriodSeconds\":6535644343996923938,\"initContainers\":[{},{}],\"containers\":[{},{},{},{}],\"scale\":{\"minReplicas\":1044665061,\"maxReplicas\":1565134020,\"rules\":[{}]},\"volumes\":[{},{},{},{}],\"serviceBinds\":[{},{}]},\"active\":false,\"replicas\":1689782344,\"trafficWeight\":1959517954,\"provisioningError\":\"xconfozauors\",\"healthState\":\"Healthy\",\"provisioningState\":\"Provisioning\",\"runningState\":\"Degraded\"},\"id\":\"lhlv\",\"name\":\"uuepzlrphwzsoldw\",\"type\":\"yuqdu\"},{\"properties\":{\"createdTime\":\"2020-12-22T02:15:52Z\",\"lastActiveTime\":\"2021-05-15T23:33:47Z\",\"fqdn\":\"rbior\",\"template\":{\"revisionSuffix\":\"lywjhh\",\"terminationGracePeriodSeconds\":6322848214394065275,\"initContainers\":[{}],\"containers\":[{},{},{}],\"scale\":{\"minReplicas\":759547890,\"maxReplicas\":601340793,\"rules\":[{}]},\"volumes\":[{},{},{}],\"serviceBinds\":[{},{}]},\"active\":false,\"replicas\":75081100,\"trafficWeight\":133601107,\"provisioningError\":\"euzaof\",\"healthState\":\"Healthy\",\"provisioningState\":\"Failed\",\"runningState\":\"Stopped\"},\"id\":\"s\",\"name\":\"gdotcubiipuipwo\",\"type\":\"onmacjekniz\"}],\"nextLink\":\"qvci\"}")
+            .toObject(RevisionCollection.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RevisionCollection model =
-            new RevisionCollection().withValue(Arrays.asList(new RevisionInner(), new RevisionInner()));
+        RevisionCollection model = new RevisionCollection()
+            .withValue(Arrays.asList(new RevisionInner(), new RevisionInner(), new RevisionInner()));
         model = BinaryData.fromObject(model).toObject(RevisionCollection.class);
     }
 }

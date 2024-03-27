@@ -37,75 +37,50 @@ public final class GovernanceRulesCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"tenantId\":\"jqjpv\",\"displayName\":\"aihxjtgzgtaiywbq\",\"description\":\"oig\",\"remediationTimeframe\":\"fsgsa\",\"isGracePeriod\":false,\"rulePriority\":1919322541,\"isDisabled\":false,\"ruleType\":\"ServiceNow\",\"sourceResourceType\":\"Assessments\",\"excludedScopes\":[\"qlxspmrj\",\"tryldsxebuhsxr\",\"nmgsdaluyckhef\"],\"conditionSets\":[\"datahs\"],\"includeMemberScopes\":false,\"ownerSource\":{\"type\":\"Manually\",\"value\":\"pxebjlud\"},\"governanceEmailNotification\":{\"disableManagerEmailNotification\":true,\"disableOwnerEmailNotification\":true},\"metadata\":{\"createdBy\":\"xdtpry\",\"createdOn\":\"2021-05-23T11:25:30Z\",\"updatedBy\":\"nsewouxl\",\"updatedOn\":\"2021-04-21T21:20:48Z\"}},\"id\":\"vvyljurkepose\",\"name\":\"qqylmpctwjwds\",\"type\":\"lzmkxerxxxotee\"}";
+        String responseStr
+            = "{\"properties\":{\"tenantId\":\"nwbhanzgesfhshag\",\"displayName\":\"ahn\",\"description\":\"pbyfyvynpmggq\",\"remediationTimeframe\":\"g\",\"isGracePeriod\":true,\"rulePriority\":177836950,\"isDisabled\":false,\"ruleType\":\"Integrated\",\"sourceResourceType\":\"Assessments\",\"excludedScopes\":[\"dvfoizorbl\"],\"conditionSets\":[\"datajzsaxzgkqwvde\"],\"includeMemberScopes\":false,\"ownerSource\":{\"type\":\"Manually\",\"value\":\"hi\"},\"governanceEmailNotification\":{\"disableManagerEmailNotification\":false,\"disableOwnerEmailNotification\":false},\"metadata\":{\"createdBy\":\"ubpebrm\",\"createdOn\":\"2021-10-07T01:34:45Z\",\"updatedBy\":\"p\",\"updatedOn\":\"2021-05-15T19:53:19Z\"}},\"id\":\"b\",\"name\":\"tpkimskhnkkhbykr\",\"type\":\"mhrcmelycpgoku\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        GovernanceRule response =
-            manager
-                .governanceRules()
-                .define("lhpses")
-                .withExistingScope("zpvxak")
-                .withDisplayName("goqg")
-                .withDescription("yqyxyjrcbqpbis")
-                .withRemediationTimeframe("lqjoxtda")
-                .withIsGracePeriod(false)
-                .withRulePriority(352859817)
-                .withIsDisabled(false)
-                .withRuleType(GovernanceRuleType.INTEGRATED)
-                .withSourceResourceType(GovernanceRuleSourceResourceType.ASSESSMENTS)
-                .withExcludedScopes(Arrays.asList("ztivfwjl", "fzekfsrm", "uklajvcfoc", "hapejov"))
-                .withConditionSets(Arrays.asList("datawxn", "datawhhnoyrzaa", "dataee", "datapmjen"))
-                .withIncludeMemberScopes(false)
-                .withOwnerSource(
-                    new GovernanceRuleOwnerSource()
-                        .withType(GovernanceRuleOwnerSourceType.MANUALLY)
-                        .withValue("axxcrxoxdj"))
-                .withGovernanceEmailNotification(
-                    new GovernanceRuleEmailNotification()
-                        .withDisableManagerEmailNotification(false)
-                        .withDisableOwnerEmailNotification(false))
-                .withMetadata(new GovernanceRuleMetadata())
-                .create();
+        GovernanceRule response = manager.governanceRules().define("aaugic").withExistingScope("csjvjnkoiznzsqbi")
+            .withDisplayName("zbassqfyy").withDescription("ppeygkbzbloasy").withRemediationTimeframe("h")
+            .withIsGracePeriod(true).withRulePriority(1144181952).withIsDisabled(true)
+            .withRuleType(GovernanceRuleType.SERVICE_NOW)
+            .withSourceResourceType(GovernanceRuleSourceResourceType.ASSESSMENTS)
+            .withExcludedScopes(Arrays.asList("uvsqj", "rvjnqtaqgxqb", "kceincnrec"))
+            .withConditionSets(Arrays.asList("dataiywevsfg", "datarmnszdosmjsqsvz")).withIncludeMemberScopes(false)
+            .withOwnerSource(
+                new GovernanceRuleOwnerSource().withType(GovernanceRuleOwnerSourceType.MANUALLY).withValue("ghndae"))
+            .withGovernanceEmailNotification(new GovernanceRuleEmailNotification()
+                .withDisableManagerEmailNotification(false).withDisableOwnerEmailNotification(true))
+            .withMetadata(new GovernanceRuleMetadata()).create();
 
-        Assertions.assertEquals("aihxjtgzgtaiywbq", response.displayName());
-        Assertions.assertEquals("oig", response.description());
-        Assertions.assertEquals("fsgsa", response.remediationTimeframe());
-        Assertions.assertEquals(false, response.isGracePeriod());
-        Assertions.assertEquals(1919322541, response.rulePriority());
+        Assertions.assertEquals("ahn", response.displayName());
+        Assertions.assertEquals("pbyfyvynpmggq", response.description());
+        Assertions.assertEquals("g", response.remediationTimeframe());
+        Assertions.assertEquals(true, response.isGracePeriod());
+        Assertions.assertEquals(177836950, response.rulePriority());
         Assertions.assertEquals(false, response.isDisabled());
-        Assertions.assertEquals(GovernanceRuleType.SERVICE_NOW, response.ruleType());
+        Assertions.assertEquals(GovernanceRuleType.INTEGRATED, response.ruleType());
         Assertions.assertEquals(GovernanceRuleSourceResourceType.ASSESSMENTS, response.sourceResourceType());
-        Assertions.assertEquals("qlxspmrj", response.excludedScopes().get(0));
+        Assertions.assertEquals("dvfoizorbl", response.excludedScopes().get(0));
         Assertions.assertEquals(false, response.includeMemberScopes());
         Assertions.assertEquals(GovernanceRuleOwnerSourceType.MANUALLY, response.ownerSource().type());
-        Assertions.assertEquals("pxebjlud", response.ownerSource().value());
-        Assertions.assertEquals(true, response.governanceEmailNotification().disableManagerEmailNotification());
-        Assertions.assertEquals(true, response.governanceEmailNotification().disableOwnerEmailNotification());
+        Assertions.assertEquals("hi", response.ownerSource().value());
+        Assertions.assertEquals(false, response.governanceEmailNotification().disableManagerEmailNotification());
+        Assertions.assertEquals(false, response.governanceEmailNotification().disableOwnerEmailNotification());
     }
 }

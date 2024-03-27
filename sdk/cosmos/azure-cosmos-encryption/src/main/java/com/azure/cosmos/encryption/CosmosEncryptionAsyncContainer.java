@@ -22,7 +22,7 @@ import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.ItemBulkOperation;
-import com.azure.cosmos.implementation.guava25.base.Preconditions;
+import com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.patch.PatchOperationCore;
 import com.azure.cosmos.implementation.patch.PatchOperationType;
@@ -68,7 +68,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.Utils.getEffectiveCosmosChangeFeedRequestOptions;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * CosmosAsyncContainer with encryption capabilities.

@@ -5,8 +5,8 @@ package com.azure.cosmos.implementation
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper
 import com.azure.cosmos.implementation.changefeed.common.{ChangeFeedMode, ChangeFeedStartFromInternal, ChangeFeedState, ChangeFeedStateV1}
-import com.azure.cosmos.implementation.guava25.base.MoreObjects.firstNonNull
-import com.azure.cosmos.implementation.guava25.base.Strings.emptyToNull
+import com.azure.cosmos.kafka.connect.implementation.guava25.base.MoreObjects.firstNonNull
+import com.azure.cosmos.kafka.connect.implementation.guava25.base.Strings.emptyToNull
 import com.azure.cosmos.implementation.query.CompositeContinuationToken
 import com.azure.cosmos.implementation.routing.Range
 import com.azure.cosmos.models.{FeedRange, PartitionKey, PartitionKeyBuilder, PartitionKeyDefinition, SparkModelBridgeInternal}

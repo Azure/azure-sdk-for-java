@@ -14,31 +14,33 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.ServiceInner;
 import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 
-/** An instance of this class provides access to all the operations defined in ServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServicesClient.
+ */
 public interface ServicesClient {
     /**
      * Deletes the specified service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String mobileNetworkName, String serviceName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mobileNetworkName,
+        String serviceName);
 
     /**
      * Deletes the specified service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -46,16 +48,16 @@ public interface ServicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String mobileNetworkName, String serviceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mobileNetworkName,
+        String serviceName, Context context);
 
     /**
      * Deletes the specified service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -65,11 +67,11 @@ public interface ServicesClient {
 
     /**
      * Deletes the specified service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -80,11 +82,11 @@ public interface ServicesClient {
 
     /**
      * Gets information about the specified service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -92,16 +94,16 @@ public interface ServicesClient {
      * @return information about the specified service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceInner> getWithResponse(
-        String resourceGroupName, String mobileNetworkName, String serviceName, Context context);
+    Response<ServiceInner> getWithResponse(String resourceGroupName, String mobileNetworkName, String serviceName,
+        Context context);
 
     /**
      * Gets information about the specified service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -112,11 +114,11 @@ public interface ServicesClient {
 
     /**
      * Creates or updates a service. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param parameters Parameters supplied to the create or update service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -124,16 +126,16 @@ public interface ServicesClient {
      * @return the {@link SyncPoller} for polling of service resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServiceInner>, ServiceInner> beginCreateOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String serviceName, ServiceInner parameters);
+    SyncPoller<PollResult<ServiceInner>, ServiceInner> beginCreateOrUpdate(String resourceGroupName,
+        String mobileNetworkName, String serviceName, ServiceInner parameters);
 
     /**
      * Creates or updates a service. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param parameters Parameters supplied to the create or update service operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -142,20 +144,16 @@ public interface ServicesClient {
      * @return the {@link SyncPoller} for polling of service resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServiceInner>, ServiceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String serviceName,
-        ServiceInner parameters,
-        Context context);
+    SyncPoller<PollResult<ServiceInner>, ServiceInner> beginCreateOrUpdate(String resourceGroupName,
+        String mobileNetworkName, String serviceName, ServiceInner parameters, Context context);
 
     /**
      * Creates or updates a service. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param parameters Parameters supplied to the create or update service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -163,16 +161,16 @@ public interface ServicesClient {
      * @return service resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceInner createOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String serviceName, ServiceInner parameters);
+    ServiceInner createOrUpdate(String resourceGroupName, String mobileNetworkName, String serviceName,
+        ServiceInner parameters);
 
     /**
      * Creates or updates a service. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param parameters Parameters supplied to the create or update service operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,20 +179,16 @@ public interface ServicesClient {
      * @return service resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceInner createOrUpdate(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String serviceName,
-        ServiceInner parameters,
-        Context context);
+    ServiceInner createOrUpdate(String resourceGroupName, String mobileNetworkName, String serviceName,
+        ServiceInner parameters, Context context);
 
     /**
      * Updates service tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param parameters Parameters supplied to update service tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -203,16 +197,16 @@ public interface ServicesClient {
      * @return service resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceInner> updateTagsWithResponse(
-        String resourceGroupName, String mobileNetworkName, String serviceName, TagsObject parameters, Context context);
+    Response<ServiceInner> updateTagsWithResponse(String resourceGroupName, String mobileNetworkName,
+        String serviceName, TagsObject parameters, Context context);
 
     /**
      * Updates service tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param serviceName The name of the service. You must not use any of the following reserved strings - `default`,
-     *     `requested` or `service`.
+     * `requested` or `service`.
      * @param parameters Parameters supplied to update service tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -220,12 +214,12 @@ public interface ServicesClient {
      * @return service resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceInner updateTags(
-        String resourceGroupName, String mobileNetworkName, String serviceName, TagsObject parameters);
+    ServiceInner updateTags(String resourceGroupName, String mobileNetworkName, String serviceName,
+        TagsObject parameters);
 
     /**
      * Gets all the services in a mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -238,7 +232,7 @@ public interface ServicesClient {
 
     /**
      * Gets all the services in a mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param context The context to associate with this operation.
@@ -248,6 +242,6 @@ public interface ServicesClient {
      * @return all the services in a mobile network as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServiceInner> listByMobileNetwork(
-        String resourceGroupName, String mobileNetworkName, Context context);
+    PagedIterable<ServiceInner> listByMobileNetwork(String resourceGroupName, String mobileNetworkName,
+        Context context);
 }

@@ -16,13 +16,15 @@ import com.azure.resourcemanager.appcontainers.fluent.models.ContainerAppInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.CustomHostnameAnalysisResultInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.SecretsCollectionInner;
 
-/** An instance of this class provides access to all the operations defined in ContainerAppsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ContainerAppsClient.
+ */
 public interface ContainerAppsClient {
     /**
      * Get the Container Apps in a given subscription.
-     *
+     * 
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Container Apps in a given subscription as paginated response with {@link PagedIterable}.
      */
@@ -31,11 +33,11 @@ public interface ContainerAppsClient {
 
     /**
      * Get the Container Apps in a given subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Container Apps in a given subscription as paginated response with {@link PagedIterable}.
      */
@@ -44,11 +46,11 @@ public interface ContainerAppsClient {
 
     /**
      * Get the Container Apps in a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Container Apps in a given resource group as paginated response with {@link PagedIterable}.
      */
@@ -57,12 +59,12 @@ public interface ContainerAppsClient {
 
     /**
      * Get the Container Apps in a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Container Apps in a given resource group as paginated response with {@link PagedIterable}.
      */
@@ -71,32 +73,32 @@ public interface ContainerAppsClient {
 
     /**
      * Get the properties of a Container App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
-     *     status code 404.
+     * status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ContainerAppInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String containerAppName, Context context);
+    Response<ContainerAppInner> getByResourceGroupWithResponse(String resourceGroupName, String containerAppName,
+        Context context);
 
     /**
      * Get the properties of a Container App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
-     *     status code 404.
+     * status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App.
      */
@@ -105,78 +107,78 @@ public interface ContainerAppsClient {
 
     /**
      * Create or update a Container App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param containerAppEnvelope Properties used to create a container app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of container App.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginCreateOrUpdate(
-        String resourceGroupName, String containerAppName, ContainerAppInner containerAppEnvelope);
+    SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginCreateOrUpdate(String resourceGroupName,
+        String containerAppName, ContainerAppInner containerAppEnvelope);
 
     /**
      * Create or update a Container App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param containerAppEnvelope Properties used to create a container app.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of container App.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginCreateOrUpdate(
-        String resourceGroupName, String containerAppName, ContainerAppInner containerAppEnvelope, Context context);
+    SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginCreateOrUpdate(String resourceGroupName,
+        String containerAppName, ContainerAppInner containerAppEnvelope, Context context);
 
     /**
      * Create or update a Container App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param containerAppEnvelope Properties used to create a container app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContainerAppInner createOrUpdate(
-        String resourceGroupName, String containerAppName, ContainerAppInner containerAppEnvelope);
+    ContainerAppInner createOrUpdate(String resourceGroupName, String containerAppName,
+        ContainerAppInner containerAppEnvelope);
 
     /**
      * Create or update a Container App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param containerAppEnvelope Properties used to create a container app.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContainerAppInner createOrUpdate(
-        String resourceGroupName, String containerAppName, ContainerAppInner containerAppEnvelope, Context context);
+    ContainerAppInner createOrUpdate(String resourceGroupName, String containerAppName,
+        ContainerAppInner containerAppEnvelope, Context context);
 
     /**
      * Delete a Container App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
@@ -185,13 +187,13 @@ public interface ContainerAppsClient {
 
     /**
      * Delete a Container App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
@@ -200,12 +202,12 @@ public interface ContainerAppsClient {
 
     /**
      * Delete a Container App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -213,13 +215,13 @@ public interface ContainerAppsClient {
 
     /**
      * Delete a Container App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -227,52 +229,52 @@ public interface ContainerAppsClient {
 
     /**
      * Update properties of a Container App
-     *
-     * <p>Patches a Container App using JSON Merge Patch.
-     *
+     * 
+     * Patches a Container App using JSON Merge Patch.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param containerAppEnvelope Properties of a Container App that need to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of container App.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginUpdate(
-        String resourceGroupName, String containerAppName, ContainerAppInner containerAppEnvelope);
+    SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginUpdate(String resourceGroupName,
+        String containerAppName, ContainerAppInner containerAppEnvelope);
 
     /**
      * Update properties of a Container App
-     *
-     * <p>Patches a Container App using JSON Merge Patch.
-     *
+     * 
+     * Patches a Container App using JSON Merge Patch.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param containerAppEnvelope Properties of a Container App that need to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of container App.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginUpdate(
-        String resourceGroupName, String containerAppName, ContainerAppInner containerAppEnvelope, Context context);
+    SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginUpdate(String resourceGroupName,
+        String containerAppName, ContainerAppInner containerAppEnvelope, Context context);
 
     /**
      * Update properties of a Container App
-     *
-     * <p>Patches a Container App using JSON Merge Patch.
-     *
+     * 
+     * Patches a Container App using JSON Merge Patch.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param containerAppEnvelope Properties of a Container App that need to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */
@@ -281,48 +283,48 @@ public interface ContainerAppsClient {
 
     /**
      * Update properties of a Container App
-     *
-     * <p>Patches a Container App using JSON Merge Patch.
-     *
+     * 
+     * Patches a Container App using JSON Merge Patch.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param containerAppEnvelope Properties of a Container App that need to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContainerAppInner update(
-        String resourceGroupName, String containerAppName, ContainerAppInner containerAppEnvelope, Context context);
+    ContainerAppInner update(String resourceGroupName, String containerAppName, ContainerAppInner containerAppEnvelope,
+        Context context);
 
     /**
      * Analyzes a custom hostname for a Container App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param customHostname Custom hostname.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom domain analysis along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomHostnameAnalysisResultInner> listCustomHostnameAnalysisWithResponse(
-        String resourceGroupName, String containerAppName, String customHostname, Context context);
+    Response<CustomHostnameAnalysisResultInner> listCustomHostnameAnalysisWithResponse(String resourceGroupName,
+        String containerAppName, String customHostname, Context context);
 
     /**
      * Analyzes a custom hostname for a Container App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom domain analysis.
      */
@@ -331,28 +333,28 @@ public interface ContainerAppsClient {
 
     /**
      * List secrets for a container app.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App Secrets Collection ARM resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SecretsCollectionInner> listSecretsWithResponse(
-        String resourceGroupName, String containerAppName, Context context);
+    Response<SecretsCollectionInner> listSecretsWithResponse(String resourceGroupName, String containerAppName,
+        Context context);
 
     /**
      * List secrets for a container app.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App Secrets Collection ARM resource.
      */
@@ -361,32 +363,32 @@ public interface ContainerAppsClient {
 
     /**
      * Get auth token for a container app.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
-     *     status code 404.
+     * status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return auth token for a container app along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ContainerAppAuthTokenInner> getAuthTokenWithResponse(
-        String resourceGroupName, String containerAppName, Context context);
+    Response<ContainerAppAuthTokenInner> getAuthTokenWithResponse(String resourceGroupName, String containerAppName,
+        Context context);
 
     /**
      * Get auth token for a container app.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
-     *     status code 404.
+     * status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return auth token for a container app.
      */
@@ -395,43 +397,43 @@ public interface ContainerAppsClient {
 
     /**
      * Start a container app.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of container App.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginStart(
-        String resourceGroupName, String containerAppName);
+    SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginStart(String resourceGroupName,
+        String containerAppName);
 
     /**
      * Start a container app.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of container App.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginStart(
-        String resourceGroupName, String containerAppName, Context context);
+    SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginStart(String resourceGroupName,
+        String containerAppName, Context context);
 
     /**
      * Start a container app.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */
@@ -440,13 +442,13 @@ public interface ContainerAppsClient {
 
     /**
      * Start a container app.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */
@@ -455,43 +457,43 @@ public interface ContainerAppsClient {
 
     /**
      * Stop a container app.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of container App.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginStop(
-        String resourceGroupName, String containerAppName);
+    SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginStop(String resourceGroupName,
+        String containerAppName);
 
     /**
      * Stop a container app.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of container App.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginStop(
-        String resourceGroupName, String containerAppName, Context context);
+    SyncPoller<PollResult<ContainerAppInner>, ContainerAppInner> beginStop(String resourceGroupName,
+        String containerAppName, Context context);
 
     /**
      * Stop a container app.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */
@@ -500,13 +502,13 @@ public interface ContainerAppsClient {
 
     /**
      * Stop a container app.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */

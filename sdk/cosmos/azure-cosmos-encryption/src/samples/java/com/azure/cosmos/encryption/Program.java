@@ -12,7 +12,7 @@ import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.guava25.base.Preconditions;
+import com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;

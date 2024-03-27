@@ -8,9 +8,9 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosSchedulers;
+import com.azure.cosmos.kafka.connect.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkItemRequestOptions;
 import com.azure.cosmos.models.CosmosBulkItemResponse;
@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class KafkaCosmosBulkWriter extends KafkaCosmosWriterBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaCosmosBulkWriter.class);
@@ -136,7 +136,10 @@ public class KafkaCosmosBulkWriter extends KafkaCosmosWriterBase {
         CosmosAsyncContainer container,
         SinkOperation sinkOperation) {
 
-        return this.getPartitionKeyDefinition(container)
+            return ImplementationBridgeHelpers
+                .CosmosAsyncContainerHelper
+                .getCosmosAsyncContainerAccessor()
+                .getPartitionKeyDefinition(container)
             .flatMap(partitionKeyDefinition -> {
                 CosmosItemOperation cosmosItemOperation;
 

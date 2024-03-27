@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Container App credentials. */
+/**
+ * Container App credentials.
+ */
 @Fluent
 public final class AzureCredentials {
     /*
@@ -40,13 +42,15 @@ public final class AzureCredentials {
     @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
 
-    /** Creates an instance of AzureCredentials class. */
+    /**
+     * Creates an instance of AzureCredentials class.
+     */
     public AzureCredentials() {
     }
 
     /**
      * Get the clientId property: Client Id.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -55,7 +59,7 @@ public final class AzureCredentials {
 
     /**
      * Set the clientId property: Client Id.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the AzureCredentials object itself.
      */
@@ -66,7 +70,7 @@ public final class AzureCredentials {
 
     /**
      * Get the clientSecret property: Client Secret.
-     *
+     * 
      * @return the clientSecret value.
      */
     public String clientSecret() {
@@ -75,7 +79,7 @@ public final class AzureCredentials {
 
     /**
      * Set the clientSecret property: Client Secret.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the AzureCredentials object itself.
      */
@@ -86,7 +90,7 @@ public final class AzureCredentials {
 
     /**
      * Get the tenantId property: Tenant Id.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -95,7 +99,7 @@ public final class AzureCredentials {
 
     /**
      * Set the tenantId property: Tenant Id.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the AzureCredentials object itself.
      */
@@ -106,7 +110,7 @@ public final class AzureCredentials {
 
     /**
      * Get the kind property: Kind of auth github does for deploying the template.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -115,7 +119,7 @@ public final class AzureCredentials {
 
     /**
      * Set the kind property: Kind of auth github does for deploying the template.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the AzureCredentials object itself.
      */
@@ -126,7 +130,7 @@ public final class AzureCredentials {
 
     /**
      * Get the subscriptionId property: Subscription Id.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -135,7 +139,7 @@ public final class AzureCredentials {
 
     /**
      * Set the subscriptionId property: Subscription Id.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the AzureCredentials object itself.
      */
@@ -146,7 +150,7 @@ public final class AzureCredentials {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

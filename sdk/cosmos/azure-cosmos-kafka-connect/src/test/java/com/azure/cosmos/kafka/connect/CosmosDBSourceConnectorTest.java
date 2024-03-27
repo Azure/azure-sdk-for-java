@@ -7,8 +7,6 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
@@ -16,8 +14,9 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
-import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
+import com.azure.cosmos.kafka.connect.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedModes;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedStartFromModes;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
@@ -28,6 +27,7 @@ import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeContinuatio
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeTaskUnit;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangesMetadataTopicOffset;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangesMetadataTopicPartition;
+import com.azure.cosmos.kafka.connect.implementation.source.KafkaCosmosChangeFeedState;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataMonitorThread;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataTaskUnit;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -180,7 +180,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                 new FeedRangeContinuationTopicPartition(
                     databaseName,
                     multiPartitionContainer.getResourceId(),
-                    FeedRangeEpkImpl.forFullRange().getRange());
+                    FeedRange.forFullRange());
 
             String initialContinuationState = new ChangeFeedStateV1(
                 multiPartitionContainer.getResourceId(),
@@ -203,7 +203,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             FeedRangesMetadataTopicPartition feedRangesMetadataTopicPartition =
                 new FeedRangesMetadataTopicPartition(databaseName, multiPartitionContainer.getResourceId());
             FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffset =
-                new FeedRangesMetadataTopicOffset(Arrays.asList(FeedRangeEpkImpl.forFullRange().getRange()));
+                new FeedRangesMetadataTopicOffset(Arrays.asList(FeedRange.forFullRange()));
             initialOffsetMap.put(
                 FeedRangesMetadataTopicPartition.toMap(feedRangesMetadataTopicPartition),
                 FeedRangesMetadataTopicOffset.toMap(feedRangesMetadataTopicOffset));
@@ -252,7 +252,6 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         CosmosDBSourceConnector sourceConnector = new CosmosDBSourceConnector();
 
         try {
-
             Map<String, Object> sourceConfigMap = new HashMap<>();
             sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
             sourceConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
@@ -272,7 +271,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             CosmosContainerProperties singlePartitionContainer = getSinglePartitionContainer(cosmosAsyncClient);
 
             // constructing feed range continuation offset
-            List<FeedRangeEpkImpl> childRanges =
+            List<FeedRange> childRanges =
                 ImplementationBridgeHelpers
                     .CosmosAsyncContainerHelper
                     .getCosmosAsyncContainerAccessor()
@@ -285,37 +284,40 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             Map<Map<String, Object>, Map<String, Object>> initialOffsetMap = new HashMap<>();
             List<FeedRangeTaskUnit> singlePartitionFeedRangeTaskUnits = new ArrayList<>();
 
-            for (FeedRangeEpkImpl childRange : childRanges) {
+            for (FeedRange childRange : childRanges) {
                 FeedRangeContinuationTopicPartition feedRangeContinuationTopicPartition =
                     new FeedRangeContinuationTopicPartition(
                         databaseName,
                         singlePartitionContainer.getResourceId(),
-                        childRange.getRange());
+                        childRange);
 
-                String childRangeContinuationState = new ChangeFeedStateV1(
+                ChangeFeedStateV1 childRangeContinuationState = new ChangeFeedStateV1(
                     singlePartitionContainer.getResourceId(),
-                    childRange,
+                    (FeedRangeEpkImpl)childRange,
                     ChangeFeedMode.INCREMENTAL,
                     ChangeFeedStartFromInternal.createFromBeginning(),
                     FeedRangeContinuation.create(
                         singlePartitionContainer.getResourceId(),
-                        childRange,
-                        Arrays.asList(new CompositeContinuationToken("1", childRange.getRange())))).toString();
+                        (FeedRangeEpkImpl)childRange,
+                        Arrays.asList(new CompositeContinuationToken("1", ((FeedRangeEpkImpl)childRange).getRange()))));
 
                 FeedRangeContinuationTopicOffset feedRangeContinuationTopicOffset =
-                    new FeedRangeContinuationTopicOffset(childRangeContinuationState, "1");
+                    new FeedRangeContinuationTopicOffset(childRangeContinuationState.toString(), "1");
 
                 initialOffsetMap.put(
                     FeedRangeContinuationTopicPartition.toMap(feedRangeContinuationTopicPartition),
                     FeedRangeContinuationTopicOffset.toMap(feedRangeContinuationTopicOffset));
 
+                KafkaCosmosChangeFeedState kafkaCosmosChangeFeedState =
+                    new KafkaCosmosChangeFeedState(childRangeContinuationState.toString(), childRange, "1");
+                String taskUnitContinuationState = KafkaCosmosUtils.getSimpleObjectMapper().writeValueAsString(kafkaCosmosChangeFeedState);
                 singlePartitionFeedRangeTaskUnits.add(
                     new FeedRangeTaskUnit(
                         databaseName,
                         singlePartitionContainer.getId(),
                         singlePartitionContainer.getResourceId(),
-                        childRange.getRange(),
-                        childRangeContinuationState,
+                        childRange,
+                        taskUnitContinuationState,
                         singlePartitionContainer.getId()));
             }
 
@@ -326,7 +328,6 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                 new FeedRangesMetadataTopicOffset(
                     childRanges
                         .stream()
-                        .map(childRange -> childRange.getRange())
                         .collect(Collectors.toList()));
 
             initialOffsetMap.put(
@@ -353,10 +354,10 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
 
             validateFeedRangeTasks(expectedTaskUnits, taskConfigs);
 
-            Map<String, List<Range<String>>> containersEffectiveRangesMap = new HashMap<>();
+            Map<String, List<FeedRange>> containersEffectiveRangesMap = new HashMap<>();
             containersEffectiveRangesMap.put(
                 singlePartitionContainer.getResourceId(),
-                childRanges.stream().map(FeedRangeEpkImpl::getRange).collect(Collectors.toList()));
+                childRanges.stream().collect(Collectors.toList()));
 
             MetadataTaskUnit expectedMetadataTaskUnit =
                 new MetadataTaskUnit(
@@ -484,26 +485,23 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                 String feedRangeContinuationState = null;
                 if (StringUtils.isNotEmpty(continuationState)) {
                     ChangeFeedState changeFeedState = ChangeFeedStateV1.fromString(continuationState);
-                    feedRangeContinuationState =
-                        new ChangeFeedStateV1(
-                            changeFeedState.getContainerRid(),
-                            FeedRangeEpkImpl.forFullRange(),
-                            ChangeFeedMode.INCREMENTAL,
-                            ChangeFeedStartFromInternal.createFromBeginning(),
-                            FeedRangeContinuation.create(
-                                changeFeedState.getContainerRid(),
-                                (FeedRangeEpkImpl)feedRange,
-                                Arrays.asList(
-                                    new CompositeContinuationToken(
-                                        changeFeedState.getContinuation().getCurrentContinuationToken().getToken(),
-                                        ((FeedRangeEpkImpl)feedRange).getRange())))).toString();
+                    KafkaCosmosChangeFeedState kafkaCosmosChangeFeedState =
+                        new KafkaCosmosChangeFeedState(
+                            continuationState,
+                            feedRange,
+                            changeFeedState.getContinuation().getCurrentContinuationToken().getToken());
+                    try {
+                        feedRangeContinuationState = KafkaCosmosUtils.getSimpleObjectMapper().writeValueAsString(kafkaCosmosChangeFeedState);
+                    } catch (JsonProcessingException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
 
                 return new FeedRangeTaskUnit(
                     databaseName,
                     containerProperties.getId(),
                     containerProperties.getResourceId(),
-                    ((FeedRangeEpkImpl)feedRange).getRange(),
+                    feedRange,
                     feedRangeContinuationState,
                     topicName);
             })
@@ -515,7 +513,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         String databaseName,
         List<CosmosContainerProperties> containers) {
 
-        Map<String, List<Range<String>>> containersEffectiveRangesMap = new HashMap<>();
+        Map<String, List<FeedRange>> containersEffectiveRangesMap = new HashMap<>();
         for (CosmosContainerProperties containerProperties : containers) {
             List<FeedRange> feedRanges =
                 cosmosAsyncClient
@@ -524,12 +522,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                     .getFeedRanges()
                     .block();
 
-            containersEffectiveRangesMap.put(
-                containerProperties.getResourceId(),
-                feedRanges
-                    .stream()
-                    .map(feedRange -> ((FeedRangeEpkImpl)feedRange).getRange())
-                    .collect(Collectors.toList()));
+            containersEffectiveRangesMap.put(containerProperties.getResourceId(), feedRanges);
         }
 
         return new MetadataTaskUnit(
@@ -542,29 +535,31 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
 
     private void validateFeedRangeTasks(
         List<List<FeedRangeTaskUnit>> feedRangeTaskUnits,
-        List<Map<String, String>> taskConfig) throws JsonProcessingException {
+        List<Map<String, String>> taskConfigs) throws JsonProcessingException {
 
         String taskUnitsKey = "kafka.connect.cosmos.source.task.feedRangeTaskUnits";
-        for (int i = 0; i< feedRangeTaskUnits.size(); i++) {
-            List<FeedRangeTaskUnit> expectedTaskUnits = feedRangeTaskUnits.get(i);
-            assertThat(taskConfig.get(i).containsKey(taskUnitsKey)).isTrue();
-            List<FeedRangeTaskUnit> taskUnitsFromTaskConfig =
-                Utils
-                    .getSimpleObjectMapper()
-                    .readValue(taskConfig.get(i).get(taskUnitsKey), new TypeReference<List<String>>() {})
-                    .stream()
-                    .map(taskUnitString -> {
-                        try {
-                            return Utils.getSimpleObjectMapper().readValue(taskUnitString, FeedRangeTaskUnit.class);
-                        } catch (JsonProcessingException e) {
-                            throw new RuntimeException(e);
-                        }
-                    })
-                    .collect(Collectors.toList());
-
-            assertThat(expectedTaskUnits.size()).isEqualTo(taskUnitsFromTaskConfig.size());
-            assertThat(expectedTaskUnits.containsAll(taskUnitsFromTaskConfig)).isTrue();
+        List<FeedRangeTaskUnit> allTaskUnitsFromTaskConfigs = new ArrayList<>();
+        for (Map<String, String> taskConfig : taskConfigs) {
+            List<FeedRangeTaskUnit> taskUnitsFromTaskConfig = KafkaCosmosUtils
+                .getSimpleObjectMapper()
+                .readValue(taskConfig.get(taskUnitsKey), new TypeReference<List<String>>() {})
+                .stream()
+                .map(taskUnitString -> {
+                    try {
+                        return KafkaCosmosUtils.getSimpleObjectMapper().readValue(taskUnitString, FeedRangeTaskUnit.class);
+                    } catch (JsonProcessingException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .collect(Collectors.toList());
+            allTaskUnitsFromTaskConfigs.addAll(taskUnitsFromTaskConfig);
         }
+
+        List<FeedRangeTaskUnit> allExpectedTaskUnits = new ArrayList<>();
+        feedRangeTaskUnits.forEach(taskUnits -> allExpectedTaskUnits.addAll(taskUnits));
+
+        assertThat(allExpectedTaskUnits.size()).isEqualTo(allTaskUnitsFromTaskConfigs.size());
+        assertThat(allExpectedTaskUnits.containsAll(allTaskUnitsFromTaskConfigs)).isTrue();
     }
 
     private void validateMetadataTask(
@@ -574,7 +569,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         String taskUnitKey = "kafka.connect.cosmos.source.task.metadataTaskUnit";
         assertThat(taskConfig.containsKey(taskUnitKey));
         MetadataTaskUnit metadataTaskUnitFromTaskConfig =
-            Utils.getSimpleObjectMapper().readValue(taskConfig.get(taskUnitKey), MetadataTaskUnit.class);
+            KafkaCosmosUtils.getSimpleObjectMapper().readValue(taskConfig.get(taskUnitKey), MetadataTaskUnit.class);
 
         assertThat(expectedMetadataTaskUnit).isEqualTo(metadataTaskUnitFromTaskConfig);
     }

@@ -6,9 +6,9 @@ package com.azure.cosmos.implementation.directconnectivity.TcpServerMock.rntbd;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
-import com.azure.cosmos.implementation.guava25.collect.Sets;
+import com.azure.cosmos.kafka.connect.implementation.guava25.collect.ImmutableMap;
+import com.azure.cosmos.kafka.connect.implementation.guava25.collect.ImmutableSet;
+import com.azure.cosmos.kafka.connect.implementation.guava25.collect.Sets;
 import io.netty.handler.codec.DecoderException;
 
 import java.util.EnumSet;

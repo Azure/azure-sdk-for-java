@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The multi cloud account's membership type in the organization. */
+/**
+ * The multi cloud account's membership type in the organization.
+ */
 public final class OrganizationMembershipType extends ExpandableStringEnum<OrganizationMembershipType> {
-    /** Static value Member for OrganizationMembershipType. */
+    /**
+     * Static value Member for OrganizationMembershipType.
+     */
     public static final OrganizationMembershipType MEMBER = fromString("Member");
 
-    /** Static value Organization for OrganizationMembershipType. */
+    /**
+     * Static value Organization for OrganizationMembershipType.
+     */
     public static final OrganizationMembershipType ORGANIZATION = fromString("Organization");
 
     /**
      * Creates a new instance of OrganizationMembershipType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class OrganizationMembershipType extends ExpandableStringEnum<Organ
 
     /**
      * Creates or finds a OrganizationMembershipType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OrganizationMembershipType.
      */
@@ -38,7 +44,7 @@ public final class OrganizationMembershipType extends ExpandableStringEnum<Organ
 
     /**
      * Gets known OrganizationMembershipType values.
-     *
+     * 
      * @return known OrganizationMembershipType values.
      */
     public static Collection<OrganizationMembershipType> values() {

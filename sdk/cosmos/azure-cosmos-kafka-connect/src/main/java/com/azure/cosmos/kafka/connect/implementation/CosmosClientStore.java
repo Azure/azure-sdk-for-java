@@ -7,7 +7,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.kafka.connect.implementation.apachecommons.lang.StringUtils;
 
 import java.time.Duration;
 

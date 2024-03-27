@@ -5,8 +5,8 @@ package com.azure.cosmos.test.faultinjection;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Fault injection condition builder.

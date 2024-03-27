@@ -823,24 +823,36 @@ public class IdentityClient extends IdentityClientBase {
             return Mono.error(LOGGER.logExceptionAsError(new RuntimeException(e)));
         }
 
-        if (options.isBrokerEnabled() && options.useOperatingSystemAccount()) {
-            return getPublicClientInstance(request).getValue().flatMap(pc ->
-                Mono.fromFuture(() ->
-                    acquireTokenFromPublicClientSilently(request, pc, null, false)).
-                    map(MsalToken::new));
-        } else {
+        // If the broker is enabled, try to get the token for the default account by passing
+        // a null account to MSAL. If that fails, show the dialog.
 
+        return getPublicClientInstance(request).getValue().flatMap(pc -> {
+            if (options.isBrokerEnabled() && options.useDefaultBrokerAccount()) {
+                return Mono.fromFuture(() ->
+                    acquireTokenFromPublicClientSilently(request, pc, null, false))
+                    // The error case here represents the silent acquisition failing. There's nothing actionable and
+                    // in this case the fallback path of showing the dialog will capture any meaningful error and share it.
+                    .onErrorResume(e -> Mono.empty());
+            } else {
+                return Mono.empty();
+            }
+        })
+        .switchIfEmpty(Mono.defer(() -> {
             InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
                 buildInteractiveRequestParameters(request, loginHint, redirectUri);
 
             SynchronizedAccessor<PublicClientApplication> publicClient = getPublicClientInstance(request);
 
-            Mono<IAuthenticationResult> acquireToken = publicClient.getValue()
+            return publicClient.getValue()
                 .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(builder.build())));
 
-            return acquireToken.onErrorMap(t -> new ClientAuthenticationException(
-                "Failed to acquire token with Interactive Browser Authentication.", null, t)).map(MsalToken::new);
-        }
+        }))
+        // If we're already throwing a ClientAuthenticationException we don't need to wrap it again.
+        .onErrorMap(t -> !(t instanceof ClientAuthenticationException),
+                        t -> {
+                throw new ClientAuthenticationException("Failed to acquire token with Interactive Browser Authentication.", null, t);
+            })
+        .map(MsalToken::new);
     }
 
     /**

@@ -6,35 +6,40 @@ package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Description of a NotificationHub AdmCredential. */
+/**
+ * Description of a NotificationHub AdmCredential.
+ */
 @Fluent
 public final class AdmCredentialProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdmCredentialProperties.class);
-
     /*
-     * The client identifier.
+     * Gets or sets the client identifier.
      */
     @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
-     * The credential secret access key.
+     * Gets or sets the credential secret access key.
      */
     @JsonProperty(value = "clientSecret")
     private String clientSecret;
 
     /*
-     * The URL of the authorization token.
+     * Gets or sets the URL of the authorization token.
      */
     @JsonProperty(value = "authTokenUrl")
     private String authTokenUrl;
 
     /**
-     * Get the clientId property: The client identifier.
-     *
+     * Creates an instance of AdmCredentialProperties class.
+     */
+    public AdmCredentialProperties() {
+    }
+
+    /**
+     * Get the clientId property: Gets or sets the client identifier.
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -42,8 +47,8 @@ public final class AdmCredentialProperties {
     }
 
     /**
-     * Set the clientId property: The client identifier.
-     *
+     * Set the clientId property: Gets or sets the client identifier.
+     * 
      * @param clientId the clientId value to set.
      * @return the AdmCredentialProperties object itself.
      */
@@ -53,8 +58,8 @@ public final class AdmCredentialProperties {
     }
 
     /**
-     * Get the clientSecret property: The credential secret access key.
-     *
+     * Get the clientSecret property: Gets or sets the credential secret access key.
+     * 
      * @return the clientSecret value.
      */
     public String clientSecret() {
@@ -62,8 +67,8 @@ public final class AdmCredentialProperties {
     }
 
     /**
-     * Set the clientSecret property: The credential secret access key.
-     *
+     * Set the clientSecret property: Gets or sets the credential secret access key.
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the AdmCredentialProperties object itself.
      */
@@ -73,8 +78,8 @@ public final class AdmCredentialProperties {
     }
 
     /**
-     * Get the authTokenUrl property: The URL of the authorization token.
-     *
+     * Get the authTokenUrl property: Gets or sets the URL of the authorization token.
+     * 
      * @return the authTokenUrl value.
      */
     public String authTokenUrl() {
@@ -82,8 +87,8 @@ public final class AdmCredentialProperties {
     }
 
     /**
-     * Set the authTokenUrl property: The URL of the authorization token.
-     *
+     * Set the authTokenUrl property: Gets or sets the URL of the authorization token.
+     * 
      * @param authTokenUrl the authTokenUrl value to set.
      * @return the AdmCredentialProperties object itself.
      */
@@ -94,9 +99,23 @@ public final class AdmCredentialProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (clientId() == null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property clientId in model AdmCredentialProperties"));
+        }
+        if (clientSecret() == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property clientSecret in model AdmCredentialProperties"));
+        }
+        if (authTokenUrl() == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property authTokenUrl in model AdmCredentialProperties"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AdmCredentialProperties.class);
 }

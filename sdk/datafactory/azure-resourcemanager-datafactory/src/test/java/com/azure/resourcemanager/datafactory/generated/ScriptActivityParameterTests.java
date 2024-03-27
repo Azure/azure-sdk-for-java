@@ -14,21 +14,21 @@ public final class ScriptActivityParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptActivityParameter model = BinaryData.fromString(
-            "{\"name\":\"datau\",\"type\":\"DateTimeOffset\",\"value\":\"datajoshmmzotcpf\",\"direction\":\"Output\",\"size\":119206096}")
+            "{\"name\":\"dataj\",\"type\":\"Int64\",\"value\":\"dataiyzjdrkcsheoxss\",\"direction\":\"Output\",\"size\":1317589595}")
             .toObject(ScriptActivityParameter.class);
-        Assertions.assertEquals(ScriptActivityParameterType.DATE_TIME_OFFSET, model.type());
+        Assertions.assertEquals(ScriptActivityParameterType.INT64, model.type());
         Assertions.assertEquals(ScriptActivityParameterDirection.OUTPUT, model.direction());
-        Assertions.assertEquals(119206096, model.size());
+        Assertions.assertEquals(1317589595, model.size());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScriptActivityParameter model = new ScriptActivityParameter().withName("datau")
-            .withType(ScriptActivityParameterType.DATE_TIME_OFFSET).withValue("datajoshmmzotcpf")
-            .withDirection(ScriptActivityParameterDirection.OUTPUT).withSize(119206096);
+        ScriptActivityParameter model = new ScriptActivityParameter().withName("dataj")
+            .withType(ScriptActivityParameterType.INT64).withValue("dataiyzjdrkcsheoxss")
+            .withDirection(ScriptActivityParameterDirection.OUTPUT).withSize(1317589595);
         model = BinaryData.fromObject(model).toObject(ScriptActivityParameter.class);
-        Assertions.assertEquals(ScriptActivityParameterType.DATE_TIME_OFFSET, model.type());
+        Assertions.assertEquals(ScriptActivityParameterType.INT64, model.type());
         Assertions.assertEquals(ScriptActivityParameterDirection.OUTPUT, model.direction());
-        Assertions.assertEquals(119206096, model.size());
+        Assertions.assertEquals(1317589595, model.size());
     }
 }

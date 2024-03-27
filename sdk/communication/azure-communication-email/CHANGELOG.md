@@ -11,6 +11,18 @@
 - An `EmailMessage` with null recipient addresses can no longer be sent.
 ### Other Changes
 
+
+## 1.0.11 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-communication-common` from `1.3.0` to version `1.3.1`.
+
+
 ## 1.0.10 (2024-02-20)
 
 ### Other Changes

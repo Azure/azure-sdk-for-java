@@ -31,7 +31,7 @@ public final class CredentialOperationsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"type\":\"ManagedIdentity\",\"typeProperties\":{\"resourceId\":\"sxajrnqouj\"},\"description\":\"pvisqflmalm\",\"annotations\":[\"datardpfanjkenrlcjms\"],\"\":{\"hhiiduogakr\":\"datamebxwd\",\"qdtfjctvoh\":\"datamjodbdcyijnoibcl\",\"vstvpkslq\":\"dataw\"}},\"name\":\"abgo\",\"type\":\"ryli\",\"etag\":\"fnhcklll\",\"id\":\"rkvlqqkpxve\"}";
+            = "{\"properties\":{\"type\":\"ManagedIdentity\",\"typeProperties\":{\"resourceId\":\"b\"},\"description\":\"ussldjsb\",\"annotations\":[\"datathfas\",\"dataglcktraeraql\",\"datafyhwdogchdqtlbn\"],\"\":{\"wpeksrhkmzs\":\"datayox\"}},\"name\":\"p\",\"type\":\"sbp\",\"etag\":\"kmgwmmwjugaqyrt\",\"id\":\"iyspbghnnx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,11 +49,11 @@ public final class CredentialOperationsGetWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ManagedIdentityCredentialResource response = manager.credentialOperations()
-            .getWithResponse("zhidpxvkpbaftf", "xhfusjxnadiese", "zfh", "ihrxg", com.azure.core.util.Context.NONE)
+            .getWithResponse("cdryjgxwdanidr", "qfpxka", "bbpzk", "pmjtfymvlvosbc", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rkvlqqkpxve", response.id());
-        Assertions.assertEquals("pvisqflmalm", response.properties().description());
-        Assertions.assertEquals("sxajrnqouj", response.properties().resourceId());
+        Assertions.assertEquals("iyspbghnnx", response.id());
+        Assertions.assertEquals("ussldjsb", response.properties().description());
+        Assertions.assertEquals("b", response.properties().resourceId());
     }
 }

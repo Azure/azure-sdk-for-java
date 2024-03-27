@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The action that should be triggered. */
+/**
+ * The action that should be triggered.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,17 +21,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "LogicApp", value = AutomationActionLogicApp.class),
     @JsonSubTypes.Type(name = "EventHub", value = AutomationActionEventHub.class),
-    @JsonSubTypes.Type(name = "Workspace", value = AutomationActionWorkspace.class)
-})
+    @JsonSubTypes.Type(name = "Workspace", value = AutomationActionWorkspace.class) })
 @Immutable
 public class AutomationAction {
-    /** Creates an instance of AutomationAction class. */
+    /**
+     * Creates an instance of AutomationAction class.
+     */
     public AutomationAction() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

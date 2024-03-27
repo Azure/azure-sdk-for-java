@@ -8,8 +8,7 @@ import com.azure.cosmos.{BridgeInternal, CosmosAsyncContainer, CosmosDiagnostics
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.implementation.batch.{BatchRequestResponseConstants, BulkExecutorDiagnosticsTracker, ItemBulkOperation}
 import com.azure.cosmos.models._
-import com.azure.cosmos.spark.BulkWriter.{BulkOperationFailedException, bulkWriterBoundedElastic, getThreadInfo, readManyBoundedElastic}
-import com.azure.cosmos.spark.CosmosConstants.StatusCodes
+import com.azure.cosmos.spark.BulkWriter.{BulkOperationFailedException, bulkWriterRequestsBoundedElastic, bulkWriterResponsesBoundedElastic, getThreadInfo, readManyBoundedElastic}
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
 import reactor.core.Scannable
 import reactor.core.publisher.Mono
@@ -23,7 +22,7 @@ import scala.collection.mutable
 import scala.concurrent.duration.Duration
 // scalastyle:on underscore.import
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers
-import com.azure.cosmos.implementation.guava25.base.Preconditions
+import com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions
 import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
 import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.BulkWriter.{DefaultMaxPendingOperationPerCore, emitFailureHandler}
@@ -157,15 +156,12 @@ private class BulkWriter(container: CosmosAsyncContainer,
 
   writeConfig.maxMicroBatchSize match {
     case Some(customMaxMicroBatchSize) =>
-      ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
-        .getCosmosBulkExecutionOptionsAccessor
-        .setMaxMicroBatchSize(
-          cosmosBulkExecutionOptions,
-          Math.max(
-            1,
-            Math.min(customMaxMicroBatchSize, BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST)
-          )
-        )
+     cosmosBulkExecutionOptions.setMaxMicroBatchSize(
+       Math.max(
+        1,
+        Math.min(customMaxMicroBatchSize, BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST)
+       )
+     )
     case None =>
   }
 
@@ -461,7 +457,7 @@ private class BulkWriter(container: CosmosAsyncContainer,
                 })
               val requestOperationContext = ReadManyOperation.operationContext
               if (shouldRetry(e.getStatusCode, e.getSubStatusCode, requestOperationContext)) {
-                  log.logWarning(s"for itemId=[${requestOperationContext.itemId}], partitionKeyValue=[${requestOperationContext.partitionKeyValue}], " +
+                  log.logInfo(s"for itemId=[${requestOperationContext.itemId}], partitionKeyValue=[${requestOperationContext.partitionKeyValue}], " +
                       s"encountered status code '${e.getStatusCode}:${e.getSubStatusCode}' in read many, will retry! " +
                       s"attemptNumber=${requestOperationContext.attemptNumber}, exceptionMessage=${e.getMessage},  " +
                       s"Context: {${operationContext.toString}} $getThreadInfo")
@@ -555,9 +551,10 @@ private class BulkWriter(container: CosmosAsyncContainer,
     val bulkOperationResponseFlux: SFlux[CosmosBulkOperationResponse[Object]] =
       container
           .executeBulkOperations[Object](
-            bulkInputEmitter.asFlux().publishOn(bulkWriterBoundedElastic),
+            bulkInputEmitter.asFlux().publishOn(bulkWriterRequestsBoundedElastic),
             cosmosBulkExecutionOptions)
-          .publishOn(bulkWriterBoundedElastic)
+          .onBackpressureBuffer()
+          .publishOn(bulkWriterResponsesBoundedElastic)
           .asScala
 
     bulkOperationResponseFlux.subscribe(
@@ -1252,7 +1249,8 @@ private object BulkWriter {
   private val maxDelayOn408RequestTimeoutInMs = 10000
   private val minDelayOn408RequestTimeoutInMs = 1000
   private val maxItemOperationsToShowInErrorMessage = 10
-  private val BULK_WRITER_BOUNDED_ELASTIC_THREAD_NAME = "bulk-writer-bounded-elastic"
+  private val BULK_WRITER_REQUESTS_BOUNDED_ELASTIC_THREAD_NAME = "bulk-writer-requests-bounded-elastic"
+  private val BULK_WRITER_RESPONSES_BOUNDED_ELASTIC_THREAD_NAME = "bulk-writer-responses-bounded-elastic"
   private val READ_MANY_BOUNDED_ELASTIC_THREAD_NAME = "read-many-bounded-elastic"
   private val TTL_FOR_SCHEDULER_WORKER_IN_SECONDS = 60 // same as BoundedElasticScheduler.DEFAULT_TTL_SECONDS
 
@@ -1308,17 +1306,25 @@ private object BulkWriter {
 
   private val bulkProcessingThresholds = new CosmosBulkExecutionThresholdsState()
 
-  // Custom bounded elastic scheduler to switch off IO thread to process response.
-  val bulkWriterBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
-    2 * Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
-    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
-    BULK_WRITER_BOUNDED_ELASTIC_THREAD_NAME,
+  // Custom bounded elastic scheduler to consume input flux
+  val bulkWriterRequestsBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + DefaultMaxPendingOperationPerCore,
+    BULK_WRITER_REQUESTS_BOUNDED_ELASTIC_THREAD_NAME,
     TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
+
+  // Custom bounded elastic scheduler to switch off IO thread to process response.
+  val bulkWriterResponsesBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + DefaultMaxPendingOperationPerCore,
+    BULK_WRITER_RESPONSES_BOUNDED_ELASTIC_THREAD_NAME,
+    TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
+
 
   // Custom bounded elastic scheduler to switch off IO thread to process response.
   val readManyBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
       2 * Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
-      Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
+      Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + DefaultMaxPendingOperationPerCore,
       READ_MANY_BOUNDED_ELASTIC_THREAD_NAME,
       TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
 

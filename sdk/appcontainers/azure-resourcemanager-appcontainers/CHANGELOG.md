@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.0.0-beta.8 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,405 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.7 (2024-03-20)
+
+- Azure Resource Manager ContainerAppsApi client library for Java. This package contains Microsoft Azure SDK for ContainerAppsApi Management SDK.  Package tag package-preview-2023-11. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.DotNetComponent$UpdateStages` was added
+
+* `models.DaprComponentResiliencyPolicyTimeoutPolicyConfiguration` was added
+
+* `models.HttpConnectionPool` was added
+
+* `models.Usage` was added
+
+* `models.BuildResource$UpdateStages` was added
+
+* `models.DotNetComponents` was added
+
+* `models.BuildProvisioningState` was added
+
+* `models.AppResiliency` was added
+
+* `models.DaprSubscriptions` was added
+
+* `models.BuilderResource$Update` was added
+
+* `models.BuildConfiguration` was added
+
+* `models.BuildResource$Update` was added
+
+* `models.CertificateKeyVaultProperties` was added
+
+* `models.EnvironmentVariable` was added
+
+* `models.DotNetComponentServiceBind` was added
+
+* `models.AppResiliencies` was added
+
+* `models.JavaComponentServiceBind` was added
+
+* `models.LogsConfiguration` was added
+
+* `models.Usages` was added
+
+* `models.DotNetComponent$Update` was added
+
+* `models.UsageName` was added
+
+* `models.DaprSubscription$UpdateStages` was added
+
+* `models.DotNetComponent$DefinitionStages` was added
+
+* `models.HttpGet` was added
+
+* `models.JavaComponentConfigurationProperty` was added
+
+* `models.ListUsagesResult` was added
+
+* `models.DotNetComponentProvisioningState` was added
+
+* `models.DotNetComponentType` was added
+
+* `models.BuilderResourceUpdate` was added
+
+* `models.AppResiliency$DefinitionStages` was added
+
+* `models.DaprComponentResiliencyPoliciesCollection` was added
+
+* `models.BuildAuthTokens` was added
+
+* `models.ContainerRegistry` was added
+
+* `models.IngressTargetPortHttpScheme` was added
+
+* `models.AppResiliency$Definition` was added
+
+* `models.DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration` was added
+
+* `models.DaprSubscription$DefinitionStages` was added
+
+* `models.OtlpConfiguration` was added
+
+* `models.MetricsConfiguration` was added
+
+* `models.DaprServiceBindMetadata` was added
+
+* `models.TracesConfiguration` was added
+
+* `models.DaprSubscriptionBulkSubscribeOptions` was added
+
+* `models.DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration` was added
+
+* `models.JavaComponent$Definition` was added
+
+* `models.BuildsByBuilderResources` was added
+
+* `models.BuildResource` was added
+
+* `models.TimeoutPolicy` was added
+
+* `models.DotNetComponentConfigurationProperty` was added
+
+* `models.DaprSubscriptionsCollection` was added
+
+* `models.TokenStore` was added
+
+* `models.AppInsightsConfiguration` was added
+
+* `models.DaprSubscriptionRoutes` was added
+
+* `models.DaprComponentResiliencyPolicy$Definition` was added
+
+* `models.HttpRetryPolicy` was added
+
+* `models.NfsAzureFileProperties` was added
+
+* `models.CircuitBreakerPolicy` was added
+
+* `models.DaprComponentResiliencyPolicy$DefinitionStages` was added
+
+* `models.TcpRetryPolicy` was added
+
+* `models.DaprComponentResiliencyPolicies` was added
+
+* `models.HeaderMatch` was added
+
+* `models.AppResiliencyCollection` was added
+
+* `models.DotNetComponent` was added
+
+* `models.BuilderCollection` was added
+
+* `models.BuildStatus` was added
+
+* `models.DaprSubscription` was added
+
+* `models.DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration` was added
+
+* `models.BuildToken` was added
+
+* `models.DaprComponentResiliencyPolicyConfiguration` was added
+
+* `models.BuilderResource$DefinitionStages` was added
+
+* `models.JavaComponentsCollection` was added
+
+* `models.OpenTelemetryConfiguration` was added
+
+* `models.Builders` was added
+
+* `models.DaprComponentResiliencyPolicy$Update` was added
+
+* `models.BuildResource$DefinitionStages` was added
+
+* `models.JavaComponent` was added
+
+* `models.AppResiliency$Update` was added
+
+* `models.DaprSubscription$Update` was added
+
+* `models.DestinationsConfiguration` was added
+
+* `models.CertificateType` was added
+
+* `models.DataDogConfiguration` was added
+
+* `models.DotNetComponentsCollection` was added
+
+* `models.ManagedEnvironmentUsages` was added
+
+* `models.DotNetComponent$Definition` was added
+
+* `models.EncryptionSettings` was added
+
+* `models.DaprComponentResiliencyPolicy$UpdateStages` was added
+
+* `models.BuildCollection` was added
+
+* `models.JavaComponent$UpdateStages` was added
+
+* `models.JavaComponentProvisioningState` was added
+
+* `models.PreBuildStep` was added
+
+* `models.DaprComponentServiceBinding` was added
+
+* `models.BuilderResource$UpdateStages` was added
+
+* `models.JavaComponent$DefinitionStages` was added
+
+* `models.DaprComponentResiliencyPolicy` was added
+
+* `models.IngressPortMapping` was added
+
+* `models.ContainerRegistryWithCustomImage` was added
+
+* `models.BlobStorageTokenStore` was added
+
+* `models.JavaComponentType` was added
+
+* `models.AppResiliency$UpdateStages` was added
+
+* `models.BuilderResource` was added
+
+* `models.BuildResource$Definition` was added
+
+* `models.Builds` was added
+
+* `models.BuilderResource$Definition` was added
+
+* `models.JavaComponent$Update` was added
+
+* `models.Header` was added
+
+* `models.TcpConnectionPool` was added
+
+* `models.JavaComponents` was added
+
+* `models.DaprSubscriptionRouteRule` was added
+
+* `models.DaprSubscription$Definition` was added
+
+* `models.BuilderProvisioningState` was added
+
+#### `models.Replica` was modified
+
+* `systemData()` was added
+
+#### `models.ServiceBind` was modified
+
+* `withCustomizedKeys(java.util.Map)` was added
+* `clientType()` was added
+* `customizedKeys()` was added
+* `withClientType(java.lang.String)` was added
+
+#### `models.Job` was modified
+
+* `extendedLocation()` was added
+
+#### `models.DaprComponent$Definition` was modified
+
+* `withServiceComponentBind(java.util.List)` was added
+
+#### `models.ManagedEnvironment$Update` was modified
+
+* `withOpenTelemetryConfiguration(models.OpenTelemetryConfiguration)` was added
+* `withAppInsightsConfiguration(models.AppInsightsConfiguration)` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.Revision` was modified
+
+* `systemData()` was added
+
+#### `models.AvailableWorkloadProfileProperties` was modified
+
+* `withGpus(java.lang.Integer)` was added
+* `gpus()` was added
+
+#### `models.Job$Definition` was modified
+
+* `withExtendedLocation(models.ExtendedLocation)` was added
+
+#### `models.Jobs` was modified
+
+* `listDetectors(java.lang.String,java.lang.String)` was added
+* `listDetectorsWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `proxyGet(java.lang.String,java.lang.String)` was added
+* `getDetectorWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `proxyGetWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getDetector(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.DaprComponent$Update` was modified
+
+* `withServiceComponentBind(java.util.List)` was added
+
+#### `models.ManagedEnvironment$Definition` was modified
+
+* `withOpenTelemetryConfiguration(models.OpenTelemetryConfiguration)` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
+* `withAppInsightsConfiguration(models.AppInsightsConfiguration)` was added
+
+#### `models.ManagedEnvironmentStorageProperties` was modified
+
+* `nfsAzureFile()` was added
+* `withNfsAzureFile(models.NfsAzureFileProperties)` was added
+
+#### `models.BillingMeter` was modified
+
+* `systemData()` was added
+
+#### `models.GithubActionConfiguration` was modified
+
+* `buildEnvironmentVariables()` was added
+* `withBuildEnvironmentVariables(java.util.List)` was added
+
+#### `models.DaprComponent` was modified
+
+* `serviceComponentBind()` was added
+* `systemData()` was added
+
+#### `models.ManagedEnvironmentStorage` was modified
+
+* `systemData()` was added
+
+#### `models.LogAnalyticsConfiguration` was modified
+
+* `dynamicJsonColumns()` was added
+* `withDynamicJsonColumns(java.lang.Boolean)` was added
+
+#### `models.Job$Update` was modified
+
+* `withExtendedLocation(models.ExtendedLocation)` was added
+
+#### `models.ManagedEnvironment` was modified
+
+* `appInsightsConfiguration()` was added
+* `identity()` was added
+* `openTelemetryConfiguration()` was added
+
+#### `models.WorkloadProfileStates` was modified
+
+* `systemData()` was added
+
+#### `models.Login` was modified
+
+* `tokenStore()` was added
+* `withTokenStore(models.TokenStore)` was added
+
+#### `models.ResourceProviders` was modified
+
+* `getCustomDomainVerificationId()` was added
+* `getCustomDomainVerificationIdWithResponse(com.azure.core.util.Context)` was added
+
+#### `models.JobPatchProperties` was modified
+
+* `withExtendedLocation(models.ExtendedLocation)` was added
+* `extendedLocation()` was added
+
+#### `models.SourceControl` was modified
+
+* `systemData()` was added
+
+#### `models.CertificateProperties` was modified
+
+* `withCertificateType(models.CertificateType)` was added
+* `certificateType()` was added
+* `withCertificateKeyVaultProperties(models.CertificateKeyVaultProperties)` was added
+* `certificateKeyVaultProperties()` was added
+
+#### `models.Diagnostics` was modified
+
+* `systemData()` was added
+
+#### `models.AvailableWorkloadProfile` was modified
+
+* `systemData()` was added
+
+#### `models.AuthConfig` was modified
+
+* `encryptionSettings()` was added
+
+#### `ContainerAppsApiManager` was modified
+
+* `dotNetComponents()` was added
+* `builds()` was added
+* `buildsByBuilderResources()` was added
+* `javaComponents()` was added
+* `usages()` was added
+* `daprSubscriptions()` was added
+* `daprComponentResiliencyPolicies()` was added
+* `buildAuthTokens()` was added
+* `appResiliencies()` was added
+* `managedEnvironmentUsages()` was added
+* `builders()` was added
+
+#### `models.ConnectedEnvironmentStorage` was modified
+
+* `systemData()` was added
+
+#### `models.AuthConfig$Update` was modified
+
+* `withEncryptionSettings(models.EncryptionSettings)` was added
+
+#### `models.Ingress` was modified
+
+* `targetPortHttpScheme()` was added
+* `additionalPortMappings()` was added
+* `withAdditionalPortMappings(java.util.List)` was added
+* `withTargetPortHttpScheme(models.IngressTargetPortHttpScheme)` was added
+
+#### `models.CustomDomainConfiguration` was modified
+
+* `certificateKeyVaultProperties()` was added
+* `withCertificateKeyVaultProperties(models.CertificateKeyVaultProperties)` was added
+
+#### `models.AuthConfig$Definition` was modified
+
+* `withEncryptionSettings(models.EncryptionSettings)` was added
 
 ## 1.0.0-beta.6 (2023-08-21)
 

@@ -5,8 +5,8 @@ package com.azure.cosmos.kafka.connect;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -65,7 +65,7 @@ public class CosmosDbSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             for (int i = 0; i < 10; i++) {
                 TestItem testItem = TestItem.createNewItem();
                 ProducerRecord<String, JsonNode> record =
-                    new ProducerRecord<>(singlePartitionContainerName, testItem.getId(), Utils.getSimpleObjectMapper().valueToTree(testItem));
+                    new ProducerRecord<>(singlePartitionContainerName, testItem.getId(), KafkaCosmosUtils.getSimpleObjectMapper().valueToTree(testItem));
                 kafkaProducer.send(record);
                 recordValueIds.add(testItem.getId());
             }

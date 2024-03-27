@@ -13,17 +13,16 @@ public final class SnowflakeImportCopyCommandTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnowflakeImportCopyCommand model = BinaryData.fromString(
-            "{\"type\":\"SnowflakeImportCopyCommand\",\"additionalCopyOptions\":{\"amoyxdigk\":\"datayxmpmsacbamtoqs\",\"ylqhqeosxdsxil\":\"datagz\",\"ttyh\":\"datafiottdawgkaohh\",\"kxoicbxsmfvltbo\":\"datapidzjjjfcyskpn\"},\"additionalFormatOptions\":{\"g\":\"datavtpmvppvgr\",\"lgkoqbzrcla\":\"dataeg\",\"moramsh\":\"datartfmfkuvyb\",\"zvzqhvzjdsn\":\"datavkuq\"},\"\":{\"ani\":\"datab\",\"aq\":\"dataozjrc\",\"almzpfylqevwwvz\":\"datag\",\"gjl\":\"datapdxcizrop\"}}")
+            "{\"type\":\"SnowflakeImportCopyCommand\",\"additionalCopyOptions\":{\"lvktjbmce\":\"databe\",\"ukdawgz\":\"datal\",\"vygx\":\"databwhjvonu\"},\"additionalFormatOptions\":{\"jcjvdajxebm\":\"datatjoxocothsg\",\"nd\":\"dataiyrctfaabkukra\",\"dhjdwfnbiyxqr\":\"datahwdicntqsrhacjsb\"},\"\":{\"yovljtrmlxr\":\"dataffk\",\"wbqukjithxlpvp\":\"datallugnxmbwdkzi\",\"shhcktbfmtbprt\":\"datavceiwc\"}}")
             .toObject(SnowflakeImportCopyCommand.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SnowflakeImportCopyCommand model = new SnowflakeImportCopyCommand()
-            .withAdditionalCopyOptions(mapOf("amoyxdigk", "datayxmpmsacbamtoqs", "ylqhqeosxdsxil", "datagz", "ttyh",
-                "datafiottdawgkaohh", "kxoicbxsmfvltbo", "datapidzjjjfcyskpn"))
-            .withAdditionalFormatOptions(mapOf("g", "datavtpmvppvgr", "lgkoqbzrcla", "dataeg", "moramsh",
-                "datartfmfkuvyb", "zvzqhvzjdsn", "datavkuq"));
+            .withAdditionalCopyOptions(mapOf("lvktjbmce", "databe", "ukdawgz", "datal", "vygx", "databwhjvonu"))
+            .withAdditionalFormatOptions(mapOf("jcjvdajxebm", "datatjoxocothsg", "nd", "dataiyrctfaabkukra",
+                "dhjdwfnbiyxqr", "datahwdicntqsrhacjsb"));
         model = BinaryData.fromObject(model).toObject(SnowflakeImportCopyCommand.class);
     }
 

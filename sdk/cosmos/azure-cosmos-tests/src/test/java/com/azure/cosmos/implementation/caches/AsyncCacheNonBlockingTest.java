@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.caches;
 
-import com.azure.cosmos.implementation.guava25.base.Function;
+import com.azure.cosmos.kafka.connect.implementation.guava25.base.Function;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

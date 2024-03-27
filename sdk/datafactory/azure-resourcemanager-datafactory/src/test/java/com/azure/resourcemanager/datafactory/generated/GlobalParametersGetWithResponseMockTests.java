@@ -32,7 +32,7 @@ public final class GlobalParametersGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"oydzmbv\":{\"type\":\"Object\",\"value\":\"datapbbwicteqwjlynlr\"},\"otozxadk\":{\"type\":\"Bool\",\"value\":\"dataadxs\"}},\"name\":\"aptv\",\"type\":\"y\",\"etag\":\"gvzevpypkfvw\",\"id\":\"vxjxvspubfke\"}";
+            = "{\"properties\":{\"wiautvehpvlm\":{\"type\":\"Bool\",\"value\":\"datablw\"},\"yfyfubtrtaipji\":{\"type\":\"String\",\"value\":\"datanlmzeqhqf\"}},\"name\":\"dowcgqc\",\"type\":\"vqqyxziutqnv\",\"etag\":\"trnwgchvgpun\",\"id\":\"fogccac\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,9 +50,9 @@ public final class GlobalParametersGetWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         GlobalParameterResource response = manager.globalParameters()
-            .getWithResponse("rd", "onovveouwixtefd", "qprhzsaquha", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("qpmdojbm", "johu", "uvnbiujt", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("vxjxvspubfke", response.id());
-        Assertions.assertEquals(GlobalParameterType.OBJECT, response.properties().get("oydzmbv").type());
+        Assertions.assertEquals("fogccac", response.id());
+        Assertions.assertEquals(GlobalParameterType.BOOL, response.properties().get("wiautvehpvlm").type());
     }
 }

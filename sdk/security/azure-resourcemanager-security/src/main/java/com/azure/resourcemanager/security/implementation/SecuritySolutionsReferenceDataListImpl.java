@@ -15,8 +15,7 @@ public final class SecuritySolutionsReferenceDataListImpl implements SecuritySol
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    SecuritySolutionsReferenceDataListImpl(
-        SecuritySolutionsReferenceDataListInner innerObject,
+    SecuritySolutionsReferenceDataListImpl(SecuritySolutionsReferenceDataListInner innerObject,
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

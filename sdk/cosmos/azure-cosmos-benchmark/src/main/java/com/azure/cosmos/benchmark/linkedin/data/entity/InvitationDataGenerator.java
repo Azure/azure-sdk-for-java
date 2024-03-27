@@ -7,7 +7,7 @@ import com.azure.cosmos.benchmark.linkedin.data.DataGenerator;
 import com.azure.cosmos.benchmark.linkedin.data.Key;
 import com.azure.cosmos.benchmark.linkedin.data.KeyGenerator;
 import com.azure.cosmos.benchmark.linkedin.impl.Constants;
-import com.azure.cosmos.implementation.guava25.base.Preconditions;
+import com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions;
 import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.LongNode;

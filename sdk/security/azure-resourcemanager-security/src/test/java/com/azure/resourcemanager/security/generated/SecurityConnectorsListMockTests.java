@@ -32,40 +32,29 @@ public final class SecurityConnectorsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"pgarpfctw\",\"hierarchyIdentifierTrialEndDate\":\"2021-09-18T04:03Z\",\"environmentName\":\"GCP\",\"offerings\":[],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"qyvzesipiysnjq\",\"tags\":{\"ewkaupwhl\":\"aadcndazabundt\",\"sirxxhyr\":\"yckremgjlmsvdo\"},\"id\":\"qakofajf\",\"name\":\"epr\",\"type\":\"vmkinwtey\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"wqgqrbthbfpi\",\"hierarchyIdentifierTrialEndDate\":\"2021-02-14T16:09:27Z\",\"environmentName\":\"Github\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"wfvkywzrq\"},{\"offeringType\":\"CloudOffering\",\"description\":\"addpkhuvnlmdcn\"},{\"offeringType\":\"CloudOffering\",\"description\":\"iexmizunzbqvioy\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"tfqhhvvwzprjaaai\",\"tags\":{\"cn\":\"tvavlyaqtl\",\"rvbzgyhenfsfy\":\"mefzvzuzqcrlk\"},\"id\":\"ncowmhnozfby\",\"name\":\"jiaaosla\",\"type\":\"agwaakktbjort\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SecurityConnector> response = manager.securityConnectors().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qyvzesipiysnjq", response.iterator().next().location());
-        Assertions.assertEquals("aadcndazabundt", response.iterator().next().tags().get("ewkaupwhl"));
-        Assertions.assertEquals("pgarpfctw", response.iterator().next().hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.GCP, response.iterator().next().environmentName());
+        Assertions.assertEquals("tfqhhvvwzprjaaai", response.iterator().next().location());
+        Assertions.assertEquals("tvavlyaqtl", response.iterator().next().tags().get("cn"));
+        Assertions.assertEquals("wqgqrbthbfpi", response.iterator().next().hierarchyIdentifier());
+        Assertions.assertEquals(CloudName.GITHUB, response.iterator().next().environmentName());
     }
 }

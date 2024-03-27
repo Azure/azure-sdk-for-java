@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.FailureValidator;
-import com.azure.cosmos.implementation.guava25.base.Predicates;
+import com.azure.cosmos.kafka.connect.implementation.guava25.base.Predicates;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.description.Description;

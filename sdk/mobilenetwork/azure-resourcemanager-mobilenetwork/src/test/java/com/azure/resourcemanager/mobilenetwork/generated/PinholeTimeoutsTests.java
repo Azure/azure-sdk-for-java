@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class PinholeTimeoutsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PinholeTimeouts model =
-            BinaryData
-                .fromString("{\"tcp\":1863276924,\"udp\":253959415,\"icmp\":1793570177}")
-                .toObject(PinholeTimeouts.class);
+        PinholeTimeouts model = BinaryData.fromString("{\"tcp\":1863276924,\"udp\":253959415,\"icmp\":1793570177}")
+            .toObject(PinholeTimeouts.class);
         Assertions.assertEquals(1863276924, model.tcp());
         Assertions.assertEquals(253959415, model.udp());
         Assertions.assertEquals(1793570177, model.icmp());

@@ -17,7 +17,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ShouldRetryResult;
-import com.azure.cosmos.implementation.guava25.base.Supplier;
+import com.azure.cosmos.kafka.connect.implementation.guava25.base.Supplier;
 import com.azure.cosmos.implementation.RetryWithException;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;

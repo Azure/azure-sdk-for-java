@@ -25,7 +25,7 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkArgument;
 
 public class FaultInjectionServerErrorResultInternal {
     private final FaultInjectionServerErrorType serverErrorType;

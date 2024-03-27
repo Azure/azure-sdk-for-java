@@ -8,8 +8,8 @@ import com.azure.cosmos.test.implementation.ImplementationBridgeHelpers;
 
 import java.time.Duration;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkNotNull;
 
 /***
  * The fault injection rule builder.

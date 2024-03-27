@@ -11,7 +11,7 @@ import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
+import com.azure.cosmos.kafka.connect.implementation.guava25.collect.ImmutableMap;
 import com.azure.cosmos.implementation.query.UnorderedDistinctMap;
 import com.azure.cosmos.implementation.routing.UInt128;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;

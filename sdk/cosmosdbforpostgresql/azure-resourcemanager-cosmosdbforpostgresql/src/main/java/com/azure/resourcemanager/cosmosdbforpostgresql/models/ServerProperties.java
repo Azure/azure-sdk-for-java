@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmosdbforpostgresql.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a server. */
+/**
+ * The properties of a server.
+ */
 @Fluent
 public class ServerProperties {
     /*
@@ -52,13 +54,15 @@ public class ServerProperties {
     @JsonProperty(value = "administratorLogin", access = JsonProperty.Access.WRITE_ONLY)
     private String administratorLogin;
 
-    /** Creates an instance of ServerProperties class. */
+    /**
+     * Creates an instance of ServerProperties class.
+     */
     public ServerProperties() {
     }
 
     /**
      * Get the serverEdition property: The edition of a server.
-     *
+     * 
      * @return the serverEdition value.
      */
     public String serverEdition() {
@@ -67,7 +71,7 @@ public class ServerProperties {
 
     /**
      * Set the serverEdition property: The edition of a server.
-     *
+     * 
      * @param serverEdition the serverEdition value to set.
      * @return the ServerProperties object itself.
      */
@@ -78,7 +82,7 @@ public class ServerProperties {
 
     /**
      * Get the storageQuotaInMb property: The storage of a server in MB.
-     *
+     * 
      * @return the storageQuotaInMb value.
      */
     public Integer storageQuotaInMb() {
@@ -87,7 +91,7 @@ public class ServerProperties {
 
     /**
      * Set the storageQuotaInMb property: The storage of a server in MB.
-     *
+     * 
      * @param storageQuotaInMb the storageQuotaInMb value to set.
      * @return the ServerProperties object itself.
      */
@@ -98,7 +102,7 @@ public class ServerProperties {
 
     /**
      * Get the vCores property: The vCores count of a server.
-     *
+     * 
      * @return the vCores value.
      */
     public Integer vCores() {
@@ -107,7 +111,7 @@ public class ServerProperties {
 
     /**
      * Set the vCores property: The vCores count of a server.
-     *
+     * 
      * @param vCores the vCores value to set.
      * @return the ServerProperties object itself.
      */
@@ -118,7 +122,7 @@ public class ServerProperties {
 
     /**
      * Get the enableHa property: If high availability (HA) is enabled or not for the server.
-     *
+     * 
      * @return the enableHa value.
      */
     public Boolean enableHa() {
@@ -127,7 +131,7 @@ public class ServerProperties {
 
     /**
      * Set the enableHa property: If high availability (HA) is enabled or not for the server.
-     *
+     * 
      * @param enableHa the enableHa value to set.
      * @return the ServerProperties object itself.
      */
@@ -138,7 +142,7 @@ public class ServerProperties {
 
     /**
      * Get the enablePublicIpAccess property: If public access is enabled on server.
-     *
+     * 
      * @return the enablePublicIpAccess value.
      */
     public Boolean enablePublicIpAccess() {
@@ -148,7 +152,7 @@ public class ServerProperties {
     /**
      * Get the isReadOnly property: If server database is set to read-only by system maintenance depending on high disk
      * space usage.
-     *
+     * 
      * @return the isReadOnly value.
      */
     public Boolean isReadOnly() {
@@ -157,7 +161,7 @@ public class ServerProperties {
 
     /**
      * Get the administratorLogin property: The administrator's login name of the servers in the cluster.
-     *
+     * 
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -166,7 +170,7 @@ public class ServerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

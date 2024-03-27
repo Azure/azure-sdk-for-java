@@ -15,12 +15,15 @@ import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.ClusterInne
 import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.NameAvailabilityInner;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ClusterForUpdate;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.NameAvailabilityRequest;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.PromoteRequest;
 
-/** An instance of this class provides access to all the operations defined in ClustersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ClustersClient.
+ */
 public interface ClustersClient {
     /**
      * Lists all clusters in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of clusters as paginated response with {@link PagedIterable}.
@@ -30,7 +33,7 @@ public interface ClustersClient {
 
     /**
      * Lists all clusters in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -42,7 +45,7 @@ public interface ClustersClient {
 
     /**
      * Lists all clusters in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,7 +57,7 @@ public interface ClustersClient {
 
     /**
      * Lists all clusters in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -67,7 +70,7 @@ public interface ClustersClient {
 
     /**
      * Creates a new cluster with servers.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param parameters The required parameters for creating or updating a cluster.
@@ -77,12 +80,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of represents a cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(
-        String resourceGroupName, String clusterName, ClusterInner parameters);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(String resourceGroupName, String clusterName,
+        ClusterInner parameters);
 
     /**
      * Creates a new cluster with servers.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param parameters The required parameters for creating or updating a cluster.
@@ -93,12 +96,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of represents a cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(
-        String resourceGroupName, String clusterName, ClusterInner parameters, Context context);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(String resourceGroupName, String clusterName,
+        ClusterInner parameters, Context context);
 
     /**
      * Creates a new cluster with servers.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param parameters The required parameters for creating or updating a cluster.
@@ -112,7 +115,7 @@ public interface ClustersClient {
 
     /**
      * Creates a new cluster with servers.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param parameters The required parameters for creating or updating a cluster.
@@ -128,7 +131,7 @@ public interface ClustersClient {
     /**
      * Gets information about a cluster such as compute and storage configuration and cluster lifecycle metadata such as
      * cluster creation date and time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -136,30 +139,30 @@ public interface ClustersClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a cluster such as compute and storage configuration and cluster lifecycle metadata such
-     *     as cluster creation date and time along with {@link Response}.
+     * as cluster creation date and time along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String clusterName, Context context);
+    Response<ClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Gets information about a cluster such as compute and storage configuration and cluster lifecycle metadata such as
      * cluster creation date and time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a cluster such as compute and storage configuration and cluster lifecycle metadata such
-     *     as cluster creation date and time.
+     * as cluster creation date and time.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ClusterInner getByResourceGroup(String resourceGroupName, String clusterName);
 
     /**
      * Deletes a cluster together with servers in it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -172,7 +175,7 @@ public interface ClustersClient {
 
     /**
      * Deletes a cluster together with servers in it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -186,7 +189,7 @@ public interface ClustersClient {
 
     /**
      * Deletes a cluster together with servers in it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -198,7 +201,7 @@ public interface ClustersClient {
 
     /**
      * Deletes a cluster together with servers in it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -211,7 +214,7 @@ public interface ClustersClient {
 
     /**
      * Updates an existing cluster. The request body can contain one or several properties from the cluster definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param parameters The parameters for updating a cluster.
@@ -221,12 +224,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of represents a cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(
-        String resourceGroupName, String clusterName, ClusterForUpdate parameters);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String clusterName,
+        ClusterForUpdate parameters);
 
     /**
      * Updates an existing cluster. The request body can contain one or several properties from the cluster definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param parameters The parameters for updating a cluster.
@@ -237,12 +240,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of represents a cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(
-        String resourceGroupName, String clusterName, ClusterForUpdate parameters, Context context);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String clusterName,
+        ClusterForUpdate parameters, Context context);
 
     /**
      * Updates an existing cluster. The request body can contain one or several properties from the cluster definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param parameters The parameters for updating a cluster.
@@ -256,7 +259,7 @@ public interface ClustersClient {
 
     /**
      * Updates an existing cluster. The request body can contain one or several properties from the cluster definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param parameters The parameters for updating a cluster.
@@ -271,7 +274,7 @@ public interface ClustersClient {
 
     /**
      * Restarts all nodes in the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -284,7 +287,7 @@ public interface ClustersClient {
 
     /**
      * Restarts all nodes in the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -298,7 +301,7 @@ public interface ClustersClient {
 
     /**
      * Restarts all nodes in the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -310,7 +313,7 @@ public interface ClustersClient {
 
     /**
      * Restarts all nodes in the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -323,7 +326,7 @@ public interface ClustersClient {
 
     /**
      * Starts stopped compute on all cluster nodes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -336,7 +339,7 @@ public interface ClustersClient {
 
     /**
      * Starts stopped compute on all cluster nodes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -350,7 +353,7 @@ public interface ClustersClient {
 
     /**
      * Starts stopped compute on all cluster nodes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -362,7 +365,7 @@ public interface ClustersClient {
 
     /**
      * Starts stopped compute on all cluster nodes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -375,7 +378,7 @@ public interface ClustersClient {
 
     /**
      * Stops compute on all cluster nodes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -388,7 +391,7 @@ public interface ClustersClient {
 
     /**
      * Stops compute on all cluster nodes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -402,7 +405,7 @@ public interface ClustersClient {
 
     /**
      * Stops compute on all cluster nodes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -414,7 +417,7 @@ public interface ClustersClient {
 
     /**
      * Stops compute on all cluster nodes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -427,7 +430,7 @@ public interface ClustersClient {
 
     /**
      * Promotes read replica cluster to an independent read-write cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -440,9 +443,10 @@ public interface ClustersClient {
 
     /**
      * Promotes read replica cluster to an independent read-write cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
+     * @param promoteRequest The parameter for enabling geo-redundant backup while promoting read replica.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -450,12 +454,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPromoteReadReplica(
-        String resourceGroupName, String clusterName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginPromoteReadReplica(String resourceGroupName, String clusterName,
+        PromoteRequest promoteRequest, Context context);
 
     /**
      * Promotes read replica cluster to an independent read-write cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -467,22 +471,24 @@ public interface ClustersClient {
 
     /**
      * Promotes read replica cluster to an independent read-write cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
+     * @param promoteRequest The parameter for enabling geo-redundant backup while promoting read replica.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void promoteReadReplica(String resourceGroupName, String clusterName, Context context);
+    void promoteReadReplica(String resourceGroupName, String clusterName, PromoteRequest promoteRequest,
+        Context context);
 
     /**
      * Checks availability of a cluster name. Cluster names should be globally unique; at least 3 characters and at most
      * 40 characters long; they must only contain lowercase letters, numbers, and hyphens; and must not start or end
      * with a hyphen.
-     *
+     * 
      * @param nameAvailabilityRequest The required parameters for checking if cluster name is available.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -491,14 +497,14 @@ public interface ClustersClient {
      * @return represents cluster name availability along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NameAvailabilityInner> checkNameAvailabilityWithResponse(
-        NameAvailabilityRequest nameAvailabilityRequest, Context context);
+    Response<NameAvailabilityInner> checkNameAvailabilityWithResponse(NameAvailabilityRequest nameAvailabilityRequest,
+        Context context);
 
     /**
      * Checks availability of a cluster name. Cluster names should be globally unique; at least 3 characters and at most
      * 40 characters long; they must only contain lowercase letters, numbers, and hyphens; and must not start or end
      * with a hyphen.
-     *
+     * 
      * @param nameAvailabilityRequest The required parameters for checking if cluster name is available.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

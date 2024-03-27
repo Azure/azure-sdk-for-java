@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
-import com.azure.cosmos.implementation.guava25.base.Preconditions.checkState
+import com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkState
 import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
 import com.azure.cosmos.models.{CosmosItemRequestOptions, CosmosItemResponse, CosmosPatchItemRequestOptions, PartitionKey, PartitionKeyDefinition}
 import com.azure.cosmos.spark.BulkWriter.getThreadInfo

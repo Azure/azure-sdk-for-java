@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.Configurati
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of cluster configurations. */
+/**
+ * A list of cluster configurations.
+ */
 @Fluent
 public final class ClusterConfigurationListResult {
     /*
@@ -24,13 +26,15 @@ public final class ClusterConfigurationListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ClusterConfigurationListResult class. */
+    /**
+     * Creates an instance of ClusterConfigurationListResult class.
+     */
     public ClusterConfigurationListResult() {
     }
 
     /**
      * Get the value property: The list of cluster configurations.
-     *
+     * 
      * @return the value value.
      */
     public List<ConfigurationInner> value() {
@@ -39,7 +43,7 @@ public final class ClusterConfigurationListResult {
 
     /**
      * Set the value property: The list of cluster configurations.
-     *
+     * 
      * @param value the value value to set.
      * @return the ClusterConfigurationListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class ClusterConfigurationListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ClusterConfigurationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

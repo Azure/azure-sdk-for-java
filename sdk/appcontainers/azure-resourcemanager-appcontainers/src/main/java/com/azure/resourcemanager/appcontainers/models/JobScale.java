@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Scaling configurations for event driven jobs. */
+/**
+ * Scaling configurations for event driven jobs.
+ */
 @Fluent
 public final class JobScale {
     /*
@@ -35,13 +37,15 @@ public final class JobScale {
     @JsonProperty(value = "rules")
     private List<JobScaleRule> rules;
 
-    /** Creates an instance of JobScale class. */
+    /**
+     * Creates an instance of JobScale class.
+     */
     public JobScale() {
     }
 
     /**
      * Get the pollingInterval property: Interval to check each event source in seconds. Defaults to 30s.
-     *
+     * 
      * @return the pollingInterval value.
      */
     public Integer pollingInterval() {
@@ -50,7 +54,7 @@ public final class JobScale {
 
     /**
      * Set the pollingInterval property: Interval to check each event source in seconds. Defaults to 30s.
-     *
+     * 
      * @param pollingInterval the pollingInterval value to set.
      * @return the JobScale object itself.
      */
@@ -61,7 +65,7 @@ public final class JobScale {
 
     /**
      * Get the minExecutions property: Minimum number of job executions that are created for a trigger, default 0.
-     *
+     * 
      * @return the minExecutions value.
      */
     public Integer minExecutions() {
@@ -70,7 +74,7 @@ public final class JobScale {
 
     /**
      * Set the minExecutions property: Minimum number of job executions that are created for a trigger, default 0.
-     *
+     * 
      * @param minExecutions the minExecutions value to set.
      * @return the JobScale object itself.
      */
@@ -81,7 +85,7 @@ public final class JobScale {
 
     /**
      * Get the maxExecutions property: Maximum number of job executions that are created for a trigger, default 100.
-     *
+     * 
      * @return the maxExecutions value.
      */
     public Integer maxExecutions() {
@@ -90,7 +94,7 @@ public final class JobScale {
 
     /**
      * Set the maxExecutions property: Maximum number of job executions that are created for a trigger, default 100.
-     *
+     * 
      * @param maxExecutions the maxExecutions value to set.
      * @return the JobScale object itself.
      */
@@ -101,7 +105,7 @@ public final class JobScale {
 
     /**
      * Get the rules property: Scaling rules.
-     *
+     * 
      * @return the rules value.
      */
     public List<JobScaleRule> rules() {
@@ -110,7 +114,7 @@ public final class JobScale {
 
     /**
      * Set the rules property: Scaling rules.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the JobScale object itself.
      */
@@ -121,7 +125,7 @@ public final class JobScale {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

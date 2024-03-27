@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.kafka.connect.implementation.guava25.collect.ImmutableList;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;

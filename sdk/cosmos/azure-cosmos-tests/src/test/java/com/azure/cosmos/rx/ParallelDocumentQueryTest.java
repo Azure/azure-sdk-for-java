@@ -20,7 +20,7 @@ import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.implementation.guava25.base.Function;
+import com.azure.cosmos.kafka.connect.implementation.guava25.base.Function;
 import com.azure.cosmos.implementation.guava27.Strings;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
