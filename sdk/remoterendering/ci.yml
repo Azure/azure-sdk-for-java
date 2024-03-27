@@ -36,5 +36,3 @@ extends:
       - name: azure-mixedreality-remoterendering
         groupId: com.azure
         safeName: azuremixedrealityremoterendering
-    MatrixFilters:
-      - JavaTestVersion=^(?!1.8).*
