@@ -7,7 +7,7 @@ import static com.azure.ai.openai.implementation.AudioTranscriptionValidator.val
 import static com.azure.ai.openai.implementation.AudioTranscriptionValidator.validateAudioResponseFormatForTranscriptionText;
 import static com.azure.ai.openai.implementation.AudioTranslationValidator.validateAudioResponseFormatForTranslation;
 import static com.azure.ai.openai.implementation.AudioTranslationValidator.validateAudioResponseFormatForTranslationText;
-import static com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.addEncodingFormat;
+import static com.azure.ai.openai.implementation.EmbeddingsUtils.addEncodingFormat;
 import static com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.addModelIdJson;
 
 import com.azure.ai.openai.implementation.CompletionsUtils;
@@ -137,7 +137,7 @@ public final class OpenAIClient {
         try {
             embeddingsOptions = addEncodingFormat(embeddingsOptions);
         } catch (JsonProcessingException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to serialize the request body.", e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
         return openAIServiceClient != null
             ? openAIServiceClient.getEmbeddingsWithResponse(deploymentOrModelName, embeddingsOptions, requestOptions)

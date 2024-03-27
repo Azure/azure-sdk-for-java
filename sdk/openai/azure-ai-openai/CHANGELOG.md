@@ -7,13 +7,17 @@
 - Added support for service API version, `2024-03-01-preview`.
 - Added two new properties to `EmbeddingOptions`:
   - `dimensions`, which is only supported in models `text-embedding-3-*` and above.
-  - `encoding_format`, which could be value of `float` default value or `base64`.
-  
+- Added a new method to get base64 encoded string in `EmbeddingItem` class:
+  - `getEmbeddingString` method returns the embedding as a base64 encoded string. 
+ 
 ### Breaking Changes
+
+- Replace return type `List<Double>` with `List<Float>` of `getEmbedding` method in `EmbeddingItem` class.
 
 ### Bugs Fixed
 
 ### Other Changes
+
 
 ## 1.0.0-beta.7 (2024-03-04)
 

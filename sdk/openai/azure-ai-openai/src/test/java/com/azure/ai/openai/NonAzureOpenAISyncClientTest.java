@@ -210,26 +210,6 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getEmbeddingsWithFloatFormat(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getNonAzureOpenAISyncClient(httpClient);
-        getEmbeddingsWithFloatFormatRunner((deploymentId, embeddingsOptions) -> {
-            Embeddings resultEmbeddings = client.getEmbeddings(deploymentId, embeddingsOptions);
-            assertEmbeddings(resultEmbeddings);
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getEmbeddingsWithBase64Format(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getNonAzureOpenAISyncClient(httpClient);
-        getEmbeddingsWithBase64FormatRunner((deploymentId, embeddingsOptions) -> {
-            Embeddings resultEmbeddings = client.getEmbeddings(deploymentId, embeddingsOptions);
-            assertEmbeddings(resultEmbeddings);
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
         getEmbeddingRunnerForNonAzure((deploymentId, embeddingsOptions) -> {

@@ -145,7 +145,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     protected String getAzureCognitiveSearchKey() {
-        String azureCognitiveSearchKey = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_API_KEY");
+        String azureCognitiveSearchKey = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_API_KEY");
         if (getTestMode() == TestMode.PLAYBACK) {
             return FAKE_API_KEY;
         } else if (azureCognitiveSearchKey != null) {
@@ -174,12 +174,6 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     @Test
     public abstract void getEmbeddingsWithSmallerDimensions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
-
-    @Test
-    public abstract void getEmbeddingsWithFloatFormat(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
-
-    @Test
-    public abstract void getEmbeddingsWithBase64Format(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
 
     @Test
     public abstract void testGetEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
@@ -231,19 +225,6 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     void getEmbeddingWithSmallerDimensionsRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
         testRunner.accept("text-embedding-3-large",
                 new EmbeddingsOptions(Arrays.asList("Your text string goes here")).setDimensions(20)
-        );
-    }
-
-    void getEmbeddingsWithFloatFormatRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
-        testRunner.accept("text-embedding-ada-002",
-                new EmbeddingsOptions(Arrays.asList("Your text string goes here"))
-
-        );
-    }
-
-    void getEmbeddingsWithBase64FormatRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
-        testRunner.accept("text-embedding-ada-002",
-                new EmbeddingsOptions(Arrays.asList("Your text string goes here"))
         );
     }
 
@@ -544,6 +525,9 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
             List<Float> embedding = item.getEmbedding();
             assertNotNull(embedding);
             assertFalse(embedding.isEmpty());
+
+            String base64Embedding = item.getEmbeddingString();
+            assertNotNull(base64Embedding);
         }
         assertNotNull(actual.getUsage());
     }

@@ -193,7 +193,8 @@ public final class EmbeddingsOptions {
      *
      * @return the encodingFormat value.
      */
-    private EmbeddingEncodingFormat getEncodingFormat() {
+    @Generated
+    public EmbeddingEncodingFormat getEncodingFormat() {
         return this.encodingFormat;
     }
 
@@ -203,7 +204,8 @@ public final class EmbeddingsOptions {
      * @param encodingFormat the encodingFormat value to set.
      * @return the EmbeddingsOptions object itself.
      */
-    private EmbeddingsOptions setEncodingFormat(EmbeddingEncodingFormat encodingFormat) {
+    @Generated
+    public EmbeddingsOptions setEncodingFormat(EmbeddingEncodingFormat encodingFormat) {
         this.encodingFormat = encodingFormat;
         return this;
     }
