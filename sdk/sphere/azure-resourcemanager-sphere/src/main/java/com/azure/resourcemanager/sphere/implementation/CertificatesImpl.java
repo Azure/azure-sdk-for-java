@@ -26,39 +26,30 @@ public final class CertificatesImpl implements Certificates {
 
     private final com.azure.resourcemanager.sphere.AzureSphereManager serviceManager;
 
-    public CertificatesImpl(
-        CertificatesClient innerClient, com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
+    public CertificatesImpl(CertificatesClient innerClient,
+        com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Certificate> listByCatalog(String resourceGroupName, String catalogName) {
         PagedIterable<CertificateInner> inner = this.serviceClient().listByCatalog(resourceGroupName, catalogName);
-        return Utils.mapPage(inner, inner1 -> new CertificateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CertificateImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Certificate> listByCatalog(
-        String resourceGroupName,
-        String catalogName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
+    public PagedIterable<Certificate> listByCatalog(String resourceGroupName, String catalogName, String filter,
+        Integer top, Integer skip, Integer maxpagesize, Context context) {
+        PagedIterable<CertificateInner> inner = this.serviceClient().listByCatalog(resourceGroupName, catalogName,
+            filter, top, skip, maxpagesize, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CertificateImpl(inner1, this.manager()));
+    }
+
+    public Response<Certificate> getWithResponse(String resourceGroupName, String catalogName, String serialNumber,
         Context context) {
-        PagedIterable<CertificateInner> inner =
-            this.serviceClient().listByCatalog(resourceGroupName, catalogName, filter, top, skip, maxpagesize, context);
-        return Utils.mapPage(inner, inner1 -> new CertificateImpl(inner1, this.manager()));
-    }
-
-    public Response<Certificate> getWithResponse(
-        String resourceGroupName, String catalogName, String serialNumber, Context context) {
-        Response<CertificateInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, catalogName, serialNumber, context);
+        Response<CertificateInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, catalogName, serialNumber, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CertificateImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -74,25 +65,22 @@ public final class CertificatesImpl implements Certificates {
         }
     }
 
-    public Response<CertificateChainResponse> retrieveCertChainWithResponse(
-        String resourceGroupName, String catalogName, String serialNumber, Context context) {
-        Response<CertificateChainResponseInner> inner =
-            this.serviceClient().retrieveCertChainWithResponse(resourceGroupName, catalogName, serialNumber, context);
+    public Response<CertificateChainResponse> retrieveCertChainWithResponse(String resourceGroupName,
+        String catalogName, String serialNumber, Context context) {
+        Response<CertificateChainResponseInner> inner
+            = this.serviceClient().retrieveCertChainWithResponse(resourceGroupName, catalogName, serialNumber, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CertificateChainResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CertificateChainResponse retrieveCertChain(
-        String resourceGroupName, String catalogName, String serialNumber) {
-        CertificateChainResponseInner inner =
-            this.serviceClient().retrieveCertChain(resourceGroupName, catalogName, serialNumber);
+    public CertificateChainResponse retrieveCertChain(String resourceGroupName, String catalogName,
+        String serialNumber) {
+        CertificateChainResponseInner inner
+            = this.serviceClient().retrieveCertChain(resourceGroupName, catalogName, serialNumber);
         if (inner != null) {
             return new CertificateChainResponseImpl(inner, this.manager());
         } else {
@@ -100,38 +88,24 @@ public final class CertificatesImpl implements Certificates {
         }
     }
 
-    public Response<ProofOfPossessionNonceResponse> retrieveProofOfPossessionNonceWithResponse(
-        String resourceGroupName,
-        String catalogName,
-        String serialNumber,
-        ProofOfPossessionNonceRequest proofOfPossessionNonceRequest,
+    public Response<ProofOfPossessionNonceResponse> retrieveProofOfPossessionNonceWithResponse(String resourceGroupName,
+        String catalogName, String serialNumber, ProofOfPossessionNonceRequest proofOfPossessionNonceRequest,
         Context context) {
-        Response<ProofOfPossessionNonceResponseInner> inner =
-            this
-                .serviceClient()
-                .retrieveProofOfPossessionNonceWithResponse(
-                    resourceGroupName, catalogName, serialNumber, proofOfPossessionNonceRequest, context);
+        Response<ProofOfPossessionNonceResponseInner> inner
+            = this.serviceClient().retrieveProofOfPossessionNonceWithResponse(resourceGroupName, catalogName,
+                serialNumber, proofOfPossessionNonceRequest, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ProofOfPossessionNonceResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ProofOfPossessionNonceResponse retrieveProofOfPossessionNonce(
-        String resourceGroupName,
-        String catalogName,
-        String serialNumber,
-        ProofOfPossessionNonceRequest proofOfPossessionNonceRequest) {
-        ProofOfPossessionNonceResponseInner inner =
-            this
-                .serviceClient()
-                .retrieveProofOfPossessionNonce(
-                    resourceGroupName, catalogName, serialNumber, proofOfPossessionNonceRequest);
+    public ProofOfPossessionNonceResponse retrieveProofOfPossessionNonce(String resourceGroupName, String catalogName,
+        String serialNumber, ProofOfPossessionNonceRequest proofOfPossessionNonceRequest) {
+        ProofOfPossessionNonceResponseInner inner = this.serviceClient().retrieveProofOfPossessionNonce(
+            resourceGroupName, catalogName, serialNumber, proofOfPossessionNonceRequest);
         if (inner != null) {
             return new ProofOfPossessionNonceResponseImpl(inner, this.manager());
         } else {

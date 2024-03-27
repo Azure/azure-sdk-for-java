@@ -14,19 +14,19 @@ import java.util.List;
 /**
  * Sample demonstrates how to synchronously query metrics for multiple resources.
  */
-public class MetricsBatchQuerySample {
+public class MetricsSample {
     /**
      * The main method to execute the sample.
      *
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
-        MetricsClient metricsBatchQueryClient = new MetricsClientBuilder()
+        MetricsClient metricsClient = new MetricsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("https://westus2.monitoring.azure.com")
             .buildClient();
 
-        MetricsQueryResourcesResult metricsQueryResourcesResult = metricsBatchQueryClient.queryResources(
+        MetricsQueryResourcesResult metricsQueryResourcesResult = metricsClient.queryResources(
             Arrays.asList("{resourceId1}", "{resourceId2}"),
             Arrays.asList("{metric1}", "{metric2}"),
             "{metricNamespace}");
