@@ -4,19 +4,120 @@
 package com.azure.xml;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
-import java.io.IOException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.Base64;
 import java.util.Objects;
 
 /**
  * Reads an XML encoded value as a stream of tokens.
  */
-public abstract class XmlReader implements AutoCloseable {
+public final class XmlReader implements AutoCloseable {
+    private static final XMLInputFactory XML_INPUT_FACTORY;
+
+    static {
+        XML_INPUT_FACTORY = XMLInputFactory.newInstance();
+        XML_INPUT_FACTORY.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+        XML_INPUT_FACTORY.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+    }
+
+    private final XMLStreamReader reader;
+
+    private XmlToken currentToken;
+
+    /**
+     * Creates an {@link XMLStreamReader}-based {@link XmlReader} that parses the passed {@code xml}.
+     * <p>
+     * This uses the {@link XMLStreamReader} implementation provided by the default
+     * {@link XMLInputFactory#newInstance()}. If you need to provide a custom implementation of
+     * {@link XMLStreamReader} use {@link #fromXmlStreamReader(XMLStreamReader)}.
+     *
+     * @param xml The XML to parse.
+     * @return A new {@link XmlReader} instance.
+     * @throws NullPointerException If {@code xml} is null.
+     * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
+     */
+    public static XmlReader fromBytes(byte[] xml) throws XMLStreamException {
+        Objects.requireNonNull(xml, "'xml' cannot be null.");
+        return fromStream(new ByteArrayInputStream(xml));
+    }
+
+    /**
+     * Creates an {@link XmlReader} that parses the passed {@code xml}.
+     * <p>
+     * This uses the {@link XMLStreamReader} implementation provided by the default
+     * {@link XMLInputFactory#newInstance()}. If you need to provide a custom implementation of
+     * {@link XMLStreamReader} use {@link #fromXmlStreamReader(XMLStreamReader)}.
+     *
+     * @param xml The XML to parse.
+     * @return A new {@link XmlReader} instance.
+     * @throws NullPointerException If {@code xml} is null.
+     * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
+     */
+    public static XmlReader fromString(String xml) throws XMLStreamException {
+        Objects.requireNonNull(xml, "'xml' cannot be null.");
+        return fromReader(new StringReader(xml));
+    }
+
+    /**
+     * Creates an {@link XmlReader} that parses the passed {@code xml}.
+     * <p>
+     * This uses the {@link XMLStreamReader} implementation provided by the default
+     * {@link XMLInputFactory#newInstance()}. If you need to provide a custom implementation of
+     * {@link XMLStreamReader} use {@link #fromXmlStreamReader(XMLStreamReader)}.
+     *
+     * @param xml The XML to parse.
+     * @return A new {@link XmlReader} instance.
+     * @throws NullPointerException If {@code xml} is null.
+     * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
+     */
+    public static XmlReader fromStream(InputStream xml) throws XMLStreamException {
+        Objects.requireNonNull(xml, "'xml' cannot be null.");
+        return new XmlReader(XML_INPUT_FACTORY.createXMLStreamReader(xml));
+    }
+
+    /**
+     * Creates an {@link XmlReader} that parses the passed {@code xml}.
+     * <p>
+     * This uses the {@link XMLStreamReader} implementation provided by the default
+     * {@link XMLInputFactory#newInstance()}. If you need to provide a custom implementation of
+     * {@link XMLStreamReader} use {@link #fromXmlStreamReader(XMLStreamReader)}.
+     *
+     * @param xml The XML to parse.
+     * @return A new {@link XmlReader} instance.
+     * @throws NullPointerException If {@code xml} is null.
+     * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
+     */
+    public static XmlReader fromReader(Reader xml) throws XMLStreamException {
+        Objects.requireNonNull(xml, "'xml' cannot be null.");
+        return new XmlReader(XML_INPUT_FACTORY.createXMLStreamReader(xml));
+    }
+
+    /**
+     * Creates an {@link XmlReader} that parses the passed {@code xml}.
+     * <p>
+     * This uses the provided {@link XMLStreamReader} implementation to parse the XML.
+     *
+     * @param reader The {@link XMLStreamReader} to parse the XML.
+     * @return A new {@link XmlReader} instance.
+     * @throws NullPointerException If {@code reader} is null.
+     */
+    public static XmlReader fromXmlStreamReader(XMLStreamReader reader) {
+        return new XmlReader(reader);
+    }
+
     /**
      * Creates an instance of {@link XmlReader}.
      */
-    public XmlReader() {
+    private XmlReader(XMLStreamReader reader) {
+        this.reader = Objects.requireNonNull(reader, "'reader' cannot be null.");
+        this.currentToken = convertEventToToken(reader.getEventType());
     }
 
     /**
@@ -27,7 +128,9 @@ public abstract class XmlReader implements AutoCloseable {
      *
      * @return The {@link XmlToken} that the reader points to currently.
      */
-    public abstract XmlToken currentToken();
+    public XmlToken currentToken() {
+        return currentToken;
+    }
 
     /**
      * Iterates to and returns the next {@link XmlToken#START_ELEMENT} or {@link XmlToken#END_ELEMENT} in the XML
@@ -40,7 +143,17 @@ public abstract class XmlReader implements AutoCloseable {
      * {@link XmlToken#END_DOCUMENT} if reading completes.
      * @throws XMLStreamException If the next element cannot be determined.
      */
-    public abstract XmlToken nextElement() throws XMLStreamException;
+    public XmlToken nextElement() throws XMLStreamException {
+        int next = reader.next();
+        while (next != XMLStreamConstants.START_ELEMENT
+            && next != XMLStreamConstants.END_ELEMENT
+            && next != XMLStreamConstants.END_DOCUMENT) {
+            next = reader.next();
+        }
+
+        currentToken = convertEventToToken(next);
+        return currentToken;
+    }
 
     /**
      * Closes the XML stream.
@@ -48,7 +161,9 @@ public abstract class XmlReader implements AutoCloseable {
      * @throws XMLStreamException If the underlying content store fails to close.
      */
     @Override
-    public abstract void close() throws XMLStreamException;
+    public void close() throws XMLStreamException {
+        reader.close();
+    }
 
     /**
      * Gets the {@link QName} for the current XML element.
@@ -57,7 +172,9 @@ public abstract class XmlReader implements AutoCloseable {
      * @throws IllegalStateException If the {@link #currentToken()} {@link XmlToken#START_ELEMENT} or
      * {@link XmlToken#END_ELEMENT}.
      */
-    public abstract QName getElementName();
+    public QName getElementName() {
+        return reader.getName();
+    }
 
     /**
      * Gets the string value for the attribute in the XML element.
@@ -69,7 +186,12 @@ public abstract class XmlReader implements AutoCloseable {
      * @return The string value for the attribute in the XML element, or null if the attribute doesn't exist.
      * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT}.
      */
-    public abstract String getStringAttribute(String namespaceUri, String localName);
+    public String getStringAttribute(String namespaceUri, String localName) {
+        String value = reader.getAttributeValue(namespaceUri, localName);
+
+        // Treat empty string as null.
+        return "".equals(value) ? null : value;
+    }
 
     /**
      * Gets the binary value for the attribute in the XML element.
@@ -78,7 +200,7 @@ public abstract class XmlReader implements AutoCloseable {
      * @param localName Attribute local name.
      * @return The binary value for the attribute in the XML element.
      */
-    public final byte[] getBinaryAttribute(String namespaceUri, String localName) {
+    public byte[] getBinaryAttribute(String namespaceUri, String localName) {
         String value = getStringAttribute(namespaceUri, localName);
         return (value == null || value.isEmpty()) ? null : Base64.getDecoder().decode(value);
     }
@@ -90,7 +212,7 @@ public abstract class XmlReader implements AutoCloseable {
      * @param localName Attribute local name.
      * @return The boolean value for the attribute in the XML element.
      */
-    public final boolean getBooleanAttribute(String namespaceUri, String localName) {
+    public boolean getBooleanAttribute(String namespaceUri, String localName) {
         return Boolean.parseBoolean(getStringAttribute(namespaceUri, localName));
     }
 
@@ -101,7 +223,7 @@ public abstract class XmlReader implements AutoCloseable {
      * @param localName Attribute local name.
      * @return The double value for the attribute in the XML element.
      */
-    public final double getDoubleAttribute(String namespaceUri, String localName) {
+    public double getDoubleAttribute(String namespaceUri, String localName) {
         return Double.parseDouble(getStringAttribute(namespaceUri, localName));
     }
 
@@ -112,7 +234,7 @@ public abstract class XmlReader implements AutoCloseable {
      * @param localName Attribute local name.
      * @return The float value for the attribute in the XML element.
      */
-    public final float getFloatAttribute(String namespaceUri, String localName) {
+    public float getFloatAttribute(String namespaceUri, String localName) {
         return Float.parseFloat(getStringAttribute(namespaceUri, localName));
     }
 
@@ -123,7 +245,7 @@ public abstract class XmlReader implements AutoCloseable {
      * @param localName Attribute local name.
      * @return The int value for the attribute in the XML element.
      */
-    public final int getIntAttribute(String namespaceUri, String localName) {
+    public int getIntAttribute(String namespaceUri, String localName) {
         return Integer.parseInt(getStringAttribute(namespaceUri, localName));
     }
 
@@ -134,7 +256,7 @@ public abstract class XmlReader implements AutoCloseable {
      * @param localName Attribute local name.
      * @return The long value for the attribute in the XML element.
      */
-    public final long getLongAttribute(String namespaceUri, String localName) {
+    public long getLongAttribute(String namespaceUri, String localName) {
         return Long.parseLong(getStringAttribute(namespaceUri, localName));
     }
 
@@ -151,19 +273,15 @@ public abstract class XmlReader implements AutoCloseable {
      * @return The converted text value, or null if the attribute didn't have a value.
      * @throws XMLStreamException If the nullable attribute cannot be read.
      */
-    public final <T> T getNullableAttribute(String namespaceUri, String localName,
-        ReadValueCallback<String, T> converter) throws XMLStreamException {
+    public <T> T getNullableAttribute(String namespaceUri, String localName, ReadValueCallback<String, T> converter)
+        throws XMLStreamException {
         String textValue = getStringAttribute(namespaceUri, localName);
 
         if (textValue == null) {
             return null;
         }
 
-        try {
-            return converter.read(textValue);
-        } catch (IOException ex) {
-            throw new XMLStreamException(ex);
-        }
+        return converter.read(textValue);
     }
 
     /**
@@ -172,7 +290,72 @@ public abstract class XmlReader implements AutoCloseable {
      * @return The string value for the current element.
      * @throws XMLStreamException If the String element cannot be read.
      */
-    public abstract String getStringElement() throws XMLStreamException;
+    public String getStringElement() throws XMLStreamException {
+        // The default getElementText implementation in the JDK uses an internal buffer as the API handles merging
+        // multiple text states, characters, CDATA, space, and entity reference, into a single String. This
+        // generally results in overhead as most cases will only have a single read performed but that read will
+        // be buffered into the buffer and then returned as-is. So instead, a custom implementation will be used
+        // where a small String buffer will be used to contain the intermediate reads and when the terminal state
+        // is reached if only a single read was performed the String can be return, and if the unlikely multiple
+        // read scenario is triggered those Strings can be concatenated.
+        //
+        // This logic continues to work even if the underlying XMLStreamReader implementation, such as the one
+        // used in Jackson XML through Woodstox, handles this already.
+
+        int readCount = 0;
+        String firstRead = null;
+        String[] buffer = null;
+        int stringBufferSize = 0;
+        int nextEvent = reader.next();
+
+        // Continue reading until the next event is the end of the element or an exception state.
+        while (nextEvent != XMLStreamConstants.END_ELEMENT) {
+            if (nextEvent == XMLStreamConstants.CHARACTERS
+                || nextEvent == XMLStreamConstants.CDATA
+                || nextEvent == XMLStreamConstants.SPACE
+                || nextEvent == XMLStreamConstants.ENTITY_REFERENCE) {
+                readCount++;
+                if (readCount == 1) {
+                    firstRead = reader.getText();
+                    stringBufferSize = firstRead.length();
+                } else {
+                    if (readCount == 2) {
+                        buffer = new String[4];
+                        buffer[0] = firstRead;
+                    }
+
+                    if (readCount > buffer.length - 1) {
+                        String[] newBuffer = new String[buffer.length * 2];
+                        System.arraycopy(buffer, 0, newBuffer, 0, buffer.length);
+                        buffer = newBuffer;
+                    }
+
+                    String readText = reader.getText();
+                    buffer[readCount - 1] = readText;
+                    stringBufferSize += readText.length();
+                }
+            } else if (nextEvent != XMLStreamConstants.PROCESSING_INSTRUCTION
+                && nextEvent != XMLStreamConstants.COMMENT) {
+                // Processing instructions and comments are ignored but anything else is unexpected.
+                throw new XMLStreamException("Unexpected event type while reading element value " + nextEvent);
+            }
+
+            nextEvent = reader.next();
+        }
+
+        if (readCount == 0) {
+            return null;
+        } else if (readCount == 1) {
+            return firstRead;
+        } else {
+            StringBuilder finalText = new StringBuilder(stringBufferSize);
+            for (int i = 0; i < readCount; i++) {
+                finalText.append(buffer[i]);
+            }
+
+            return finalText.toString();
+        }
+    }
 
     /**
      * Gets the binary value for the current element.
@@ -180,7 +363,7 @@ public abstract class XmlReader implements AutoCloseable {
      * @return The binary value for the current element.
      * @throws XMLStreamException If the binary element cannot be read.
      */
-    public final byte[] getBinaryElement() throws XMLStreamException {
+    public byte[] getBinaryElement() throws XMLStreamException {
         String value = getStringElement();
         return (value == null || value.isEmpty()) ? null : Base64.getDecoder().decode(value);
     }
@@ -191,7 +374,7 @@ public abstract class XmlReader implements AutoCloseable {
      * @return The boolean value for the current element.
      * @throws XMLStreamException If the boolean element cannot be read.
      */
-    public final boolean getBooleanElement() throws XMLStreamException {
+    public boolean getBooleanElement() throws XMLStreamException {
         return Boolean.parseBoolean(getStringElement());
     }
 
@@ -201,7 +384,7 @@ public abstract class XmlReader implements AutoCloseable {
      * @return The double value for the current element.
      * @throws XMLStreamException If the double element cannot be read.
      */
-    public final double getDoubleElement() throws XMLStreamException {
+    public double getDoubleElement() throws XMLStreamException {
         return Double.parseDouble(getStringElement());
     }
 
@@ -211,7 +394,7 @@ public abstract class XmlReader implements AutoCloseable {
      * @return The float value for the current element.
      * @throws XMLStreamException If the float element cannot be read.
      */
-    public final float getFloatElement() throws XMLStreamException {
+    public float getFloatElement() throws XMLStreamException {
         return Float.parseFloat(getStringElement());
     }
 
@@ -221,7 +404,7 @@ public abstract class XmlReader implements AutoCloseable {
      * @return The int value for the current element.
      * @throws XMLStreamException If the int element cannot be read.
      */
-    public final int getIntElement() throws XMLStreamException {
+    public int getIntElement() throws XMLStreamException {
         return Integer.parseInt(getStringElement());
     }
 
@@ -231,7 +414,7 @@ public abstract class XmlReader implements AutoCloseable {
      * @return The long value for the current element.
      * @throws XMLStreamException If the long element cannot be read.
      */
-    public final long getLongElement() throws XMLStreamException {
+    public long getLongElement() throws XMLStreamException {
         return Long.parseLong(getStringElement());
     }
 
@@ -246,18 +429,14 @@ public abstract class XmlReader implements AutoCloseable {
      * @return The converted text value, or null if the element didn't have a value.
      * @throws XMLStreamException If the nullable element cannot be read.
      */
-    public final <T> T getNullableElement(ReadValueCallback<String, T> converter) throws XMLStreamException {
+    public <T> T getNullableElement(ReadValueCallback<String, T> converter) throws XMLStreamException {
         String textValue = getStringElement();
 
         if (textValue == null) {
             return null;
         }
 
-        try {
-            return converter.read(textValue);
-        } catch (IOException ex) {
-            throw new XMLStreamException(ex);
-        }
+        return converter.read(textValue);
     }
 
     /**
@@ -274,8 +453,7 @@ public abstract class XmlReader implements AutoCloseable {
      * the expected {@code startTagName}
      * @throws XMLStreamException If the object cannot be read.
      */
-    public final <T> T readObject(String localName, ReadValueCallback<XmlReader, T> converter)
-        throws XMLStreamException {
+    public <T> T readObject(String localName, ReadValueCallback<XmlReader, T> converter) throws XMLStreamException {
         return readObject(null, localName, converter);
     }
 
@@ -294,7 +472,7 @@ public abstract class XmlReader implements AutoCloseable {
      * the expected {@code startTagName}
      * @throws XMLStreamException If the object cannot be read.
      */
-    public final <T> T readObject(String namespaceUri, String localName, ReadValueCallback<XmlReader, T> converter)
+    public <T> T readObject(String namespaceUri, String localName, ReadValueCallback<XmlReader, T> converter)
         throws XMLStreamException {
         return readObject(new QName(namespaceUri, localName), converter);
     }
@@ -315,11 +493,7 @@ public abstract class XmlReader implements AutoCloseable {
                 "Expected XML element to be '" + startTagName + "' but it was: " + tagName + "'.");
         }
 
-        try {
-            return converter.read(this);
-        } catch (IOException ex) {
-            throw new XMLStreamException(ex);
-        }
+        return converter.read(this);
     }
 
     /**
@@ -331,7 +505,7 @@ public abstract class XmlReader implements AutoCloseable {
      * {@link XmlToken#START_ELEMENT}.
      * @throws XMLStreamException If skipping the element fails.
      */
-    public final void skipElement() throws XMLStreamException {
+    public void skipElement() throws XMLStreamException {
         XmlToken currentToken = currentToken();
         if (currentToken != XmlToken.START_ELEMENT) {
             return;
@@ -350,6 +524,25 @@ public abstract class XmlReader implements AutoCloseable {
                 // But if this happens, just break until a better strategy can be determined.
                 break;
             }
+        }
+    }
+
+    private static XmlToken convertEventToToken(int event) {
+        switch (event) {
+            case 1:
+                return XmlToken.START_ELEMENT;
+
+            case 2:
+                return XmlToken.END_ELEMENT;
+
+            case 7:
+                return XmlToken.START_DOCUMENT;
+
+            case 8:
+                return XmlToken.END_DOCUMENT;
+
+            default:
+                throw new IllegalStateException("Unknown/unsupported XMLStreamConstants: " + event);
         }
     }
 }

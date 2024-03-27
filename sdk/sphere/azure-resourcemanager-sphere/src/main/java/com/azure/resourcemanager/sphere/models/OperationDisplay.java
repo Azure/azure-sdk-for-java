@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sphere.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Localized display information for this particular operation. */
+/**
+ * Localized display information for this particular operation.
+ */
 @Immutable
 public final class OperationDisplay {
     /*
@@ -37,14 +39,16 @@ public final class OperationDisplay {
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
-    /** Creates an instance of OperationDisplay class. */
+    /**
+     * Creates an instance of OperationDisplay class.
+     */
     public OperationDisplay() {
     }
 
     /**
      * Get the provider property: The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring
      * Insights" or "Microsoft Compute".
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -54,7 +58,7 @@ public final class OperationDisplay {
     /**
      * Get the resource property: The localized friendly name of the resource type related to this operation. E.g.
      * "Virtual Machines" or "Job Schedule Collections".
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -64,7 +68,7 @@ public final class OperationDisplay {
     /**
      * Get the operation property: The concise, localized friendly name for the operation; suitable for dropdowns. E.g.
      * "Create or Update Virtual Machine", "Restart Virtual Machine".
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -74,7 +78,7 @@ public final class OperationDisplay {
     /**
      * Get the description property: The short, localized friendly description of the operation; suitable for tool tips
      * and detailed views.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -83,7 +87,7 @@ public final class OperationDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

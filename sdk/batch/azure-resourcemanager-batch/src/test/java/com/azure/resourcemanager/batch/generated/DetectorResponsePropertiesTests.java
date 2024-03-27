@@ -12,14 +12,14 @@ public final class DetectorResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DetectorResponseProperties model
-            = BinaryData.fromString("{\"value\":\"z\"}").toObject(DetectorResponseProperties.class);
-        Assertions.assertEquals("z", model.value());
+            = BinaryData.fromString("{\"value\":\"wkuofoskghsauu\"}").toObject(DetectorResponseProperties.class);
+        Assertions.assertEquals("wkuofoskghsauu", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DetectorResponseProperties model = new DetectorResponseProperties().withValue("z");
+        DetectorResponseProperties model = new DetectorResponseProperties().withValue("wkuofoskghsauu");
         model = BinaryData.fromObject(model).toObject(DetectorResponseProperties.class);
-        Assertions.assertEquals("z", model.value());
+        Assertions.assertEquals("wkuofoskghsauu", model.value());
     }
 }

@@ -20,22 +20,18 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient,
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<JobExecution> jobExecutionWithResponse(
-        String resourceGroupName, String jobName, String jobExecutionName, Context context) {
-        Response<JobExecutionInner> inner =
-            this.serviceClient().jobExecutionWithResponse(resourceGroupName, jobName, jobExecutionName, context);
+    public Response<JobExecution> jobExecutionWithResponse(String resourceGroupName, String jobName,
+        String jobExecutionName, Context context) {
+        Response<JobExecutionInner> inner
+            = this.serviceClient().jobExecutionWithResponse(resourceGroupName, jobName, jobExecutionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new JobExecutionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -49,6 +45,14 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         } else {
             return null;
         }
+    }
+
+    public Response<String> getCustomDomainVerificationIdWithResponse(Context context) {
+        return this.serviceClient().getCustomDomainVerificationIdWithResponse(context);
+    }
+
+    public String getCustomDomainVerificationId() {
+        return this.serviceClient().getCustomDomainVerificationId();
     }
 
     private ResourceProvidersClient serviceClient() {

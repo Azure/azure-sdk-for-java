@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Current running state of the container. */
+/**
+ * Current running state of the container.
+ */
 public final class ContainerAppContainerRunningState extends ExpandableStringEnum<ContainerAppContainerRunningState> {
-    /** Static value Running for ContainerAppContainerRunningState. */
+    /**
+     * Static value Running for ContainerAppContainerRunningState.
+     */
     public static final ContainerAppContainerRunningState RUNNING = fromString("Running");
 
-    /** Static value Terminated for ContainerAppContainerRunningState. */
+    /**
+     * Static value Terminated for ContainerAppContainerRunningState.
+     */
     public static final ContainerAppContainerRunningState TERMINATED = fromString("Terminated");
 
-    /** Static value Waiting for ContainerAppContainerRunningState. */
+    /**
+     * Static value Waiting for ContainerAppContainerRunningState.
+     */
     public static final ContainerAppContainerRunningState WAITING = fromString("Waiting");
 
     /**
      * Creates a new instance of ContainerAppContainerRunningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class ContainerAppContainerRunningState extends ExpandableStringEnu
 
     /**
      * Creates or finds a ContainerAppContainerRunningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ContainerAppContainerRunningState.
      */
@@ -41,7 +49,7 @@ public final class ContainerAppContainerRunningState extends ExpandableStringEnu
 
     /**
      * Gets known ContainerAppContainerRunningState values.
-     *
+     * 
      * @return known ContainerAppContainerRunningState values.
      */
     public static Collection<ContainerAppContainerRunningState> values() {

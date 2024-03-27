@@ -20,12 +20,12 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = { ConfluentManagementClientImpl.class })
 public final class ConfluentManagementClientBuilder {
     /*
-     * The ID of the target subscription. The value must be an UUID.
+     * Microsoft Azure subscription id
      */
     private String subscriptionId;
 
     /**
-     * Sets The ID of the target subscription. The value must be an UUID.
+     * Sets Microsoft Azure subscription id.
      * 
      * @param subscriptionId the subscriptionId value.
      * @return the ConfluentManagementClientBuilder.

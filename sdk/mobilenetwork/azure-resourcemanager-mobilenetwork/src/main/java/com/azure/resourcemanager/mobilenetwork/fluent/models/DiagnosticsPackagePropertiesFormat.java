@@ -9,7 +9,9 @@ import com.azure.resourcemanager.mobilenetwork.models.DiagnosticsPackageStatus;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Diagnostics package properties. */
+/**
+ * Diagnostics package properties.
+ */
 @Immutable
 public final class DiagnosticsPackagePropertiesFormat {
     /*
@@ -30,13 +32,15 @@ public final class DiagnosticsPackagePropertiesFormat {
     @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
     private String reason;
 
-    /** Creates an instance of DiagnosticsPackagePropertiesFormat class. */
+    /**
+     * Creates an instance of DiagnosticsPackagePropertiesFormat class.
+     */
     public DiagnosticsPackagePropertiesFormat() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the diagnostics package resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -45,7 +49,7 @@ public final class DiagnosticsPackagePropertiesFormat {
 
     /**
      * Get the status property: The status of the diagnostics package collection.
-     *
+     * 
      * @return the status value.
      */
     public DiagnosticsPackageStatus status() {
@@ -54,7 +58,7 @@ public final class DiagnosticsPackagePropertiesFormat {
 
     /**
      * Get the reason property: The reason for the current state of the diagnostics package collection.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -63,7 +67,7 @@ public final class DiagnosticsPackagePropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

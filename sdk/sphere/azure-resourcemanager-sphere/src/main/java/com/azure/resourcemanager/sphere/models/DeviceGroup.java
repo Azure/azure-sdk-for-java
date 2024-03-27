@@ -5,111 +5,87 @@
 package com.azure.resourcemanager.sphere.models;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.sphere.fluent.models.DeviceGroupInner;
 
-/** An immutable client-side representation of DeviceGroup. */
+/**
+ * An immutable client-side representation of DeviceGroup.
+ */
 public interface DeviceGroup {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
-     * Gets the description property: Description of the device group.
-     *
-     * @return the description value.
+     * Gets the properties property: The resource-specific properties for this resource.
+     * 
+     * @return the properties value.
      */
-    String description();
+    DeviceGroupProperties properties();
 
     /**
-     * Gets the osFeedType property: Operating system feed type of the device group.
-     *
-     * @return the osFeedType value.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    OSFeedType osFeedType();
-
-    /**
-     * Gets the updatePolicy property: Update policy of the device group.
-     *
-     * @return the updatePolicy value.
-     */
-    UpdatePolicy updatePolicy();
-
-    /**
-     * Gets the allowCrashDumpsCollection property: Flag to define if the user allows for crash dump collection.
-     *
-     * @return the allowCrashDumpsCollection value.
-     */
-    AllowCrashDumpCollection allowCrashDumpsCollection();
-
-    /**
-     * Gets the regionalDataBoundary property: Regional data boundary for the device group.
-     *
-     * @return the regionalDataBoundary value.
-     */
-    RegionalDataBoundary regionalDataBoundary();
-
-    /**
-     * Gets the hasDeployment property: Deployment status for the device group.
-     *
-     * @return the hasDeployment value.
-     */
-    Boolean hasDeployment();
-
-    /**
-     * Gets the provisioningState property: The status of the last operation.
-     *
-     * @return the provisioningState value.
-     */
-    ProvisioningState provisioningState();
+    SystemData systemData();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.sphere.fluent.models.DeviceGroupInner object.
-     *
+     * 
      * @return the inner object.
      */
     DeviceGroupInner innerModel();
 
-    /** The entirety of the DeviceGroup definition. */
+    /**
+     * The entirety of the DeviceGroup definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The DeviceGroup definition stages. */
+    /**
+     * The DeviceGroup definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the DeviceGroup definition. */
+        /**
+         * The first stage of the DeviceGroup definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the DeviceGroup definition allowing to specify parent resource. */
+        /**
+         * The stage of the DeviceGroup definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, catalogName, productName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param catalogName Name of catalog.
              * @param productName Name of product.
@@ -122,184 +98,92 @@ public interface DeviceGroup {
          * The stage of the DeviceGroup definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithDescription,
-                DefinitionStages.WithOsFeedType,
-                DefinitionStages.WithUpdatePolicy,
-                DefinitionStages.WithAllowCrashDumpsCollection,
-                DefinitionStages.WithRegionalDataBoundary {
+        interface WithCreate extends DefinitionStages.WithProperties {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             DeviceGroup create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             DeviceGroup create(Context context);
         }
 
-        /** The stage of the DeviceGroup definition allowing to specify description. */
-        interface WithDescription {
+        /**
+         * The stage of the DeviceGroup definition allowing to specify properties.
+         */
+        interface WithProperties {
             /**
-             * Specifies the description property: Description of the device group..
-             *
-             * @param description Description of the device group.
+             * Specifies the properties property: The resource-specific properties for this resource..
+             * 
+             * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            WithCreate withDescription(String description);
-        }
-
-        /** The stage of the DeviceGroup definition allowing to specify osFeedType. */
-        interface WithOsFeedType {
-            /**
-             * Specifies the osFeedType property: Operating system feed type of the device group..
-             *
-             * @param osFeedType Operating system feed type of the device group.
-             * @return the next definition stage.
-             */
-            WithCreate withOsFeedType(OSFeedType osFeedType);
-        }
-
-        /** The stage of the DeviceGroup definition allowing to specify updatePolicy. */
-        interface WithUpdatePolicy {
-            /**
-             * Specifies the updatePolicy property: Update policy of the device group..
-             *
-             * @param updatePolicy Update policy of the device group.
-             * @return the next definition stage.
-             */
-            WithCreate withUpdatePolicy(UpdatePolicy updatePolicy);
-        }
-
-        /** The stage of the DeviceGroup definition allowing to specify allowCrashDumpsCollection. */
-        interface WithAllowCrashDumpsCollection {
-            /**
-             * Specifies the allowCrashDumpsCollection property: Flag to define if the user allows for crash dump
-             * collection..
-             *
-             * @param allowCrashDumpsCollection Flag to define if the user allows for crash dump collection.
-             * @return the next definition stage.
-             */
-            WithCreate withAllowCrashDumpsCollection(AllowCrashDumpCollection allowCrashDumpsCollection);
-        }
-
-        /** The stage of the DeviceGroup definition allowing to specify regionalDataBoundary. */
-        interface WithRegionalDataBoundary {
-            /**
-             * Specifies the regionalDataBoundary property: Regional data boundary for the device group..
-             *
-             * @param regionalDataBoundary Regional data boundary for the device group.
-             * @return the next definition stage.
-             */
-            WithCreate withRegionalDataBoundary(RegionalDataBoundary regionalDataBoundary);
+            WithCreate withProperties(DeviceGroupProperties properties);
         }
     }
 
     /**
      * Begins update for the DeviceGroup resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     DeviceGroup.Update update();
 
-    /** The template for DeviceGroup update. */
-    interface Update
-        extends UpdateStages.WithDescription,
-            UpdateStages.WithOsFeedType,
-            UpdateStages.WithUpdatePolicy,
-            UpdateStages.WithAllowCrashDumpsCollection,
-            UpdateStages.WithRegionalDataBoundary {
+    /**
+     * The template for DeviceGroup update.
+     */
+    interface Update extends UpdateStages.WithProperties {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         DeviceGroup apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         DeviceGroup apply(Context context);
     }
 
-    /** The DeviceGroup update stages. */
+    /**
+     * The DeviceGroup update stages.
+     */
     interface UpdateStages {
-        /** The stage of the DeviceGroup update allowing to specify description. */
-        interface WithDescription {
+        /**
+         * The stage of the DeviceGroup update allowing to specify properties.
+         */
+        interface WithProperties {
             /**
-             * Specifies the description property: Description of the device group..
-             *
-             * @param description Description of the device group.
+             * Specifies the properties property: The updatable properties of the DeviceGroup..
+             * 
+             * @param properties The updatable properties of the DeviceGroup.
              * @return the next definition stage.
              */
-            Update withDescription(String description);
-        }
-
-        /** The stage of the DeviceGroup update allowing to specify osFeedType. */
-        interface WithOsFeedType {
-            /**
-             * Specifies the osFeedType property: Operating system feed type of the device group..
-             *
-             * @param osFeedType Operating system feed type of the device group.
-             * @return the next definition stage.
-             */
-            Update withOsFeedType(OSFeedType osFeedType);
-        }
-
-        /** The stage of the DeviceGroup update allowing to specify updatePolicy. */
-        interface WithUpdatePolicy {
-            /**
-             * Specifies the updatePolicy property: Update policy of the device group..
-             *
-             * @param updatePolicy Update policy of the device group.
-             * @return the next definition stage.
-             */
-            Update withUpdatePolicy(UpdatePolicy updatePolicy);
-        }
-
-        /** The stage of the DeviceGroup update allowing to specify allowCrashDumpsCollection. */
-        interface WithAllowCrashDumpsCollection {
-            /**
-             * Specifies the allowCrashDumpsCollection property: Flag to define if the user allows for crash dump
-             * collection..
-             *
-             * @param allowCrashDumpsCollection Flag to define if the user allows for crash dump collection.
-             * @return the next definition stage.
-             */
-            Update withAllowCrashDumpsCollection(AllowCrashDumpCollection allowCrashDumpsCollection);
-        }
-
-        /** The stage of the DeviceGroup update allowing to specify regionalDataBoundary. */
-        interface WithRegionalDataBoundary {
-            /**
-             * Specifies the regionalDataBoundary property: Regional data boundary for the device group..
-             *
-             * @param regionalDataBoundary Regional data boundary for the device group.
-             * @return the next definition stage.
-             */
-            Update withRegionalDataBoundary(RegionalDataBoundary regionalDataBoundary);
+            Update withProperties(DeviceGroupUpdateProperties properties);
         }
     }
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     DeviceGroup refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -308,7 +192,7 @@ public interface DeviceGroup {
     /**
      * Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names when bulk
      * claiming devices to a catalog only.
-     *
+     * 
      * @param claimDevicesRequest Bulk claim devices request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -319,7 +203,7 @@ public interface DeviceGroup {
     /**
      * Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names when bulk
      * claiming devices to a catalog only.
-     *
+     * 
      * @param claimDevicesRequest Bulk claim devices request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -331,22 +215,22 @@ public interface DeviceGroup {
     /**
      * Counts devices in device group. '.default' and '.unassigned' are system defined values and cannot be used for
      * product or device group name.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response to the action call for count devices in a catalog along with {@link Response}.
      */
-    Response<CountDeviceResponse> countDevicesWithResponse(Context context);
+    Response<CountDevicesResponse> countDevicesWithResponse(Context context);
 
     /**
      * Counts devices in device group. '.default' and '.unassigned' are system defined values and cannot be used for
      * product or device group name.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response to the action call for count devices in a catalog.
      */
-    CountDeviceResponse countDevices();
+    CountDevicesResponse countDevices();
 }

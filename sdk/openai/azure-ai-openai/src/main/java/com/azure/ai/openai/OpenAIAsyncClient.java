@@ -47,6 +47,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.nio.ByteBuffer;
+import java.util.concurrent.atomic.AtomicReference;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -563,6 +564,57 @@ public final class OpenAIAsyncClient {
     }
 
     /**
+     * Gets chat completions for the provided chat messages. Chat completions support a wide variety of tasks and
+     * generate text that continues from or "completes" provided prompt data.
+     *
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
+     * <!-- src_embed
+     * com.azure.ai.openai.OpenAIAsyncClient.getChatCompletionsStream#String-ChatCompletionsOptionsMaxOverload -->
+     * <pre>
+     * openAIAsyncClient.getChatCompletionsStreamWithResponse&#40;deploymentOrModelId, new ChatCompletionsOptions&#40;chatMessages&#41;,
+     *                 new RequestOptions&#40;&#41;.setHeader&#40;&quot;my-header&quot;, &quot;my-header-value&quot;&#41;&#41;
+     *         .subscribe&#40;
+     *                 response -&gt; System.out.print&#40;response.getValue&#40;&#41;.getId&#40;&#41;&#41;,
+     *                 error -&gt; System.err.println&#40;&quot;There was an error getting chat completions.&quot; + error&#41;,
+     *                 &#40;&#41; -&gt; System.out.println&#40;&quot;Completed called getChatCompletionsStreamWithResponse.&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.openai.OpenAIAsyncClient.getChatCompletionsStream#String-ChatCompletionsOptionsMaxOverload
+     * -->
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
+     * wide variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return chat completions stream for the provided chat messages. Completions support a wide variety of tasks and
+     * generate text that continues from or "completes" provided prompt data.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<Response<ChatCompletions>> getChatCompletionsStreamWithResponse(String deploymentOrModelName,
+        ChatCompletionsOptions chatCompletionsOptions, RequestOptions requestOptions) {
+        chatCompletionsOptions.setStream(true);
+        Mono<Response<BinaryData>> chatCompletionsWithResponse = getChatCompletionsWithResponse(deploymentOrModelName,
+            BinaryData.fromObject(chatCompletionsOptions), requestOptions);
+        AtomicReference<Response<BinaryData>> responseCopy = new AtomicReference<>();
+        Flux<ByteBuffer> responseStream = chatCompletionsWithResponse.flatMapMany(response -> {
+            responseCopy.set(response);
+            return response.getValue().toFluxByteBuffer();
+        });
+        OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream
+            = new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
+        return chatCompletionsStream.getEvents()
+            .map(chatCompletions -> new SimpleResponse<>(responseCopy.get(), chatCompletions));
+    }
+
+    /**
      * Return the embeddings for a given prompt.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
@@ -652,21 +704,10 @@ public final class OpenAIAsyncClient {
      * <pre>
      * openAIAsyncClient
      *         .getChatCompletionsStream&#40;deploymentOrModelId, new ChatCompletionsOptions&#40;chatMessages&#41;&#41;
-     *         .toStream&#40;&#41;
-     *         &#47;&#47; Remove .skip&#40;1&#41; when using Non-Azure OpenAI API
-     *         &#47;&#47; Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
-     *         &#47;&#47; TODO: remove .skip&#40;1&#41; after service fixes the issue.
-     *         .skip&#40;1&#41;
-     *         .forEach&#40;chatCompletions -&gt; &#123;
-     *             ChatResponseMessage delta = chatCompletions.getChoices&#40;&#41;.get&#40;0&#41;.getDelta&#40;&#41;;
-     *             if &#40;delta.getRole&#40;&#41; != null&#41; &#123;
-     *                 System.out.println&#40;&quot;Role = &quot; + delta.getRole&#40;&#41;&#41;;
-     *             &#125;
-     *             if &#40;delta.getContent&#40;&#41; != null&#41; &#123;
-     *                 String content = delta.getContent&#40;&#41;;
-     *                 System.out.print&#40;content&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *         .subscribe&#40;
+     *                 chatCompletions -&gt; System.out.print&#40;chatCompletions.getId&#40;&#41;&#41;,
+     *                 error -&gt; System.err.println&#40;&quot;There was an error getting chat completions.&quot; + error&#41;,
+     *                 &#40;&#41; -&gt; System.out.println&#40;&quot;Completed called getChatCompletionsStream.&quot;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.ai.openai.OpenAIAsyncClient.getChatCompletionsStream#String-ChatCompletionsOptions -->
      *

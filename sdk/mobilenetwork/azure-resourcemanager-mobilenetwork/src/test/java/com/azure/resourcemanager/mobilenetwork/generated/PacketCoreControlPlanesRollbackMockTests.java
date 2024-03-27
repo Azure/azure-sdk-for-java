@@ -30,44 +30,33 @@ public final class PacketCoreControlPlanesRollbackMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"id\":\"toihiqakydi\",\"name\":\"brkwpzdqt\",\"status\":\"hcspo\",\"resourceId\":\"qaxsipietgbebjf\",\"startTime\":\"2021-08-07T23:47:59Z\",\"endTime\":\"2021-12-06T17:55:42Z\",\"percentComplete\":65.3142900105031,\"properties\":\"datalpnfpubntnb\"}";
+        String responseStr
+            = "{\"id\":\"ropions\",\"name\":\"nw\",\"status\":\"ngajinnixjawrtmj\",\"resourceId\":\"myccx\",\"startTime\":\"2021-07-27T15:44:21Z\",\"endTime\":\"2021-03-20T00:37:44Z\",\"percentComplete\":22.430662745783934,\"properties\":\"dataekhenl\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MobileNetworkManager manager = MobileNetworkManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AsyncOperationStatus response =
-            manager.packetCoreControlPlanes().rollback("tjewlpxuzzj", "nrefqyh", com.azure.core.util.Context.NONE);
+        AsyncOperationStatus response
+            = manager.packetCoreControlPlanes().rollback("vzuyturmlmu", "wolba", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("toihiqakydi", response.id());
-        Assertions.assertEquals("brkwpzdqt", response.name());
-        Assertions.assertEquals("hcspo", response.status());
-        Assertions.assertEquals("qaxsipietgbebjf", response.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-07T23:47:59Z"), response.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-06T17:55:42Z"), response.endTime());
-        Assertions.assertEquals(65.3142900105031D, response.percentComplete());
+        Assertions.assertEquals("ropions", response.id());
+        Assertions.assertEquals("nw", response.name());
+        Assertions.assertEquals("ngajinnixjawrtmj", response.status());
+        Assertions.assertEquals("myccx", response.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-27T15:44:21Z"), response.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-20T00:37:44Z"), response.endTime());
+        Assertions.assertEquals(22.430662745783934D, response.percentComplete());
     }
 }

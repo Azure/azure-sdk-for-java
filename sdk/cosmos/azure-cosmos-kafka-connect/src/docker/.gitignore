@@ -1,8 +1,0 @@
-connectors/
-log.txt
-
-# Exclude all temporary files in resources
-!resources/*example
-resources/sink.properties
-resources/source.properties
-resources/standalone.properties

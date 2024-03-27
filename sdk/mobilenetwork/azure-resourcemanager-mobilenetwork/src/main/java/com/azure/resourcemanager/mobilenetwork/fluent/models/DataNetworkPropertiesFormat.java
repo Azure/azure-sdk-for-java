@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Data network properties. */
+/**
+ * Data network properties.
+ */
 @Fluent
 public final class DataNetworkPropertiesFormat {
     /*
@@ -23,13 +25,15 @@ public final class DataNetworkPropertiesFormat {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of DataNetworkPropertiesFormat class. */
+    /**
+     * Creates an instance of DataNetworkPropertiesFormat class.
+     */
     public DataNetworkPropertiesFormat() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the data network resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -38,7 +42,7 @@ public final class DataNetworkPropertiesFormat {
 
     /**
      * Get the description property: An optional description for this data network.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -47,7 +51,7 @@ public final class DataNetworkPropertiesFormat {
 
     /**
      * Set the description property: An optional description for this data network.
-     *
+     * 
      * @param description the description value to set.
      * @return the DataNetworkPropertiesFormat object itself.
      */
@@ -58,7 +62,7 @@ public final class DataNetworkPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

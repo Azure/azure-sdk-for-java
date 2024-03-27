@@ -33,14 +33,14 @@ public final class SubvolumesImpl implements Subvolumes {
         String volumeName) {
         PagedIterable<SubvolumeInfoInner> inner
             = this.serviceClient().listByVolume(resourceGroupName, accountName, poolName, volumeName);
-        return Utils.mapPage(inner, inner1 -> new SubvolumeInfoImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SubvolumeInfoImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SubvolumeInfo> listByVolume(String resourceGroupName, String accountName, String poolName,
         String volumeName, Context context) {
         PagedIterable<SubvolumeInfoInner> inner
             = this.serviceClient().listByVolume(resourceGroupName, accountName, poolName, volumeName, context);
-        return Utils.mapPage(inner, inner1 -> new SubvolumeInfoImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SubvolumeInfoImpl(inner1, this.manager()));
     }
 
     public Response<SubvolumeInfo> getWithResponse(String resourceGroupName, String accountName, String poolName,
@@ -99,27 +99,27 @@ public final class SubvolumesImpl implements Subvolumes {
     }
 
     public SubvolumeInfo getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String poolName = Utils.getValueFromIdByName(id, "capacityPools");
+        String poolName = ResourceManagerUtils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
-        String volumeName = Utils.getValueFromIdByName(id, "volumes");
+        String volumeName = ResourceManagerUtils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
-        String subvolumeName = Utils.getValueFromIdByName(id, "subvolumes");
+        String subvolumeName = ResourceManagerUtils.getValueFromIdByName(id, "subvolumes");
         if (subvolumeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'subvolumes'.", id)));
@@ -129,27 +129,27 @@ public final class SubvolumesImpl implements Subvolumes {
     }
 
     public Response<SubvolumeInfo> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String poolName = Utils.getValueFromIdByName(id, "capacityPools");
+        String poolName = ResourceManagerUtils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
-        String volumeName = Utils.getValueFromIdByName(id, "volumes");
+        String volumeName = ResourceManagerUtils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
-        String subvolumeName = Utils.getValueFromIdByName(id, "subvolumes");
+        String subvolumeName = ResourceManagerUtils.getValueFromIdByName(id, "subvolumes");
         if (subvolumeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'subvolumes'.", id)));
@@ -158,27 +158,27 @@ public final class SubvolumesImpl implements Subvolumes {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String poolName = Utils.getValueFromIdByName(id, "capacityPools");
+        String poolName = ResourceManagerUtils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
-        String volumeName = Utils.getValueFromIdByName(id, "volumes");
+        String volumeName = ResourceManagerUtils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
-        String subvolumeName = Utils.getValueFromIdByName(id, "subvolumes");
+        String subvolumeName = ResourceManagerUtils.getValueFromIdByName(id, "subvolumes");
         if (subvolumeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'subvolumes'.", id)));
@@ -187,27 +187,27 @@ public final class SubvolumesImpl implements Subvolumes {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String poolName = Utils.getValueFromIdByName(id, "capacityPools");
+        String poolName = ResourceManagerUtils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
-        String volumeName = Utils.getValueFromIdByName(id, "volumes");
+        String volumeName = ResourceManagerUtils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
-        String subvolumeName = Utils.getValueFromIdByName(id, "subvolumes");
+        String subvolumeName = ResourceManagerUtils.getValueFromIdByName(id, "subvolumes");
         if (subvolumeName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'subvolumes'.", id)));
