@@ -6,8 +6,6 @@ package com.generic.core.http.models;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.Context;
 
-import static com.generic.core.http.models.ResponseBodyHandling.BUFFER;
-
 /**
  * Contains metadata associated with a given {@link HttpRequest}.
  * <p>

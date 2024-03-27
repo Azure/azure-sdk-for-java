@@ -225,13 +225,20 @@ class DefaultHttpClient implements HttpClient {
             HttpRequestMetadata metadata = httpRequest.getMetadata();
 
             if (metadata != null && metadata.getResponseBodyHandling() != null) {
-                switch (metadata.getResponseBodyHandling()) {
+                switch (httpRequest.getMetadata().getResponseBodyHandling()) {
                     case IGNORE:
-                        ignoreResponseBody(httpResponse, connection);
+                        HttpResponseAccessHelper.setBody(httpResponse, EMPTY_BODY);
+
+                        connection.disconnect();
 
                         break;
                     case STREAM:
-                        setStreamingResponseBody(httpResponse, connection);
+                        try {
+                            HttpResponseAccessHelper.setBody(httpResponse,
+                                BinaryData.fromStream(connection.getInputStream()));
+                        } catch (IOException e) {
+                            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+                        }
 
                         break;
                     case BUFFER:
@@ -264,20 +271,6 @@ class DefaultHttpClient implements HttpClient {
             return ServerSentEventUtil.isTextEventStreamContentType(responseHeaders.getValue(HttpHeaderName.CONTENT_TYPE));
         }
         return false;
-    }
-
-    private void setStreamingResponseBody(HttpResponse<?> httpResponse, HttpURLConnection connection) {
-        try {
-            HttpResponseAccessHelper.setBody(httpResponse, BinaryData.fromStream(connection.getInputStream()));
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
-    }
-
-    private void ignoreResponseBody(HttpResponse<?> httpResponse, HttpURLConnection connection) {
-        HttpResponseAccessHelper.setBody(httpResponse, EMPTY_BODY);
-
-        connection.disconnect();
     }
 
     private void eagerlyBufferResponseBody(HttpResponse<?> httpResponse, HttpURLConnection connection) {

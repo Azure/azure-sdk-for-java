@@ -173,8 +173,6 @@ class OkHttpHttpClient implements HttpClient {
 
                 if (body != null && body.contentLength() != 0) {
                     bytes = body.bytes();
-
-                    body.close();
                 }
 
                 return new OkHttpResponse(response, request, eagerlyConvertHeaders, bytes);
