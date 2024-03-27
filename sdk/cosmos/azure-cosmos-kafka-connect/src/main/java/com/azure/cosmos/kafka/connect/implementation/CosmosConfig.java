@@ -3,7 +3,8 @@
 
 package com.azure.cosmos.kafka.connect.implementation;
 
-import com.azure.cosmos.kafka.connect.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.apache.kafka.common.config.AbstractConfig;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigException;

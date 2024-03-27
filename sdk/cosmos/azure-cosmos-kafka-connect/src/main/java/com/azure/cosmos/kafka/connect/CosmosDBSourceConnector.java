@@ -6,12 +6,12 @@ package com.azure.cosmos.kafka.connect;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.CosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.CosmosExceptionsHelper;
-import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
-import com.azure.cosmos.kafka.connect.implementation.Strings;
-import com.azure.cosmos.kafka.connect.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceOffsetStorageReader;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTask;
@@ -310,7 +310,7 @@ public class CosmosDBSourceConnector extends SourceConnector {
                 feedRangeContinuationTopicOffset.getItemLsn());
 
         try {
-            return KafkaCosmosUtils.getSimpleObjectMapper().writeValueAsString(changeFeedState);
+            return Utils.getSimpleObjectMapper().writeValueAsString(changeFeedState);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

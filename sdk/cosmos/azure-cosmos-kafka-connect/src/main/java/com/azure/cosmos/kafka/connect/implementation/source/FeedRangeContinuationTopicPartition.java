@@ -3,14 +3,14 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
-import com.azure.cosmos.kafka.connect.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.FeedRange;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkArgument;
-import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class FeedRangeContinuationTopicPartition {
     private static final String DATABASE_NAME_KEY = "cosmos.source.database.name";

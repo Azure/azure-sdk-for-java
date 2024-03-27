@@ -6,13 +6,13 @@ package com.azure.cosmos.kafka.connect.implementation.source;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.implementation.guava25.base.Stopwatch;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.CosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.CosmosExceptionsHelper;
-import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
-import com.azure.cosmos.kafka.connect.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.kafka.connect.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.kafka.connect.implementation.guava25.base.Stopwatch;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -315,7 +315,7 @@ public class CosmosSourceTask extends SourceTask {
         } else {
             try {
                 KafkaCosmosChangeFeedState kafkaCosmosChangeFeedState =
-                    KafkaCosmosUtils
+                    Utils
                         .getSimpleObjectMapper()
                         .readValue(feedRangeTaskUnit.getContinuationState(), KafkaCosmosChangeFeedState.class);
 

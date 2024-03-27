@@ -7,6 +7,8 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
@@ -15,8 +17,6 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
-import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
-import com.azure.cosmos.kafka.connect.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedModes;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedStartFromModes;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
@@ -310,7 +310,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
 
                 KafkaCosmosChangeFeedState kafkaCosmosChangeFeedState =
                     new KafkaCosmosChangeFeedState(childRangeContinuationState.toString(), childRange, "1");
-                String taskUnitContinuationState = KafkaCosmosUtils.getSimpleObjectMapper().writeValueAsString(kafkaCosmosChangeFeedState);
+                String taskUnitContinuationState = Utils.getSimpleObjectMapper().writeValueAsString(kafkaCosmosChangeFeedState);
                 singlePartitionFeedRangeTaskUnits.add(
                     new FeedRangeTaskUnit(
                         databaseName,
@@ -491,7 +491,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                             feedRange,
                             changeFeedState.getContinuation().getCurrentContinuationToken().getToken());
                     try {
-                        feedRangeContinuationState = KafkaCosmosUtils.getSimpleObjectMapper().writeValueAsString(kafkaCosmosChangeFeedState);
+                        feedRangeContinuationState = Utils.getSimpleObjectMapper().writeValueAsString(kafkaCosmosChangeFeedState);
                     } catch (JsonProcessingException e) {
                         throw new RuntimeException(e);
                     }
@@ -540,18 +540,19 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         String taskUnitsKey = "kafka.connect.cosmos.source.task.feedRangeTaskUnits";
         List<FeedRangeTaskUnit> allTaskUnitsFromTaskConfigs = new ArrayList<>();
         for (Map<String, String> taskConfig : taskConfigs) {
-            List<FeedRangeTaskUnit> taskUnitsFromTaskConfig = KafkaCosmosUtils
-                .getSimpleObjectMapper()
-                .readValue(taskConfig.get(taskUnitsKey), new TypeReference<List<String>>() {})
-                .stream()
-                .map(taskUnitString -> {
-                    try {
-                        return KafkaCosmosUtils.getSimpleObjectMapper().readValue(taskUnitString, FeedRangeTaskUnit.class);
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .collect(Collectors.toList());
+            List<FeedRangeTaskUnit> taskUnitsFromTaskConfig =
+                Utils
+                    .getSimpleObjectMapper()
+                    .readValue(taskConfig.get(taskUnitsKey), new TypeReference<List<String>>() {})
+                    .stream()
+                    .map(taskUnitString -> {
+                        try {
+                            return Utils.getSimpleObjectMapper().readValue(taskUnitString, FeedRangeTaskUnit.class);
+                        } catch (JsonProcessingException e) {
+                            throw new RuntimeException(e);
+                        }
+                    })
+                    .collect(Collectors.toList());
             allTaskUnitsFromTaskConfigs.addAll(taskUnitsFromTaskConfig);
         }
 
@@ -569,7 +570,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         String taskUnitKey = "kafka.connect.cosmos.source.task.metadataTaskUnit";
         assertThat(taskConfig.containsKey(taskUnitKey));
         MetadataTaskUnit metadataTaskUnitFromTaskConfig =
-            KafkaCosmosUtils.getSimpleObjectMapper().readValue(taskConfig.get(taskUnitKey), MetadataTaskUnit.class);
+            Utils.getSimpleObjectMapper().readValue(taskConfig.get(taskUnitKey), MetadataTaskUnit.class);
 
         assertThat(expectedMetadataTaskUnit).isEqualTo(metadataTaskUnitFromTaskConfig);
     }
