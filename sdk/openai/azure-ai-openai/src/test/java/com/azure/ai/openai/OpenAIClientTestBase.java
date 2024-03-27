@@ -37,6 +37,7 @@ import com.azure.ai.openai.models.ContentFilterResultDetailsForPrompt;
 import com.azure.ai.openai.models.ContentFilterResultsForChoice;
 import com.azure.ai.openai.models.ContentFilterResultsForPrompt;
 import com.azure.ai.openai.models.ContentFilterSeverity;
+import com.azure.ai.openai.models.EmbeddingEncodingFormat;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
@@ -64,8 +65,10 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.fasterxml.jackson.core.JsonParseException;
 import org.junit.jupiter.api.Test;
 
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -84,6 +87,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class OpenAIClientTestBase extends TestProxyTestBase {
@@ -240,6 +244,12 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("text-embedding-ada-002", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
     }
 
+    void getEmbeddingBase64RunnerForNonAzure(BiConsumer<String, EmbeddingsOptions> testRunner) {
+        testRunner.accept("text-embedding-ada-002",
+                new EmbeddingsOptions(Arrays.asList("Your text string goes here"))
+                        .setEncodingFormat(EmbeddingEncodingFormat.BASE64)
+        );
+    }
     void getImageGenerationRunner(BiConsumer<String, ImageGenerationOptions> testRunner) {
         testRunner.accept("dall-e-3",
                 new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh")
@@ -532,15 +542,21 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertFalse(actual.getMessage().getContent().isEmpty());
     }
 
-    static void assertEmbeddings(Embeddings actual) {
+    static void assertEmbeddings(Embeddings actual, EmbeddingEncodingFormat encodingFormat) {
         List<EmbeddingItem> data = actual.getData();
         assertNotNull(data);
         assertFalse(data.isEmpty());
 
         for (EmbeddingItem item : data) {
-            List<Double> embedding = item.getEmbedding();
-            assertNotNull(embedding);
-            assertFalse(embedding.isEmpty());
+            if (encodingFormat == EmbeddingEncodingFormat.BASE64) {
+                assertNotNull(item.getEmbeddingBase64());
+                assertThrows(UncheckedIOException.class, () -> item.getEmbedding());
+            } else {
+                List<Float> embedding = item.getEmbedding();
+                assertNotNull(embedding);
+                assertFalse(embedding.isEmpty());
+                assertThrows(UncheckedIOException.class, () -> item.getEmbeddingBase64());
+            }
         }
         assertNotNull(actual.getUsage());
     }

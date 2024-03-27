@@ -5,10 +5,12 @@ package com.azure.ai.openai.usage;
 
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
+import com.azure.ai.openai.models.EmbeddingEncodingFormat;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.EmbeddingsUsage;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Configuration;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
@@ -23,9 +25,9 @@ public class GetEmbeddingsAsyncSample {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) throws InterruptedException {
-        String azureOpenaiKey = "{azure-open-ai-key}";
-        String endpoint = "{azure-open-ai-endpoint}";
-        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
+        String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
+        String deploymentOrModelId = "text-embedding-ada-002";
 
         OpenAIAsyncClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)
@@ -36,9 +38,13 @@ public class GetEmbeddingsAsyncSample {
         client.getEmbeddings(deploymentOrModelId, embeddingsOptions).subscribe(
             embeddings -> {
                 for (EmbeddingItem item : embeddings.getData()) {
-                    System.out.printf("Index: %d.%n", item.getPromptIndex());
-                    for (Double embedding : item.getEmbedding()) {
-                        System.out.printf("%f;", embedding);
+                    if (embeddingsOptions.getEncodingFormat() == EmbeddingEncodingFormat.BASE64) {
+                        System.out.printf("Embedding: %s.%n", item.getEmbeddingBase64());
+                    } else {
+                        System.out.printf("Embedding: ");
+                        for (Float embedding : item.getEmbedding()) {
+                            System.out.printf("%f;", embedding);
+                        }
                     }
                 }
                 EmbeddingsUsage usage = embeddings.getUsage();

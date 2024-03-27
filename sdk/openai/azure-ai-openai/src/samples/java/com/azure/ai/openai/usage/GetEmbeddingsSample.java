@@ -5,11 +5,13 @@ package com.azure.ai.openai.usage;
 
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
+import com.azure.ai.openai.models.EmbeddingEncodingFormat;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.EmbeddingsUsage;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Configuration;
 
 import java.util.Arrays;
 
@@ -23,23 +25,30 @@ public class GetEmbeddingsSample {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
-        String azureOpenaiKey = "{azure-open-ai-key}";
-        String endpoint = "{azure-open-ai-endpoint}";
-        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
+        String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
+        String deploymentOrModelId = "text-embedding-ada-002";
 
         OpenAIClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(azureOpenaiKey))
             .buildClient();
 
-        EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(Arrays.asList("Your text string goes here"));
+        EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(Arrays.asList("Your text string goes here"))
+                .setEncodingFormat(EmbeddingEncodingFormat.BASE64);
 
         Embeddings embeddings = client.getEmbeddings(deploymentOrModelId, embeddingsOptions);
 
         for (EmbeddingItem item : embeddings.getData()) {
             System.out.printf("Index: %d.%n", item.getPromptIndex());
-            for (Double embedding : item.getEmbedding()) {
-                System.out.printf("%f;", embedding);
+
+            if (embeddingsOptions.getEncodingFormat() == EmbeddingEncodingFormat.BASE64) {
+                System.out.printf("Embedding: %s.%n", item.getEmbeddingBase64());
+            } else {
+                System.out.printf("Embedding: ");
+                for (Float embedding : item.getEmbedding()) {
+                    System.out.printf("%f;", embedding);
+                }
             }
         }
 

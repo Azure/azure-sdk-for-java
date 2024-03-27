@@ -241,7 +241,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getEmbeddingRunnerForNonAzure((modelId, embeddingsOptions) -> {
             StepVerifier.create(client.getEmbeddings(modelId, embeddingsOptions))
-                .assertNext(resultEmbeddings -> assertEmbeddings(resultEmbeddings))
+                .assertNext(resultEmbeddings -> assertEmbeddings(resultEmbeddings, embeddingsOptions.getEncodingFormat()))
                 .verifyComplete();
         });
     }
@@ -256,7 +256,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                     new RequestOptions()))
                 .assertNext(response -> {
                     Embeddings resultEmbeddings = assertAndGetValueFromResponse(response, Embeddings.class, 200);
-                    assertEmbeddings(resultEmbeddings);
+                    assertEmbeddings(resultEmbeddings, embeddingsOptions.getEncodingFormat());
                 })
                 .verifyComplete();
         });

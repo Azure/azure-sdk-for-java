@@ -201,7 +201,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIClient(httpClient, serviceVersion);
         getEmbeddingRunner((deploymentId, embeddingsOptions) -> {
             Embeddings resultEmbeddings = client.getEmbeddings(deploymentId, embeddingsOptions);
-            assertEmbeddings(resultEmbeddings);
+            assertEmbeddings(resultEmbeddings, embeddingsOptions.getEncodingFormat());
         });
     }
 
@@ -213,7 +213,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             Response<BinaryData> response = client.getEmbeddingsWithResponse(deploymentId,
                 BinaryData.fromObject(embeddingsOptions), new RequestOptions());
             Embeddings resultEmbeddings = assertAndGetValueFromResponse(response, Embeddings.class, 200);
-            assertEmbeddings(resultEmbeddings);
+            assertEmbeddings(resultEmbeddings, embeddingsOptions.getEncodingFormat());
         });
     }
 

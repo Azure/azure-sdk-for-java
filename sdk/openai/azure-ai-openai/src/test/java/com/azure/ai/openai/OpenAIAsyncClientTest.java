@@ -237,7 +237,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getEmbeddingRunner((deploymentId, embeddingsOptions) -> {
             StepVerifier.create(client.getEmbeddings(deploymentId, embeddingsOptions))
-                .assertNext(resultEmbeddings -> assertEmbeddings(resultEmbeddings))
+                .assertNext(resultEmbeddings -> assertEmbeddings(resultEmbeddings, embeddingsOptions.getEncodingFormat()))
                 .verifyComplete();
         });
     }
@@ -252,7 +252,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     new RequestOptions()))
                 .assertNext(response -> {
                     Embeddings resultEmbeddings = assertAndGetValueFromResponse(response, Embeddings.class, 200);
-                    assertEmbeddings(resultEmbeddings);
+                    assertEmbeddings(resultEmbeddings, embeddingsOptions.getEncodingFormat());
                 })
                 .verifyComplete();
         });

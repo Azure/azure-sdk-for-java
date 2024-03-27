@@ -20,6 +20,8 @@ import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
+import com.azure.ai.openai.models.EmbeddingEncodingFormat;
+import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.FunctionCallConfig;
@@ -207,7 +209,17 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         client = getNonAzureOpenAISyncClient(httpClient);
         getEmbeddingRunnerForNonAzure((deploymentId, embeddingsOptions) -> {
             Embeddings resultEmbeddings = client.getEmbeddings(deploymentId, embeddingsOptions);
-            assertEmbeddings(resultEmbeddings);
+            assertEmbeddings(resultEmbeddings, embeddingsOptions.getEncodingFormat());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetEmbeddingsBase64(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getEmbeddingBase64RunnerForNonAzure((deploymentId, embeddingsOptions) -> {
+            Embeddings resultEmbeddings = client.getEmbeddings(deploymentId, embeddingsOptions);
+            assertEmbeddings(resultEmbeddings, embeddingsOptions.getEncodingFormat());
         });
     }
 
@@ -219,7 +231,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             Response<BinaryData> response = client.getEmbeddingsWithResponse(deploymentId,
                 BinaryData.fromObject(embeddingsOptions), new RequestOptions());
             Embeddings resultEmbeddings = assertAndGetValueFromResponse(response, Embeddings.class, 200);
-            assertEmbeddings(resultEmbeddings);
+            assertEmbeddings(resultEmbeddings, embeddingsOptions.getEncodingFormat());
         });
     }
 
@@ -480,8 +492,6 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             assertTrue(transcription.contains("It's raining today."));
         });
     }
-
-
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")

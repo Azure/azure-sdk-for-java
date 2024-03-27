@@ -5,8 +5,12 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.List;
 
 /**
@@ -21,21 +25,7 @@ public final class EmbeddingItem {
      */
     @Generated
     @JsonProperty(value = "embedding")
-    private List<Double> embedding;
-
-    /**
-     * Creates an instance of EmbeddingItem class.
-     *
-     * @param embedding the embedding value to set.
-     * @param promptIndex the promptIndex value to set.
-     */
-    @Generated
-    @JsonCreator
-    private EmbeddingItem(@JsonProperty(value = "embedding") List<Double> embedding,
-        @JsonProperty(value = "index") int promptIndex) {
-        this.embedding = embedding;
-        this.promptIndex = promptIndex;
-    }
+    private BinaryData embedding;
 
     /**
      * Get the embedding property: List of embeddings value for the input prompt. These represent a measurement of the
@@ -43,9 +33,24 @@ public final class EmbeddingItem {
      *
      * @return the embedding value.
      */
-    @Generated
-    public List<Double> getEmbedding() {
-        return this.embedding;
+    public List<Float> getEmbedding() {
+        return embedding.toObject(new TypeReference<List<Float>>() {
+        });
+    }
+
+    /**
+     * Get the embedding property: List of embeddings value in base64 format for the input prompt. These represent a
+     * measurement of the vector-based relatedness of the provided input.
+     *
+     * @return the embedding base64 value.
+     */
+    public String getEmbeddingBase64() {
+        try {
+            getEmbedding();
+        } catch (Exception e) {
+            return embedding.toString();
+        }
+        throw new UncheckedIOException(new IOException("Embedding is not base64 encoded."));
     }
 
     /*
@@ -63,5 +68,19 @@ public final class EmbeddingItem {
     @Generated
     public int getPromptIndex() {
         return this.promptIndex;
+    }
+
+    /**
+     * Creates an instance of EmbeddingItem class.
+     *
+     * @param embedding the embedding value to set.
+     * @param promptIndex the promptIndex value to set.
+     */
+    @Generated
+    @JsonCreator
+    private EmbeddingItem(@JsonProperty(value = "embedding") BinaryData embedding,
+        @JsonProperty(value = "index") int promptIndex) {
+        this.embedding = embedding;
+        this.promptIndex = promptIndex;
     }
 }
