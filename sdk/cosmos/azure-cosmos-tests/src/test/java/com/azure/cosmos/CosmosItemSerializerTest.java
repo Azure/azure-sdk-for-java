@@ -7,7 +7,6 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.apachecommons.math.util.Pair;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
@@ -24,7 +23,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.util.function.Tuple2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,7 +32,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -307,16 +304,21 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         pojoResponse = container.readItem(id, new PartitionKey(id), requestOptions, classType);
         assertSameDocument(doc, pojoResponse.getItem());
 
+        beforeReplace.accept(doc);
+        CosmosItemRequestOptions upsertRequestOptions = new CosmosItemRequestOptions();
+        if (useEnvelopeWrapper) {
+            upsertRequestOptions.setCustomSerializer(EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION);
+        } else {
+            upsertRequestOptions.setCustomSerializer(requestOptions.getCustomSerializer());
+        }
+        pojoResponse = container.upsertItem(doc, new PartitionKey(id), upsertRequestOptions);
+        if (this.isContentOnWriteEnabled) {
+            assertSameDocument(doc, pojoResponse.getItem());
+        } else {
+            assertThat(pojoResponse.getItem()).isNull();
+        }
+
         // TODO @fabianm - add missing test cases
-
-        // INternalObjectNode.serializeJsonToByteBuffer - make sure TrackingId stays at top level
-
-        // Replace
-
-
-        // Upsert
-
-        // Patch
 
         // Batch
 
