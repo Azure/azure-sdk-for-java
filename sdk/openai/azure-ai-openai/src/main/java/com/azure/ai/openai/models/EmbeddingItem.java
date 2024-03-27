@@ -84,10 +84,10 @@ public final class EmbeddingItem {
         byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
         FloatBuffer floatBuffer = byteBuffer.asFloatBuffer();
         // Copy the floats in the buffer to a List representing an embedding.
-        List<Float> flaotList = new ArrayList<>(floatBuffer.remaining());
+        List<Float> floatList = new ArrayList<>(floatBuffer.remaining());
         while (floatBuffer.hasRemaining()) {
-            flaotList.add(floatBuffer.get());
+            floatList.add(floatBuffer.get());
         }
-        return flaotList;
+        return floatList;
     }
 }
