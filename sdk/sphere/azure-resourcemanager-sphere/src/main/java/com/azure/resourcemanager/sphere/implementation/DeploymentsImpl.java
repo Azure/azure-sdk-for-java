@@ -21,75 +21,42 @@ public final class DeploymentsImpl implements Deployments {
 
     private final com.azure.resourcemanager.sphere.AzureSphereManager serviceManager;
 
-    public DeploymentsImpl(
-        DeploymentsClient innerClient, com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
+    public DeploymentsImpl(DeploymentsClient innerClient,
+        com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Deployment> listByDeviceGroup(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName) {
-        PagedIterable<DeploymentInner> inner =
-            this.serviceClient().listByDeviceGroup(resourceGroupName, catalogName, productName, deviceGroupName);
-        return Utils.mapPage(inner, inner1 -> new DeploymentImpl(inner1, this.manager()));
+    public PagedIterable<Deployment> listByDeviceGroup(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName) {
+        PagedIterable<DeploymentInner> inner
+            = this.serviceClient().listByDeviceGroup(resourceGroupName, catalogName, productName, deviceGroupName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DeploymentImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Deployment> listByDeviceGroup(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
-        Context context) {
-        PagedIterable<DeploymentInner> inner =
-            this
-                .serviceClient()
-                .listByDeviceGroup(
-                    resourceGroupName,
-                    catalogName,
-                    productName,
-                    deviceGroupName,
-                    filter,
-                    top,
-                    skip,
-                    maxpagesize,
-                    context);
-        return Utils.mapPage(inner, inner1 -> new DeploymentImpl(inner1, this.manager()));
+    public PagedIterable<Deployment> listByDeviceGroup(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String filter, Integer top, Integer skip, Integer maxpagesize, Context context) {
+        PagedIterable<DeploymentInner> inner = this.serviceClient().listByDeviceGroup(resourceGroupName, catalogName,
+            productName, deviceGroupName, filter, top, skip, maxpagesize, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DeploymentImpl(inner1, this.manager()));
     }
 
-    public Response<Deployment> getWithResponse(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        Context context) {
-        Response<DeploymentInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, context);
+    public Response<Deployment> getWithResponse(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deploymentName, Context context) {
+        Response<DeploymentInner> inner = this.serviceClient().getWithResponse(resourceGroupName, catalogName,
+            productName, deviceGroupName, deploymentName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DeploymentImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Deployment get(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
+    public Deployment get(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         String deploymentName) {
-        DeploymentInner inner =
-            this.serviceClient().get(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName);
+        DeploymentInner inner
+            = this.serviceClient().get(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName);
         if (inner != null) {
             return new DeploymentImpl(inner, this.manager());
         } else {
@@ -97,63 +64,42 @@ public final class DeploymentsImpl implements Deployments {
         }
     }
 
-    public void delete(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
+    public void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         String deploymentName) {
         this.serviceClient().delete(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName);
     }
 
-    public void delete(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        Context context) {
-        this
-            .serviceClient()
-            .delete(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, context);
+    public void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
+        String deploymentName, Context context) {
+        this.serviceClient().delete(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
+            context);
     }
 
     public Deployment getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String catalogName = Utils.getValueFromIdByName(id, "catalogs");
+        String catalogName = ResourceManagerUtils.getValueFromIdByName(id, "catalogs");
         if (catalogName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'catalogs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'catalogs'.", id)));
         }
-        String productName = Utils.getValueFromIdByName(id, "products");
+        String productName = ResourceManagerUtils.getValueFromIdByName(id, "products");
         if (productName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'products'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'products'.", id)));
         }
-        String deviceGroupName = Utils.getValueFromIdByName(id, "deviceGroups");
+        String deviceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "deviceGroups");
         if (deviceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'deviceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'deviceGroups'.", id)));
         }
-        String deploymentName = Utils.getValueFromIdByName(id, "deployments");
+        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "deployments");
         if (deploymentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
         }
         return this
             .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, Context.NONE)
@@ -161,122 +107,89 @@ public final class DeploymentsImpl implements Deployments {
     }
 
     public Response<Deployment> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String catalogName = Utils.getValueFromIdByName(id, "catalogs");
+        String catalogName = ResourceManagerUtils.getValueFromIdByName(id, "catalogs");
         if (catalogName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'catalogs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'catalogs'.", id)));
         }
-        String productName = Utils.getValueFromIdByName(id, "products");
+        String productName = ResourceManagerUtils.getValueFromIdByName(id, "products");
         if (productName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'products'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'products'.", id)));
         }
-        String deviceGroupName = Utils.getValueFromIdByName(id, "deviceGroups");
+        String deviceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "deviceGroups");
         if (deviceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'deviceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'deviceGroups'.", id)));
         }
-        String deploymentName = Utils.getValueFromIdByName(id, "deployments");
+        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "deployments");
         if (deploymentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, context);
+        return this.getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
+            context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String catalogName = Utils.getValueFromIdByName(id, "catalogs");
+        String catalogName = ResourceManagerUtils.getValueFromIdByName(id, "catalogs");
         if (catalogName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'catalogs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'catalogs'.", id)));
         }
-        String productName = Utils.getValueFromIdByName(id, "products");
+        String productName = ResourceManagerUtils.getValueFromIdByName(id, "products");
         if (productName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'products'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'products'.", id)));
         }
-        String deviceGroupName = Utils.getValueFromIdByName(id, "deviceGroups");
+        String deviceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "deviceGroups");
         if (deviceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'deviceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'deviceGroups'.", id)));
         }
-        String deploymentName = Utils.getValueFromIdByName(id, "deployments");
+        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "deployments");
         if (deploymentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
         }
         this.delete(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String catalogName = Utils.getValueFromIdByName(id, "catalogs");
+        String catalogName = ResourceManagerUtils.getValueFromIdByName(id, "catalogs");
         if (catalogName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'catalogs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'catalogs'.", id)));
         }
-        String productName = Utils.getValueFromIdByName(id, "products");
+        String productName = ResourceManagerUtils.getValueFromIdByName(id, "products");
         if (productName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'products'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'products'.", id)));
         }
-        String deviceGroupName = Utils.getValueFromIdByName(id, "deviceGroups");
+        String deviceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "deviceGroups");
         if (deviceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'deviceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'deviceGroups'.", id)));
         }
-        String deploymentName = Utils.getValueFromIdByName(id, "deployments");
+        String deploymentName = ResourceManagerUtils.getValueFromIdByName(id, "deployments");
         if (deploymentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'deployments'.", id)));
         }
         this.delete(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, context);
     }

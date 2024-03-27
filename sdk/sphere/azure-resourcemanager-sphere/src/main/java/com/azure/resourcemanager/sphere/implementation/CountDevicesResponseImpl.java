@@ -4,16 +4,16 @@
 
 package com.azure.resourcemanager.sphere.implementation;
 
-import com.azure.resourcemanager.sphere.fluent.models.CountDeviceResponseInner;
-import com.azure.resourcemanager.sphere.models.CountDeviceResponse;
+import com.azure.resourcemanager.sphere.fluent.models.CountDevicesResponseInner;
+import com.azure.resourcemanager.sphere.models.CountDevicesResponse;
 
-public final class CountDeviceResponseImpl implements CountDeviceResponse {
-    private CountDeviceResponseInner innerObject;
+public final class CountDevicesResponseImpl implements CountDevicesResponse {
+    private CountDevicesResponseInner innerObject;
 
     private final com.azure.resourcemanager.sphere.AzureSphereManager serviceManager;
 
-    CountDeviceResponseImpl(
-        CountDeviceResponseInner innerObject, com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
+    CountDevicesResponseImpl(CountDevicesResponseInner innerObject,
+        com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -22,7 +22,7 @@ public final class CountDeviceResponseImpl implements CountDeviceResponse {
         return this.innerModel().value();
     }
 
-    public CountDeviceResponseInner innerModel() {
+    public CountDevicesResponseInner innerModel() {
         return this.innerObject;
     }
 
