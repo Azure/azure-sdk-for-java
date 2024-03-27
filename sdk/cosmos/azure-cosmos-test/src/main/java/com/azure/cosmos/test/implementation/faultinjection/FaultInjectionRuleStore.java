@@ -17,8 +17,8 @@ import reactor.core.publisher.Mono;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkArgument;
-import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType.DIRECT;
 import static com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType.GATEWAY;
 

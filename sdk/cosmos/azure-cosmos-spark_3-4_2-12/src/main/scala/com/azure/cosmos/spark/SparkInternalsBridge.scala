@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.kafka.connect.implementation.guava25.base.MoreObjects.firstNonNull
-import com.azure.cosmos.kafka.connect.implementation.guava25.base.Strings.emptyToNull
+import com.azure.cosmos.implementation.guava25.base.MoreObjects.firstNonNull
+import com.azure.cosmos.implementation.guava25.base.Strings.emptyToNull
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.TaskContext
 import org.apache.spark.sql.execution.metric.SQLMetric

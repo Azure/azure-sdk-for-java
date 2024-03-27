@@ -14,9 +14,9 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.CorruptedFrameException;
 
-import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkArgument;
-import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkNotNull;
-import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkState;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 /**

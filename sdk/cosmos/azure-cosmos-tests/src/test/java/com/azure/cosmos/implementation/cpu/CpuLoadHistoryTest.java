@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.cpu;
 
-import com.azure.cosmos.kafka.connect.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 

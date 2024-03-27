@@ -6,9 +6,9 @@ import com.azure.cosmos.implementation.directconnectivity.ServerProperties;
 
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContext;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
-import com.azure.cosmos.kafka.connect.implementation.guava25.collect.ImmutableMap;
-import com.azure.cosmos.kafka.connect.implementation.guava25.collect.ImmutableSet;
-import com.azure.cosmos.kafka.connect.implementation.guava25.collect.Sets;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
+import com.azure.cosmos.implementation.guava25.collect.Sets;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.netty.buffer.ByteBuf;
@@ -19,7 +19,7 @@ import java.util.EnumSet;
 import java.util.UUID;
 import java.util.stream.Collector;
 
-import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkState;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 
 /**
  * Except the constructor method, other methods are copied frm {@link RntbdContext}

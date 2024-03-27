@@ -3,16 +3,16 @@
 
 package com.azure.cosmos.implementation.directconnectivity.TcpServerMock.rntbd;
 
-import com.azure.cosmos.kafka.connect.implementation.guava25.collect.ImmutableMap;
-import com.azure.cosmos.kafka.connect.implementation.guava25.collect.ImmutableSet;
-import com.azure.cosmos.kafka.connect.implementation.guava25.collect.Maps;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
+import com.azure.cosmos.implementation.guava25.collect.Maps;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.CorruptedFrameException;
 import io.netty.util.ReferenceCounted;
 
 import java.util.stream.Collector;
 
-import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 /**
