@@ -7,7 +7,7 @@ package com.azure.communication.phonenumbers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Capabilities of a phone number. */
+/** The PhoneNumberCapabilities model. */
 @Fluent
 public final class PhoneNumberCapabilities {
     /*
@@ -21,6 +21,12 @@ public final class PhoneNumberCapabilities {
      */
     @JsonProperty(value = "sms", required = true)
     private PhoneNumberCapabilityType sms;
+
+     /*
+     * Ten DLC campaign brief id attached to the number
+     */
+    @JsonProperty(value = "tenDLCCampaignBriefId")
+    private String tenDLCCampaignBriefId;
 
     /**
      * Get the calling property: Capability value for calling.
@@ -59,6 +65,26 @@ public final class PhoneNumberCapabilities {
      */
     public PhoneNumberCapabilities setSms(PhoneNumberCapabilityType sms) {
         this.sms = sms;
+        return this;
+    }
+
+    /**
+     * Get the tenDLCCampaignBriefId property: Ten DLC campaign brief id attached to the number.
+     *
+     * @return the tenDLCCampaignBriefId value.
+     */
+    public String getTenDLCCampaignBriefId() {
+        return this.tenDLCCampaignBriefId;
+    }
+
+    /**
+     * Set the tenDLCCampaignBriefId property: Ten DLC campaign brief id attached to the number.
+     *
+     * @param tenDLCCampaignBriefId the tenDLCCampaignBriefId value to set.
+     * @return the PhoneNumberCapabilities object itself.
+     */
+    public PhoneNumberCapabilities setTenDLCCampaignBriefId(String tenDLCCampaignBriefId) {
+        this.tenDLCCampaignBriefId = tenDLCCampaignBriefId;
         return this;
     }
 }

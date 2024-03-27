@@ -8,9 +8,9 @@ import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PhoneNumberCapabilitiesRequest model. */
+/** The PhoneNumberBrowseCapabilitiesRequest model. */
 @Fluent
-public final class PhoneNumberCapabilitiesRequest {
+public final class PhoneNumberBrowseCapabilitiesRequest {
     /*
      * Capability value for calling.
      */
@@ -22,12 +22,6 @@ public final class PhoneNumberCapabilitiesRequest {
      */
     @JsonProperty(value = "sms")
     private PhoneNumberCapabilityType sms;
-
-    /*
-     * Campaign Brief Id to attach to a number. For adding SMS to local numbers
-     */
-    @JsonProperty(value = "tenDLCCampaignBriefId")
-    private String tenDLCCampaignBriefId;
 
     /**
      * Get the calling property: Capability value for calling.
@@ -42,9 +36,9 @@ public final class PhoneNumberCapabilitiesRequest {
      * Set the calling property: Capability value for calling.
      *
      * @param calling the calling value to set.
-     * @return the PhoneNumberCapabilitiesRequest object itself.
+     * @return the PhoneNumberBrowseCapabilitiesRequest object itself.
      */
-    public PhoneNumberCapabilitiesRequest setCalling(PhoneNumberCapabilityType calling) {
+    public PhoneNumberBrowseCapabilitiesRequest setCalling(PhoneNumberCapabilityType calling) {
         this.calling = calling;
         return this;
     }
@@ -62,30 +56,10 @@ public final class PhoneNumberCapabilitiesRequest {
      * Set the sms property: Capability value for SMS.
      *
      * @param sms the sms value to set.
-     * @return the PhoneNumberCapabilitiesRequest object itself.
+     * @return the PhoneNumberBrowseCapabilitiesRequest object itself.
      */
-    public PhoneNumberCapabilitiesRequest setSms(PhoneNumberCapabilityType sms) {
+    public PhoneNumberBrowseCapabilitiesRequest setSms(PhoneNumberCapabilityType sms) {
         this.sms = sms;
-        return this;
-    }
-
-    /**
-     * Get the tenDLCCampaignBriefId property: Campaign Brief Id to attach to a number. For adding SMS to local numbers.
-     *
-     * @return the tenDLCCampaignBriefId value.
-     */
-    public String getTenDLCCampaignBriefId() {
-        return this.tenDLCCampaignBriefId;
-    }
-
-    /**
-     * Set the tenDLCCampaignBriefId property: Campaign Brief Id to attach to a number. For adding SMS to local numbers.
-     *
-     * @param tenDLCCampaignBriefId the tenDLCCampaignBriefId value to set.
-     * @return the PhoneNumberCapabilitiesRequest object itself.
-     */
-    public PhoneNumberCapabilitiesRequest setTenDLCCampaignBriefId(String tenDLCCampaignBriefId) {
-        this.tenDLCCampaignBriefId = tenDLCCampaignBriefId;
         return this;
     }
 }

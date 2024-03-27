@@ -10,10 +10,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Represents a phone number search request to find phone numbers. Found phone numbers are temporarily held for a
- * following purchase.
- */
+/** The PhoneNumberSearchRequest model. */
 @Fluent
 public final class PhoneNumberSearchRequest {
     /*

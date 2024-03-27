@@ -73,11 +73,7 @@ public final class PhoneNumberSearchResultError extends ExpandableStringEnum<Pho
         return fromString(name, PhoneNumberSearchResultError.class);
     }
 
-    /**
-     * Gets known PhoneNumberSearchResultError values.
-     *
-     * @return known PhoneNumberSearchResultError values.
-     */
+    /** @return known PhoneNumberSearchResultError values. */
     public static Collection<PhoneNumberSearchResultError> values() {
         return values(PhoneNumberSearchResultError.class);
     }

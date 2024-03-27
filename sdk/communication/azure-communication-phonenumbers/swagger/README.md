@@ -27,8 +27,8 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 ### Code generation settings
 
 ```yaml
-tag: package-phonenumber-2023-10-01-preview
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/bd44f2d98fdc14c674b542cc64ce7df33ddfaf76/specification/communication/data-plane/PhoneNumbers/readme.md
+tag: package-preview-2024-05
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/90ed80785885293a5f7401e1e2b03dc9ced63277/specification/communication/data-plane/PhoneNumbers/readme.md
 override-client-name: PhoneNumberAdminClient
 custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountry,PhoneNumberLocality,PhoneNumberOffering,AreaCodeResult,AreaCodes,PhoneNumberAreaCode,PhoneNumberSearchResultError,OperatorDetails,OperatorInformation,OperatorInformationResult,OperatorNumberType
 custom-types-subpackage: models
@@ -267,20 +267,4 @@ directive:
 directive:
     where-model: PurchasedPhoneNumber
     remove-property: phoneNumberSource
-```
-
-# Removed Models
-
-```yaml
-directive:
-    - remove-operation-match: /.*Reservation.*/i
-    - remove-operation: PhoneNumbers_BrowseAvailableNumbers
-    - remove-model: PhoneNumbersReservation
-    - remove-model: PhoneNumbersReservations
-    - remove-model: PhoneNumbersBrowseRequest
-    - remove-model: PhoneNumbersBrowseResult
-    - remove-model: PhoneNumberBrowseCapabilitiesRequest
-    - remove-model: PhoneNumbersReservationPurchaseRequest
-    - remove-model: AvailablePhoneNumber
-    - remove-model: AvailablePhoneNumberCost
 ```

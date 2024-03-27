@@ -33,11 +33,7 @@ public final class OperatorNumberType extends ExpandableStringEnum<OperatorNumbe
         return fromString(name, OperatorNumberType.class);
     }
 
-    /**
-     * Gets known OperatorNumberType values.
-     *
-     * @return known OperatorNumberType values.
-     */
+    /** @return known OperatorNumberType values. */
     public static Collection<OperatorNumberType> values() {
         return values(OperatorNumberType.class);
     }
