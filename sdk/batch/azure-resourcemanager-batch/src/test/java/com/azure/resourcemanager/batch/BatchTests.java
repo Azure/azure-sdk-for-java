@@ -20,7 +20,6 @@ import com.azure.resourcemanager.batch.models.AutoStorageBaseProperties;
 import com.azure.resourcemanager.batch.models.BatchAccount;
 import com.azure.resourcemanager.batch.models.BatchAccountKeys;
 import com.azure.resourcemanager.batch.models.BatchAccountRegenerateKeyParameters;
-import com.azure.resourcemanager.batch.models.CloudServiceConfiguration;
 import com.azure.resourcemanager.batch.models.ComputeNodeDeallocationOption;
 import com.azure.resourcemanager.batch.models.DeploymentConfiguration;
 import com.azure.resourcemanager.batch.models.FixedScaleSettings;
