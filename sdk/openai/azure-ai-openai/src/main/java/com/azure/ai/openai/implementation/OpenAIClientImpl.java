@@ -1682,6 +1682,7 @@ public final class OpenAIClientImpl {
      *     input (Required): [
      *         String (Required)
      *     ]
+     *     encoding_format: String(float/base64) (Optional)
      *     dimensions: Integer (Optional)
      *     input_type: String (Optional)
      * }
@@ -1693,7 +1694,9 @@ public final class OpenAIClientImpl {
      * {
      *     data (Required): [
      *          (Required){
-     *             embedding: String (Required)
+     *             embedding (Required): [
+     *                 double (Required)
+     *             ]
      *             index: int (Required)
      *         }
      *     ]
@@ -1740,6 +1743,7 @@ public final class OpenAIClientImpl {
      *     input (Required): [
      *         String (Required)
      *     ]
+     *     encoding_format: String(float/base64) (Optional)
      *     dimensions: Integer (Optional)
      *     input_type: String (Optional)
      * }
@@ -1751,7 +1755,9 @@ public final class OpenAIClientImpl {
      * {
      *     data (Required): [
      *          (Required){
-     *             embedding: String (Required)
+     *             embedding (Required): [
+     *                 double (Required)
+     *             ]
      *             index: int (Required)
      *         }
      *     ]

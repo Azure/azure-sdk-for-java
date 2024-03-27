@@ -220,7 +220,7 @@ public final class ReadmeSamples {
 
         for (EmbeddingItem item : embeddings.getData()) {
             System.out.printf("Index: %d.%n", item.getPromptIndex());
-            for (Float embedding : item.getEmbeddingAsFloatList()) {
+            for (Float embedding : item.getEmbedding()) {
                 System.out.printf("%f;", embedding);
             }
         }

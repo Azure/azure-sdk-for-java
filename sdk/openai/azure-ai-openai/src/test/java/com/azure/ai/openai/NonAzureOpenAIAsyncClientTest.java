@@ -237,7 +237,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                     .assertNext(resultEmbeddings -> {
                         assertEmbeddings(resultEmbeddings);
                         assertEquals(embeddingsOptions.getDimensions(),
-                                resultEmbeddings.getData().get(0).getEmbeddingAsFloatList().size());
+                                resultEmbeddings.getData().get(0).getEmbedding().size());
                     })
                     .verifyComplete();
         });

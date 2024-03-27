@@ -7,11 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-import java.util.ArrayList;
-import java.util.Base64;
+
 import java.util.List;
 
 /**
@@ -26,9 +22,7 @@ public final class EmbeddingItem {
      */
     @Generated
     @JsonProperty(value = "embedding")
-    private String embedding;
-
-    private List<Float> embeddingAsFloatList;
+    private List<Float> embedding;
 
     /**
      * Get the embedding property: List of embeddings value for the input prompt in base64 encoded string format. These
@@ -38,19 +32,8 @@ public final class EmbeddingItem {
      * @return the embedding value.
      */
     @Generated
-    public String getEmbedding() {
+    public List<Float> getEmbedding() {
         return this.embedding;
-    }
-
-    /**
-     * Get the getEmbeddingAsFloatList property: embeddings value for the input prompt in float format. These represent
-     * a
-     * measurement of the vector-based relatedness of the provided input.
-     *
-     * @return the getEmbeddingAsFloatList value.
-     */
-    public List<Float> getEmbeddingAsFloatList() {
-        return embeddingAsFloatList;
     }
 
     /*
@@ -77,24 +60,9 @@ public final class EmbeddingItem {
      * @param promptIndex the promptIndex value to set.
      */
     @JsonCreator
-    private EmbeddingItem(@JsonProperty(value = "embedding") String embedding,
+    private EmbeddingItem(@JsonProperty(value = "embedding") List<Float> embedding,
         @JsonProperty(value = "index") int promptIndex) {
         this.embedding = embedding;
         this.promptIndex = promptIndex;
-        this.embeddingAsFloatList = convertToFloatList(this.embedding);
-    }
-
-    private List<Float> convertToFloatList(String embedding) {
-        byte[] bytes = Base64.getDecoder().decode(embedding);
-        // View the raw binary data as floats (IEEE 754 binary32).
-        ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
-        byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
-        FloatBuffer floatBuffer = byteBuffer.asFloatBuffer();
-        // Copy the floats in the buffer to a List representing an embedding.
-        List<Float> flaotList = new ArrayList<>(floatBuffer.remaining());
-        while (floatBuffer.hasRemaining()) {
-            flaotList.add(floatBuffer.get());
-        }
-        return flaotList;
     }
 }

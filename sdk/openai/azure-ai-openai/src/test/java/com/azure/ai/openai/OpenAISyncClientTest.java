@@ -198,7 +198,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         getEmbeddingWithSmallerDimensionsRunner((deploymentId, embeddingsOptions) -> {
             Embeddings resultEmbeddings = client.getEmbeddings(deploymentId, embeddingsOptions);
             assertEmbeddings(resultEmbeddings);
-            assertEquals(embeddingsOptions.getDimensions(), resultEmbeddings.getData().get(0).getEmbeddingAsFloatList().size());
+            assertEquals(embeddingsOptions.getDimensions(), resultEmbeddings.getData().get(0).getEmbedding().size());
         });
     }
 

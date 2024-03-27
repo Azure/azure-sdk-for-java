@@ -180,4 +180,31 @@ public final class EmbeddingsOptions {
         this.dimensions = dimensions;
         return this;
     }
+
+    /*
+     * The response encoding format to use for embedding data.
+     */
+    @Generated
+    @JsonProperty(value = "encoding_format")
+    private EmbeddingEncodingFormat encodingFormat;
+
+    /**
+     * Get the encodingFormat property: The response encoding format to use for embedding data.
+     *
+     * @return the encodingFormat value.
+     */
+    private EmbeddingEncodingFormat getEncodingFormat() {
+        return this.encodingFormat;
+    }
+
+    /**
+     * Set the encodingFormat property: The response encoding format to use for embedding data.
+     *
+     * @param encodingFormat the encodingFormat value to set.
+     * @return the EmbeddingsOptions object itself.
+     */
+    private EmbeddingsOptions setEncodingFormat(EmbeddingEncodingFormat encodingFormat) {
+        this.encodingFormat = encodingFormat;
+        return this;
+    }
 }
