@@ -580,7 +580,7 @@ public class Utils {
             }
 
             JsonNode jsonNode;
-            if (jsonTreeMap instanceof ObjectNodeMap) {
+            if (jsonTreeMap instanceof ObjectNodeMap && onAfterSerialization == null) {
                 jsonNode = ((ObjectNodeMap) jsonTreeMap).getObjectNode();
             } else {
                 jsonNode = simpleObjectMapper.convertValue(jsonTreeMap, JsonNode.class);
