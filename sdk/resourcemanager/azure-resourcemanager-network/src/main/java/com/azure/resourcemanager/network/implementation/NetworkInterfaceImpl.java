@@ -587,10 +587,6 @@ class NetworkInterfaceImpl
     }
 
     public void ensureDeleteOptions(DeleteOptions deleteOptions, String ipConfigName) {
-        if (this.specifiedIpConfigNames.containsKey(ipConfigName)) {
-            this.specifiedIpConfigNames.replace(ipConfigName, deleteOptions);
-        } else {
-            this.specifiedIpConfigNames.put(ipConfigName, deleteOptions);
-        }
+        this.specifiedIpConfigNames.put(ipConfigName, deleteOptions);
     }
 }
