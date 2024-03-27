@@ -40,30 +40,31 @@ az login --service-principal -u $(getVariable('IDENTITY_CLIENT_ID')) -p $(getVar
 az account set --subscription $(getVariable('IDENTITY_SUBSCRIPTION_ID'))
 
 
-## Install latest sources on the branch to test against
-mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f $azBuildToolsRootPom
-mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azCoreRootPom/azure-json/pom.xml"
-mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azCoreRootPom/azure-core/pom.xml"
-mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azCoreRootPom/azure-core-test/pom.xml"
-mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azCoreRootPom/azure-core-http-netty/pom.xml"
-mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azCoreRootPom/azure-core-http-okhttp/pom.xml"
-mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f $azIdentityRootPom
-mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azStorageRootPom/azure-storage-common/pom.xml"
-mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azStorageRootPom/azure-storage-internal-avro/pom.xml"
-mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azStorageRootPom/azure-storage-blob/pom.xml"
+mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f $azBuildToolsRootPom | Write-Host
+mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azCoreRootPom/azure-json/pom.xml" | Write-Host
+mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azCoreRootPom/azure-core/pom.xml" | Write-Host
+mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azCoreRootPom/azure-core-test/pom.xml" | Write-Host
+mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azCoreRootPom/azure-core-http-netty/pom.xml" | Write-Host
+mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azCoreRootPom/azure-core-http-okhttp/pom.xml" | Write-Host
+mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f $azIdentityRootPom | Write-Host
+mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azStorageRootPom/azure-storage-common/pom.xml" | Write-Host
+mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azStorageRootPom/azure-storage-internal-avro/pom.xml" | Write-Host
+mvn clean install -DskipTests -f "$azStorageRootPom/azure-storage-blob/pom.xml" | Write-Host
 
-# Build and Deploy Web App
-mvn clean install -DskipTests -f $webappRootPom
+
+mvn clean install -DskipTests -f $webappRootPom | Write-Host
 az webapp deploy --resource-group $(getVariable('IDENTITY_RESOURCE_GROUP')) --name $(getVariable('IDENTITY_WEBAPP_NAME')) --src-path "$webappRoot/target/identity-test-webapp-0.0.1-SNAPSHOT.jar" --type jar
 
+Write-Host "Building Function App"
 
-# Build and Deploy function app
-mvn clean package "-DfunctionAppName=$(getVariable('IDENTITY_FUNCTION_NAME'))" "-DresourceGroup=$(getVariable('IDENTITY_RESOURCE_GROUP'))" "-DappServicePlanName=$(getVariable('IDENTITY_APPSERVICE_NAME'))" -f $funcAppPom
+# build function app
+mvn clean package "-DfunctionAppName=$(getVariable('IDENTITY_FUNCTION_NAME'))" "-DresourceGroup=$(getVariable('IDENTITY_RESOURCE_GROUP'))" "-DappServicePlanName=$(getVariable('IDENTITY_APPSERVICE_NAME'))" -f $funcAppPom | Write-Host
 compress-archive  "$funcAppRoot\target\azure-functions\$(getVariable('IDENTITY_FUNCTION_NAME'))\*" -DestinationPath "$funcAppRoot/target/funcpackage.zip"
 az functionapp deployment source config-zip -g $(getVariable('IDENTITY_RESOURCE_GROUP')) -n $(getVariable('IDENTITY_FUNCTION_NAME')) --src "$funcAppRoot/target/funcpackage.zip"
 
-# Build and Deploy VM app
-mvn clean package -f "$vmRoot/pom.xml"
+Write-Host "Building VM App"
+# build VM app
+mvn clean package -f "$vmRoot/pom.xml" | Write-Host
 
 # Virtual machine setup
 $vmScript = @"
@@ -87,8 +88,8 @@ if ($IsMacOS -eq $true) {
   return
 }
 
-# Build and Deploy AKS app
-mvn clean package -f "$aksRoot/pom.xml"
+# build aks app
+mvn clean package -f "$aksRoot/pom.xml" | Write-Host
 
 az acr login -n $DeploymentOutputs['IDENTITY_ACR_NAME']
 $loginServer = az acr show -n $DeploymentOutputs['IDENTITY_ACR_NAME'] --query loginServer -o tsv
