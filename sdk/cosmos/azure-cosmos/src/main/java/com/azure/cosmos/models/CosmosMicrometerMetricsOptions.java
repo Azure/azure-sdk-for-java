@@ -280,7 +280,8 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
                                 options.getApplyDiagnosticThresholdsEnabled() :
                                 this.defaultApplyDiagnosticThresholdsForTransportLevelMeters && (
                                     meterName.getCategory() == CosmosMetricCategory.REQUEST_SUMMARY ||
-                                        meterName.getCategory() == CosmosMetricCategory.REQUEST_DETAILS)
+                                        meterName.getCategory() == CosmosMetricCategory.REQUEST_DETAILS),
+                            options.getBaseUnit()
                         );
                     }
 
@@ -298,7 +299,9 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
                         options.getSuppressedTagNames() != null ?
                             options.getSuppressedTagNames() :
                             valueBeforeUpdate.getSuppressedTagNames(),
-                        valueBeforeUpdate.isDiagnosticThresholdsFilteringEnabled()
+                        valueBeforeUpdate.isDiagnosticThresholdsFilteringEnabled(),
+                        options.getBaseUnit() != null ?
+                            options.getBaseUnit() : valueBeforeUpdate.getBaseUnit()
                     );
                 });
 

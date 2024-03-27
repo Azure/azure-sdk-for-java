@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.Collections;
