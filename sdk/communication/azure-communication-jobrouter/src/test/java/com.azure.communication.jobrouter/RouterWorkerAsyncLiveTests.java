@@ -99,15 +99,13 @@ public class RouterWorkerAsyncLiveTests extends JobRouterTestBase {
             .setTags(tags)
             .setAvailableForOffers(false)
             .setChannels(channels)
-            .setQueues(queues)
-            .setMaxConcurrentOffers(1);
+            .setQueues(queues);
 
         // Action
         RouterWorker result = routerAsyncClient.createWorker(createWorkerOptions).block();
 
         // Verify
         assertEquals(workerId, result.getId());
-        assertEquals(1, result.getMaxConcurrentOffers());
 
         // Cleanup
         routerAsyncClient.deleteWorker(workerId).block();
