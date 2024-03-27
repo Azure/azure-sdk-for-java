@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 import static com.azure.core.http.HttpHeaderName.X_MS_CLIENT_REQUEST_ID;
 import static com.azure.core.http.HttpHeaderName.X_MS_REQUEST_ID;
@@ -170,14 +171,14 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         private final HttpResponse response;
         private final Context span;
         private final Tracer tracer;
-        private volatile boolean ended;
-
+        private volatile int ended = 0;
+        private static final AtomicIntegerFieldUpdater<TraceableResponse> ENDED_UPDATER =
+                AtomicIntegerFieldUpdater.newUpdater(TraceableResponse.class, "ended");
         private TraceableResponse(HttpResponse response, Tracer tracer, Context span) {
             super(response.getRequest());
             this.response = response;
             this.span = span;
             this.tracer = tracer;
-            this.ended = false;
         }
 
         public static HttpResponse create(HttpResponse response, Tracer tracer, Context span) {
@@ -265,27 +266,22 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         }
 
         private void onError(String errorType, Throwable error) {
-            if (ended) {
-                return;
+            if (ENDED_UPDATER.compareAndSet(this, 0, 1)) {
+                tracer.end(errorType, error, span);
             }
-            ended = true;
-            tracer.end(errorType, error, span);
         }
 
         private void endNoError() {
-            if (ended) {
-                return;
-            }
-            ended = true;
+            if (ENDED_UPDATER.compareAndSet(this, 0, 1)) {
+                String errorType = null;
+                if (response == null) {
+                    errorType = OTHER_ERROR_TYPE;
+                } else if (response.getStatusCode() >= 400) {
+                    errorType = String.valueOf(response.getStatusCode());
+                }
 
-            String errorType = null;
-            if (response == null) {
-                errorType = OTHER_ERROR_TYPE;
-            } else if (response.getStatusCode() >= 400) {
-                errorType = String.valueOf(response.getStatusCode());
+                tracer.end(errorType, null, span);
             }
-
-            tracer.end(errorType, null, span);
         }
     }
 }
