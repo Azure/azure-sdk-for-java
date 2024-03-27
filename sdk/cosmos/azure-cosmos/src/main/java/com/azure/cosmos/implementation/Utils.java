@@ -580,11 +580,15 @@ public class Utils {
             }
 
             JsonNode jsonNode;
-            if (jsonTreeMap instanceof ObjectNodeMap && onAfterSerialization == null) {
+
+            if (jsonTreeMap instanceof PrimitiveJsonNodeMap) {
+                jsonNode = ((PrimitiveJsonNodeMap)jsonTreeMap).getPrimitiveJsonNode();
+            } else if (jsonTreeMap instanceof ObjectNodeMap && onAfterSerialization == null) {
                 jsonNode = ((ObjectNodeMap) jsonTreeMap).getObjectNode();
             } else {
                 jsonNode = simpleObjectMapper.convertValue(jsonTreeMap, JsonNode.class);
             }
+
             simpleObjectMapper.writeValue(byteBufferOutputStream, jsonNode);
             return byteBufferOutputStream.asByteBuffer();
         } catch (IOException e) {
