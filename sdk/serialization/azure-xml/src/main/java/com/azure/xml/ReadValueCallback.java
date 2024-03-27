@@ -4,7 +4,6 @@
 package com.azure.xml;
 
 import javax.xml.stream.XMLStreamException;
-import java.io.IOException;
 
 /**
  * A callback used when reading an XML value, such as {@link XmlReader#getNullableElement(ReadValueCallback)}.
