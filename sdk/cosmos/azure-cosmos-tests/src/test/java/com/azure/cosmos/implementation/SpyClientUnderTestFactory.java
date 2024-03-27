@@ -64,7 +64,8 @@ public class SpyClientUnderTestFactory {
                     null,
                     null,
                     null,
-                    null);
+                    null,
+                    false);
         }
 
         public abstract List<T> getCapturedRequests();

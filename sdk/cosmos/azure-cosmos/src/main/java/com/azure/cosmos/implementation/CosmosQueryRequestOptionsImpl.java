@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
     private Integer maxItemCount;
     private String requestContinuation;
     private PartitionKey partitionkey;
+    private PartitionKeyDefinition partitionKeyDefinition;
     private boolean emptyPagesAllowed;
     private FeedRange feedRange;
     private boolean queryPlanRetrievalDisallowed;
@@ -56,6 +58,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
         this.maxItemCount = options.maxItemCount;
         this.requestContinuation = options.requestContinuation;
         this.partitionkey = options.partitionkey;
+        this.partitionKeyDefinition = options.partitionKeyDefinition;
         this.emptyPagesAllowed = options.emptyPagesAllowed;
         this.queryPlanRetrievalDisallowed = options.queryPlanRetrievalDisallowed;
         this.emptyPageDiagnosticsEnabled = options.emptyPageDiagnosticsEnabled;
@@ -319,5 +322,13 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
 
     public void setCancelledRequestDiagnosticsTracker(List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
         this.cancelledRequestDiagnosticsTracker = cancelledRequestDiagnosticsTracker;
+    }
+
+    public void setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
+        this.partitionKeyDefinition = partitionKeyDefinition;
+    }
+
+    public PartitionKeyDefinition getPartitionKeyDefinition() {
+        return this.partitionKeyDefinition;
     }
 }

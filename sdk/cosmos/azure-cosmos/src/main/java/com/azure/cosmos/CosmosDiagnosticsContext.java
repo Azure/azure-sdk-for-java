@@ -314,7 +314,12 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
-    Collection<ClientSideRequestStatistics> getDistinctCombinedClientSideRequestStatistics() {
+    // todo (abhmohanty): revert public API change - used to hook into to track 404/1002s for operation
+    /**
+     * Return {@link ClientSideRequestStatistics}
+     * @return collection of {@link ClientSideRequestStatistics}
+     * */
+    public Collection<ClientSideRequestStatistics> getDistinctCombinedClientSideRequestStatistics() {
         DistinctClientSideRequestStatisticsCollection combinedClientSideRequestStatistics =
             new DistinctClientSideRequestStatisticsCollection();
         for (CosmosDiagnostics diagnostics: this.getDiagnostics()) {

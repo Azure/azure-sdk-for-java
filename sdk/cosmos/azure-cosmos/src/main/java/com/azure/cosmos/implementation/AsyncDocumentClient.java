@@ -104,6 +104,7 @@ public interface AsyncDocumentClient {
         private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
         private SessionRetryOptions sessionRetryOptions;
         private CosmosContainerProactiveInitConfig containerProactiveInitConfig;
+        private boolean isRegionScopedSessionCapturingEnabled;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -255,6 +256,11 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        public Builder withRegionScopedSessionCapturingEnabled(boolean isRegionScopedSessionCapturingEnabled) {
+            this.isRegionScopedSessionCapturingEnabled = isRegionScopedSessionCapturingEnabled;
+            return this;
+        }
+
         private void ifThrowIllegalArgException(boolean value, String error) {
             if (value) {
                 throw new IllegalArgumentException(error);
@@ -290,7 +296,8 @@ public interface AsyncDocumentClient {
                     clientCorrelationId,
                     cosmosEndToEndOperationLatencyPolicyConfig,
                     sessionRetryOptions,
-                    containerProactiveInitConfig);
+                    containerProactiveInitConfig,
+                    isRegionScopedSessionCapturingEnabled);
 
             client.init(state, null);
             return client;

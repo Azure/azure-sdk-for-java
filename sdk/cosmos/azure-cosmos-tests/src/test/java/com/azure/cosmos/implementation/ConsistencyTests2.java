@@ -16,6 +16,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import org.apache.commons.lang3.Range;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -28,8 +29,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConsistencyTests2 extends ConsistencyTestsBase {
 
-    @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
-    public void validateReadSessionOnAsyncReplication() throws InterruptedException {
+    @DataProvider(name = "regionScopedSessionContainerConfigs")
+    public Object[] regionScopedSessionContainerConfigs() {
+        return new Object[] {false, true};
+    }
+
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
+    public void validateReadSessionOnAsyncReplication(boolean shouldRegionScopedSessionContainerEnabled) throws InterruptedException {
+
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
         this.writeClient =
                 (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
@@ -38,6 +45,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(shouldRegionScopedSessionContainerEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -50,6 +58,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(shouldRegionScopedSessionContainerEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -62,8 +71,9 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         //assertThat(readLagging).isTrue(); //Will fail if batch repl is turned off
     }
 
-    @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
-    public void validateWriteSessionOnAsyncReplication() throws InterruptedException {
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
+    public void validateWriteSessionOnAsyncReplication(boolean shouldRegionScopedSessionContainerEnabled) throws InterruptedException {
+
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
         this.writeClient =
                 (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
@@ -72,6 +82,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(shouldRegionScopedSessionContainerEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -84,6 +95,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(shouldRegionScopedSessionContainerEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -110,14 +122,16 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355053
     }
 
-    @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
-    public void validateSessionContainerAfterCollectionDeletion() throws Exception {
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
+    public void validateSessionContainerAfterCollectionDeletion(boolean shouldRegionScopedSessionContainerEnabled) throws Exception {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
         // Verify the collection deletion will trigger the session token clean up (even for different client)
         //this.ValidateSessionContainerAfterCollectionDeletion(true, Protocol.TCP);
-        this.validateSessionContainerAfterCollectionDeletion(true);
-        this.validateSessionContainerAfterCollectionDeletion(false);
+
+        this.validateSessionContainerAfterCollectionDeletion(true, shouldRegionScopedSessionContainerEnabled);
+        this.validateSessionContainerAfterCollectionDeletion(false, shouldRegionScopedSessionContainerEnabled);
+
     }
 
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT, enabled = false)
@@ -125,58 +139,64 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         // .NET uses lock method which is eventfully using LastReadAddress only for the test case to pass, we are not implementing this in java
     }
 
-    @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
-    public void validateSessionTokenWithPreConditionFailure() throws Exception {
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs"/*, timeOut = CONSISTENCY_TEST_TIMEOUT*/)
+    public void validateSessionTokenWithPreConditionFailure(boolean shouldRegionScopedSessionContainerEnabled) throws Exception {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
         //this.validateSessionTokenWithPreConditionFailure(false, Protocol.TCP);
-        this.validateSessionTokenWithPreConditionFailure(false);
-        this.validateSessionTokenWithPreConditionFailure(true);
+
+        this.validateSessionTokenWithPreConditionFailureBase(false, shouldRegionScopedSessionContainerEnabled);
+        this.validateSessionTokenWithPreConditionFailureBase(true, shouldRegionScopedSessionContainerEnabled);
     }
 
-    @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
-    public void validateSessionTokenWithDocumentNotFound() throws Exception {
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
+    public void validateSessionTokenWithDocumentNotFound(boolean shouldRegionScopedSessionContainerEnabled) throws Exception {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
+
         //this.validateSessionTokenWithDocumentNotFoundException(false, Protocol.TCP);
-        this.validateSessionTokenWithDocumentNotFoundException(false);
-        this.validateSessionTokenWithDocumentNotFoundException(true);
+        this.validateSessionTokenWithDocumentNotFoundExceptionBase(false, shouldRegionScopedSessionContainerEnabled);
+        this.validateSessionTokenWithDocumentNotFoundExceptionBase(true, shouldRegionScopedSessionContainerEnabled);
     }
 
-    @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
-    public void validateSessionTokenWithExpectedException() throws Exception {
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
+    public void validateSessionTokenWithExpectedException(boolean shouldRegionScopedSessionContainerEnabled) throws Exception {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
+
         //this.validateSessionTokenWithExpectedException(false, Protocol.TCP);
-        this.validateSessionTokenWithExpectedException(false);
-        this.validateSessionTokenWithExpectedException(true);
+        this.validateSessionTokenWithExpectedExceptionBase(false, shouldRegionScopedSessionContainerEnabled);
+        this.validateSessionTokenWithExpectedExceptionBase(true, shouldRegionScopedSessionContainerEnabled);
     }
 
-    @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
-    public void validateSessionTokenWithConflictException() {
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
+    public void validateSessionTokenWithConflictException(boolean shouldRegionScopedSessionContainerEnabled) throws Exception {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
         //this.validateSessionTokenWithConflictException(false, Protocol.TCP);
-        this.validateSessionTokenWithConflictException(false);
-        this.validateSessionTokenWithConflictException(true);
+
+        this.validateSessionTokenWithConflictExceptionBase(false, shouldRegionScopedSessionContainerEnabled);
+        this.validateSessionTokenWithConflictExceptionBase(true, shouldRegionScopedSessionContainerEnabled);
     }
 
-    @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
-    public void validateSessionTokenMultiPartitionCollection() throws Exception {
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
+    public void validateSessionTokenMultiPartitionCollection(boolean shouldRegionScopedSessionContainerEnabled) throws Exception {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
         //this.validateSessionTokenMultiPartitionCollection(false, Protocol.TCP);
-        this.validateSessionTokenMultiPartitionCollection(false);
-        this.validateSessionTokenMultiPartitionCollection(true);
+
+        this.validateSessionTokenMultiPartitionCollectionBase(false, shouldRegionScopedSessionContainerEnabled);
+        this.validateSessionTokenMultiPartitionCollectionBase(true, shouldRegionScopedSessionContainerEnabled);
     }
 
-    @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
-    public void validateSessionTokenFromCollectionReplaceIsServerToken() {
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
+    public void validateSessionTokenFromCollectionReplaceIsServerToken(boolean shouldRegionScopedSessionContainerEnabled) {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
         //this.validateSessionTokenFromCollectionReplaceIsServerToken(false, Protocol.TCP);
-        this.validateSessionTokenFromCollectionReplaceIsServerToken(false);
-        this.validateSessionTokenFromCollectionReplaceIsServerToken(true);
+
+        this.validateSessionTokenFromCollectionReplaceIsServerTokenBase(false, shouldRegionScopedSessionContainerEnabled);
+        this.validateSessionTokenFromCollectionReplaceIsServerTokenBase(true, shouldRegionScopedSessionContainerEnabled);
     }
 
     //TODO ReadFeed is broken, will enable the test case once it get fixed

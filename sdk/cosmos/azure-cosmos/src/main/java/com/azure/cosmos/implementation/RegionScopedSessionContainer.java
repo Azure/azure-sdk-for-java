@@ -1,0 +1,580 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.cosmos.implementation;
+
+import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.math.util.Pair;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.URI;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+public class RegionScopedSessionContainer implements ISessionContainer {
+
+    private final Logger logger = LoggerFactory.getLogger(RegionScopedSessionContainer.class);
+
+    // the map stores mappings b/w the collectionRid and region level progress for each physical partition
+    // in that collection
+    // PartitionScopedRegionLevelProgress has the following structure:
+    //      [pkRangeId1 -> {global: <global session token for pkRangeId1>; region1: (GLSN, LLSN, <session token only if first preferred region>); region2...}]
+    private final ConcurrentHashMap<Long, PartitionScopedRegionLevelProgress> collectionResourceIdToPartitionScopedRegionLevelProgress = new ConcurrentHashMap<>();
+
+    // bloom filter which stores an entry which corresponds to a triple of [collectionRid, EPK hash, region]
+    private final PartitionKeyBasedBloomFilter partitionKeyBasedBloomFilter;
+
+    private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+    private final ReentrantReadWriteLock.ReadLock readLock = readWriteLock.readLock();
+
+    // 1. a write lock is acquired when the collection has not been cached by the session container yet
+    // 2. the write lock is only released when the collection has been recorded along with any session specific
+    // information for a partition in that collection
+    // 3. once a collection has been recorded, thread-safe access is delegated to individual concurrent hashmaps
+    private final ReentrantReadWriteLock.WriteLock writeLock = readWriteLock.writeLock();
+
+    private final ConcurrentHashMap<String, Long> collectionNameToCollectionResourceId = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Long, String> collectionResourceIdToCollectionName = new ConcurrentHashMap<>();
+    private final String hostName;
+    private boolean disableSessionCapturing;
+    private final GlobalEndpointManager globalEndpointManager;
+    private final AtomicReference<String> firstPreferredReadableRegionCached;
+
+    public RegionScopedSessionContainer(final String hostName, boolean disableSessionCapturing, GlobalEndpointManager globalEndpointManager) {
+        this.hostName = hostName;
+        this.disableSessionCapturing = disableSessionCapturing;
+        this.globalEndpointManager = globalEndpointManager;
+        this.firstPreferredReadableRegionCached = new AtomicReference<>(StringUtils.EMPTY);
+        this.partitionKeyBasedBloomFilter = new PartitionKeyBasedBloomFilter();
+    }
+
+    public RegionScopedSessionContainer(final String hostName, boolean disableSessionCapturing) {
+        this(hostName, disableSessionCapturing, null);
+    }
+
+    public RegionScopedSessionContainer(final String hostName) {
+        this(hostName, false, null);
+    }
+
+    public String getHostName() {
+        return this.hostName;
+    }
+
+    @Override
+    public void setDisableSessionCapturing(boolean value) {
+        this.disableSessionCapturing = value;
+    }
+
+    @Override
+    public boolean getDisableSessionCapturing() {
+        return this.disableSessionCapturing;
+    }
+
+    @Override
+    public String getSessionToken(String collectionLink) {
+
+        PathInfo pathInfo = new PathInfo(false, null, null, false);
+        PartitionScopedRegionLevelProgress partitionScopedRegionLevelProgress = null;
+
+        if (PathsHelper.tryParsePathSegments(collectionLink, pathInfo, null)) {
+            Long uniqueDocumentCollectionId = null;
+            if (pathInfo.isNameBased) {
+                String collectionName = PathsHelper.getCollectionPath(pathInfo.resourceIdOrFullName);
+                uniqueDocumentCollectionId = this.collectionNameToCollectionResourceId.get(collectionName);
+            } else {
+                ResourceId resourceId = ResourceId.parse(pathInfo.resourceIdOrFullName);
+                if (resourceId.getDocumentCollection() != 0) {
+                    uniqueDocumentCollectionId = resourceId.getUniqueDocumentCollectionId();
+                }
+            }
+
+            if (uniqueDocumentCollectionId != null) {
+                partitionScopedRegionLevelProgress = this.collectionResourceIdToPartitionScopedRegionLevelProgress.get(uniqueDocumentCollectionId);
+            }
+        }
+
+        if (partitionScopedRegionLevelProgress == null) {
+            return StringUtils.EMPTY;
+        }
+
+        return RegionScopedSessionContainer.getCombinedSessionToken(partitionScopedRegionLevelProgress);
+    }
+
+    private PartitionScopedRegionLevelProgress getPartitionAndRegionScopedProgressForCollection(RxDocumentServiceRequest request) {
+        return getPartitionAndRegionScopedProgressForCollection(request.getIsNameBased(), request.getResourceId(), request.getResourceAddress());
+    }
+
+    // fetch progress / session information for a given collection
+    private PartitionScopedRegionLevelProgress getPartitionAndRegionScopedProgressForCollection(boolean isNameBased, String rId, String resourceAddress) {
+
+        PartitionScopedRegionLevelProgress partitionScopedRegionLevelProgress = null;
+
+        if (!isNameBased) {
+            if (!StringUtils.isEmpty(rId)) {
+                ResourceId resourceId = ResourceId.parse(rId);
+                if (resourceId.getDocumentCollection() != 0) {
+                    partitionScopedRegionLevelProgress =
+                        this.collectionResourceIdToPartitionScopedRegionLevelProgress.get(resourceId.getUniqueDocumentCollectionId());
+                }
+            }
+        } else {
+            String collectionName = Utils.getCollectionName(resourceAddress);
+            if (!StringUtils.isEmpty(collectionName) && this.collectionNameToCollectionResourceId.containsKey(collectionName)) {
+                partitionScopedRegionLevelProgress = this.collectionResourceIdToPartitionScopedRegionLevelProgress.get(
+                    this.collectionNameToCollectionResourceId.get(collectionName));
+            }
+        }
+
+        return partitionScopedRegionLevelProgress;
+    }
+
+    private Pair<Long, PartitionScopedRegionLevelProgress> getCollectionRidToPartitionScopedRegionLevelProgress(RxDocumentServiceRequest request) {
+        return getCollectionRidToPartitionScopedRegionLevelProgress(request.getIsNameBased(), request.getResourceId(), request.getResourceAddress());
+    }
+
+    private Pair<Long, PartitionScopedRegionLevelProgress> getCollectionRidToPartitionScopedRegionLevelProgress(boolean isNameBased, String rId, String resourceAddress) {
+        PartitionScopedRegionLevelProgress partitionScopedRegionLevelProgress = null;
+        Long collectionResourceId = null;
+
+        if (!isNameBased) {
+            if (!StringUtils.isEmpty(rId)) {
+                ResourceId resourceId = ResourceId.parse(rId);
+                if (resourceId.getDocumentCollection() != 0) {
+                    collectionResourceId = resourceId.getUniqueDocumentCollectionId();
+                    partitionScopedRegionLevelProgress = this.collectionResourceIdToPartitionScopedRegionLevelProgress.get(collectionResourceId);
+                }
+            }
+        } else {
+            String collectionName = Utils.getCollectionName(resourceAddress);
+            if (!StringUtils.isEmpty(collectionName) && this.collectionNameToCollectionResourceId.containsKey(collectionName)) {
+                collectionResourceId = this.collectionNameToCollectionResourceId.get(collectionName);
+                partitionScopedRegionLevelProgress = this.collectionResourceIdToPartitionScopedRegionLevelProgress.get(collectionResourceId);
+            }
+        }
+
+        if (partitionScopedRegionLevelProgress != null && collectionResourceId != null) {
+            return new Pair<>(collectionResourceId, partitionScopedRegionLevelProgress);
+        }
+
+        return null;
+    }
+
+    public String resolveGlobalSessionToken(RxDocumentServiceRequest request) {
+        PartitionScopedRegionLevelProgress partitionScopedRegionLevelProgress = this.getPartitionAndRegionScopedProgressForCollection(request);
+        if (partitionScopedRegionLevelProgress != null) {
+            return RegionScopedSessionContainer.getCombinedSessionToken(partitionScopedRegionLevelProgress);
+        }
+
+        return StringUtils.EMPTY;
+    }
+
+    @Override
+    public ISessionToken resolvePartitionLocalSessionToken(RxDocumentServiceRequest request,
+                                                           String partitionKeyRangeId) {
+
+        Pair<Long, PartitionScopedRegionLevelProgress> collectionRidToPartitionScopedRegionLevelProgress =
+            this.getCollectionRidToPartitionScopedRegionLevelProgress(request);
+
+        if (collectionRidToPartitionScopedRegionLevelProgress == null) {
+            return null;
+        }
+
+        Long collectionRid = collectionRidToPartitionScopedRegionLevelProgress.getKey();
+        PartitionScopedRegionLevelProgress partitionScopedRegionLevelProgress
+            = collectionRidToPartitionScopedRegionLevelProgress.getValue();
+
+        Utils.ValueHolder<PartitionKeyInternal> partitionKeyInternal = Utils.ValueHolder.initialize(null);
+        Utils.ValueHolder<PartitionKeyDefinition> partitionKeyDefinition = Utils.ValueHolder.initialize(null);
+
+        if (this.firstPreferredReadableRegionCached.get().equals(StringUtils.EMPTY)) {
+            this.firstPreferredReadableRegionCached.set(extractFirstEffectivePreferredReadableRegion(this.globalEndpointManager));
+        }
+
+        if (shouldUseBloomFilter(
+            this.globalEndpointManager,
+            request,
+            partitionKeyInternal,
+            partitionKeyDefinition)) {
+
+            return SessionTokenHelper.resolvePartitionLocalSessionToken(
+                request,
+                this.partitionKeyBasedBloomFilter,
+                partitionScopedRegionLevelProgress,
+                partitionKeyInternal.v,
+                partitionKeyDefinition.v,
+                collectionRid,
+                partitionKeyRangeId,
+                this.firstPreferredReadableRegionCached.get(),
+                true);
+
+        }
+
+        return SessionTokenHelper.resolvePartitionLocalSessionToken(
+            request,
+            this.partitionKeyBasedBloomFilter,
+            partitionScopedRegionLevelProgress,
+            partitionKeyInternal.v,
+            partitionKeyDefinition.v,
+            collectionRid,
+            partitionKeyRangeId,
+            this.firstPreferredReadableRegionCached.get(),
+            false);
+    }
+
+    @Override
+    public void clearTokenByCollectionFullName(String collectionFullName) {
+        if (!Strings.isNullOrEmpty(collectionFullName)) {
+            String collectionName = PathsHelper.getCollectionPath(collectionFullName);
+            this.writeLock.lock();
+            try {
+                if (this.collectionNameToCollectionResourceId.containsKey(collectionName)) {
+                    Long rid = this.collectionNameToCollectionResourceId.get(collectionName);
+                    this.collectionResourceIdToCollectionName.remove(rid);
+                    this.collectionNameToCollectionResourceId.remove(collectionName);
+                    this.collectionResourceIdToPartitionScopedRegionLevelProgress.remove(rid);
+                }
+            } finally {
+                this.writeLock.unlock();
+            }
+        }
+    }
+
+    @Override
+    public void clearTokenByResourceId(String resourceId) {
+        if (!StringUtils.isEmpty(resourceId)) {
+            ResourceId resource = ResourceId.parse(resourceId);
+            if (resource.getDocumentCollection() != 0) {
+                Long rid = resource.getUniqueDocumentCollectionId();
+                this.writeLock.lock();
+                try {
+                    if (this.collectionResourceIdToCollectionName.containsKey(rid)) {
+                        String collectionName = this.collectionResourceIdToCollectionName.get(rid);
+                        this.collectionResourceIdToCollectionName.remove(rid);
+                        this.collectionNameToCollectionResourceId.remove(collectionName);
+                        this.collectionResourceIdToPartitionScopedRegionLevelProgress.remove(rid);
+                    }
+                } finally {
+                    this.writeLock.unlock();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void setSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
+        if (this.disableSessionCapturing) {
+            return;
+        }
+
+        String token = responseHeaders.get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+
+        if (!Strings.isNullOrEmpty(token)) {
+            Utils.ValueHolder<ResourceId> resourceId = Utils.ValueHolder.initialize(null);
+            Utils.ValueHolder<String> collectionName = Utils.ValueHolder.initialize(null);
+
+            if (shouldUpdateSessionToken(request, responseHeaders, resourceId, collectionName)) {
+                this.setSessionToken(request, resourceId.v, collectionName.v, token);
+            }
+        }
+    }
+
+    @Override
+    public void setSessionToken(RxDocumentServiceRequest request, String collectionRid, String collectionFullName, Map<String, String> responseHeaders) {
+        if (this.disableSessionCapturing) {
+            return;
+        }
+
+        ResourceId resourceId = ResourceId.parse(collectionRid);
+        String collectionName = PathsHelper.getCollectionPath(collectionFullName);
+        String token = responseHeaders.get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+
+        if (!Strings.isNullOrEmpty(token)) {
+            this.setSessionToken(request, resourceId, collectionName, token);
+        }
+    }
+
+    @Override
+    public void setSessionToken(String collectionRid, String collectionFullName, Map<String, String> responseHeaders) {
+        throw new NotImplementedException("setSessionToken(String collectionRid, String collectionFullName, Map<String, String> responseHeaders) not implemented for RegionScopedSessionContainer");
+    }
+
+    private void setSessionToken(RxDocumentServiceRequest request, ResourceId resourceId, String collectionName, String token) {
+        String partitionKeyRangeId;
+        ISessionToken parsedSessionToken;
+
+        String[] tokenParts = StringUtils.split(token, ':');
+        partitionKeyRangeId = tokenParts[0];
+        parsedSessionToken = SessionTokenHelper.parse(tokenParts[1]);
+
+        if (logger.isTraceEnabled()) {
+            logger.trace("UPDATE SESSION token {} {} {}", resourceId.getUniqueDocumentCollectionId(), collectionName, tokenParts[1]);
+        }
+
+        boolean isKnownCollection;
+
+        this.readLock.lock();
+        try {
+            isKnownCollection = collectionName != null &&
+                this.collectionNameToCollectionResourceId.containsKey(collectionName) &&
+                this.collectionResourceIdToCollectionName.containsKey(resourceId.getUniqueDocumentCollectionId()) &&
+                this.collectionNameToCollectionResourceId.get(collectionName) == resourceId.getUniqueDocumentCollectionId() &&
+                this.collectionResourceIdToCollectionName.get(resourceId.getUniqueDocumentCollectionId()).equals(collectionName);
+            if (isKnownCollection) {
+                this.addSessionTokenAndTryRecordEpkInBloomFilter(request, resourceId, partitionKeyRangeId, parsedSessionToken);
+            }
+        } finally {
+            this.readLock.unlock();
+        }
+
+        if (!isKnownCollection) {
+            this.writeLock.lock();
+            try {
+                if (resourceId.getUniqueDocumentCollectionId() != 0) {
+                    this.collectionNameToCollectionResourceId.compute(collectionName, (k, v) -> resourceId.getUniqueDocumentCollectionId());
+                    this.collectionResourceIdToCollectionName.compute(resourceId.getUniqueDocumentCollectionId(), (k, v) -> collectionName);
+                }
+                this.addSessionTokenAndTryRecordEpkInBloomFilter(request, resourceId, partitionKeyRangeId, parsedSessionToken);
+            } finally {
+                this.writeLock.unlock();
+            }
+        }
+    }
+
+    private void recordPartitionKeyInBloomFilter(
+        Long collectionRid,
+        String regionRoutedTo,
+        PartitionKeyInternal partitionKeyInternal,
+        PartitionKeyDefinition partitionKeyDefinition) {
+
+        if (Strings.isNullOrEmpty(this.firstPreferredReadableRegionCached.get())) {
+            this.firstPreferredReadableRegionCached.set(extractFirstEffectivePreferredReadableRegion(this.globalEndpointManager));
+        }
+
+        this.partitionKeyBasedBloomFilter.tryRecordPartitionKey(
+            collectionRid,
+            this.firstPreferredReadableRegionCached.get(),
+            regionRoutedTo,
+            partitionKeyInternal,
+            partitionKeyDefinition);
+    }
+
+    private void recordRegionScopedSessionToken(
+        PartitionScopedRegionLevelProgress partitionScopedRegionLevelProgress,
+        ISessionToken parsedSessionToken,
+        String partitionKeyRangeId,
+        String regionRoutedTo) {
+
+        partitionScopedRegionLevelProgress.tryRecordSessionToken(
+            parsedSessionToken,
+            partitionKeyRangeId,
+            this.firstPreferredReadableRegionCached.get(),
+            regionRoutedTo);
+    }
+
+    private void addSessionTokenAndTryRecordEpkInBloomFilter(RxDocumentServiceRequest request, ResourceId resourceId, String partitionKeyRangeId, ISessionToken parsedSessionToken) {
+
+        final Long collectionResourceId = resourceId.getUniqueDocumentCollectionId();
+
+        PartitionScopedRegionLevelProgress partitionScopedRegionLevelProgress
+            = this.collectionResourceIdToPartitionScopedRegionLevelProgress.get(collectionResourceId);
+
+        if (this.firstPreferredReadableRegionCached.get().equals(StringUtils.EMPTY)) {
+            this.firstPreferredReadableRegionCached.set(extractFirstEffectivePreferredReadableRegion(this.globalEndpointManager));
+        }
+
+        String regionRoutedTo = null;
+
+        if (request.requestContext != null) {
+            URI regionEndpointRoutedTo = request.requestContext.locationEndpointToRoute;
+            regionRoutedTo = this.globalEndpointManager.getRegionName(regionEndpointRoutedTo, request.getOperationType());
+        }
+
+        Utils.ValueHolder<PartitionKeyInternal> partitionKeyInternal = Utils.ValueHolder.initialize(null);
+        Utils.ValueHolder<PartitionKeyDefinition> partitionKeyDefinition = Utils.ValueHolder.initialize(null);
+
+        if (partitionScopedRegionLevelProgress != null) {
+
+            if (shouldUseBloomFilter(
+                this.globalEndpointManager,
+                request,
+                partitionKeyInternal,
+                partitionKeyDefinition)) {
+
+                this.recordPartitionKeyInBloomFilter(
+                    collectionResourceId,
+                    regionRoutedTo,
+                    partitionKeyInternal.v,
+                    partitionKeyDefinition.v);
+            }
+
+            this.recordRegionScopedSessionToken(
+                partitionScopedRegionLevelProgress,
+                parsedSessionToken,
+                partitionKeyRangeId,
+                regionRoutedTo);
+
+        } else {
+            this.collectionResourceIdToPartitionScopedRegionLevelProgress.compute(
+                resourceId.getUniqueDocumentCollectionId(), (k, partitionScopedRegionLevelProgressAsVal) -> {
+
+                    if (partitionScopedRegionLevelProgressAsVal == null) {
+                        logger.info("Registering a new collection resourceId [{}] in "
+                            + "RegionScopedSessionTokenRegistry", resourceId);
+                        partitionScopedRegionLevelProgressAsVal =
+                            new PartitionScopedRegionLevelProgress();
+                    }
+
+                    return partitionScopedRegionLevelProgressAsVal;
+                }
+            );
+
+            partitionScopedRegionLevelProgress =
+                this.collectionResourceIdToPartitionScopedRegionLevelProgress.get(resourceId.getUniqueDocumentCollectionId());
+
+            if (partitionScopedRegionLevelProgress != null) {
+                this.recordRegionScopedSessionToken(
+                    partitionScopedRegionLevelProgress,
+                    parsedSessionToken,
+                    partitionKeyRangeId,
+                    regionRoutedTo);
+            }
+
+            if (shouldUseBloomFilter(
+                this.globalEndpointManager,
+                request,
+                partitionKeyInternal,
+                partitionKeyDefinition)) {
+
+                this.recordPartitionKeyInBloomFilter(
+                    collectionResourceId,
+                    regionRoutedTo,
+                    partitionKeyInternal.v,
+                    partitionKeyDefinition.v);
+            }
+        }
+    }
+
+    private static String getCombinedSessionToken(PartitionScopedRegionLevelProgress partitionScopedRegionLevelProgress) {
+        ConcurrentHashMap<String, ConcurrentHashMap<String, PartitionScopedRegionLevelProgress.RegionLevelProgress>> tokens
+            = partitionScopedRegionLevelProgress.getPartitionKeyRangeIdToRegionLevelProgress();
+
+        StringBuilder result = new StringBuilder();
+        if (tokens != null) {
+            for (Iterator<Map.Entry<String, ConcurrentHashMap<String, PartitionScopedRegionLevelProgress.RegionLevelProgress>>> iterator = tokens.entrySet().iterator(); iterator.hasNext(); ) {
+                Map.Entry<String,  ConcurrentHashMap<String, PartitionScopedRegionLevelProgress.RegionLevelProgress>> entry = iterator.next();
+
+                String partitionKeyRangeId = entry.getKey();
+                String sessionTokenAsString = entry.getValue().get(PartitionScopedRegionLevelProgress.GlobalProgressKey).getVectorSessionToken().convertToString();
+
+                result = result.append(partitionKeyRangeId).append(":").append(sessionTokenAsString);
+                if (iterator.hasNext()) {
+                    result = result.append(",");
+                }
+            }
+        }
+
+        return result.toString();
+    }
+
+    private static boolean shouldUpdateSessionToken(
+        RxDocumentServiceRequest request,
+        Map<String, String> responseHeaders,
+        Utils.ValueHolder<ResourceId> resourceId,
+        Utils.ValueHolder<String> collectionName) {
+
+        resourceId.v = null;
+        String ownerFullName = responseHeaders.get(HttpConstants.HttpHeaders.OWNER_FULL_NAME);
+
+        if (Strings.isNullOrEmpty(ownerFullName)) {
+            ownerFullName = request.getResourceAddress();
+        }
+
+        collectionName.v = PathsHelper.getCollectionPath(ownerFullName);
+        String resourceIdString;
+
+        if (!request.getIsNameBased()) {
+            resourceIdString = request.getResourceId();
+        } else {
+            resourceIdString = responseHeaders.get(HttpConstants.HttpHeaders.OWNER_ID);
+            if (Strings.isNullOrEmpty(resourceIdString)) resourceIdString = request.getResourceId();
+        }
+
+        if (!Strings.isNullOrEmpty(resourceIdString)) {
+            resourceId.v = ResourceId.parse(resourceIdString);
+
+            if (resourceId.v.getDocumentCollection() != 0
+                && !ReplicatedResourceClientUtils.isReadingFromMaster(request.getResourceType(), request.getOperationType())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // validate whether the request can be scoped to a logical partition
+    // along with whether multi-write is enabled for the request / account
+    // multi-write setup needs to be verified since multiple regions can make progress
+    // independently as multiple regions can process writes
+    private static boolean shouldUseBloomFilter(
+        GlobalEndpointManager globalEndpointManager,
+        RxDocumentServiceRequest request,
+        Utils.ValueHolder<PartitionKeyInternal> partitionKeyInternal,
+        Utils.ValueHolder<PartitionKeyDefinition> partitionKeyDefinition) {
+
+        if (request == null || globalEndpointManager == null) {
+            return false;
+        }
+
+        partitionKeyInternal.v = request.getPartitionKeyInternal();
+
+        if (partitionKeyInternal.v == null) {
+            return false;
+        }
+
+        partitionKeyDefinition.v = request.getPartitionKeyDefinition();
+
+        if (partitionKeyDefinition.v == null) {
+            return false;
+        }
+
+        return globalEndpointManager.canUseMultipleWriteLocations(request);
+    }
+
+    private static String extractFirstEffectivePreferredReadableRegion(GlobalEndpointManager globalEndpointManager) {
+
+        if (globalEndpointManager == null) {
+            return StringUtils.EMPTY;
+        }
+
+        ConnectionPolicy connectionPolicy = globalEndpointManager.getConnectionPolicy();
+
+        if (connectionPolicy != null) {
+            List<String> preferredRegions = connectionPolicy.getPreferredRegions();
+
+            if (preferredRegions != null && !preferredRegions.isEmpty()) {
+                return preferredRegions.get(0).toLowerCase(Locale.ROOT).trim().replace(" ", "");
+            }
+        }
+
+        DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+
+        if (databaseAccount != null) {
+            Iterator<DatabaseAccountLocation> databaseAccountLocationIterator = databaseAccount.getReadableLocations().iterator();
+
+            if (databaseAccountLocationIterator.hasNext()) {
+                DatabaseAccountLocation databaseAccountLocation = databaseAccountLocationIterator.next();
+                return databaseAccountLocation.getName().toLowerCase(Locale.ROOT).trim().replace(" ", "");
+            }
+        }
+        return StringUtils.EMPTY;
+    }
+}

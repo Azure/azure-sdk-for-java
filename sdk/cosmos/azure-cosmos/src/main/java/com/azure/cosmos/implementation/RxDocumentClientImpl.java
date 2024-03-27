@@ -183,7 +183,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private SimpleTokenCache tokenCredentialCache;
     private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     AuthorizationTokenType authorizationTokenType;
-    private SessionContainer sessionContainer;
+    private ISessionContainer sessionContainer;
     private String firstResourceTokenFromPermissionFeed = StringUtils.EMPTY;
     private RxClientCollectionCache collectionCache;
     private RxGatewayStoreModel gatewayProxy;
@@ -250,7 +250,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
                                 SessionRetryOptions sessionRetryOptions,
-                                CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
+                                CosmosContainerProactiveInitConfig containerProactiveInitConfig,
+                                boolean isRegionScopedSessionCapturingEnabled) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -269,7 +270,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientCorrelationId,
                 cosmosEndToEndOperationLatencyPolicyConfig,
                 sessionRetryOptions,
-                containerProactiveInitConfig);
+                containerProactiveInitConfig,
+                isRegionScopedSessionCapturingEnabled);
+
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -291,7 +294,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
                                 SessionRetryOptions sessionRetryOptions,
-                                CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
+                                CosmosContainerProactiveInitConfig containerProactiveInitConfig,
+                                boolean isRegionScopedSessionCapturingEnabled) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -310,7 +314,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientCorrelationId,
                 cosmosEndToEndOperationLatencyPolicyConfig,
                 sessionRetryOptions,
-                containerProactiveInitConfig);
+                containerProactiveInitConfig,
+                isRegionScopedSessionCapturingEnabled);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -331,7 +336,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
                                 SessionRetryOptions sessionRetryOptions,
-                                CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
+                                CosmosContainerProactiveInitConfig containerProactiveInitConfig,
+                                boolean isRegionScopedSessionCapturingEnabled) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -349,7 +355,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientCorrelationId,
                 cosmosEndToEndOperationLatencyPolicyConfig,
                 sessionRetryOptions,
-                containerProactiveInitConfig);
+                containerProactiveInitConfig,
+                isRegionScopedSessionCapturingEnabled);
 
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
@@ -409,7 +416,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          String clientCorrelationId,
                          CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
                          SessionRetryOptions sessionRetryOptions,
-                         CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
+                         CosmosContainerProactiveInitConfig containerProactiveInitConfig,
+                         boolean isRegionScopedSessionCapturingEnabled) {
 
         assert(clientTelemetryConfig != null);
         Boolean clientTelemetryEnabled = ImplementationBridgeHelpers
@@ -494,7 +502,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.sessionCapturingOverrideEnabled = sessionCapturingOverrideEnabled;
             boolean disableSessionCapturing = (ConsistencyLevel.SESSION != consistencyLevel && !sessionCapturingOverrideEnabled);
 
-            this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
             this.consistencyLevel = consistencyLevel;
 
             this.userAgentContainer = new UserAgentContainer();
@@ -508,6 +515,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.reactorHttpClient = httpClient();
 
             this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
+
+            if (isRegionScopedSessionCapturingEnabled || Configs.isRegionScopedSessionTokenCapturingEnabled()) {
+                this.sessionContainer = new RegionScopedSessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing, this.globalEndpointManager);
+            } else {
+                this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
+            }
+
             this.retryPolicy = new RetryPolicy(this, this.globalEndpointManager, this.connectionPolicy);
             this.resetSessionTokenRetryPolicy = retryPolicy;
             CpuMemoryMonitor.register(this);
@@ -1257,7 +1271,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return this.create(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, DocumentCollection.class))
                        .doOnNext(resourceResponse -> {
                     // set the session token
-                    this.sessionContainer.setSessionToken(resourceResponse.getResource().getResourceId(),
+                    this.sessionContainer.setSessionToken(
+                        request,
+                        resourceResponse.getResource().getResourceId(),
                         getAltLink(resourceResponse.getResource()),
                         resourceResponse.getResponseHeaders());
                 });
@@ -1311,7 +1327,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 .doOnNext(resourceResponse -> {
                     if (resourceResponse.getResource() != null) {
                         // set the session token
-                        this.sessionContainer.setSessionToken(resourceResponse.getResource().getResourceId(),
+                        this.sessionContainer.setSessionToken(
+                            request,
+                            resourceResponse.getResource().getResourceId(),
                             getAltLink(resourceResponse.getResource()),
                             resourceResponse.getResponseHeaders());
                     }
@@ -1708,6 +1726,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         request.setPartitionKeyInternal(partitionKeyInternal);
+        request.setPartitionKeyDefinition(partitionKeyDefinition);
         request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, Utils.escapeNonAscii(partitionKeyInternal.toJson()));
     }
 
@@ -4985,12 +5004,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    public Object getSession() {
+    public ISessionContainer getSession() {
         return this.sessionContainer;
     }
 
-    public void setSession(Object sessionContainer) {
-        this.sessionContainer = (SessionContainer) sessionContainer;
+    public void setSession(ISessionContainer sessionContainer) {
+        this.sessionContainer = sessionContainer;
     }
 
     @Override
