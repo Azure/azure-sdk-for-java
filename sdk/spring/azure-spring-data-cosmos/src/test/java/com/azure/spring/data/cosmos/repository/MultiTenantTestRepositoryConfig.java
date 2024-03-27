@@ -42,6 +42,9 @@ public class MultiTenantTestRepositoryConfig extends AbstractCosmosConfiguration
     @Value("${cosmos.queryMetricsEnabled}")
     private boolean queryMetricsEnabled;
 
+    @Value("${cosmos.indexMetricsEnabled}")
+    private boolean indexMetricsEnabled;
+
     @Value("${cosmos.maxDegreeOfParallelism}")
     private int maxDegreeOfParallelism;
 
@@ -97,6 +100,7 @@ public class MultiTenantTestRepositoryConfig extends AbstractCosmosConfiguration
     public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
                            .enableQueryMetrics(queryMetricsEnabled)
+                           .enableIndexMetrics(indexMetricsEnabled)
                            .maxDegreeOfParallelism(maxDegreeOfParallelism)
                            .maxBufferedItemCount(maxBufferedItemCount)
                            .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
