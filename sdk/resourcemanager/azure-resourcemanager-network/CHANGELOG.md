@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Supported set `DeleteOptions` on a public ip address in `NetworkInterface`, for allow deleting the public ip automatically when the vm is deleted.
+- Supported set `DeleteOptions` on a public IP address in `NetworkInterface`, for allow deleting the public IP automatically when the virtual machine is deleted.
 
 ### Breaking Changes
 
