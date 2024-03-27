@@ -3,7 +3,7 @@
 ### 3.44.0-beta.1 (Unreleased)
 
 #### Features Added
-* Exposing the `indexQueryMetrics` to the `CosmosConfig` via the `application.properties` configuration file - See [PR 38996](https://github.com/Azure/azure-sdk-for-java/pull/38996).
+* Exposing the `indexQueryMetrics` to the `CosmosConfig` via the `application.properties` configuration file - See [PR 39433](https://github.com/Azure/azure-sdk-for-java/pull/39433).
 
 #### Breaking Changes
 
