@@ -3,14 +3,16 @@
 package com.azure.spring.cloud.feature.management.implementation;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
-import com.azure.spring.cloud.feature.management.implementation.models.ServerSideFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import com.azure.spring.cloud.feature.management.implementation.models.Feature;
+import com.azure.spring.cloud.feature.management.implementation.models.ServerSideFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 
@@ -26,8 +28,8 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
         .setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
 
     private static final long serialVersionUID = -1642032123104805346L;
-    private static final String FEATURE_FLAG_PASCAL_CASE = "FeatureFlags";
-    private static final String FEATURE_FLAG_KEBAB_CASE = "feature-flags";
+
+    private static final String FEATURE_FLAG_SNAKE_CASE = "feature_flags";
 
     /**
      * Map of all Feature Flags that use Feature Filters.
@@ -43,6 +45,7 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
         featureManagement = new HashMap<>();
         onOff = new HashMap<>();
     }
+
     @Override
     public void putAll(Map<? extends String, ? extends Object> m) {
         if (m == null) {
@@ -68,7 +71,7 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
         // check if FeatureFlags section exist
         String featureFlagsSectionKey = "";
         for (String key : features.keySet()) {
-            if (FEATURE_FLAG_PASCAL_CASE.equalsIgnoreCase(key) || FEATURE_FLAG_KEBAB_CASE.equalsIgnoreCase(key)) {
+            if (FEATURE_FLAG_SNAKE_CASE.equalsIgnoreCase(key)) {
                 featureFlagsSectionKey = key;
                 break;
             }
@@ -130,13 +133,28 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
 
         ServerSideFeature serverSideFeature = null;
         try {
+            LinkedHashMap<String, Object> ff = new LinkedHashMap<String, Object>();
+            if (featureValue.getClass().isAssignableFrom(LinkedHashMap.class.getClass())) {
+                ff = (LinkedHashMap<String, Object>) featureValue;
+            }
+            LinkedHashMap<String, Object> conditions = new LinkedHashMap<String, Object>();
+            if (ff.containsKey("conditions")
+                && ff.get("conditions").getClass().isAssignableFrom(LinkedHashMap.class.getClass())) {
+                conditions = (LinkedHashMap<String, Object>) ff.get("conditions");
+            }
+
+            if (conditions.get("client_filters") instanceof List) {
+                conditions.put("client_filters", null);
+            }
+
             serverSideFeature = MAPPER.convertValue(featureValue, ServerSideFeature.class);
         } catch (IllegalArgumentException e) {
             LOGGER.error("Found invalid feature {} with value {}.", key, featureValue.toString());
         }
 
         if (serverSideFeature != null && serverSideFeature.getId() != null) {
-            if (serverSideFeature.getConditions() != null && serverSideFeature.getConditions().getClientFilters() != null) {
+            if (serverSideFeature.getConditions() != null
+                && serverSideFeature.getConditions().getClientFilters() != null) {
                 final Feature feature = new Feature();
                 feature.setKey(serverSideFeature.getId());
                 feature.setEvaluate(serverSideFeature.isEnabled());
@@ -155,6 +173,7 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
     public Map<String, Feature> getFeatureManagement() {
         return featureManagement;
     }
+
     /**
      * @return the onOff
      */
