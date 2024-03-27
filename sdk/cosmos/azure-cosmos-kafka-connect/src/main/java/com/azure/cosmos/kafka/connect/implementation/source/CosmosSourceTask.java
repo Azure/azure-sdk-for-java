@@ -315,7 +315,9 @@ public class CosmosSourceTask extends SourceTask {
         } else {
             try {
                 KafkaCosmosChangeFeedState kafkaCosmosChangeFeedState =
-                KafkaCosmosUtils.getSimpleObjectMapper().readValue(feedRangeTaskUnit.getContinuationState(), KafkaCosmosChangeFeedState.class);
+                    KafkaCosmosUtils
+                        .getSimpleObjectMapper()
+                        .readValue(feedRangeTaskUnit.getContinuationState(), KafkaCosmosChangeFeedState.class);
 
                 changeFeedRequestOptions =
                     ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
