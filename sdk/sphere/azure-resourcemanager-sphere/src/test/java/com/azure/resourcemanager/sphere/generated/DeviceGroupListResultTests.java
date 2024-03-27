@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sphere.fluent.models.DeviceGroupInner;
 import com.azure.resourcemanager.sphere.models.AllowCrashDumpCollection;
 import com.azure.resourcemanager.sphere.models.DeviceGroupListResult;
+import com.azure.resourcemanager.sphere.models.DeviceGroupProperties;
 import com.azure.resourcemanager.sphere.models.OSFeedType;
 import com.azure.resourcemanager.sphere.models.RegionalDataBoundary;
 import com.azure.resourcemanager.sphere.models.UpdatePolicy;
@@ -17,57 +18,38 @@ import org.junit.jupiter.api.Assertions;
 public final class DeviceGroupListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeviceGroupListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"bvyvdcsity\",\"osFeedType\":\"Retail\",\"updatePolicy\":\"No3rdPartyAppUpdates\",\"allowCrashDumpsCollection\":\"Enabled\",\"regionalDataBoundary\":\"EU\",\"hasDeployment\":true,\"provisioningState\":\"Provisioning\"},\"id\":\"qsc\",\"name\":\"eypvhezrkg\",\"type\":\"hcjrefovgmk\"},{\"properties\":{\"description\":\"eyyvxyqjpkcat\",\"osFeedType\":\"Retail\",\"updatePolicy\":\"No3rdPartyAppUpdates\",\"allowCrashDumpsCollection\":\"Disabled\",\"regionalDataBoundary\":\"EU\",\"hasDeployment\":true,\"provisioningState\":\"Succeeded\"},\"id\":\"jh\",\"name\":\"mdajv\",\"type\":\"ysou\"},{\"properties\":{\"description\":\"canoaeupf\",\"osFeedType\":\"RetailEval\",\"updatePolicy\":\"UpdateAll\",\"allowCrashDumpsCollection\":\"Enabled\",\"regionalDataBoundary\":\"EU\",\"hasDeployment\":true,\"provisioningState\":\"Updating\"},\"id\":\"matuok\",\"name\":\"hfuiuaodsfc\",\"type\":\"kvxod\"},{\"properties\":{\"description\":\"zmyzydagf\",\"osFeedType\":\"RetailEval\",\"updatePolicy\":\"No3rdPartyAppUpdates\",\"allowCrashDumpsCollection\":\"Disabled\",\"regionalDataBoundary\":\"EU\",\"hasDeployment\":true,\"provisioningState\":\"Deleting\"},\"id\":\"whrdxwzywqsmbsu\",\"name\":\"exim\",\"type\":\"ryocfsfksymdd\"}],\"nextLink\":\"tki\"}")
-                .toObject(DeviceGroupListResult.class);
-        Assertions.assertEquals("bvyvdcsity", model.value().get(0).description());
-        Assertions.assertEquals(OSFeedType.RETAIL, model.value().get(0).osFeedType());
-        Assertions.assertEquals(UpdatePolicy.NO3RD_PARTY_APP_UPDATES, model.value().get(0).updatePolicy());
-        Assertions.assertEquals(AllowCrashDumpCollection.ENABLED, model.value().get(0).allowCrashDumpsCollection());
-        Assertions.assertEquals(RegionalDataBoundary.EU, model.value().get(0).regionalDataBoundary());
-        Assertions.assertEquals("tki", model.nextLink());
+        DeviceGroupListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"description\":\"oaeupfhyhltrpmo\",\"osFeedType\":\"RetailEval\",\"updatePolicy\":\"UpdateAll\",\"allowCrashDumpsCollection\":\"Enabled\",\"regionalDataBoundary\":\"None\",\"hasDeployment\":true,\"provisioningState\":\"Failed\"},\"id\":\"iuaod\",\"name\":\"fcp\",\"type\":\"vxodpu\"},{\"properties\":{\"description\":\"yzydagfuaxbezyi\",\"osFeedType\":\"RetailEval\",\"updatePolicy\":\"No3rdPartyAppUpdates\",\"allowCrashDumpsCollection\":\"Disabled\",\"regionalDataBoundary\":\"EU\",\"hasDeployment\":false,\"provisioningState\":\"Failed\"},\"id\":\"q\",\"name\":\"mbsureximo\",\"type\":\"yocf\"},{\"properties\":{\"description\":\"s\",\"osFeedType\":\"RetailEval\",\"updatePolicy\":\"UpdateAll\",\"allowCrashDumpsCollection\":\"Enabled\",\"regionalDataBoundary\":\"None\",\"hasDeployment\":false,\"provisioningState\":\"Failed\"},\"id\":\"yudxorrqnbp\",\"name\":\"czvyifq\",\"type\":\"vkd\"}],\"nextLink\":\"sllr\"}")
+            .toObject(DeviceGroupListResult.class);
+        Assertions.assertEquals("oaeupfhyhltrpmo", model.value().get(0).properties().description());
+        Assertions.assertEquals(OSFeedType.RETAIL_EVAL, model.value().get(0).properties().osFeedType());
+        Assertions.assertEquals(UpdatePolicy.UPDATE_ALL, model.value().get(0).properties().updatePolicy());
+        Assertions.assertEquals(AllowCrashDumpCollection.ENABLED,
+            model.value().get(0).properties().allowCrashDumpsCollection());
+        Assertions.assertEquals(RegionalDataBoundary.NONE, model.value().get(0).properties().regionalDataBoundary());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeviceGroupListResult model =
-            new DeviceGroupListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DeviceGroupInner()
-                                .withDescription("bvyvdcsity")
-                                .withOsFeedType(OSFeedType.RETAIL)
-                                .withUpdatePolicy(UpdatePolicy.NO3RD_PARTY_APP_UPDATES)
-                                .withAllowCrashDumpsCollection(AllowCrashDumpCollection.ENABLED)
-                                .withRegionalDataBoundary(RegionalDataBoundary.EU),
-                            new DeviceGroupInner()
-                                .withDescription("eyyvxyqjpkcat")
-                                .withOsFeedType(OSFeedType.RETAIL)
-                                .withUpdatePolicy(UpdatePolicy.NO3RD_PARTY_APP_UPDATES)
-                                .withAllowCrashDumpsCollection(AllowCrashDumpCollection.DISABLED)
-                                .withRegionalDataBoundary(RegionalDataBoundary.EU),
-                            new DeviceGroupInner()
-                                .withDescription("canoaeupf")
-                                .withOsFeedType(OSFeedType.RETAIL_EVAL)
-                                .withUpdatePolicy(UpdatePolicy.UPDATE_ALL)
-                                .withAllowCrashDumpsCollection(AllowCrashDumpCollection.ENABLED)
-                                .withRegionalDataBoundary(RegionalDataBoundary.EU),
-                            new DeviceGroupInner()
-                                .withDescription("zmyzydagf")
-                                .withOsFeedType(OSFeedType.RETAIL_EVAL)
-                                .withUpdatePolicy(UpdatePolicy.NO3RD_PARTY_APP_UPDATES)
-                                .withAllowCrashDumpsCollection(AllowCrashDumpCollection.DISABLED)
-                                .withRegionalDataBoundary(RegionalDataBoundary.EU)))
-                .withNextLink("tki");
+        DeviceGroupListResult model = new DeviceGroupListResult().withValue(Arrays.asList(
+            new DeviceGroupInner().withProperties(new DeviceGroupProperties().withDescription("oaeupfhyhltrpmo")
+                .withOsFeedType(OSFeedType.RETAIL_EVAL).withUpdatePolicy(UpdatePolicy.UPDATE_ALL)
+                .withAllowCrashDumpsCollection(AllowCrashDumpCollection.ENABLED)
+                .withRegionalDataBoundary(RegionalDataBoundary.NONE)),
+            new DeviceGroupInner().withProperties(new DeviceGroupProperties().withDescription("yzydagfuaxbezyi")
+                .withOsFeedType(OSFeedType.RETAIL_EVAL).withUpdatePolicy(UpdatePolicy.NO3RD_PARTY_APP_UPDATES)
+                .withAllowCrashDumpsCollection(AllowCrashDumpCollection.DISABLED)
+                .withRegionalDataBoundary(RegionalDataBoundary.EU)),
+            new DeviceGroupInner().withProperties(new DeviceGroupProperties().withDescription("s")
+                .withOsFeedType(OSFeedType.RETAIL_EVAL).withUpdatePolicy(UpdatePolicy.UPDATE_ALL)
+                .withAllowCrashDumpsCollection(AllowCrashDumpCollection.ENABLED)
+                .withRegionalDataBoundary(RegionalDataBoundary.NONE))));
         model = BinaryData.fromObject(model).toObject(DeviceGroupListResult.class);
-        Assertions.assertEquals("bvyvdcsity", model.value().get(0).description());
-        Assertions.assertEquals(OSFeedType.RETAIL, model.value().get(0).osFeedType());
-        Assertions.assertEquals(UpdatePolicy.NO3RD_PARTY_APP_UPDATES, model.value().get(0).updatePolicy());
-        Assertions.assertEquals(AllowCrashDumpCollection.ENABLED, model.value().get(0).allowCrashDumpsCollection());
-        Assertions.assertEquals(RegionalDataBoundary.EU, model.value().get(0).regionalDataBoundary());
-        Assertions.assertEquals("tki", model.nextLink());
+        Assertions.assertEquals("oaeupfhyhltrpmo", model.value().get(0).properties().description());
+        Assertions.assertEquals(OSFeedType.RETAIL_EVAL, model.value().get(0).properties().osFeedType());
+        Assertions.assertEquals(UpdatePolicy.UPDATE_ALL, model.value().get(0).properties().updatePolicy());
+        Assertions.assertEquals(AllowCrashDumpCollection.ENABLED,
+            model.value().get(0).properties().allowCrashDumpsCollection());
+        Assertions.assertEquals(RegionalDataBoundary.NONE, model.value().get(0).properties().regionalDataBoundary());
     }
 }

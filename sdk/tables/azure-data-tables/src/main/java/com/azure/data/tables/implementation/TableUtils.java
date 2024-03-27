@@ -584,10 +584,6 @@ public final class TableUtils {
         return keys;
     }
 
-    public static Context skip409Logging(Context context) {
-        return context.addData("skip409logging", true);
-    }
-
     public static <T> Response<T> callWithOptionalTimeout(Supplier<Response<T>> callable, ExecutorService threadPool, Duration timeout, ClientLogger logger) {
         return callWithOptionalTimeout(callable, threadPool, timeout, logger, false);
     }
