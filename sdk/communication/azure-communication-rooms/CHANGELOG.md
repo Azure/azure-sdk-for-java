@@ -4,16 +4,6 @@
 
 - General Availability version of PSTN dial-out capability feature
 
-## 1.1.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.0.8 (2024-02-20)
 
 ### Other Changes
