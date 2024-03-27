@@ -1618,44 +1618,4 @@ public class ImplementationBridgeHelpers {
             int getMaxInRegionRetryCount(SessionRetryOptions sessionRetryOptions);
         }
     }
-
-    public static final class CosmosItemSerializerHelper {
-        private static final AtomicReference<Boolean> cosmosItemSerializerClassLoaded = new AtomicReference<>(false);
-        private static final AtomicReference<CosmosItemSerializerAccessor> accessor = new AtomicReference<>();
-
-        private CosmosItemSerializerHelper() {}
-
-        public static CosmosItemSerializerAccessor getCosmosItemSerializerAccessor() {
-
-            if (!cosmosItemSerializerClassLoaded.get()) {
-                logger.debug("Initializing cosmosItemSerializerAccessor...");
-                initializeAllAccessors();
-            }
-
-            CosmosItemSerializerAccessor snapshot = accessor.get();
-
-            if (snapshot == null) {
-                logger.error("cosmosItemSerializerAccessor is not initialized yet!");
-                System.exit(9730); // Using a unique status code here to help debug the issue.
-            }
-
-            return snapshot;
-        }
-
-        public static void setCosmosItemSerializerAccessor(final CosmosItemSerializerAccessor newAccessor) {
-
-            assert (newAccessor != null);
-
-            if (!accessor.compareAndSet(null, newAccessor)) {
-                logger.debug("CosmosItemSerializerAccessor already initialized!");
-            } else {
-                logger.debug("Setting CosmosItemSerializerAccessor...");
-                cosmosItemSerializerClassLoaded.set(true);
-            }
-        }
-
-        public interface CosmosItemSerializerAccessor {
-            //<T> T deserializeInternal(CosmosItemSerializer serializer, JsonNode jsonNode, Class<T> clazz);
-        }
-    }
 }
