@@ -172,8 +172,9 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         private final Context span;
         private final Tracer tracer;
         private volatile int ended = 0;
-        private static final AtomicIntegerFieldUpdater<TraceableResponse> ENDED_UPDATER =
-                AtomicIntegerFieldUpdater.newUpdater(TraceableResponse.class, "ended");
+        private static final AtomicIntegerFieldUpdater<TraceableResponse> ENDED_UPDATER
+            = AtomicIntegerFieldUpdater.newUpdater(TraceableResponse.class, "ended");
+
         private TraceableResponse(HttpResponse response, Tracer tracer, Context span) {
             super(response.getRequest());
             this.response = response;
