@@ -268,14 +268,16 @@ public final class CosmosChangeFeedRequestOptions {
 
     /***
      * Creates a new {@link CosmosChangeFeedRequestOptions} instance to start processing
-     * change feed items based on a previous continuation
+     * change feed items based on a previous continuation.
+     *
+     * ONLY used by Kafka connector.
      *
      * @param continuation The continuation that was retrieved from a previously retrieved FeedResponse
      * @param targetRange the new target range
      * @param continuationLsn the new continuation lsn
      * @return a new {@link CosmosChangeFeedRequestOptions} instance
      */
-    public static CosmosChangeFeedRequestOptions createForProcessingFromContinuation(
+    static CosmosChangeFeedRequestOptions createForProcessingFromContinuation(
         String continuation, FeedRange targetRange, String continuationLsn) {
         if (targetRange instanceof FeedRangeEpkImpl) {
             Range<String> normalizedRange =
@@ -648,6 +650,15 @@ public final class CosmosChangeFeedRequestOptions {
                 @Override
                 public List<String> getExcludeRegions(CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions) {
                     return cosmosChangeFeedRequestOptions.excludeRegions;
+                }
+
+                @Override
+                public CosmosChangeFeedRequestOptions createForProcessingFromContinuation(
+                    String continuation,
+                    FeedRange targetRange,
+                    String continuationLsn) {
+
+                    return CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(continuation, targetRange, continuationLsn);
                 }
             });
     }

@@ -6,7 +6,6 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
-import com.azure.cosmos.implementation.routing.Range;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -49,15 +48,5 @@ public interface FeedRange {
      */
     public static FeedRange forFullRange() {
         return FeedRangeEpkImpl.forFullRange();
-    }
-
-    public static boolean checkOverlapping(FeedRange range1, FeedRange range2) {
-        if (range1 instanceof FeedRangeEpkImpl && range2 instanceof FeedRangeEpkImpl) {
-            return Range.checkOverlapping(
-                ((FeedRangeEpkImpl) range1).getRange(),
-                ((FeedRangeEpkImpl) range2).getRange());
-        }
-
-        throw new IllegalArgumentException("Can not checkOverlapping for range1 " + range1.getClass() + ", range2 " + range2.getClass());
     }
 }

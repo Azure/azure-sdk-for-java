@@ -5,6 +5,7 @@ package com.azure.cosmos.kafka.connect.implementation.source;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.CosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.CosmosExceptionsHelper;
@@ -227,8 +228,10 @@ public class CosmosSourceTask extends SourceTask {
                 .getDatabase(feedRangeTaskUnit.getDatabaseName())
                 .getContainer(feedRangeTaskUnit.getContainerName());
 
-        return container
-            .getOverlappingFeedRanges(feedRangeTaskUnit.getFeedRange())
+        return ImplementationBridgeHelpers
+            .CosmosAsyncContainerHelper
+            .getCosmosAsyncContainerAccessor()
+            .getOverlappingFeedRanges(container, feedRangeTaskUnit.getFeedRange())
             .flatMap(overlappedRanges -> {
 
                 if (overlappedRanges.size() == 1) {
@@ -315,10 +318,12 @@ public class CosmosSourceTask extends SourceTask {
                 KafkaCosmosUtils.getSimpleObjectMapper().readValue(feedRangeTaskUnit.getContinuationState(), KafkaCosmosChangeFeedState.class);
 
                 changeFeedRequestOptions =
-                    CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(
-                        kafkaCosmosChangeFeedState.getContinuationState(),
-                        kafkaCosmosChangeFeedState.getTargetRange(),
-                        kafkaCosmosChangeFeedState.getContinuationLsn());
+                    ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
+                        .getCosmosChangeFeedRequestOptionsAccessor()
+                        .createForProcessingFromContinuation(
+                            kafkaCosmosChangeFeedState.getContinuationState(),
+                            kafkaCosmosChangeFeedState.getTargetRange(),
+                            kafkaCosmosChangeFeedState.getContinuationLsn());
 
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);

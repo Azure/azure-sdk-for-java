@@ -2552,7 +2552,7 @@ public class CosmosAsyncContainer {
         return this.getFeedRanges(true);
     }
 
-    public Mono<List<FeedRange>> getOverlappingFeedRanges(FeedRange feedRange) {
+    Mono<List<FeedRange>> getOverlappingFeedRanges(FeedRange feedRange) {
         checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
 
         final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
@@ -2628,6 +2628,17 @@ public class CosmosAsyncContainer {
                 clientWrapper.getPartitionKeyRangeCache(),
                 null,
                 getCollectionObservable);
+    }
+
+    Mono<Boolean> checkFeedRangeOverlapping(FeedRange feedRange1, FeedRange feedRange2) {
+        checkNotNull(feedRange1, "Argument 'feedRange1' must not be null.");
+        checkNotNull(feedRange2, "Argument 'feedRange2' must not be null.");
+
+        return this.getNormalizedEffectiveRange(feedRange1)
+            .flatMap(normalizedRange1 -> {
+                 return this.getNormalizedEffectiveRange(feedRange2)
+                     .map(normalizedRange2 -> Range.checkOverlapping(normalizedRange1, normalizedRange2));
+            });
     }
 
      /**
@@ -2817,6 +2828,19 @@ public class CosmosAsyncContainer {
 
                     return cosmosAsyncContainer.trySplitFeedRange(feedRange, targetedCountAfterSplit)
                         .map(feedRangeEpks -> feedRangeEpks.stream().collect(Collectors.toList()));
+                }
+
+                @Override
+                public Mono<Boolean> checkFeedRangeOverlapping(
+                    CosmosAsyncContainer cosmosAsyncContainer,
+                    FeedRange feedRange1,
+                    FeedRange feedRange2) {
+                    return cosmosAsyncContainer.checkFeedRangeOverlapping(feedRange1, feedRange2);
+                }
+
+                @Override
+                public Mono<List<FeedRange>> getOverlappingFeedRanges(CosmosAsyncContainer container, FeedRange feedRange) {
+                    return container.getOverlappingFeedRanges(feedRange);
                 }
             });
     }
