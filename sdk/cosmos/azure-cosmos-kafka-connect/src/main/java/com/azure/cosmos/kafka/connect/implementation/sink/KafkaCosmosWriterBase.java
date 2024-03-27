@@ -6,8 +6,8 @@ package com.azure.cosmos.kafka.connect.implementation.sink;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
-import com.azure.cosmos.kafka.connect.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import org.apache.kafka.connect.sink.ErrantRecordReporter;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
 public abstract class KafkaCosmosWriterBase implements IWriter {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaCosmosWriterBase.class);

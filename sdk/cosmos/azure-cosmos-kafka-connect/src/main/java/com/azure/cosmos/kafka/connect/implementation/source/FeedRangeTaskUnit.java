@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
-import com.azure.cosmos.kafka.connect.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.FeedRange;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -17,8 +17,8 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
 import java.util.Objects;
 
-import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkArgument;
-import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 @JsonSerialize(using = FeedRangeTaskUnit.FeedRangeTaskUnitSerializer.class)
 @JsonDeserialize(using = FeedRangeTaskUnit.FeedRangeTaskUnitDeserializer.class)

@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.kafka.connect.implementation.sink.idstrategy;
 
-import com.azure.cosmos.kafka.connect.implementation.guava25.collect.ImmutableMap;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import org.apache.kafka.connect.data.Values;
 import org.apache.kafka.connect.sink.SinkRecord;
 

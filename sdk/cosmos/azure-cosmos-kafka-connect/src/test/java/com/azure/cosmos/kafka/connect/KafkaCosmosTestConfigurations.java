@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.kafka.connect;
 
-import com.azure.cosmos.kafka.connect.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.kafka.connect.implementation.guava25.base.Strings;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.guava25.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

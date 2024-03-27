@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.kafka.connect;
 
-import com.azure.cosmos.kafka.connect.implementation.Strings;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
 import com.azure.cosmos.kafka.connect.implementation.sink.IdStrategies;
 import com.azure.cosmos.kafka.connect.implementation.sink.ItemWriteStrategy;
