@@ -31,55 +31,40 @@ public final class GovernanceAssignmentsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"owner\":\"npxraqawbmpspf\",\"remediationDueDate\":\"2021-02-16T15:05:28Z\",\"remediationEta\":{\"eta\":\"2021-05-30T23:09:04Z\",\"justification\":\"ocvvujexayglxrk\"},\"isGracePeriod\":false,\"governanceEmailNotification\":{\"disableManagerEmailNotification\":true,\"disableOwnerEmailNotification\":true},\"additionalData\":{\"ticketNumber\":1922725665,\"ticketLink\":\"jfiuofpi\",\"ticketStatus\":\"dzlvssqywj\"}},\"id\":\"packyh\",\"name\":\"dvikm\",\"type\":\"ngpmillxgjsci\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"owner\":\"nycntr\",\"remediationDueDate\":\"2021-01-17T18:40:28Z\",\"remediationEta\":{\"eta\":\"2021-11-12T22:57:09Z\",\"justification\":\"tdmbqjtsuhq\"},\"isGracePeriod\":true,\"governanceEmailNotification\":{\"disableManagerEmailNotification\":true,\"disableOwnerEmailNotification\":true},\"additionalData\":{\"ticketNumber\":640040198,\"ticketLink\":\"bqmzxsyaksinp\",\"ticketStatus\":\"m\"}},\"id\":\"hwbghvwtgp\",\"name\":\"gch\",\"type\":\"gsf\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<GovernanceAssignment> response =
-            manager.governanceAssignments().list("khowgomvvhxow", "c", com.azure.core.util.Context.NONE);
+        PagedIterable<GovernanceAssignment> response
+            = manager.governanceAssignments().list("iqbgpasrvrm", "istyikjhorlxkpyp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("npxraqawbmpspf", response.iterator().next().owner());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-02-16T15:05:28Z"), response.iterator().next().remediationDueDate());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-05-30T23:09:04Z"), response.iterator().next().remediationEta().eta());
-        Assertions.assertEquals("ocvvujexayglxrk", response.iterator().next().remediationEta().justification());
-        Assertions.assertEquals(false, response.iterator().next().isGracePeriod());
-        Assertions
-            .assertEquals(
-                true, response.iterator().next().governanceEmailNotification().disableManagerEmailNotification());
-        Assertions
-            .assertEquals(
-                true, response.iterator().next().governanceEmailNotification().disableOwnerEmailNotification());
-        Assertions.assertEquals(1922725665, response.iterator().next().additionalData().ticketNumber());
-        Assertions.assertEquals("jfiuofpi", response.iterator().next().additionalData().ticketLink());
-        Assertions.assertEquals("dzlvssqywj", response.iterator().next().additionalData().ticketStatus());
+        Assertions.assertEquals("nycntr", response.iterator().next().owner());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-17T18:40:28Z"),
+            response.iterator().next().remediationDueDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-12T22:57:09Z"),
+            response.iterator().next().remediationEta().eta());
+        Assertions.assertEquals("tdmbqjtsuhq", response.iterator().next().remediationEta().justification());
+        Assertions.assertEquals(true, response.iterator().next().isGracePeriod());
+        Assertions.assertEquals(true,
+            response.iterator().next().governanceEmailNotification().disableManagerEmailNotification());
+        Assertions.assertEquals(true,
+            response.iterator().next().governanceEmailNotification().disableOwnerEmailNotification());
+        Assertions.assertEquals(640040198, response.iterator().next().additionalData().ticketNumber());
+        Assertions.assertEquals("bqmzxsyaksinp", response.iterator().next().additionalData().ticketLink());
+        Assertions.assertEquals("m", response.iterator().next().additionalData().ticketStatus());
     }
 }

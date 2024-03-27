@@ -15,19 +15,19 @@ import java.util.List;
 @Fluent
 public final class Metric {
     /*
-     * the metric Id.
+     * The metric Id.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
-     * the resource type of the metric resource.
+     * The resource type of the metric resource.
      */
     @JsonProperty(value = "type", required = true)
     private String type;
 
     /*
-     * the name and the display name of the metric, i.e. it is localizable string.
+     * The name and the display name of the metric, i.e. it is localizable string.
      */
     @JsonProperty(value = "name", required = true)
     private LocalizableString name;
@@ -57,7 +57,7 @@ public final class Metric {
     private MetricUnit unit;
 
     /*
-     * the time series returned when a data query is performed.
+     * The time series returned when a data query is performed.
      */
     @JsonProperty(value = "timeseries", required = true)
     private List<TimeSeriesElement> timeseries;
@@ -85,7 +85,7 @@ public final class Metric {
     }
 
     /**
-     * Get the id property: the metric Id.
+     * Get the id property: The metric Id.
      * 
      * @return the id value.
      */
@@ -94,7 +94,7 @@ public final class Metric {
     }
 
     /**
-     * Get the type property: the resource type of the metric resource.
+     * Get the type property: The resource type of the metric resource.
      * 
      * @return the type value.
      */
@@ -103,7 +103,7 @@ public final class Metric {
     }
 
     /**
-     * Get the name property: the name and the display name of the metric, i.e. it is localizable string.
+     * Get the name property: The name and the display name of the metric, i.e. it is localizable string.
      * 
      * @return the name value.
      */
@@ -181,7 +181,7 @@ public final class Metric {
     }
 
     /**
-     * Get the timeseries property: the time series returned when a data query is performed.
+     * Get the timeseries property: The time series returned when a data query is performed.
      * 
      * @return the timeseries value.
      */

@@ -37,7 +37,14 @@
         },
         {
             "file": [
+                "test-proxy.log"
+            ],
+            "_justification": "Transient test file that is locked by test-proxy and should not be scanned"
+        },
+        {
+            "file": [
                 "eng/common/testproxy/dotnet-devcert.pfx",
+                "sdk/core/azure-core-test/target/classes/keystore.jks",
                 "sdk/cosmos/azure-cosmos-tests/src/test/resources/server.jks",
                 "sdk/cosmos/azure-cosmos-tests/src/test/resources/client.jks",
                 "sdk/identity/azure-identity/src/test/resources/cert-chain.pem",
@@ -64,6 +71,9 @@
             "file": [
                 "sdk/communication/azure-communication-common-perf/src/main/java/com.azure.communication.common.perf/FakeCredentialInTest.java",
                 "sdk/keyvault/azure-security-keyvault-certificates/src/test/java/com/azure/security/keyvault/certificates/FakeCredentialInTest.java",
+                "sdk/keyvault/microsoft-azure-keyvault/src/test/resources/session-records/createCertificatePemForCertificateOperationsTest.json",
+                "sdk/keyvault/microsoft-azure-keyvault/src/test/resources/session-records/createSelfSignedCertificatePemForCertificateOperationsTest.json",
+                "sdk/resourcemanagerhybrid/azure-resourcemanager/src/test/resources/session-records/AzureResourceManagerTests.testContainerRegistry.json",
                 "sdk/spring/spring-cloud-azure-autoconfigure/src/test/java/com/azure/spring/cloud/autoconfigure/FakeCredentialInTest.java",
                 "sdk/spring/spring-cloud-azure-service/src/test/java/com/azure/spring/cloud/service/implementation/storage/FakeCredentialInTest.java",
                 "sdk/storage/azure-storage-blob/src/test/java/com/azure/storage/blob/FakeCredentialInTest.java",
@@ -71,6 +81,12 @@
                 "sdk/storage/microsoft-azure-storage-blob/src/test/java/com/microsoft/azure/storage/FakeCredentialInTest.groovy"
             ],
             "_justification": "File contains fake key used by test code."
+        },
+        {
+          "file":[
+            "sdk/identity/azure-identity/src/test/resources/pemCert.pem"
+          ],
+          "_justification": "Files contain private keys used by test code."
         },
         {
             "file": [

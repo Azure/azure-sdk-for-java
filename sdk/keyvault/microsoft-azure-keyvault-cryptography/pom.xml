@@ -76,7 +76,7 @@
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
-        <version>32.0.1-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
+        <version>33.1.0-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
       </dependency>
 
 
@@ -90,7 +90,7 @@
       <dependency>
         <groupId>org.bouncycastle</groupId>
         <artifactId>bcprov-jdk15to18</artifactId>
-        <version>1.76</version> <!-- {x-version-update;org.bouncycastle:bcprov-jdk15to18;external_dependency} -->
+        <version>1.77</version> <!-- {x-version-update;org.bouncycastle:bcprov-jdk15to18;external_dependency} -->
         <scope>test</scope>
       </dependency>
     </dependencies>

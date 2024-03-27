@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Additional operation-specific output. */
+/**
+ * Additional operation-specific output.
+ */
 @Fluent
 public final class AscOperationProperties {
     /*
@@ -19,13 +21,15 @@ public final class AscOperationProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> output;
 
-    /** Creates an instance of AscOperationProperties class. */
+    /**
+     * Creates an instance of AscOperationProperties class.
+     */
     public AscOperationProperties() {
     }
 
     /**
      * Get the output property: Additional operation-specific output.
-     *
+     * 
      * @return the output value.
      */
     public Map<String, Object> output() {
@@ -34,7 +38,7 @@ public final class AscOperationProperties {
 
     /**
      * Set the output property: Additional operation-specific output.
-     *
+     * 
      * @param output the output value to set.
      * @return the AscOperationProperties object itself.
      */
@@ -45,7 +49,7 @@ public final class AscOperationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

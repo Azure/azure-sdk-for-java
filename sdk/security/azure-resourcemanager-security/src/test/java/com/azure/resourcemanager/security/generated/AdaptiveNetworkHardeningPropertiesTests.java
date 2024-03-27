@@ -17,69 +17,47 @@ import org.junit.jupiter.api.Assertions;
 public final class AdaptiveNetworkHardeningPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AdaptiveNetworkHardeningProperties model =
-            BinaryData
-                .fromString(
-                    "{\"rules\":[{\"name\":\"bbjjidjksyxk\",\"direction\":\"Inbound\",\"destinationPort\":1732474011,\"protocols\":[\"TCP\",\"UDP\"],\"ipAddresses\":[\"dnlj\",\"age\"]},{\"name\":\"ulxunsmjbnkpp\",\"direction\":\"Outbound\",\"destinationPort\":2047909976,\"protocols\":[\"TCP\",\"TCP\",\"TCP\",\"TCP\"],\"ipAddresses\":[\"gwklnsr\"]}],\"rulesCalculationTime\":\"2021-08-04T15:57:37Z\",\"effectiveNetworkSecurityGroups\":[{\"networkInterface\":\"xcktpiymerteeamm\",\"networkSecurityGroups\":[\"ekkkzd\",\"rtkgdojbmxvavref\",\"eesvecu\",\"jpxtxsuwprtuj\"]},{\"networkInterface\":\"awddjibab\",\"networkSecurityGroups\":[\"titvtzeexavox\",\"fglecdmdqbwp\",\"pqtgsfjac\",\"slhhxudbxv\"]},{\"networkInterface\":\"htnsi\",\"networkSecurityGroups\":[\"hzmme\",\"ckdlpag\",\"rcxfailcfxwmdb\"]}]}")
-                .toObject(AdaptiveNetworkHardeningProperties.class);
-        Assertions.assertEquals("bbjjidjksyxk", model.rules().get(0).name());
+        AdaptiveNetworkHardeningProperties model = BinaryData.fromString(
+            "{\"rules\":[{\"name\":\"zcbf\",\"direction\":\"Inbound\",\"destinationPort\":1130120951,\"protocols\":[\"UDP\"],\"ipAddresses\":[\"c\",\"mfbcpaqktkrum\"]},{\"name\":\"ed\",\"direction\":\"Outbound\",\"destinationPort\":414135386,\"protocols\":[\"TCP\"],\"ipAddresses\":[\"kxiuxqggvqr\",\"hyhlwcjsqg\",\"jhffbxrqrkij\",\"euqlsdxeqztv\"]},{\"name\":\"mwwmjswenaww\",\"direction\":\"Outbound\",\"destinationPort\":308965260,\"protocols\":[\"UDP\",\"UDP\",\"UDP\",\"TCP\"],\"ipAddresses\":[\"h\",\"yoeojhtollhs\"]},{\"name\":\"dm\",\"direction\":\"Inbound\",\"destinationPort\":1586361734,\"protocols\":[\"TCP\",\"UDP\",\"UDP\"],\"ipAddresses\":[\"yoan\",\"bcswqagyw\",\"t\",\"igvjrktp\"]}],\"rulesCalculationTime\":\"2021-09-10T14:57:38Z\",\"effectiveNetworkSecurityGroups\":[{\"networkInterface\":\"awohpmw\",\"networkSecurityGroups\":[\"u\",\"sklhsidsjtdlp\"]}]}")
+            .toObject(AdaptiveNetworkHardeningProperties.class);
+        Assertions.assertEquals("zcbf", model.rules().get(0).name());
         Assertions.assertEquals(Direction.INBOUND, model.rules().get(0).direction());
-        Assertions.assertEquals(1732474011, model.rules().get(0).destinationPort());
-        Assertions.assertEquals(TransportProtocol.TCP, model.rules().get(0).protocols().get(0));
-        Assertions.assertEquals("dnlj", model.rules().get(0).ipAddresses().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-04T15:57:37Z"), model.rulesCalculationTime());
-        Assertions.assertEquals("xcktpiymerteeamm", model.effectiveNetworkSecurityGroups().get(0).networkInterface());
-        Assertions.assertEquals("ekkkzd", model.effectiveNetworkSecurityGroups().get(0).networkSecurityGroups().get(0));
+        Assertions.assertEquals(1130120951, model.rules().get(0).destinationPort());
+        Assertions.assertEquals(TransportProtocol.UDP, model.rules().get(0).protocols().get(0));
+        Assertions.assertEquals("c", model.rules().get(0).ipAddresses().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-10T14:57:38Z"), model.rulesCalculationTime());
+        Assertions.assertEquals("awohpmw", model.effectiveNetworkSecurityGroups().get(0).networkInterface());
+        Assertions.assertEquals("u", model.effectiveNetworkSecurityGroups().get(0).networkSecurityGroups().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AdaptiveNetworkHardeningProperties model =
-            new AdaptiveNetworkHardeningProperties()
-                .withRules(
-                    Arrays
-                        .asList(
-                            new Rule()
-                                .withName("bbjjidjksyxk")
-                                .withDirection(Direction.INBOUND)
-                                .withDestinationPort(1732474011)
-                                .withProtocols(Arrays.asList(TransportProtocol.TCP, TransportProtocol.UDP))
-                                .withIpAddresses(Arrays.asList("dnlj", "age")),
-                            new Rule()
-                                .withName("ulxunsmjbnkpp")
-                                .withDirection(Direction.OUTBOUND)
-                                .withDestinationPort(2047909976)
-                                .withProtocols(
-                                    Arrays
-                                        .asList(
-                                            TransportProtocol.TCP,
-                                            TransportProtocol.TCP,
-                                            TransportProtocol.TCP,
-                                            TransportProtocol.TCP))
-                                .withIpAddresses(Arrays.asList("gwklnsr"))))
-                .withRulesCalculationTime(OffsetDateTime.parse("2021-08-04T15:57:37Z"))
-                .withEffectiveNetworkSecurityGroups(
-                    Arrays
-                        .asList(
-                            new EffectiveNetworkSecurityGroups()
-                                .withNetworkInterface("xcktpiymerteeamm")
-                                .withNetworkSecurityGroups(
-                                    Arrays.asList("ekkkzd", "rtkgdojbmxvavref", "eesvecu", "jpxtxsuwprtuj")),
-                            new EffectiveNetworkSecurityGroups()
-                                .withNetworkInterface("awddjibab")
-                                .withNetworkSecurityGroups(
-                                    Arrays.asList("titvtzeexavox", "fglecdmdqbwp", "pqtgsfjac", "slhhxudbxv")),
-                            new EffectiveNetworkSecurityGroups()
-                                .withNetworkInterface("htnsi")
-                                .withNetworkSecurityGroups(Arrays.asList("hzmme", "ckdlpag", "rcxfailcfxwmdb"))));
+        AdaptiveNetworkHardeningProperties model = new AdaptiveNetworkHardeningProperties()
+            .withRules(Arrays.asList(
+                new Rule().withName("zcbf").withDirection(Direction.INBOUND).withDestinationPort(1130120951)
+                    .withProtocols(Arrays.asList(TransportProtocol.UDP))
+                    .withIpAddresses(Arrays.asList("c", "mfbcpaqktkrum")),
+                new Rule().withName("ed").withDirection(Direction.OUTBOUND).withDestinationPort(414135386)
+                    .withProtocols(Arrays.asList(TransportProtocol.TCP))
+                    .withIpAddresses(Arrays.asList("kxiuxqggvqr", "hyhlwcjsqg", "jhffbxrqrkij", "euqlsdxeqztv")),
+                new Rule().withName("mwwmjswenaww").withDirection(Direction.OUTBOUND).withDestinationPort(308965260)
+                    .withProtocols(Arrays.asList(TransportProtocol.UDP, TransportProtocol.UDP, TransportProtocol.UDP,
+                        TransportProtocol.TCP))
+                    .withIpAddresses(Arrays.asList("h", "yoeojhtollhs")),
+                new Rule().withName("dm").withDirection(Direction.INBOUND).withDestinationPort(1586361734)
+                    .withProtocols(Arrays.asList(TransportProtocol.TCP, TransportProtocol.UDP, TransportProtocol.UDP))
+                    .withIpAddresses(Arrays.asList("yoan", "bcswqagyw", "t", "igvjrktp"))))
+            .withRulesCalculationTime(OffsetDateTime.parse("2021-09-10T14:57:38Z"))
+            .withEffectiveNetworkSecurityGroups(Arrays.asList(new EffectiveNetworkSecurityGroups()
+                .withNetworkInterface("awohpmw").withNetworkSecurityGroups(Arrays.asList("u", "sklhsidsjtdlp"))));
         model = BinaryData.fromObject(model).toObject(AdaptiveNetworkHardeningProperties.class);
-        Assertions.assertEquals("bbjjidjksyxk", model.rules().get(0).name());
+        Assertions.assertEquals("zcbf", model.rules().get(0).name());
         Assertions.assertEquals(Direction.INBOUND, model.rules().get(0).direction());
-        Assertions.assertEquals(1732474011, model.rules().get(0).destinationPort());
-        Assertions.assertEquals(TransportProtocol.TCP, model.rules().get(0).protocols().get(0));
-        Assertions.assertEquals("dnlj", model.rules().get(0).ipAddresses().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-04T15:57:37Z"), model.rulesCalculationTime());
-        Assertions.assertEquals("xcktpiymerteeamm", model.effectiveNetworkSecurityGroups().get(0).networkInterface());
-        Assertions.assertEquals("ekkkzd", model.effectiveNetworkSecurityGroups().get(0).networkSecurityGroups().get(0));
+        Assertions.assertEquals(1130120951, model.rules().get(0).destinationPort());
+        Assertions.assertEquals(TransportProtocol.UDP, model.rules().get(0).protocols().get(0));
+        Assertions.assertEquals("c", model.rules().get(0).ipAddresses().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-10T14:57:38Z"), model.rulesCalculationTime());
+        Assertions.assertEquals("awohpmw", model.effectiveNetworkSecurityGroups().get(0).networkInterface());
+        Assertions.assertEquals("u", model.effectiveNetworkSecurityGroups().get(0).networkSecurityGroups().get(0));
     }
 }

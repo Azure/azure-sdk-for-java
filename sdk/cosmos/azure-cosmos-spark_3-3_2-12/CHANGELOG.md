@@ -1,17 +1,66 @@
 ## Release History
 
-### 4.26.0-beta.1 (Unreleased)
+### 4.29.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added optimization for query to use readMany internally when applicable - See [PR 38299](https://github.com/Azure/azure-sdk-for-java/pull/38299) and [PR 38433](https://github.com/Azure/azure-sdk-for-java/pull/38433)
-* Added option to use custom Schema with StringType (raw json) for a nested property - See [PR 38481](https://github.com/Azure/azure-sdk-for-java/pull/38481)
 
 #### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 4.28.4 (2024-03-18)
+
+#### Other Changes
+* Increased queue length of Scheduler in `BulkWriter` by using different schedulers to handle request and response to avoid `ReactorRejectedExecutionException: Scheduler unavailable` error message. - See [PR 39260](https://github.com/Azure/azure-sdk-for-java/pull/39260)
+
+### 4.28.3 (2024-03-12)
+
+#### Other Changes
+* Reduced noise level in logs with WARN level but added more verbose logs when retries have been re-enqueued. - See [PR 39169](https://github.com/Azure/azure-sdk-for-java/pull/39169)
+
+### 4.28.2 (2024-03-05)
+
+#### Other Changes
+* Reduced the number of `GET Collection` requests - especially when using Spark streaming with many, short-lived micro batches. - See [PR 39076](https://github.com/Azure/azure-sdk-for-java/pull/39076)
+
+### 4.28.1 (2024-03-01)
+
+#### Bugs Fixed
+* Fixed the UserAgent suffix when using a client retrieved via UDF `CosmosAsyncClientCache.getCosmosClientFuncFromCache` on an executor. - See [PR 39045](https://github.com/Azure/azure-sdk-for-java/pull/39045)
+
+### 4.28.0 (2024-02-26)
+
+#### Features Added
+* Added UDF `CosmosAsyncClientCache.getCosmosClientFuncFromCache` to allow Spark applications to reuse the same instance instead of having to instantiate their own `CosmsoAsyncClient` when also using the Cosmos Java SDK besides the Spark connector even on executors. - See [PR 38939](https://github.com/Azure/azure-sdk-for-java/pull/38939)
+
+### 4.27.1 (2024-02-23)
+
+#### Other Changes
+* Prevented any types in azure-cosmos package from being omitted during shading process. - See [PR 38902](https://github.com/Azure/azure-sdk-for-java/pull/38902)
+
+### 4.27.0 (2024-02-20)
+
+#### Features Added
+* Added an option to retrieve the `CosmosAsyncClient` used by the connector internally to allow Spark applications to reuse the same instance instead of having to instantiate their own `CosmsoAsyncClient` when also using the Cosmos Java SDK besides the Spark connector. - See [PR 38834](https://github.com/Azure/azure-sdk-for-java/pull/38834) and [PR 38939](https://github.com/Azure/azure-sdk-for-java/pull/38939)
+
+### 4.26.1 (2024-02-13)
+
+#### Other Changes
+* Limited max. number of threads possible to be used by BulkExecutor instances . - See [PR 38745](https://github.com/Azure/azure-sdk-for-java/pull/38745)
+
+### 4.26.0 (2024-02-08)
+
+#### Features Added
+* Added optimization for query to use readMany internally when applicable - See [PR 38299](https://github.com/Azure/azure-sdk-for-java/pull/38299), [PR 38675](https://github.com/Azure/azure-sdk-for-java/pull/38675) and [PR 38433](https://github.com/Azure/azure-sdk-for-java/pull/38433) and [PR 38670](https://github.com/Azure/azure-sdk-for-java/pull/38670)
+* Added option to use custom Schema with StringType (raw json) for a nested property - See [PR 38481](https://github.com/Azure/azure-sdk-for-java/pull/38481)
 
 #### Bugs Fixed
 * Fixed warning related to custom metrics in Spark 3.2 / 3.3 and 3.4. - See [PR 38315](https://github.com/Azure/azure-sdk-for-java/pull/38315)
 
 #### Other Changes
+* Added additional retry being en-queued when bulk ingestion hangs. - See [PR 38630](https://github.com/Azure/azure-sdk-for-java/pull/38630)
 
 ### 4.25.1 (2024-01-14)
 

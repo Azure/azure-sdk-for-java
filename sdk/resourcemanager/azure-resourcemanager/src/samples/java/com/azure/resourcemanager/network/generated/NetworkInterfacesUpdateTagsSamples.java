@@ -14,7 +14,7 @@ import java.util.Map;
 public final class NetworkInterfacesUpdateTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/NetworkInterfaceUpdateTags.
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkInterfaceUpdateTags.
      * json
      */
     /**

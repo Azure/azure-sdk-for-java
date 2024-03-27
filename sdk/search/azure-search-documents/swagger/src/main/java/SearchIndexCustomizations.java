@@ -104,7 +104,7 @@ public class SearchIndexCustomizations extends Customization {
     private void customizeImplementationModelsPackage(PackageCustomization packageCustomization) {
         customizeSearchOptions(packageCustomization.getClass("SearchOptions"));
         customizeIndexAction(packageCustomization.getClass("IndexAction"));
-        customizeSearchError(packageCustomization.getClass("SearchError"));
+        // customizeSearchError(packageCustomization.getClass("SearchError"));
     }
 
     private void customizeSearchOptions(ClassCustomization classCustomization) {

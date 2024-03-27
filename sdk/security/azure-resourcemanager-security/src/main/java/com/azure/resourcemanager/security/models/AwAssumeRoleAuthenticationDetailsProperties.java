@@ -38,13 +38,15 @@ public final class AwAssumeRoleAuthenticationDetailsProperties extends Authentic
     @JsonProperty(value = "awsExternalId", required = true)
     private String awsExternalId;
 
-    /** Creates an instance of AwAssumeRoleAuthenticationDetailsProperties class. */
+    /**
+     * Creates an instance of AwAssumeRoleAuthenticationDetailsProperties class.
+     */
     public AwAssumeRoleAuthenticationDetailsProperties() {
     }
 
     /**
      * Get the accountId property: The ID of the cloud account.
-     *
+     * 
      * @return the accountId value.
      */
     public String accountId() {
@@ -52,9 +54,9 @@ public final class AwAssumeRoleAuthenticationDetailsProperties extends Authentic
     }
 
     /**
-     * Get the awsAssumeRoleArn property: Assumed role ID is an identifier that you can use to create temporary security
-     * credentials.
-     *
+     * Get the awsAssumeRoleArn property: Assumed role ID is an identifier that you can use to create temporary
+     * security credentials.
+     * 
      * @return the awsAssumeRoleArn value.
      */
     public String awsAssumeRoleArn() {
@@ -62,9 +64,9 @@ public final class AwAssumeRoleAuthenticationDetailsProperties extends Authentic
     }
 
     /**
-     * Set the awsAssumeRoleArn property: Assumed role ID is an identifier that you can use to create temporary security
-     * credentials.
-     *
+     * Set the awsAssumeRoleArn property: Assumed role ID is an identifier that you can use to create temporary
+     * security credentials.
+     * 
      * @param awsAssumeRoleArn the awsAssumeRoleArn value to set.
      * @return the AwAssumeRoleAuthenticationDetailsProperties object itself.
      */
@@ -75,7 +77,7 @@ public final class AwAssumeRoleAuthenticationDetailsProperties extends Authentic
 
     /**
      * Get the awsExternalId property: A unique identifier that is required when you assume a role in another account.
-     *
+     * 
      * @return the awsExternalId value.
      */
     public String awsExternalId() {
@@ -84,7 +86,7 @@ public final class AwAssumeRoleAuthenticationDetailsProperties extends Authentic
 
     /**
      * Set the awsExternalId property: A unique identifier that is required when you assume a role in another account.
-     *
+     * 
      * @param awsExternalId the awsExternalId value to set.
      * @return the AwAssumeRoleAuthenticationDetailsProperties object itself.
      */
@@ -95,25 +97,19 @@ public final class AwAssumeRoleAuthenticationDetailsProperties extends Authentic
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (awsAssumeRoleArn() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property awsAssumeRoleArn in model"
-                            + " AwAssumeRoleAuthenticationDetailsProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property awsAssumeRoleArn in model AwAssumeRoleAuthenticationDetailsProperties"));
         }
         if (awsExternalId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property awsExternalId in model"
-                            + " AwAssumeRoleAuthenticationDetailsProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property awsExternalId in model AwAssumeRoleAuthenticationDetailsProperties"));
         }
     }
 

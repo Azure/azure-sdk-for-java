@@ -4,32 +4,23 @@
 
 package com.azure.resourcemanager.notificationhubs.generated;
 
-import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
-import com.azure.core.util.serializer.SerializerEncoding;
-import java.io.IOException;
-
-/** Samples for NotificationHubs DebugSend. */
+/**
+ * Samples for NotificationHubs DebugSend.
+ */
 public final class NotificationHubsDebugSendSamples {
     /*
-     * x-ms-original-file: specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/NotificationHubs/NotificationHubDebugSend.json
+     * x-ms-original-file:
+     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/
+     * NotificationHubs/DebugSend.json
      */
     /**
-     * Sample code: debugsend.
-     *
+     * Sample code: NotificationHubs_DebugSend.
+     * 
      * @param manager Entry point to NotificationHubsManager.
      */
-    public static void debugsend(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager)
-        throws IOException {
-        manager
-            .notificationHubs()
-            .debugSendWithResponse(
-                "5ktrial",
-                "nh-sdk-ns",
-                "nh-sdk-hub",
-                SerializerFactory
-                    .createDefaultManagementSerializerAdapter()
-                    .deserialize("{\"data\":{\"message\":\"Hello\"}}", Object.class, SerializerEncoding.JSON),
-                Context.NONE);
+    public static void
+        notificationHubsDebugSend(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
+        manager.notificationHubs().debugSendWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub",
+            com.azure.core.util.Context.NONE);
     }
 }

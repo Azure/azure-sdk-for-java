@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The type used for update operations of the Catalog. */
+/**
+ * The type used for update operations of the Catalog.
+ */
 @Fluent
 public final class CatalogUpdate {
     /*
@@ -19,13 +21,15 @@ public final class CatalogUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of CatalogUpdate class. */
+    /**
+     * Creates an instance of CatalogUpdate class.
+     */
     public CatalogUpdate() {
     }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -34,7 +38,7 @@ public final class CatalogUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the CatalogUpdate object itself.
      */
@@ -45,7 +49,7 @@ public final class CatalogUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Support topic information. */
+/**
+ * Support topic information.
+ */
 @Immutable
 public final class DiagnosticSupportTopic {
     /*
@@ -22,13 +24,15 @@ public final class DiagnosticSupportTopic {
     @JsonProperty(value = "pesId", access = JsonProperty.Access.WRITE_ONLY)
     private String pesId;
 
-    /** Creates an instance of DiagnosticSupportTopic class. */
+    /**
+     * Creates an instance of DiagnosticSupportTopic class.
+     */
     public DiagnosticSupportTopic() {
     }
 
     /**
      * Get the id property: Unique topic identifier.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -37,7 +41,7 @@ public final class DiagnosticSupportTopic {
 
     /**
      * Get the pesId property: PES identifier.
-     *
+     * 
      * @return the pesId value.
      */
     public String pesId() {
@@ -46,7 +50,7 @@ public final class DiagnosticSupportTopic {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

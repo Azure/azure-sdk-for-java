@@ -9,7 +9,9 @@ import com.azure.resourcemanager.security.fluent.models.GovernanceAssignmentInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Page of a governance assignments list. */
+/**
+ * Page of a governance assignments list.
+ */
 @Immutable
 public final class GovernanceAssignmentsList {
     /*
@@ -24,13 +26,15 @@ public final class GovernanceAssignmentsList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of GovernanceAssignmentsList class. */
+    /**
+     * Creates an instance of GovernanceAssignmentsList class.
+     */
     public GovernanceAssignmentsList() {
     }
 
     /**
      * Get the value property: Collection of governance assignments in this page.
-     *
+     * 
      * @return the value value.
      */
     public List<GovernanceAssignmentInner> value() {
@@ -39,7 +43,7 @@ public final class GovernanceAssignmentsList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class GovernanceAssignmentsList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -31,7 +31,7 @@ public final class IntegrationRuntimesGetMonitoringDataWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"name\":\"f\",\"nodes\":[{\"nodeName\":\"ueprpnzbfoldb\",\"availableMemoryInMB\":1536179630,\"cpuUtilization\":2072525779,\"concurrentJobsLimit\":1312014405,\"concurrentJobsRunning\":242782811,\"maxConcurrentJobs\":1274504130,\"sentBytes\":11.889243,\"receivedBytes\":34.154594,\"\":{\"qbnzr\":\"datao\",\"yabvvbsi\":\"datakmanrowdqoj\"}},{\"nodeName\":\"hs\",\"availableMemoryInMB\":546680352,\"cpuUtilization\":284097172,\"concurrentJobsLimit\":81274646,\"concurrentJobsRunning\":1068311231,\"maxConcurrentJobs\":753240513,\"sentBytes\":84.65222,\"receivedBytes\":93.84653,\"\":{\"h\":\"databtgexiwcqe\",\"pbvzbt\":\"datayrzidoyvquufpl\",\"lqrxewdgzfqsr\":\"dataftotpvoehsfwra\"}}]}";
+            = "{\"name\":\"gbm\",\"nodes\":[{\"nodeName\":\"erauoht\",\"availableMemoryInMB\":1304587071,\"cpuUtilization\":1389990784,\"concurrentJobsLimit\":1347387035,\"concurrentJobsRunning\":260431426,\"maxConcurrentJobs\":718972733,\"sentBytes\":1.437074,\"receivedBytes\":58.880486,\"\":{\"eeyptvrbgcprsds\":\"datarx\",\"su\":\"datawozpmhhdnxwkf\",\"mxitvmrq\":\"datasbyfoavozqnn\"}},{\"nodeName\":\"zch\",\"availableMemoryInMB\":1378405861,\"cpuUtilization\":735227834,\"concurrentJobsLimit\":1330999405,\"concurrentJobsRunning\":181863906,\"maxConcurrentJobs\":903484269,\"sentBytes\":79.66964,\"receivedBytes\":18.096357,\"\":{\"pfojhvqmdoqyohzh\":\"databfrv\",\"xfvj\":\"datandfkp\",\"arhfeadedivadpcx\":\"datafusuwghtgp\"}},{\"nodeName\":\"pmw\",\"availableMemoryInMB\":1264586477,\"cpuUtilization\":1236271427,\"concurrentJobsLimit\":64649335,\"concurrentJobsRunning\":697187006,\"maxConcurrentJobs\":1636051443,\"sentBytes\":73.32201,\"receivedBytes\":23.75918,\"\":{\"kmnuivpbjcl\":\"datavlc\",\"yp\":\"datahfzriigte\",\"nctkqbvtdeou\":\"datamjqjoamzdsa\",\"juwdvfaulbfrc\":\"dataixgtpykbjevj\"}},{\"nodeName\":\"ucobpkphxh\",\"availableMemoryInMB\":471274210,\"cpuUtilization\":1807912949,\"concurrentJobsLimit\":345365482,\"concurrentJobsRunning\":704883797,\"maxConcurrentJobs\":796383837,\"sentBytes\":91.77441,\"receivedBytes\":82.7453,\"\":{\"wuyp\":\"datazqohthsmduaoypry\",\"jsov\":\"datauvpdclaj\",\"zehxddmaevcjtrw\":\"datafreyrgrgf\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,8 +49,8 @@ public final class IntegrationRuntimesGetMonitoringDataWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeMonitoringData response = manager.integrationRuntimes()
-            .getMonitoringDataWithResponse("fe", "s", "ktreihlszpu", com.azure.core.util.Context.NONE).getValue();
+            .getMonitoringDataWithResponse("ogfxbv", "lc", "dnajncefqn", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("f", response.name());
+        Assertions.assertEquals("gbm", response.name());
     }
 }

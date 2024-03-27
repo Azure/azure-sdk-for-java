@@ -48,7 +48,7 @@ public class OperationLocationPollingStrategyTests {
 
         String putUrl = "http://localhost/resource";
         String pollUrl = "http://localhost/operation";
-        int[] pollCount = new int[] {0};
+        int[] pollCount = new int[] { 0 };
 
         String resourceName = "resource1";
         String operationId = "operation1";
@@ -67,35 +67,34 @@ public class OperationLocationPollingStrategyTests {
                 Map<String, String> pollResponse = new HashMap<>();
                 pollResponse.put("id", operationId);
                 pollResponse.put("status", succeeded ? "Succeeded" : "InProgress");
-                return Mono.just(new MockHttpResponse(pollRequest, 200,
-                    BinaryData.fromObject(pollResponse).toBytes(), SerializerEncoding.JSON));
+                return Mono.just(new MockHttpResponse(pollRequest, 200, BinaryData.fromObject(pollResponse).toBytes(),
+                    SerializerEncoding.JSON));
             } else {
                 return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
             }
         };
 
-        PollerFlux<PollResult, TestResource> pollerFlux = PollerFlux.create(Duration.ofMillis(1),
-            activationOperation::get, new OperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(createPipeline(httpClient))),
-            RESOURCE_POLL_RESULT_TYPE_REFERENCE, RESOURCE_TYPE_REFERENCE);
+        PollerFlux<PollResult, TestResource> pollerFlux
+            = PollerFlux.create(Duration.ofMillis(1), activationOperation::get,
+                new OperationLocationPollingStrategy<>(new PollingStrategyOptions(createPipeline(httpClient))),
+                RESOURCE_POLL_RESULT_TYPE_REFERENCE, RESOURCE_TYPE_REFERENCE);
 
         // verify poll result
         StepVerifier.create(pollerFlux)
             .expectSubscription()
-            .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
+            .expectNextMatches(
+                asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
                     && operationId.equals(asyncPollResponse.getValue().getOperationId()))
-            .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
+            .expectNextMatches(
+                asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
                     && operationId.equals(asyncPollResponse.getValue().getOperationId()))
             .verifyComplete();
 
         pollCount[0] = 0;
 
         // verify final result
-        StepVerifier.create(pollerFlux.takeUntil(apr -> apr.getStatus().isComplete())
-                .last()
-                .flatMap(AsyncPollResponse::getFinalResult))
+        StepVerifier.create(
+            pollerFlux.takeUntil(apr -> apr.getStatus().isComplete()).last().flatMap(AsyncPollResponse::getFinalResult))
             .expectNextMatches(resource -> resourceName.equals(resource.getName()))
             .verifyComplete();
     }
@@ -104,7 +103,7 @@ public class OperationLocationPollingStrategyTests {
     public void operationLocationPollingStrategyPutFailsOnPoll() {
         String putUrl = "http://localhost/resource";
         String pollUrl = "http://localhost/operation";
-        int[] pollCount = new int[] {0};
+        int[] pollCount = new int[] { 0 };
 
         String resourceName = "resource1";
         String operationId = "operation1";
@@ -129,30 +128,29 @@ public class OperationLocationPollingStrategyTests {
                     responseError.put("message", "mock error message");
                     pollResponse.put("error", responseError);
                 }
-                return Mono.just(new MockHttpResponse(pollRequest, 200,
-                    BinaryData.fromObject(pollResponse).toBytes(), SerializerEncoding.JSON));
+                return Mono.just(new MockHttpResponse(pollRequest, 200, BinaryData.fromObject(pollResponse).toBytes(),
+                    SerializerEncoding.JSON));
             } else {
                 return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
             }
         };
 
-        PollerFlux<PollResult, TestResource> pollerFlux = PollerFlux.create(Duration.ofMillis(1),
-            activationOperation::get, new OperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(createPipeline(httpClient))),
-            RESOURCE_POLL_RESULT_TYPE_REFERENCE, RESOURCE_TYPE_REFERENCE);
+        PollerFlux<PollResult, TestResource> pollerFlux
+            = PollerFlux.create(Duration.ofMillis(1), activationOperation::get,
+                new OperationLocationPollingStrategy<>(new PollingStrategyOptions(createPipeline(httpClient))),
+                RESOURCE_POLL_RESULT_TYPE_REFERENCE, RESOURCE_TYPE_REFERENCE);
 
         // verify poll result
         StepVerifier.create(pollerFlux)
             .expectSubscription()
-            .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
+            .expectNextMatches(
+                asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
                     && operationId.equals(asyncPollResponse.getValue().getOperationId())
                     && asyncPollResponse.getValue().getError() == null)
-            .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.FAILED
-                    && operationId.equals(asyncPollResponse.getValue().getOperationId())
-                    && "mock-error".equals(asyncPollResponse.getValue().getError().getCode())
-                    && "mock error message".equals(asyncPollResponse.getValue().getError().getMessage()))
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.FAILED
+                && operationId.equals(asyncPollResponse.getValue().getOperationId())
+                && "mock-error".equals(asyncPollResponse.getValue().getError().getCode())
+                && "mock error message".equals(asyncPollResponse.getValue().getError().getMessage()))
             .verifyComplete();
     }
 
@@ -162,7 +160,7 @@ public class OperationLocationPollingStrategyTests {
 
         String putUrl = "http://localhost/resource";
         String pollUrl = "http://localhost/operation";
-        int[] pollCount = new int[] {0};
+        int[] pollCount = new int[] { 0 };
 
         String actionResultName = "result1";
         String operationId = "operation1";
@@ -187,35 +185,34 @@ public class OperationLocationPollingStrategyTests {
                 if (succeeded) {
                     pollResponse.put("result", new TestActionResult(actionResultName));
                 }
-                return Mono.just(new MockHttpResponse(pollRequest, 200,
-                    BinaryData.fromObject(pollResponse).toBytes(), SerializerEncoding.JSON));
+                return Mono.just(new MockHttpResponse(pollRequest, 200, BinaryData.fromObject(pollResponse).toBytes(),
+                    SerializerEncoding.JSON));
             } else {
                 return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
             }
         };
 
-        PollerFlux<PollResult, TestActionResult> pollerFlux = PollerFlux.create(Duration.ofMillis(1),
-            activationOperation::get, new OperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(createPipeline(httpClient))),
-            RESOURCE_POLL_RESULT_TYPE_REFERENCE, ACTION_RESULT_TYPE_REFERENCE);
+        PollerFlux<PollResult, TestActionResult> pollerFlux
+            = PollerFlux.create(Duration.ofMillis(1), activationOperation::get,
+                new OperationLocationPollingStrategy<>(new PollingStrategyOptions(createPipeline(httpClient))),
+                RESOURCE_POLL_RESULT_TYPE_REFERENCE, ACTION_RESULT_TYPE_REFERENCE);
 
         // verify poll result
         StepVerifier.create(pollerFlux)
             .expectSubscription()
-            .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
+            .expectNextMatches(
+                asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
                     && operationId.equals(asyncPollResponse.getValue().getOperationId()))
-            .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
+            .expectNextMatches(
+                asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
                     && operationId.equals(asyncPollResponse.getValue().getOperationId()))
             .verifyComplete();
 
         pollCount[0] = 0;
 
         // verify final result
-        StepVerifier.create(pollerFlux.takeUntil(apr -> apr.getStatus().isComplete())
-                .last()
-                .flatMap(AsyncPollResponse::getFinalResult))
+        StepVerifier.create(
+            pollerFlux.takeUntil(apr -> apr.getStatus().isComplete()).last().flatMap(AsyncPollResponse::getFinalResult))
             .expectNextMatches(actionResult -> actionResultName.equals(actionResult.getName()))
             .verifyComplete();
     }
@@ -227,7 +224,7 @@ public class OperationLocationPollingStrategyTests {
 
         String putUrl = "http://localhost/resource";
         String pollUrl = "http://localhost/operation";
-        int[] pollCount = new int[] {0};
+        int[] pollCount = new int[] { 0 };
 
         String operationId = "operation1";
 
@@ -248,35 +245,34 @@ public class OperationLocationPollingStrategyTests {
                 Map<String, Object> pollResponse = new HashMap<>();
                 pollResponse.put("id", operationId);
                 pollResponse.put("status", succeeded ? "Succeeded" : "InProgress");
-                return Mono.just(new MockHttpResponse(pollRequest, 200,
-                    BinaryData.fromObject(pollResponse).toBytes(), SerializerEncoding.JSON));
+                return Mono.just(new MockHttpResponse(pollRequest, 200, BinaryData.fromObject(pollResponse).toBytes(),
+                    SerializerEncoding.JSON));
             } else {
                 return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
             }
         };
 
-        PollerFlux<PollResult, TestActionResult> pollerFlux = PollerFlux.create(Duration.ofMillis(1),
-            activationOperation::get, new OperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(createPipeline(httpClient))),
-            RESOURCE_POLL_RESULT_TYPE_REFERENCE, ACTION_RESULT_TYPE_REFERENCE);
+        PollerFlux<PollResult, TestActionResult> pollerFlux
+            = PollerFlux.create(Duration.ofMillis(1), activationOperation::get,
+                new OperationLocationPollingStrategy<>(new PollingStrategyOptions(createPipeline(httpClient))),
+                RESOURCE_POLL_RESULT_TYPE_REFERENCE, ACTION_RESULT_TYPE_REFERENCE);
 
         // verify poll result
         StepVerifier.create(pollerFlux)
             .expectSubscription()
-            .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
+            .expectNextMatches(
+                asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
                     && operationId.equals(asyncPollResponse.getValue().getOperationId()))
-            .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
+            .expectNextMatches(
+                asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
                     && operationId.equals(asyncPollResponse.getValue().getOperationId()))
             .verifyComplete();
 
         pollCount[0] = 0;
 
         // verify final result as error, as "result" is not populated
-        StepVerifier.create(pollerFlux.takeUntil(apr -> apr.getStatus().isComplete())
-                .last()
-                .flatMap(AsyncPollResponse::getFinalResult))
+        StepVerifier.create(
+            pollerFlux.takeUntil(apr -> apr.getStatus().isComplete()).last().flatMap(AsyncPollResponse::getFinalResult))
             .verifyError(AzureException.class);
     }
 

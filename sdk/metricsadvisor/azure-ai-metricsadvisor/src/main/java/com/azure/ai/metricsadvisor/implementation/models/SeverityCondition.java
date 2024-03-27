@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * The SeverityCondition model.
@@ -76,8 +75,10 @@ public final class SeverityCondition implements JsonSerializable<SeverityConditi
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("minAlertSeverity", Objects.toString(this.minAlertSeverity, null));
-        jsonWriter.writeStringField("maxAlertSeverity", Objects.toString(this.maxAlertSeverity, null));
+        jsonWriter.writeStringField("minAlertSeverity",
+            this.minAlertSeverity == null ? null : this.minAlertSeverity.toString());
+        jsonWriter.writeStringField("maxAlertSeverity",
+            this.maxAlertSeverity == null ? null : this.maxAlertSeverity.toString());
         return jsonWriter.writeEndObject();
     }
 

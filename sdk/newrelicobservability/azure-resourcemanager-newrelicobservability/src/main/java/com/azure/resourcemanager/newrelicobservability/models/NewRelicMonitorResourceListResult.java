@@ -10,7 +10,9 @@ import com.azure.resourcemanager.newrelicobservability.fluent.models.NewRelicMon
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of a NewRelicMonitorResource list operation. */
+/**
+ * The response of a NewRelicMonitorResource list operation.
+ */
 @Fluent
 public final class NewRelicMonitorResourceListResult {
     /*
@@ -25,13 +27,15 @@ public final class NewRelicMonitorResourceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of NewRelicMonitorResourceListResult class. */
+    /**
+     * Creates an instance of NewRelicMonitorResourceListResult class.
+     */
     public NewRelicMonitorResourceListResult() {
     }
 
     /**
      * Get the value property: The NewRelicMonitorResource items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<NewRelicMonitorResourceInner> value() {
@@ -40,7 +44,7 @@ public final class NewRelicMonitorResourceListResult {
 
     /**
      * Set the value property: The NewRelicMonitorResource items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the NewRelicMonitorResourceListResult object itself.
      */
@@ -51,7 +55,7 @@ public final class NewRelicMonitorResourceListResult {
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class NewRelicMonitorResourceListResult {
 
     /**
      * Set the nextLink property: The link to the next page of items.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NewRelicMonitorResourceListResult object itself.
      */
@@ -71,15 +75,13 @@ public final class NewRelicMonitorResourceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model NewRelicMonitorResourceListResult"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model NewRelicMonitorResourceListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

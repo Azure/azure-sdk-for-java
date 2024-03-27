@@ -88,7 +88,8 @@
     "dcrRoleName": "[concat('dcrrole', parameters('baseName'))]",
     "dataCollectionRuleName": "[concat(parameters('baseName'), '-', 'azmonitordcr')]",
     "dataCollectionEndpointName": "[concat(parameters('baseName'), '-', 'azmonitordce')]",
-    "workspaceName": "[concat(parameters('baseName'), '-', 'azmonitorlogsws')]"
+    "workspaceName": "[concat(parameters('baseName'), '-', 'azmonitorlogsws')]",
+    "additionalWorkspaceName": "[concat(parameters('baseName'), '-', 'azmonitorlogsws2')]"
   },
   "resources": [
     {
@@ -276,6 +277,26 @@
       }
     },
     {
+      "type": "microsoft.operationalinsights/workspaces",
+      "apiVersion": "2021-12-01-preview",
+      "name": "[variables('additionalWorkspaceName')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "sku": {
+          "name": "pergb2018"
+        },
+        "retentionInDays": 30,
+        "features": {
+          "enableLogAccessUsingOnlyResourcePermissions": true
+        },
+        "workspaceCapping": {
+          "dailyQuotaGb": -1
+        },
+        "publicNetworkAccessForIngestion": "Enabled",
+        "publicNetworkAccessForQuery": "Enabled"
+      }
+    },
+    {
       "type": "Microsoft.OperationalInsights/workspaces/tables",
       "apiVersion": "2021-12-01-preview",
       "name": "[concat(variables('workspaceName'), '/', 'MyTable_CL')]",
@@ -357,6 +378,10 @@
     "AZURE_MONITOR_LOGS_WORKSPACE_ID": {
       "type": "string",
       "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', variables('workspaceName'))).customerId]"
+    },
+    "AZURE_MONITOR_LOGS_ADDITIONAL_WORKSPACE_ID": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', variables('additionalWorkspaceName'))).customerId]"
     },
     "AZURE_MONITOR_LOGS_RESOURCE_ID": {
       "type": "string",

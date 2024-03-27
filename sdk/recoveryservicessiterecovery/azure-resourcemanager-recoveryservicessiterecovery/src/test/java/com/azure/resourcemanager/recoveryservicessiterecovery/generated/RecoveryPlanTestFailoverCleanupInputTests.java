@@ -12,18 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class RecoveryPlanTestFailoverCleanupInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPlanTestFailoverCleanupInput model =
-            BinaryData
-                .fromString("{\"properties\":{\"comments\":\"ysfaqegplwrysh\"}}")
+        RecoveryPlanTestFailoverCleanupInput model
+            = BinaryData.fromString("{\"properties\":{\"comments\":\"ysfaqegplwrysh\"}}")
                 .toObject(RecoveryPlanTestFailoverCleanupInput.class);
         Assertions.assertEquals("ysfaqegplwrysh", model.properties().comments());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPlanTestFailoverCleanupInput model =
-            new RecoveryPlanTestFailoverCleanupInput()
-                .withProperties(new RecoveryPlanTestFailoverCleanupInputProperties().withComments("ysfaqegplwrysh"));
+        RecoveryPlanTestFailoverCleanupInput model = new RecoveryPlanTestFailoverCleanupInput()
+            .withProperties(new RecoveryPlanTestFailoverCleanupInputProperties().withComments("ysfaqegplwrysh"));
         model = BinaryData.fromObject(model).toObject(RecoveryPlanTestFailoverCleanupInput.class);
         Assertions.assertEquals("ysfaqegplwrysh", model.properties().comments());
     }

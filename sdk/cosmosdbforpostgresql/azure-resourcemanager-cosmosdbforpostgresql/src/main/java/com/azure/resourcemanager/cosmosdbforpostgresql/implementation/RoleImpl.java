@@ -7,16 +7,17 @@ package com.azure.resourcemanager.cosmosdbforpostgresql.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.RoleInner;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.PrincipalType;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ProvisioningState;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.Role;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.RoleType;
 
 public final class RoleImpl implements Role, Role.Definition {
     private RoleInner innerObject;
 
     private final com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager serviceManager;
 
-    RoleImpl(
-        RoleInner innerObject,
+    RoleImpl(RoleInner innerObject,
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -38,12 +39,28 @@ public final class RoleImpl implements Role, Role.Definition {
         return this.innerModel().systemData();
     }
 
+    public RoleType roleType() {
+        return this.innerModel().roleType();
+    }
+
     public String password() {
         return this.innerModel().password();
     }
 
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public String objectId() {
+        return this.innerModel().objectId();
+    }
+
+    public PrincipalType principalType() {
+        return this.innerModel().principalType();
+    }
+
+    public String tenantId() {
+        return this.innerModel().tenantId();
     }
 
     public RoleInner innerModel() {
@@ -67,20 +84,14 @@ public final class RoleImpl implements Role, Role.Definition {
     }
 
     public Role create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRoles()
-                .create(resourceGroupName, clusterName, roleName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getRoles().create(resourceGroupName, clusterName, roleName,
+            this.innerModel(), Context.NONE);
         return this;
     }
 
     public Role create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRoles()
-                .create(resourceGroupName, clusterName, roleName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getRoles().create(resourceGroupName, clusterName, roleName,
+            this.innerModel(), context);
         return this;
     }
 
@@ -91,27 +102,39 @@ public final class RoleImpl implements Role, Role.Definition {
     }
 
     public Role refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRoles()
-                .getWithResponse(resourceGroupName, clusterName, roleName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getRoles()
+            .getWithResponse(resourceGroupName, clusterName, roleName, Context.NONE).getValue();
         return this;
     }
 
     public Role refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRoles()
-                .getWithResponse(resourceGroupName, clusterName, roleName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getRoles()
+            .getWithResponse(resourceGroupName, clusterName, roleName, context).getValue();
+        return this;
+    }
+
+    public RoleImpl withRoleType(RoleType roleType) {
+        this.innerModel().withRoleType(roleType);
         return this;
     }
 
     public RoleImpl withPassword(String password) {
         this.innerModel().withPassword(password);
+        return this;
+    }
+
+    public RoleImpl withObjectId(String objectId) {
+        this.innerModel().withObjectId(objectId);
+        return this;
+    }
+
+    public RoleImpl withPrincipalType(PrincipalType principalType) {
+        this.innerModel().withPrincipalType(principalType);
+        return this;
+    }
+
+    public RoleImpl withTenantId(String tenantId) {
+        this.innerModel().withTenantId(tenantId);
         return this;
     }
 }

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The resource from which the rule collects its data. */
+/**
+ * The resource from which the rule collects its data.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -23,8 +25,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         value = RuleMetricDataSource.class),
     @JsonSubTypes.Type(
         name = "Microsoft.Azure.Management.Insights.Models.RuleManagementEventDataSource",
-        value = RuleManagementEventDataSource.class)
-})
+        value = RuleManagementEventDataSource.class) })
 @Fluent
 public class RuleDataSource {
     /*
@@ -53,14 +54,16 @@ public class RuleDataSource {
     @JsonProperty(value = "metricNamespace")
     private String metricNamespace;
 
-    /** Creates an instance of RuleDataSource class. */
+    /**
+     * Creates an instance of RuleDataSource class.
+     */
     public RuleDataSource() {
     }
 
     /**
      * Get the resourceUri property: the resource identifier of the resource the rule monitors. **NOTE**: this property
      * cannot be updated for an existing rule.
-     *
+     * 
      * @return the resourceUri value.
      */
     public String resourceUri() {
@@ -70,7 +73,7 @@ public class RuleDataSource {
     /**
      * Set the resourceUri property: the resource identifier of the resource the rule monitors. **NOTE**: this property
      * cannot be updated for an existing rule.
-     *
+     * 
      * @param resourceUri the resourceUri value to set.
      * @return the RuleDataSource object itself.
      */
@@ -82,7 +85,7 @@ public class RuleDataSource {
     /**
      * Get the legacyResourceId property: the legacy resource identifier of the resource the rule monitors. **NOTE**:
      * this property cannot be updated for an existing rule.
-     *
+     * 
      * @return the legacyResourceId value.
      */
     public String legacyResourceId() {
@@ -92,7 +95,7 @@ public class RuleDataSource {
     /**
      * Set the legacyResourceId property: the legacy resource identifier of the resource the rule monitors. **NOTE**:
      * this property cannot be updated for an existing rule.
-     *
+     * 
      * @param legacyResourceId the legacyResourceId value to set.
      * @return the RuleDataSource object itself.
      */
@@ -103,7 +106,7 @@ public class RuleDataSource {
 
     /**
      * Get the resourceLocation property: the location of the resource.
-     *
+     * 
      * @return the resourceLocation value.
      */
     public String resourceLocation() {
@@ -112,7 +115,7 @@ public class RuleDataSource {
 
     /**
      * Set the resourceLocation property: the location of the resource.
-     *
+     * 
      * @param resourceLocation the resourceLocation value to set.
      * @return the RuleDataSource object itself.
      */
@@ -123,7 +126,7 @@ public class RuleDataSource {
 
     /**
      * Get the metricNamespace property: the namespace of the metric.
-     *
+     * 
      * @return the metricNamespace value.
      */
     public String metricNamespace() {
@@ -132,7 +135,7 @@ public class RuleDataSource {
 
     /**
      * Set the metricNamespace property: the namespace of the metric.
-     *
+     * 
      * @param metricNamespace the metricNamespace value to set.
      * @return the RuleDataSource object itself.
      */
@@ -143,7 +146,7 @@ public class RuleDataSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

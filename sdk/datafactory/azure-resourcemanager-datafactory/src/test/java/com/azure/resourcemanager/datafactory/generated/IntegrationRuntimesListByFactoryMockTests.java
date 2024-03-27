@@ -32,7 +32,7 @@ public final class IntegrationRuntimesListByFactoryMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"lswipobtbtlmpdr\",\"\":{\"swughx\":\"datalrmmmsaujxaogtwx\",\"ifs\":\"datawfaehryordinfwn\"}},\"name\":\"jufuddtubzekfbuf\",\"type\":\"xmelzlsskphwwn\",\"etag\":\"a\",\"id\":\"ibgyquzofyeqru\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"akghvaqbkz\",\"\":{\"spnyutfhqighnun\":\"databxau\",\"ovgio\":\"datatjmzbirjndd\"}},\"name\":\"ztrln\",\"type\":\"vjdv\",\"etag\":\"c\",\"id\":\"j\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,10 +49,10 @@ public final class IntegrationRuntimesListByFactoryMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<IntegrationRuntimeResource> response = manager.integrationRuntimes().listByFactory("futohkrqbgx",
-            "jbapflluyh", com.azure.core.util.Context.NONE);
+        PagedIterable<IntegrationRuntimeResource> response
+            = manager.integrationRuntimes().listByFactory("ljcblppnq", "snvcwji", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ibgyquzofyeqru", response.iterator().next().id());
-        Assertions.assertEquals("lswipobtbtlmpdr", response.iterator().next().properties().description());
+        Assertions.assertEquals("j", response.iterator().next().id());
+        Assertions.assertEquals("akghvaqbkz", response.iterator().next().properties().description());
     }
 }

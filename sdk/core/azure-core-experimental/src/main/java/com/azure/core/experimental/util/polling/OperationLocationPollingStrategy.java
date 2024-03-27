@@ -32,14 +32,13 @@ import java.time.OffsetDateTime;
  *
  * @param <T> the type of the response type from a polling call, or BinaryData if raw response body should be kept
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
- *           kept
+ * kept
  */
 public class OperationLocationPollingStrategy<T, U> extends OperationResourcePollingStrategy<T, U> {
 
     private static final ClientLogger LOGGER = new ClientLogger(OperationLocationPollingStrategy.class);
 
-    private static final HttpHeaderName OPERATION_LOCATION_HEADER
-        = HttpHeaderName.fromString("Operation-Location");
+    private static final HttpHeaderName OPERATION_LOCATION_HEADER = HttpHeaderName.fromString("Operation-Location");
 
     private static final TypeReference<PostPollResult> POST_POLL_RESULT_TYPE_REFERENCE
         = TypeReference.createInstance(PostPollResult.class);
@@ -57,7 +56,8 @@ public class OperationLocationPollingStrategy<T, U> extends OperationResourcePol
         super(OPERATION_LOCATION_HEADER, pollingStrategyOptions);
         this.endpoint = pollingStrategyOptions.getEndpoint();
         this.serializer = pollingStrategyOptions.getSerializer() != null
-            ? pollingStrategyOptions.getSerializer() : JsonSerializerProviders.createInstance(true);
+            ? pollingStrategyOptions.getSerializer()
+            : JsonSerializerProviders.createInstance(true);
     }
 
     /**
@@ -65,7 +65,7 @@ public class OperationLocationPollingStrategy<T, U> extends OperationResourcePol
      */
     @Override
     public Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
-                                                   TypeReference<T> pollResponseType) {
+        TypeReference<T> pollResponseType) {
         HttpHeader operationLocationHeader = response.getHeaders().get(OPERATION_LOCATION_HEADER);
         if (operationLocationHeader != null) {
             pollingContext.setData(OPERATION_LOCATION_HEADER.getCaseSensitiveName(),
@@ -85,10 +85,10 @@ public class OperationLocationPollingStrategy<T, U> extends OperationResourcePol
                 // PUT has initial response body as resultType
                 // we expect Response<?> be either Response<BinaryData> or Response<U>
                 // if it is not Response<BinaryData>, PollingUtils.serializeResponse would miss read-only properties
-                pollResponseMono = PollingUtils.serializeResponse(response.getValue(), serializer)
-                    .map(initialResponseBody -> {
-                        pollingContext.setData(
-                            PollingConstants.INITIAL_RESOURCE_RESPONSE_BODY, initialResponseBody.toString());
+                pollResponseMono
+                    = PollingUtils.serializeResponse(response.getValue(), serializer).map(initialResponseBody -> {
+                        pollingContext.setData(PollingConstants.INITIAL_RESOURCE_RESPONSE_BODY,
+                            initialResponseBody.toString());
                         return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, null, retryAfter);
                     });
             } else {
@@ -96,12 +96,13 @@ public class OperationLocationPollingStrategy<T, U> extends OperationResourcePol
                 pollResponseMono = PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType)
                     .map(value -> new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, value, retryAfter));
             }
-            return pollResponseMono.switchIfEmpty(Mono.fromSupplier(() -> new PollResponse<>(
-                LongRunningOperationStatus.IN_PROGRESS, null, retryAfter)));
+            return pollResponseMono.switchIfEmpty(
+                Mono.fromSupplier(() -> new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, null, retryAfter)));
         } else {
-            return Mono.error(new AzureException(String.format("Operation failed or cancelled with status code %d,"
-                    + ", '%s' header: %s, and response body: %s", response.getStatusCode(), OPERATION_LOCATION_HEADER,
-                operationLocationHeader, PollingUtils.serializeResponse(response.getValue(), serializer))));
+            return Mono.error(new AzureException(String.format(
+                "Operation failed or cancelled with status code %d," + ", '%s' header: %s, and response body: %s",
+                response.getStatusCode(), OPERATION_LOCATION_HEADER, operationLocationHeader,
+                PollingUtils.serializeResponse(response.getValue(), serializer))));
         }
     }
 
@@ -119,14 +120,14 @@ public class OperationLocationPollingStrategy<T, U> extends OperationResourcePol
         if (HttpMethod.PUT.name().equalsIgnoreCase(httpMethod)
             || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
             // take the initial response body from PollingContext, and de-serialize as final result
-            BinaryData initialResponseBody = BinaryData.fromString(pollingContext.getData(
-                PollingConstants.INITIAL_RESOURCE_RESPONSE_BODY));
+            BinaryData initialResponseBody
+                = BinaryData.fromString(pollingContext.getData(PollingConstants.INITIAL_RESOURCE_RESPONSE_BODY));
             return PollingUtils.deserializeResponse(initialResponseBody, serializer, resultType);
         } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)) {
             // take the last poll response body from PollingContext,
             // and de-serialize the "result" property as final result
-            BinaryData latestResponseBody =
-                BinaryData.fromString(pollingContext.getData(PollingConstants.POLL_RESPONSE_BODY));
+            BinaryData latestResponseBody
+                = BinaryData.fromString(pollingContext.getData(PollingConstants.POLL_RESPONSE_BODY));
             return PollingUtils.deserializeResponse(latestResponseBody, serializer, POST_POLL_RESULT_TYPE_REFERENCE)
                 .flatMap(value -> {
                     if (value.getResult() != null) {
@@ -134,7 +135,8 @@ public class OperationLocationPollingStrategy<T, U> extends OperationResourcePol
                     } else {
                         return Mono.error(new AzureException("Cannot get final result"));
                     }
-                }).switchIfEmpty(Mono.error(new AzureException("Cannot get final result")));
+                })
+                .switchIfEmpty(Mono.error(new AzureException("Cannot get final result")));
         } else {
             return Mono.error(new AzureException("Cannot get final result"));
         }

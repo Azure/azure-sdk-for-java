@@ -14,6 +14,7 @@ trigger:
       - sdk/identity/azure-identity/pom.xml
       - sdk/identity/azure-identity-perf/pom.xml
       - sdk/identity/azure-identity-broker/pom.xml
+      - sdk/identity/azure-identity-extensions/
 
 pr:
   branches:
@@ -30,6 +31,7 @@ pr:
       - sdk/identity/azure-identity/pom.xml
       - sdk/identity/azure-identity-perf/pom.xml
       - sdk/identity/azure-identity-broker/pom.xml
+      - sdk/identity/azure-identity-extensions/
 
 parameters:
 - name: release_dependsonlivetests
@@ -40,19 +42,16 @@ parameters:
   displayName: 'azure-identity'
   type: boolean
   default: true
-- name: release_azureidentityextensions
-  displayName: 'azure-identity-extensions'
-  type: boolean
-  default: true
 - name: release_azureidentitybroker
   displayName: 'azure-identity-broker'
   type: boolean
   default: true
 
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: identity
+    TimeoutInMinutes: 90
     EnableBatchRelease: true
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     Artifacts:
@@ -60,10 +59,6 @@ extends:
         groupId: com.azure
         safeName: azureidentity
         releaseInBatch: ${{ parameters.release_azureidentity }}
-      - name: azure-identity-extensions
-        groupId: com.azure
-        safeName: azureidentityextensions
-        releaseInBatch: ${{ parameters.release_azureidentityextensions }}
       - name: azure-identity-broker
         groupId: com.azure
         safeName: azureidentitybroker
@@ -75,8 +70,9 @@ extends:
       - name: perf-test-core
         groupId: com.azure
     LiveTestStages:
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
+          CalledFromClient: true
           ServiceDirectory: identity
           SupportedClouds: 'Public,UsGov,China'
           CloudConfig:

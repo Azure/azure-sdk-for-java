@@ -10,10 +10,9 @@ import com.azure.resourcemanager.security.models.DefenderForDevOpsAzureDevOpsOff
 public final class DefenderForDevOpsAzureDevOpsOfferingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderForDevOpsAzureDevOpsOffering model =
-            BinaryData
-                .fromString("{\"offeringType\":\"DefenderForDevOpsAzureDevOps\",\"description\":\"rb\"}")
-                .toObject(DefenderForDevOpsAzureDevOpsOffering.class);
+        DefenderForDevOpsAzureDevOpsOffering model = BinaryData
+            .fromString("{\"offeringType\":\"DefenderForDevOpsAzureDevOps\",\"description\":\"litqdsjipdvi\"}")
+            .toObject(DefenderForDevOpsAzureDevOpsOffering.class);
     }
 
     @org.junit.jupiter.api.Test

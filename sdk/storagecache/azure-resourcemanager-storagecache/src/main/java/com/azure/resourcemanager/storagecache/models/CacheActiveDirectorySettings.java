@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Active Directory settings used to join a cache to a domain. */
+/**
+ * Active Directory settings used to join a cache to a domain.
+ */
 @Fluent
 public final class CacheActiveDirectorySettings {
     /*
@@ -54,14 +56,16 @@ public final class CacheActiveDirectorySettings {
     @JsonProperty(value = "credentials")
     private CacheActiveDirectorySettingsCredentials credentials;
 
-    /** Creates an instance of CacheActiveDirectorySettings class. */
+    /**
+     * Creates an instance of CacheActiveDirectorySettings class.
+     */
     public CacheActiveDirectorySettings() {
     }
 
     /**
      * Get the primaryDnsIpAddress property: Primary DNS IP address used to resolve the Active Directory domain
      * controller's fully qualified domain name.
-     *
+     * 
      * @return the primaryDnsIpAddress value.
      */
     public String primaryDnsIpAddress() {
@@ -71,7 +75,7 @@ public final class CacheActiveDirectorySettings {
     /**
      * Set the primaryDnsIpAddress property: Primary DNS IP address used to resolve the Active Directory domain
      * controller's fully qualified domain name.
-     *
+     * 
      * @param primaryDnsIpAddress the primaryDnsIpAddress value to set.
      * @return the CacheActiveDirectorySettings object itself.
      */
@@ -83,7 +87,7 @@ public final class CacheActiveDirectorySettings {
     /**
      * Get the secondaryDnsIpAddress property: Secondary DNS IP address used to resolve the Active Directory domain
      * controller's fully qualified domain name.
-     *
+     * 
      * @return the secondaryDnsIpAddress value.
      */
     public String secondaryDnsIpAddress() {
@@ -93,7 +97,7 @@ public final class CacheActiveDirectorySettings {
     /**
      * Set the secondaryDnsIpAddress property: Secondary DNS IP address used to resolve the Active Directory domain
      * controller's fully qualified domain name.
-     *
+     * 
      * @param secondaryDnsIpAddress the secondaryDnsIpAddress value to set.
      * @return the CacheActiveDirectorySettings object itself.
      */
@@ -104,7 +108,7 @@ public final class CacheActiveDirectorySettings {
 
     /**
      * Get the domainName property: The fully qualified domain name of the Active Directory domain controller.
-     *
+     * 
      * @return the domainName value.
      */
     public String domainName() {
@@ -113,7 +117,7 @@ public final class CacheActiveDirectorySettings {
 
     /**
      * Set the domainName property: The fully qualified domain name of the Active Directory domain controller.
-     *
+     * 
      * @param domainName the domainName value to set.
      * @return the CacheActiveDirectorySettings object itself.
      */
@@ -124,7 +128,7 @@ public final class CacheActiveDirectorySettings {
 
     /**
      * Get the domainNetBiosName property: The Active Directory domain's NetBIOS name.
-     *
+     * 
      * @return the domainNetBiosName value.
      */
     public String domainNetBiosName() {
@@ -133,7 +137,7 @@ public final class CacheActiveDirectorySettings {
 
     /**
      * Set the domainNetBiosName property: The Active Directory domain's NetBIOS name.
-     *
+     * 
      * @param domainNetBiosName the domainNetBiosName value to set.
      * @return the CacheActiveDirectorySettings object itself.
      */
@@ -143,9 +147,9 @@ public final class CacheActiveDirectorySettings {
     }
 
     /**
-     * Get the cacheNetBiosName property: The NetBIOS name to assign to the HPC Cache when it joins the Active Directory
-     * domain as a server. Length must 1-15 characters from the class [-0-9a-zA-Z].
-     *
+     * Get the cacheNetBiosName property: The NetBIOS name to assign to the HPC Cache when it joins the Active
+     * Directory domain as a server. Length must 1-15 characters from the class [-0-9a-zA-Z].
+     * 
      * @return the cacheNetBiosName value.
      */
     public String cacheNetBiosName() {
@@ -153,9 +157,9 @@ public final class CacheActiveDirectorySettings {
     }
 
     /**
-     * Set the cacheNetBiosName property: The NetBIOS name to assign to the HPC Cache when it joins the Active Directory
-     * domain as a server. Length must 1-15 characters from the class [-0-9a-zA-Z].
-     *
+     * Set the cacheNetBiosName property: The NetBIOS name to assign to the HPC Cache when it joins the Active
+     * Directory domain as a server. Length must 1-15 characters from the class [-0-9a-zA-Z].
+     * 
      * @param cacheNetBiosName the cacheNetBiosName value to set.
      * @return the CacheActiveDirectorySettings object itself.
      */
@@ -166,7 +170,7 @@ public final class CacheActiveDirectorySettings {
 
     /**
      * Get the domainJoined property: True if the HPC Cache is joined to the Active Directory domain.
-     *
+     * 
      * @return the domainJoined value.
      */
     public DomainJoinedType domainJoined() {
@@ -175,7 +179,7 @@ public final class CacheActiveDirectorySettings {
 
     /**
      * Get the credentials property: Active Directory admin credentials used to join the HPC Cache to a domain.
-     *
+     * 
      * @return the credentials value.
      */
     public CacheActiveDirectorySettingsCredentials credentials() {
@@ -184,7 +188,7 @@ public final class CacheActiveDirectorySettings {
 
     /**
      * Set the credentials property: Active Directory admin credentials used to join the HPC Cache to a domain.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the CacheActiveDirectorySettings object itself.
      */
@@ -195,33 +199,25 @@ public final class CacheActiveDirectorySettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (primaryDnsIpAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property primaryDnsIpAddress in model CacheActiveDirectorySettings"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property primaryDnsIpAddress in model CacheActiveDirectorySettings"));
         }
         if (domainName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property domainName in model CacheActiveDirectorySettings"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property domainName in model CacheActiveDirectorySettings"));
         }
         if (domainNetBiosName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property domainNetBiosName in model CacheActiveDirectorySettings"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property domainNetBiosName in model CacheActiveDirectorySettings"));
         }
         if (cacheNetBiosName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property cacheNetBiosName in model CacheActiveDirectorySettings"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property cacheNetBiosName in model CacheActiveDirectorySettings"));
         }
         if (credentials() != null) {
             credentials().validate();

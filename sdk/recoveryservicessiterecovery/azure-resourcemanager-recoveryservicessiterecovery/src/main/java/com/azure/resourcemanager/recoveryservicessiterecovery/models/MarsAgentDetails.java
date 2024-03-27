@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Mars agent details. */
+/**
+ * Mars agent details.
+ */
 @Immutable
 public final class MarsAgentDetails {
     /*
@@ -66,13 +68,15 @@ public final class MarsAgentDetails {
     @JsonProperty(value = "healthErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<HealthError> healthErrors;
 
-    /** Creates an instance of MarsAgentDetails class. */
+    /**
+     * Creates an instance of MarsAgentDetails class.
+     */
     public MarsAgentDetails() {
     }
 
     /**
      * Get the id property: The Mars agent Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -81,7 +85,7 @@ public final class MarsAgentDetails {
 
     /**
      * Get the name property: The Mars agent name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -90,7 +94,7 @@ public final class MarsAgentDetails {
 
     /**
      * Get the biosId property: The Mars agent Bios Id.
-     *
+     * 
      * @return the biosId value.
      */
     public String biosId() {
@@ -99,7 +103,7 @@ public final class MarsAgentDetails {
 
     /**
      * Get the fabricObjectId property: The fabric object Id.
-     *
+     * 
      * @return the fabricObjectId value.
      */
     public String fabricObjectId() {
@@ -108,7 +112,7 @@ public final class MarsAgentDetails {
 
     /**
      * Get the fqdn property: The Mars agent Fqdn.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -117,7 +121,7 @@ public final class MarsAgentDetails {
 
     /**
      * Get the version property: The version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -126,7 +130,7 @@ public final class MarsAgentDetails {
 
     /**
      * Get the lastHeartbeatUtc property: The last heartbeat received from the Mars agent.
-     *
+     * 
      * @return the lastHeartbeatUtc value.
      */
     public OffsetDateTime lastHeartbeatUtc() {
@@ -135,7 +139,7 @@ public final class MarsAgentDetails {
 
     /**
      * Get the health property: The health of the Mars agent.
-     *
+     * 
      * @return the health value.
      */
     public ProtectionHealth health() {
@@ -144,7 +148,7 @@ public final class MarsAgentDetails {
 
     /**
      * Get the healthErrors property: The health errors.
-     *
+     * 
      * @return the healthErrors value.
      */
     public List<HealthError> healthErrors() {
@@ -153,7 +157,7 @@ public final class MarsAgentDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

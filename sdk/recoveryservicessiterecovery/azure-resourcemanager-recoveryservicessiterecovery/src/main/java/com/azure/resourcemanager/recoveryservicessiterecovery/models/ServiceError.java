@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ASR error model. */
+/**
+ * ASR error model.
+ */
 @Fluent
 public final class ServiceError {
     /*
@@ -40,13 +42,15 @@ public final class ServiceError {
     @JsonProperty(value = "activityId")
     private String activityId;
 
-    /** Creates an instance of ServiceError class. */
+    /**
+     * Creates an instance of ServiceError class.
+     */
     public ServiceError() {
     }
 
     /**
      * Get the code property: Error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -55,7 +59,7 @@ public final class ServiceError {
 
     /**
      * Set the code property: Error code.
-     *
+     * 
      * @param code the code value to set.
      * @return the ServiceError object itself.
      */
@@ -66,7 +70,7 @@ public final class ServiceError {
 
     /**
      * Get the message property: Error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -75,7 +79,7 @@ public final class ServiceError {
 
     /**
      * Set the message property: Error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the ServiceError object itself.
      */
@@ -86,7 +90,7 @@ public final class ServiceError {
 
     /**
      * Get the possibleCauses property: Possible causes of error.
-     *
+     * 
      * @return the possibleCauses value.
      */
     public String possibleCauses() {
@@ -95,7 +99,7 @@ public final class ServiceError {
 
     /**
      * Set the possibleCauses property: Possible causes of error.
-     *
+     * 
      * @param possibleCauses the possibleCauses value to set.
      * @return the ServiceError object itself.
      */
@@ -106,7 +110,7 @@ public final class ServiceError {
 
     /**
      * Get the recommendedAction property: Recommended action to resolve error.
-     *
+     * 
      * @return the recommendedAction value.
      */
     public String recommendedAction() {
@@ -115,7 +119,7 @@ public final class ServiceError {
 
     /**
      * Set the recommendedAction property: Recommended action to resolve error.
-     *
+     * 
      * @param recommendedAction the recommendedAction value to set.
      * @return the ServiceError object itself.
      */
@@ -126,7 +130,7 @@ public final class ServiceError {
 
     /**
      * Get the activityId property: Activity Id.
-     *
+     * 
      * @return the activityId value.
      */
     public String activityId() {
@@ -135,7 +139,7 @@ public final class ServiceError {
 
     /**
      * Set the activityId property: Activity Id.
-     *
+     * 
      * @param activityId the activityId value to set.
      * @return the ServiceError object itself.
      */
@@ -146,7 +150,7 @@ public final class ServiceError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

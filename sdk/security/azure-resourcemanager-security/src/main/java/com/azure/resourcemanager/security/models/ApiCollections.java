@@ -8,78 +8,210 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ApiCollections. */
+/**
+ * Resource collection API of ApiCollections.
+ */
 public interface ApiCollections {
     /**
-     * Gets a list of Azure API Management APIs that have been onboarded to Defender for APIs
-     *
-     * <p>Gets a list of Azure API Management APIs that have been onboarded to Defender for APIs. If an Azure API
-     * Management API is onboarded to Defender for APIs, the system will monitor the operations within the Azure API
-     * Management API for intrusive behaviors and provide alerts for attacks that have been detected.
-     *
+     * Gets a list of API collections within a subscription
+     * 
+     * Gets a list of API collections within a subscription that have been onboarded to Microsoft Defender for APIs.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of API collections within a subscription that have been onboarded to Microsoft Defender for APIs
+     * as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<ApiCollection> list();
+
+    /**
+     * Gets a list of API collections within a subscription
+     * 
+     * Gets a list of API collections within a subscription that have been onboarded to Microsoft Defender for APIs.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of API collections within a subscription that have been onboarded to Microsoft Defender for APIs
+     * as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<ApiCollection> list(Context context);
+
+    /**
+     * Gets a list of API collections within a resource group
+     * 
+     * Gets a list of API collections within a resource group that have been onboarded to Microsoft Defender for APIs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of API collections within a resource group that have been onboarded to Microsoft Defender for APIs
+     * as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<ApiCollection> listByResourceGroup(String resourceGroupName);
+
+    /**
+     * Gets a list of API collections within a resource group
+     * 
+     * Gets a list of API collections within a resource group that have been onboarded to Microsoft Defender for APIs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of API collections within a resource group that have been onboarded to Microsoft Defender for APIs
+     * as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<ApiCollection> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Gets a list of onboarded Azure API Management APIs
+     * 
+     * Gets a list of Azure API Management APIs that have been onboarded to Microsoft Defender for APIs. If an Azure API
+     * Management API is onboarded to Microsoft Defender for APIs, the system will monitor the operations within the
+     * Azure API Management API for intrusive behaviors and provide alerts for attacks that have been detected.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure API Management APIs that have been onboarded to Defender for APIs as paginated response
-     *     with {@link PagedIterable}.
+     * @return a list of Azure API Management APIs that have been onboarded to Microsoft Defender for APIs as paginated
+     * response with {@link PagedIterable}.
      */
-    PagedIterable<ApiCollectionResponse> list(String resourceGroupName, String serviceName);
+    PagedIterable<ApiCollection> listByAzureApiManagementService(String resourceGroupName, String serviceName);
 
     /**
-     * Gets a list of Azure API Management APIs that have been onboarded to Defender for APIs
-     *
-     * <p>Gets a list of Azure API Management APIs that have been onboarded to Defender for APIs. If an Azure API
-     * Management API is onboarded to Defender for APIs, the system will monitor the operations within the Azure API
-     * Management API for intrusive behaviors and provide alerts for attacks that have been detected.
-     *
+     * Gets a list of onboarded Azure API Management APIs
+     * 
+     * Gets a list of Azure API Management APIs that have been onboarded to Microsoft Defender for APIs. If an Azure API
+     * Management API is onboarded to Microsoft Defender for APIs, the system will monitor the operations within the
+     * Azure API Management API for intrusive behaviors and provide alerts for attacks that have been detected.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure API Management APIs that have been onboarded to Defender for APIs as paginated response
-     *     with {@link PagedIterable}.
+     * @return a list of Azure API Management APIs that have been onboarded to Microsoft Defender for APIs as paginated
+     * response with {@link PagedIterable}.
      */
-    PagedIterable<ApiCollectionResponse> list(String resourceGroupName, String serviceName, Context context);
+    PagedIterable<ApiCollection> listByAzureApiManagementService(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
-     * Gets an Azure API Management API if it has been onboarded to Defender for APIs
-     *
-     * <p>Gets an Azure API Management API if it has been onboarded to Defender for APIs. If an Azure API Management API
-     * is onboarded to Defender for APIs, the system will monitor the operations within the Azure API Management API for
-     * intrusive behaviors and provide alerts for attacks that have been detected.
-     *
+     * Gets an onboarded Azure API Management API
+     * 
+     * Gets an Azure API Management API if it has been onboarded to Microsoft Defender for APIs. If an Azure API
+     * Management API is onboarded to Microsoft Defender for APIs, the system will monitor the operations within the
+     * Azure API Management API for intrusive behaviors and provide alerts for attacks that have been detected.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
-     * @param apiCollectionId A string representing the apiCollections resource within the Microsoft.Security provider
-     *     namespace. This string matches the Azure API Management API name.
+     * @param apiId API revision identifier. Must be unique in the API Management service instance. Non-current revision
+     * has ;rev=n as a suffix where n is the revision number.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure API Management API if it has been onboarded to Defender for APIs along with {@link Response}.
+     * @return an Azure API Management API if it has been onboarded to Microsoft Defender for APIs along with
+     * {@link Response}.
      */
-    Response<ApiCollectionResponse> getWithResponse(
-        String resourceGroupName, String serviceName, String apiCollectionId, Context context);
+    Response<ApiCollection> getByAzureApiManagementServiceWithResponse(String resourceGroupName, String serviceName,
+        String apiId, Context context);
 
     /**
-     * Gets an Azure API Management API if it has been onboarded to Defender for APIs
-     *
-     * <p>Gets an Azure API Management API if it has been onboarded to Defender for APIs. If an Azure API Management API
-     * is onboarded to Defender for APIs, the system will monitor the operations within the Azure API Management API for
-     * intrusive behaviors and provide alerts for attacks that have been detected.
-     *
+     * Gets an onboarded Azure API Management API
+     * 
+     * Gets an Azure API Management API if it has been onboarded to Microsoft Defender for APIs. If an Azure API
+     * Management API is onboarded to Microsoft Defender for APIs, the system will monitor the operations within the
+     * Azure API Management API for intrusive behaviors and provide alerts for attacks that have been detected.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
-     * @param apiCollectionId A string representing the apiCollections resource within the Microsoft.Security provider
-     *     namespace. This string matches the Azure API Management API name.
+     * @param apiId API revision identifier. Must be unique in the API Management service instance. Non-current revision
+     * has ;rev=n as a suffix where n is the revision number.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure API Management API if it has been onboarded to Defender for APIs.
+     * @return an Azure API Management API if it has been onboarded to Microsoft Defender for APIs.
      */
-    ApiCollectionResponse get(String resourceGroupName, String serviceName, String apiCollectionId);
+    ApiCollection getByAzureApiManagementService(String resourceGroupName, String serviceName, String apiId);
+
+    /**
+     * Onboard an Azure API Management API to Microsoft Defender for APIs
+     * 
+     * Onboard an Azure API Management API to Microsoft Defender for APIs. The system will start monitoring the
+     * operations within the Azure Management API for intrusive behaviors and provide alerts for attacks that have been
+     * detected.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the API Management service instance. Non-current revision
+     * has ;rev=n as a suffix where n is the revision number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an API collection as represented by Microsoft Defender for APIs.
+     */
+    ApiCollection onboardAzureApiManagementApi(String resourceGroupName, String serviceName, String apiId);
+
+    /**
+     * Onboard an Azure API Management API to Microsoft Defender for APIs
+     * 
+     * Onboard an Azure API Management API to Microsoft Defender for APIs. The system will start monitoring the
+     * operations within the Azure Management API for intrusive behaviors and provide alerts for attacks that have been
+     * detected.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the API Management service instance. Non-current revision
+     * has ;rev=n as a suffix where n is the revision number.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an API collection as represented by Microsoft Defender for APIs.
+     */
+    ApiCollection onboardAzureApiManagementApi(String resourceGroupName, String serviceName, String apiId,
+        Context context);
+
+    /**
+     * Offboard an Azure API Management API from Microsoft Defender for APIs
+     * 
+     * Offboard an Azure API Management API from Microsoft Defender for APIs. The system will stop monitoring the
+     * operations within the Azure API Management API for intrusive behaviors.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the API Management service instance. Non-current revision
+     * has ;rev=n as a suffix where n is the revision number.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> offboardAzureApiManagementApiWithResponse(String resourceGroupName, String serviceName, String apiId,
+        Context context);
+
+    /**
+     * Offboard an Azure API Management API from Microsoft Defender for APIs
+     * 
+     * Offboard an Azure API Management API from Microsoft Defender for APIs. The system will stop monitoring the
+     * operations within the Azure API Management API for intrusive behaviors.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the API Management service instance. Non-current revision
+     * has ;rev=n as a suffix where n is the revision number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void offboardAzureApiManagementApi(String resourceGroupName, String serviceName, String apiId);
 }

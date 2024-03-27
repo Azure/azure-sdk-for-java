@@ -18,8 +18,7 @@ public final class ReplicationProtectionIntentImpl
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    ReplicationProtectionIntentImpl(
-        ReplicationProtectionIntentInner innerObject,
+    ReplicationProtectionIntentImpl(ReplicationProtectionIntentInner innerObject,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -76,27 +75,20 @@ public final class ReplicationProtectionIntentImpl
     }
 
     public ReplicationProtectionIntent create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationProtectionIntents()
-                .createWithResponse(resourceName, resourceGroupName, intentObjectName, createInput, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getReplicationProtectionIntents()
+            .createWithResponse(resourceName, resourceGroupName, intentObjectName, createInput, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ReplicationProtectionIntent create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationProtectionIntents()
-                .createWithResponse(resourceName, resourceGroupName, intentObjectName, createInput, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getReplicationProtectionIntents()
+            .createWithResponse(resourceName, resourceGroupName, intentObjectName, createInput, context).getValue();
         return this;
     }
 
-    ReplicationProtectionIntentImpl(
-        String name, com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
+    ReplicationProtectionIntentImpl(String name,
+        com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = new ReplicationProtectionIntentInner();
         this.serviceManager = serviceManager;
         this.intentObjectName = name;
@@ -104,22 +96,14 @@ public final class ReplicationProtectionIntentImpl
     }
 
     public ReplicationProtectionIntent refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationProtectionIntents()
-                .getWithResponse(resourceName, resourceGroupName, intentObjectName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getReplicationProtectionIntents()
+            .getWithResponse(resourceName, resourceGroupName, intentObjectName, Context.NONE).getValue();
         return this;
     }
 
     public ReplicationProtectionIntent refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationProtectionIntents()
-                .getWithResponse(resourceName, resourceGroupName, intentObjectName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getReplicationProtectionIntents()
+            .getWithResponse(resourceName, resourceGroupName, intentObjectName, context).getValue();
         return this;
     }
 

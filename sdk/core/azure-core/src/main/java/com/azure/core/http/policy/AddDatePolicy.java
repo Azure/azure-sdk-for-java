@@ -17,13 +17,18 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 /**
- * The pipeline policy that adds a "Date" header in RFC 1123 format when sending an HTTP request.
+ * <p>The {@code AddDatePolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is
+ * used to add a "Date" header in RFC 1123 format when sending an HTTP request.</p>
+ *
+ * @see com.azure.core.http.policy
+ * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
  */
 public class AddDatePolicy implements HttpPipelinePolicy {
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter
-            .ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
-            .withZone(ZoneOffset.UTC)
-            .withLocale(Locale.US);
+    private static final DateTimeFormatter FORMATTER
+        = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'").withZone(ZoneOffset.UTC).withLocale(Locale.US);
 
     /**
      * Creates a new instance of {@link AddDatePolicy}.

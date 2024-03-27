@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
 import java.util.List;
 
-/** Model that represents a continuous action. */
+/**
+ * Model that represents a continuous action.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("continuous")
 @Fluent
@@ -35,13 +37,15 @@ public final class ContinuousAction extends ChaosExperimentAction {
     @JsonProperty(value = "selectorId", required = true)
     private String selectorId;
 
-    /** Creates an instance of ContinuousAction class. */
+    /**
+     * Creates an instance of ContinuousAction class.
+     */
     public ContinuousAction() {
     }
 
     /**
      * Get the duration property: ISO8601 formatted string that represents a duration.
-     *
+     * 
      * @return the duration value.
      */
     public Duration duration() {
@@ -50,7 +54,7 @@ public final class ContinuousAction extends ChaosExperimentAction {
 
     /**
      * Set the duration property: ISO8601 formatted string that represents a duration.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the ContinuousAction object itself.
      */
@@ -61,7 +65,7 @@ public final class ContinuousAction extends ChaosExperimentAction {
 
     /**
      * Get the parameters property: List of key value pairs.
-     *
+     * 
      * @return the parameters value.
      */
     public List<KeyValuePair> parameters() {
@@ -70,7 +74,7 @@ public final class ContinuousAction extends ChaosExperimentAction {
 
     /**
      * Set the parameters property: List of key value pairs.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the ContinuousAction object itself.
      */
@@ -81,7 +85,7 @@ public final class ContinuousAction extends ChaosExperimentAction {
 
     /**
      * Get the selectorId property: String that represents a selector.
-     *
+     * 
      * @return the selectorId value.
      */
     public String selectorId() {
@@ -90,7 +94,7 @@ public final class ContinuousAction extends ChaosExperimentAction {
 
     /**
      * Set the selectorId property: String that represents a selector.
-     *
+     * 
      * @param selectorId the selectorId value to set.
      * @return the ContinuousAction object itself.
      */
@@ -99,7 +103,9 @@ public final class ContinuousAction extends ChaosExperimentAction {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContinuousAction withName(String name) {
         super.withName(name);
@@ -108,28 +114,25 @@ public final class ContinuousAction extends ChaosExperimentAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (duration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property duration in model ContinuousAction"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property duration in model ContinuousAction"));
         }
         if (parameters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property parameters in model ContinuousAction"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property parameters in model ContinuousAction"));
         } else {
             parameters().forEach(e -> e.validate());
         }
         if (selectorId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property selectorId in model ContinuousAction"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property selectorId in model ContinuousAction"));
         }
     }
 

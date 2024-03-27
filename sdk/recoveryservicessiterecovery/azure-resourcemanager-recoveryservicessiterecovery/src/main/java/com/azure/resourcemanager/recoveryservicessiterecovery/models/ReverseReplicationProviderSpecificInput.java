@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Provider specific reverse replication input. */
+/**
+ * Provider specific reverse replication input.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -22,17 +24,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "InMageAzureV2", value = InMageAzureV2ReprotectInput.class),
     @JsonSubTypes.Type(name = "InMageRcmFailback", value = InMageRcmFailbackReprotectInput.class),
     @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmReprotectInput.class),
-    @JsonSubTypes.Type(name = "InMage", value = InMageReprotectInput.class)
-})
+    @JsonSubTypes.Type(name = "InMage", value = InMageReprotectInput.class) })
 @Immutable
 public class ReverseReplicationProviderSpecificInput {
-    /** Creates an instance of ReverseReplicationProviderSpecificInput class. */
+    /**
+     * Creates an instance of ReverseReplicationProviderSpecificInput class.
+     */
     public ReverseReplicationProviderSpecificInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,16 +11,16 @@ public final class SalesforceServiceCloudSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SalesforceServiceCloudSource model = BinaryData.fromString(
-            "{\"type\":\"SalesforceServiceCloudSource\",\"query\":\"datag\",\"readBehavior\":\"dataotvocjk\",\"additionalColumns\":\"datah\",\"sourceRetryCount\":\"datayvtrsgfdmtfn\",\"sourceRetryWait\":\"datatxqqlbmiq\",\"maxConcurrentConnections\":\"dataiahjxcd\",\"disableMetricsCollection\":\"datadlxwsfddyqpfyn\",\"\":{\"jzsjhhru\":\"datamjsurhl\",\"o\":\"dataizqvga\",\"am\":\"dataepnglzjhaqx\",\"s\":\"dataptc\"}}")
+            "{\"type\":\"SalesforceServiceCloudSource\",\"query\":\"dataprf\",\"readBehavior\":\"datahfv\",\"additionalColumns\":\"datayqzhoikemhohxa\",\"sourceRetryCount\":\"dataxoowpoogozer\",\"sourceRetryWait\":\"datazvpbnkgkuujeqqjq\",\"maxConcurrentConnections\":\"datajkajlogvfnwq\",\"disableMetricsCollection\":\"datalvazkqkycg\",\"\":{\"c\":\"datawehjybboqyxi\"}}")
             .toObject(SalesforceServiceCloudSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SalesforceServiceCloudSource model = new SalesforceServiceCloudSource().withSourceRetryCount("datayvtrsgfdmtfn")
-            .withSourceRetryWait("datatxqqlbmiq").withMaxConcurrentConnections("dataiahjxcd")
-            .withDisableMetricsCollection("datadlxwsfddyqpfyn").withQuery("datag").withReadBehavior("dataotvocjk")
-            .withAdditionalColumns("datah");
+        SalesforceServiceCloudSource model = new SalesforceServiceCloudSource().withSourceRetryCount("dataxoowpoogozer")
+            .withSourceRetryWait("datazvpbnkgkuujeqqjq").withMaxConcurrentConnections("datajkajlogvfnwq")
+            .withDisableMetricsCollection("datalvazkqkycg").withQuery("dataprf").withReadBehavior("datahfv")
+            .withAdditionalColumns("datayqzhoikemhohxa");
         model = BinaryData.fromObject(model).toObject(SalesforceServiceCloudSource.class);
     }
 }

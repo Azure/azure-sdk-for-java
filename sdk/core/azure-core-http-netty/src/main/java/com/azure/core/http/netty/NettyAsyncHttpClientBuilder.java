@@ -46,26 +46,16 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIM
 import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
 
 /**
- * <p>Builder class responsible for creating instances of {@link com.azure.core.http.HttpClient} backed by Reactor Netty.
+ * <p>
+ * Builder class responsible for creating instances of {@link com.azure.core.http.HttpClient} backed by Reactor Netty.
  * The client built from this builder can support sending requests synchronously and asynchronously.
  * Use {@link com.azure.core.http.HttpClient#sendSync(HttpRequest, Context)} to send the provided request
- * synchronously with contextual information.</p>
+ * synchronously with contextual information.
+ * </p>
  *
- * <p><strong>Building a new HttpClient instance</strong></p>
- *
- * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
- * <pre>
- * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
- *     .port&#40;8080&#41;
- *     .wiretap&#40;true&#41;
- *     .build&#40;&#41;;
- * </pre>
- * <!-- end com.azure.core.http.netty.instantiation-simple -->
- *
- * <p><strong>Building a new HttpClient instance using http proxy.</strong></p>
- *
- * <p>Configuring the Netty client with a proxy is relevant when your application needs to communicate with Azure
- * services through a proxy server.</p>
+ * <p>
+ * <strong>Building a new HttpClient instance</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
  * <pre>
@@ -76,7 +66,14 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * </pre>
  * <!-- end com.azure.core.http.netty.instantiation-simple -->
  *
- * <p><strong>Building a new HttpClient instance with HTTP/2 Support.</strong></p>
+ * <p>
+ * <strong>Building a new HttpClient instance using http proxy.</strong>
+ * </p>
+ *
+ * <p>
+ * Configuring the Netty client with a proxy is relevant when your application needs to communicate with Azure
+ * services through a proxy server.
+ * </p>
  *
  * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
  * <pre>
@@ -87,7 +84,22 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * </pre>
  * <!-- end com.azure.core.http.netty.instantiation-simple -->
  *
- * <p>It is also possible to create a Netty HttpClient that only supports HTTP/2.</p>
+ * <p>
+ * <strong>Building a new HttpClient instance with HTTP/2 Support.</strong>
+ * </p>
+ *
+ * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
+ * <pre>
+ * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
+ *     .port&#40;8080&#41;
+ *     .wiretap&#40;true&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.netty.instantiation-simple -->
+ *
+ * <p>
+ * It is also possible to create a Netty HttpClient that only supports HTTP/2.
+ * </p>
  *
  * <!-- src_embed readme-sample-useHttp2OnlyWithConfiguredNettyClient -->
  * <pre>
@@ -96,7 +108,7 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  *     .protocol&#40;HttpProtocol.H2&#41;&#41;
  *     .build&#40;&#41;;
  * </pre>
- * <!-- end readme-sample-useHttp2OnlyWithConfiguredNettyClient  -->
+ * <!-- end readme-sample-useHttp2OnlyWithConfiguredNettyClient -->
  *
  * @see HttpClient
  * @see NettyAsyncHttpClient
@@ -203,24 +215,21 @@ public class NettyAsyncHttpClientBuilder {
         // .httpResponseDecoder passes a new HttpResponseDecoderSpec and any existing configuration should be updated
         // instead of overwritten.
         HttpResponseDecoderSpec initialSpec = nettyHttpClient.configuration().decoder();
-        nettyHttpClient = nettyHttpClient
-            .port(port)
+        nettyHttpClient = nettyHttpClient.port(port)
             .wiretap(enableWiretap)
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) getTimeoutMillis(connectTimeout,
-                DEFAULT_CONNECT_TIMEOUT))
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
+                (int) getTimeoutMillis(connectTimeout, DEFAULT_CONNECT_TIMEOUT))
             // TODO (alzimmer): What does validating HTTP response headers get us?
             .httpResponseDecoder(httpResponseDecoderSpec -> initialSpec.validateHeaders(false))
-            .doOnRequest((request, connection) -> addHandler(request, connection, writeTimeout, responseTimeout,
-                readTimeout))
+            .doOnRequest(
+                (request, connection) -> addHandler(request, connection, writeTimeout, responseTimeout, readTimeout))
             .doAfterResponseSuccess((ignored, connection) -> removeHandler(connection));
 
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
-        ProxyOptions buildProxyOptions = proxyOptions == null
-            ? ProxyOptions.fromConfiguration(buildConfiguration, true)
-            : proxyOptions;
+        ProxyOptions buildProxyOptions
+            = proxyOptions == null ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
 
         /*
          * Only configure the custom authorization challenge handler and challenge holder when using an authenticated
@@ -255,14 +264,14 @@ public class NettyAsyncHttpClientBuilder {
                 nettyHttpClient = nettyHttpClient.doOnChannelInit((connectionObserver, channel, socketAddress) -> {
                     if (shouldApplyProxy(socketAddress, nonProxyHostsPattern)) {
                         channel.pipeline()
-                            .addFirst(NettyPipeline.ProxyHandler, new HttpProxyHandler(
-                                AddressUtils.replaceWithResolved(buildProxyOptions.getAddress()),
-                                handler, proxyChallengeHolder));
+                            .addFirst(NettyPipeline.ProxyHandler,
+                                new HttpProxyHandler(AddressUtils.replaceWithResolved(buildProxyOptions.getAddress()),
+                                    handler, proxyChallengeHolder));
                     }
                 });
             } else {
-                nettyHttpClient = nettyHttpClient.proxy(proxy ->
-                    proxy.type(toReactorNettyProxyType(buildProxyOptions.getType()))
+                nettyHttpClient
+                    = nettyHttpClient.proxy(proxy -> proxy.type(toReactorNettyProxyType(buildProxyOptions.getType()))
                         .address(buildProxyOptions.getAddress())
                         .username(buildProxyOptions.getUsername())
                         .password(ignored -> buildProxyOptions.getPassword())
@@ -530,13 +539,16 @@ public class NettyAsyncHttpClientBuilder {
         switch (azureProxyType) {
             case HTTP:
                 return ProxyProvider.Proxy.HTTP;
+
             case SOCKS4:
                 return ProxyProvider.Proxy.SOCKS4;
+
             case SOCKS5:
                 return ProxyProvider.Proxy.SOCKS5;
+
             default:
-                throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Unknown 'ProxyOptions.Type' enum value"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("Unknown 'ProxyOptions.Type' enum value"));
         }
     }
 
@@ -580,11 +592,11 @@ public class NettyAsyncHttpClientBuilder {
      */
     private static void addHandler(HttpClientRequest request, Connection connection, long writeTimeout,
         long responseTimeout, long readTimeout) {
-        AzureNettyHttpClientContext attr = request.currentContextView().getOrDefault(
-            AzureNettyHttpClientContext.KEY, null);
+        AzureNettyHttpClientContext attr
+            = request.currentContextView().getOrDefault(AzureNettyHttpClientContext.KEY, null);
 
-        connection.addHandlerLast(AzureSdkHandler.HANDLER_NAME, new AzureSdkHandler(attr, writeTimeout, responseTimeout,
-            readTimeout));
+        connection.addHandlerLast(AzureSdkHandler.HANDLER_NAME,
+            new AzureSdkHandler(attr, writeTimeout, responseTimeout, readTimeout));
     }
 
     /*

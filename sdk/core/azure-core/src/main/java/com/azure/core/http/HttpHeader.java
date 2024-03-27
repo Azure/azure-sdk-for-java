@@ -8,10 +8,17 @@ import com.azure.core.util.Header;
 import java.util.List;
 
 /**
- * A single header within an HTTP request or response.
- * <p>
- * If multiple header values are added to an HTTP request or response with the same name (case-insensitive), then the
- * values will be appended to the end of the same Header with commas separating them.
+ * Represents a single header within an HTTP request or response.
+ *
+ * <p>This class encapsulates the name and value(s) of an HTTP header. If multiple values are associated with the same
+ * header name, they are stored in a single HttpHeader instance with values separated by commas.</p>
+ *
+ * <p>It provides constructors to create an HttpHeader instance with a single value {@link #HttpHeader(String, String)}
+ * or multiple values {@link #HttpHeader(String, List)}.</p>
+ *
+ * <p>This class is useful when you want to work with individual headers of an HTTP request or response.</p>
+ *
+ * <p>Note: Header names are case-insensitive.</p>
  */
 public class HttpHeader extends Header {
     /**

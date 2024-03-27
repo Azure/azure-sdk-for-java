@@ -22,8 +22,13 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.appcontainers.fluent.AppResilienciesClient;
 import com.azure.resourcemanager.appcontainers.fluent.AvailableWorkloadProfilesClient;
 import com.azure.resourcemanager.appcontainers.fluent.BillingMetersClient;
+import com.azure.resourcemanager.appcontainers.fluent.BuildAuthTokensClient;
+import com.azure.resourcemanager.appcontainers.fluent.BuildersClient;
+import com.azure.resourcemanager.appcontainers.fluent.BuildsByBuilderResourcesClient;
+import com.azure.resourcemanager.appcontainers.fluent.BuildsClient;
 import com.azure.resourcemanager.appcontainers.fluent.CertificatesClient;
 import com.azure.resourcemanager.appcontainers.fluent.ConnectedEnvironmentsCertificatesClient;
 import com.azure.resourcemanager.appcontainers.fluent.ConnectedEnvironmentsClient;
@@ -36,17 +41,23 @@ import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsDiagnosticsCl
 import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsRevisionReplicasClient;
 import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsRevisionsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsSourceControlsClient;
+import com.azure.resourcemanager.appcontainers.fluent.DaprComponentResiliencyPoliciesClient;
 import com.azure.resourcemanager.appcontainers.fluent.DaprComponentsClient;
+import com.azure.resourcemanager.appcontainers.fluent.DaprSubscriptionsClient;
+import com.azure.resourcemanager.appcontainers.fluent.DotNetComponentsClient;
+import com.azure.resourcemanager.appcontainers.fluent.JavaComponentsClient;
 import com.azure.resourcemanager.appcontainers.fluent.JobsClient;
 import com.azure.resourcemanager.appcontainers.fluent.JobsExecutionsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedCertificatesClient;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentDiagnosticsClient;
+import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentUsagesClient;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentsDiagnosticsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentsStoragesClient;
 import com.azure.resourcemanager.appcontainers.fluent.NamespacesClient;
 import com.azure.resourcemanager.appcontainers.fluent.OperationsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ResourceProvidersClient;
+import com.azure.resourcemanager.appcontainers.fluent.UsagesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -56,363 +67,523 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the ContainerAppsApiClientImpl type. */
+/**
+ * Initializes a new instance of the ContainerAppsApiClientImpl type.
+ */
 @ServiceClient(builder = ContainerAppsApiClientBuilder.class)
 public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient {
-    /** The ID of the target subscription. */
+    /**
+     * The ID of the target subscription. The value must be an UUID.
+     */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
-     *
+     * Gets The ID of the target subscription. The value must be an UUID.
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The ContainerAppsAuthConfigsClient object to access its operations. */
+    /**
+     * The AppResilienciesClient object to access its operations.
+     */
+    private final AppResilienciesClient appResiliencies;
+
+    /**
+     * Gets the AppResilienciesClient object to access its operations.
+     * 
+     * @return the AppResilienciesClient object.
+     */
+    public AppResilienciesClient getAppResiliencies() {
+        return this.appResiliencies;
+    }
+
+    /**
+     * The ContainerAppsAuthConfigsClient object to access its operations.
+     */
     private final ContainerAppsAuthConfigsClient containerAppsAuthConfigs;
 
     /**
      * Gets the ContainerAppsAuthConfigsClient object to access its operations.
-     *
+     * 
      * @return the ContainerAppsAuthConfigsClient object.
      */
     public ContainerAppsAuthConfigsClient getContainerAppsAuthConfigs() {
         return this.containerAppsAuthConfigs;
     }
 
-    /** The AvailableWorkloadProfilesClient object to access its operations. */
+    /**
+     * The AvailableWorkloadProfilesClient object to access its operations.
+     */
     private final AvailableWorkloadProfilesClient availableWorkloadProfiles;
 
     /**
      * Gets the AvailableWorkloadProfilesClient object to access its operations.
-     *
+     * 
      * @return the AvailableWorkloadProfilesClient object.
      */
     public AvailableWorkloadProfilesClient getAvailableWorkloadProfiles() {
         return this.availableWorkloadProfiles;
     }
 
-    /** The BillingMetersClient object to access its operations. */
+    /**
+     * The BillingMetersClient object to access its operations.
+     */
     private final BillingMetersClient billingMeters;
 
     /**
      * Gets the BillingMetersClient object to access its operations.
-     *
+     * 
      * @return the BillingMetersClient object.
      */
     public BillingMetersClient getBillingMeters() {
         return this.billingMeters;
     }
 
-    /** The ConnectedEnvironmentsClient object to access its operations. */
+    /**
+     * The BuildersClient object to access its operations.
+     */
+    private final BuildersClient builders;
+
+    /**
+     * Gets the BuildersClient object to access its operations.
+     * 
+     * @return the BuildersClient object.
+     */
+    public BuildersClient getBuilders() {
+        return this.builders;
+    }
+
+    /**
+     * The BuildsByBuilderResourcesClient object to access its operations.
+     */
+    private final BuildsByBuilderResourcesClient buildsByBuilderResources;
+
+    /**
+     * Gets the BuildsByBuilderResourcesClient object to access its operations.
+     * 
+     * @return the BuildsByBuilderResourcesClient object.
+     */
+    public BuildsByBuilderResourcesClient getBuildsByBuilderResources() {
+        return this.buildsByBuilderResources;
+    }
+
+    /**
+     * The BuildsClient object to access its operations.
+     */
+    private final BuildsClient builds;
+
+    /**
+     * Gets the BuildsClient object to access its operations.
+     * 
+     * @return the BuildsClient object.
+     */
+    public BuildsClient getBuilds() {
+        return this.builds;
+    }
+
+    /**
+     * The BuildAuthTokensClient object to access its operations.
+     */
+    private final BuildAuthTokensClient buildAuthTokens;
+
+    /**
+     * Gets the BuildAuthTokensClient object to access its operations.
+     * 
+     * @return the BuildAuthTokensClient object.
+     */
+    public BuildAuthTokensClient getBuildAuthTokens() {
+        return this.buildAuthTokens;
+    }
+
+    /**
+     * The ConnectedEnvironmentsClient object to access its operations.
+     */
     private final ConnectedEnvironmentsClient connectedEnvironments;
 
     /**
      * Gets the ConnectedEnvironmentsClient object to access its operations.
-     *
+     * 
      * @return the ConnectedEnvironmentsClient object.
      */
     public ConnectedEnvironmentsClient getConnectedEnvironments() {
         return this.connectedEnvironments;
     }
 
-    /** The ConnectedEnvironmentsCertificatesClient object to access its operations. */
+    /**
+     * The ConnectedEnvironmentsCertificatesClient object to access its operations.
+     */
     private final ConnectedEnvironmentsCertificatesClient connectedEnvironmentsCertificates;
 
     /**
      * Gets the ConnectedEnvironmentsCertificatesClient object to access its operations.
-     *
+     * 
      * @return the ConnectedEnvironmentsCertificatesClient object.
      */
     public ConnectedEnvironmentsCertificatesClient getConnectedEnvironmentsCertificates() {
         return this.connectedEnvironmentsCertificates;
     }
 
-    /** The ConnectedEnvironmentsDaprComponentsClient object to access its operations. */
+    /**
+     * The ConnectedEnvironmentsDaprComponentsClient object to access its operations.
+     */
     private final ConnectedEnvironmentsDaprComponentsClient connectedEnvironmentsDaprComponents;
 
     /**
      * Gets the ConnectedEnvironmentsDaprComponentsClient object to access its operations.
-     *
+     * 
      * @return the ConnectedEnvironmentsDaprComponentsClient object.
      */
     public ConnectedEnvironmentsDaprComponentsClient getConnectedEnvironmentsDaprComponents() {
         return this.connectedEnvironmentsDaprComponents;
     }
 
-    /** The ConnectedEnvironmentsStoragesClient object to access its operations. */
+    /**
+     * The ConnectedEnvironmentsStoragesClient object to access its operations.
+     */
     private final ConnectedEnvironmentsStoragesClient connectedEnvironmentsStorages;
 
     /**
      * Gets the ConnectedEnvironmentsStoragesClient object to access its operations.
-     *
+     * 
      * @return the ConnectedEnvironmentsStoragesClient object.
      */
     public ConnectedEnvironmentsStoragesClient getConnectedEnvironmentsStorages() {
         return this.connectedEnvironmentsStorages;
     }
 
-    /** The ContainerAppsClient object to access its operations. */
+    /**
+     * The ContainerAppsClient object to access its operations.
+     */
     private final ContainerAppsClient containerApps;
 
     /**
      * Gets the ContainerAppsClient object to access its operations.
-     *
+     * 
      * @return the ContainerAppsClient object.
      */
     public ContainerAppsClient getContainerApps() {
         return this.containerApps;
     }
 
-    /** The ContainerAppsRevisionsClient object to access its operations. */
+    /**
+     * The ContainerAppsRevisionsClient object to access its operations.
+     */
     private final ContainerAppsRevisionsClient containerAppsRevisions;
 
     /**
      * Gets the ContainerAppsRevisionsClient object to access its operations.
-     *
+     * 
      * @return the ContainerAppsRevisionsClient object.
      */
     public ContainerAppsRevisionsClient getContainerAppsRevisions() {
         return this.containerAppsRevisions;
     }
 
-    /** The ContainerAppsRevisionReplicasClient object to access its operations. */
+    /**
+     * The ContainerAppsRevisionReplicasClient object to access its operations.
+     */
     private final ContainerAppsRevisionReplicasClient containerAppsRevisionReplicas;
 
     /**
      * Gets the ContainerAppsRevisionReplicasClient object to access its operations.
-     *
+     * 
      * @return the ContainerAppsRevisionReplicasClient object.
      */
     public ContainerAppsRevisionReplicasClient getContainerAppsRevisionReplicas() {
         return this.containerAppsRevisionReplicas;
     }
 
-    /** The ContainerAppsDiagnosticsClient object to access its operations. */
+    /**
+     * The ContainerAppsDiagnosticsClient object to access its operations.
+     */
     private final ContainerAppsDiagnosticsClient containerAppsDiagnostics;
 
     /**
      * Gets the ContainerAppsDiagnosticsClient object to access its operations.
-     *
+     * 
      * @return the ContainerAppsDiagnosticsClient object.
      */
     public ContainerAppsDiagnosticsClient getContainerAppsDiagnostics() {
         return this.containerAppsDiagnostics;
     }
 
-    /** The ManagedEnvironmentDiagnosticsClient object to access its operations. */
+    /**
+     * The ManagedEnvironmentDiagnosticsClient object to access its operations.
+     */
     private final ManagedEnvironmentDiagnosticsClient managedEnvironmentDiagnostics;
 
     /**
      * Gets the ManagedEnvironmentDiagnosticsClient object to access its operations.
-     *
+     * 
      * @return the ManagedEnvironmentDiagnosticsClient object.
      */
     public ManagedEnvironmentDiagnosticsClient getManagedEnvironmentDiagnostics() {
         return this.managedEnvironmentDiagnostics;
     }
 
-    /** The ManagedEnvironmentsDiagnosticsClient object to access its operations. */
+    /**
+     * The ManagedEnvironmentsDiagnosticsClient object to access its operations.
+     */
     private final ManagedEnvironmentsDiagnosticsClient managedEnvironmentsDiagnostics;
 
     /**
      * Gets the ManagedEnvironmentsDiagnosticsClient object to access its operations.
-     *
+     * 
      * @return the ManagedEnvironmentsDiagnosticsClient object.
      */
     public ManagedEnvironmentsDiagnosticsClient getManagedEnvironmentsDiagnostics() {
         return this.managedEnvironmentsDiagnostics;
     }
 
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
-
     /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
+     * The JobsClient object to access its operations.
      */
-    public OperationsClient getOperations() {
-        return this.operations;
-    }
-
-    /** The JobsClient object to access its operations. */
     private final JobsClient jobs;
 
     /**
      * Gets the JobsClient object to access its operations.
-     *
+     * 
      * @return the JobsClient object.
      */
     public JobsClient getJobs() {
         return this.jobs;
     }
 
-    /** The JobsExecutionsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     * 
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
+    }
+
+    /**
+     * The JobsExecutionsClient object to access its operations.
+     */
     private final JobsExecutionsClient jobsExecutions;
 
     /**
      * Gets the JobsExecutionsClient object to access its operations.
-     *
+     * 
      * @return the JobsExecutionsClient object.
      */
     public JobsExecutionsClient getJobsExecutions() {
         return this.jobsExecutions;
     }
 
-    /** The ResourceProvidersClient object to access its operations. */
+    /**
+     * The ResourceProvidersClient object to access its operations.
+     */
     private final ResourceProvidersClient resourceProviders;
 
     /**
      * Gets the ResourceProvidersClient object to access its operations.
-     *
+     * 
      * @return the ResourceProvidersClient object.
      */
     public ResourceProvidersClient getResourceProviders() {
         return this.resourceProviders;
     }
 
-    /** The ManagedEnvironmentsClient object to access its operations. */
+    /**
+     * The ManagedEnvironmentsClient object to access its operations.
+     */
     private final ManagedEnvironmentsClient managedEnvironments;
 
     /**
      * Gets the ManagedEnvironmentsClient object to access its operations.
-     *
+     * 
      * @return the ManagedEnvironmentsClient object.
      */
     public ManagedEnvironmentsClient getManagedEnvironments() {
         return this.managedEnvironments;
     }
 
-    /** The CertificatesClient object to access its operations. */
+    /**
+     * The CertificatesClient object to access its operations.
+     */
     private final CertificatesClient certificates;
 
     /**
      * Gets the CertificatesClient object to access its operations.
-     *
+     * 
      * @return the CertificatesClient object.
      */
     public CertificatesClient getCertificates() {
         return this.certificates;
     }
 
-    /** The ManagedCertificatesClient object to access its operations. */
+    /**
+     * The ManagedCertificatesClient object to access its operations.
+     */
     private final ManagedCertificatesClient managedCertificates;
 
     /**
      * Gets the ManagedCertificatesClient object to access its operations.
-     *
+     * 
      * @return the ManagedCertificatesClient object.
      */
     public ManagedCertificatesClient getManagedCertificates() {
         return this.managedCertificates;
     }
 
-    /** The NamespacesClient object to access its operations. */
+    /**
+     * The NamespacesClient object to access its operations.
+     */
     private final NamespacesClient namespaces;
 
     /**
      * Gets the NamespacesClient object to access its operations.
-     *
+     * 
      * @return the NamespacesClient object.
      */
     public NamespacesClient getNamespaces() {
         return this.namespaces;
     }
 
-    /** The DaprComponentsClient object to access its operations. */
+    /**
+     * The DaprComponentResiliencyPoliciesClient object to access its operations.
+     */
+    private final DaprComponentResiliencyPoliciesClient daprComponentResiliencyPolicies;
+
+    /**
+     * Gets the DaprComponentResiliencyPoliciesClient object to access its operations.
+     * 
+     * @return the DaprComponentResiliencyPoliciesClient object.
+     */
+    public DaprComponentResiliencyPoliciesClient getDaprComponentResiliencyPolicies() {
+        return this.daprComponentResiliencyPolicies;
+    }
+
+    /**
+     * The DaprComponentsClient object to access its operations.
+     */
     private final DaprComponentsClient daprComponents;
 
     /**
      * Gets the DaprComponentsClient object to access its operations.
-     *
+     * 
      * @return the DaprComponentsClient object.
      */
     public DaprComponentsClient getDaprComponents() {
         return this.daprComponents;
     }
 
-    /** The ManagedEnvironmentsStoragesClient object to access its operations. */
+    /**
+     * The DaprSubscriptionsClient object to access its operations.
+     */
+    private final DaprSubscriptionsClient daprSubscriptions;
+
+    /**
+     * Gets the DaprSubscriptionsClient object to access its operations.
+     * 
+     * @return the DaprSubscriptionsClient object.
+     */
+    public DaprSubscriptionsClient getDaprSubscriptions() {
+        return this.daprSubscriptions;
+    }
+
+    /**
+     * The ManagedEnvironmentsStoragesClient object to access its operations.
+     */
     private final ManagedEnvironmentsStoragesClient managedEnvironmentsStorages;
 
     /**
      * Gets the ManagedEnvironmentsStoragesClient object to access its operations.
-     *
+     * 
      * @return the ManagedEnvironmentsStoragesClient object.
      */
     public ManagedEnvironmentsStoragesClient getManagedEnvironmentsStorages() {
         return this.managedEnvironmentsStorages;
     }
 
-    /** The ContainerAppsSourceControlsClient object to access its operations. */
+    /**
+     * The ContainerAppsSourceControlsClient object to access its operations.
+     */
     private final ContainerAppsSourceControlsClient containerAppsSourceControls;
 
     /**
      * Gets the ContainerAppsSourceControlsClient object to access its operations.
-     *
+     * 
      * @return the ContainerAppsSourceControlsClient object.
      */
     public ContainerAppsSourceControlsClient getContainerAppsSourceControls() {
@@ -420,31 +591,87 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
     }
 
     /**
+     * The UsagesClient object to access its operations.
+     */
+    private final UsagesClient usages;
+
+    /**
+     * Gets the UsagesClient object to access its operations.
+     * 
+     * @return the UsagesClient object.
+     */
+    public UsagesClient getUsages() {
+        return this.usages;
+    }
+
+    /**
+     * The ManagedEnvironmentUsagesClient object to access its operations.
+     */
+    private final ManagedEnvironmentUsagesClient managedEnvironmentUsages;
+
+    /**
+     * Gets the ManagedEnvironmentUsagesClient object to access its operations.
+     * 
+     * @return the ManagedEnvironmentUsagesClient object.
+     */
+    public ManagedEnvironmentUsagesClient getManagedEnvironmentUsages() {
+        return this.managedEnvironmentUsages;
+    }
+
+    /**
+     * The JavaComponentsClient object to access its operations.
+     */
+    private final JavaComponentsClient javaComponents;
+
+    /**
+     * Gets the JavaComponentsClient object to access its operations.
+     * 
+     * @return the JavaComponentsClient object.
+     */
+    public JavaComponentsClient getJavaComponents() {
+        return this.javaComponents;
+    }
+
+    /**
+     * The DotNetComponentsClient object to access its operations.
+     */
+    private final DotNetComponentsClient dotNetComponents;
+
+    /**
+     * Gets the DotNetComponentsClient object to access its operations.
+     * 
+     * @return the DotNetComponentsClient object.
+     */
+    public DotNetComponentsClient getDotNetComponents() {
+        return this.dotNetComponents;
+    }
+
+    /**
      * Initializes an instance of ContainerAppsApiClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
-    ContainerAppsApiClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    ContainerAppsApiClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-05-01";
+        this.apiVersion = "2023-11-02-preview";
+        this.appResiliencies = new AppResilienciesClientImpl(this);
         this.containerAppsAuthConfigs = new ContainerAppsAuthConfigsClientImpl(this);
         this.availableWorkloadProfiles = new AvailableWorkloadProfilesClientImpl(this);
         this.billingMeters = new BillingMetersClientImpl(this);
+        this.builders = new BuildersClientImpl(this);
+        this.buildsByBuilderResources = new BuildsByBuilderResourcesClientImpl(this);
+        this.builds = new BuildsClientImpl(this);
+        this.buildAuthTokens = new BuildAuthTokensClientImpl(this);
         this.connectedEnvironments = new ConnectedEnvironmentsClientImpl(this);
         this.connectedEnvironmentsCertificates = new ConnectedEnvironmentsCertificatesClientImpl(this);
         this.connectedEnvironmentsDaprComponents = new ConnectedEnvironmentsDaprComponentsClientImpl(this);
@@ -455,22 +682,28 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
         this.containerAppsDiagnostics = new ContainerAppsDiagnosticsClientImpl(this);
         this.managedEnvironmentDiagnostics = new ManagedEnvironmentDiagnosticsClientImpl(this);
         this.managedEnvironmentsDiagnostics = new ManagedEnvironmentsDiagnosticsClientImpl(this);
-        this.operations = new OperationsClientImpl(this);
         this.jobs = new JobsClientImpl(this);
+        this.operations = new OperationsClientImpl(this);
         this.jobsExecutions = new JobsExecutionsClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.managedEnvironments = new ManagedEnvironmentsClientImpl(this);
         this.certificates = new CertificatesClientImpl(this);
         this.managedCertificates = new ManagedCertificatesClientImpl(this);
         this.namespaces = new NamespacesClientImpl(this);
+        this.daprComponentResiliencyPolicies = new DaprComponentResiliencyPoliciesClientImpl(this);
         this.daprComponents = new DaprComponentsClientImpl(this);
+        this.daprSubscriptions = new DaprSubscriptionsClientImpl(this);
         this.managedEnvironmentsStorages = new ManagedEnvironmentsStoragesClientImpl(this);
         this.containerAppsSourceControls = new ContainerAppsSourceControlsClientImpl(this);
+        this.usages = new UsagesClientImpl(this);
+        this.managedEnvironmentUsages = new ManagedEnvironmentUsagesClientImpl(this);
+        this.javaComponents = new JavaComponentsClientImpl(this);
+        this.dotNetComponents = new DotNetComponentsClientImpl(this);
     }
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -479,7 +712,7 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -489,7 +722,7 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -499,26 +732,15 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -531,19 +753,16 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
+                            SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
