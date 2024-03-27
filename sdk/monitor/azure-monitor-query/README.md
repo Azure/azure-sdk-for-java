@@ -66,7 +66,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-query</artifactId>
-    <version>1.3.0-beta.2</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 
@@ -108,8 +108,8 @@ MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
     .buildClient();
 ```
 
-```java readme-sample-createMetricsBatchQueryClient
-MetricsClient metricsBatchQueryClient = new MetricsClientBuilder()
+```java readme-sample-createMetricsClient
+MetricsClient metricsClient = new MetricsClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .endpoint("{endpoint}")
     .buildClient();
@@ -129,7 +129,7 @@ MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder(
     .buildAsyncClient();
 ```
 
-```java readme-sample-createMetricsBatchQueryAsyncClient
+```java readme-sample-createMetricsAsyncClient
 MetricsAsyncClient metricsAsyncClient = new MetricsClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .endpoint("{endpoint}")
@@ -196,8 +196,8 @@ Each set of metric values is a time series with the following characteristics:
   - [Handle metrics query response](#handle-metrics-query-response)
   - [Get average and count metrics](#get-average-and-count-metrics)
   - [Create a metrics client for non-public Azure clouds](#configure-clients-for-non-public-azure-clouds)
-- [Metrics batch query](#metrics-batch-query)
-  - [Handle metrics batch query response](#handle-metrics-batch-query-response)
+- [Metrics query resources](#metrics-query-resources)
+  - [Handle metrics query resources response](#handle-metrics-query-resources-response)
 ### Logs query
 
 ```java readme-sample-logsquery
@@ -529,17 +529,17 @@ for (MetricResult metric : metricsQueryResult.getMetrics()) {
 }
 ```
 
-### Metrics batch query
+### Metrics query resources
 
-#### Handle metrics batch query response
+#### Handle metrics query resources response
 
-```java readme-sample-metricsquerybatch
-MetricsClient metricsBatchQueryClient = new MetricsClientBuilder()
+```java readme-sample-metricsquerymultipleresources
+MetricsClient metricsClient = new MetricsClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .endpoint("{endpoint}")
     .buildClient();
 
-MetricsQueryResourcesResult metricsQueryResourcesResult = metricsBatchQueryClient.queryResources(
+MetricsQueryResourcesResult metricsQueryResourcesResult = metricsClient.queryResources(
     Arrays.asList("{resourceId1}", "{resourceId2}"),
     Arrays.asList("{metric1}", "{metric2}"),
     "{metricNamespace}");

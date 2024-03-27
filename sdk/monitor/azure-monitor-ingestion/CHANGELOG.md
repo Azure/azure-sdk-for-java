@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Introduced `LogsIngestionAudience` to allow specification of the audience of logs ingestion clients.
+- Support for the scopes of non-public clouds. 
+
 ### Breaking Changes
 
 ### Bugs Fixed
