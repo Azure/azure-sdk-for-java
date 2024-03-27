@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -9,13 +11,11 @@ import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
-import com.azure.identity.ManagedIdentityCredential;
-import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
-import org.junit.jupiter.api.condition.EnabledIfSystemProperties;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 
 import java.io.BufferedReader;
@@ -57,7 +57,7 @@ public class LiveManagedIdentityTests extends TestBase {
 
     @Test
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
-    @EnabledIfSystemProperty(named = "os.name", matches = "Linux|Windows")
+    @EnabledIfSystemProperty(named = "os.name", matches = "Linux")
     public void testManagedIdentityAksDeployment() {
 
         String os = System.getProperty("os.name");
@@ -91,6 +91,7 @@ public class LiveManagedIdentityTests extends TestBase {
 
     @Test
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
+    @EnabledIfSystemProperty(named = "os.name", matches = "Linux")
     public void testManagedIdentityVmDeployment() {
 
         String os = System.getProperty("os.name");
@@ -122,6 +123,28 @@ public class LiveManagedIdentityTests extends TestBase {
 
         Assertions.assertTrue(output.contains("Successfully retrieved managed identity tokens"),
             "Failed to get response from AKS");
+    }
+
+    @Test
+    @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
+    public void callGraphWithClientSecret() {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+
+        String multiTenantId = configuration.get("AZURE_IDENTITY_MULTI_TENANT_TENANT_ID");
+        String multiClientId = configuration.get("AZURE_IDENTITY_MULTI_TENANT_CLIENT_ID");
+        String multiClientSecret = configuration.get("AZURE_IDENTITY_MULTI_TENANT_CLIENT_SECRET");
+
+        ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+            .tenantId(multiTenantId)
+            .clientId(multiClientId)
+            .clientSecret(multiClientSecret)
+            .build();
+
+
+        AccessToken accessToken = credential
+            .getTokenSync(new TokenRequestContext().addScopes("https://graph.microsoft.com/.default"));
+
+        Assertions.assertTrue(accessToken != null, "Failed to get access token");
     }
 
     private String runCommand(String... args) {

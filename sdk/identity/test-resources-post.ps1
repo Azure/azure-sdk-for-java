@@ -25,6 +25,13 @@ $vmRoot = "$PSScriptRoot/live-test-apps/identity-test-vm" | Resolve-Path
 
 $webappRootPom = "$webappRoot/pom.xml" | Resolve-Path
 
+$azCoreRootPom = "$PSScriptRoot/../core" | Resolve-Path
+
+$azStorageRootPom = "$PSScriptRoot/../storage" | Resolve-Path
+
+$azIdentityRootPom = "$PSScriptRoot/azure-identity/pom.xml" | Resolve-Path
+
+$azBuildToolsRootPom = "$PSScriptRoot/../../eng/code-quality-reports/pom.xml" | Resolve-Path
 
 $funcAppRoot = "$PSScriptRoot/live-test-apps/identity-test-function" | Resolve-Path
 $funcAppPom = "$funcAppRoot/pom.xml" | Resolve-Path
@@ -33,33 +40,45 @@ az login --service-principal -u $(getVariable('IDENTITY_CLIENT_ID')) -p $(getVar
 az account set --subscription $(getVariable('IDENTITY_SUBSCRIPTION_ID'))
 
 
+## Install latest sources on the branch to test against
+mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f $azBuildToolsRootPom
+mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azCoreRootPom/azure-json/pom.xml"
+mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azCoreRootPom/azure-core/pom.xml"
+mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azCoreRootPom/azure-core-test/pom.xml"
+mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azCoreRootPom/azure-core-http-netty/pom.xml"
+mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azCoreRootPom/azure-core-http-okhttp/pom.xml"
+mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f $azIdentityRootPom
+mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azStorageRootPom/azure-storage-common/pom.xml"
+mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azStorageRootPom/azure-storage-internal-avro/pom.xml"
+mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azStorageRootPom/azure-storage-blob/pom.xml"
 
-mvn clean install -DskipTests -f $webappRootPom | Write-Host
+# Build and Deploy Web App
+mvn clean install -DskipTests -f $webappRootPom
 az webapp deploy --resource-group $(getVariable('IDENTITY_RESOURCE_GROUP')) --name $(getVariable('IDENTITY_WEBAPP_NAME')) --src-path "$webappRoot/target/identity-test-webapp-0.0.1-SNAPSHOT.jar" --type jar
 
 
-# build function app
-mvn clean package "-DfunctionAppName=$(getVariable('IDENTITY_FUNCTION_NAME'))" "-DresourceGroup=$(getVariable('IDENTITY_RESOURCE_GROUP'))" "-DappServicePlanName=$(getVariable('IDENTITY_APPSERVICE_NAME'))" -f $funcAppPom | Write-Host
+# Build and Deploy function app
+mvn clean package "-DfunctionAppName=$(getVariable('IDENTITY_FUNCTION_NAME'))" "-DresourceGroup=$(getVariable('IDENTITY_RESOURCE_GROUP'))" "-DappServicePlanName=$(getVariable('IDENTITY_APPSERVICE_NAME'))" -f $funcAppPom
 compress-archive  "$funcAppRoot\target\azure-functions\$(getVariable('IDENTITY_FUNCTION_NAME'))\*" -DestinationPath "$funcAppRoot/target/funcpackage.zip"
 az functionapp deployment source config-zip -g $(getVariable('IDENTITY_RESOURCE_GROUP')) -n $(getVariable('IDENTITY_FUNCTION_NAME')) --src "$funcAppRoot/target/funcpackage.zip"
 
-# build aks app
-mvn clean package -f "$vmRoot/pom.xml" | Write-Host
+# Build and Deploy VM app
+mvn clean package -f "$vmRoot/pom.xml"
 
 # Virtual machine setup
 $vmScript = @"
 sudo apt update && sudo apt install openjdk-8-jdk -y --no-install-recommends
 "@
-az vm run-command invoke -n $DeploymentOutputs['IDENTITY_VM_NAME'] -g $DeploymentOutputs['IDENTITY_RESOURCE_GROUP'] --command-id RunShellScript --scripts "$vmScript" | Write-Host
+az vm run-command invoke -n $DeploymentOutputs['IDENTITY_VM_NAME'] -g $DeploymentOutputs['IDENTITY_RESOURCE_GROUP'] --command-id RunShellScript --scripts "$vmScript"
 
 Write-Host "Getting storage account details"
 $key=az storage account keys list --account-name $DeploymentOutputs['IDENTITY_STORAGE_NAME_1'] --resource-group $DeploymentOutputs['IDENTITY_RESOURCE_GROUP'] --query "[0].value" --output tsv
 
 Write-Host "Creating storage container"
-az storage container create --name "vmcontainer" --account-name $DeploymentOutputs['IDENTITY_STORAGE_NAME_1'] --account-key $key --public-access blob | Write-Host
+az storage container create --name "vmcontainer" --account-name $DeploymentOutputs['IDENTITY_STORAGE_NAME_1'] --account-key $key --public-access blob
 
 Write-Host "Uploading file to storage"
-az storage blob upload --container-name "vmcontainer" --file "$vmRoot/target/identity-test-vm-1.0-SNAPSHOT-jar-with-dependencies.jar" --name "testfile.jar" --account-name $DeploymentOutputs['IDENTITY_STORAGE_NAME_1'] --account-key $key | Write-Host
+az storage blob upload --container-name "vmcontainer" --file "$vmRoot/target/identity-test-vm-1.0-SNAPSHOT-jar-with-dependencies.jar" --name "testfile.jar" --account-name $DeploymentOutputs['IDENTITY_STORAGE_NAME_1'] --account-key $key
 
 
 if ($IsMacOS -eq $true) {
@@ -68,8 +87,8 @@ if ($IsMacOS -eq $true) {
   return
 }
 
-# build aks app
-mvn clean package -f "$aksRoot/pom.xml" | Write-Host
+# Build and Deploy AKS app
+mvn clean package -f "$aksRoot/pom.xml"
 
 az acr login -n $DeploymentOutputs['IDENTITY_ACR_NAME']
 $loginServer = az acr show -n $DeploymentOutputs['IDENTITY_ACR_NAME'] --query loginServer -o tsv
