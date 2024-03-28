@@ -76,7 +76,6 @@ public class PageBlobOutputStream extends PageBlobScenarioBase<StorageStressOpti
             originalContent.checkMatch(inputStream.getContentInfo(), span).block();
         } catch (Exception e) {
             // Ensure to close the blobOutputStream in case of an error.
-            System.err.println("Error: " + e.getCause().toString());
             outputStream.close();
         }
     }

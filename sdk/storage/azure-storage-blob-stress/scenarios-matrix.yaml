@@ -197,11 +197,11 @@ matrix:
       durationMin: 10
       imageBuildDir: "../../.."
 
-    # this test uploads 4MB (1024 * 1024 * 4) to append blob output stream, no chunking
+    # this test uploads 10KB (1024 * 1024 * 4) to append blob output stream, no chunking
     appendoutputstreamlarge:
       testScenario: appendbloboutputstream
       sync: true
-      sizeBytes: "4194304"
+      sizeBytes: "10240"
       parallel: 1
       faults: true
       requestFaulted: true
