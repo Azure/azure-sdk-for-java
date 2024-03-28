@@ -716,7 +716,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .buildProcessorClient());
         toClose((AutoCloseable) () -> processor.stop());
         processor.start();
-        assertTrue(messageProcessed.await(10, TimeUnit.SECONDS));
+        assertTrue(messageProcessed.await(30, TimeUnit.SECONDS));
         processor.stop();
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();

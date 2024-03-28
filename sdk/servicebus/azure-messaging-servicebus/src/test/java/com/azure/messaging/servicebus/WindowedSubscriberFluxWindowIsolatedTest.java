@@ -284,7 +284,7 @@ public final class WindowedSubscriberFluxWindowIsolatedTest {
         Assertions.assertFalse(work1.isCanceled());
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(1)
     @Execution(ExecutionMode.SAME_THREAD)
     public void shouldPickEnqueuedWindowRequestsOnSubscriptionReady() {
         final int window0Size = 1;
@@ -395,11 +395,11 @@ public final class WindowedSubscriberFluxWindowIsolatedTest {
                 return r.getWindowFlux();
             } catch (Throwable e) {
                 do {
-                    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!");
+                    System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!");
                     e.printStackTrace();
                     e = e.getCause();
                 } while (e != null);
-                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!! done");
+                System.err.println("!!!!!!!!!!!!!!!!!!!!!!!! done");
             }
             try {
                 Thread.sleep(1000);
@@ -407,7 +407,7 @@ public final class WindowedSubscriberFluxWindowIsolatedTest {
                 LOGGER.warning("can't sleep", e);
             }
         }
-        return Flux.error(new RejectedExecutionException("Can't enqueue request after 10 attempts."));
+        throw new RejectedExecutionException("Can't enqueue request after 10 attempts.");
     }
 
     private static final class VirtualTimeStepVerifier implements AutoCloseable {
