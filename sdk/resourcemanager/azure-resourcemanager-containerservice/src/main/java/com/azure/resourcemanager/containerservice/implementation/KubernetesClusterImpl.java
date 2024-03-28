@@ -40,6 +40,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterSku;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSkuName;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSkuTier;
 import com.azure.resourcemanager.containerservice.models.PowerState;
+import com.azure.resourcemanager.containerservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerservice.models.ResourceIdentityType;
 import com.azure.resourcemanager.containerservice.models.UserAssignedIdentity;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint;
@@ -297,6 +298,11 @@ public class KubernetesClusterImpl
     @Override
     public String agentPoolResourceGroup() {
         return innerModel().nodeResourceGroup();
+    }
+
+    @Override
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
     }
 
     @Override
@@ -702,6 +708,18 @@ public class KubernetesClusterImpl
     @Override
     public KubernetesClusterImpl withAgentPoolResourceGroup(String resourceGroupName) {
         this.innerModel().withNodeResourceGroup(resourceGroupName);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl enablePublicNetworkAccess() {
+        this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl disablePublicNetworkAccess() {
+        this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         return this;
     }
 
