@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
@@ -283,8 +284,12 @@ public final class CosmosChangeFeedRequestOptions {
             Range<String> normalizedRange =
                 FeedRangeInternal.normalizeRange(((FeedRangeEpkImpl) targetRange).getRange());
 
-
             final ChangeFeedState changeFeedState = ChangeFeedState.fromString(continuation);
+
+            if (StringUtils.isEmpty(continuationLsn)) {
+                continuationLsn = changeFeedState.getContinuation().getCurrentContinuationToken().getToken();
+            }
+
             ChangeFeedState targetChangeFeedState =
                 new ChangeFeedStateV1(
                     changeFeedState.getContainerRid(),
