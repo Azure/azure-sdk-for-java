@@ -11,7 +11,7 @@
 ### Other Changes
 
 
-## 1.1.2 (2024-03-20)
+## 1.1.2 (2024-03-28)
 
 ### Other Changes
 
@@ -20,6 +20,10 @@
 - Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
 - Upgraded `azure-communication-common` from `1.3.0` to version `1.3.1`.
+
+### Bugs Fixed
+
+- JobRouterClient and JobRouterAdminClient no longer throws 401 errors when HmacAuthenticationPolicy is not provided
 
 
 ## 1.1.1 (2024-02-13)
