@@ -42,6 +42,9 @@ parameters:
     default: ''
   - name: OSName
     type: string
+  - name: TimeoutInMinutes
+    type: number
+    default: 60
 
 jobs:
   - job:
@@ -69,6 +72,8 @@ jobs:
 
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
+
+    timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
 
     templateContext:
       outputParentDirectory: '$(System.DefaultWorkingDirectory)'

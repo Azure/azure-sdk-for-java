@@ -31,7 +31,7 @@ public final class LocationsListSupportedVirtualMachineSkusMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"name\":\"bkfezzxscyhwzdgi\",\"familyName\":\"jbzbomvzzbtdcq\",\"capabilities\":[{\"name\":\"yujviylwdshfssn\",\"value\":\"gy\"},{\"name\":\"rymsgaojfmw\",\"value\":\"otmrfhir\"}]}]}";
+            = "{\"value\":[{\"name\":\"fdlwg\",\"familyName\":\"tsbwtovvtgse\",\"capabilities\":[{\"name\":\"iufxqknpir\",\"value\":\"epttwqmsniff\"}],\"batchSupportEndOfLife\":\"2021-10-31T18:45:45Z\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -48,8 +48,8 @@ public final class LocationsListSupportedVirtualMachineSkusMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SupportedSku> response = manager.locations().listSupportedVirtualMachineSkus("hpjbib", 1956695064,
-            "mfxumvfcluyovw", com.azure.core.util.Context.NONE);
+        PagedIterable<SupportedSku> response = manager.locations().listSupportedVirtualMachineSkus("ihwqknfdntwjchr",
+            1139414595, "oihxumwctondzjlu", com.azure.core.util.Context.NONE);
 
     }
 }

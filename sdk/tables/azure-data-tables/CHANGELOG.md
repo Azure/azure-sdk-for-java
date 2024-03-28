@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed the issue where `createTableIfNotExists` utilized improper logic for checking for 409 status code.
+
 ### Other Changes
 
 ## 12.4.0-beta.1 (2024-03-13)

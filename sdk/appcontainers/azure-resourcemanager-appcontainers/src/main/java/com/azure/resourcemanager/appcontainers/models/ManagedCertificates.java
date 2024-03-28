@@ -8,33 +8,35 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ManagedCertificates. */
+/**
+ * Resource collection API of ManagedCertificates.
+ */
 public interface ManagedCertificates {
     /**
      * Get the specified Managed Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param managedCertificateName Name of the Managed Certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Managed Certificate along with {@link Response}.
      */
-    Response<ManagedCertificate> getWithResponse(
-        String resourceGroupName, String environmentName, String managedCertificateName, Context context);
+    Response<ManagedCertificate> getWithResponse(String resourceGroupName, String environmentName,
+        String managedCertificateName, Context context);
 
     /**
      * Get the specified Managed Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param managedCertificateName Name of the Managed Certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Managed Certificate.
      */
@@ -42,41 +44,41 @@ public interface ManagedCertificates {
 
     /**
      * Deletes the specified Managed Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param managedCertificateName Name of the Managed Certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String managedCertificateName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String managedCertificateName,
+        Context context);
 
     /**
      * Deletes the specified Managed Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param managedCertificateName Name of the Managed Certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void delete(String resourceGroupName, String environmentName, String managedCertificateName);
 
     /**
      * Get the Managed Certificates in a given managed environment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Managed Certificates in a given managed environment as paginated response with {@link PagedIterable}.
      */
@@ -84,13 +86,13 @@ public interface ManagedCertificates {
 
     /**
      * Get the Managed Certificates in a given managed environment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Managed Certificates in a given managed environment as paginated response with {@link PagedIterable}.
      */
@@ -98,11 +100,11 @@ public interface ManagedCertificates {
 
     /**
      * Get the specified Managed Certificate.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Managed Certificate along with {@link Response}.
      */
@@ -110,12 +112,12 @@ public interface ManagedCertificates {
 
     /**
      * Get the specified Managed Certificate.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Managed Certificate along with {@link Response}.
      */
@@ -123,23 +125,23 @@ public interface ManagedCertificates {
 
     /**
      * Deletes the specified Managed Certificate.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void deleteById(String id);
 
     /**
      * Deletes the specified Managed Certificate.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -147,7 +149,7 @@ public interface ManagedCertificates {
 
     /**
      * Begins definition for a new ManagedCertificate resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ManagedCertificate definition.
      */

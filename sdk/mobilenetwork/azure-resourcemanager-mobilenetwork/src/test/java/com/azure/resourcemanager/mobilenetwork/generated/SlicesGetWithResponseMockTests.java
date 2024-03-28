@@ -30,45 +30,31 @@ public final class SlicesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Failed\",\"snssai\":{\"sst\":704277704,\"sd\":\"llizhce\"},\"description\":\"oqodkadpp\"},\"location\":\"bngqladywrx\",\"tags\":{\"yemlowuowhlxln\":\"dtluvvadswzsn\"},\"id\":\"y\",\"name\":\"mouvbl\",\"type\":\"mo\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Accepted\",\"snssai\":{\"sst\":1782311657,\"sd\":\"ulsutrjbhxy\"},\"description\":\"hyqezvqq\"},\"location\":\"drftbcvexreuquo\",\"tags\":{\"whreagkhyxvrq\":\"jv\",\"lmepjpf\":\"vbczsulmdg\",\"g\":\"eykgsangpszngaf\"},\"id\":\"lkvec\",\"name\":\"ujcngo\",\"type\":\"dyedmzrgjfo\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MobileNetworkManager manager = MobileNetworkManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Slice response =
-            manager
-                .slices()
-                .getWithResponse("ixqcahyhxalybxaw", "ijpodtblxpkkwj", "jodqhykincn", com.azure.core.util.Context.NONE)
-                .getValue();
+        Slice response = manager.slices()
+            .getWithResponse("zvyfijdkzuqnwsi", "huqol", "ah", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("bngqladywrx", response.location());
-        Assertions.assertEquals("dtluvvadswzsn", response.tags().get("yemlowuowhlxln"));
-        Assertions.assertEquals(704277704, response.snssai().sst());
-        Assertions.assertEquals("llizhce", response.snssai().sd());
-        Assertions.assertEquals("oqodkadpp", response.description());
+        Assertions.assertEquals("drftbcvexreuquo", response.location());
+        Assertions.assertEquals("jv", response.tags().get("whreagkhyxvrq"));
+        Assertions.assertEquals(1782311657, response.snssai().sst());
+        Assertions.assertEquals("ulsutrjbhxy", response.snssai().sd());
+        Assertions.assertEquals("hyqezvqq", response.description());
     }
 }

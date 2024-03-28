@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configuration properties Dapr component. */
+/**
+ * Configuration properties Dapr component.
+ */
 @Immutable
 public final class DaprConfiguration {
     /*
@@ -16,13 +18,15 @@ public final class DaprConfiguration {
     @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
-    /** Creates an instance of DaprConfiguration class. */
+    /**
+     * Creates an instance of DaprConfiguration class.
+     */
     public DaprConfiguration() {
     }
 
     /**
      * Get the version property: The version of Dapr.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -31,7 +35,7 @@ public final class DaprConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

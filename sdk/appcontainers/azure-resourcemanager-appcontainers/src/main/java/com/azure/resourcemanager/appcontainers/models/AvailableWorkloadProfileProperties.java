@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Revision resource specific properties. */
+/**
+ * Revision resource specific properties.
+ */
 @Fluent
 public final class AvailableWorkloadProfileProperties {
     /*
@@ -35,18 +37,26 @@ public final class AvailableWorkloadProfileProperties {
     private Integer memoryGiB;
 
     /*
+     * Number of GPUs.
+     */
+    @JsonProperty(value = "gpus")
+    private Integer gpus;
+
+    /*
      * The everyday name of the workload profile.
      */
     @JsonProperty(value = "displayName")
     private String displayName;
 
-    /** Creates an instance of AvailableWorkloadProfileProperties class. */
+    /**
+     * Creates an instance of AvailableWorkloadProfileProperties class.
+     */
     public AvailableWorkloadProfileProperties() {
     }
 
     /**
      * Get the category property: Used to categorize workload profiles.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -55,7 +65,7 @@ public final class AvailableWorkloadProfileProperties {
 
     /**
      * Set the category property: Used to categorize workload profiles.
-     *
+     * 
      * @param category the category value to set.
      * @return the AvailableWorkloadProfileProperties object itself.
      */
@@ -66,7 +76,7 @@ public final class AvailableWorkloadProfileProperties {
 
     /**
      * Get the applicability property: indicates whether the profile is default for the location.
-     *
+     * 
      * @return the applicability value.
      */
     public Applicability applicability() {
@@ -75,7 +85,7 @@ public final class AvailableWorkloadProfileProperties {
 
     /**
      * Set the applicability property: indicates whether the profile is default for the location.
-     *
+     * 
      * @param applicability the applicability value to set.
      * @return the AvailableWorkloadProfileProperties object itself.
      */
@@ -86,7 +96,7 @@ public final class AvailableWorkloadProfileProperties {
 
     /**
      * Get the cores property: Number of cores in CPU.
-     *
+     * 
      * @return the cores value.
      */
     public Integer cores() {
@@ -95,7 +105,7 @@ public final class AvailableWorkloadProfileProperties {
 
     /**
      * Set the cores property: Number of cores in CPU.
-     *
+     * 
      * @param cores the cores value to set.
      * @return the AvailableWorkloadProfileProperties object itself.
      */
@@ -106,7 +116,7 @@ public final class AvailableWorkloadProfileProperties {
 
     /**
      * Get the memoryGiB property: Memory in GiB.
-     *
+     * 
      * @return the memoryGiB value.
      */
     public Integer memoryGiB() {
@@ -115,7 +125,7 @@ public final class AvailableWorkloadProfileProperties {
 
     /**
      * Set the memoryGiB property: Memory in GiB.
-     *
+     * 
      * @param memoryGiB the memoryGiB value to set.
      * @return the AvailableWorkloadProfileProperties object itself.
      */
@@ -125,8 +135,28 @@ public final class AvailableWorkloadProfileProperties {
     }
 
     /**
+     * Get the gpus property: Number of GPUs.
+     * 
+     * @return the gpus value.
+     */
+    public Integer gpus() {
+        return this.gpus;
+    }
+
+    /**
+     * Set the gpus property: Number of GPUs.
+     * 
+     * @param gpus the gpus value to set.
+     * @return the AvailableWorkloadProfileProperties object itself.
+     */
+    public AvailableWorkloadProfileProperties withGpus(Integer gpus) {
+        this.gpus = gpus;
+        return this;
+    }
+
+    /**
      * Get the displayName property: The everyday name of the workload profile.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -135,7 +165,7 @@ public final class AvailableWorkloadProfileProperties {
 
     /**
      * Set the displayName property: The everyday name of the workload profile.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the AvailableWorkloadProfileProperties object itself.
      */
@@ -146,7 +176,7 @@ public final class AvailableWorkloadProfileProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

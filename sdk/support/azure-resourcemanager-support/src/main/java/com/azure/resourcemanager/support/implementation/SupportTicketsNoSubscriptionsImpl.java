@@ -25,22 +25,18 @@ public final class SupportTicketsNoSubscriptionsImpl implements SupportTicketsNo
 
     private final com.azure.resourcemanager.support.SupportManager serviceManager;
 
-    public SupportTicketsNoSubscriptionsImpl(
-        SupportTicketsNoSubscriptionsClient innerClient,
+    public SupportTicketsNoSubscriptionsImpl(SupportTicketsNoSubscriptionsClient innerClient,
         com.azure.resourcemanager.support.SupportManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<CheckNameAvailabilityOutput> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
-        Response<CheckNameAvailabilityOutputInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(checkNameAvailabilityInput, context);
+    public Response<CheckNameAvailabilityOutput>
+        checkNameAvailabilityWithResponse(CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
+        Response<CheckNameAvailabilityOutputInner> inner
+            = this.serviceClient().checkNameAvailabilityWithResponse(checkNameAvailabilityInput, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckNameAvailabilityOutputImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -58,21 +54,18 @@ public final class SupportTicketsNoSubscriptionsImpl implements SupportTicketsNo
 
     public PagedIterable<SupportTicketDetails> list() {
         PagedIterable<SupportTicketDetailsInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new SupportTicketDetailsImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SupportTicketDetailsImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SupportTicketDetails> list(Integer top, String filter, Context context) {
         PagedIterable<SupportTicketDetailsInner> inner = this.serviceClient().list(top, filter, context);
-        return Utils.mapPage(inner, inner1 -> new SupportTicketDetailsImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SupportTicketDetailsImpl(inner1, this.manager()));
     }
 
     public Response<SupportTicketDetails> getWithResponse(String supportTicketName, Context context) {
         Response<SupportTicketDetailsInner> inner = this.serviceClient().getWithResponse(supportTicketName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SupportTicketDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -88,15 +81,12 @@ public final class SupportTicketsNoSubscriptionsImpl implements SupportTicketsNo
         }
     }
 
-    public Response<SupportTicketDetails> updateWithResponse(
-        String supportTicketName, UpdateSupportTicket updateSupportTicket, Context context) {
-        Response<SupportTicketDetailsInner> inner =
-            this.serviceClient().updateWithResponse(supportTicketName, updateSupportTicket, context);
+    public Response<SupportTicketDetails> updateWithResponse(String supportTicketName,
+        UpdateSupportTicket updateSupportTicket, Context context) {
+        Response<SupportTicketDetailsInner> inner
+            = this.serviceClient().updateWithResponse(supportTicketName, updateSupportTicket, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SupportTicketDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -112,8 +102,8 @@ public final class SupportTicketsNoSubscriptionsImpl implements SupportTicketsNo
         }
     }
 
-    public SupportTicketDetails create(
-        String supportTicketName, SupportTicketDetailsInner createSupportTicketParameters) {
+    public SupportTicketDetails create(String supportTicketName,
+        SupportTicketDetailsInner createSupportTicketParameters) {
         SupportTicketDetailsInner inner = this.serviceClient().create(supportTicketName, createSupportTicketParameters);
         if (inner != null) {
             return new SupportTicketDetailsImpl(inner, this.manager());
@@ -122,10 +112,10 @@ public final class SupportTicketsNoSubscriptionsImpl implements SupportTicketsNo
         }
     }
 
-    public SupportTicketDetails create(
-        String supportTicketName, SupportTicketDetailsInner createSupportTicketParameters, Context context) {
-        SupportTicketDetailsInner inner =
-            this.serviceClient().create(supportTicketName, createSupportTicketParameters, context);
+    public SupportTicketDetails create(String supportTicketName,
+        SupportTicketDetailsInner createSupportTicketParameters, Context context) {
+        SupportTicketDetailsInner inner
+            = this.serviceClient().create(supportTicketName, createSupportTicketParameters, context);
         if (inner != null) {
             return new SupportTicketDetailsImpl(inner, this.manager());
         } else {

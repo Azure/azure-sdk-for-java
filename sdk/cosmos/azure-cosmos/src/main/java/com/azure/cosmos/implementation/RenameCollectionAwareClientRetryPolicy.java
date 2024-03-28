@@ -60,7 +60,7 @@ public class RenameCollectionAwareClientRetryPolicy extends DocumentClientRetryP
                         Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.NOTFOUND) &&
                         Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)) {
                     // Clear the session token, because the collection name might be reused.
-                    logger.warn("Clear the token for named base request {}", request.getResourceAddress());
+                    logger.info("Clear the token for named base request {}", request.getResourceAddress());
 
                     this.sessionContainer.clearTokenByCollectionFullName(request.getResourceAddress());
 

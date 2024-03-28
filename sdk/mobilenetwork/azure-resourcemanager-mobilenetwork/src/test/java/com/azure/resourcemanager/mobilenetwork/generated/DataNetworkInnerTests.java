@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DataNetworkInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataNetworkInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Canceled\",\"description\":\"wu\"},\"location\":\"gazxuf\",\"tags\":{\"fidfvzw\":\"ckyfih\",\"nteiwaopv\":\"zuhtymwisdkfthwx\"},\"id\":\"mijcmmxdcufufs\",\"name\":\"pymzidnsezcxtbzs\",\"type\":\"fycc\"}")
-                .toObject(DataNetworkInner.class);
+        DataNetworkInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"description\":\"wu\"},\"location\":\"gazxuf\",\"tags\":{\"fidfvzw\":\"ckyfih\",\"nteiwaopv\":\"zuhtymwisdkfthwx\"},\"id\":\"mijcmmxdcufufs\",\"name\":\"pymzidnsezcxtbzs\",\"type\":\"fycc\"}")
+            .toObject(DataNetworkInner.class);
         Assertions.assertEquals("gazxuf", model.location());
         Assertions.assertEquals("ckyfih", model.tags().get("fidfvzw"));
         Assertions.assertEquals("wu", model.description());
@@ -25,11 +23,8 @@ public final class DataNetworkInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataNetworkInner model =
-            new DataNetworkInner()
-                .withLocation("gazxuf")
-                .withTags(mapOf("fidfvzw", "ckyfih", "nteiwaopv", "zuhtymwisdkfthwx"))
-                .withDescription("wu");
+        DataNetworkInner model = new DataNetworkInner().withLocation("gazxuf")
+            .withTags(mapOf("fidfvzw", "ckyfih", "nteiwaopv", "zuhtymwisdkfthwx")).withDescription("wu");
         model = BinaryData.fromObject(model).toObject(DataNetworkInner.class);
         Assertions.assertEquals("gazxuf", model.location());
         Assertions.assertEquals("ckyfih", model.tags().get("fidfvzw"));

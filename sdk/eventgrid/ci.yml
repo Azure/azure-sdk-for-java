@@ -60,8 +60,3 @@ extends:
         groupId: com.azure
         safeName: azuremessagingeventgridcloudnativecloudevents
         releaseInBatch: ${{ parameters.release_azuremessagingeventgridcloudnativecloudevents }}
-      - name: azure-resourcemanager-eventgrid
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagereventgrid
-        releaseInBatch: ${{ parameters.release_azureresourcemanagereventgrid }}
-

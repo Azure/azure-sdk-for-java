@@ -17,8 +17,8 @@ public final class ChatTranscriptDetailsImpl implements ChatTranscriptDetails {
 
     private final com.azure.resourcemanager.support.SupportManager serviceManager;
 
-    ChatTranscriptDetailsImpl(
-        ChatTranscriptDetailsInner innerObject, com.azure.resourcemanager.support.SupportManager serviceManager) {
+    ChatTranscriptDetailsImpl(ChatTranscriptDetailsInner innerObject,
+        com.azure.resourcemanager.support.SupportManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
