@@ -1,16 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file.datalake.stress;
+package com.azure.storage.file.share.stress;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.ParallelTransferOptions;
-import com.azure.storage.file.datalake.DataLakeFileAsyncClient;
-import com.azure.storage.file.datalake.DataLakeFileClient;
-import com.azure.storage.file.datalake.stress.utils.OriginalContent;
+import com.azure.storage.file.share.ShareFileAsyncClient;
+import com.azure.storage.file.share.ShareFileClient;
+import com.azure.storage.file.share.stress.utils.OriginalContent;
 import com.azure.storage.stress.CrcInputStream;
 import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
@@ -24,23 +23,22 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
-public class UploadFromFile extends DataLakeScenarioBase<StorageStressOptions> {
+public class UploadFromFile extends ShareScenarioBase<StorageStressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(UploadFromFile.class);
     private final OriginalContent originalContent = new OriginalContent();
-    private final DataLakeFileClient syncClient;
-    private final DataLakeFileAsyncClient asyncClient;
-    private final DataLakeFileClient syncNoFaultClient;
-    private final DataLakeFileAsyncClient asyncNoFaultClient;
+    private final ShareFileClient syncClient;
+    private final ShareFileAsyncClient asyncClient;
+    private final ShareFileClient syncNoFaultClient;
+    private final ShareFileAsyncClient asyncNoFaultClient;
 
     public UploadFromFile(StorageStressOptions options) {
         super(options);
         String fileName = generateFileName();
-        this.syncClient = getSyncFileSystemClient().getFileClient(fileName);
-        this.asyncClient = getAsyncFileSystemClient().getFileAsyncClient(fileName);
-        this.syncNoFaultClient = getSyncFileSystemClientNoFault().getFileClient(fileName);
-        this.asyncNoFaultClient = getAsyncFileSystemClientNoFault().getFileAsyncClient(fileName);
+        this.syncClient = getSyncShareClient().getFileClient(fileName);
+        this.asyncClient = getAsyncShareClient().getFileClient(fileName);
+        this.syncNoFaultClient = getSyncShareClientNoFault().getFileClient(fileName);
+        this.asyncNoFaultClient = getAsyncShareClientNoFault().getFileClient(fileName);
     }
-
 
     @Override
     protected void runInternal(Context span) {
@@ -48,11 +46,9 @@ public class UploadFromFile extends DataLakeScenarioBase<StorageStressOptions> {
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getContentHead(), options.getSize())) {
             Path uploadFilePath = generateFile(inputStream);
             downloadPath = downloadPath.resolve(CoreUtils.randomUuid() + ".txt");
-            syncClient.uploadFromFileWithResponse(uploadFilePath.toString(),
-                new ParallelTransferOptions()
-                    .setMaxSingleUploadSizeLong(4 * 1024 * 1024L).setMaxConcurrency(1), null, null, null, null, span);
+            syncClient.uploadFromFile(uploadFilePath.toString());
             // then download file using no fault client to verify the content
-            syncNoFaultClient.readToFileWithResponse(downloadPath.toString(), null, null, null, null, false, null, null, span);
+            syncNoFaultClient.downloadToFileWithResponse(downloadPath.toString(), null, null, span);
             originalContent.checkMatch(BinaryData.fromFile(downloadPath), span).block();
         } finally {
             deleteFile(downloadPath);
@@ -68,10 +64,8 @@ public class UploadFromFile extends DataLakeScenarioBase<StorageStressOptions> {
                 Path uploadFilePath = generateFile(inputStream);
                 return Mono.using(
                     () -> downloadPath.resolve(UUID.randomUUID() + ".txt"),
-                    path -> asyncClient.uploadFromFileWithResponse(uploadFilePath.toString(),
-                            new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * 1024 * 1024L).setMaxConcurrency(1),
-                            null, null, null)
-                        .flatMap(ignored -> asyncNoFaultClient.readToFile(path.toString(), true)
+                    path -> asyncClient.uploadFromFile(uploadFilePath.toString())
+                        .flatMap(ignored -> asyncNoFaultClient.downloadToFile(path.toString())
                         )
                         .flatMap(ignored -> originalContent.checkMatch(BinaryData.fromFile(path), span)),
                     UploadFromFile::deleteFile);

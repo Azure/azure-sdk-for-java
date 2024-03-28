@@ -1,7 +1,7 @@
 matrix:
   scenarios:
     # this test downloads 1KB (1024 bytes), small file, no chunking
-    read-small-file-test:
+    readfilesmall:
       testScenario: readtofile
       sync: true
       sizeBytes: 1024
@@ -11,7 +11,7 @@ matrix:
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small file, no chunking with async client
-    read-small-file-async-test:
+    readfilesmallasync:
       testScenario: readtofile
       sync: false
       sizeBytes: 1024
@@ -21,7 +21,7 @@ matrix:
       imageBuildDir: "../../.."
 
     # this test downloads 50MB (1024 * 1024 * 50), large file requiring multiple requests
-    read-large-file-test:
+    readfilelarge:
       testScenario: readtofile
       sync: false
       sizeBytes: "52428800"
@@ -31,7 +31,7 @@ matrix:
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small stream, no chunking
-    read-small-test:
+    readsmall:
       testScenario: read
       sync: true
       sizeBytes: 1024
@@ -41,7 +41,7 @@ matrix:
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small stream, no chunking with async client
-    read-small-async-test:
+    readsmallasync:
       testScenario: read
       sync: false
       sizeBytes: 1024
@@ -51,7 +51,7 @@ matrix:
       imageBuildDir: "../../.."
 
     # this test downloads 50MB (1024 * 1024 * 50), large stream requiring multiple requests
-    read-large-test:
+    readlarge:
       testScenario: read
       sync: false
       sizeBytes: "52428800"
@@ -61,7 +61,7 @@ matrix:
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes) to open input stream, no chunking
-    openinputstream-small-test:
+    openinputstreamsmall:
       testScenario: openinputstream
       sync: true
       sizeBytes: 1024
@@ -71,7 +71,7 @@ matrix:
       imageBuildDir: "../../.."
 
     # this test downloads 50MB (1024 * 1024 * 50) to open input stream requiring multiple requests
-    openinputstream-large-test:
+    openinputstreamlarge:
       testScenario: openinputstream
       sync: true
       sizeBytes: "52428800"
@@ -81,7 +81,7 @@ matrix:
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes), no chunking
-    append-small-test:
+    appendsmall:
       testScenario: append
       sync: true
       sizeBytes: 1024
@@ -92,7 +92,7 @@ matrix:
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes) asynchronously, no chunking
-    append-async-test:
+    appendasync:
       testScenario: append
       sync: false
       sizeBytes: 1024
@@ -102,8 +102,19 @@ matrix:
       durationMin: 10
       imageBuildDir: "../../.."
 
+    # this test uploads 25MB (1024 * 1024 * 25), requiring multiple requests
+    appendlarge:
+      testScenario: append
+      sync: true
+      sizeBytes: "26214400"
+      parallel: 10
+      faults: true
+      requestFaulted: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
     # this test uploads 1KB (1024 bytes) to output stream, no chunking
-    outputstream-test:
+    outputstreamsmall:
       testScenario: datalakeoutputstream
       sync: true
       sizeBytes: 1024
@@ -113,8 +124,19 @@ matrix:
       durationMin: 10
       imageBuildDir: "../../.."
 
+    # this test uploads 25MB (1024 * 1024 * 25) to output stream, requiring multiple requests
+    outputstreamlarge:
+      testScenario: datalakeoutputstream
+      sync: true
+      sizeBytes: "26214400"
+      parallel: 10
+      faults: true
+      requestFaulted: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
     # this test uploads 1KB (1024 bytes), no chunking
-    flush-test:
+    flushsmall:
       testScenario: flush
       sync: true
       sizeBytes: 1024
@@ -124,8 +146,30 @@ matrix:
       durationMin: 25
       imageBuildDir: "../../.."
 
+    # this test uploads 1KB (1024 bytes) asynchronously, no chunking
+    flushsmallasync:
+      testScenario: flush
+      sync: false
+      sizeBytes: 1024
+      parallel: 10
+      faults: true
+      requestFaulted: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # this test uploads 25MB (1024 * 1024 * 25), requiring multiple requests
+    flushlarge:
+      testScenario: flush
+      sync: true
+      sizeBytes: "26214400"
+      parallel: 10
+      faults: true
+      requestFaulted: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
     # this test uploads 1KB (1024 bytes), no chunking
-    upload-small-test:
+    uploadsmall:
       testScenario: upload
       sync: true
       sizeBytes: 1024
@@ -136,7 +180,7 @@ matrix:
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes) asynchronously, no chunking
-    upload-async-test:
+    uploadsmallasync:
       testScenario: read
       sync: false
       sizeBytes: 1024
@@ -146,8 +190,19 @@ matrix:
       durationMin: 10
       imageBuildDir: "../../.."
 
+    # this test uploads 25MB (1024 * 1024 * 25), requiring multiple requests
+    uploadlarge:
+      testScenario: upload
+      sync: true
+      sizeBytes: "26214400"
+      parallel: 10
+      faults: true
+      requestFaulted: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
     # this test uploads 1KB (1024 bytes) from a file, no chunking
-    uploadfromfile-test:
+    uploadfromfilesmall:
       testScenario: uploadfromfile
       sync: true
       sizeBytes: 1024
@@ -157,8 +212,8 @@ matrix:
       durationMin: 10
       imageBuildDir: "../../.."
 
-    # this test uploads 50MB (1024 * 1024 * 50) from a file, no chunking
-    uploadfromfilelarge-test:
+    # this test uploads 50MB (1024 * 1024 * 50) from a file, requiring multiple requests
+    uploadfromfilelarge:
       testScenario: uploadfromfile
       sync: true
       sizeBytes: "52428800"

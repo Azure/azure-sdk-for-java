@@ -40,7 +40,7 @@ public class AppendBlobOutputStream extends BlobScenarioBase<StorageStressOption
     protected void runInternal(Context span) throws IOException {
         AppendBlobClient appendBlobClient = syncClient.getAppendBlobClient();
 
-        BlobOutputStream outputStream = appendBlobClient.getBlobOutputStream();
+        BlobOutputStream outputStream = appendBlobClient.getBlobOutputStream(true);
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())) {
             byte[] buffer = new byte[4096]; // Define a buffer
             int bytesRead;

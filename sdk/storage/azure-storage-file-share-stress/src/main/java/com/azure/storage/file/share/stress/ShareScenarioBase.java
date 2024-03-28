@@ -25,12 +25,10 @@ import java.util.UUID;
 public abstract class ShareScenarioBase<TOptions extends StorageStressOptions> extends PerfStressTest<TOptions> {
     private static final String SHARE_NAME = "stress-" + UUID.randomUUID();
     protected final TelemetryHelper telemetryHelper = new TelemetryHelper(this.getClass());
-    private final ShareServiceClient syncClient;
-    private final ShareServiceAsyncClient asyncClient;
-    private final ShareServiceAsyncClient asyncNoFaultClient;
     private final ShareClient syncShareClient;
     private final ShareAsyncClient asyncShareClient;
     private final ShareAsyncClient asyncNoFaultShareClient;
+    private final ShareClient syncNoFaultShareClient;
     private Instant startTime;
 
     public ShareScenarioBase(TOptions options) {
@@ -44,16 +42,18 @@ public abstract class ShareScenarioBase<TOptions extends StorageStressOptions> e
             .connectionString(connectionString)
             .httpLogOptions(getLogOptions());
 
-        asyncNoFaultClient = clientBuilder.buildAsyncClient();
+        ShareServiceAsyncClient asyncNoFaultClient = clientBuilder.buildAsyncClient();
+        ShareServiceClient syncNoFaultClient = clientBuilder.buildClient();
 
         if (options.isFaultInjectionEnabled()) {
             clientBuilder.addPolicy(new FaultInjectingHttpPolicy(false, getFaultProbabilities(),
                 options.isRequestFaulted()));
         }
 
-        syncClient = clientBuilder.buildClient();
-        asyncClient = clientBuilder.buildAsyncClient();
+        ShareServiceClient syncClient = clientBuilder.buildClient();
+        ShareServiceAsyncClient asyncClient = clientBuilder.buildAsyncClient();
         asyncNoFaultShareClient = asyncNoFaultClient.getShareAsyncClient(SHARE_NAME);
+        syncNoFaultShareClient = syncNoFaultClient.getShareClient(SHARE_NAME);
         syncShareClient = syncClient.getShareClient(SHARE_NAME);
         asyncShareClient = asyncClient.getShareAsyncClient(SHARE_NAME);
     }
@@ -101,6 +101,10 @@ public abstract class ShareScenarioBase<TOptions extends StorageStressOptions> e
 
     protected ShareAsyncClient getAsyncShareClientNoFault() {
         return asyncNoFaultShareClient;
+    }
+
+    protected ShareClient getSyncShareClientNoFault() {
+        return syncNoFaultShareClient;
     }
 
     protected String generateFileName() {

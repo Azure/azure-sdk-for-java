@@ -49,8 +49,7 @@ public class Upload extends DataLakeScenarioBase<StorageStressOptions> {
             originalContent.getContentHead(), options.getSize()), options.getSize(),
             BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
         return asyncClient.uploadWithResponse(new FileParallelUploadOptions(byteBufferFlux)
-                .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * 1024 * 1024L)
-                    .setMaxConcurrency(1)))
+                .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * 1024 * 1024L)))
             .then(originalContent.checkMatch(byteBufferFlux, span));
     }
 

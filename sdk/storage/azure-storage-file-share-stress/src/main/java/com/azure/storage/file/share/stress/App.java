@@ -12,8 +12,14 @@ public class App {
         PerfStressProgram.run(new Class<?>[]{
             Download.class,
             DownloadToFile.class,
-            GetFileSeekableByteChannelRead.class,
-            OpenInputStream.class
+            FileOutputStream.class,
+            FileSeekableByteChannelWrite.class,
+            FileSeekableByteChannelRead.class,
+            OpenInputStream.class,
+            Upload.class,
+            UploadFromFile.class,
+            UploadRange.class,
+            UploadRangeFromUrl.class
         }, args);
     }
 }

@@ -19,13 +19,13 @@ import java.nio.channels.SeekableByteChannel;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
-public class GetFileSeekableByteChannelRead extends ShareScenarioBase<StorageStressOptions> {
-    private static final ClientLogger LOGGER = new ClientLogger(GetFileSeekableByteChannelRead.class);
+public class FileSeekableByteChannelRead extends ShareScenarioBase<StorageStressOptions> {
+    private static final ClientLogger LOGGER = new ClientLogger(FileSeekableByteChannelRead.class);
     private final OriginalContent originalContent = new OriginalContent();
     private final ShareFileClient syncClient;
     private final ShareFileAsyncClient asyncNoFaultClient;
 
-    public GetFileSeekableByteChannelRead(StorageStressOptions options) {
+    public FileSeekableByteChannelRead(StorageStressOptions options) {
         super(options);
         String fileName = generateFileName();
         this.syncClient = getSyncShareClient().getFileClient(fileName);

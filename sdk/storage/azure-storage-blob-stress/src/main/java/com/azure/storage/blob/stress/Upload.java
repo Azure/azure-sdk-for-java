@@ -6,6 +6,8 @@ package com.azure.storage.blob.stress;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.stress.utils.OriginalContent;
 import com.azure.storage.common.Utility;
 import com.azure.storage.stress.CrcInputStream;
@@ -32,7 +34,8 @@ public class Upload extends BlobScenarioBase<StorageStressOptions> {
     @Override
     protected void runInternal(Context span) {
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())) {
-            syncClient.upload(inputStream, options.getSize(), true);
+            syncClient.uploadWithResponse(new BlobParallelUploadOptions(inputStream).setParallelTransferOptions(
+                new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * 1024 * 1024L)), null, span);
             originalContent.checkMatch(inputStream.getContentInfo(), span).block();
         }
     }
@@ -44,7 +47,8 @@ public class Upload extends BlobScenarioBase<StorageStressOptions> {
             BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
 
         // Using the same Flux<ByteBuffer> that was used to upload the blob to check the content.
-        return asyncClient.upload(byteBufferFlux, null, true)
+        return asyncClient.uploadWithResponse(new BlobParallelUploadOptions(byteBufferFlux)
+                .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * 1024 * 1024L)))
             .then(originalContent.checkMatch(byteBufferFlux, span));
     }
 

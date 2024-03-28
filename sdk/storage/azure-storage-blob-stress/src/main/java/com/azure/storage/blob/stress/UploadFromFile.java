@@ -9,6 +9,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.stress.utils.OriginalContent;
@@ -49,7 +50,9 @@ public class UploadFromFile extends BlobScenarioBase<StorageStressOptions> {
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())) {
             Path uploadFilePath = generateFile(inputStream);
             downloadPath = downloadPath.resolve(CoreUtils.randomUuid() + ".txt");
-            syncClient.uploadFromFileWithResponse(new BlobUploadFromFileOptions(uploadFilePath.toString()), null, span);
+            syncClient.uploadFromFileWithResponse(new BlobUploadFromFileOptions(uploadFilePath.toString())
+                .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * 1024 * 1024L)),
+                null, span);
             // then download file using no fault client to verify the content
             syncNoFaultClient.downloadToFileWithResponse(
                 new BlobDownloadToFileOptions(downloadPath.toString()), null, span);
@@ -68,7 +71,8 @@ public class UploadFromFile extends BlobScenarioBase<StorageStressOptions> {
                 Path uploadFilePath = generateFile(inputStream);
                 return Mono.using(
                     () -> downloadPath.resolve(UUID.randomUUID() + ".txt"),
-                    path -> asyncClient.uploadFromFileWithResponse(new BlobUploadFromFileOptions(uploadFilePath.toString()))
+                    path -> asyncClient.uploadFromFileWithResponse(new BlobUploadFromFileOptions(uploadFilePath.toString())
+                            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * 1024 * 1024L)))
                         .flatMap(ignored -> asyncNoFaultClient.downloadToFileWithResponse(
                             new BlobDownloadToFileOptions(path.toString()))
                         )
