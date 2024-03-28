@@ -3,7 +3,9 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -19,6 +21,7 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -33,6 +36,7 @@ import static com.azure.messaging.servicebus.WindowedSubscriberFluxWindowTest.Up
 @Execution(ExecutionMode.SAME_THREAD)
 @Isolated
 public final class WindowedSubscriberFluxWindowIsolatedTest {
+    private static final ClientLogger LOGGER = new ClientLogger(WindowedSubscriberFluxWindowIsolatedTest.class);
     @Test
     @Execution(ExecutionMode.SAME_THREAD)
     public void shouldCloseEmptyWindowOnTimeout() {
@@ -44,11 +48,7 @@ public final class WindowedSubscriberFluxWindowIsolatedTest {
         upstream.subscribe(subscriber);
 
         final AtomicReference<EnqueueResult<Integer>> rRef = new AtomicReference<>();
-        final Supplier<Publisher<Integer>> scenario =  () -> {
-            final EnqueueResult<Integer> r = subscriber.enqueueRequestImpl(windowSize, windowTimeout);
-            rRef.set(r);
-            return r.getWindowFlux();
-        };
+        final Supplier<Publisher<Integer>> scenario =  () -> enqueueWithRetry(subscriber, windowSize, windowTimeout, rRef);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(scenario)
@@ -74,11 +74,7 @@ public final class WindowedSubscriberFluxWindowIsolatedTest {
         upstream.subscribe(subscriber);
 
         final AtomicReference<EnqueueResult<Integer>> rRef = new AtomicReference<>();
-        final Supplier<Publisher<Integer>> scenario =  () -> {
-            final EnqueueResult<Integer> r = subscriber.enqueueRequestImpl(windowSize, windowTimeout);
-            rRef.set(r);
-            return r.getWindowFlux();
-        };
+        final Supplier<Publisher<Integer>> scenario = () -> enqueueWithRetry(subscriber, windowSize, windowTimeout, rRef);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(scenario)
@@ -109,12 +105,8 @@ public final class WindowedSubscriberFluxWindowIsolatedTest {
         final AtomicReference<EnqueueResult<Integer>> r0Ref = new AtomicReference<>();
         final AtomicReference<EnqueueResult<Integer>> r1Ref = new AtomicReference<>();
         final Supplier<Publisher<Integer>> scenario =  () -> {
-            final EnqueueResult<Integer> r0 = subscriber.enqueueRequestImpl(windowSize, windowTimeout);
-            final EnqueueResult<Integer> r1 = subscriber.enqueueRequestImpl(windowSize, windowTimeout);
-            r0Ref.set(r0);
-            r1Ref.set(r1);
-            final Flux<Integer> window0Flux = r0.getWindowFlux();
-            final Flux<Integer> window1Flux = r1.getWindowFlux();
+            final Flux<Integer> window0Flux = enqueueWithRetry(subscriber, windowSize, windowTimeout, r0Ref);
+            final Flux<Integer> window1Flux = enqueueWithRetry(subscriber, windowSize, windowTimeout, r1Ref);
             return window0Flux.concatWith(window1Flux);
         };
 
@@ -155,12 +147,8 @@ public final class WindowedSubscriberFluxWindowIsolatedTest {
         final AtomicReference<EnqueueResult<Integer>> r0Ref = new AtomicReference<>();
         final AtomicReference<EnqueueResult<Integer>> r1Ref = new AtomicReference<>();
         final Supplier<Publisher<Integer>> scenario =  () -> {
-            final EnqueueResult<Integer> r0 = subscriber.enqueueRequestImpl(windowSize, windowTimeout);
-            final EnqueueResult<Integer> r1 = subscriber.enqueueRequestImpl(windowSize, windowTimeout);
-            r0Ref.set(r0);
-            r1Ref.set(r1);
-            final Flux<Integer> window0Flux = r0.getWindowFlux();
-            final Flux<Integer> window1Flux = r1.getWindowFlux();
+            final Flux<Integer> window0Flux = enqueueWithRetry(subscriber, windowSize, windowTimeout, r0Ref);
+            final Flux<Integer> window1Flux = enqueueWithRetry(subscriber, windowSize, windowTimeout, r1Ref);
             return window0Flux.concatWith(window1Flux);
         };
 
@@ -205,12 +193,8 @@ public final class WindowedSubscriberFluxWindowIsolatedTest {
         final AtomicReference<EnqueueResult<Integer>> r0Ref = new AtomicReference<>();
         final AtomicReference<EnqueueResult<Integer>> r1Ref = new AtomicReference<>();
         final Supplier<Publisher<Integer>> scenario =  () -> {
-            final EnqueueResult<Integer> r0 = subscriber.enqueueRequestImpl(windowSize, windowTimeout);
-            final EnqueueResult<Integer> r1 = subscriber.enqueueRequestImpl(windowSize, windowTimeout);
-            r0Ref.set(r0);
-            r1Ref.set(r1);
-            final Flux<Integer> window0Flux = r0.getWindowFlux();
-            final Flux<Integer> window1Flux = r1.getWindowFlux();
+            final Flux<Integer> window0Flux = enqueueWithRetry(subscriber, windowSize, windowTimeout, r0Ref);
+            final Flux<Integer> window1Flux = enqueueWithRetry(subscriber, windowSize, windowTimeout, r1Ref);
             return window0Flux
                 .take(cancelAfter)
                 .concatWith(window1Flux);
@@ -248,11 +232,7 @@ public final class WindowedSubscriberFluxWindowIsolatedTest {
         upstream.subscribe(subscriber);
 
         final AtomicReference<EnqueueResult<Integer>> rRef = new AtomicReference<>();
-        final Supplier<Publisher<Integer>> scenario =  () -> {
-            final EnqueueResult<Integer> r = subscriber.enqueueRequestImpl(windowSize, windowTimeout);
-            rRef.set(r);
-            return r.getWindowFlux();
-        };
+        final Supplier<Publisher<Integer>> scenario =  () -> enqueueWithRetry(subscriber, windowSize, windowTimeout, rRef);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(scenario)
@@ -280,15 +260,10 @@ public final class WindowedSubscriberFluxWindowIsolatedTest {
         final AtomicReference<EnqueueResult<Integer>> r0Ref = new AtomicReference<>();
         final AtomicReference<EnqueueResult<Integer>> r1Ref = new AtomicReference<>();
         final Supplier<Publisher<Integer>> scenario =  () -> {
-            final EnqueueResult<Integer> r0 = subscriber.enqueueRequestImpl(window0Size, windowTimeout);
-            final EnqueueResult<Integer> r1 = subscriber.enqueueRequestImpl(window1Size, windowTimeout);
-            r0Ref.set(r0);
-            r1Ref.set(r1);
-            final Flux<Integer> window0Flux = r0.getWindowFlux();
-            final Flux<Integer> window1Flux = r1.getWindowFlux();
+            final Flux<Integer> window0Flux = enqueueWithRetry(subscriber, window0Size, windowTimeout, r0Ref);
+            final Flux<Integer> window1Flux = enqueueWithRetry(subscriber, window1Size, windowTimeout, r1Ref);
             return window0Flux.concatWith(window1Flux);
         };
-
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(scenario)
@@ -309,7 +284,7 @@ public final class WindowedSubscriberFluxWindowIsolatedTest {
         Assertions.assertFalse(work1.isCanceled());
     }
 
-    @Test
+    @RepeatedTest(1)
     @Execution(ExecutionMode.SAME_THREAD)
     public void shouldPickEnqueuedWindowRequestsOnSubscriptionReady() {
         final int window0Size = 1;
@@ -323,12 +298,8 @@ public final class WindowedSubscriberFluxWindowIsolatedTest {
         final AtomicReference<EnqueueResult<Integer>> r0Ref = new AtomicReference<>();
         final AtomicReference<EnqueueResult<Integer>> r1Ref = new AtomicReference<>();
         final Supplier<Publisher<Integer>> scenario =  () -> {
-            final EnqueueResult<Integer> r0 = subscriber.enqueueRequestImpl(window0Size, windowTimeout);
-            final EnqueueResult<Integer> r1 = subscriber.enqueueRequestImpl(window1Size, windowTimeout);
-            r0Ref.set(r0);
-            r1Ref.set(r1);
-            final Flux<Integer> window0Flux = r0.getWindowFlux();
-            final Flux<Integer> window1Flux = r1.getWindowFlux();
+            final Flux<Integer> window0Flux = enqueueWithRetry(subscriber, window0Size, windowTimeout, r0Ref);
+            final Flux<Integer> window1Flux = enqueueWithRetry(subscriber, window1Size, windowTimeout, r1Ref);
             return window0Flux.concatWith(window1Flux);
         };
 
@@ -367,11 +338,7 @@ public final class WindowedSubscriberFluxWindowIsolatedTest {
         upstream.subscribe(subscriber);
 
         final AtomicReference<EnqueueResult<Integer>> rRef = new AtomicReference<>();
-        final Supplier<Publisher<Integer>> scenario =  () -> {
-            final EnqueueResult<Integer> r = subscriber.enqueueRequestImpl(windowSize, windowTimeout);
-            rRef.set(r);
-            return r.getWindowFlux();
-        };
+        final Supplier<Publisher<Integer>> scenario = () -> enqueueWithRetry(subscriber, windowSize, windowTimeout, rRef);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(scenario)
@@ -401,11 +368,7 @@ public final class WindowedSubscriberFluxWindowIsolatedTest {
         upstream.subscribe(subscriber);
 
         final AtomicReference<EnqueueResult<Integer>> rRef = new AtomicReference<>();
-        final Supplier<Publisher<Integer>> scenario =  () -> {
-            final EnqueueResult<Integer> r = subscriber.enqueueRequestImpl(windowSize, windowTimeout);
-            rRef.set(r);
-            return r.getWindowFlux();
-        };
+        final Supplier<Publisher<Integer>> scenario =  () -> enqueueWithRetry(subscriber, windowSize, windowTimeout, rRef);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(scenario)
@@ -422,6 +385,29 @@ public final class WindowedSubscriberFluxWindowIsolatedTest {
 
         final List<Integer> released = releaser.getReleased();
         Assertions.assertEquals(Arrays.asList(1, 2), released);
+    }
+
+    private static Flux<Integer> enqueueWithRetry(WindowedSubscriber<Integer> subscriber, int windowSize, Duration windowTimeout, AtomicReference<EnqueueResult<Integer>> rRef) {
+        for (int i = 0; i < 1; i ++) {
+            try {
+                final EnqueueResult<Integer> r = subscriber.enqueueRequestImpl(windowSize, windowTimeout);
+                rRef.set(r);
+                return r.getWindowFlux();
+            } catch (Throwable e) {
+                do {
+                    System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!");
+                    e.printStackTrace();
+                    e = e.getCause();
+                } while (e != null);
+                System.err.println("!!!!!!!!!!!!!!!!!!!!!!!! done");
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                LOGGER.warning("can't sleep", e);
+            }
+        }
+        throw new RejectedExecutionException("Can't enqueue request after 10 attempts.");
     }
 
     private static final class VirtualTimeStepVerifier implements AutoCloseable {
