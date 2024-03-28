@@ -4,7 +4,6 @@
 package com.azure.cosmos.kafka.connect;
 
 import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
 import com.azure.cosmos.kafka.connect.implementation.sink.IdStrategies;
@@ -74,8 +73,8 @@ public class CosmosDBSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         CosmosDBSinkConnector sinkConnector = new CosmosDBSinkConnector();
 
         Map<String, String> sinkConfigMap = new HashMap<>();
-        sinkConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
-        sinkConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
+        sinkConfigMap.put("kafka.connect.cosmos.accountEndpoint", KafkaCosmosTestConfigurations.HOST);
+        sinkConfigMap.put("kafka.connect.cosmos.accountKey", KafkaCosmosTestConfigurations.MASTER_KEY);
         sinkConfigMap.put("kafka.connect.cosmos.sink.database.name", databaseName);
         sinkConfigMap.put("kafka.connect.cosmos.sink.containers.topicMap", singlePartitionContainerName + "#" + singlePartitionContainerName);
         sinkConnector.start(sinkConfigMap);
@@ -85,8 +84,8 @@ public class CosmosDBSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         assertThat(taskConfigs.size()).isEqualTo(maxTask);
 
         for (Map<String, String> taskConfig : taskConfigs) {
-            assertThat(taskConfig.get("kafka.connect.cosmos.accountEndpoint")).isEqualTo(TestConfigurations.HOST);
-            assertThat(taskConfig.get("kafka.connect.cosmos.accountKey")).isEqualTo(TestConfigurations.MASTER_KEY);
+            assertThat(taskConfig.get("kafka.connect.cosmos.accountEndpoint")).isEqualTo(KafkaCosmosTestConfigurations.HOST);
+            assertThat(taskConfig.get("kafka.connect.cosmos.accountKey")).isEqualTo(KafkaCosmosTestConfigurations.MASTER_KEY);
             assertThat(taskConfig.get("kafka.connect.cosmos.sink.database.name")).isEqualTo(databaseName);
             assertThat(taskConfig.get("kafka.connect.cosmos.sink.containers.topicMap"))
                 .isEqualTo(singlePartitionContainerName + "#" + singlePartitionContainerName);
@@ -174,8 +173,8 @@ public class CosmosDBSinkConnectorTest extends KafkaCosmosTestSuiteBase {
 
     private Map<String, String> getValidSinkConfig() {
         Map<String, String> sinkConfigMap = new HashMap<>();
-        sinkConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
-        sinkConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
+        sinkConfigMap.put("kafka.connect.cosmos.accountEndpoint", KafkaCosmosTestConfigurations.HOST);
+        sinkConfigMap.put("kafka.connect.cosmos.accountKey", KafkaCosmosTestConfigurations.MASTER_KEY);
         sinkConfigMap.put("kafka.connect.cosmos.sink.database.name", databaseName);
         sinkConfigMap.put("kafka.connect.cosmos.sink.containers.topicMap", singlePartitionContainerName + "#" + singlePartitionContainerName);
 

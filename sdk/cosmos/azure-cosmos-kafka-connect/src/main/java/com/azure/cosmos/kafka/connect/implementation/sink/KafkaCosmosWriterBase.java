@@ -4,12 +4,9 @@
 package com.azure.cosmos.kafka.connect.implementation.sink;
 
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosBridgeInternal;
-import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -17,7 +14,6 @@ import org.apache.kafka.connect.sink.ErrantRecordReporter;
 import org.apache.kafka.connect.sink.SinkRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.List;
@@ -81,12 +77,11 @@ public abstract class KafkaCosmosWriterBase implements IWriter {
         String partitionKeyPath = StringUtils.join(partitionKeyDefinition.getPaths(), "");
         Map<String, Object> recordMap = (Map<String, Object>) recordValue;
         Object partitionKeyValue = recordMap.get(partitionKeyPath.substring(1));
-        PartitionKeyInternal partitionKeyInternal = PartitionKeyInternal.fromObjectArray(Collections.singletonList(partitionKeyValue), false);
 
         return ImplementationBridgeHelpers
             .PartitionKeyHelper
             .getPartitionKeyAccessor()
-            .toPartitionKey(partitionKeyInternal);
+            .toPartitionKey(Collections.singletonList(partitionKeyValue), false);
     }
 
     protected boolean shouldRetry(Throwable exception, int attemptedCount, int maxRetryCount) {
@@ -95,22 +90,6 @@ public abstract class KafkaCosmosWriterBase implements IWriter {
         }
 
         return KafkaCosmosExceptionsHelper.isTransientFailure(exception);
-    }
-
-    protected Mono<PartitionKeyDefinition> getPartitionKeyDefinition(CosmosAsyncContainer container) {
-        return Mono.just(CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase()).getCollectionCache())
-            .flatMap(collectionCache -> {
-                return collectionCache
-                    .resolveByNameAsync(
-                        null,
-                        ImplementationBridgeHelpers
-                            .CosmosAsyncContainerHelper
-                            .getCosmosAsyncContainerAccessor()
-                            .getLinkWithoutTrailingSlash(container),
-                        null,
-                        new DocumentCollection())
-                    .map(documentCollection -> documentCollection.getPartitionKey());
-            });
     }
 
     protected void sendToDlqIfConfigured(SinkOperation sinkOperationContext) {

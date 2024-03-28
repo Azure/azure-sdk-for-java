@@ -4,15 +4,11 @@
 package com.azure.cosmos.kafka.connect;
 
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
-import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
-import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
-import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.query.CompositeContinuationToken;
-import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
@@ -23,9 +19,12 @@ import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTaskConf
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeContinuationTopicOffset;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeTaskUnit;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangesMetadataTopicOffset;
+import com.azure.cosmos.kafka.connect.implementation.source.KafkaCosmosChangeFeedState;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataMonitorThread;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataTaskUnit;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.FeedRange;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.kafka.common.config.Config;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigValue;
@@ -33,10 +32,12 @@ import org.apache.kafka.connect.connector.Task;
 import org.apache.kafka.connect.source.SourceConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -169,10 +170,10 @@ public class CosmosDBSourceConnector extends SourceConnector {
         List<CosmosContainerProperties> allContainers = this.monitorThread.getAllContainers().block();
         Map<String, String> containerTopicMap = this.getContainersTopicMap(allContainers);
         List<FeedRangeTaskUnit> allFeedRangeTaskUnits = new ArrayList<>();
-        Map<String, List<Range<String>>> updatedContainerToFeedRangesMap = new ConcurrentHashMap<>();
+        Map<String, List<FeedRange>> updatedContainerToFeedRangesMap = new ConcurrentHashMap<>();
 
         for (CosmosContainerProperties containerProperties : allContainers) {
-            Map<Range<String>, String> effectiveFeedRangesContinuationMap =
+            Map<FeedRange, String> effectiveFeedRangesContinuationMap =
                 this.getEffectiveFeedRangesContinuationMap(
                     this.config.getContainersConfig().getDatabaseName(),
                     containerProperties);
@@ -183,7 +184,7 @@ public class CosmosDBSourceConnector extends SourceConnector {
             );
 
             // add feedRange task unit
-            for (Range<String> effectiveFeedRange : effectiveFeedRangesContinuationMap.keySet()) {
+            for (FeedRange effectiveFeedRange : effectiveFeedRangesContinuationMap.keySet()) {
                 allFeedRangeTaskUnits.add(
                     new FeedRangeTaskUnit(
                         this.config.getContainersConfig().getDatabaseName(),
@@ -207,7 +208,7 @@ public class CosmosDBSourceConnector extends SourceConnector {
         return Pair.of(metadataTaskUnit, allFeedRangeTaskUnits);
     }
 
-    private Map<Range<String>, String> getEffectiveFeedRangesContinuationMap(
+    private Map<FeedRange, String> getEffectiveFeedRangesContinuationMap(
         String databaseName,
         CosmosContainerProperties containerProperties) {
         // Return effective feed ranges to be used for copying data from container
@@ -219,119 +220,126 @@ public class CosmosDBSourceConnector extends SourceConnector {
         // If a merge is detected, we will use the matched feedRanges from the offsets,
         // otherwise use the current feedRange, but constructing the continuationState based on the previous feedRange
 
-        List<Range<String>> containerFeedRanges = this.getFeedRanges(containerProperties);
-        containerFeedRanges.sort(new Comparator<Range<String>>() {
-            @Override
-            public int compare(Range<String> o1, Range<String> o2) {
-                return o1.getMin().compareTo(o2.getMin());
-            }
-        });
+        List<FeedRange> containerFeedRanges = this.getFeedRanges(containerProperties);
 
         FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffset =
             this.offsetStorageReader.getFeedRangesMetadataOffset(databaseName, containerProperties.getResourceId());
 
-        Map<Range<String>, String> effectiveFeedRangesContinuationMap = new LinkedHashMap<>();
+        Map<FeedRange, String> effectiveFeedRangesContinuationMap = new LinkedHashMap<>();
+        CosmosAsyncContainer container = this.cosmosClient.getDatabase(databaseName).getContainer(containerProperties.getId());
 
-        for (Range<String> containerFeedRange : containerFeedRanges) {
-            if (feedRangesMetadataTopicOffset == null) {
-                // there is no existing offset, return the current container feedRanges with continuationState null (start from refresh)
-                effectiveFeedRangesContinuationMap.put(containerFeedRange, Strings.Emtpy);
-            } else {
-                // there is existing offsets, need to find out effective feedRanges based on the offset
-                effectiveFeedRangesContinuationMap.putAll(
-                    this.getEffectiveContinuationMapForSingleFeedRange(
+        Flux.fromIterable(containerFeedRanges)
+            .flatMap(containerFeedRange -> {
+                if (feedRangesMetadataTopicOffset == null) {
+                    return Mono.just(
+                        Collections.singletonMap(containerFeedRange, Strings.Emtpy));
+                } else {
+                    // there is existing offsets, need to find out effective feedRanges based on the offset
+                    return this.getEffectiveContinuationMapForSingleFeedRange(
                         databaseName,
                         containerProperties.getResourceId(),
                         containerFeedRange,
-                        feedRangesMetadataTopicOffset.getFeedRanges())
-                );
-            }
-        }
+                        container,
+                        feedRangesMetadataTopicOffset.getFeedRanges());
+                }
+            })
+            .doOnNext(map -> {
+                effectiveFeedRangesContinuationMap.putAll(map);
+            })
+            .blockLast();
 
         return effectiveFeedRangesContinuationMap;
     }
 
-    private Map<Range<String>, String> getEffectiveContinuationMapForSingleFeedRange(
+    private Mono<Map<FeedRange, String>> getEffectiveContinuationMapForSingleFeedRange(
         String databaseName,
         String containerRid,
-        Range<String> containerFeedRange,
-        List<Range<String>> rangesFromMetadataTopicOffset) {
+        FeedRange containerFeedRange,
+        CosmosAsyncContainer cosmosAsyncContainer,
+        List<FeedRange> rangesFromMetadataTopicOffset) {
 
         //first try to find out whether there is exact feedRange matching
         FeedRangeContinuationTopicOffset feedRangeContinuationTopicOffset =
             this.offsetStorageReader.getFeedRangeContinuationOffset(databaseName, containerRid, containerFeedRange);
 
-        Map<Range<String>, String> effectiveContinuationMap = new LinkedHashMap<>();
+        Map<FeedRange, String> effectiveContinuationMap = new LinkedHashMap<>();
         if (feedRangeContinuationTopicOffset != null) {
             // we can find the continuation offset based on exact feedRange matching
             effectiveContinuationMap.put(
                 containerFeedRange,
                 this.getContinuationStateFromOffset(
-                    containerRid,
                     feedRangeContinuationTopicOffset,
                     containerFeedRange));
 
-            return effectiveContinuationMap;
+            return Mono.just(effectiveContinuationMap);
         }
 
         // we can not find the continuation offset based on the exact feed range matching
         // it means the previous Partition key range could have gone due to container split/merge
         // need to find out overlapped feedRanges from offset
-        List<Range<String>> overlappedFeedRangesFromOffset =
-            rangesFromMetadataTopicOffset
-                .stream()
-                .filter(rangeFromOffset -> Range.checkOverlapping(rangeFromOffset, containerFeedRange))
-                .collect(Collectors.toList());
+        return  Flux.fromIterable(rangesFromMetadataTopicOffset)
+                    .flatMap(rangeFromOffset -> {
+                        return ImplementationBridgeHelpers
+                                .CosmosAsyncContainerHelper
+                                .getCosmosAsyncContainerAccessor()
+                                .checkFeedRangeOverlapping(cosmosAsyncContainer, rangeFromOffset, containerFeedRange)
+                            .flatMap(overlapped -> {
+                                if (overlapped) {
+                                    return Mono.just(rangeFromOffset);
+                                } else {
+                                    return Mono.empty();
+                                }
+                            });
+                    })
+                    .collectList()
+                    .flatMap(overlappedFeedRangesFromOffset -> {
+                        if (overlappedFeedRangesFromOffset.size() == 1) {
+                            // split - use the current containerFeedRange, but construct the continuationState based on the feedRange from offset
+                            effectiveContinuationMap.put(
+                                containerFeedRange,
+                                this.getContinuationStateFromOffset(
+                                    this.offsetStorageReader.getFeedRangeContinuationOffset(databaseName, containerRid, overlappedFeedRangesFromOffset.get(0)),
+                                    containerFeedRange));
+                            return Mono.just(effectiveContinuationMap);
+                        }
 
-        if (overlappedFeedRangesFromOffset.size() == 1) {
-            // split - use the current containerFeedRange, but construct the continuationState based on the feedRange from offset
-            effectiveContinuationMap.put(
-                containerFeedRange,
-                this.getContinuationStateFromOffset(
-                    containerRid,
-                    this.offsetStorageReader.getFeedRangeContinuationOffset(databaseName, containerRid, overlappedFeedRangesFromOffset.get(0)),
-                    containerFeedRange));
-            return effectiveContinuationMap;
-        }
+                        if (overlappedFeedRangesFromOffset.size() > 1) {
+                            // merge - use the feed ranges from the offset
+                            for (FeedRange overlappedRangeFromOffset : overlappedFeedRangesFromOffset) {
+                                effectiveContinuationMap.put(
+                                    overlappedRangeFromOffset,
+                                    this.getContinuationStateFromOffset(
+                                        this.offsetStorageReader.getFeedRangeContinuationOffset(databaseName, containerRid, overlappedRangeFromOffset),
+                                        overlappedRangeFromOffset));
+                            }
 
-        if (overlappedFeedRangesFromOffset.size() > 1) {
-            // merge - use the feed ranges from the offset
-            for (Range<String> overlappedRangeFromOffset : overlappedFeedRangesFromOffset) {
-                effectiveContinuationMap.put(
-                    overlappedRangeFromOffset,
-                    this.getContinuationStateFromOffset(
-                        containerRid,
-                        this.offsetStorageReader.getFeedRangeContinuationOffset(databaseName, containerRid, overlappedRangeFromOffset),
-                        overlappedRangeFromOffset));
-            }
+                            return Mono.just(effectiveContinuationMap);
+                        }
 
-            return effectiveContinuationMap;
-        }
-
-        // Can not find overlapped ranges from offset, this should never happen, fail
-        LOGGER.error("Can not find overlapped ranges for feedRange {}", containerFeedRange);
-        throw new IllegalStateException("Can not find overlapped ranges for feedRange " + containerFeedRange);
+                        // Can not find overlapped ranges from offset, this should never happen, fail
+                        LOGGER.error("Can not find overlapped ranges for feedRange {}", containerFeedRange);
+                        return Mono.error(new IllegalStateException("Can not find overlapped ranges for feedRange " + containerFeedRange));
+                    });
     }
 
     private String getContinuationStateFromOffset(
-        String containerRid,
         FeedRangeContinuationTopicOffset feedRangeContinuationTopicOffset,
-        Range<String> range) {
+        FeedRange feedRange) {
 
-        ChangeFeedState stateFromOffset = ChangeFeedStateV1.fromString(feedRangeContinuationTopicOffset.getContinuationState());
-        String itemLsn = feedRangeContinuationTopicOffset.getItemLsn();
-        return new ChangeFeedStateV1(
-            containerRid,
-            new FeedRangeEpkImpl(range),
-            stateFromOffset.getMode(),
-            stateFromOffset.getStartFromSettings(),
-            FeedRangeContinuation.create(
-                containerRid,
-                new FeedRangeEpkImpl(range),
-                Arrays.asList(new CompositeContinuationToken(itemLsn, range)))).toString();
+        KafkaCosmosChangeFeedState changeFeedState =
+            new KafkaCosmosChangeFeedState(
+                feedRangeContinuationTopicOffset.getResponseContinuation(),
+                feedRange,
+                feedRangeContinuationTopicOffset.getItemLsn());
+
+        try {
+            return Utils.getSimpleObjectMapper().writeValueAsString(changeFeedState);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private List<Range<String>> getFeedRanges(CosmosContainerProperties containerProperties) {
+    private List<FeedRange> getFeedRanges(CosmosContainerProperties containerProperties) {
         return this.cosmosClient
             .getDatabase(this.config.getContainersConfig().getDatabaseName())
             .getContainer(containerProperties.getId())
@@ -340,10 +348,7 @@ public class CosmosDBSourceConnector extends SourceConnector {
                 KafkaCosmosExceptionsHelper.convertToConnectException(
                     throwable,
                     "GetFeedRanges failed for container " + containerProperties.getId()))
-            .block()
-            .stream()
-            .map(feedRange -> FeedRangeInternal.normalizeRange(((FeedRangeEpkImpl) feedRange).getRange()))
-            .collect(Collectors.toList());
+            .block();
     }
 
     private Map<String, String> getContainersTopicMap(List<CosmosContainerProperties> allContainers) {

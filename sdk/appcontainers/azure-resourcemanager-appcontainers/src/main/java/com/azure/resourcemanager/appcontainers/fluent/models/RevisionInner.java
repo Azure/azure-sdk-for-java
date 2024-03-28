@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appcontainers.models.RevisionHealthState;
 import com.azure.resourcemanager.appcontainers.models.RevisionProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.RevisionRunningState;
@@ -13,7 +14,9 @@ import com.azure.resourcemanager.appcontainers.models.Template;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Container App Revision. */
+/**
+ * Container App Revision.
+ */
 @Immutable
 public final class RevisionInner extends ProxyResource {
     /*
@@ -22,13 +25,21 @@ public final class RevisionInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private RevisionProperties innerProperties;
 
-    /** Creates an instance of RevisionInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of RevisionInner class.
+     */
     public RevisionInner() {
     }
 
     /**
      * Get the innerProperties property: Revision resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RevisionProperties innerProperties() {
@@ -36,8 +47,18 @@ public final class RevisionInner extends ProxyResource {
     }
 
     /**
-     * Get the createdTime property: Timestamp describing when the revision was created by controller.
-     *
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the createdTime property: Timestamp describing when the revision was created
+     * by controller.
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -47,7 +68,7 @@ public final class RevisionInner extends ProxyResource {
     /**
      * Get the lastActiveTime property: Timestamp describing when the revision was last active. Only meaningful when
      * revision is inactive.
-     *
+     * 
      * @return the lastActiveTime value.
      */
     public OffsetDateTime lastActiveTime() {
@@ -56,7 +77,7 @@ public final class RevisionInner extends ProxyResource {
 
     /**
      * Get the fqdn property: Fully qualified domain name of the revision.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -64,9 +85,10 @@ public final class RevisionInner extends ProxyResource {
     }
 
     /**
-     * Get the template property: Container App Revision Template with all possible settings and the defaults if user
-     * did not provide them. The defaults are populated as they were at the creation time.
-     *
+     * Get the template property: Container App Revision Template with all possible settings and the
+     * defaults if user did not provide them. The defaults are populated
+     * as they were at the creation time.
+     * 
      * @return the template value.
      */
     public Template template() {
@@ -75,7 +97,7 @@ public final class RevisionInner extends ProxyResource {
 
     /**
      * Get the active property: Boolean describing if the Revision is Active.
-     *
+     * 
      * @return the active value.
      */
     public Boolean active() {
@@ -84,7 +106,7 @@ public final class RevisionInner extends ProxyResource {
 
     /**
      * Get the replicas property: Number of pods currently running for this revision.
-     *
+     * 
      * @return the replicas value.
      */
     public Integer replicas() {
@@ -93,7 +115,7 @@ public final class RevisionInner extends ProxyResource {
 
     /**
      * Get the trafficWeight property: Traffic weight assigned to this revision.
-     *
+     * 
      * @return the trafficWeight value.
      */
     public Integer trafficWeight() {
@@ -102,7 +124,7 @@ public final class RevisionInner extends ProxyResource {
 
     /**
      * Get the provisioningError property: Optional Field - Platform Error Message.
-     *
+     * 
      * @return the provisioningError value.
      */
     public String provisioningError() {
@@ -111,7 +133,7 @@ public final class RevisionInner extends ProxyResource {
 
     /**
      * Get the healthState property: Current health State of the revision.
-     *
+     * 
      * @return the healthState value.
      */
     public RevisionHealthState healthState() {
@@ -120,7 +142,7 @@ public final class RevisionInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Current provisioning State of the revision.
-     *
+     * 
      * @return the provisioningState value.
      */
     public RevisionProvisioningState provisioningState() {
@@ -129,7 +151,7 @@ public final class RevisionInner extends ProxyResource {
 
     /**
      * Get the runningState property: Current running state of the revision.
-     *
+     * 
      * @return the runningState value.
      */
     public RevisionRunningState runningState() {
@@ -138,7 +160,7 @@ public final class RevisionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

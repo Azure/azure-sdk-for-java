@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class MobileNetworkResourceIdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MobileNetworkResourceId model =
-            BinaryData.fromString("{\"id\":\"sv\"}").toObject(MobileNetworkResourceId.class);
-        Assertions.assertEquals("sv", model.id());
+        MobileNetworkResourceId model
+            = BinaryData.fromString("{\"id\":\"sibircgpi\"}").toObject(MobileNetworkResourceId.class);
+        Assertions.assertEquals("sibircgpi", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MobileNetworkResourceId model = new MobileNetworkResourceId().withId("sv");
+        MobileNetworkResourceId model = new MobileNetworkResourceId().withId("sibircgpi");
         model = BinaryData.fromObject(model).toObject(MobileNetworkResourceId.class);
-        Assertions.assertEquals("sv", model.id());
+        Assertions.assertEquals("sibircgpi", model.id());
     }
 }

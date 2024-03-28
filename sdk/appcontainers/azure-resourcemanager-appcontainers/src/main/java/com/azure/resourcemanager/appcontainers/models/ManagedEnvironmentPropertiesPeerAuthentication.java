@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Peer authentication settings for the Managed Environment. */
+/**
+ * Peer authentication settings for the Managed Environment.
+ */
 @Fluent
 public final class ManagedEnvironmentPropertiesPeerAuthentication {
     /*
@@ -16,13 +18,15 @@ public final class ManagedEnvironmentPropertiesPeerAuthentication {
     @JsonProperty(value = "mtls")
     private Mtls mtls;
 
-    /** Creates an instance of ManagedEnvironmentPropertiesPeerAuthentication class. */
+    /**
+     * Creates an instance of ManagedEnvironmentPropertiesPeerAuthentication class.
+     */
     public ManagedEnvironmentPropertiesPeerAuthentication() {
     }
 
     /**
      * Get the mtls property: Mutual TLS authentication settings for the Managed Environment.
-     *
+     * 
      * @return the mtls value.
      */
     public Mtls mtls() {
@@ -31,7 +35,7 @@ public final class ManagedEnvironmentPropertiesPeerAuthentication {
 
     /**
      * Set the mtls property: Mutual TLS authentication settings for the Managed Environment.
-     *
+     * 
      * @param mtls the mtls value to set.
      * @return the ManagedEnvironmentPropertiesPeerAuthentication object itself.
      */
@@ -42,7 +46,7 @@ public final class ManagedEnvironmentPropertiesPeerAuthentication {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

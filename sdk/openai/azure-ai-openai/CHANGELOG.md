@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added a new overload `getChatCompletionsStreamWithResponse` that takes `RequestOptions` to provide the flexibility to
+  modify the HTTP request.
+
 ### Breaking Changes
 
 ### Bugs Fixed

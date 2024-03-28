@@ -10,11 +10,9 @@ import com.azure.resourcemanager.mobilenetwork.models.OperationList;
 public final class OperationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"isDataAction\":true,\"name\":\"rvynhzgpph\",\"display\":{\"provider\":\"yncocpecfvmmcoo\",\"resource\":\"xlzevgbmqjqabcy\",\"operation\":\"ivkwlzuvccfwnfnb\",\"description\":\"fionl\"}},{\"isDataAction\":false,\"name\":\"tqgtzxdpnqbqq\",\"display\":{\"provider\":\"jfeallnwsub\",\"resource\":\"njampm\",\"operation\":\"nzscxa\",\"description\":\"ooch\"}},{\"isDataAction\":false,\"name\":\"qvpkvlrxnjeaseip\",\"display\":{\"provider\":\"f\",\"resource\":\"keyyi\",\"operation\":\"jbdlwtgrhpdjpju\",\"description\":\"sxazjpq\"}},{\"isDataAction\":false,\"name\":\"alhbx\",\"display\":{\"provider\":\"jj\",\"resource\":\"v\",\"operation\":\"dgwdslfhot\",\"description\":\"cynpwlbjnp\"}}],\"nextLink\":\"cftadeh\"}")
-                .toObject(OperationList.class);
+        OperationList model = BinaryData.fromString(
+            "{\"value\":[{\"isDataAction\":false,\"name\":\"gm\",\"display\":{\"provider\":\"leyyvx\",\"resource\":\"jpkcattpng\",\"operation\":\"rcczsqpjhvmd\",\"description\":\"v\"}},{\"isDataAction\":true,\"name\":\"unqecanoae\",\"display\":{\"provider\":\"hy\",\"resource\":\"trpmo\",\"operation\":\"mcmatuokthfuiu\",\"description\":\"dsfcpkvxodpuoz\"}}],\"nextLink\":\"zydagfuaxbezyiuo\"}")
+            .toObject(OperationList.class);
     }
 
     @org.junit.jupiter.api.Test

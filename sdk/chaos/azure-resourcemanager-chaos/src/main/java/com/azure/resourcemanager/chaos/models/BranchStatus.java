@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Model that represents the a list of actions and action statuses. */
+/**
+ * Model that represents the a list of actions and action statuses.
+ */
 @Immutable
 public final class BranchStatus {
     /*
@@ -35,13 +37,15 @@ public final class BranchStatus {
     @JsonProperty(value = "actions", access = JsonProperty.Access.WRITE_ONLY)
     private List<ActionStatus> actions;
 
-    /** Creates an instance of BranchStatus class. */
+    /**
+     * Creates an instance of BranchStatus class.
+     */
     public BranchStatus() {
     }
 
     /**
      * Get the branchName property: The name of the branch status.
-     *
+     * 
      * @return the branchName value.
      */
     public String branchName() {
@@ -50,7 +54,7 @@ public final class BranchStatus {
 
     /**
      * Get the branchId property: The id of the branch status.
-     *
+     * 
      * @return the branchId value.
      */
     public String branchId() {
@@ -59,7 +63,7 @@ public final class BranchStatus {
 
     /**
      * Get the status property: The status of the branch.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -68,7 +72,7 @@ public final class BranchStatus {
 
     /**
      * Get the actions property: The array of actions.
-     *
+     * 
      * @return the actions value.
      */
     public List<ActionStatus> actions() {
@@ -77,7 +81,7 @@ public final class BranchStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

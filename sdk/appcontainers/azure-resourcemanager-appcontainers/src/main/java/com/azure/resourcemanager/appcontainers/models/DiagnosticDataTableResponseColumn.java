@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Diagnostics data column. */
+/**
+ * Diagnostics data column.
+ */
 @Fluent
 public final class DiagnosticDataTableResponseColumn {
     /*
@@ -28,13 +30,15 @@ public final class DiagnosticDataTableResponseColumn {
     @JsonProperty(value = "columnType")
     private String columnType;
 
-    /** Creates an instance of DiagnosticDataTableResponseColumn class. */
+    /**
+     * Creates an instance of DiagnosticDataTableResponseColumn class.
+     */
     public DiagnosticDataTableResponseColumn() {
     }
 
     /**
      * Get the columnName property: Column name.
-     *
+     * 
      * @return the columnName value.
      */
     public String columnName() {
@@ -43,7 +47,7 @@ public final class DiagnosticDataTableResponseColumn {
 
     /**
      * Set the columnName property: Column name.
-     *
+     * 
      * @param columnName the columnName value to set.
      * @return the DiagnosticDataTableResponseColumn object itself.
      */
@@ -54,7 +58,7 @@ public final class DiagnosticDataTableResponseColumn {
 
     /**
      * Get the dataType property: Data type of the column.
-     *
+     * 
      * @return the dataType value.
      */
     public String dataType() {
@@ -63,7 +67,7 @@ public final class DiagnosticDataTableResponseColumn {
 
     /**
      * Set the dataType property: Data type of the column.
-     *
+     * 
      * @param dataType the dataType value to set.
      * @return the DiagnosticDataTableResponseColumn object itself.
      */
@@ -74,7 +78,7 @@ public final class DiagnosticDataTableResponseColumn {
 
     /**
      * Get the columnType property: Column type.
-     *
+     * 
      * @return the columnType value.
      */
     public String columnType() {
@@ -83,7 +87,7 @@ public final class DiagnosticDataTableResponseColumn {
 
     /**
      * Set the columnType property: Column type.
-     *
+     * 
      * @param columnType the columnType value to set.
      * @return the DiagnosticDataTableResponseColumn object itself.
      */
@@ -94,7 +98,7 @@ public final class DiagnosticDataTableResponseColumn {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

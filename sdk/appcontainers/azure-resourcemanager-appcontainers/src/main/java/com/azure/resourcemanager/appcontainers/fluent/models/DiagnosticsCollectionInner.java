@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Diagnostics data collection for a resource. */
+/**
+ * Diagnostics data collection for a resource.
+ */
 @Fluent
 public final class DiagnosticsCollectionInner {
     /*
@@ -24,13 +26,15 @@ public final class DiagnosticsCollectionInner {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DiagnosticsCollectionInner class. */
+    /**
+     * Creates an instance of DiagnosticsCollectionInner class.
+     */
     public DiagnosticsCollectionInner() {
     }
 
     /**
      * Get the value property: Collection of diagnostic data.
-     *
+     * 
      * @return the value value.
      */
     public List<DiagnosticsInner> value() {
@@ -39,7 +43,7 @@ public final class DiagnosticsCollectionInner {
 
     /**
      * Set the value property: Collection of diagnostic data.
-     *
+     * 
      * @param value the value value to set.
      * @return the DiagnosticsCollectionInner object itself.
      */
@@ -50,7 +54,7 @@ public final class DiagnosticsCollectionInner {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,15 +63,13 @@ public final class DiagnosticsCollectionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model DiagnosticsCollectionInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model DiagnosticsCollectionInner"));
         } else {
             value().forEach(e -> e.validate());
         }

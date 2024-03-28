@@ -9,10 +9,19 @@ import javax.xml.stream.XMLStreamException;
  * Indicates that the implementing class can be serialized to and deserialized from XML.
  * <p>
  * Since deserialization needs to work without an instance of the class, implementing this interface it's assumed the
- * class has a static method {@code fromXml(XmlReader)} that deserializes an instance of that class. The contract for
- * reading XML... TODO (alzimmer): finish this javadoc
+ * class has static methods {@link #fromXml(XmlReader)} and {@link #fromXml(XmlReader, String)} that deserializes an
+ * instance of that class. The contract for reading XML from {@link XmlReader} is that the initial state of the reader
+ * on call will either be a null {@link XmlToken} or be {@link XmlToken#START_ELEMENT} for the object. So, for objects
+ * calling out to other {@link XmlSerializable} objects for deserialization, they'll pass the reader pointing to the
+ * token after the {@link XmlToken#START_ELEMENT}. This way objects reading XML will be self-encapsulated for reading
+ * properly formatted XML. And, if an error occurs during deserialization an {@link IllegalStateException} should be
+ * thrown.
  *
  * @param <T> The type of the object that is XML serializable.
+ *
+ * @see com.azure.xml
+ * @see XmlReader
+ * @see XmlWriter
  */
 public interface XmlSerializable<T extends XmlSerializable<T>> {
     /**
@@ -24,7 +33,7 @@ public interface XmlSerializable<T extends XmlSerializable<T>> {
      * writing XML will be self-encapsulated for writing properly formatted XML.
      *
      * @param xmlWriter The {@link XmlWriter} being written to.
-     * @return The {@link XmlWriter} where the JSON was written for chaining.
+     * @return The {@link XmlWriter} where the XML was written for chaining.
      * @throws XMLStreamException If the object fails to be written to the {@code xmlWriter}.
      */
     XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException;
@@ -40,7 +49,7 @@ public interface XmlSerializable<T extends XmlSerializable<T>> {
      * @param xmlWriter The {@link XmlWriter} being written to.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
      * cases where the model can serialize using different root element names.
-     * @return The {@link XmlWriter} where the JSON was written for chaining.
+     * @return The {@link XmlWriter} where the XML was written for chaining.
      * @throws XMLStreamException If the object fails to be written to the {@code xmlWriter}.
      */
     XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException;

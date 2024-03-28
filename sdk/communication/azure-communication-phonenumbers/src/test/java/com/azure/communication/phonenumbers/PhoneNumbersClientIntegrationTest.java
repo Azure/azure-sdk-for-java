@@ -6,6 +6,7 @@ import com.azure.communication.phonenumbers.implementation.converters.PhoneNumbe
 import com.azure.communication.phonenumbers.implementation.models.CommunicationError;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.phonenumbers.models.PhoneNumberAdministrativeDivision;
+import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
@@ -447,6 +448,16 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         CommunicationError communicationError = null;
         PhoneNumberError error = PhoneNumberErrorConverter.convert(communicationError);
         assertEquals(null, error);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void searchOperatorInformationSucceeds(HttpClient httpClient) {
+        List<String> phoneNumbers = new ArrayList<String>();
+        phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
+        OperatorInformationResult result = this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
+                .searchOperatorInformation(phoneNumbers);
+        assertEquals(phoneNumbers.get(0), result.getValues().get(0).getPhoneNumber());
     }
 
     private SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(

@@ -8,21 +8,29 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Selected type of domain control validation for managed certificates. */
+/**
+ * Selected type of domain control validation for managed certificates.
+ */
 public final class ManagedCertificateDomainControlValidation
     extends ExpandableStringEnum<ManagedCertificateDomainControlValidation> {
-    /** Static value CNAME for ManagedCertificateDomainControlValidation. */
+    /**
+     * Static value CNAME for ManagedCertificateDomainControlValidation.
+     */
     public static final ManagedCertificateDomainControlValidation CNAME = fromString("CNAME");
 
-    /** Static value HTTP for ManagedCertificateDomainControlValidation. */
+    /**
+     * Static value HTTP for ManagedCertificateDomainControlValidation.
+     */
     public static final ManagedCertificateDomainControlValidation HTTP = fromString("HTTP");
 
-    /** Static value TXT for ManagedCertificateDomainControlValidation. */
+    /**
+     * Static value TXT for ManagedCertificateDomainControlValidation.
+     */
     public static final ManagedCertificateDomainControlValidation TXT = fromString("TXT");
 
     /**
      * Creates a new instance of ManagedCertificateDomainControlValidation value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,7 +39,7 @@ public final class ManagedCertificateDomainControlValidation
 
     /**
      * Creates or finds a ManagedCertificateDomainControlValidation from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ManagedCertificateDomainControlValidation.
      */
@@ -42,7 +50,7 @@ public final class ManagedCertificateDomainControlValidation
 
     /**
      * Gets known ManagedCertificateDomainControlValidation values.
-     *
+     * 
      * @return known ManagedCertificateDomainControlValidation values.
      */
     public static Collection<ManagedCertificateDomainControlValidation> values() {

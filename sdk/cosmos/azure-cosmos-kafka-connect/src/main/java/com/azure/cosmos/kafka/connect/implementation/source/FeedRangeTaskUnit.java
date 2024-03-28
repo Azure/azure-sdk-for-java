@@ -4,7 +4,7 @@
 package com.azure.cosmos.kafka.connect.implementation.source;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.FeedRange;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -26,7 +26,7 @@ public class FeedRangeTaskUnit implements ITaskUnit {
     private String databaseName;
     private String containerName;
     private String containerRid;
-    private Range<String> feedRange;
+    private FeedRange feedRange;
     private String continuationState;
     private String topic;
 
@@ -36,7 +36,7 @@ public class FeedRangeTaskUnit implements ITaskUnit {
         String databaseName,
         String containerName,
         String containerRid,
-        Range<String> feedRange,
+        FeedRange feedRange,
         String continuationState,
         String topic) {
 
@@ -66,7 +66,7 @@ public class FeedRangeTaskUnit implements ITaskUnit {
         return containerRid;
     }
 
-    public Range<String> getFeedRange() {
+    public FeedRange getFeedRange() {
         return feedRange;
     }
 
@@ -154,7 +154,7 @@ public class FeedRangeTaskUnit implements ITaskUnit {
             String databaseName = rootNode.get("databaseName").asText();
             String containerName = rootNode.get("containerName").asText();
             String containerRid = rootNode.get("containerRid").asText();
-            Range<String> feedRange = new Range<String>(rootNode.get("feedRange").asText());
+            FeedRange feedRange = FeedRange.fromString(rootNode.get("feedRange").asText());
             String continuationState = null;
             if (rootNode.has("continuationState")) {
                 continuationState = rootNode.get("continuationState").asText();

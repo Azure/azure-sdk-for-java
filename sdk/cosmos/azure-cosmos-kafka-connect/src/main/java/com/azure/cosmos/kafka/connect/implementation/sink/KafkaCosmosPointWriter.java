@@ -4,6 +4,7 @@
 package com.azure.cosmos.kafka.connect.implementation.sink;
 
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlConfig;
@@ -97,14 +98,17 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
                 itemRequestOptions.setIfMatchETag(etag);
                 KafkaCosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(itemRequestOptions, this.throughputControlConfig);
 
-                return this.getPartitionKeyDefinition(container)
-                        .flatMap(partitionKeyDefinition -> {
-                            return container.replaceItem(
-                                    operation.getSinkRecord().value(),
-                                    getId(operation.getSinkRecord().value()),
-                                    getPartitionKeyValue(operation.getSinkRecord().value(), partitionKeyDefinition),
-                                    itemRequestOptions).then();
-                        });
+                return ImplementationBridgeHelpers
+                        .CosmosAsyncContainerHelper
+                        .getCosmosAsyncContainerAccessor()
+                        .getPartitionKeyDefinition(container)
+                    .flatMap(partitionKeyDefinition -> {
+                        return container.replaceItem(
+                                operation.getSinkRecord().value(),
+                                getId(operation.getSinkRecord().value()),
+                                getPartitionKeyValue(operation.getSinkRecord().value(), partitionKeyDefinition),
+                                itemRequestOptions).then();
+                    });
             },
             (throwable) -> {
                 return KafkaCosmosExceptionsHelper.isNotFoundException(throwable)
@@ -127,7 +131,10 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
 
                 KafkaCosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(itemRequestOptions, this.throughputControlConfig);
 
-                return this.getPartitionKeyDefinition(container)
+                return ImplementationBridgeHelpers
+                        .CosmosAsyncContainerHelper
+                        .getCosmosAsyncContainerAccessor()
+                        .getPartitionKeyDefinition(container)
                     .flatMap(partitionKeyDefinition -> {
                         return container.deleteItem(
                             getId(operation.getSinkRecord().value()),

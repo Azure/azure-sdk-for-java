@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Diagnostics data returned from a detector. */
+/**
+ * Diagnostics data returned from a detector.
+ */
 @Fluent
 public final class DiagnosticsDataApiResponse {
     /*
@@ -22,13 +24,15 @@ public final class DiagnosticsDataApiResponse {
     @JsonProperty(value = "renderingProperties")
     private DiagnosticRendering renderingProperties;
 
-    /** Creates an instance of DiagnosticsDataApiResponse class. */
+    /**
+     * Creates an instance of DiagnosticsDataApiResponse class.
+     */
     public DiagnosticsDataApiResponse() {
     }
 
     /**
      * Get the table property: Table response.
-     *
+     * 
      * @return the table value.
      */
     public DiagnosticDataTableResponseObject table() {
@@ -37,7 +41,7 @@ public final class DiagnosticsDataApiResponse {
 
     /**
      * Set the table property: Table response.
-     *
+     * 
      * @param table the table value to set.
      * @return the DiagnosticsDataApiResponse object itself.
      */
@@ -48,7 +52,7 @@ public final class DiagnosticsDataApiResponse {
 
     /**
      * Get the renderingProperties property: Details of the table response.
-     *
+     * 
      * @return the renderingProperties value.
      */
     public DiagnosticRendering renderingProperties() {
@@ -57,7 +61,7 @@ public final class DiagnosticsDataApiResponse {
 
     /**
      * Set the renderingProperties property: Details of the table response.
-     *
+     * 
      * @param renderingProperties the renderingProperties value to set.
      * @return the DiagnosticsDataApiResponse object itself.
      */
@@ -68,7 +72,7 @@ public final class DiagnosticsDataApiResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

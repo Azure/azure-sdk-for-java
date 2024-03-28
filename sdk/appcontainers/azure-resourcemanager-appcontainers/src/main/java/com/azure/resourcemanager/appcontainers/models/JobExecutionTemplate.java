@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Job's execution template, containing container configuration for a job's execution. */
+/**
+ * Job's execution template, containing container configuration for a job's execution.
+ */
 @Fluent
 public final class JobExecutionTemplate {
     /*
@@ -23,13 +25,15 @@ public final class JobExecutionTemplate {
     @JsonProperty(value = "initContainers")
     private List<JobExecutionContainer> initContainers;
 
-    /** Creates an instance of JobExecutionTemplate class. */
+    /**
+     * Creates an instance of JobExecutionTemplate class.
+     */
     public JobExecutionTemplate() {
     }
 
     /**
      * Get the containers property: List of container definitions for the Container Apps Job.
-     *
+     * 
      * @return the containers value.
      */
     public List<JobExecutionContainer> containers() {
@@ -38,7 +42,7 @@ public final class JobExecutionTemplate {
 
     /**
      * Set the containers property: List of container definitions for the Container Apps Job.
-     *
+     * 
      * @param containers the containers value to set.
      * @return the JobExecutionTemplate object itself.
      */
@@ -49,7 +53,7 @@ public final class JobExecutionTemplate {
 
     /**
      * Get the initContainers property: List of specialized containers that run before job containers.
-     *
+     * 
      * @return the initContainers value.
      */
     public List<JobExecutionContainer> initContainers() {
@@ -58,7 +62,7 @@ public final class JobExecutionTemplate {
 
     /**
      * Set the initContainers property: List of specialized containers that run before job containers.
-     *
+     * 
      * @param initContainers the initContainers value to set.
      * @return the JobExecutionTemplate object itself.
      */
@@ -69,7 +73,7 @@ public final class JobExecutionTemplate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

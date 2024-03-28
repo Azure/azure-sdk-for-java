@@ -655,7 +655,7 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
   # Filter for package in "com.azure*" groupid.
   $artifactPath = Join-Path $artifactDir "com.azure*" $pkgName
   Write-Host "Checking for source jar in artifact path $($artifactPath)"
-  $files = Get-ChildItem -Recurse "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")}
+  $files = @(Get-ChildItem -Recurse "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")})
   if (!$files)
   {
     Write-Host "$($artifactPath) does not have any package"

@@ -7,10 +7,13 @@ package com.azure.resourcemanager.iotfirmwaredefense.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.iotfirmwaredefense.models.ProvisioningState;
 import com.azure.resourcemanager.iotfirmwaredefense.models.Status;
+import com.azure.resourcemanager.iotfirmwaredefense.models.StatusMessage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Firmware properties. */
+/**
+ * Firmware properties.
+ */
 @Fluent
 public final class FirmwareProperties {
     /*
@@ -59,7 +62,7 @@ public final class FirmwareProperties {
      * A list of errors or other messages generated during firmware analysis
      */
     @JsonProperty(value = "statusMessages")
-    private List<Object> statusMessages;
+    private List<StatusMessage> statusMessages;
 
     /*
      * Provisioning state of the resource.
@@ -67,13 +70,15 @@ public final class FirmwareProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of FirmwareProperties class. */
+    /**
+     * Creates an instance of FirmwareProperties class.
+     */
     public FirmwareProperties() {
     }
 
     /**
      * Get the fileName property: File name for a firmware that user uploaded.
-     *
+     * 
      * @return the fileName value.
      */
     public String fileName() {
@@ -82,7 +87,7 @@ public final class FirmwareProperties {
 
     /**
      * Set the fileName property: File name for a firmware that user uploaded.
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the FirmwareProperties object itself.
      */
@@ -93,7 +98,7 @@ public final class FirmwareProperties {
 
     /**
      * Get the vendor property: Firmware vendor.
-     *
+     * 
      * @return the vendor value.
      */
     public String vendor() {
@@ -102,7 +107,7 @@ public final class FirmwareProperties {
 
     /**
      * Set the vendor property: Firmware vendor.
-     *
+     * 
      * @param vendor the vendor value to set.
      * @return the FirmwareProperties object itself.
      */
@@ -113,7 +118,7 @@ public final class FirmwareProperties {
 
     /**
      * Get the model property: Firmware model.
-     *
+     * 
      * @return the model value.
      */
     public String model() {
@@ -122,7 +127,7 @@ public final class FirmwareProperties {
 
     /**
      * Set the model property: Firmware model.
-     *
+     * 
      * @param model the model value to set.
      * @return the FirmwareProperties object itself.
      */
@@ -133,7 +138,7 @@ public final class FirmwareProperties {
 
     /**
      * Get the version property: Firmware version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -142,7 +147,7 @@ public final class FirmwareProperties {
 
     /**
      * Set the version property: Firmware version.
-     *
+     * 
      * @param version the version value to set.
      * @return the FirmwareProperties object itself.
      */
@@ -153,7 +158,7 @@ public final class FirmwareProperties {
 
     /**
      * Get the description property: User-specified description of the firmware.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -162,7 +167,7 @@ public final class FirmwareProperties {
 
     /**
      * Set the description property: User-specified description of the firmware.
-     *
+     * 
      * @param description the description value to set.
      * @return the FirmwareProperties object itself.
      */
@@ -173,7 +178,7 @@ public final class FirmwareProperties {
 
     /**
      * Get the fileSize property: File size of the uploaded firmware image.
-     *
+     * 
      * @return the fileSize value.
      */
     public Long fileSize() {
@@ -182,7 +187,7 @@ public final class FirmwareProperties {
 
     /**
      * Set the fileSize property: File size of the uploaded firmware image.
-     *
+     * 
      * @param fileSize the fileSize value to set.
      * @return the FirmwareProperties object itself.
      */
@@ -193,7 +198,7 @@ public final class FirmwareProperties {
 
     /**
      * Get the status property: The status of firmware scan.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -202,7 +207,7 @@ public final class FirmwareProperties {
 
     /**
      * Set the status property: The status of firmware scan.
-     *
+     * 
      * @param status the status value to set.
      * @return the FirmwareProperties object itself.
      */
@@ -213,27 +218,27 @@ public final class FirmwareProperties {
 
     /**
      * Get the statusMessages property: A list of errors or other messages generated during firmware analysis.
-     *
+     * 
      * @return the statusMessages value.
      */
-    public List<Object> statusMessages() {
+    public List<StatusMessage> statusMessages() {
         return this.statusMessages;
     }
 
     /**
      * Set the statusMessages property: A list of errors or other messages generated during firmware analysis.
-     *
+     * 
      * @param statusMessages the statusMessages value to set.
      * @return the FirmwareProperties object itself.
      */
-    public FirmwareProperties withStatusMessages(List<Object> statusMessages) {
+    public FirmwareProperties withStatusMessages(List<StatusMessage> statusMessages) {
         this.statusMessages = statusMessages;
         return this;
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -242,9 +247,12 @@ public final class FirmwareProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (statusMessages() != null) {
+            statusMessages().forEach(e -> e.validate());
+        }
     }
 }

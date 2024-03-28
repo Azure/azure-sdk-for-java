@@ -7,7 +7,9 @@ package com.azure.resourcemanager.mobilenetwork.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Certificate provisioning state. */
+/**
+ * Certificate provisioning state.
+ */
 @Immutable
 public final class CertificateProvisioning {
     /*
@@ -22,13 +24,15 @@ public final class CertificateProvisioning {
     @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
     private String reason;
 
-    /** Creates an instance of CertificateProvisioning class. */
+    /**
+     * Creates an instance of CertificateProvisioning class.
+     */
     public CertificateProvisioning() {
     }
 
     /**
      * Get the state property: The certificate's provisioning state.
-     *
+     * 
      * @return the state value.
      */
     public CertificateProvisioningState state() {
@@ -37,7 +41,7 @@ public final class CertificateProvisioning {
 
     /**
      * Get the reason property: Reason for certificate provisioning failure.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -46,7 +50,7 @@ public final class CertificateProvisioning {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

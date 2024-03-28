@@ -19,10 +19,10 @@ import java.io.Writer;
  */
 public final class DefaultJsonProvider implements JsonProvider {
     private static final String JSON_READER_EXCEPTION
-        = "Both 'json' and 'options' must be passed as non-null to " + "create an instance of JsonReader.";
+        = "Both 'json' and 'options' must be passed as non-null to create an instance of JsonReader.";
 
     private static final String JSON_WRITER_EXCEPTION
-        = "Both 'json' and 'options' must be passed as non-null to " + "create an instance of JsonWriter.";
+        = "Both 'json' and 'options' must be passed as non-null to create an instance of JsonWriter.";
 
     @Override
     public JsonReader createReader(byte[] json, JsonOptions options) throws IOException {

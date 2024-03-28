@@ -3,15 +3,12 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosBridgeInternal;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.guava25.base.Stopwatch;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
@@ -21,6 +18,7 @@ import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaAndValue;
@@ -117,7 +115,8 @@ public class CosmosSourceTask extends SourceTask {
                     ((FeedRangeTaskUnit) taskUnit).getContainerName(),
                     ((FeedRangeTaskUnit) taskUnit).getContainerRid(),
                     ((FeedRangeTaskUnit) taskUnit).getFeedRange(),
-                    stopwatch.elapsed().toMillis());
+                    stopwatch.elapsed().toMillis()
+                );
             }
             return results;
         } catch (Exception e) {
@@ -245,34 +244,23 @@ public class CosmosSourceTask extends SourceTask {
 
     private Mono<Boolean> handleFeedRangeGone(FeedRangeTaskUnit feedRangeTaskUnit) {
         // need to find out whether it is split or merge
-        AsyncDocumentClient asyncDocumentClient = CosmosBridgeInternal.getAsyncDocumentClient(this.cosmosClient);
         CosmosAsyncContainer container =
             this.cosmosClient
                 .getDatabase(feedRangeTaskUnit.getDatabaseName())
                 .getContainer(feedRangeTaskUnit.getContainerName());
-        return asyncDocumentClient
-            .getCollectionCache()
-            .resolveByNameAsync(null, BridgeInternal.extractContainerSelfLink(container), null)
-            .flatMap(collection -> {
-                return asyncDocumentClient.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(
-                    null,
-                    collection.getResourceId(),
-                    feedRangeTaskUnit.getFeedRange(),
-                    true,
-                    null);
-            })
-            .flatMap(pkRangesValueHolder -> {
-                if (pkRangesValueHolder == null || pkRangesValueHolder.v == null) {
-                    return Mono.error(new IllegalStateException("There are no overlapping ranges for the range"));
-                }
 
-                List<PartitionKeyRange> partitionKeyRanges = pkRangesValueHolder.v;
-                if (partitionKeyRanges.size() == 1) {
+        return ImplementationBridgeHelpers
+            .CosmosAsyncContainerHelper
+            .getCosmosAsyncContainerAccessor()
+            .getOverlappingFeedRanges(container, feedRangeTaskUnit.getFeedRange())
+            .flatMap(overlappedRanges -> {
+
+                if (overlappedRanges.size() == 1) {
                     // merge happens
                     LOGGER.info(
                         "FeedRange {} is merged into {}, but we will continue polling data from feedRange {}",
                         feedRangeTaskUnit.getFeedRange(),
-                        partitionKeyRanges.get(0).toRange(),
+                        overlappedRanges.get(0).toString(),
                         feedRangeTaskUnit.getFeedRange());
 
                     // Continue using polling data from the current task unit feedRange
@@ -281,16 +269,16 @@ public class CosmosSourceTask extends SourceTask {
                     LOGGER.info(
                         "FeedRange {} is split into {}. Will create new task units. ",
                         feedRangeTaskUnit.getFeedRange(),
-                        partitionKeyRanges.stream().map(PartitionKeyRange::toRange).collect(Collectors.toList())
+                        overlappedRanges.stream().map(FeedRange::toString).collect(Collectors.toList())
                     );
 
-                    for (PartitionKeyRange pkRange : partitionKeyRanges) {
+                    for (FeedRange pkRange : overlappedRanges) {
                         FeedRangeTaskUnit childTaskUnit =
                             new FeedRangeTaskUnit(
                                 feedRangeTaskUnit.getDatabaseName(),
                                 feedRangeTaskUnit.getContainerName(),
                                 feedRangeTaskUnit.getContainerRid(),
-                                pkRange.toRange(),
+                                pkRange,
                                 feedRangeTaskUnit.getContinuationState(),
                                 feedRangeTaskUnit.getTopic());
                         this.taskUnitsQueue.add(childTaskUnit);
@@ -320,7 +308,7 @@ public class CosmosSourceTask extends SourceTask {
 
     private CosmosChangeFeedRequestOptions getChangeFeedRequestOptions(FeedRangeTaskUnit feedRangeTaskUnit) {
         CosmosChangeFeedRequestOptions changeFeedRequestOptions = null;
-        FeedRange changeFeedRange = new FeedRangeEpkImpl(feedRangeTaskUnit.getFeedRange());
+        FeedRange changeFeedRange = feedRangeTaskUnit.getFeedRange();
         if (StringUtils.isEmpty(feedRangeTaskUnit.getContinuationState())) {
             switch (this.taskConfig.getChangeFeedConfig().getChangeFeedStartFromModes()) {
                 case BEGINNING:
@@ -346,8 +334,23 @@ public class CosmosSourceTask extends SourceTask {
                 changeFeedRequestOptions.allVersionsAndDeletes();
             }
         } else {
-            changeFeedRequestOptions =
-                CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(feedRangeTaskUnit.getContinuationState());
+            try {
+                KafkaCosmosChangeFeedState kafkaCosmosChangeFeedState =
+                    Utils
+                        .getSimpleObjectMapper()
+                        .readValue(feedRangeTaskUnit.getContinuationState(), KafkaCosmosChangeFeedState.class);
+
+                changeFeedRequestOptions =
+                    ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
+                        .getCosmosChangeFeedRequestOptionsAccessor()
+                        .createForProcessingFromContinuation(
+                            kafkaCosmosChangeFeedState.getResponseContinuation(),
+                            kafkaCosmosChangeFeedState.getTargetRange(),
+                            kafkaCosmosChangeFeedState.getItemLsn());
+
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         return changeFeedRequestOptions;
