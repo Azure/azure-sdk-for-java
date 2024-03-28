@@ -8,32 +8,34 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.GovernanceAssignmentInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of GovernanceAssignment. */
+/**
+ * An immutable client-side representation of GovernanceAssignment.
+ */
 public interface GovernanceAssignment {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the owner property: The Owner for the governance assignment - e.g. user@contoso.com - see example.
-     *
+     * 
      * @return the owner value.
      */
     String owner();
@@ -41,21 +43,21 @@ public interface GovernanceAssignment {
     /**
      * Gets the remediationDueDate property: The remediation due-date - after this date Secure Score will be affected
      * (in case of active grace-period).
-     *
+     * 
      * @return the remediationDueDate value.
      */
     OffsetDateTime remediationDueDate();
 
     /**
      * Gets the remediationEta property: The ETA (estimated time of arrival) for remediation (optional), see example.
-     *
+     * 
      * @return the remediationEta value.
      */
     RemediationEta remediationEta();
 
     /**
      * Gets the isGracePeriod property: Defines whether there is a grace period on the governance assignment.
-     *
+     * 
      * @return the isGracePeriod value.
      */
     Boolean isGracePeriod();
@@ -63,7 +65,7 @@ public interface GovernanceAssignment {
     /**
      * Gets the governanceEmailNotification property: The email notifications settings for the governance rule, states
      * whether to disable notifications for mangers and owners.
-     *
+     * 
      * @return the governanceEmailNotification value.
      */
     GovernanceEmailNotification governanceEmailNotification();
@@ -71,248 +73,293 @@ public interface GovernanceAssignment {
     /**
      * Gets the additionalData property: The additional data for the governance assignment - e.g. links to ticket
      * (optional), see example.
-     *
+     * 
      * @return the additionalData value.
      */
     GovernanceAssignmentAdditionalData additionalData();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.GovernanceAssignmentInner object.
-     *
+     * 
      * @return the inner object.
      */
     GovernanceAssignmentInner innerModel();
 
-    /** The entirety of the GovernanceAssignment definition. */
+    /**
+     * The entirety of the GovernanceAssignment definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
-    /** The GovernanceAssignment definition stages. */
+
+    /**
+     * The GovernanceAssignment definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the GovernanceAssignment definition. */
+        /**
+         * The first stage of the GovernanceAssignment definition.
+         */
         interface Blank extends WithParentResource {
         }
-        /** The stage of the GovernanceAssignment definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the GovernanceAssignment definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies scope, assessmentName.
-             *
+             * 
              * @param scope The scope of the Governance assignments. Valid scopes are: subscription (format:
-             *     'subscriptions/{subscriptionId}'), or security connector (format:
-             *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+             * 'subscriptions/{subscriptionId}'), or security connector (format:
+             * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
              * @param assessmentName The Assessment Key - A unique key for the assessment type.
              * @return the next definition stage.
              */
             WithCreate withExistingAssessment(String scope, String assessmentName);
         }
+
         /**
          * The stage of the GovernanceAssignment definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithOwner,
-                DefinitionStages.WithRemediationDueDate,
-                DefinitionStages.WithRemediationEta,
-                DefinitionStages.WithIsGracePeriod,
-                DefinitionStages.WithGovernanceEmailNotification,
-                DefinitionStages.WithAdditionalData {
+        interface WithCreate extends DefinitionStages.WithOwner, DefinitionStages.WithRemediationDueDate,
+            DefinitionStages.WithRemediationEta, DefinitionStages.WithIsGracePeriod,
+            DefinitionStages.WithGovernanceEmailNotification, DefinitionStages.WithAdditionalData {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             GovernanceAssignment create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             GovernanceAssignment create(Context context);
         }
-        /** The stage of the GovernanceAssignment definition allowing to specify owner. */
+
+        /**
+         * The stage of the GovernanceAssignment definition allowing to specify owner.
+         */
         interface WithOwner {
             /**
              * Specifies the owner property: The Owner for the governance assignment - e.g. user@contoso.com - see
              * example.
-             *
+             * 
              * @param owner The Owner for the governance assignment - e.g. user@contoso.com - see example.
              * @return the next definition stage.
              */
             WithCreate withOwner(String owner);
         }
-        /** The stage of the GovernanceAssignment definition allowing to specify remediationDueDate. */
+
+        /**
+         * The stage of the GovernanceAssignment definition allowing to specify remediationDueDate.
+         */
         interface WithRemediationDueDate {
             /**
              * Specifies the remediationDueDate property: The remediation due-date - after this date Secure Score will
              * be affected (in case of active grace-period).
-             *
+             * 
              * @param remediationDueDate The remediation due-date - after this date Secure Score will be affected (in
-             *     case of active grace-period).
+             * case of active grace-period).
              * @return the next definition stage.
              */
             WithCreate withRemediationDueDate(OffsetDateTime remediationDueDate);
         }
-        /** The stage of the GovernanceAssignment definition allowing to specify remediationEta. */
+
+        /**
+         * The stage of the GovernanceAssignment definition allowing to specify remediationEta.
+         */
         interface WithRemediationEta {
             /**
              * Specifies the remediationEta property: The ETA (estimated time of arrival) for remediation (optional),
              * see example.
-             *
+             * 
              * @param remediationEta The ETA (estimated time of arrival) for remediation (optional), see example.
              * @return the next definition stage.
              */
             WithCreate withRemediationEta(RemediationEta remediationEta);
         }
-        /** The stage of the GovernanceAssignment definition allowing to specify isGracePeriod. */
+
+        /**
+         * The stage of the GovernanceAssignment definition allowing to specify isGracePeriod.
+         */
         interface WithIsGracePeriod {
             /**
              * Specifies the isGracePeriod property: Defines whether there is a grace period on the governance
              * assignment.
-             *
+             * 
              * @param isGracePeriod Defines whether there is a grace period on the governance assignment.
              * @return the next definition stage.
              */
             WithCreate withIsGracePeriod(Boolean isGracePeriod);
         }
-        /** The stage of the GovernanceAssignment definition allowing to specify governanceEmailNotification. */
+
+        /**
+         * The stage of the GovernanceAssignment definition allowing to specify governanceEmailNotification.
+         */
         interface WithGovernanceEmailNotification {
             /**
              * Specifies the governanceEmailNotification property: The email notifications settings for the governance
              * rule, states whether to disable notifications for mangers and owners.
-             *
+             * 
              * @param governanceEmailNotification The email notifications settings for the governance rule, states
-             *     whether to disable notifications for mangers and owners.
+             * whether to disable notifications for mangers and owners.
              * @return the next definition stage.
              */
             WithCreate withGovernanceEmailNotification(GovernanceEmailNotification governanceEmailNotification);
         }
-        /** The stage of the GovernanceAssignment definition allowing to specify additionalData. */
+
+        /**
+         * The stage of the GovernanceAssignment definition allowing to specify additionalData.
+         */
         interface WithAdditionalData {
             /**
              * Specifies the additionalData property: The additional data for the governance assignment - e.g. links to
              * ticket (optional), see example.
-             *
+             * 
              * @param additionalData The additional data for the governance assignment - e.g. links to ticket
-             *     (optional), see example.
+             * (optional), see example.
              * @return the next definition stage.
              */
             WithCreate withAdditionalData(GovernanceAssignmentAdditionalData additionalData);
         }
     }
+
     /**
      * Begins update for the GovernanceAssignment resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     GovernanceAssignment.Update update();
 
-    /** The template for GovernanceAssignment update. */
+    /**
+     * The template for GovernanceAssignment update.
+     */
     interface Update
-        extends UpdateStages.WithOwner,
-            UpdateStages.WithRemediationDueDate,
-            UpdateStages.WithRemediationEta,
-            UpdateStages.WithIsGracePeriod,
-            UpdateStages.WithGovernanceEmailNotification,
-            UpdateStages.WithAdditionalData {
+        extends UpdateStages.WithOwner, UpdateStages.WithRemediationDueDate, UpdateStages.WithRemediationEta,
+        UpdateStages.WithIsGracePeriod, UpdateStages.WithGovernanceEmailNotification, UpdateStages.WithAdditionalData {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         GovernanceAssignment apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         GovernanceAssignment apply(Context context);
     }
-    /** The GovernanceAssignment update stages. */
+
+    /**
+     * The GovernanceAssignment update stages.
+     */
     interface UpdateStages {
-        /** The stage of the GovernanceAssignment update allowing to specify owner. */
+        /**
+         * The stage of the GovernanceAssignment update allowing to specify owner.
+         */
         interface WithOwner {
             /**
              * Specifies the owner property: The Owner for the governance assignment - e.g. user@contoso.com - see
              * example.
-             *
+             * 
              * @param owner The Owner for the governance assignment - e.g. user@contoso.com - see example.
              * @return the next definition stage.
              */
             Update withOwner(String owner);
         }
-        /** The stage of the GovernanceAssignment update allowing to specify remediationDueDate. */
+
+        /**
+         * The stage of the GovernanceAssignment update allowing to specify remediationDueDate.
+         */
         interface WithRemediationDueDate {
             /**
              * Specifies the remediationDueDate property: The remediation due-date - after this date Secure Score will
              * be affected (in case of active grace-period).
-             *
+             * 
              * @param remediationDueDate The remediation due-date - after this date Secure Score will be affected (in
-             *     case of active grace-period).
+             * case of active grace-period).
              * @return the next definition stage.
              */
             Update withRemediationDueDate(OffsetDateTime remediationDueDate);
         }
-        /** The stage of the GovernanceAssignment update allowing to specify remediationEta. */
+
+        /**
+         * The stage of the GovernanceAssignment update allowing to specify remediationEta.
+         */
         interface WithRemediationEta {
             /**
              * Specifies the remediationEta property: The ETA (estimated time of arrival) for remediation (optional),
              * see example.
-             *
+             * 
              * @param remediationEta The ETA (estimated time of arrival) for remediation (optional), see example.
              * @return the next definition stage.
              */
             Update withRemediationEta(RemediationEta remediationEta);
         }
-        /** The stage of the GovernanceAssignment update allowing to specify isGracePeriod. */
+
+        /**
+         * The stage of the GovernanceAssignment update allowing to specify isGracePeriod.
+         */
         interface WithIsGracePeriod {
             /**
              * Specifies the isGracePeriod property: Defines whether there is a grace period on the governance
              * assignment.
-             *
+             * 
              * @param isGracePeriod Defines whether there is a grace period on the governance assignment.
              * @return the next definition stage.
              */
             Update withIsGracePeriod(Boolean isGracePeriod);
         }
-        /** The stage of the GovernanceAssignment update allowing to specify governanceEmailNotification. */
+
+        /**
+         * The stage of the GovernanceAssignment update allowing to specify governanceEmailNotification.
+         */
         interface WithGovernanceEmailNotification {
             /**
              * Specifies the governanceEmailNotification property: The email notifications settings for the governance
              * rule, states whether to disable notifications for mangers and owners.
-             *
+             * 
              * @param governanceEmailNotification The email notifications settings for the governance rule, states
-             *     whether to disable notifications for mangers and owners.
+             * whether to disable notifications for mangers and owners.
              * @return the next definition stage.
              */
             Update withGovernanceEmailNotification(GovernanceEmailNotification governanceEmailNotification);
         }
-        /** The stage of the GovernanceAssignment update allowing to specify additionalData. */
+
+        /**
+         * The stage of the GovernanceAssignment update allowing to specify additionalData.
+         */
         interface WithAdditionalData {
             /**
              * Specifies the additionalData property: The additional data for the governance assignment - e.g. links to
              * ticket (optional), see example.
-             *
+             * 
              * @param additionalData The additional data for the governance assignment - e.g. links to ticket
-             *     (optional), see example.
+             * (optional), see example.
              * @return the next definition stage.
              */
             Update withAdditionalData(GovernanceAssignmentAdditionalData additionalData);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     GovernanceAssignment refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

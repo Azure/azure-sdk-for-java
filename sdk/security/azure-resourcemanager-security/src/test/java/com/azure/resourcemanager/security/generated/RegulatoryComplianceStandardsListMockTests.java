@@ -32,38 +32,27 @@ public final class RegulatoryComplianceStandardsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"state\":\"Failed\",\"passedControls\":1575047020,\"failedControls\":1278915874,\"skippedControls\":1490193432,\"unsupportedControls\":146432492},\"id\":\"wiinjdllw\",\"name\":\"tlepowavvqxua\",\"type\":\"g\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"state\":\"Unsupported\",\"passedControls\":1887536848,\"failedControls\":1014166164,\"skippedControls\":1948237782,\"unsupportedControls\":794544985},\"id\":\"grblwalaossnqeb\",\"name\":\"otbptg\",\"type\":\"sman\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<RegulatoryComplianceStandard> response =
-            manager.regulatoryComplianceStandards().list("uiadhbatecaatsdo", com.azure.core.util.Context.NONE);
+        PagedIterable<RegulatoryComplianceStandard> response
+            = manager.regulatoryComplianceStandards().list("faar", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(State.FAILED, response.iterator().next().state());
+        Assertions.assertEquals(State.UNSUPPORTED, response.iterator().next().state());
     }
 }

@@ -12,8 +12,8 @@ public final class MdeOnboardingDataImpl implements MdeOnboardingData {
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    MdeOnboardingDataImpl(
-        MdeOnboardingDataInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    MdeOnboardingDataImpl(MdeOnboardingDataInner innerObject,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

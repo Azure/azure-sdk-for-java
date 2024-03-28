@@ -5,12 +5,13 @@
 package com.azure.resourcemanager.playwrighttesting.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.playwrighttesting.fluent.models.AccountUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The type used for update operations of the Account. */
+/**
+ * The type used for update operations of the Account.
+ */
 @Fluent
 public final class AccountUpdate {
     /*
@@ -24,15 +25,17 @@ public final class AccountUpdate {
      * The updatable properties of the Account.
      */
     @JsonProperty(value = "properties")
-    private AccountUpdateProperties innerProperties;
+    private AccountUpdateProperties properties;
 
-    /** Creates an instance of AccountUpdate class. */
+    /**
+     * Creates an instance of AccountUpdate class.
+     */
     public AccountUpdate() {
     }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -41,7 +44,7 @@ public final class AccountUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the AccountUpdate object itself.
      */
@@ -51,105 +54,33 @@ public final class AccountUpdate {
     }
 
     /**
-     * Get the innerProperties property: The updatable properties of the Account.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: The updatable properties of the Account.
+     * 
+     * @return the properties value.
      */
-    private AccountUpdateProperties innerProperties() {
-        return this.innerProperties;
+    public AccountUpdateProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the regionalAffinity property: This property sets the connection region for Playwright client workers to
-     * cloud-hosted browsers. If enabled, workers connect to browsers in the closest Azure region, ensuring lower
-     * latency. If disabled, workers connect to browsers in the Azure region in which the workspace was initially
-     * created.
-     *
-     * @return the regionalAffinity value.
-     */
-    public EnablementStatus regionalAffinity() {
-        return this.innerProperties() == null ? null : this.innerProperties().regionalAffinity();
-    }
-
-    /**
-     * Set the regionalAffinity property: This property sets the connection region for Playwright client workers to
-     * cloud-hosted browsers. If enabled, workers connect to browsers in the closest Azure region, ensuring lower
-     * latency. If disabled, workers connect to browsers in the Azure region in which the workspace was initially
-     * created.
-     *
-     * @param regionalAffinity the regionalAffinity value to set.
+     * Set the properties property: The updatable properties of the Account.
+     * 
+     * @param properties the properties value to set.
      * @return the AccountUpdate object itself.
      */
-    public AccountUpdate withRegionalAffinity(EnablementStatus regionalAffinity) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AccountUpdateProperties();
-        }
-        this.innerProperties().withRegionalAffinity(regionalAffinity);
-        return this;
-    }
-
-    /**
-     * Get the scalableExecution property: When enabled, Playwright client workers can connect to cloud-hosted browsers.
-     * This can increase the number of parallel workers for a test run, significantly minimizing test completion
-     * durations.
-     *
-     * @return the scalableExecution value.
-     */
-    public EnablementStatus scalableExecution() {
-        return this.innerProperties() == null ? null : this.innerProperties().scalableExecution();
-    }
-
-    /**
-     * Set the scalableExecution property: When enabled, Playwright client workers can connect to cloud-hosted browsers.
-     * This can increase the number of parallel workers for a test run, significantly minimizing test completion
-     * durations.
-     *
-     * @param scalableExecution the scalableExecution value to set.
-     * @return the AccountUpdate object itself.
-     */
-    public AccountUpdate withScalableExecution(EnablementStatus scalableExecution) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AccountUpdateProperties();
-        }
-        this.innerProperties().withScalableExecution(scalableExecution);
-        return this;
-    }
-
-    /**
-     * Get the reporting property: When enabled, this feature allows the workspace to upload and display test results,
-     * including artifacts like traces and screenshots, in the Playwright portal. This enables faster and more efficient
-     * troubleshooting.
-     *
-     * @return the reporting value.
-     */
-    public EnablementStatus reporting() {
-        return this.innerProperties() == null ? null : this.innerProperties().reporting();
-    }
-
-    /**
-     * Set the reporting property: When enabled, this feature allows the workspace to upload and display test results,
-     * including artifacts like traces and screenshots, in the Playwright portal. This enables faster and more efficient
-     * troubleshooting.
-     *
-     * @param reporting the reporting value to set.
-     * @return the AccountUpdate object itself.
-     */
-    public AccountUpdate withReporting(EnablementStatus reporting) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AccountUpdateProperties();
-        }
-        this.innerProperties().withReporting(reporting);
+    public AccountUpdate withProperties(AccountUpdateProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

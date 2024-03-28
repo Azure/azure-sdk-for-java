@@ -45,7 +45,8 @@ public final class DatasetsDeleteWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.datasets().deleteWithResponse("nbc", "znlscfbwkh", "e", com.azure.core.util.Context.NONE);
+        manager.datasets().deleteWithResponse("dqfynrdagmihxjpf", "zpuibczlr", "wfrmqbmcmg",
+            com.azure.core.util.Context.NONE);
 
     }
 }

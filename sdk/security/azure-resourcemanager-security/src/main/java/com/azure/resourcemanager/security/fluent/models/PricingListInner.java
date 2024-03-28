@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of pricing configurations response. */
+/**
+ * List of pricing configurations response.
+ */
 @Fluent
 public final class PricingListInner {
     /*
@@ -18,13 +20,15 @@ public final class PricingListInner {
     @JsonProperty(value = "value", required = true)
     private List<PricingInner> value;
 
-    /** Creates an instance of PricingListInner class. */
+    /**
+     * Creates an instance of PricingListInner class.
+     */
     public PricingListInner() {
     }
 
     /**
      * Get the value property: List of pricing configurations.
-     *
+     * 
      * @return the value value.
      */
     public List<PricingInner> value() {
@@ -33,7 +37,7 @@ public final class PricingListInner {
 
     /**
      * Set the value property: List of pricing configurations.
-     *
+     * 
      * @param value the value value to set.
      * @return the PricingListInner object itself.
      */
@@ -44,14 +48,13 @@ public final class PricingListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model PricingListInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model PricingListInner"));
         } else {
             value().forEach(e -> e.validate());
         }

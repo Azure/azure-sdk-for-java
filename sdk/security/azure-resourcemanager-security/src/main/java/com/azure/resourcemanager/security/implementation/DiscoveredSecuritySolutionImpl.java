@@ -13,8 +13,7 @@ public final class DiscoveredSecuritySolutionImpl implements DiscoveredSecurityS
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    DiscoveredSecuritySolutionImpl(
-        DiscoveredSecuritySolutionInner innerObject,
+    DiscoveredSecuritySolutionImpl(DiscoveredSecuritySolutionInner innerObject,
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

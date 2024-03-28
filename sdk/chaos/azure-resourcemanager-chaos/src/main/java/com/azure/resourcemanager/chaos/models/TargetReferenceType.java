@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enum of the Target reference type. */
+/**
+ * Enum of the Target reference type.
+ */
 public final class TargetReferenceType extends ExpandableStringEnum<TargetReferenceType> {
-    /** Static value ChaosTarget for TargetReferenceType. */
+    /**
+     * Static value ChaosTarget for TargetReferenceType.
+     */
     public static final TargetReferenceType CHAOS_TARGET = fromString("ChaosTarget");
 
     /**
      * Creates a new instance of TargetReferenceType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class TargetReferenceType extends ExpandableStringEnum<TargetRefere
 
     /**
      * Creates or finds a TargetReferenceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TargetReferenceType.
      */
@@ -35,7 +39,7 @@ public final class TargetReferenceType extends ExpandableStringEnum<TargetRefere
 
     /**
      * Gets known TargetReferenceType values.
-     *
+     * 
      * @return known TargetReferenceType values.
      */
     public static Collection<TargetReferenceType> values() {

@@ -11,16 +11,16 @@ public final class CosmosDbMongoDbApiSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CosmosDbMongoDbApiSink model = BinaryData.fromString(
-            "{\"type\":\"CosmosDbMongoDbApiSink\",\"writeBehavior\":\"datamgvm\",\"writeBatchSize\":\"datamjazqlmigkx\",\"writeBatchTimeout\":\"datashadnholkoyxms\",\"sinkRetryCount\":\"datadsqwvzunrqvu\",\"sinkRetryWait\":\"dataxs\",\"maxConcurrentConnections\":\"dataqzdfjwo\",\"disableMetricsCollection\":\"datazifrmoftilhoyemh\",\"\":{\"rcdtkv\":\"datapgdd\",\"ubmhsxtry\":\"datarifcqmfv\"}}")
+            "{\"type\":\"CosmosDbMongoDbApiSink\",\"writeBehavior\":\"dataxvjjwlwysrs\",\"writeBatchSize\":\"datahciazwebts\",\"writeBatchTimeout\":\"dataqkanuxjud\",\"sinkRetryCount\":\"datazodnxlcdgkc\",\"sinkRetryWait\":\"dataancjlkrskzw\",\"maxConcurrentConnections\":\"databafqzihmvw\",\"disableMetricsCollection\":\"datajwvqiahoqjz\",\"\":{\"hgwzbystwuuwe\":\"datawdlrtcfulmz\",\"qichzcajity\":\"datantjssjbpnatpym\"}}")
             .toObject(CosmosDbMongoDbApiSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CosmosDbMongoDbApiSink model = new CosmosDbMongoDbApiSink().withWriteBatchSize("datamjazqlmigkx")
-            .withWriteBatchTimeout("datashadnholkoyxms").withSinkRetryCount("datadsqwvzunrqvu")
-            .withSinkRetryWait("dataxs").withMaxConcurrentConnections("dataqzdfjwo")
-            .withDisableMetricsCollection("datazifrmoftilhoyemh").withWriteBehavior("datamgvm");
+        CosmosDbMongoDbApiSink model = new CosmosDbMongoDbApiSink().withWriteBatchSize("datahciazwebts")
+            .withWriteBatchTimeout("dataqkanuxjud").withSinkRetryCount("datazodnxlcdgkc")
+            .withSinkRetryWait("dataancjlkrskzw").withMaxConcurrentConnections("databafqzihmvw")
+            .withDisableMetricsCollection("datajwvqiahoqjz").withWriteBehavior("dataxvjjwlwysrs");
         model = BinaryData.fromObject(model).toObject(CosmosDbMongoDbApiSink.class);
     }
 }

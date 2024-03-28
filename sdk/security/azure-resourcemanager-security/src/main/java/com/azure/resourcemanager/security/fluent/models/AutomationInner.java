@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The security automation resource. */
+/**
+ * The security automation resource.
+ */
 @Fluent
 public final class AutomationInner extends Resource {
     /*
@@ -22,27 +24,33 @@ public final class AutomationInner extends Resource {
     @JsonProperty(value = "properties")
     private AutomationProperties innerProperties;
 
-    /** Creates an instance of AutomationInner class. */
+    /**
+     * Creates an instance of AutomationInner class.
+     */
     public AutomationInner() {
     }
 
     /**
      * Get the innerProperties property: Security automation data.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AutomationProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AutomationInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AutomationInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -51,7 +59,7 @@ public final class AutomationInner extends Resource {
 
     /**
      * Get the description property: The security automation description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -60,7 +68,7 @@ public final class AutomationInner extends Resource {
 
     /**
      * Set the description property: The security automation description.
-     *
+     * 
      * @param description the description value to set.
      * @return the AutomationInner object itself.
      */
@@ -74,7 +82,7 @@ public final class AutomationInner extends Resource {
 
     /**
      * Get the isEnabled property: Indicates whether the security automation is enabled.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -83,7 +91,7 @@ public final class AutomationInner extends Resource {
 
     /**
      * Set the isEnabled property: Indicates whether the security automation is enabled.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the AutomationInner object itself.
      */
@@ -97,9 +105,9 @@ public final class AutomationInner extends Resource {
 
     /**
      * Get the scopes property: A collection of scopes on which the security automations logic is applied. Supported
-     * scopes are the subscription itself or a resource group under that subscription. The automation will only apply on
-     * defined scopes.
-     *
+     * scopes are the subscription itself or a resource group under that subscription. The automation will only apply
+     * on defined scopes.
+     * 
      * @return the scopes value.
      */
     public List<AutomationScope> scopes() {
@@ -108,9 +116,9 @@ public final class AutomationInner extends Resource {
 
     /**
      * Set the scopes property: A collection of scopes on which the security automations logic is applied. Supported
-     * scopes are the subscription itself or a resource group under that subscription. The automation will only apply on
-     * defined scopes.
-     *
+     * scopes are the subscription itself or a resource group under that subscription. The automation will only apply
+     * on defined scopes.
+     * 
      * @param scopes the scopes value to set.
      * @return the AutomationInner object itself.
      */
@@ -125,7 +133,7 @@ public final class AutomationInner extends Resource {
     /**
      * Get the sources property: A collection of the source event types which evaluate the security automation set of
      * rules.
-     *
+     * 
      * @return the sources value.
      */
     public List<AutomationSource> sources() {
@@ -135,7 +143,7 @@ public final class AutomationInner extends Resource {
     /**
      * Set the sources property: A collection of the source event types which evaluate the security automation set of
      * rules.
-     *
+     * 
      * @param sources the sources value to set.
      * @return the AutomationInner object itself.
      */
@@ -150,7 +158,7 @@ public final class AutomationInner extends Resource {
     /**
      * Get the actions property: A collection of the actions which are triggered if all the configured rules
      * evaluations, within at least one rule set, are true.
-     *
+     * 
      * @return the actions value.
      */
     public List<AutomationAction> actions() {
@@ -160,7 +168,7 @@ public final class AutomationInner extends Resource {
     /**
      * Set the actions property: A collection of the actions which are triggered if all the configured rules
      * evaluations, within at least one rule set, are true.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the AutomationInner object itself.
      */
@@ -174,7 +182,7 @@ public final class AutomationInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,22 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class AwAssumeRoleAuthenticationDetailsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AwAssumeRoleAuthenticationDetailsProperties model =
-            BinaryData
-                .fromString(
-                    "{\"authenticationType\":\"awsAssumeRole\",\"accountId\":\"mnhjevdyzn\",\"awsAssumeRoleArn\":\"ajsvk\",\"awsExternalId\":\"kmq\",\"authenticationProvisioningState\":\"IncorrectPolicy\",\"grantedPermissions\":[\"AWS::SecurityAudit\",\"AWS::AmazonSSMAutomationRole\",\"GCP::Security"
-                        + " Center Admin Viewer\",\"AWS::SecurityAudit\"]}")
-                .toObject(AwAssumeRoleAuthenticationDetailsProperties.class);
-        Assertions.assertEquals("ajsvk", model.awsAssumeRoleArn());
-        Assertions.assertEquals("kmq", model.awsExternalId());
+        AwAssumeRoleAuthenticationDetailsProperties model = BinaryData.fromString(
+            "{\"authenticationType\":\"awsAssumeRole\",\"accountId\":\"ae\",\"awsAssumeRoleArn\":\"scflwtjdtlri\",\"awsExternalId\":\"fooy\",\"authenticationProvisioningState\":\"Invalid\",\"grantedPermissions\":[\"AWS::SecurityAudit\",\"GCP::Security Center Admin Viewer\"]}")
+            .toObject(AwAssumeRoleAuthenticationDetailsProperties.class);
+        Assertions.assertEquals("scflwtjdtlri", model.awsAssumeRoleArn());
+        Assertions.assertEquals("fooy", model.awsExternalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AwAssumeRoleAuthenticationDetailsProperties model =
-            new AwAssumeRoleAuthenticationDetailsProperties().withAwsAssumeRoleArn("ajsvk").withAwsExternalId("kmq");
+        AwAssumeRoleAuthenticationDetailsProperties model = new AwAssumeRoleAuthenticationDetailsProperties()
+            .withAwsAssumeRoleArn("scflwtjdtlri").withAwsExternalId("fooy");
         model = BinaryData.fromObject(model).toObject(AwAssumeRoleAuthenticationDetailsProperties.class);
-        Assertions.assertEquals("ajsvk", model.awsAssumeRoleArn());
-        Assertions.assertEquals("kmq", model.awsExternalId());
+        Assertions.assertEquals("scflwtjdtlri", model.awsAssumeRoleArn());
+        Assertions.assertEquals("fooy", model.awsExternalId());
     }
 }

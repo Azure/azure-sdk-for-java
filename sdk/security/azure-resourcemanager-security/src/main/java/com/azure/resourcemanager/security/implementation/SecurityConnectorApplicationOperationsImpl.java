@@ -20,22 +20,18 @@ public final class SecurityConnectorApplicationOperationsImpl implements Securit
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public SecurityConnectorApplicationOperationsImpl(
-        SecurityConnectorApplicationOperationsClient innerClient,
+    public SecurityConnectorApplicationOperationsImpl(SecurityConnectorApplicationOperationsClient innerClient,
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Application> getWithResponse(
-        String resourceGroupName, String securityConnectorName, String applicationId, Context context) {
-        Response<ApplicationInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, securityConnectorName, applicationId, context);
+    public Response<Application> getWithResponse(String resourceGroupName, String securityConnectorName,
+        String applicationId, Context context) {
+        Response<ApplicationInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, securityConnectorName, applicationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplicationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -51,32 +47,22 @@ public final class SecurityConnectorApplicationOperationsImpl implements Securit
         }
     }
 
-    public Response<Application> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String securityConnectorName,
-        String applicationId,
-        ApplicationInner application,
-        Context context) {
-        Response<ApplicationInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, securityConnectorName, applicationId, application, context);
+    public Response<Application> createOrUpdateWithResponse(String resourceGroupName, String securityConnectorName,
+        String applicationId, ApplicationInner application, Context context) {
+        Response<ApplicationInner> inner = this.serviceClient().createOrUpdateWithResponse(resourceGroupName,
+            securityConnectorName, applicationId, application, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplicationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Application createOrUpdate(
-        String resourceGroupName, String securityConnectorName, String applicationId, ApplicationInner application) {
-        ApplicationInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, securityConnectorName, applicationId, application);
+    public Application createOrUpdate(String resourceGroupName, String securityConnectorName, String applicationId,
+        ApplicationInner application) {
+        ApplicationInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, securityConnectorName, applicationId, application);
         if (inner != null) {
             return new ApplicationImpl(inner, this.manager());
         } else {
@@ -84,11 +70,10 @@ public final class SecurityConnectorApplicationOperationsImpl implements Securit
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String securityConnectorName, String applicationId, Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(resourceGroupName, securityConnectorName, applicationId, context);
+    public Response<Void> deleteWithResponse(String resourceGroupName, String securityConnectorName,
+        String applicationId, Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, securityConnectorName, applicationId,
+            context);
     }
 
     public void delete(String resourceGroupName, String securityConnectorName, String applicationId) {

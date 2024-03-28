@@ -317,7 +317,9 @@ private class PointWriter(container: CosmosAsyncContainer,
 
         return
       } catch {
-        case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
+        case e: CosmosException if (Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) ||
+          Exceptions.isNotFoundExceptionCore(e.getStatusCode, e.getSubStatusCode) ||
+          e.getStatusCode == 0) => // Gateway mode reports inability to connect due to PoolAcquirePendingLimitException as status code 0
           log.logWarning(
             s"upsert item $upsertOperation attempt #$attempt max remaining retries "
               + s"${cosmosWriteConfig.maxRetryCount - attempt}, encountered ${e.getMessage}")

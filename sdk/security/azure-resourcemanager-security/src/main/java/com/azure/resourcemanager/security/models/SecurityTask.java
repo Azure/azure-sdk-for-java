@@ -7,39 +7,41 @@ package com.azure.resourcemanager.security.models;
 import com.azure.resourcemanager.security.fluent.models.SecurityTaskInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of SecurityTask. */
+/**
+ * An immutable client-side representation of SecurityTask.
+ */
 public interface SecurityTask {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the state property: State of the task (Active, Resolved etc.).
-     *
+     * 
      * @return the state value.
      */
     String state();
 
     /**
      * Gets the creationTimeUtc property: The time this task was discovered in UTC.
-     *
+     * 
      * @return the creationTimeUtc value.
      */
     OffsetDateTime creationTimeUtc();
@@ -47,28 +49,28 @@ public interface SecurityTask {
     /**
      * Gets the securityTaskParameters property: Changing set of properties, depending on the task type that is derived
      * from the name field.
-     *
+     * 
      * @return the securityTaskParameters value.
      */
     SecurityTaskParameters securityTaskParameters();
 
     /**
      * Gets the lastStateChangeTimeUtc property: The time this task's details were last changed in UTC.
-     *
+     * 
      * @return the lastStateChangeTimeUtc value.
      */
     OffsetDateTime lastStateChangeTimeUtc();
 
     /**
      * Gets the subState property: Additional data on the state of the task.
-     *
+     * 
      * @return the subState value.
      */
     String subState();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.SecurityTaskInner object.
-     *
+     * 
      * @return the inner object.
      */
     SecurityTaskInner innerModel();

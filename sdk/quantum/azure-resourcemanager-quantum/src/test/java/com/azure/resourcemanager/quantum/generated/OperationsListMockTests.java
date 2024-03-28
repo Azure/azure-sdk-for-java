@@ -31,42 +31,31 @@ public final class OperationsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"name\":\"ivfxzsjabibsyst\",\"isDataAction\":true,\"display\":{\"provider\":\"jpvkvpbjxbkzbzkd\",\"resource\":\"cjabudurgkakmo\",\"operation\":\"hjjklff\",\"description\":\"ouw\"}}]}";
+        String responseStr
+            = "{\"value\":[{\"name\":\"gkfpaga\",\"isDataAction\":true,\"display\":{\"provider\":\"pqblylsyxkqjnsj\",\"resource\":\"vti\",\"operation\":\"xsdszuempsb\",\"description\":\"f\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AzureQuantumManager manager =
-            AzureQuantumManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureQuantumManager manager = AzureQuantumManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ivfxzsjabibsyst", response.iterator().next().name());
+        Assertions.assertEquals("gkfpaga", response.iterator().next().name());
         Assertions.assertEquals(true, response.iterator().next().isDataAction());
-        Assertions.assertEquals("jpvkvpbjxbkzbzkd", response.iterator().next().display().provider());
-        Assertions.assertEquals("cjabudurgkakmo", response.iterator().next().display().resource());
-        Assertions.assertEquals("hjjklff", response.iterator().next().display().operation());
-        Assertions.assertEquals("ouw", response.iterator().next().display().description());
+        Assertions.assertEquals("pqblylsyxkqjnsj", response.iterator().next().display().provider());
+        Assertions.assertEquals("vti", response.iterator().next().display().resource());
+        Assertions.assertEquals("xsdszuempsb", response.iterator().next().display().operation());
+        Assertions.assertEquals("f", response.iterator().next().display().description());
     }
 }

@@ -40,7 +40,7 @@ public final class ImageGenerations {
      * @param data the data value to set.
      */
     @Generated
-    public ImageGenerations(OffsetDateTime createdAt, List<ImageGenerationData> data) {
+    private ImageGenerations(OffsetDateTime createdAt, List<ImageGenerationData> data) {
         this.createdAt = createdAt.toEpochSecond();
         this.data = data;
     }

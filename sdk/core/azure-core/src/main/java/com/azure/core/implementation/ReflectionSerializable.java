@@ -13,6 +13,8 @@ import com.azure.json.JsonWriter;
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -56,16 +58,22 @@ public final class ReflectionSerializable {
         try {
             xmlSerializable = Class.forName("com.azure.xml.XmlSerializable");
             xmlReader = Class.forName("com.azure.xml.XmlReader");
-
-            Class<?> xmlProviders = Class.forName("com.azure.xml.XmlProviders");
-
-            xmlReaderCreator = ReflectionUtils.getMethodInvoker(xmlProviders,
-                xmlProviders.getDeclaredMethod("createReader", byte[].class));
-
-            xmlWriterCreator = ReflectionUtils.getMethodInvoker(xmlProviders,
-                xmlProviders.getDeclaredMethod("createWriter", OutputStream.class));
-
             Class<?> xmlWriter = Class.forName("com.azure.xml.XmlWriter");
+
+            try {
+                Class<?> xmlProviders = Class.forName("com.azure.xml.XmlProviders");
+
+                xmlReaderCreator = ReflectionUtils.getMethodInvoker(xmlProviders,
+                    xmlProviders.getDeclaredMethod("createReader", byte[].class));
+
+                xmlWriterCreator = ReflectionUtils.getMethodInvoker(xmlProviders,
+                    xmlProviders.getDeclaredMethod("createWriter", OutputStream.class));
+            } catch (LinkageError | ReflectiveOperationException ex) {
+                xmlReaderCreator = ReflectionUtils.getMethodInvoker(xmlReader,
+                    xmlReader.getDeclaredMethod("fromBytes", byte[].class));
+                xmlWriterCreator = ReflectionUtils.getMethodInvoker(xmlWriter,
+                    xmlWriter.getDeclaredMethod("toStream", OutputStream.class));
+            }
 
             xmlWriterWriteStartDocument
                 = ReflectionUtils.getMethodInvoker(xmlWriter, xmlWriter.getDeclaredMethod("writeStartDocument"));
@@ -105,7 +113,30 @@ public final class ReflectionSerializable {
      * @return Whether {@code bodyContentClass} can be used as {@code JsonSerializable}.
      */
     public static boolean supportsJsonSerializable(Class<?> bodyContentClass) {
-        return JsonSerializable.class.isAssignableFrom(bodyContentClass);
+        if (!JsonSerializable.class.isAssignableFrom(bodyContentClass)) {
+            return false;
+        }
+
+        boolean hasFromJson = false;
+        boolean hasToJson = false;
+        for (Method method : bodyContentClass.getDeclaredMethods()) {
+            if (method.getName().equals("fromJson")
+                && (method.getModifiers() & Modifier.STATIC) != 0
+                && method.getParameterCount() == 1
+                && method.getParameterTypes()[0].equals(JsonReader.class)) {
+                hasFromJson = true;
+            } else if (method.getName().equals("toJson")
+                && method.getParameterCount() == 1
+                && method.getParameterTypes()[0].equals(JsonWriter.class)) {
+                hasToJson = true;
+            }
+
+            if (hasFromJson && hasToJson) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

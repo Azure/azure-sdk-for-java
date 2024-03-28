@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The TopologyResource model. */
+/**
+ * The TopologyResource model.
+ */
 @Immutable
 public final class TopologyResourceInner extends ProxyResource {
     /*
@@ -26,13 +28,15 @@ public final class TopologyResourceInner extends ProxyResource {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
-    /** Creates an instance of TopologyResourceInner class. */
+    /**
+     * Creates an instance of TopologyResourceInner class.
+     */
     public TopologyResourceInner() {
     }
 
     /**
      * Get the innerProperties property: The properties property.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TopologyResourceProperties innerProperties() {
@@ -41,7 +45,7 @@ public final class TopologyResourceInner extends ProxyResource {
 
     /**
      * Get the location property: Location where the resource is stored.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -50,7 +54,7 @@ public final class TopologyResourceInner extends ProxyResource {
 
     /**
      * Get the calculatedDateTime property: The UTC time on which the topology was calculated.
-     *
+     * 
      * @return the calculatedDateTime value.
      */
     public OffsetDateTime calculatedDateTime() {
@@ -59,7 +63,7 @@ public final class TopologyResourceInner extends ProxyResource {
 
     /**
      * Get the topologyResources property: Azure resources which are part of this topology resource.
-     *
+     * 
      * @return the topologyResources value.
      */
     public List<TopologySingleResource> topologyResources() {
@@ -68,7 +72,7 @@ public final class TopologyResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

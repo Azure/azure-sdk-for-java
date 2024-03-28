@@ -9,23 +9,31 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Execution of a process that isn't allowed. Allow list consists of process names to allow. */
+/**
+ * Execution of a process that isn't allowed. Allow list consists of process names to allow.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
 @JsonTypeName("ProcessNotAllowed")
 @Fluent
 public final class ProcessNotAllowed extends AllowlistCustomAlertRule {
-    /** Creates an instance of ProcessNotAllowed class. */
+    /**
+     * Creates an instance of ProcessNotAllowed class.
+     */
     public ProcessNotAllowed() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProcessNotAllowed withAllowlistValues(List<String> allowlistValues) {
         super.withAllowlistValues(allowlistValues);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProcessNotAllowed withIsEnabled(boolean isEnabled) {
         super.withIsEnabled(isEnabled);
@@ -34,7 +42,7 @@ public final class ProcessNotAllowed extends AllowlistCustomAlertRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The UpdateIotSecuritySolutionData model. */
+/**
+ * The UpdateIotSecuritySolutionData model.
+ */
 @Fluent
 public final class UpdateIotSecuritySolutionData extends TagsResource {
     /*
@@ -19,20 +21,24 @@ public final class UpdateIotSecuritySolutionData extends TagsResource {
     @JsonProperty(value = "properties")
     private UpdateIoTSecuritySolutionProperties innerProperties;
 
-    /** Creates an instance of UpdateIotSecuritySolutionData class. */
+    /**
+     * Creates an instance of UpdateIotSecuritySolutionData class.
+     */
     public UpdateIotSecuritySolutionData() {
     }
 
     /**
      * Get the innerProperties property: Security Solution data.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UpdateIoTSecuritySolutionProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UpdateIotSecuritySolutionData withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -41,7 +47,7 @@ public final class UpdateIotSecuritySolutionData extends TagsResource {
 
     /**
      * Get the userDefinedResources property: Properties of the IoT Security solution's user defined resources.
-     *
+     * 
      * @return the userDefinedResources value.
      */
     public UserDefinedResourcesProperties userDefinedResources() {
@@ -50,7 +56,7 @@ public final class UpdateIotSecuritySolutionData extends TagsResource {
 
     /**
      * Set the userDefinedResources property: Properties of the IoT Security solution's user defined resources.
-     *
+     * 
      * @param userDefinedResources the userDefinedResources value to set.
      * @return the UpdateIotSecuritySolutionData object itself.
      */
@@ -64,7 +70,7 @@ public final class UpdateIotSecuritySolutionData extends TagsResource {
 
     /**
      * Get the recommendationsConfiguration property: List of the configuration status for each recommendation type.
-     *
+     * 
      * @return the recommendationsConfiguration value.
      */
     public List<RecommendationConfigurationProperties> recommendationsConfiguration() {
@@ -73,12 +79,12 @@ public final class UpdateIotSecuritySolutionData extends TagsResource {
 
     /**
      * Set the recommendationsConfiguration property: List of the configuration status for each recommendation type.
-     *
+     * 
      * @param recommendationsConfiguration the recommendationsConfiguration value to set.
      * @return the UpdateIotSecuritySolutionData object itself.
      */
-    public UpdateIotSecuritySolutionData withRecommendationsConfiguration(
-        List<RecommendationConfigurationProperties> recommendationsConfiguration) {
+    public UpdateIotSecuritySolutionData
+        withRecommendationsConfiguration(List<RecommendationConfigurationProperties> recommendationsConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new UpdateIoTSecuritySolutionProperties();
         }
@@ -88,7 +94,7 @@ public final class UpdateIotSecuritySolutionData extends TagsResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

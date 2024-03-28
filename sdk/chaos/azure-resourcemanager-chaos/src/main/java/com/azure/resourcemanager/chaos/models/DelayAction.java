@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
 
-/** Model that represents a delay action. */
+/**
+ * Model that represents a delay action.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("delay")
 @Fluent
@@ -22,13 +24,15 @@ public final class DelayAction extends ChaosExperimentAction {
     @JsonProperty(value = "duration", required = true)
     private Duration duration;
 
-    /** Creates an instance of DelayAction class. */
+    /**
+     * Creates an instance of DelayAction class.
+     */
     public DelayAction() {
     }
 
     /**
      * Get the duration property: ISO8601 formatted string that represents a duration.
-     *
+     * 
      * @return the duration value.
      */
     public Duration duration() {
@@ -37,7 +41,7 @@ public final class DelayAction extends ChaosExperimentAction {
 
     /**
      * Set the duration property: ISO8601 formatted string that represents a duration.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the DelayAction object itself.
      */
@@ -46,7 +50,9 @@ public final class DelayAction extends ChaosExperimentAction {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DelayAction withName(String name) {
         super.withName(name);
@@ -55,16 +61,15 @@ public final class DelayAction extends ChaosExperimentAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (duration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property duration in model DelayAction"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property duration in model DelayAction"));
         }
     }
 

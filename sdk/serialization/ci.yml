@@ -32,12 +32,12 @@ parameters:
     default: false
 
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: core
+    ServiceDirectory: serialization
     JavadocSafeJavaBuildVersion: '1.21'
+    TimeoutInMinutes: 90
     EnableBatchRelease: true
-    ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     Artifacts:
       - name: azure-json
         groupId: com.azure
@@ -47,8 +47,6 @@ extends:
         groupId: com.azure
         safeName: azurexml
         releaseInBatch: ${{ parameters.release_azurexml }}
-    MatrixReplace:
-      - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
     AdditionalStagesAfterBuild:
       - stage: AzureJsonReflectVersionSupport
         displayName: 'azure-json-reflect Version Support'
@@ -56,7 +54,6 @@ extends:
         jobs:
           - template: /eng/pipelines/templates/jobs/ci.versions.tests.yml
             parameters:
-              ServiceDirectory: core
               Artifacts:
                 - name: azure-json-reflect
                   groupId: com.azure
@@ -75,10 +72,11 @@ extends:
                 - jackson_2.14
                 - jackson_2.15
                 - jackson_2.16
+                - jackson_2.17
               TestGoals: surefire:test
 
     LiveTestStages:
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           ServiceDirectory: serialization
           Artifacts:
@@ -88,10 +86,3 @@ extends:
             - name: azure-xml
               groupId: com.azure
               safeName: azurexml
-          MatrixReplace:
-            - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
-      - template: /sdk/storage/tests-template.yml
-        parameters:
-          AdditionalMatrixReplace:
-            - TestFromSource=(.*)/true
-

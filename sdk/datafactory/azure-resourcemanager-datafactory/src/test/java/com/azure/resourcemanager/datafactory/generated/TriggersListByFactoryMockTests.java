@@ -32,7 +32,7 @@ public final class TriggersListByFactoryMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"Trigger\",\"description\":\"nq\",\"runtimeState\":\"Disabled\",\"annotations\":[\"datadztdjsxwuk\",\"datacwymbpredclvcl\"],\"\":{\"swasvey\":\"dataqsvtcrk\"}},\"name\":\"rbmff\",\"type\":\"yyykwwhs\",\"etag\":\"bgwzmanplzbzcgzh\",\"id\":\"vk\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"Trigger\",\"description\":\"mxctkwx\",\"runtimeState\":\"Disabled\",\"annotations\":[\"databfeucdq\",\"datajazhtetimcjkh\",\"dataxx\"],\"\":{\"ssvrhcjhszmymfri\":\"datalcekonmcxriqfrrx\"}},\"name\":\"m\",\"type\":\"jkizqqdawmrk\",\"etag\":\"ixbbhjgnjlzdj\",\"id\":\"xwobxs\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,9 +50,9 @@ public final class TriggersListByFactoryMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<TriggerResource> response
-            = manager.triggers().listByFactory("wojt", "yrdzogtrycb", com.azure.core.util.Context.NONE);
+            = manager.triggers().listByFactory("ymsqnliou", "av", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vk", response.iterator().next().id());
-        Assertions.assertEquals("nq", response.iterator().next().properties().description());
+        Assertions.assertEquals("xwobxs", response.iterator().next().id());
+        Assertions.assertEquals("mxctkwx", response.iterator().next().properties().description());
     }
 }

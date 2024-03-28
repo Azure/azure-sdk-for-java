@@ -26,7 +26,7 @@ public interface AccessListClusterSuccessResponse {
     ConfluentListMetadata metadata();
 
     /**
-     * Gets the data property: Data of the environments list.
+     * Gets the data property: List of clusters.
      * 
      * @return the data value.
      */

@@ -11,26 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class FileDetailsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FileDetailsProperties model =
-            BinaryData
-                .fromString(
-                    "{\"createdOn\":\"2021-02-11T23:15:26Z\",\"chunkSize\":55.672485,\"fileSize\":54.449566,\"numberOfChunks\":78.99571}")
-                .toObject(FileDetailsProperties.class);
-        Assertions.assertEquals(55.672485F, model.chunkSize());
-        Assertions.assertEquals(54.449566F, model.fileSize());
-        Assertions.assertEquals(78.99571F, model.numberOfChunks());
+        FileDetailsProperties model = BinaryData.fromString(
+            "{\"createdOn\":\"2021-05-25T05:03:14Z\",\"chunkSize\":671328296,\"fileSize\":1223269261,\"numberOfChunks\":2011830272}")
+            .toObject(FileDetailsProperties.class);
+        Assertions.assertEquals(671328296, model.chunkSize());
+        Assertions.assertEquals(1223269261, model.fileSize());
+        Assertions.assertEquals(2011830272, model.numberOfChunks());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileDetailsProperties model =
-            new FileDetailsProperties()
-                .withChunkSize(55.672485F)
-                .withFileSize(54.449566F)
-                .withNumberOfChunks(78.99571F);
+        FileDetailsProperties model = new FileDetailsProperties().withChunkSize(671328296).withFileSize(1223269261)
+            .withNumberOfChunks(2011830272);
         model = BinaryData.fromObject(model).toObject(FileDetailsProperties.class);
-        Assertions.assertEquals(55.672485F, model.chunkSize());
-        Assertions.assertEquals(54.449566F, model.fileSize());
-        Assertions.assertEquals(78.99571F, model.numberOfChunks());
+        Assertions.assertEquals(671328296, model.chunkSize());
+        Assertions.assertEquals(1223269261, model.fileSize());
+        Assertions.assertEquals(2011830272, model.numberOfChunks());
     }
 }

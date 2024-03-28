@@ -30,7 +30,7 @@ public final class IntegrationRuntimeNodesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"nodeName\":\"jzhhjgvuvjsn\",\"machineName\":\"nuujkjkqyewtlom\",\"hostServiceUri\":\"xaqvrazthdua\",\"status\":\"InitializeFailed\",\"capabilities\":{\"mgheamxidjdpt\":\"hlnhgngqciiopo\"},\"versionStatus\":\"ie\",\"version\":\"auyphugwauipatod\",\"registerTime\":\"2021-11-05T05:14:24Z\",\"lastConnectTime\":\"2021-04-02T01:24:07Z\",\"expiryTime\":\"2021-02-18T13:41:39Z\",\"lastStartTime\":\"2021-12-02T05:39:26Z\",\"lastStopTime\":\"2021-03-24T03:50:49Z\",\"lastUpdateResult\":\"Fail\",\"lastStartUpdateTime\":\"2021-07-06T18:00:42Z\",\"lastEndUpdateTime\":\"2021-08-13T17:30:02Z\",\"isActiveDispatcher\":true,\"concurrentJobsLimit\":1673002875,\"maxConcurrentJobs\":633341735,\"\":{\"blndlahr\":\"dataulefltubwpe\",\"tkehfoephipho\":\"datax\",\"mv\":\"datagmcuqjouk\",\"ogfxbv\":\"dataqismvo\"}}";
+            = "{\"nodeName\":\"jxtzy\",\"machineName\":\"qmp\",\"hostServiceUri\":\"xiioasvykt\",\"status\":\"Limited\",\"capabilities\":{\"egqzqdcohsqufsy\":\"wjwl\",\"z\":\"hsnzsjoxuogyakex\",\"nbmngstvnkshaul\":\"lh\",\"oqyin\":\"tvlyl\"},\"versionStatus\":\"gxncoaiyflvvmd\",\"version\":\"ytaocxak\",\"registerTime\":\"2021-02-13T13:27:18Z\",\"lastConnectTime\":\"2021-11-19T07:48:54Z\",\"expiryTime\":\"2021-11-08T15:41:18Z\",\"lastStartTime\":\"2021-10-24T21:52:16Z\",\"lastStopTime\":\"2021-04-19T16:57:35Z\",\"lastUpdateResult\":\"None\",\"lastStartUpdateTime\":\"2021-06-01T19:59:49Z\",\"lastEndUpdateTime\":\"2021-06-04T07:00:41Z\",\"isActiveDispatcher\":false,\"concurrentJobsLimit\":482006335,\"maxConcurrentJobs\":2014408540,\"\":{\"vgusfrkjfrtauf\":\"datalrwwmukx\",\"qmjodvknxj\":\"dataxxvzqin\",\"fqodc\":\"datattkhmhquca\"}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -48,7 +48,8 @@ public final class IntegrationRuntimeNodesGetWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SelfHostedIntegrationRuntimeNode response = manager.integrationRuntimeNodes()
-            .getWithResponse("iqcjylkdby", "bxjkmavppo", "gimt", "ucls", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("dsygdzzufr", "ewqwdglmfsjpl", "dhzltmywy", "fuovkgqtzg", com.azure.core.util.Context.NONE)
+            .getValue();
 
     }
 }
