@@ -20,13 +20,13 @@ public final class StringIndexType extends ExpandableStringEnum<StringIndexType>
     public static final StringIndexType TEXT_ELEMENTS = fromString("textElements");
 
     /**
-     * Character unit represented by a single unicode code point.  Used by Python 3.
+     * Character unit represented by a single unicode code point. Used by Python 3.
      */
     @Generated
     public static final StringIndexType UNICODE_CODE_POINT = fromString("unicodeCodePoint");
 
     /**
-     * Character unit represented by a 16-bit Unicode code unit.  Used by JavaScript,
+     * Character unit represented by a 16-bit Unicode code unit. Used by JavaScript,
      * Java, and .NET.
      */
     @Generated

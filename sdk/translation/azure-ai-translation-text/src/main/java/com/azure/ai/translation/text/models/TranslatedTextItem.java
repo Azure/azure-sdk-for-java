@@ -52,7 +52,8 @@ public final class TranslatedTextItem {
     }
 
     /**
-     * Get the detectedLanguage property: The detectedLanguage property is only present in the result object when language auto-detection is requested.
+     * Get the detectedLanguage property: The detectedLanguage property is only present in the result object when
+     * language auto-detection is requested.
      *
      * @return the detectedLanguage value.
      */
@@ -62,7 +63,8 @@ public final class TranslatedTextItem {
     }
 
     /**
-     * Get the translations property: An array of translation results. The size of the array matches the number of target
+     * Get the translations property: An array of translation results. The size of the array matches the number of
+     * target
      * languages specified through the to query parameter.
      *
      * @return the translations value.
@@ -73,7 +75,8 @@ public final class TranslatedTextItem {
     }
 
     /**
-     * Get the sourceText property: Input text in the default script of the source language. sourceText property is present only when
+     * Get the sourceText property: Input text in the default script of the source language. sourceText property is
+     * present only when
      * the input is expressed in a script that's not the usual script for the language. For example,
      * if the input were Arabic written in Latin script, then sourceText.text would be the same Arabic text
      * converted into Arab script.

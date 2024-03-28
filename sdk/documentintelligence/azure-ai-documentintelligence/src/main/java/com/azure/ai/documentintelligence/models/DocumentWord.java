@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * A word object consisting of a contiguous sequence of characters.  For non-space
+ * A word object consisting of a contiguous sequence of characters. For non-space
  * delimited languages, such as Chinese, Japanese, and Korean, each character is
  * represented as its own word.
  */
@@ -122,7 +122,8 @@ public final class DocumentWord implements JsonSerializable<DocumentWord> {
      * Reads an instance of DocumentWord from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of DocumentWord if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of DocumentWord if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentWord.
      */

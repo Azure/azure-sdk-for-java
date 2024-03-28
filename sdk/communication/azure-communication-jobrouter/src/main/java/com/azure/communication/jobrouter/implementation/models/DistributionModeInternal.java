@@ -58,7 +58,8 @@ public class DistributionModeInternal {
     }
 
     /**
-     * Get the minConcurrentOffers property: Governs the minimum desired number of active concurrent offers a job can have.
+     * Get the minConcurrentOffers property: Governs the minimum desired number of active concurrent offers a job can
+     * have.
      *
      * @return the minConcurrentOffers value.
      */
@@ -68,7 +69,8 @@ public class DistributionModeInternal {
     }
 
     /**
-     * Set the minConcurrentOffers property: Governs the minimum desired number of active concurrent offers a job can have.
+     * Set the minConcurrentOffers property: Governs the minimum desired number of active concurrent offers a job can
+     * have.
      *
      * @param minConcurrentOffers the minConcurrentOffers value to set.
      * @return the DistributionModeInternal object itself.
@@ -102,7 +104,9 @@ public class DistributionModeInternal {
     }
 
     /**
-     * Get the bypassSelectors property: If set to true, then router will match workers to jobs even if they don't match label selectors. Warning: You may get workers that are not qualified for a job they are matched with if you set this variable to true. This flag is intended more for temporary usage. By default, set to false.
+     * Get the bypassSelectors property: If set to true, then router will match workers to jobs even if they don't match
+     * label selectors. Warning: You may get workers that are not qualified for a job they are matched with if you set
+     * this variable to true. This flag is intended more for temporary usage. By default, set to false.
      *
      * @return the bypassSelectors value.
      */
@@ -112,7 +116,9 @@ public class DistributionModeInternal {
     }
 
     /**
-     * Set the bypassSelectors property: If set to true, then router will match workers to jobs even if they don't match label selectors. Warning: You may get workers that are not qualified for a job they are matched with if you set this variable to true. This flag is intended more for temporary usage. By default, set to false.
+     * Set the bypassSelectors property: If set to true, then router will match workers to jobs even if they don't match
+     * label selectors. Warning: You may get workers that are not qualified for a job they are matched with if you set
+     * this variable to true. This flag is intended more for temporary usage. By default, set to false.
      *
      * @param bypassSelectors the bypassSelectors value to set.
      * @return the DistributionModeInternal object itself.

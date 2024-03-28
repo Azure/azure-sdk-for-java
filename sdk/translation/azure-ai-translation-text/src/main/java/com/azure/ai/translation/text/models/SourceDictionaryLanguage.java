@@ -83,7 +83,8 @@ public final class SourceDictionaryLanguage {
     }
 
     /**
-     * Get the dir property: Directionality, which is rtl for right-to-left languages or ltr for left-to-right languages.
+     * Get the dir property: Directionality, which is rtl for right-to-left languages or ltr for left-to-right
+     * languages.
      *
      * @return the dir value.
      */
@@ -93,7 +94,8 @@ public final class SourceDictionaryLanguage {
     }
 
     /**
-     * Get the translations property: List of languages with alterative translations and examples for the query expressed in the source language.
+     * Get the translations property: List of languages with alterative translations and examples for the query
+     * expressed in the source language.
      *
      * @return the translations value.
      */

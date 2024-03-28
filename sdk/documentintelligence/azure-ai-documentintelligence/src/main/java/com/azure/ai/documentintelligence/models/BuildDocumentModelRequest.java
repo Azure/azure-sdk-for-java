@@ -111,7 +111,7 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
     }
 
     /**
-     * Get the azureBlobSource property: Azure Blob Storage location containing the training data.  Either
+     * Get the azureBlobSource property: Azure Blob Storage location containing the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
      * 
      * @return the azureBlobSource value.
@@ -122,7 +122,7 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
     }
 
     /**
-     * Set the azureBlobSource property: Azure Blob Storage location containing the training data.  Either
+     * Set the azureBlobSource property: Azure Blob Storage location containing the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
      * 
      * @param azureBlobSource the azureBlobSource value to set.
@@ -135,7 +135,7 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
     }
 
     /**
-     * Get the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data.  Either
+     * Get the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
      * 
      * @return the azureBlobFileListSource value.
@@ -146,7 +146,7 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
     }
 
     /**
-     * Set the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data.  Either
+     * Set the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
      * 
      * @param azureBlobFileListSource the azureBlobFileListSource value to set.
@@ -201,7 +201,8 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
      * Reads an instance of BuildDocumentModelRequest from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BuildDocumentModelRequest if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of BuildDocumentModelRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BuildDocumentModelRequest.
      */

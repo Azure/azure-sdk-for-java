@@ -100,7 +100,8 @@ public final class AtlasEntitiesWithExtInfo implements JsonSerializable<AtlasEnt
      * Reads an instance of AtlasEntitiesWithExtInfo from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AtlasEntitiesWithExtInfo if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of AtlasEntitiesWithExtInfo if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AtlasEntitiesWithExtInfo.
      */
     @Generated

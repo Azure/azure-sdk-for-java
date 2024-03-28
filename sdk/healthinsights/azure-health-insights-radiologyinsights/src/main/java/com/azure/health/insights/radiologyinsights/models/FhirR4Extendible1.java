@@ -14,16 +14,16 @@ import java.util.List;
 
 /**
  * An inference made by the Radiology Insights model regarding a patient.
- *   - AgeMismatch
- *   - SexMismatch
- *   - LateralityDiscrepancy
- *   - CompleteOrderDiscrepancy
- *   - LimitedOrderDiscrepancy
- *   - Finding
- *   - CriticalResult
- *   - FollowupRecommendation
- *   - RadiologyProcedure
- *   - FollowupCommunication.
+ * - AgeMismatch
+ * - SexMismatch
+ * - LateralityDiscrepancy
+ * - CompleteOrderDiscrepancy
+ * - LimitedOrderDiscrepancy
+ * - Finding
+ * - CriticalResult
+ * - FollowupRecommendation
+ * - RadiologyProcedure
+ * - FollowupCommunication.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = FhirR4Extendible1.class, visible = true)
 @JsonTypeName("Fhir_R4_Extendible1")

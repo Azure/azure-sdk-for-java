@@ -50,7 +50,9 @@ public final class TextCategoriesAnalysis implements JsonSerializable<TextCatego
     }
 
     /**
-     * Get the severity property: The value increases with the severity of the input content. The value of this field is determined by the output type specified in the request. The output type could be ‘FourSeverityLevels’ or ‘EightSeverity Levels’, and the output value can be 0, 2, 4, 6 or 0, 1, 2, 3, 4, 5, 6, or 7.
+     * Get the severity property: The value increases with the severity of the input content. The value of this field is
+     * determined by the output type specified in the request. The output type could be ‘FourSeverityLevels’ or
+     * ‘EightSeverity Levels’, and the output value can be 0, 2, 4, 6 or 0, 1, 2, 3, 4, 5, 6, or 7.
      *
      * @return the severity value.
      */
@@ -75,7 +77,8 @@ public final class TextCategoriesAnalysis implements JsonSerializable<TextCatego
      * Reads an instance of TextCategoriesAnalysis from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of TextCategoriesAnalysis if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of TextCategoriesAnalysis if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TextCategoriesAnalysis.
      */

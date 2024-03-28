@@ -89,7 +89,8 @@ public final class CopyAuthorization implements JsonSerializable<CopyAuthorizati
     }
 
     /**
-     * Get the targetResourceRegion property: Location of the target Azure resource where the document model should be copied
+     * Get the targetResourceRegion property: Location of the target Azure resource where the document model should be
+     * copied
      * to.
      * 
      * @return the targetResourceRegion value.
@@ -162,7 +163,8 @@ public final class CopyAuthorization implements JsonSerializable<CopyAuthorizati
      * Reads an instance of CopyAuthorization from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of CopyAuthorization if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of CopyAuthorization if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CopyAuthorization.
      */

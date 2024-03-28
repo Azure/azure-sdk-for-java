@@ -59,7 +59,8 @@ public final class Encounter {
 
     /**
      * Get the period property: Time period of the visit.
-     * In case of admission, use timePeriod.start to indicate the admission time and timePeriod.end to indicate the discharge time.
+     * In case of admission, use timePeriod.start to indicate the admission time and timePeriod.end to indicate the
+     * discharge time.
      *
      * @return the period value.
      */
@@ -70,7 +71,8 @@ public final class Encounter {
 
     /**
      * Set the period property: Time period of the visit.
-     * In case of admission, use timePeriod.start to indicate the admission time and timePeriod.end to indicate the discharge time.
+     * In case of admission, use timePeriod.start to indicate the admission time and timePeriod.end to indicate the
+     * discharge time.
      *
      * @param period the period value to set.
      * @return the Encounter object itself.

@@ -4,7 +4,8 @@
 /**
  * <!-- start generated doc -->
  * Package containing the implementations for RadiologyInsights.
- * Azure AI Health Insights provides an API that serves insight models, specific for Health &amp; Life Sciences, that perform analysis and provide inferences to be used by a human.
+ * Azure AI Health Insights provides an API that serves insight models, specific for Health &amp; Life Sciences, that
+ * perform analysis and provide inferences to be used by a human.
  * <!-- end generated doc -->
  */
 package com.azure.health.insights.radiologyinsights.implementation;

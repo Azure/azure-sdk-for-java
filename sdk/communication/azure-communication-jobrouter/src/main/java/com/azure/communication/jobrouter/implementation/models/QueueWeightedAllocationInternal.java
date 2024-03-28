@@ -54,7 +54,8 @@ public final class QueueWeightedAllocationInternal {
     }
 
     /**
-     * Get the queueSelectors property: A collection of queue selectors that will be applied if this allocation is selected.
+     * Get the queueSelectors property: A collection of queue selectors that will be applied if this allocation is
+     * selected.
      *
      * @return the queueSelectors value.
      */

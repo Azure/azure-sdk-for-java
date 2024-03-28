@@ -285,7 +285,7 @@ public final class FhirR4Observation extends FhirR4DomainResource {
     }
 
     /**
-     * Get the category property: Classification of  type of observation.
+     * Get the category property: Classification of type of observation.
      *
      * @return the category value.
      */
@@ -295,7 +295,7 @@ public final class FhirR4Observation extends FhirR4DomainResource {
     }
 
     /**
-     * Set the category property: Classification of  type of observation.
+     * Set the category property: Classification of type of observation.
      *
      * @param category the category value to set.
      * @return the FhirR4Observation object itself.

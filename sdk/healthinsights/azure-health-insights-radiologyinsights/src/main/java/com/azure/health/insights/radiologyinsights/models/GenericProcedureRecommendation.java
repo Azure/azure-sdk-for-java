@@ -59,7 +59,8 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
     }
 
     /**
-     * Get the description property: Procedure description : MANAGEMENT PROCEDURE (PROCEDURE) or CONSULTATION (PROCEDURE) based on SNOMED CT.
+     * Get the description property: Procedure description : MANAGEMENT PROCEDURE (PROCEDURE) or CONSULTATION
+     * (PROCEDURE) based on SNOMED CT.
      *
      * @return the description value.
      */

@@ -61,7 +61,8 @@ public final class RouterQueueSelectorInternal {
     }
 
     /**
-     * Get the labelOperator property: Describes how the value of the label is compared to the value defined on the label selector.
+     * Get the labelOperator property: Describes how the value of the label is compared to the value defined on the
+     * label selector.
      *
      * @return the labelOperator value.
      */
@@ -71,7 +72,8 @@ public final class RouterQueueSelectorInternal {
     }
 
     /**
-     * Get the value property: The value to compare against the actual label value with the given operator. Values must be primitive values - number, string, boolean.
+     * Get the value property: The value to compare against the actual label value with the given operator. Values must
+     * be primitive values - number, string, boolean.
      *
      * @return the value value.
      */
@@ -81,7 +83,8 @@ public final class RouterQueueSelectorInternal {
     }
 
     /**
-     * Set the value property: The value to compare against the actual label value with the given operator. Values must be primitive values - number, string, boolean.
+     * Set the value property: The value to compare against the actual label value with the given operator. Values must
+     * be primitive values - number, string, boolean.
      *
      * @param value the value value to set.
      * @return the RouterQueueSelectorInternal object itself.

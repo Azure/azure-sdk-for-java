@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Any resource that is a [DomainResource](https://www.hl7.org/fhir/domainresource.html) may include a human-readable narrative that contains a summary of the resource and may be used to represent the content of the resource to a human.
+ * Any resource that is a [DomainResource](https://www.hl7.org/fhir/domainresource.html) may include a human-readable
+ * narrative that contains a summary of the resource and may be used to represent the content of the resource to a
+ * human.
  * Based on [FHIR Narrative](https://www.hl7.org/fhir/R4/narrative.html#Narrative).
  */
 @Fluent

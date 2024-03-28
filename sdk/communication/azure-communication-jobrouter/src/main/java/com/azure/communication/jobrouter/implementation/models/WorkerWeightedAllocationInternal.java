@@ -54,7 +54,8 @@ public final class WorkerWeightedAllocationInternal {
     }
 
     /**
-     * Get the workerSelectors property: A collection of worker selectors that will be applied if this allocation is selected.
+     * Get the workerSelectors property: A collection of worker selectors that will be applied if this allocation is
+     * selected.
      *
      * @return the workerSelectors value.
      */

@@ -691,7 +691,8 @@ public final class AtlasGlossaryTerm implements JsonSerializable<AtlasGlossaryTe
     }
 
     /**
-     * Get the attributes property: The custom attributes of the term, which is map&lt;string,map&lt;string,object&gt;&gt;.
+     * Get the attributes property: The custom attributes of the term, which is
+     * map&lt;string,map&lt;string,object&gt;&gt;.
      * The
      * key of the first layer map is term template name.
      * 
@@ -703,7 +704,8 @@ public final class AtlasGlossaryTerm implements JsonSerializable<AtlasGlossaryTe
     }
 
     /**
-     * Set the attributes property: The custom attributes of the term, which is map&lt;string,map&lt;string,object&gt;&gt;.
+     * Set the attributes property: The custom attributes of the term, which is
+     * map&lt;string,map&lt;string,object&gt;&gt;.
      * The
      * key of the first layer map is term template name.
      * 
@@ -1130,7 +1132,8 @@ public final class AtlasGlossaryTerm implements JsonSerializable<AtlasGlossaryTe
      * Reads an instance of AtlasGlossaryTerm from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AtlasGlossaryTerm if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of AtlasGlossaryTerm if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AtlasGlossaryTerm.
      */
     @Generated

@@ -66,7 +66,8 @@ public final class CancelExceptionActionInternal extends ExceptionActionInternal
     }
 
     /**
-     * Get the dispositionCode property: Indicates the outcome of a job, populate this field with your own custom values.
+     * Get the dispositionCode property: Indicates the outcome of a job, populate this field with your own custom
+     * values.
      *
      * @return the dispositionCode value.
      */
@@ -76,7 +77,8 @@ public final class CancelExceptionActionInternal extends ExceptionActionInternal
     }
 
     /**
-     * Set the dispositionCode property: Indicates the outcome of a job, populate this field with your own custom values.
+     * Set the dispositionCode property: Indicates the outcome of a job, populate this field with your own custom
+     * values.
      *
      * @param dispositionCode the dispositionCode value to set.
      * @return the CancelExceptionActionInternal object itself.

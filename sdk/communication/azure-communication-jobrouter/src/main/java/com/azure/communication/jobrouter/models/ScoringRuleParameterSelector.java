@@ -14,13 +14,13 @@ import java.util.Collection;
 public final class ScoringRuleParameterSelector extends ExpandableStringEnum<ScoringRuleParameterSelector> {
 
     /**
-     * Parameter to add job labels to scoring payload.  Property is sent as `job`.
+     * Parameter to add job labels to scoring payload. Property is sent as `job`.
      */
     @Generated
     public static final ScoringRuleParameterSelector JOB_LABELS = fromString("jobLabels");
 
     /**
-     * Parameter to add worker selectors from a job to scoring payload.  Property is sent as `selectors`.
+     * Parameter to add worker selectors from a job to scoring payload. Property is sent as `selectors`.
      */
     @Generated
     public static final ScoringRuleParameterSelector WORKER_SELECTORS = fromString("workerSelectors");

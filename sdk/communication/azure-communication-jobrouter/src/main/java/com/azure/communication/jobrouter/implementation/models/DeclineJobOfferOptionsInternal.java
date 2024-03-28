@@ -29,7 +29,10 @@ public final class DeclineJobOfferOptionsInternal {
     }
 
     /**
-     * Get the retryOfferAt property: If the RetryOfferAt is not provided, then this job will not be offered again to the worker who declined this job unless the worker is de-registered and re-registered.  If a RetryOfferAt time is provided, then the job will be re-matched to eligible workers at the retry time in UTC.  The worker that declined the job will also be eligible for the job at that time.
+     * Get the retryOfferAt property: If the RetryOfferAt is not provided, then this job will not be offered again to
+     * the worker who declined this job unless the worker is de-registered and re-registered. If a RetryOfferAt time is
+     * provided, then the job will be re-matched to eligible workers at the retry time in UTC. The worker that declined
+     * the job will also be eligible for the job at that time.
      *
      * @return the retryOfferAt value.
      */
@@ -39,7 +42,10 @@ public final class DeclineJobOfferOptionsInternal {
     }
 
     /**
-     * Set the retryOfferAt property: If the RetryOfferAt is not provided, then this job will not be offered again to the worker who declined this job unless the worker is de-registered and re-registered.  If a RetryOfferAt time is provided, then the job will be re-matched to eligible workers at the retry time in UTC.  The worker that declined the job will also be eligible for the job at that time.
+     * Set the retryOfferAt property: If the RetryOfferAt is not provided, then this job will not be offered again to
+     * the worker who declined this job unless the worker is de-registered and re-registered. If a RetryOfferAt time is
+     * provided, then the job will be re-matched to eligible workers at the retry time in UTC. The worker that declined
+     * the job will also be eligible for the job at that time.
      *
      * @param retryOfferAt the retryOfferAt value to set.
      * @return the DeclineJobOfferOptionsInternal object itself.

@@ -152,7 +152,8 @@ public final class JobRouterAdministrationClientImpl {
     }
 
     /**
-     * The interface defining all the services for JobRouterAdministrationClient to be used by the proxy service to perform REST calls.
+     * The interface defining all the services for JobRouterAdministrationClient to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "JobRouterAdministrat")
@@ -590,13 +591,16 @@ public final class JobRouterAdministrationClientImpl {
      * Creates or updates a distribution policy.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this string.</td></tr>
-     *     <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the entity was not modified after this time.</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -611,7 +615,9 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -634,7 +640,8 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return policy governing how jobs are distributed to workers along with {@link Response} on successful completion of {@link Mono}.
+     * @return policy governing how jobs are distributed to workers along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> upsertDistributionPolicyWithResponseAsync(String distributionPolicyId,
@@ -650,13 +657,16 @@ public final class JobRouterAdministrationClientImpl {
      * Creates or updates a distribution policy.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this string.</td></tr>
-     *     <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the entity was not modified after this time.</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -671,7 +681,9 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -708,6 +720,7 @@ public final class JobRouterAdministrationClientImpl {
     /**
      * Retrieves an existing distribution policy by Id.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -729,7 +742,8 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return policy governing how jobs are distributed to workers along with {@link Response} on successful completion of {@link Mono}.
+     * @return policy governing how jobs are distributed to workers along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDistributionPolicyWithResponseAsync(String distributionPolicyId,
@@ -742,6 +756,7 @@ public final class JobRouterAdministrationClientImpl {
     /**
      * Retrieves an existing distribution policy by Id.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -777,12 +792,13 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing distribution policies.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -803,7 +819,8 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DistributionPolicy items along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of DistributionPolicy items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listDistributionPoliciesSinglePageAsync(RequestOptions requestOptions) {
@@ -819,12 +836,13 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing distribution policies.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -880,12 +898,13 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing distribution policies.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -921,12 +940,13 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing distribution policies.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1020,13 +1040,16 @@ public final class JobRouterAdministrationClientImpl {
      * Creates or updates a classification policy.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this string.</td></tr>
-     *     <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the entity was not modified after this time.</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1048,7 +1071,9 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1078,7 +1103,8 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a container for the rules that govern how jobs are classified along with {@link Response} on successful completion of {@link Mono}.
+     * @return a container for the rules that govern how jobs are classified along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> upsertClassificationPolicyWithResponseAsync(String classificationPolicyId,
@@ -1094,13 +1120,16 @@ public final class JobRouterAdministrationClientImpl {
      * Creates or updates a classification policy.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this string.</td></tr>
-     *     <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the entity was not modified after this time.</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1122,7 +1151,9 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1166,6 +1197,7 @@ public final class JobRouterAdministrationClientImpl {
     /**
      * Retrieves an existing classification policy by Id.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1194,7 +1226,8 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a container for the rules that govern how jobs are classified along with {@link Response} on successful completion of {@link Mono}.
+     * @return a container for the rules that govern how jobs are classified along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationPolicyWithResponseAsync(String classificationPolicyId,
@@ -1207,6 +1240,7 @@ public final class JobRouterAdministrationClientImpl {
     /**
      * Retrieves an existing classification policy by Id.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1249,12 +1283,13 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing classification policies.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1282,7 +1317,8 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of ClassificationPolicy items along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of ClassificationPolicy items along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listClassificationPoliciesSinglePageAsync(RequestOptions requestOptions) {
@@ -1298,12 +1334,13 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing classification policies.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1366,12 +1403,13 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing classification policies.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1414,12 +1452,13 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing classification policies.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1520,13 +1559,16 @@ public final class JobRouterAdministrationClientImpl {
      * Creates or updates a exception policy.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this string.</td></tr>
-     *     <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the entity was not modified after this time.</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1548,7 +1590,9 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1578,7 +1622,8 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a policy that defines actions to execute when exception are triggered along with {@link Response} on successful completion of {@link Mono}.
+     * @return a policy that defines actions to execute when exception are triggered along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> upsertExceptionPolicyWithResponseAsync(String exceptionPolicyId,
@@ -1594,13 +1639,16 @@ public final class JobRouterAdministrationClientImpl {
      * Creates or updates a exception policy.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this string.</td></tr>
-     *     <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the entity was not modified after this time.</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1622,7 +1670,9 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1666,6 +1716,7 @@ public final class JobRouterAdministrationClientImpl {
     /**
      * Retrieves an existing exception policy by Id.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1694,7 +1745,8 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a policy that defines actions to execute when exception are triggered along with {@link Response} on successful completion of {@link Mono}.
+     * @return a policy that defines actions to execute when exception are triggered along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getExceptionPolicyWithResponseAsync(String exceptionPolicyId,
@@ -1707,6 +1759,7 @@ public final class JobRouterAdministrationClientImpl {
     /**
      * Retrieves an existing exception policy by Id.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1749,12 +1802,13 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing exception policies.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1782,7 +1836,8 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of ExceptionPolicy items along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of ExceptionPolicy items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listExceptionPoliciesSinglePageAsync(RequestOptions requestOptions) {
@@ -1798,12 +1853,13 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing exception policies.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1866,12 +1922,13 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing exception policies.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1914,12 +1971,13 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing exception policies.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2019,13 +2077,16 @@ public final class JobRouterAdministrationClientImpl {
      * Creates or updates a queue.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this string.</td></tr>
-     *     <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the entity was not modified after this time.</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2038,7 +2099,9 @@ public final class JobRouterAdministrationClientImpl {
      *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2059,7 +2122,8 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a queue that can contain jobs to be routed along with {@link Response} on successful completion of {@link Mono}.
+     * @return a queue that can contain jobs to be routed along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> upsertQueueWithResponseAsync(String queueId, BinaryData resource,
@@ -2074,13 +2138,16 @@ public final class JobRouterAdministrationClientImpl {
      * Creates or updates a queue.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this string.</td></tr>
-     *     <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the entity was not modified after this time.</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2093,7 +2160,9 @@ public final class JobRouterAdministrationClientImpl {
      *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2128,6 +2197,7 @@ public final class JobRouterAdministrationClientImpl {
     /**
      * Retrieves an existing queue by Id.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2147,7 +2217,8 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a queue that can contain jobs to be routed along with {@link Response} on successful completion of {@link Mono}.
+     * @return a queue that can contain jobs to be routed along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getQueueWithResponseAsync(String queueId, RequestOptions requestOptions) {
@@ -2159,6 +2230,7 @@ public final class JobRouterAdministrationClientImpl {
     /**
      * Retrieves an existing queue by Id.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2191,12 +2263,13 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing queues.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2215,7 +2288,8 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of RouterQueue items along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of RouterQueue items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listQueuesSinglePageAsync(RequestOptions requestOptions) {
@@ -2231,12 +2305,13 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing queues.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2290,12 +2365,13 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing queues.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2329,12 +2405,13 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing queues.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2425,6 +2502,7 @@ public final class JobRouterAdministrationClientImpl {
      * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2448,7 +2526,8 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DistributionPolicy items along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of DistributionPolicy items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listDistributionPoliciesNextSinglePageAsync(String nextLink,
@@ -2466,6 +2545,7 @@ public final class JobRouterAdministrationClientImpl {
      * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2506,6 +2586,7 @@ public final class JobRouterAdministrationClientImpl {
      * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2536,7 +2617,8 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of ClassificationPolicy items along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of ClassificationPolicy items along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listClassificationPoliciesNextSinglePageAsync(String nextLink,
@@ -2554,6 +2636,7 @@ public final class JobRouterAdministrationClientImpl {
      * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2601,6 +2684,7 @@ public final class JobRouterAdministrationClientImpl {
      * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2631,7 +2715,8 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of ExceptionPolicy items along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of ExceptionPolicy items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listExceptionPoliciesNextSinglePageAsync(String nextLink,
@@ -2648,6 +2733,7 @@ public final class JobRouterAdministrationClientImpl {
      * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2695,6 +2781,7 @@ public final class JobRouterAdministrationClientImpl {
      * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2716,7 +2803,8 @@ public final class JobRouterAdministrationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of RouterQueue items along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of RouterQueue items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listQueuesNextSinglePageAsync(String nextLink,
@@ -2734,6 +2822,7 @@ public final class JobRouterAdministrationClientImpl {
      * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)

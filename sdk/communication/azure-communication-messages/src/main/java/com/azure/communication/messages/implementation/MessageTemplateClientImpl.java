@@ -149,7 +149,8 @@ public final class MessageTemplateClientImpl {
     }
 
     /**
-     * The interface defining all the services for MessageTemplateClient to be used by the proxy service to perform REST calls.
+     * The interface defining all the services for MessageTemplateClient to be used by the proxy service to perform REST
+     * calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "MessageTemplateClien")
@@ -199,12 +200,13 @@ public final class MessageTemplateClientImpl {
      * List all templates for given Azure Communication Services channel.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     kind: String(whatsApp) (Required)
@@ -220,7 +222,8 @@ public final class MessageTemplateClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of MessageTemplateItem items along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of MessageTemplateItem items along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listTemplatesSinglePageAsync(String channelId,
@@ -237,12 +240,13 @@ public final class MessageTemplateClientImpl {
      * List all templates for given Azure Communication Services channel.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     kind: String(whatsApp) (Required)
@@ -293,12 +297,13 @@ public final class MessageTemplateClientImpl {
      * List all templates for given Azure Communication Services channel.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     kind: String(whatsApp) (Required)
@@ -329,12 +334,13 @@ public final class MessageTemplateClientImpl {
      * List all templates for given Azure Communication Services channel.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     kind: String(whatsApp) (Required)
@@ -384,6 +390,7 @@ public final class MessageTemplateClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     kind: String(whatsApp) (Required)
@@ -401,7 +408,8 @@ public final class MessageTemplateClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of MessageTemplateItem items along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of MessageTemplateItem items along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listTemplatesNextSinglePageAsync(String nextLink,
@@ -417,6 +425,7 @@ public final class MessageTemplateClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     kind: String(whatsApp) (Required)

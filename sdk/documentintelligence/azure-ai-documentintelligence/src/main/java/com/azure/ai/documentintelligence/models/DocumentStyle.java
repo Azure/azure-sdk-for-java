@@ -90,7 +90,8 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
     }
 
     /**
-     * Get the similarFontFamily property: Visually most similar font from among the set of supported font families, with
+     * Get the similarFontFamily property: Visually most similar font from among the set of supported font families,
+     * with
      * fallback fonts following CSS convention (ex. 'Arial, sans-serif').
      * 
      * @return the similarFontFamily value.
@@ -182,7 +183,8 @@ public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
      * Reads an instance of DocumentStyle from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of DocumentStyle if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of DocumentStyle if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentStyle.
      */

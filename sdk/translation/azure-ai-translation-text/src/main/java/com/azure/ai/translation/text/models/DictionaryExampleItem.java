@@ -56,7 +56,8 @@ public final class DictionaryExampleItem {
     }
 
     /**
-     * Get the normalizedSource property: A string giving the normalized form of the source term. Generally, this should be identical
+     * Get the normalizedSource property: A string giving the normalized form of the source term. Generally, this should
+     * be identical
      * to the value of the Text field at the matching list index in the body of the request.
      *
      * @return the normalizedSource value.
@@ -67,7 +68,8 @@ public final class DictionaryExampleItem {
     }
 
     /**
-     * Get the normalizedTarget property: A string giving the normalized form of the target term. Generally, this should be identical
+     * Get the normalizedTarget property: A string giving the normalized form of the target term. Generally, this should
+     * be identical
      * to the value of the Translation field at the matching list index in the body of the request.
      *
      * @return the normalizedTarget value.

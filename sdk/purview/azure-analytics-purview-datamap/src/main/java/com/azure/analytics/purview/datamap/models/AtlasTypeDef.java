@@ -436,7 +436,7 @@ public final class AtlasTypeDef implements JsonSerializable<AtlasTypeDef> {
      * Get the endDef1 property: The relationshipEndDef represents an end of the relationship. The end of the
      * relationship is defined by a type, an
      * attribute name, cardinality and whether
-     * it  is the container end of the relationship.
+     * it is the container end of the relationship.
      * 
      * @return the endDef1 value.
      */
@@ -449,7 +449,7 @@ public final class AtlasTypeDef implements JsonSerializable<AtlasTypeDef> {
      * Get the endDef2 property: The relationshipEndDef represents an end of the relationship. The end of the
      * relationship is defined by a type, an
      * attribute name, cardinality and whether
-     * it  is the container end of the relationship.
+     * it is the container end of the relationship.
      * 
      * @return the endDef2 value.
      */
@@ -463,11 +463,11 @@ public final class AtlasTypeDef implements JsonSerializable<AtlasTypeDef> {
      * containment and lifecycle.
      * UML terminology is used for the values.
      * 
-     * ASSOCIATION is a relationship with no containment. 
+     * ASSOCIATION is a relationship with no containment.
      * COMPOSITION and AGGREGATION are containment relationships.
      * 
-     * The difference being in the lifecycles of the container and its children. 
-     * In the COMPOSITION case, the children cannot exist without the container. 
+     * The difference being in the lifecycles of the container and its children.
+     * In the COMPOSITION case, the children cannot exist without the container.
      * For AGGREGATION, the life cycles of the container and children are totally independent.
      * 
      * @return the relationshipCategory value.
@@ -538,7 +538,8 @@ public final class AtlasTypeDef implements JsonSerializable<AtlasTypeDef> {
      * Reads an instance of AtlasTypeDef from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AtlasTypeDef if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of AtlasTypeDef if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AtlasTypeDef.
      */
     @Generated

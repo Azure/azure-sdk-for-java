@@ -5,7 +5,11 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Represents the output results of Azure enhancements to chat completions, as configured via the matching input
@@ -13,13 +17,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * in the request.
  */
 @Immutable
-public final class AzureChatEnhancements {
+public final class AzureChatEnhancements implements JsonSerializable<AzureChatEnhancements> {
 
     /*
      * The grounding enhancement that returns the bounding box of the objects detected in the image.
      */
     @Generated
-    @JsonProperty(value = "grounding")
     private AzureGroundingEnhancement grounding;
 
     /**
@@ -38,5 +41,41 @@ public final class AzureChatEnhancements {
     @Generated
     public AzureGroundingEnhancement getGrounding() {
         return this.grounding;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("grounding", this.grounding);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureChatEnhancements from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureChatEnhancements if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureChatEnhancements.
+     */
+    @Generated
+    public static AzureChatEnhancements fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureChatEnhancements deserializedAzureChatEnhancements = new AzureChatEnhancements();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("grounding".equals(fieldName)) {
+                    deserializedAzureChatEnhancements.grounding = AzureGroundingEnhancement.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedAzureChatEnhancements;
+        });
     }
 }

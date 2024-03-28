@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * A notification for age mismatch is displayed when the age mentioned in a document for a specific patient does not match the age specified in the patient information.
+ * A notification for age mismatch is displayed when the age mentioned in a document for a specific patient does not
+ * match the age specified in the patient information.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = AgeMismatchInference.class, visible = true)
 @JsonTypeName("ageMismatch")

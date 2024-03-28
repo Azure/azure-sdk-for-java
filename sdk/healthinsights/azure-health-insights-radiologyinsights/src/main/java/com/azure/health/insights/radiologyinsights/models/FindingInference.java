@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Findings in a radiology report typically describe abnormalities, lesions, or other notable observations related to the anatomy or pathology of the imaged area.
+ * Findings in a radiology report typically describe abnormalities, lesions, or other notable observations related to
+ * the anatomy or pathology of the imaged area.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = FindingInference.class, visible = true)
 @JsonTypeName("finding")

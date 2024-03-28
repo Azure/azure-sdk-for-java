@@ -78,7 +78,8 @@ public final class RouterQueueStatisticsInternal {
     }
 
     /**
-     * Get the estimatedWaitTimeMinutes property: The estimated wait time of this queue rounded up to the nearest minute, grouped by job priority.
+     * Get the estimatedWaitTimeMinutes property: The estimated wait time of this queue rounded up to the nearest
+     * minute, grouped by job priority.
      *
      * @return the estimatedWaitTimeMinutes value.
      */
@@ -88,7 +89,8 @@ public final class RouterQueueStatisticsInternal {
     }
 
     /**
-     * Get the longestJobWaitTimeMinutes property: The wait time of the job that has been enqueued in this queue for the longest.
+     * Get the longestJobWaitTimeMinutes property: The wait time of the job that has been enqueued in this queue for the
+     * longest.
      *
      * @return the longestJobWaitTimeMinutes value.
      */

@@ -44,7 +44,8 @@ public final class RadiologyCodeWithTypes {
     }
 
     /**
-     * Get the code property: The SNOMED CT code indicates whether imaging was conducted with or without contrast in the case of contrast, and in the case of views, it denotes the number of views.
+     * Get the code property: The SNOMED CT code indicates whether imaging was conducted with or without contrast in the
+     * case of contrast, and in the case of views, it denotes the number of views.
      *
      * @return the code value.
      */
@@ -54,7 +55,8 @@ public final class RadiologyCodeWithTypes {
     }
 
     /**
-     * Get the types property: The collection of types will indicate the contrast substance used in the case of contrast and, in the case of views, it will specify the types of views, such as lateral and frontal, etc.
+     * Get the types property: The collection of types will indicate the contrast substance used in the case of contrast
+     * and, in the case of views, it will specify the types of views, such as lateral and frontal, etc.
      *
      * @return the types value.
      */

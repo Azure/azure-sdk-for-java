@@ -53,6 +53,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * Builds a custom document analysis model.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -90,6 +91,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * Creates a new document model from document types of existing document models.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -124,6 +126,7 @@ public final class DocumentIntelligenceAdministrationClient {
      * Generates authorization to copy a document model to this location with
      * specified modelId and optional description.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -133,7 +136,9 @@ public final class DocumentIntelligenceAdministrationClient {
      *     }
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     targetResourceId: String (Required)
@@ -164,6 +169,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * Copies document model to the target resource, region, and modelId.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     targetResourceId: String (Required)
@@ -194,6 +200,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * Gets detailed document model information.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -260,6 +267,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * List all document models.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -342,6 +350,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * Return information about the current resource.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     customDocumentModels (Required): {
@@ -372,6 +381,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * Gets operation info.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
@@ -418,6 +428,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * Lists all operations.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
@@ -463,6 +474,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * Builds a custom document classifier.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -502,6 +514,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * Gets detailed document classifier information.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -550,6 +563,7 @@ public final class DocumentIntelligenceAdministrationClient {
     /**
      * List all document classifiers.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     classifierId: String (Required)

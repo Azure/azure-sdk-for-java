@@ -5,47 +5,35 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An abstract representation of an annotation to text thread message content.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = MessageTextAnnotation.class)
-@JsonTypeName("MessageTextAnnotation")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "file_citation", value = MessageTextFileCitationAnnotation.class),
-    @JsonSubTypes.Type(name = "file_path", value = MessageTextFilePathAnnotation.class) })
 @Immutable
-public class MessageTextAnnotation {
+public class MessageTextAnnotation implements JsonSerializable<MessageTextAnnotation> {
 
     /*
      * The textual content associated with this text annotation item.
      */
     @Generated
-    @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /*
      * The first text index associated with this text annotation.
      */
     @Generated
-    @JsonProperty(value = "start_index")
-    private int startIndex;
+    private final int startIndex;
 
     /*
      * The last text index associated with this text annotation.
      */
     @Generated
-    @JsonProperty(value = "end_index")
-    private int endIndex;
+    private final int endIndex;
 
     /**
      * Creates an instance of MessageTextAnnotation class.
@@ -55,9 +43,8 @@ public class MessageTextAnnotation {
      * @param endIndex the endIndex value to set.
      */
     @Generated
-    @JsonCreator
-    protected MessageTextAnnotation(@JsonProperty(value = "text") String text,
-        @JsonProperty(value = "start_index") int startIndex, @JsonProperty(value = "end_index") int endIndex) {
+    protected MessageTextAnnotation(String text, int startIndex, int endIndex) {
+        this.type = "MessageTextAnnotation";
         this.text = text;
         this.startIndex = startIndex;
         this.endIndex = endIndex;
@@ -91,5 +78,102 @@ public class MessageTextAnnotation {
     @Generated
     public int getEndIndex() {
         return this.endIndex;
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type;
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeIntField("start_index", this.startIndex);
+        jsonWriter.writeIntField("end_index", this.endIndex);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MessageTextAnnotation from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MessageTextAnnotation if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MessageTextAnnotation.
+     */
+    @Generated
+    public static MessageTextAnnotation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                // Prepare for reading
+                readerToUse.nextToken();
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("file_citation".equals(discriminatorValue)) {
+                    return MessageTextFileCitationAnnotation.fromJson(readerToUse.reset());
+                } else if ("file_path".equals(discriminatorValue)) {
+                    return MessageTextFilePathAnnotation.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    @Generated
+    static MessageTextAnnotation fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String text = null;
+            int startIndex = 0;
+            int endIndex = 0;
+            String type = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("text".equals(fieldName)) {
+                    text = reader.getString();
+                } else if ("start_index".equals(fieldName)) {
+                    startIndex = reader.getInt();
+                } else if ("end_index".equals(fieldName)) {
+                    endIndex = reader.getInt();
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            MessageTextAnnotation deserializedMessageTextAnnotation
+                = new MessageTextAnnotation(text, startIndex, endIndex);
+            deserializedMessageTextAnnotation.type = type;
+            return deserializedMessageTextAnnotation;
+        });
     }
 }

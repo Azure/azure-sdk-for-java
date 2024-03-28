@@ -170,7 +170,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     }
 
     /**
-     * Get the azureBlobSource property: Azure Blob Storage location containing the training data.  Either
+     * Get the azureBlobSource property: Azure Blob Storage location containing the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
      * 
      * @return the azureBlobSource value.
@@ -181,7 +181,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     }
 
     /**
-     * Get the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data.  Either
+     * Get the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
      * 
      * @return the azureBlobFileListSource value.
@@ -239,7 +239,8 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      * Reads an instance of DocumentModelDetails from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of DocumentModelDetails if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of DocumentModelDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentModelDetails.
      */

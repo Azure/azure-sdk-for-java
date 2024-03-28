@@ -59,6 +59,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * Builds a custom document analysis model.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -96,6 +97,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * Creates a new document model from document types of existing document models.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -130,6 +132,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * Generates authorization to copy a document model to this location with
      * specified modelId and optional description.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -139,7 +142,9 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *     }
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     targetResourceId: String (Required)
@@ -170,6 +175,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * Copies document model to the target resource, region, and modelId.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     targetResourceId: String (Required)
@@ -200,6 +206,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * Gets detailed document model information.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -266,6 +273,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * List all document models.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -348,6 +356,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * Return information about the current resource.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     customDocumentModels (Required): {
@@ -367,7 +376,8 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return general information regarding the current resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return general information regarding the current resource along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -378,6 +388,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * Gets operation info.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
@@ -424,6 +435,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * Lists all operations.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
@@ -469,6 +481,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * Builds a custom document classifier.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -508,6 +521,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * Gets detailed document classifier information.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -545,7 +559,8 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return detailed document classifier information along with {@link Response} on successful completion of {@link Mono}.
+     * @return detailed document classifier information along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -556,6 +571,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     /**
      * List all document classifiers.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     classifierId: String (Required)

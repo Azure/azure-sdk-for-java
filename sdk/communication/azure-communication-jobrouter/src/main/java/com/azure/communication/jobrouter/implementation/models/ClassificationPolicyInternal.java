@@ -135,7 +135,8 @@ public final class ClassificationPolicyInternal {
     }
 
     /**
-     * Get the fallbackQueueId property: Id of a fallback queue to select if queue selector attachments doesn't find a match.
+     * Get the fallbackQueueId property: Id of a fallback queue to select if queue selector attachments doesn't find a
+     * match.
      *
      * @return the fallbackQueueId value.
      */
@@ -145,7 +146,8 @@ public final class ClassificationPolicyInternal {
     }
 
     /**
-     * Set the fallbackQueueId property: Id of a fallback queue to select if queue selector attachments doesn't find a match.
+     * Set the fallbackQueueId property: Id of a fallback queue to select if queue selector attachments doesn't find a
+     * match.
      *
      * @param fallbackQueueId the fallbackQueueId value to set.
      * @return the ClassificationPolicyInternal object itself.

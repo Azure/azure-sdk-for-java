@@ -50,7 +50,9 @@ public final class ImageCategoriesAnalysis implements JsonSerializable<ImageCate
     }
 
     /**
-     * Get the severity property: The value increases with the severity of the input content. The value of this field is determined by the output type specified in the request. The output type could be ‘FourSeverityLevels’, and the output value can be 0, 2, 4, 6.
+     * Get the severity property: The value increases with the severity of the input content. The value of this field is
+     * determined by the output type specified in the request. The output type could be ‘FourSeverityLevels’, and the
+     * output value can be 0, 2, 4, 6.
      *
      * @return the severity value.
      */
@@ -75,7 +77,8 @@ public final class ImageCategoriesAnalysis implements JsonSerializable<ImageCate
      * Reads an instance of ImageCategoriesAnalysis from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ImageCategoriesAnalysis if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of ImageCategoriesAnalysis if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ImageCategoriesAnalysis.
      */

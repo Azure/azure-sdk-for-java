@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Critical results refer to findings of utmost importance that may require timely attention due to their potential impact on patient care.
+ * Critical results refer to findings of utmost importance that may require timely attention due to their potential
+ * impact on patient care.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,

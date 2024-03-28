@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * A notification for a sex mismatch is displayed when the gender, personal pronouns, gender-related body parts, or gender-related procedures mentioned in a patient's clinical document are either inconsistent or do not match the gender specified in the patient information.
+ * A notification for a sex mismatch is displayed when the gender, personal pronouns, gender-related body parts, or
+ * gender-related procedures mentioned in a patient's clinical document are either inconsistent or do not match the
+ * gender specified in the patient information.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = SexMismatchInference.class, visible = true)
 @JsonTypeName("sexMismatch")

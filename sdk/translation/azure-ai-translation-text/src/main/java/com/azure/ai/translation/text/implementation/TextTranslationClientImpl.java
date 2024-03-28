@@ -49,13 +49,13 @@ public final class TextTranslationClientImpl {
 
     /**
      * Supported Text Translation endpoints (protocol and hostname, for example:
-     *     https://api.cognitive.microsofttranslator.com).
+     * https://api.cognitive.microsofttranslator.com).
      */
     private final String endpoint;
 
     /**
      * Gets Supported Text Translation endpoints (protocol and hostname, for example:
-     *     https://api.cognitive.microsofttranslator.com).
+     * https://api.cognitive.microsofttranslator.com).
      * 
      * @return the endpoint value.
      */
@@ -109,7 +109,7 @@ public final class TextTranslationClientImpl {
      * Initializes an instance of TextTranslationClient client.
      * 
      * @param endpoint Supported Text Translation endpoints (protocol and hostname, for example:
-     *     https://api.cognitive.microsofttranslator.com).
+     * https://api.cognitive.microsofttranslator.com).
      * @param serviceVersion Service version.
      */
     public TextTranslationClientImpl(String endpoint, TextTranslationServiceVersion serviceVersion) {
@@ -122,7 +122,7 @@ public final class TextTranslationClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Supported Text Translation endpoints (protocol and hostname, for example:
-     *     https://api.cognitive.microsofttranslator.com).
+     * https://api.cognitive.microsofttranslator.com).
      * @param serviceVersion Service version.
      */
     public TextTranslationClientImpl(HttpPipeline httpPipeline, String endpoint,
@@ -136,7 +136,7 @@ public final class TextTranslationClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Supported Text Translation endpoints (protocol and hostname, for example:
-     *     https://api.cognitive.microsofttranslator.com).
+     * https://api.cognitive.microsofttranslator.com).
      * @param serviceVersion Service version.
      */
     public TextTranslationClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
@@ -150,7 +150,8 @@ public final class TextTranslationClientImpl {
     }
 
     /**
-     * The interface defining all the services for TextTranslationClient to be used by the proxy service to perform REST calls.
+     * The interface defining all the services for TextTranslationClient to be used by the proxy service to perform REST
+     * calls.
      */
     @Host("{Endpoint}")
     @ServiceInterface(name = "TextTranslationClien")
@@ -290,31 +291,37 @@ public final class TextTranslationClientImpl {
      * Gets the set of languages currently supported by other operations of the Translator.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>scope</td><td>String</td><td>No</td><td>A comma-separated list of names defining the group of languages to return.
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>scope</td><td>String</td><td>No</td><td>A comma-separated list of names defining the group of languages
+     * to return.
      * Allowed group names are: `translation`, `transliteration` and `dictionary`.
-     * If no scope is given, then all groups are returned, which is equivalent to passing 
-     * `scope=translation,transliteration,dictionary`. To decide which set of supported languages 
+     * If no scope is given, then all groups are returned, which is equivalent to passing
+     * `scope=translation,transliteration,dictionary`. To decide which set of supported languages
      * is appropriate for your scenario, see the description of the [response object](#response-body).</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the request.</td></tr>
-     *     <tr><td>Accept-Language</td><td>String</td><td>No</td><td>The language to use for user interface strings. Some of the fields in the response are names of languages or 
-     * names of regions. Use this parameter to define the language in which these names are returned. 
-     * The language is specified by providing a well-formed BCP 47 language tag. For instance, use the value `fr` 
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the
+     * request.</td></tr>
+     * <tr><td>Accept-Language</td><td>String</td><td>No</td><td>The language to use for user interface strings. Some of
+     * the fields in the response are names of languages or
+     * names of regions. Use this parameter to define the language in which these names are returned.
+     * The language is specified by providing a well-formed BCP 47 language tag. For instance, use the value `fr`
      * to request names in French or use the value `zh-Hant` to request names in Chinese Traditional.
-     * Names are provided in the English language when a target language is not specified or when localization 
+     * Names are provided in the English language when a target language is not specified or when localization
      * is not available.</td></tr>
-     *     <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Passing the value of the ETag response header in an If-None-Match field will allow the service to optimize the response. 
-     * If the resource has not been modified, the service will return status code 304 and an empty response body.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Passing the value of the ETag response header in an
+     * If-None-Match field will allow the service to optimize the response.
+     * If the resource has not been modified, the service will return status code 304 and an empty response
+     * body.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     translation (Optional): {
@@ -369,7 +376,8 @@ public final class TextTranslationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the set of languages currently supported by other operations of the Translator along with {@link Response} on successful completion of {@link Mono}.
+     * @return the set of languages currently supported by other operations of the Translator along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLanguagesWithResponseAsync(RequestOptions requestOptions) {
@@ -382,31 +390,37 @@ public final class TextTranslationClientImpl {
      * Gets the set of languages currently supported by other operations of the Translator.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>scope</td><td>String</td><td>No</td><td>A comma-separated list of names defining the group of languages to return.
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>scope</td><td>String</td><td>No</td><td>A comma-separated list of names defining the group of languages
+     * to return.
      * Allowed group names are: `translation`, `transliteration` and `dictionary`.
-     * If no scope is given, then all groups are returned, which is equivalent to passing 
-     * `scope=translation,transliteration,dictionary`. To decide which set of supported languages 
+     * If no scope is given, then all groups are returned, which is equivalent to passing
+     * `scope=translation,transliteration,dictionary`. To decide which set of supported languages
      * is appropriate for your scenario, see the description of the [response object](#response-body).</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the request.</td></tr>
-     *     <tr><td>Accept-Language</td><td>String</td><td>No</td><td>The language to use for user interface strings. Some of the fields in the response are names of languages or 
-     * names of regions. Use this parameter to define the language in which these names are returned. 
-     * The language is specified by providing a well-formed BCP 47 language tag. For instance, use the value `fr` 
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the
+     * request.</td></tr>
+     * <tr><td>Accept-Language</td><td>String</td><td>No</td><td>The language to use for user interface strings. Some of
+     * the fields in the response are names of languages or
+     * names of regions. Use this parameter to define the language in which these names are returned.
+     * The language is specified by providing a well-formed BCP 47 language tag. For instance, use the value `fr`
      * to request names in French or use the value `zh-Hant` to request names in Chinese Traditional.
-     * Names are provided in the English language when a target language is not specified or when localization 
+     * Names are provided in the English language when a target language is not specified or when localization
      * is not available.</td></tr>
-     *     <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Passing the value of the ETag response header in an If-None-Match field will allow the service to optimize the response. 
-     * If the resource has not been modified, the service will return status code 304 and an empty response body.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Passing the value of the ETag response header in an
+     * If-None-Match field will allow the service to optimize the response.
+     * If the resource has not been modified, the service will return status code 304 and an empty response
+     * body.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     translation (Optional): {
@@ -461,7 +475,8 @@ public final class TextTranslationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the set of languages currently supported by other operations of the Translator along with {@link Response}.
+     * @return the set of languages currently supported by other operations of the Translator along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLanguagesWithResponse(RequestOptions requestOptions) {
@@ -474,50 +489,63 @@ public final class TextTranslationClientImpl {
      * Translate Text.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>from</td><td>String</td><td>No</td><td>Specifies the language of the input text. Find which languages are available to translate from by 
-     * looking up supported languages using the translation scope. If the from parameter isn't specified, 
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>from</td><td>String</td><td>No</td><td>Specifies the language of the input text. Find which languages are
+     * available to translate from by
+     * looking up supported languages using the translation scope. If the from parameter isn't specified,
      * automatic language detection is applied to determine the source language.
      * 
-     * You must use the from parameter rather than autodetection when using the dynamic dictionary feature. 
+     * You must use the from parameter rather than autodetection when using the dynamic dictionary feature.
      * Note: the dynamic dictionary feature is case-sensitive.</td></tr>
-     *     <tr><td>textType</td><td>String</td><td>No</td><td>Defines whether the text being translated is plain text or HTML text. Any HTML needs to be a well-formed, 
+     * <tr><td>textType</td><td>String</td><td>No</td><td>Defines whether the text being translated is plain text or
+     * HTML text. Any HTML needs to be a well-formed,
      * complete element. Possible values are: plain (default) or html. Allowed values: "Plain", "Html".</td></tr>
-     *     <tr><td>category</td><td>String</td><td>No</td><td>A string specifying the category (domain) of the translation. This parameter is used to get translations 
-     * from a customized system built with Custom Translator. Add the Category ID from your Custom Translator 
+     * <tr><td>category</td><td>String</td><td>No</td><td>A string specifying the category (domain) of the translation.
+     * This parameter is used to get translations
+     * from a customized system built with Custom Translator. Add the Category ID from your Custom Translator
      * project details to this parameter to use your deployed customized system. Default value is: general.</td></tr>
-     *     <tr><td>profanityAction</td><td>String</td><td>No</td><td>Specifies how profanities should be treated in translations.
-     * Possible values are: NoAction (default), Marked or Deleted. Allowed values: "NoAction", "Marked", "Deleted".</td></tr>
-     *     <tr><td>profanityMarker</td><td>String</td><td>No</td><td>Specifies how profanities should be marked in translations.
+     * <tr><td>profanityAction</td><td>String</td><td>No</td><td>Specifies how profanities should be treated in
+     * translations.
+     * Possible values are: NoAction (default), Marked or Deleted. Allowed values: "NoAction", "Marked",
+     * "Deleted".</td></tr>
+     * <tr><td>profanityMarker</td><td>String</td><td>No</td><td>Specifies how profanities should be marked in
+     * translations.
      * Possible values are: Asterisk (default) or Tag. . Allowed values: "Asterisk", "Tag".</td></tr>
-     *     <tr><td>includeAlignment</td><td>Boolean</td><td>No</td><td>Specifies whether to include alignment projection from source text to translated text.
+     * <tr><td>includeAlignment</td><td>Boolean</td><td>No</td><td>Specifies whether to include alignment projection
+     * from source text to translated text.
      * Possible values are: true or false (default).</td></tr>
-     *     <tr><td>includeSentenceLength</td><td>Boolean</td><td>No</td><td>Specifies whether to include sentence boundaries for the input text and the translated text.
+     * <tr><td>includeSentenceLength</td><td>Boolean</td><td>No</td><td>Specifies whether to include sentence boundaries
+     * for the input text and the translated text.
      * Possible values are: true or false (default).</td></tr>
-     *     <tr><td>suggestedFrom</td><td>String</td><td>No</td><td>Specifies a fallback language if the language of the input text can't be identified. 
-     * Language autodetection is applied when the from parameter is omitted. If detection fails, 
+     * <tr><td>suggestedFrom</td><td>String</td><td>No</td><td>Specifies a fallback language if the language of the
+     * input text can't be identified.
+     * Language autodetection is applied when the from parameter is omitted. If detection fails,
      * the suggestedFrom language will be assumed.</td></tr>
-     *     <tr><td>fromScript</td><td>String</td><td>No</td><td>Specifies the script of the input text.</td></tr>
-     *     <tr><td>toScript</td><td>String</td><td>No</td><td>Specifies the script of the translated text.</td></tr>
-     *     <tr><td>allowFallback</td><td>Boolean</td><td>No</td><td>Specifies that the service is allowed to fall back to a general system when a custom system doesn't exist. 
+     * <tr><td>fromScript</td><td>String</td><td>No</td><td>Specifies the script of the input text.</td></tr>
+     * <tr><td>toScript</td><td>String</td><td>No</td><td>Specifies the script of the translated text.</td></tr>
+     * <tr><td>allowFallback</td><td>Boolean</td><td>No</td><td>Specifies that the service is allowed to fall back to a
+     * general system when a custom system doesn't exist.
      * Possible values are: true (default) or false.
      * 
-     * allowFallback=false specifies that the translation should only use systems trained for the category specified 
-     * by the request. If a translation for language X to language Y requires chaining through a pivot language E, 
-     * then all the systems in the chain (X → E and E → Y) will need to be custom and have the same category. 
-     * If no system is found with the specific category, the request will return a 400 status code. allowFallback=true 
-     * specifies that the service is allowed to fall back to a general system when a custom system doesn't exist.</td></tr>
+     * allowFallback=false specifies that the translation should only use systems trained for the category specified
+     * by the request. If a translation for language X to language Y requires chaining through a pivot language E,
+     * then all the systems in the chain (X → E and E → Y) will need to be custom and have the same category.
+     * If no system is found with the specific category, the request will return a 400 status code. allowFallback=true
+     * specifies that the service is allowed to fall back to a general system when a custom system doesn't
+     * exist.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the request.</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the
+     * request.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -525,7 +553,9 @@ public final class TextTranslationClientImpl {
      *     }
      * ]
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -561,9 +591,10 @@ public final class TextTranslationClientImpl {
      * ]
      * }</pre>
      * 
-     * @param to Specifies the language of the output text. The target language must be one of the supported languages included 
+     * @param to Specifies the language of the output text. The target language must be one of the supported languages
+     * included
      * in the translation scope. For example, use to=de to translate to German.
-     * It's possible to translate to multiple languages simultaneously by repeating the parameter in the query string. 
+     * It's possible to translate to multiple languages simultaneously by repeating the parameter in the query string.
      * For example, use to=de&amp;to=it to translate to German and Italian.
      * @param requestBody Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -586,50 +617,63 @@ public final class TextTranslationClientImpl {
      * Translate Text.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>from</td><td>String</td><td>No</td><td>Specifies the language of the input text. Find which languages are available to translate from by 
-     * looking up supported languages using the translation scope. If the from parameter isn't specified, 
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>from</td><td>String</td><td>No</td><td>Specifies the language of the input text. Find which languages are
+     * available to translate from by
+     * looking up supported languages using the translation scope. If the from parameter isn't specified,
      * automatic language detection is applied to determine the source language.
      * 
-     * You must use the from parameter rather than autodetection when using the dynamic dictionary feature. 
+     * You must use the from parameter rather than autodetection when using the dynamic dictionary feature.
      * Note: the dynamic dictionary feature is case-sensitive.</td></tr>
-     *     <tr><td>textType</td><td>String</td><td>No</td><td>Defines whether the text being translated is plain text or HTML text. Any HTML needs to be a well-formed, 
+     * <tr><td>textType</td><td>String</td><td>No</td><td>Defines whether the text being translated is plain text or
+     * HTML text. Any HTML needs to be a well-formed,
      * complete element. Possible values are: plain (default) or html. Allowed values: "Plain", "Html".</td></tr>
-     *     <tr><td>category</td><td>String</td><td>No</td><td>A string specifying the category (domain) of the translation. This parameter is used to get translations 
-     * from a customized system built with Custom Translator. Add the Category ID from your Custom Translator 
+     * <tr><td>category</td><td>String</td><td>No</td><td>A string specifying the category (domain) of the translation.
+     * This parameter is used to get translations
+     * from a customized system built with Custom Translator. Add the Category ID from your Custom Translator
      * project details to this parameter to use your deployed customized system. Default value is: general.</td></tr>
-     *     <tr><td>profanityAction</td><td>String</td><td>No</td><td>Specifies how profanities should be treated in translations.
-     * Possible values are: NoAction (default), Marked or Deleted. Allowed values: "NoAction", "Marked", "Deleted".</td></tr>
-     *     <tr><td>profanityMarker</td><td>String</td><td>No</td><td>Specifies how profanities should be marked in translations.
+     * <tr><td>profanityAction</td><td>String</td><td>No</td><td>Specifies how profanities should be treated in
+     * translations.
+     * Possible values are: NoAction (default), Marked or Deleted. Allowed values: "NoAction", "Marked",
+     * "Deleted".</td></tr>
+     * <tr><td>profanityMarker</td><td>String</td><td>No</td><td>Specifies how profanities should be marked in
+     * translations.
      * Possible values are: Asterisk (default) or Tag. . Allowed values: "Asterisk", "Tag".</td></tr>
-     *     <tr><td>includeAlignment</td><td>Boolean</td><td>No</td><td>Specifies whether to include alignment projection from source text to translated text.
+     * <tr><td>includeAlignment</td><td>Boolean</td><td>No</td><td>Specifies whether to include alignment projection
+     * from source text to translated text.
      * Possible values are: true or false (default).</td></tr>
-     *     <tr><td>includeSentenceLength</td><td>Boolean</td><td>No</td><td>Specifies whether to include sentence boundaries for the input text and the translated text.
+     * <tr><td>includeSentenceLength</td><td>Boolean</td><td>No</td><td>Specifies whether to include sentence boundaries
+     * for the input text and the translated text.
      * Possible values are: true or false (default).</td></tr>
-     *     <tr><td>suggestedFrom</td><td>String</td><td>No</td><td>Specifies a fallback language if the language of the input text can't be identified. 
-     * Language autodetection is applied when the from parameter is omitted. If detection fails, 
+     * <tr><td>suggestedFrom</td><td>String</td><td>No</td><td>Specifies a fallback language if the language of the
+     * input text can't be identified.
+     * Language autodetection is applied when the from parameter is omitted. If detection fails,
      * the suggestedFrom language will be assumed.</td></tr>
-     *     <tr><td>fromScript</td><td>String</td><td>No</td><td>Specifies the script of the input text.</td></tr>
-     *     <tr><td>toScript</td><td>String</td><td>No</td><td>Specifies the script of the translated text.</td></tr>
-     *     <tr><td>allowFallback</td><td>Boolean</td><td>No</td><td>Specifies that the service is allowed to fall back to a general system when a custom system doesn't exist. 
+     * <tr><td>fromScript</td><td>String</td><td>No</td><td>Specifies the script of the input text.</td></tr>
+     * <tr><td>toScript</td><td>String</td><td>No</td><td>Specifies the script of the translated text.</td></tr>
+     * <tr><td>allowFallback</td><td>Boolean</td><td>No</td><td>Specifies that the service is allowed to fall back to a
+     * general system when a custom system doesn't exist.
      * Possible values are: true (default) or false.
      * 
-     * allowFallback=false specifies that the translation should only use systems trained for the category specified 
-     * by the request. If a translation for language X to language Y requires chaining through a pivot language E, 
-     * then all the systems in the chain (X → E and E → Y) will need to be custom and have the same category. 
-     * If no system is found with the specific category, the request will return a 400 status code. allowFallback=true 
-     * specifies that the service is allowed to fall back to a general system when a custom system doesn't exist.</td></tr>
+     * allowFallback=false specifies that the translation should only use systems trained for the category specified
+     * by the request. If a translation for language X to language Y requires chaining through a pivot language E,
+     * then all the systems in the chain (X → E and E → Y) will need to be custom and have the same category.
+     * If no system is found with the specific category, the request will return a 400 status code. allowFallback=true
+     * specifies that the service is allowed to fall back to a general system when a custom system doesn't
+     * exist.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the request.</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the
+     * request.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -637,7 +681,9 @@ public final class TextTranslationClientImpl {
      *     }
      * ]
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -673,9 +719,10 @@ public final class TextTranslationClientImpl {
      * ]
      * }</pre>
      * 
-     * @param to Specifies the language of the output text. The target language must be one of the supported languages included 
+     * @param to Specifies the language of the output text. The target language must be one of the supported languages
+     * included
      * in the translation scope. For example, use to=de to translate to German.
-     * It's possible to translate to multiple languages simultaneously by repeating the parameter in the query string. 
+     * It's possible to translate to multiple languages simultaneously by repeating the parameter in the query string.
      * For example, use to=de&amp;to=it to translate to German and Italian.
      * @param requestBody Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -698,12 +745,14 @@ public final class TextTranslationClientImpl {
      * Transliterate Text.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the request.</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the
+     * request.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -711,7 +760,9 @@ public final class TextTranslationClientImpl {
      *     }
      * ]
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -721,12 +772,14 @@ public final class TextTranslationClientImpl {
      * ]
      * }</pre>
      * 
-     * @param language Specifies the language of the text to convert from one script to another. 
-     * Possible languages are listed in the transliteration scope obtained by querying the service 
+     * @param language Specifies the language of the text to convert from one script to another.
+     * Possible languages are listed in the transliteration scope obtained by querying the service
      * for its supported languages.
-     * @param fromScript Specifies the script used by the input text. Look up supported languages using the transliteration scope,
+     * @param fromScript Specifies the script used by the input text. Look up supported languages using the
+     * transliteration scope,
      * to find input scripts available for the selected language.
-     * @param toScript Specifies the output script. Look up supported languages using the transliteration scope, to find output 
+     * @param toScript Specifies the output script. Look up supported languages using the transliteration scope, to find
+     * output
      * scripts available for the selected combination of input language and input script.
      * @param requestBody Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -748,12 +801,14 @@ public final class TextTranslationClientImpl {
      * Transliterate Text.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the request.</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the
+     * request.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -761,7 +816,9 @@ public final class TextTranslationClientImpl {
      *     }
      * ]
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -771,12 +828,14 @@ public final class TextTranslationClientImpl {
      * ]
      * }</pre>
      * 
-     * @param language Specifies the language of the text to convert from one script to another. 
-     * Possible languages are listed in the transliteration scope obtained by querying the service 
+     * @param language Specifies the language of the text to convert from one script to another.
+     * Possible languages are listed in the transliteration scope obtained by querying the service
      * for its supported languages.
-     * @param fromScript Specifies the script used by the input text. Look up supported languages using the transliteration scope,
+     * @param fromScript Specifies the script used by the input text. Look up supported languages using the
+     * transliteration scope,
      * to find input scripts available for the selected language.
-     * @param toScript Specifies the output script. Look up supported languages using the transliteration scope, to find output 
+     * @param toScript Specifies the output script. Look up supported languages using the transliteration scope, to find
+     * output
      * scripts available for the selected combination of input language and input script.
      * @param requestBody Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -798,22 +857,24 @@ public final class TextTranslationClientImpl {
      * Find Sentence Boundaries.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>language</td><td>String</td><td>No</td><td>Language tag identifying the language of the input text. 
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>language</td><td>String</td><td>No</td><td>Language tag identifying the language of the input text.
      * If a code isn't specified, automatic language detection will be applied.</td></tr>
-     *     <tr><td>script</td><td>String</td><td>No</td><td>Script tag identifying the script used by the input text. 
+     * <tr><td>script</td><td>String</td><td>No</td><td>Script tag identifying the script used by the input text.
      * If a script isn't specified, the default script of the language will be assumed.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the request.</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the
+     * request.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -821,7 +882,9 @@ public final class TextTranslationClientImpl {
      *     }
      * ]
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -856,22 +919,24 @@ public final class TextTranslationClientImpl {
      * Find Sentence Boundaries.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>language</td><td>String</td><td>No</td><td>Language tag identifying the language of the input text. 
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>language</td><td>String</td><td>No</td><td>Language tag identifying the language of the input text.
      * If a code isn't specified, automatic language detection will be applied.</td></tr>
-     *     <tr><td>script</td><td>String</td><td>No</td><td>Script tag identifying the script used by the input text. 
+     * <tr><td>script</td><td>String</td><td>No</td><td>Script tag identifying the script used by the input text.
      * If a script isn't specified, the default script of the language will be assumed.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the request.</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the
+     * request.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -879,7 +944,9 @@ public final class TextTranslationClientImpl {
      *     }
      * ]
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -914,12 +981,14 @@ public final class TextTranslationClientImpl {
      * Lookup Dictionary Entries.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the request.</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the
+     * request.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -927,7 +996,9 @@ public final class TextTranslationClientImpl {
      *     }
      * ]
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -978,12 +1049,14 @@ public final class TextTranslationClientImpl {
      * Lookup Dictionary Entries.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the request.</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the
+     * request.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -991,7 +1064,9 @@ public final class TextTranslationClientImpl {
      *     }
      * ]
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -1042,12 +1117,14 @@ public final class TextTranslationClientImpl {
      * Lookup Dictionary Examples.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the request.</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the
+     * request.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -1056,7 +1133,9 @@ public final class TextTranslationClientImpl {
      *     }
      * ]
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -1100,12 +1179,14 @@ public final class TextTranslationClientImpl {
      * Lookup Dictionary Examples.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the request.</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>X-ClientTraceId</td><td>String</td><td>No</td><td>A client-generated GUID to uniquely identify the
+     * request.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -1114,7 +1195,9 @@ public final class TextTranslationClientImpl {
      *     }
      * ]
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){

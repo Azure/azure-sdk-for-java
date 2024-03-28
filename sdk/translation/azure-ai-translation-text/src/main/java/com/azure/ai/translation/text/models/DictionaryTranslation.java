@@ -155,7 +155,8 @@ public final class DictionaryTranslation {
     }
 
     /**
-     * Get the backTranslations property: A list of "back translations" of the target. For example, source words that the target can translate to.
+     * Get the backTranslations property: A list of "back translations" of the target. For example, source words that
+     * the target can translate to.
      * The list is guaranteed to contain the source word that was requested (e.g., if the source word being
      * looked up is "fly", then it is guaranteed that "fly" will be in the backTranslations list).
      * However, it is not guaranteed to be in the first position, and often will not be.

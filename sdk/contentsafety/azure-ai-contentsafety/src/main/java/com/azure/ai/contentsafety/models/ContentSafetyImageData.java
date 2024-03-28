@@ -13,7 +13,9 @@ import java.io.IOException;
 import com.azure.core.util.BinaryData;
 
 /**
- * The image can be either base64 encoded bytes or a blob URL. You can choose only one of these options. If both are provided, the request will be refused. The maximum image size is 2048 x 2048 pixels and should not exceed 4 MB, while the minimum image size is 50 x 50 pixels.
+ * The image can be either base64 encoded bytes or a blob URL. You can choose only one of these options. If both are
+ * provided, the request will be refused. The maximum image size is 2048 x 2048 pixels and should not exceed 4 MB, while
+ * the minimum image size is 50 x 50 pixels.
  */
 @Fluent
 public final class ContentSafetyImageData implements JsonSerializable<ContentSafetyImageData> {
@@ -95,7 +97,8 @@ public final class ContentSafetyImageData implements JsonSerializable<ContentSaf
      * Reads an instance of ContentSafetyImageData from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ContentSafetyImageData if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of ContentSafetyImageData if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ContentSafetyImageData.
      */
     @Generated

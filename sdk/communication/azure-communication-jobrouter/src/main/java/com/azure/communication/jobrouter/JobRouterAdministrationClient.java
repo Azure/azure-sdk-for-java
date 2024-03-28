@@ -61,13 +61,16 @@ public final class JobRouterAdministrationClient {
      * Creates or updates a distribution policy.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this string.</td></tr>
-     *     <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the entity was not modified after this time.</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -82,7 +85,9 @@ public final class JobRouterAdministrationClient {
      *     }
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -307,6 +312,7 @@ public final class JobRouterAdministrationClient {
     /**
      * Retrieves an existing distribution policy by Id.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -341,12 +347,13 @@ public final class JobRouterAdministrationClient {
      * Retrieves existing distribution policies.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -397,13 +404,16 @@ public final class JobRouterAdministrationClient {
      * Creates or updates a classification policy.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this string.</td></tr>
-     *     <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the entity was not modified after this time.</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -425,7 +435,9 @@ public final class JobRouterAdministrationClient {
      *     ]
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -680,6 +692,7 @@ public final class JobRouterAdministrationClient {
     /**
      * Retrieves an existing classification policy by Id.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -721,12 +734,13 @@ public final class JobRouterAdministrationClient {
      * Retrieves existing classification policies.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -784,13 +798,16 @@ public final class JobRouterAdministrationClient {
      * Creates or updates a exception policy.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this string.</td></tr>
-     *     <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the entity was not modified after this time.</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -812,7 +829,9 @@ public final class JobRouterAdministrationClient {
      *     ]
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1061,6 +1080,7 @@ public final class JobRouterAdministrationClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
+     *
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1119,6 +1139,7 @@ public final class JobRouterAdministrationClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
+     *
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1172,13 +1193,16 @@ public final class JobRouterAdministrationClient {
      * Creates or updates a queue.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this string.</td></tr>
-     *     <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the entity was not modified after this time.</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1191,7 +1215,9 @@ public final class JobRouterAdministrationClient {
      *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1404,6 +1430,7 @@ public final class JobRouterAdministrationClient {
     /**
      * Retrieves an existing queue by Id.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1435,12 +1462,13 @@ public final class JobRouterAdministrationClient {
      * Retrieves existing queues.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)

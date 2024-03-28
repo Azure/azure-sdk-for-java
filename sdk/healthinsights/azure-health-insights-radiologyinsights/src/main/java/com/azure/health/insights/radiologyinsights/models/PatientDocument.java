@@ -96,7 +96,8 @@ public final class PatientDocument {
     }
 
     /**
-     * Get the type property: The type of the patient document, such as 'note' (text document) or 'fhirBundle' (FHIR JSON document).
+     * Get the type property: The type of the patient document, such as 'note' (text document) or 'fhirBundle' (FHIR
+     * JSON document).
      *
      * @return the type value.
      */
@@ -128,7 +129,8 @@ public final class PatientDocument {
     }
 
     /**
-     * Get the id property: A given identifier for the document. Has to be unique across all documents for a single patient.
+     * Get the id property: A given identifier for the document. Has to be unique across all documents for a single
+     * patient.
      *
      * @return the id value.
      */

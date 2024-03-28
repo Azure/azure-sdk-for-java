@@ -325,7 +325,8 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Get the requestedWorkerSelectors property: A collection of manually specified worker selectors, which a worker must satisfy in order to process this job.
+     * Get the requestedWorkerSelectors property: A collection of manually specified worker selectors, which a worker
+     * must satisfy in order to process this job.
      *
      * @return the requestedWorkerSelectors value.
      */
@@ -335,7 +336,8 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Set the requestedWorkerSelectors property: A collection of manually specified worker selectors, which a worker must satisfy in order to process this job.
+     * Set the requestedWorkerSelectors property: A collection of manually specified worker selectors, which a worker
+     * must satisfy in order to process this job.
      *
      * @param requestedWorkerSelectors the requestedWorkerSelectors value to set.
      * @return the RouterJobInternal object itself.
@@ -347,7 +349,8 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Get the attachedWorkerSelectors property: A collection of worker selectors attached by a classification policy, which a worker must satisfy in order to process this job.
+     * Get the attachedWorkerSelectors property: A collection of worker selectors attached by a classification policy,
+     * which a worker must satisfy in order to process this job.
      *
      * @return the attachedWorkerSelectors value.
      */
@@ -357,7 +360,8 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Get the labels property: A set of key/value pairs that are identifying attributes used by the rules engines to make decisions. Values must be primitive values - number, string, boolean.
+     * Get the labels property: A set of key/value pairs that are identifying attributes used by the rules engines to
+     * make decisions. Values must be primitive values - number, string, boolean.
      *
      * @return the labels value.
      */
@@ -367,7 +371,8 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Set the labels property: A set of key/value pairs that are identifying attributes used by the rules engines to make decisions. Values must be primitive values - number, string, boolean.
+     * Set the labels property: A set of key/value pairs that are identifying attributes used by the rules engines to
+     * make decisions. Values must be primitive values - number, string, boolean.
      *
      * @param labels the labels value to set.
      * @return the RouterJobInternal object itself.
@@ -389,7 +394,8 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Get the tags property: A set of non-identifying attributes attached to this job. Values must be primitive values - number, string, boolean.
+     * Get the tags property: A set of non-identifying attributes attached to this job. Values must be primitive values
+     * - number, string, boolean.
      *
      * @return the tags value.
      */
@@ -399,7 +405,8 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Set the tags property: A set of non-identifying attributes attached to this job. Values must be primitive values - number, string, boolean.
+     * Set the tags property: A set of non-identifying attributes attached to this job. Values must be primitive values
+     * - number, string, boolean.
      *
      * @param tags the tags value to set.
      * @return the RouterJobInternal object itself.
@@ -443,7 +450,8 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Get the matchingMode property: If provided, will determine how job matching will be carried out. Default mode: QueueAndMatchMode.
+     * Get the matchingMode property: If provided, will determine how job matching will be carried out. Default mode:
+     * QueueAndMatchMode.
      *
      * @return the matchingMode value.
      */
@@ -453,7 +461,8 @@ public final class RouterJobInternal {
     }
 
     /**
-     * Set the matchingMode property: If provided, will determine how job matching will be carried out. Default mode: QueueAndMatchMode.
+     * Set the matchingMode property: If provided, will determine how job matching will be carried out. Default mode:
+     * QueueAndMatchMode.
      *
      * @param matchingMode the matchingMode value to set.
      * @return the RouterJobInternal object itself.

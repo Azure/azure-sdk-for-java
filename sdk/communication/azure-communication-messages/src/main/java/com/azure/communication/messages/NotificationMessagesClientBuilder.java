@@ -92,7 +92,7 @@ public final class NotificationMessagesClientBuilder
     @Override
     public NotificationMessagesClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
-            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
         }
         this.pipeline = pipeline;
         return this;

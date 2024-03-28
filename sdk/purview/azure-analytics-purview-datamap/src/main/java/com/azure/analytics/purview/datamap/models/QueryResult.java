@@ -70,7 +70,8 @@ public final class QueryResult implements JsonSerializable<QueryResult> {
     }
 
     /**
-     * Get the searchCountApproximate property: 'True' if the '&#064;search.count' is an approximate value and vise versa.
+     * Get the searchCountApproximate property: 'True' if the '&#064;search.count' is an approximate value and vise
+     * versa.
      * 
      * @return the searchCountApproximate value.
      */
@@ -130,7 +131,8 @@ public final class QueryResult implements JsonSerializable<QueryResult> {
      * Reads an instance of QueryResult from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of QueryResult if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of QueryResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the QueryResult.
      */
     @Generated

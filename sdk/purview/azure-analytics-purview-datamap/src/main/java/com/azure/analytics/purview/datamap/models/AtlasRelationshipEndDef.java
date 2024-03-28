@@ -16,7 +16,7 @@ import java.io.IOException;
  * The relationshipEndDef represents an end of the relationship. The end of the
  * relationship is defined by a type, an
  * attribute name, cardinality and whether
- * it  is the container end of the relationship.
+ * it is the container end of the relationship.
  */
 @Fluent
 public final class AtlasRelationshipEndDef implements JsonSerializable<AtlasRelationshipEndDef> {
@@ -215,7 +215,8 @@ public final class AtlasRelationshipEndDef implements JsonSerializable<AtlasRela
      * Reads an instance of AtlasRelationshipEndDef from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AtlasRelationshipEndDef if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of AtlasRelationshipEndDef if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AtlasRelationshipEndDef.
      */
     @Generated

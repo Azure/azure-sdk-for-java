@@ -76,7 +76,8 @@ public final class MediaNotificationContent extends NotificationContent {
     }
 
     /**
-     * Get the mediaUrl property: A media url for the file. Required if the type is one of the supported media types, e.g. image.
+     * Get the mediaUrl property: A media url for the file. Required if the type is one of the supported media types,
+     * e.g. image.
      *
      * @return the mediaUrl value.
      */

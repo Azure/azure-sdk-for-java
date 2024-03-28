@@ -151,7 +151,8 @@ public final class DocumentIntelligenceClientImpl {
     }
 
     /**
-     * The interface defining all the services for DocumentIntelligenceClient to be used by the proxy service to perform REST calls.
+     * The interface defining all the services for DocumentIntelligenceClient to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{endpoint}/documentintelligence")
     @ServiceInterface(name = "DocumentIntelligence")
@@ -205,18 +206,25 @@ public final class DocumentIntelligenceClientImpl {
      * Analyzes document with document model.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze.  Ex. "1-3,5,7-9"</td></tr>
-     *     <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis.  Value may contain only
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
+     * "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of "," separated string.</td></tr>
-     *     <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract.  Ex. "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
-     *     <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -250,18 +258,25 @@ public final class DocumentIntelligenceClientImpl {
      * Analyzes document with document model.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze.  Ex. "1-3,5,7-9"</td></tr>
-     *     <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis.  Value may contain only
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
+     * "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of "," separated string.</td></tr>
-     *     <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract.  Ex. "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
-     *     <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -295,18 +310,25 @@ public final class DocumentIntelligenceClientImpl {
      * Analyzes document with document model.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze.  Ex. "1-3,5,7-9"</td></tr>
-     *     <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis.  Value may contain only
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
+     * "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of "," separated string.</td></tr>
-     *     <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract.  Ex. "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
-     *     <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -339,18 +361,25 @@ public final class DocumentIntelligenceClientImpl {
      * Analyzes document with document model.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze.  Ex. "1-3,5,7-9"</td></tr>
-     *     <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis.  Value may contain only
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
+     * "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of "," separated string.</td></tr>
-     *     <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract.  Ex. "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
-     *     <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -383,18 +412,25 @@ public final class DocumentIntelligenceClientImpl {
      * Analyzes document with document model.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze.  Ex. "1-3,5,7-9"</td></tr>
-     *     <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis.  Value may contain only
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
+     * "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of "," separated string.</td></tr>
-     *     <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract.  Ex. "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
-     *     <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -429,18 +465,25 @@ public final class DocumentIntelligenceClientImpl {
      * Analyzes document with document model.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze.  Ex. "1-3,5,7-9"</td></tr>
-     *     <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis.  Value may contain only
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
+     * "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
      * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of "," separated string.</td></tr>
-     *     <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract.  Ex. "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
-     *     <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -475,13 +518,16 @@ public final class DocumentIntelligenceClientImpl {
      * Classifies document with document classifier.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
+     * "perPage".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -512,13 +558,16 @@ public final class DocumentIntelligenceClientImpl {
      * Classifies document with document classifier.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
+     * "perPage".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -548,13 +597,16 @@ public final class DocumentIntelligenceClientImpl {
      * Classifies document with document classifier.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
+     * "perPage".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -589,13 +641,16 @@ public final class DocumentIntelligenceClientImpl {
      * Classifies document with document classifier.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
+     * "perPage".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -630,13 +685,16 @@ public final class DocumentIntelligenceClientImpl {
      * Classifies document with document classifier.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
+     * "perPage".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -672,13 +730,16 @@ public final class DocumentIntelligenceClientImpl {
      * Classifies document with document classifier.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     *     <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
+     * "perPage".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)

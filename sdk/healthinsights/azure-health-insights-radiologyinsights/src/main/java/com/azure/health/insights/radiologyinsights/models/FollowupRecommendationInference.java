@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Follow-up recommendations offer guidance to healthcare providers on managing and monitoring patients based on the findings of imaging studies.
+ * Follow-up recommendations offer guidance to healthcare providers on managing and monitoring patients based on the
+ * findings of imaging studies.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -103,7 +104,8 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the effectiveDateTime property: Date and time are displayed when the procedure is recommended to be done at a specific point in time.
+     * Get the effectiveDateTime property: Date and time are displayed when the procedure is recommended to be done at a
+     * specific point in time.
      *
      * @return the effectiveDateTime value.
      */
@@ -113,7 +115,8 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the effectivePeriod property: The period is shown if a specific period is mentioned, with a start and end date-time.
+     * Get the effectivePeriod property: The period is shown if a specific period is mentioned, with a start and end
+     * date-time.
      *
      * @return the effectivePeriod value.
      */
@@ -133,7 +136,9 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the isConditional property: The conditional value indicates whether or not the sentence containing the recommendation includes a conditional statement. Keywords for conditional statements include 'if', 'when', 'unless', and so on.
+     * Get the isConditional property: The conditional value indicates whether or not the sentence containing the
+     * recommendation includes a conditional statement. Keywords for conditional statements include 'if', 'when',
+     * 'unless', and so on.
      *
      * @return the isConditional value.
      */
@@ -143,7 +148,8 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the isOption property: The option value indicates whether or not the sentence containing the recommendation includes an optional statement. Keywords for optional statements include 'recommend', 'consider', and so on.
+     * Get the isOption property: The option value indicates whether or not the sentence containing the recommendation
+     * includes an optional statement. Keywords for optional statements include 'recommend', 'consider', and so on.
      *
      * @return the isOption value.
      */
@@ -153,7 +159,8 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the isGuideline property: The guideline value indicates whether or not the recommendation is part of a guideline section that compiles all recommendations applicable to various findings.
+     * Get the isGuideline property: The guideline value indicates whether or not the recommendation is part of a
+     * guideline section that compiles all recommendations applicable to various findings.
      *
      * @return the isGuideline value.
      */
@@ -163,7 +170,8 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the isHedging property: Hedging refers to ambiguous, vague or imprecise language within the sentence of the recommendation. Keywords for hedging are 'can be','may be',and so on.
+     * Get the isHedging property: Hedging refers to ambiguous, vague or imprecise language within the sentence of the
+     * recommendation. Keywords for hedging are 'can be','may be',and so on.
      *
      * @return the isHedging value.
      */
@@ -173,7 +181,8 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the recommendedProcedure property: The procedure recommendation can be a generic procedure or an imaging procedure.
+     * Get the recommendedProcedure property: The procedure recommendation can be a generic procedure or an imaging
+     * procedure.
      *
      * @return the recommendedProcedure value.
      */

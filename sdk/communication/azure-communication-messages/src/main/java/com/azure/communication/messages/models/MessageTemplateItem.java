@@ -69,7 +69,8 @@ public abstract class MessageTemplateItem {
     }
 
     /**
-     * Get the language property: The template's language, in the ISO 639 format, consist of a two-letter language code followed by an optional two-letter country code, e.g., 'en' or 'en_US'.
+     * Get the language property: The template's language, in the ISO 639 format, consist of a two-letter language code
+     * followed by an optional two-letter country code, e.g., 'en' or 'en_US'.
      *
      * @return the language value.
      */

@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Radiology procedures are the specific imaging studies or examinations ordered for the patient, extracted from the document information and text.
+ * Radiology procedures are the specific imaging studies or examinations ordered for the patient, extracted from the
+ * document information and text.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,

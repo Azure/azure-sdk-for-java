@@ -45,8 +45,10 @@ public final class BlocklistClient {
     /**
      * Add or update BlocklistItems To Text Blocklist
      *
-     * Add or update blocklistItems to a text blocklist. You can add or update at most 100 blocklistItems in one request.
+     * Add or update blocklistItems to a text blocklist. You can add or update at most 100 blocklistItems in one
+     * request.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     blocklistItems (Required): [
@@ -58,7 +60,9 @@ public final class BlocklistClient {
      *     ]
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     blocklistItems (Required): [
@@ -92,13 +96,16 @@ public final class BlocklistClient {
      *
      * Updates a text blocklist. If the blocklistName does not exist, a new blocklist will be created.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
@@ -146,6 +153,7 @@ public final class BlocklistClient {
      *
      * Returns text blocklist details.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
@@ -172,6 +180,7 @@ public final class BlocklistClient {
      *
      * Get blocklistItem by blocklistName and blocklistItemId from a text blocklist.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     blocklistItemId: String (Required)
@@ -202,14 +211,15 @@ public final class BlocklistClient {
      * Get all blocklistItems in a text blocklist.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The number of result items to return.</td></tr>
-     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The number of result items to return.</td></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     blocklistItemId: String (Required)
@@ -237,6 +247,7 @@ public final class BlocklistClient {
      *
      * Get all text blocklists details.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
@@ -262,6 +273,7 @@ public final class BlocklistClient {
      *
      * Remove blocklistItems from a text blocklist. You can remove at most 100 BlocklistItems in one request.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     blocklistItemIds (Required): [
@@ -289,7 +301,8 @@ public final class BlocklistClient {
     /**
      * Add or update BlocklistItems To Text Blocklist
      *
-     * Add or update blocklistItems to a text blocklist. You can add or update at most 100 blocklistItems in one request.
+     * Add or update blocklistItems to a text blocklist. You can add or update at most 100 blocklistItems in one
+     * request.
      *
      * @param name Text blocklist name.
      * @param options Options for adding or updating blocklist items.

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * A text note which also  contains information about who made the statement and when
+ * A text note which also contains information about who made the statement and when
  * Based on [FHIR Annotation](https://www.hl7.org/fhir/R4/datatypes.html#Annotation).
  */
 @Fluent

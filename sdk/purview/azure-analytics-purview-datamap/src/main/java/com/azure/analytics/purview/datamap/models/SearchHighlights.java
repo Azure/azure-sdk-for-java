@@ -128,7 +128,8 @@ public final class SearchHighlights implements JsonSerializable<SearchHighlights
      * Reads an instance of SearchHighlights from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SearchHighlights if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of SearchHighlights if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SearchHighlights.
      */
     @Generated

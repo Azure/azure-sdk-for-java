@@ -46,6 +46,7 @@ public final class DiscoveryAsyncClient {
     /**
      * Get data using search.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     keywords: String (Optional)
@@ -73,13 +74,16 @@ public final class DiscoveryAsyncClient {
      *     }
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     * <pre>{@code
+     * 
+     * <pre>
+     * {@code
      * {
-     *     @search.count: Integer (Optional)
-     *     @search.count.approximate: Boolean (Optional)
+     *     &#64;search.count: Integer (Optional)
+     *     &#64;search.count.approximate: Boolean (Optional)
      *     continuationToken: String (Optional)
-     *     @search.facets (Optional): {
+     *     &#64;search.facets (Optional): {
      *         entityType (Optional): [
      *              (Optional){
      *                 count: Integer (Optional)
@@ -116,7 +120,7 @@ public final class DiscoveryAsyncClient {
      *     }
      *     value (Optional): [
      *          (Optional){
-     *             @search.score: Double (Optional)
+     *             &#64;search.score: Double (Optional)
      *             @search.highlights (Optional): {
      *                 id (Optional): [
      *                     String (Optional)
@@ -177,7 +181,8 @@ public final class DiscoveryAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param queryOptions The search query of advanced search request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -196,6 +201,7 @@ public final class DiscoveryAsyncClient {
     /**
      * Get search suggestions by query criteria.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     keywords: String (Optional)
@@ -203,12 +209,15 @@ public final class DiscoveryAsyncClient {
      *     filter: Object (Optional)
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     * <pre>{@code
+     * 
+     * <pre>
+     * {@code
      * {
      *     value (Optional): [
      *          (Optional){
-     *             @search.score: Double (Optional)
+     *             &#64;search.score: Double (Optional)
      *             @search.text: String (Optional)
      *             objectType: String (Optional)
      *             createTime: Long (Optional)
@@ -253,7 +262,8 @@ public final class DiscoveryAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param suggestOptions The payload of suggest request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -261,7 +271,8 @@ public final class DiscoveryAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return search suggestions by query criteria along with {@link Response} on successful completion of {@link Mono}.
+     * @return search suggestions by query criteria along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -272,6 +283,7 @@ public final class DiscoveryAsyncClient {
     /**
      * Get auto complete options.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     keywords: String (Optional)
@@ -279,7 +291,9 @@ public final class DiscoveryAsyncClient {
      *     filter: Object (Optional)
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     value (Optional): [

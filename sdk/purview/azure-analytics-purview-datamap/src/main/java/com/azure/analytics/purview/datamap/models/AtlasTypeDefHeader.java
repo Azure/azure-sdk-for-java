@@ -89,7 +89,8 @@ public final class AtlasTypeDefHeader implements JsonSerializable<AtlasTypeDefHe
      * Reads an instance of AtlasTypeDefHeader from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AtlasTypeDefHeader if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of AtlasTypeDefHeader if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AtlasTypeDefHeader.
      */
     @Generated

@@ -14,7 +14,8 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
- * Follow-up communication involves the exchange of important information, recommendations, or updates between radiologists and other healthcare professionals involved in a patient's care.
+ * Follow-up communication involves the exchange of important information, recommendations, or updates between
+ * radiologists and other healthcare professionals involved in a patient's care.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,

@@ -64,7 +64,8 @@ public final class FunctionRouterRuleCredential {
     }
 
     /**
-     * Get the appKey property: Access key scoped to a Azure Function app. This key grants access to all functions under the app.
+     * Get the appKey property: Access key scoped to a Azure Function app. This key grants access to all functions under
+     * the app.
      *
      * @return the appKey value.
      */
@@ -74,7 +75,8 @@ public final class FunctionRouterRuleCredential {
     }
 
     /**
-     * Set the appKey property: Access key scoped to a Azure Function app. This key grants access to all functions under the app.
+     * Set the appKey property: Access key scoped to a Azure Function app. This key grants access to all functions under
+     * the app.
      *
      * @param appKey the appKey value to set.
      * @return the FunctionRouterRuleCredential object itself.
@@ -86,7 +88,8 @@ public final class FunctionRouterRuleCredential {
     }
 
     /**
-     * Get the clientId property: Client id, when AppKey is provided In context of Azure function, this is usually the name of the key.
+     * Get the clientId property: Client id, when AppKey is provided In context of Azure function, this is usually the
+     * name of the key.
      *
      * @return the clientId value.
      */
@@ -96,7 +99,8 @@ public final class FunctionRouterRuleCredential {
     }
 
     /**
-     * Set the clientId property: Client id, when AppKey is provided In context of Azure function, this is usually the name of the key.
+     * Set the clientId property: Client id, when AppKey is provided In context of Azure function, this is usually the
+     * name of the key.
      *
      * @param clientId the clientId value to set.
      * @return the FunctionRouterRuleCredential object itself.

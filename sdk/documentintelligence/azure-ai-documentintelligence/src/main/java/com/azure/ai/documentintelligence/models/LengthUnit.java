@@ -9,7 +9,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The unit used by the width, height, and polygon properties. For images, the unit is "pixel". For PDF, the unit is "inch".
+ * The unit used by the width, height, and polygon properties. For images, the unit is "pixel". For PDF, the unit is
+ * "inch".
  */
 public final class LengthUnit extends ExpandableStringEnum<LengthUnit> {
     /**

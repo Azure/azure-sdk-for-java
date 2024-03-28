@@ -51,8 +51,10 @@ public final class BlocklistAsyncClient {
     /**
      * Add or update BlocklistItems To Text Blocklist
      *
-     * Add or update blocklistItems to a text blocklist. You can add or update at most 100 blocklistItems in one request.
+     * Add or update blocklistItems to a text blocklist. You can add or update at most 100 blocklistItems in one
+     * request.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     blocklistItems (Required): [
@@ -64,7 +66,9 @@ public final class BlocklistAsyncClient {
      *     ]
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     blocklistItems (Required): [
@@ -84,7 +88,8 @@ public final class BlocklistAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response of adding blocklistItems to the text blocklist along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response of adding blocklistItems to the text blocklist along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -98,13 +103,16 @@ public final class BlocklistAsyncClient {
      *
      * Updates a text blocklist. If the blocklistName does not exist, a new blocklist will be created.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
@@ -152,6 +160,7 @@ public final class BlocklistAsyncClient {
      *
      * Returns text blocklist details.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
@@ -178,6 +187,7 @@ public final class BlocklistAsyncClient {
      *
      * Get blocklistItem by blocklistName and blocklistItemId from a text blocklist.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     blocklistItemId: String (Required)
@@ -193,7 +203,8 @@ public final class BlocklistAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return blocklistItem by blocklistName and blocklistItemId from a text blocklist along with {@link Response} on successful completion of {@link Mono}.
+     * @return blocklistItem by blocklistName and blocklistItemId from a text blocklist along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -208,14 +219,15 @@ public final class BlocklistAsyncClient {
      * Get all blocklistItems in a text blocklist.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The number of result items to return.</td></tr>
-     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The number of result items to return.</td></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     blocklistItemId: String (Required)
@@ -243,6 +255,7 @@ public final class BlocklistAsyncClient {
      *
      * Get all text blocklists details.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
@@ -268,6 +281,7 @@ public final class BlocklistAsyncClient {
      *
      * Remove blocklistItems from a text blocklist. You can remove at most 100 BlocklistItems in one request.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     blocklistItemIds (Required): [
@@ -295,7 +309,8 @@ public final class BlocklistAsyncClient {
     /**
      * Add or update BlocklistItems To Text Blocklist
      *
-     * Add or update blocklistItems to a text blocklist. You can add or update at most 100 blocklistItems in one request.
+     * Add or update blocklistItems to a text blocklist. You can add or update at most 100 blocklistItems in one
+     * request.
      *
      * @param name Text blocklist name.
      * @param options Options for adding or updating blocklist items.
@@ -376,7 +391,8 @@ public final class BlocklistAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blocklistItem by blocklistName and blocklistItemId from a text blocklist on successful completion of {@link Mono}.
+     * @return blocklistItem by blocklistName and blocklistItemId from a text blocklist on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

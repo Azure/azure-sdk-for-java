@@ -730,13 +730,15 @@ public final class DevBoxesClientImpl {
      * Lists available pools.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -792,13 +794,15 @@ public final class DevBoxesClientImpl {
      * Lists available pools.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -852,13 +856,15 @@ public final class DevBoxesClientImpl {
      * Lists available pools.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -912,13 +918,15 @@ public final class DevBoxesClientImpl {
      * Lists available pools.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -971,6 +979,7 @@ public final class DevBoxesClientImpl {
     /**
      * Gets a pool.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1023,6 +1032,7 @@ public final class DevBoxesClientImpl {
     /**
      * Gets a pool.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1076,13 +1086,15 @@ public final class DevBoxesClientImpl {
      * Lists available schedules for a pool.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1117,13 +1129,15 @@ public final class DevBoxesClientImpl {
      * Lists available schedules for a pool.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1157,13 +1171,15 @@ public final class DevBoxesClientImpl {
      * Lists available schedules for a pool.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1197,13 +1213,15 @@ public final class DevBoxesClientImpl {
      * Lists available schedules for a pool.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1235,6 +1253,7 @@ public final class DevBoxesClientImpl {
     /**
      * Gets a schedule.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1267,6 +1286,7 @@ public final class DevBoxesClientImpl {
     /**
      * Gets a schedule.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1299,13 +1319,15 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes that the caller has access to in the DevCenter.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1374,13 +1396,15 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes that the caller has access to in the DevCenter.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1448,13 +1472,15 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes that the caller has access to in the DevCenter.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1522,13 +1548,15 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes that the caller has access to in the DevCenter.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1596,13 +1624,15 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the Dev Center for a particular user.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1650,7 +1680,8 @@ public final class DevBoxesClientImpl {
      * }
      * }</pre>
      * 
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1673,13 +1704,15 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the Dev Center for a particular user.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1727,7 +1760,8 @@ public final class DevBoxesClientImpl {
      * }
      * }</pre>
      * 
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1748,13 +1782,15 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the Dev Center for a particular user.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1802,7 +1838,8 @@ public final class DevBoxesClientImpl {
      * }
      * }</pre>
      * 
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1823,13 +1860,15 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the Dev Center for a particular user.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1877,7 +1916,8 @@ public final class DevBoxesClientImpl {
      * }
      * }</pre>
      * 
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1898,13 +1938,15 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the project for a particular user.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1953,7 +1995,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1976,13 +2019,15 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the project for a particular user.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -2031,7 +2076,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2052,13 +2098,15 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the project for a particular user.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -2107,7 +2155,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2129,13 +2178,15 @@ public final class DevBoxesClientImpl {
      * Lists Dev Boxes in the project for a particular user.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -2184,7 +2235,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2204,6 +2256,7 @@ public final class DevBoxesClientImpl {
     /**
      * Gets a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -2252,7 +2305,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2272,6 +2326,7 @@ public final class DevBoxesClientImpl {
     /**
      * Gets a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -2320,7 +2375,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2340,6 +2396,7 @@ public final class DevBoxesClientImpl {
     /**
      * Creates or replaces a Dev Box.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -2386,7 +2443,9 @@ public final class DevBoxesClientImpl {
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -2435,7 +2494,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param body Represents a environment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2457,6 +2517,7 @@ public final class DevBoxesClientImpl {
     /**
      * Creates or replaces a Dev Box.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -2503,7 +2564,9 @@ public final class DevBoxesClientImpl {
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -2552,7 +2615,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param body Represents a environment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2573,6 +2637,7 @@ public final class DevBoxesClientImpl {
     /**
      * Creates or replaces a Dev Box.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -2619,7 +2684,9 @@ public final class DevBoxesClientImpl {
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -2668,7 +2735,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param body Represents a environment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2695,6 +2763,7 @@ public final class DevBoxesClientImpl {
     /**
      * Creates or replaces a Dev Box.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -2741,7 +2810,9 @@ public final class DevBoxesClientImpl {
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -2790,7 +2861,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param body Represents a environment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2817,6 +2889,7 @@ public final class DevBoxesClientImpl {
     /**
      * Deletes a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -2835,14 +2908,16 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BinaryData>> deleteDevBoxWithResponseAsync(String projectName, String userId,
@@ -2855,6 +2930,7 @@ public final class DevBoxesClientImpl {
     /**
      * Deletes a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -2873,7 +2949,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2893,6 +2970,7 @@ public final class DevBoxesClientImpl {
     /**
      * Deletes a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -2911,7 +2989,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2937,6 +3016,7 @@ public final class DevBoxesClientImpl {
     /**
      * Deletes a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -2955,7 +3035,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2981,6 +3062,7 @@ public final class DevBoxesClientImpl {
     /**
      * Starts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -2999,14 +3081,16 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BinaryData>> startDevBoxWithResponseAsync(String projectName, String userId,
@@ -3019,6 +3103,7 @@ public final class DevBoxesClientImpl {
     /**
      * Starts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -3037,7 +3122,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3057,6 +3143,7 @@ public final class DevBoxesClientImpl {
     /**
      * Starts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -3075,7 +3162,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3101,6 +3189,7 @@ public final class DevBoxesClientImpl {
     /**
      * Starts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -3119,7 +3208,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3146,12 +3236,13 @@ public final class DevBoxesClientImpl {
      * Stops a Dev Box.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>hibernate</td><td>Boolean</td><td>No</td><td>Optional parameter to hibernate the dev box.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>hibernate</td><td>Boolean</td><td>No</td><td>Optional parameter to hibernate the dev box.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -3170,14 +3261,16 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BinaryData>> stopDevBoxWithResponseAsync(String projectName, String userId, String devBoxName,
@@ -3191,12 +3284,13 @@ public final class DevBoxesClientImpl {
      * Stops a Dev Box.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>hibernate</td><td>Boolean</td><td>No</td><td>Optional parameter to hibernate the dev box.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>hibernate</td><td>Boolean</td><td>No</td><td>Optional parameter to hibernate the dev box.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -3215,7 +3309,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3236,12 +3331,13 @@ public final class DevBoxesClientImpl {
      * Stops a Dev Box.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>hibernate</td><td>Boolean</td><td>No</td><td>Optional parameter to hibernate the dev box.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>hibernate</td><td>Boolean</td><td>No</td><td>Optional parameter to hibernate the dev box.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -3260,7 +3356,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3287,12 +3384,13 @@ public final class DevBoxesClientImpl {
      * Stops a Dev Box.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>hibernate</td><td>Boolean</td><td>No</td><td>Optional parameter to hibernate the dev box.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>hibernate</td><td>Boolean</td><td>No</td><td>Optional parameter to hibernate the dev box.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -3311,7 +3409,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3337,6 +3436,7 @@ public final class DevBoxesClientImpl {
     /**
      * Restarts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -3355,14 +3455,16 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BinaryData>> restartDevBoxWithResponseAsync(String projectName, String userId,
@@ -3375,6 +3477,7 @@ public final class DevBoxesClientImpl {
     /**
      * Restarts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -3393,7 +3496,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3413,6 +3517,7 @@ public final class DevBoxesClientImpl {
     /**
      * Restarts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -3431,7 +3536,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3457,6 +3563,7 @@ public final class DevBoxesClientImpl {
     /**
      * Restarts a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -3475,7 +3582,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3501,6 +3609,7 @@ public final class DevBoxesClientImpl {
     /**
      * Gets RDP Connection info.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     webUrl: String (Optional)
@@ -3509,7 +3618,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3529,6 +3639,7 @@ public final class DevBoxesClientImpl {
     /**
      * Gets RDP Connection info.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     webUrl: String (Optional)
@@ -3537,7 +3648,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3557,6 +3669,7 @@ public final class DevBoxesClientImpl {
     /**
      * Lists actions on a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -3570,7 +3683,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3593,6 +3707,7 @@ public final class DevBoxesClientImpl {
     /**
      * Lists actions on a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -3606,7 +3721,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3628,6 +3744,7 @@ public final class DevBoxesClientImpl {
     /**
      * Lists actions on a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -3641,7 +3758,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3664,6 +3782,7 @@ public final class DevBoxesClientImpl {
     /**
      * Lists actions on a Dev Box.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -3677,7 +3796,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3699,6 +3819,7 @@ public final class DevBoxesClientImpl {
     /**
      * Gets an action.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -3712,7 +3833,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param actionName The name of an action that will take place on a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3734,6 +3856,7 @@ public final class DevBoxesClientImpl {
     /**
      * Gets an action.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -3747,7 +3870,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param actionName The name of an action that will take place on a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3769,7 +3893,8 @@ public final class DevBoxesClientImpl {
      * Skips an occurrence of an action.
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param actionName The name of an action that will take place on a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3792,7 +3917,8 @@ public final class DevBoxesClientImpl {
      * Skips an occurrence of an action.
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param actionName The name of an action that will take place on a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3813,6 +3939,7 @@ public final class DevBoxesClientImpl {
     /**
      * Delays the occurrence of an action.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -3826,7 +3953,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param actionName The name of an action that will take place on a Dev Box.
      * @param delayUntil The time to delay the Dev Box action or actions until.
@@ -3835,7 +3963,8 @@ public final class DevBoxesClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an action which will take place on a Dev Box along with {@link Response} on successful completion of {@link Mono}.
+     * @return an action which will take place on a Dev Box along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> delayActionWithResponseAsync(String projectName, String userId, String devBoxName,
@@ -3849,6 +3978,7 @@ public final class DevBoxesClientImpl {
     /**
      * Delays the occurrence of an action.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -3862,7 +3992,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param actionName The name of an action that will take place on a Dev Box.
      * @param delayUntil The time to delay the Dev Box action or actions until.
@@ -3884,6 +4015,7 @@ public final class DevBoxesClientImpl {
     /**
      * Delays all actions.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -3913,7 +4045,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param delayUntil The time to delay the Dev Box action or actions until.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3937,6 +4070,7 @@ public final class DevBoxesClientImpl {
     /**
      * Delays all actions.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -3966,7 +4100,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param delayUntil The time to delay the Dev Box action or actions until.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3990,6 +4125,7 @@ public final class DevBoxesClientImpl {
     /**
      * Delays all actions.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -4019,7 +4155,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param delayUntil The time to delay the Dev Box action or actions until.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4043,6 +4180,7 @@ public final class DevBoxesClientImpl {
     /**
      * Delays all actions.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -4072,7 +4210,8 @@ public final class DevBoxesClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param devBoxName The name of a Dev Box.
      * @param delayUntil The time to delay the Dev Box action or actions until.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4096,6 +4235,7 @@ public final class DevBoxesClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -4152,6 +4292,7 @@ public final class DevBoxesClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -4206,6 +4347,7 @@ public final class DevBoxesClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -4240,6 +4382,7 @@ public final class DevBoxesClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -4272,6 +4415,7 @@ public final class DevBoxesClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -4343,6 +4487,7 @@ public final class DevBoxesClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -4412,6 +4557,7 @@ public final class DevBoxesClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -4482,6 +4628,7 @@ public final class DevBoxesClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -4552,6 +4699,7 @@ public final class DevBoxesClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -4623,6 +4771,7 @@ public final class DevBoxesClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -4692,6 +4841,7 @@ public final class DevBoxesClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -4728,6 +4878,7 @@ public final class DevBoxesClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -4762,6 +4913,7 @@ public final class DevBoxesClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -4814,6 +4966,7 @@ public final class DevBoxesClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)

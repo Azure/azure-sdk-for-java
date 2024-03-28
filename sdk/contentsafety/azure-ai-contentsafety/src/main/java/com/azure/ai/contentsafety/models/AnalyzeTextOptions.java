@@ -59,7 +59,8 @@ public final class AnalyzeTextOptions implements JsonSerializable<AnalyzeTextOpt
     }
 
     /**
-     * Get the text property: The text needs to be analyzed. We support a maximum of 10k Unicode characters (Unicode code points) in the text of one request.
+     * Get the text property: The text needs to be analyzed. We support a maximum of 10k Unicode characters (Unicode
+     * code points) in the text of one request.
      *
      * @return the text value.
      */
@@ -69,7 +70,8 @@ public final class AnalyzeTextOptions implements JsonSerializable<AnalyzeTextOpt
     }
 
     /**
-     * Get the categories property: The categories will be analyzed. If they are not assigned, a default set of analysis results for the categories will be returned.
+     * Get the categories property: The categories will be analyzed. If they are not assigned, a default set of analysis
+     * results for the categories will be returned.
      *
      * @return the categories value.
      */
@@ -79,7 +81,8 @@ public final class AnalyzeTextOptions implements JsonSerializable<AnalyzeTextOpt
     }
 
     /**
-     * Set the categories property: The categories will be analyzed. If they are not assigned, a default set of analysis results for the categories will be returned.
+     * Set the categories property: The categories will be analyzed. If they are not assigned, a default set of analysis
+     * results for the categories will be returned.
      *
      * @param categories the categories value to set.
      * @return the AnalyzeTextOptions object itself.
@@ -113,7 +116,9 @@ public final class AnalyzeTextOptions implements JsonSerializable<AnalyzeTextOpt
     }
 
     /**
-     * Get the haltOnBlocklistHit property: When set to true, further analyses of harmful content will not be performed in cases where blocklists are hit. When set to false, all analyses of harmful content will be performed, whether or not blocklists are hit.
+     * Get the haltOnBlocklistHit property: When set to true, further analyses of harmful content will not be performed
+     * in cases where blocklists are hit. When set to false, all analyses of harmful content will be performed, whether
+     * or not blocklists are hit.
      *
      * @return the haltOnBlocklistHit value.
      */
@@ -123,7 +128,9 @@ public final class AnalyzeTextOptions implements JsonSerializable<AnalyzeTextOpt
     }
 
     /**
-     * Set the haltOnBlocklistHit property: When set to true, further analyses of harmful content will not be performed in cases where blocklists are hit. When set to false, all analyses of harmful content will be performed, whether or not blocklists are hit.
+     * Set the haltOnBlocklistHit property: When set to true, further analyses of harmful content will not be performed
+     * in cases where blocklists are hit. When set to false, all analyses of harmful content will be performed, whether
+     * or not blocklists are hit.
      *
      * @param haltOnBlocklistHit the haltOnBlocklistHit value to set.
      * @return the AnalyzeTextOptions object itself.
@@ -135,7 +142,8 @@ public final class AnalyzeTextOptions implements JsonSerializable<AnalyzeTextOpt
     }
 
     /**
-     * Get the outputType property: This refers to the type of text analysis output. If no value is assigned, the default value will be "FourSeverityLevels".
+     * Get the outputType property: This refers to the type of text analysis output. If no value is assigned, the
+     * default value will be "FourSeverityLevels".
      *
      * @return the outputType value.
      */
@@ -145,7 +153,8 @@ public final class AnalyzeTextOptions implements JsonSerializable<AnalyzeTextOpt
     }
 
     /**
-     * Set the outputType property: This refers to the type of text analysis output. If no value is assigned, the default value will be "FourSeverityLevels".
+     * Set the outputType property: This refers to the type of text analysis output. If no value is assigned, the
+     * default value will be "FourSeverityLevels".
      *
      * @param outputType the outputType value to set.
      * @return the AnalyzeTextOptions object itself.
@@ -177,7 +186,8 @@ public final class AnalyzeTextOptions implements JsonSerializable<AnalyzeTextOpt
      * Reads an instance of AnalyzeTextOptions from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AnalyzeTextOptions if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of AnalyzeTextOptions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnalyzeTextOptions.
      */

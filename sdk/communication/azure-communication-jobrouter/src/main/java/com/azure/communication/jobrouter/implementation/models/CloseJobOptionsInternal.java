@@ -43,7 +43,8 @@ public final class CloseJobOptionsInternal {
     }
 
     /**
-     * Get the dispositionCode property: Indicates the outcome of a job, populate this field with your own custom values.
+     * Get the dispositionCode property: Indicates the outcome of a job, populate this field with your own custom
+     * values.
      *
      * @return the dispositionCode value.
      */
@@ -53,7 +54,8 @@ public final class CloseJobOptionsInternal {
     }
 
     /**
-     * Set the dispositionCode property: Indicates the outcome of a job, populate this field with your own custom values.
+     * Set the dispositionCode property: Indicates the outcome of a job, populate this field with your own custom
+     * values.
      *
      * @param dispositionCode the dispositionCode value to set.
      * @return the CloseJobOptionsInternal object itself.
@@ -65,7 +67,9 @@ public final class CloseJobOptionsInternal {
     }
 
     /**
-     * Get the closeAt property: If not provided, worker capacity is released immediately along with a JobClosedEvent notification. If provided, worker capacity is released along with a JobClosedEvent notification at a future time in UTC.
+     * Get the closeAt property: If not provided, worker capacity is released immediately along with a JobClosedEvent
+     * notification. If provided, worker capacity is released along with a JobClosedEvent notification at a future time
+     * in UTC.
      *
      * @return the closeAt value.
      */
@@ -75,7 +79,9 @@ public final class CloseJobOptionsInternal {
     }
 
     /**
-     * Set the closeAt property: If not provided, worker capacity is released immediately along with a JobClosedEvent notification. If provided, worker capacity is released along with a JobClosedEvent notification at a future time in UTC.
+     * Set the closeAt property: If not provided, worker capacity is released immediately along with a JobClosedEvent
+     * notification. If provided, worker capacity is released along with a JobClosedEvent notification at a future time
+     * in UTC.
      *
      * @param closeAt the closeAt value to set.
      * @return the CloseJobOptionsInternal object itself.

@@ -158,7 +158,8 @@ public final class DeploymentEnvironmentsClientImpl {
     }
 
     /**
-     * The interface defining all the services for DeploymentEnvironmentsClient to be used by the proxy service to perform REST calls.
+     * The interface defining all the services for DeploymentEnvironmentsClient to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "DeploymentEnvironmen")
@@ -524,12 +525,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists the environments for a project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -561,7 +564,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return results of the environment list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listAllEnvironmentsSinglePageAsync(String projectName,
@@ -578,12 +582,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists the environments for a project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -630,12 +636,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists the environments for a project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -682,12 +690,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists the environments for a project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -734,12 +744,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists the environments for a project and user.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -766,13 +778,15 @@ public final class DeploymentEnvironmentsClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return results of the environment list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listEnvironmentsSinglePageAsync(String projectName, String userId,
@@ -789,12 +803,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists the environments for a project and user.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -821,7 +837,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -843,12 +860,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists the environments for a project and user.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -875,7 +894,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -897,12 +917,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists the environments for a project and user.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -929,7 +951,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -950,6 +973,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Gets an environment.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -976,7 +1000,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param environmentName The name of the environment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -997,6 +1022,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Gets an environment.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -1023,7 +1049,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param environmentName The name of the environment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1043,6 +1070,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Creates or updates an environment.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -1067,7 +1095,9 @@ public final class DeploymentEnvironmentsClientImpl {
      *     }
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -1094,7 +1124,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param environmentName The name of the environment.
      * @param body Represents an environment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1116,6 +1147,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Creates or updates an environment.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -1140,7 +1172,9 @@ public final class DeploymentEnvironmentsClientImpl {
      *     }
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -1167,7 +1201,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param environmentName The name of the environment.
      * @param body Represents an environment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1188,6 +1223,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Creates or updates an environment.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -1212,7 +1248,9 @@ public final class DeploymentEnvironmentsClientImpl {
      *     }
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -1239,7 +1277,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param environmentName The name of the environment.
      * @param body Represents an environment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1267,6 +1306,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Creates or updates an environment.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -1291,7 +1331,9 @@ public final class DeploymentEnvironmentsClientImpl {
      *     }
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -1318,7 +1360,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param environmentName The name of the environment.
      * @param body Represents an environment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1346,6 +1389,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Deletes an environment and all its associated resources.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -1364,14 +1408,16 @@ public final class DeploymentEnvironmentsClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param environmentName The name of the environment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BinaryData>> deleteEnvironmentWithResponseAsync(String projectName, String userId,
@@ -1385,6 +1431,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Deletes an environment and all its associated resources.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -1403,7 +1450,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param environmentName The name of the environment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1423,6 +1471,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Deletes an environment and all its associated resources.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -1441,7 +1490,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param environmentName The name of the environment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1467,6 +1517,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Deletes an environment and all its associated resources.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -1485,7 +1536,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * }</pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication context.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
      * @param environmentName The name of the environment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1512,12 +1564,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all of the catalogs available for a project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1530,7 +1584,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the catalog list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return results of the catalog list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listCatalogsSinglePageAsync(String projectName,
@@ -1547,12 +1602,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all of the catalogs available for a project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1580,12 +1637,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all of the catalogs available for a project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1613,12 +1672,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all of the catalogs available for a project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1645,6 +1706,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Gets the specified catalog within the project.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1658,7 +1720,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the specified catalog within the project along with {@link Response} on successful completion of {@link Mono}.
+     * @return the specified catalog within the project along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCatalogWithResponseAsync(String projectName, String catalogName,
@@ -1671,6 +1734,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Gets the specified catalog within the project.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1698,12 +1762,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment definitions available for a project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1735,7 +1801,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment definition list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return results of the environment definition list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listEnvironmentDefinitionsSinglePageAsync(String projectName,
@@ -1752,12 +1819,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment definitions available for a project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1804,12 +1873,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment definitions available for a project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1857,12 +1928,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment definitions available for a project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1909,12 +1982,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment definitions available within a catalog.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1947,7 +2022,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment definition list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return results of the environment definition list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listEnvironmentDefinitionsByCatalogSinglePageAsync(String projectName,
@@ -1964,12 +2040,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment definitions available within a catalog.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2019,12 +2097,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment definitions available within a catalog.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2073,12 +2153,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment definitions available within a catalog.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2127,6 +2209,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Get an environment definition from a catalog.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2160,7 +2243,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an environment definition from a catalog along with {@link Response} on successful completion of {@link Mono}.
+     * @return an environment definition from a catalog along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEnvironmentDefinitionWithResponseAsync(String projectName, String catalogName,
@@ -2174,6 +2258,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Get an environment definition from a catalog.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2221,12 +2306,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment types configured for a project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -2241,7 +2328,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return result of the environment type list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return result of the environment type list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listEnvironmentTypesSinglePageAsync(String projectName,
@@ -2258,12 +2346,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment types configured for a project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -2293,12 +2383,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment types configured for a project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -2329,12 +2421,14 @@ public final class DeploymentEnvironmentsClientImpl {
      * Lists all environment types configured for a project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -2363,6 +2457,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -2396,7 +2491,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return results of the environment list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listAllEnvironmentsNextSinglePageAsync(String nextLink,
@@ -2411,6 +2507,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -2459,6 +2556,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -2492,7 +2590,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return results of the environment list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listEnvironmentsNextSinglePageAsync(String nextLink,
@@ -2508,6 +2607,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -2555,6 +2655,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -2569,7 +2670,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the catalog list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return results of the catalog list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listCatalogsNextSinglePageAsync(String nextLink,
@@ -2585,6 +2687,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -2613,6 +2716,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2646,7 +2750,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment definition list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return results of the environment definition list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listEnvironmentDefinitionsNextSinglePageAsync(String nextLink,
@@ -2662,6 +2767,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2710,6 +2816,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2743,7 +2850,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment definition list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return results of the environment definition list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listEnvironmentDefinitionsByCatalogNextSinglePageAsync(String nextLink,
@@ -2759,6 +2867,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2807,6 +2916,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -2823,7 +2933,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return result of the environment type list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return result of the environment type list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listEnvironmentTypesNextSinglePageAsync(String nextLink,
@@ -2838,6 +2949,7 @@ public final class DeploymentEnvironmentsClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)

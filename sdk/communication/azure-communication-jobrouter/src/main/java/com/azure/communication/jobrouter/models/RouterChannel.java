@@ -60,7 +60,8 @@ public final class RouterChannel {
     }
 
     /**
-     * Get the capacityCostPerJob property: The amount of capacity that an instance of a job of this channel will consume of the total worker capacity.
+     * Get the capacityCostPerJob property: The amount of capacity that an instance of a job of this channel will
+     * consume of the total worker capacity.
      *
      * @return the capacityCostPerJob value.
      */
@@ -70,7 +71,8 @@ public final class RouterChannel {
     }
 
     /**
-     * Get the maxNumberOfJobs property: The maximum number of jobs that can be supported concurrently for this channel. Value must be greater than zero.
+     * Get the maxNumberOfJobs property: The maximum number of jobs that can be supported concurrently for this channel.
+     * Value must be greater than zero.
      *
      * @return the maxNumberOfJobs value.
      */
@@ -80,7 +82,8 @@ public final class RouterChannel {
     }
 
     /**
-     * Set the maxNumberOfJobs property: The maximum number of jobs that can be supported concurrently for this channel. Value must be greater than zero.
+     * Set the maxNumberOfJobs property: The maximum number of jobs that can be supported concurrently for this channel.
+     * Value must be greater than zero.
      *
      * @param maxNumberOfJobs the maxNumberOfJobs value to set.
      * @return the RouterChannel object itself.

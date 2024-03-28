@@ -15,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * A matching mode of one of the following types:
  * QueueAndMatchMode: Used when matching worker to a job is required to be done right after job is queued.
- * ScheduleAndSuspendMode: Used for scheduling jobs to be queued at a future time. At specified time, matching of a worker to the job will not start automatically.
+ * ScheduleAndSuspendMode: Used for scheduling jobs to be queued at a future time. At specified time, matching of a
+ * worker to the job will not start automatically.
  * SuspendMode: Used when matching workers to a job needs to be suspended.
  */
 @JsonTypeInfo(

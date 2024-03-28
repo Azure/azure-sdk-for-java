@@ -65,7 +65,8 @@ public final class FhirR4Meta {
     }
 
     /**
-     * Get the versionId property: The version specific identifier, as it appears in the version portion of the URL. This value changes when the resource is created, updated, or deleted.
+     * Get the versionId property: The version specific identifier, as it appears in the version portion of the URL.
+     * This value changes when the resource is created, updated, or deleted.
      *
      * @return the versionId value.
      */
@@ -75,7 +76,8 @@ public final class FhirR4Meta {
     }
 
     /**
-     * Set the versionId property: The version specific identifier, as it appears in the version portion of the URL. This value changes when the resource is created, updated, or deleted.
+     * Set the versionId property: The version specific identifier, as it appears in the version portion of the URL.
+     * This value changes when the resource is created, updated, or deleted.
      *
      * @param versionId the versionId value to set.
      * @return the FhirR4Meta object itself.
@@ -109,7 +111,9 @@ public final class FhirR4Meta {
     }
 
     /**
-     * Get the source property: A uri that identifies the source system of the resource. This provides a minimal amount of Provenance information that can be used to track or differentiate the source of information in the resource. The source may identify another FHIR server, document, message, database, etc.
+     * Get the source property: A uri that identifies the source system of the resource. This provides a minimal amount
+     * of Provenance information that can be used to track or differentiate the source of information in the resource.
+     * The source may identify another FHIR server, document, message, database, etc.
      *
      * @return the source value.
      */
@@ -119,7 +123,9 @@ public final class FhirR4Meta {
     }
 
     /**
-     * Set the source property: A uri that identifies the source system of the resource. This provides a minimal amount of Provenance information that can be used to track or differentiate the source of information in the resource. The source may identify another FHIR server, document, message, database, etc.
+     * Set the source property: A uri that identifies the source system of the resource. This provides a minimal amount
+     * of Provenance information that can be used to track or differentiate the source of information in the resource.
+     * The source may identify another FHIR server, document, message, database, etc.
      *
      * @param source the source value to set.
      * @return the FhirR4Meta object itself.
@@ -131,7 +137,10 @@ public final class FhirR4Meta {
     }
 
     /**
-     * Get the profile property: A list of profiles (references to [StructureDefinition](https://www.hl7.org/fhir/structuredefinition.html) resources) that this resource claims to conform to. The URL is a reference to [StructureDefinition.url](https://www.hl7.org/fhir/structuredefinition-definitions.html#StructureDefinition.url).
+     * Get the profile property: A list of profiles (references to
+     * [StructureDefinition](https://www.hl7.org/fhir/structuredefinition.html) resources) that this resource claims to
+     * conform to. The URL is a reference to
+     * [StructureDefinition.url](https://www.hl7.org/fhir/structuredefinition-definitions.html#StructureDefinition.url).
      *
      * @return the profile value.
      */
@@ -141,7 +150,10 @@ public final class FhirR4Meta {
     }
 
     /**
-     * Set the profile property: A list of profiles (references to [StructureDefinition](https://www.hl7.org/fhir/structuredefinition.html) resources) that this resource claims to conform to. The URL is a reference to [StructureDefinition.url](https://www.hl7.org/fhir/structuredefinition-definitions.html#StructureDefinition.url).
+     * Set the profile property: A list of profiles (references to
+     * [StructureDefinition](https://www.hl7.org/fhir/structuredefinition.html) resources) that this resource claims to
+     * conform to. The URL is a reference to
+     * [StructureDefinition.url](https://www.hl7.org/fhir/structuredefinition-definitions.html#StructureDefinition.url).
      *
      * @param profile the profile value to set.
      * @return the FhirR4Meta object itself.
@@ -153,7 +165,8 @@ public final class FhirR4Meta {
     }
 
     /**
-     * Get the security property: Security labels applied to this resource. These tags connect specific resources to the overall security policy and infrastructure.
+     * Get the security property: Security labels applied to this resource. These tags connect specific resources to the
+     * overall security policy and infrastructure.
      *
      * @return the security value.
      */
@@ -163,7 +176,8 @@ public final class FhirR4Meta {
     }
 
     /**
-     * Set the security property: Security labels applied to this resource. These tags connect specific resources to the overall security policy and infrastructure.
+     * Set the security property: Security labels applied to this resource. These tags connect specific resources to the
+     * overall security policy and infrastructure.
      *
      * @param security the security value to set.
      * @return the FhirR4Meta object itself.
@@ -175,7 +189,9 @@ public final class FhirR4Meta {
     }
 
     /**
-     * Get the tag property: Tags applied to this resource. Tags are intended to be used to identify and relate resources to process and workflow, and applications are not required to consider the tags when interpreting the meaning of a resource.
+     * Get the tag property: Tags applied to this resource. Tags are intended to be used to identify and relate
+     * resources to process and workflow, and applications are not required to consider the tags when interpreting the
+     * meaning of a resource.
      *
      * @return the tag value.
      */
@@ -185,7 +201,9 @@ public final class FhirR4Meta {
     }
 
     /**
-     * Set the tag property: Tags applied to this resource. Tags are intended to be used to identify and relate resources to process and workflow, and applications are not required to consider the tags when interpreting the meaning of a resource.
+     * Set the tag property: Tags applied to this resource. Tags are intended to be used to identify and relate
+     * resources to process and workflow, and applications are not required to consider the tags when interpreting the
+     * meaning of a resource.
      *
      * @param tag the tag value to set.
      * @return the FhirR4Meta object itself.

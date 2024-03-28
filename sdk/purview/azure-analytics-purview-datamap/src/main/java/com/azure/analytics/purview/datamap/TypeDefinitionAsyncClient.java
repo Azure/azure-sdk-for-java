@@ -53,6 +53,7 @@ public final class TypeDefinitionAsyncClient {
     /**
      * Get the businessMetadata definition for the given guid.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -144,7 +145,8 @@ public final class TypeDefinitionAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the businessMetadata definition for the given guid along with {@link Response} on successful completion of {@link Mono}.
+     * @return the businessMetadata definition for the given guid along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -155,6 +157,7 @@ public final class TypeDefinitionAsyncClient {
     /**
      * Get the businessMetadata definition by it's name (unique).
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -246,7 +249,8 @@ public final class TypeDefinitionAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the businessMetadata definition by it's name (unique) along with {@link Response} on successful completion of {@link Mono}.
+     * @return the businessMetadata definition by it's name (unique) along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -258,6 +262,7 @@ public final class TypeDefinitionAsyncClient {
     /**
      * Get the classification definition for the given GUID.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -358,7 +363,8 @@ public final class TypeDefinitionAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the classification definition for the given GUID along with {@link Response} on successful completion of {@link Mono}.
+     * @return the classification definition for the given GUID along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -369,6 +375,7 @@ public final class TypeDefinitionAsyncClient {
     /**
      * Get the classification definition by its name (unique).
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -469,7 +476,8 @@ public final class TypeDefinitionAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the classification definition by its name (unique) along with {@link Response} on successful completion of {@link Mono}.
+     * @return the classification definition by its name (unique) along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -480,6 +488,7 @@ public final class TypeDefinitionAsyncClient {
     /**
      * Get the Entity definition for the given GUID.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -600,7 +609,8 @@ public final class TypeDefinitionAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the Entity definition for the given GUID along with {@link Response} on successful completion of {@link Mono}.
+     * @return the Entity definition for the given GUID along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -611,6 +621,7 @@ public final class TypeDefinitionAsyncClient {
     /**
      * Get the entity definition by its name (unique).
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -731,7 +742,8 @@ public final class TypeDefinitionAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the entity definition by its name (unique) along with {@link Response} on successful completion of {@link Mono}.
+     * @return the entity definition by its name (unique) along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -742,6 +754,7 @@ public final class TypeDefinitionAsyncClient {
     /**
      * Get the enum definition for the given GUID.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -815,7 +828,8 @@ public final class TypeDefinitionAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the enum definition for the given GUID along with {@link Response} on successful completion of {@link Mono}.
+     * @return the enum definition for the given GUID along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -826,6 +840,7 @@ public final class TypeDefinitionAsyncClient {
     /**
      * Get the enum definition by its name (unique).
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -899,7 +914,8 @@ public final class TypeDefinitionAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the enum definition by its name (unique) along with {@link Response} on successful completion of {@link Mono}.
+     * @return the enum definition by its name (unique) along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -910,6 +926,7 @@ public final class TypeDefinitionAsyncClient {
     /**
      * Get the relationship definition for the given GUID.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -1012,7 +1029,8 @@ public final class TypeDefinitionAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the relationship definition for the given GUID along with {@link Response} on successful completion of {@link Mono}.
+     * @return the relationship definition for the given GUID along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1023,6 +1041,7 @@ public final class TypeDefinitionAsyncClient {
     /**
      * Get the relationship definition by its name (unique).
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -1125,7 +1144,8 @@ public final class TypeDefinitionAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the relationship definition by its name (unique) along with {@link Response} on successful completion of {@link Mono}.
+     * @return the relationship definition by its name (unique) along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1136,6 +1156,7 @@ public final class TypeDefinitionAsyncClient {
     /**
      * Get the struct definition for the given GUID.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -1227,7 +1248,8 @@ public final class TypeDefinitionAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the struct definition for the given GUID along with {@link Response} on successful completion of {@link Mono}.
+     * @return the struct definition for the given GUID along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1238,6 +1260,7 @@ public final class TypeDefinitionAsyncClient {
     /**
      * Get the struct definition by its name (unique).
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -1329,7 +1352,8 @@ public final class TypeDefinitionAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the struct definition by its name (unique) along with {@link Response} on successful completion of {@link Mono}.
+     * @return the struct definition by its name (unique) along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1340,6 +1364,7 @@ public final class TypeDefinitionAsyncClient {
     /**
      * Get the type definition for the given GUID.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -1482,7 +1507,8 @@ public final class TypeDefinitionAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the type definition for the given GUID along with {@link Response} on successful completion of {@link Mono}.
+     * @return the type definition for the given GUID along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1493,6 +1519,7 @@ public final class TypeDefinitionAsyncClient {
     /**
      * Get the type definition by its name (unique).
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -1635,7 +1662,8 @@ public final class TypeDefinitionAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the type definition by its name (unique) along with {@link Response} on successful completion of {@link Mono}.
+     * @return the type definition by its name (unique) along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1664,15 +1692,19 @@ public final class TypeDefinitionAsyncClient {
      * List all type definitions in bulk.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermTemplate</td><td>Boolean</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>includeTermTemplate</td><td>Boolean</td><td>No</td><td>Whether include termtemplatedef when return all
+     * typedefs.
      * This is always true
      * when search filter type=term_template</td></tr>
-     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs. Allowed values: "PRIMITIVE", "OBJECT_ID_TYPE", "ENUM", "STRUCT", "CLASSIFICATION", "ENTITY", "ARRAY", "MAP", "RELATIONSHIP", "TERM_TEMPLATE".</td></tr>
+     * <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs. Allowed values:
+     * "PRIMITIVE", "OBJECT_ID_TYPE", "ENUM", "STRUCT", "CLASSIFICATION", "ENTITY", "ARRAY", "MAP", "RELATIONSHIP",
+     * "TERM_TEMPLATE".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     businessMetadataDefs (Optional): [
@@ -1972,6 +2004,7 @@ public final class TypeDefinitionAsyncClient {
      * created.
      * Any changes to the existing definitions will be discarded.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     businessMetadataDefs (Optional): [
@@ -2252,7 +2285,9 @@ public final class TypeDefinitionAsyncClient {
      *     ]
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     businessMetadataDefs (Optional): [
@@ -2552,6 +2587,7 @@ public final class TypeDefinitionAsyncClient {
      * Update all types in bulk, changes detected in the type definitions would be
      * persisted.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     businessMetadataDefs (Optional): [
@@ -2832,7 +2868,9 @@ public final class TypeDefinitionAsyncClient {
      *     ]
      * }
      * }</pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     businessMetadataDefs (Optional): [
@@ -3131,6 +3169,7 @@ public final class TypeDefinitionAsyncClient {
     /**
      * Delete API for all types in bulk.
      * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     businessMetadataDefs (Optional): [
@@ -3430,15 +3469,19 @@ public final class TypeDefinitionAsyncClient {
      * List all type definitions returned as a list of minimal information header.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermTemplate</td><td>Boolean</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>includeTermTemplate</td><td>Boolean</td><td>No</td><td>Whether include termtemplatedef when return all
+     * typedefs.
      * This is always true
      * when search filter type=term_template</td></tr>
-     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs. Allowed values: "PRIMITIVE", "OBJECT_ID_TYPE", "ENUM", "STRUCT", "CLASSIFICATION", "ENTITY", "ARRAY", "MAP", "RELATIONSHIP", "TERM_TEMPLATE".</td></tr>
+     * <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs. Allowed values:
+     * "PRIMITIVE", "OBJECT_ID_TYPE", "ENUM", "STRUCT", "CLASSIFICATION", "ENTITY", "ARRAY", "MAP", "RELATIONSHIP",
+     * "TERM_TEMPLATE".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -3465,6 +3508,7 @@ public final class TypeDefinitionAsyncClient {
     /**
      * Get the term template definition for the given GUID.
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -3556,7 +3600,8 @@ public final class TypeDefinitionAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the term template definition for the given GUID along with {@link Response} on successful completion of {@link Mono}.
+     * @return the term template definition for the given GUID along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3567,6 +3612,7 @@ public final class TypeDefinitionAsyncClient {
     /**
      * Get the term template definition by its name (unique).
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -3658,7 +3704,8 @@ public final class TypeDefinitionAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the term template definition by its name (unique) along with {@link Response} on successful completion of {@link Mono}.
+     * @return the term template definition by its name (unique) along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

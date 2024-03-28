@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * A limited order discrepancy occurs when there is a limited order, but all body parts and measurements that are needed for a complete order are present in the document.
+ * A limited order discrepancy occurs when there is a limited order, but all body parts and measurements that are needed
+ * for a complete order are present in the document.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -57,7 +58,8 @@ public final class LimitedOrderDiscrepancyInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the orderType property: Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or breast.
+     * Get the orderType property: Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or
+     * breast.
      *
      * @return the orderType value.
      */
@@ -77,7 +79,8 @@ public final class LimitedOrderDiscrepancyInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the presentBodyPartMeasurements property: List of body parts that are measured according to the document : SNOMED CT codes.
+     * Get the presentBodyPartMeasurements property: List of body parts that are measured according to the document :
+     * SNOMED CT codes.
      *
      * @return the presentBodyPartMeasurements value.
      */

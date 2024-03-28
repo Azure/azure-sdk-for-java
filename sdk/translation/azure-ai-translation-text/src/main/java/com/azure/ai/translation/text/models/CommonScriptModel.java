@@ -91,7 +91,8 @@ public class CommonScriptModel {
     }
 
     /**
-     * Get the dir property: Directionality, which is rtl for right-to-left languages or ltr for left-to-right languages.
+     * Get the dir property: Directionality, which is rtl for right-to-left languages or ltr for left-to-right
+     * languages.
      *
      * @return the dir value.
      */

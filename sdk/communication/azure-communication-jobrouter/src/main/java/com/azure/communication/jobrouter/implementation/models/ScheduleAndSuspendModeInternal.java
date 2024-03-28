@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 
 /**
- * Describes a matching mode used for scheduling jobs to be queued at a future time. At the specified time, matching worker to a job will not start automatically.
+ * Describes a matching mode used for scheduling jobs to be queued at a future time. At the specified time, matching
+ * worker to a job will not start automatically.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,

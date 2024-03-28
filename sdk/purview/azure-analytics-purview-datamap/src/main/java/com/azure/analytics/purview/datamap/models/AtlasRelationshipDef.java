@@ -25,9 +25,9 @@ import java.util.Map;
  * whether the
  * end is a container.
  * RelationshipDefs can have AttributeDefs - though only
- * primitive types are allowed. 
+ * primitive types are allowed.
  * RelationshipDefs have a relationshipCategory
- * specifying the UML type of relationship required 
+ * specifying the UML type of relationship required
  * The way EntityDefs and
  * RelationshipDefs are intended to be used is that EntityDefs will define
  * AttributeDefs these AttributeDefs
@@ -37,15 +37,15 @@ import java.util.Map;
  * instances. For example
  * EntityDef A might have attributes attr1,attr2,attr3
  * 
- * EntityDef B might have attributes attr4,attr5,attr6 
+ * EntityDef B might have attributes attr4,attr5,attr6
  * RelationshipDef
- * AtoB might define 2 ends 
+ * AtoB might define 2 ends
  * 
- * end1:  type A, name attr7
- * end2:  type B, name attr8 
+ * end1: type A, name attr7
+ * end2: type B, name attr8
  * 
  * When an instance of EntityDef A is created, it
- * will have attributes attr1,attr2,attr3,attr7 
+ * will have attributes attr1,attr2,attr3,attr7
  * When an instance of EntityDef
  * B is created, it will have attributes attr4,attr5,attr6,attr8
  * 
@@ -524,7 +524,7 @@ public final class AtlasRelationshipDef implements JsonSerializable<AtlasRelatio
      * Get the endDef1 property: The relationshipEndDef represents an end of the relationship. The end of the
      * relationship is defined by a type, an
      * attribute name, cardinality and whether
-     * it  is the container end of the relationship.
+     * it is the container end of the relationship.
      * 
      * @return the endDef1 value.
      */
@@ -537,7 +537,7 @@ public final class AtlasRelationshipDef implements JsonSerializable<AtlasRelatio
      * Set the endDef1 property: The relationshipEndDef represents an end of the relationship. The end of the
      * relationship is defined by a type, an
      * attribute name, cardinality and whether
-     * it  is the container end of the relationship.
+     * it is the container end of the relationship.
      * 
      * @param endDef1 the endDef1 value to set.
      * @return the AtlasRelationshipDef object itself.
@@ -552,7 +552,7 @@ public final class AtlasRelationshipDef implements JsonSerializable<AtlasRelatio
      * Get the endDef2 property: The relationshipEndDef represents an end of the relationship. The end of the
      * relationship is defined by a type, an
      * attribute name, cardinality and whether
-     * it  is the container end of the relationship.
+     * it is the container end of the relationship.
      * 
      * @return the endDef2 value.
      */
@@ -565,7 +565,7 @@ public final class AtlasRelationshipDef implements JsonSerializable<AtlasRelatio
      * Set the endDef2 property: The relationshipEndDef represents an end of the relationship. The end of the
      * relationship is defined by a type, an
      * attribute name, cardinality and whether
-     * it  is the container end of the relationship.
+     * it is the container end of the relationship.
      * 
      * @param endDef2 the endDef2 value to set.
      * @return the AtlasRelationshipDef object itself.
@@ -580,9 +580,9 @@ public final class AtlasRelationshipDef implements JsonSerializable<AtlasRelatio
      * Get the relationshipCategory property: The Relationship category determines the style of relationship around
      * containment and lifecycle.
      * UML terminology is used for the values.
-     * ASSOCIATION is a relationship with no containment. 
+     * ASSOCIATION is a relationship with no containment.
      * COMPOSITION and AGGREGATION are containment relationships.
-     * The difference being in the lifecycles of the container and its children. 
+     * The difference being in the lifecycles of the container and its children.
      * In the COMPOSITION case, the children cannot exist without the container.
      * For AGGREGATION, the life cycles of the container and children are totally independent.
      * 
@@ -597,9 +597,9 @@ public final class AtlasRelationshipDef implements JsonSerializable<AtlasRelatio
      * Set the relationshipCategory property: The Relationship category determines the style of relationship around
      * containment and lifecycle.
      * UML terminology is used for the values.
-     * ASSOCIATION is a relationship with no containment. 
+     * ASSOCIATION is a relationship with no containment.
      * COMPOSITION and AGGREGATION are containment relationships.
-     * The difference being in the lifecycles of the container and its children. 
+     * The difference being in the lifecycles of the container and its children.
      * In the COMPOSITION case, the children cannot exist without the container.
      * For AGGREGATION, the life cycles of the container and children are totally independent.
      * 
@@ -668,7 +668,8 @@ public final class AtlasRelationshipDef implements JsonSerializable<AtlasRelatio
      * Reads an instance of AtlasRelationshipDef from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AtlasRelationshipDef if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of AtlasRelationshipDef if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AtlasRelationshipDef.
      */
     @Generated

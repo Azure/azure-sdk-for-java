@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * A complete order discrepancy is shown when one or more body parts and/or measurements that should be in the document (because there is a complete order) are not present.
+ * A complete order discrepancy is shown when one or more body parts and/or measurements that should be in the document
+ * (because there is a complete order) are not present.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -57,7 +58,8 @@ public final class CompleteOrderDiscrepancyInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the orderType property: Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or breast.
+     * Get the orderType property: Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or
+     * breast.
      *
      * @return the orderType value.
      */
@@ -77,7 +79,8 @@ public final class CompleteOrderDiscrepancyInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the missingBodyPartMeasurements property: List of missing body parts that require measurement by a complete order : SNOMED CT codes.
+     * Get the missingBodyPartMeasurements property: List of missing body parts that require measurement by a complete
+     * order : SNOMED CT codes.
      *
      * @return the missingBodyPartMeasurements value.
      */

@@ -238,7 +238,8 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
      * Reads an instance of DocumentPage from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of DocumentPage if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of DocumentPage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentPage.
      */

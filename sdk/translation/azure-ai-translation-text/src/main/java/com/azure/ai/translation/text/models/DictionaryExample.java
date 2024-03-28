@@ -89,7 +89,8 @@ public final class DictionaryExample {
     }
 
     /**
-     * Get the sourcePrefix property: The string to concatenate before the value of sourceTerm to form a complete example.
+     * Get the sourcePrefix property: The string to concatenate before the value of sourceTerm to form a complete
+     * example.
      * Do not add a space character, since it is already there when it should be.
      * This value may be an empty string.
      *
@@ -113,7 +114,8 @@ public final class DictionaryExample {
     }
 
     /**
-     * Get the sourceSuffix property: The string to concatenate after the value of sourceTerm to form a complete example.
+     * Get the sourceSuffix property: The string to concatenate after the value of sourceTerm to form a complete
+     * example.
      * Do not add a space character, since it is already there when it should be.
      * This value may be an empty string.
      *

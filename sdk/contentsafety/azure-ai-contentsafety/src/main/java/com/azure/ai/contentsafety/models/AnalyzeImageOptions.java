@@ -57,7 +57,8 @@ public final class AnalyzeImageOptions implements JsonSerializable<AnalyzeImageO
     }
 
     /**
-     * Get the categories property: The categories will be analyzed. If they are not assigned, a default set of analysis results for the categories will be returned.
+     * Get the categories property: The categories will be analyzed. If they are not assigned, a default set of analysis
+     * results for the categories will be returned.
      *
      * @return the categories value.
      */
@@ -67,7 +68,8 @@ public final class AnalyzeImageOptions implements JsonSerializable<AnalyzeImageO
     }
 
     /**
-     * Set the categories property: The categories will be analyzed. If they are not assigned, a default set of analysis results for the categories will be returned.
+     * Set the categories property: The categories will be analyzed. If they are not assigned, a default set of analysis
+     * results for the categories will be returned.
      *
      * @param categories the categories value to set.
      * @return the AnalyzeImageOptions object itself.
@@ -79,7 +81,8 @@ public final class AnalyzeImageOptions implements JsonSerializable<AnalyzeImageO
     }
 
     /**
-     * Get the outputType property: This refers to the type of image analysis output. If no value is assigned, the default value will be "FourSeverityLevels".
+     * Get the outputType property: This refers to the type of image analysis output. If no value is assigned, the
+     * default value will be "FourSeverityLevels".
      *
      * @return the outputType value.
      */
@@ -89,7 +92,8 @@ public final class AnalyzeImageOptions implements JsonSerializable<AnalyzeImageO
     }
 
     /**
-     * Set the outputType property: This refers to the type of image analysis output. If no value is assigned, the default value will be "FourSeverityLevels".
+     * Set the outputType property: This refers to the type of image analysis output. If no value is assigned, the
+     * default value will be "FourSeverityLevels".
      *
      * @param outputType the outputType value to set.
      * @return the AnalyzeImageOptions object itself.
@@ -118,7 +122,8 @@ public final class AnalyzeImageOptions implements JsonSerializable<AnalyzeImageO
      * Reads an instance of AnalyzeImageOptions from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AnalyzeImageOptions if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of AnalyzeImageOptions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnalyzeImageOptions.
      */

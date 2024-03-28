@@ -101,7 +101,8 @@ public final class Error implements JsonSerializable<Error> {
     }
 
     /**
-     * Get the innererror property: An object containing more specific information than the current object about the error.
+     * Get the innererror property: An object containing more specific information than the current object about the
+     * error.
      * 
      * @return the innererror value.
      */
@@ -129,7 +130,8 @@ public final class Error implements JsonSerializable<Error> {
      * Reads an instance of Error from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of Error if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of Error if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Error.
      */

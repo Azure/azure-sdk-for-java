@@ -39,7 +39,7 @@ public final class AnalyzeDocumentRequest implements JsonSerializable<AnalyzeDoc
     }
 
     /**
-     * Get the urlSource property: Document URL to analyze.  Either urlSource or base64Source must be specified.
+     * Get the urlSource property: Document URL to analyze. Either urlSource or base64Source must be specified.
      * 
      * @return the urlSource value.
      */
@@ -49,7 +49,7 @@ public final class AnalyzeDocumentRequest implements JsonSerializable<AnalyzeDoc
     }
 
     /**
-     * Set the urlSource property: Document URL to analyze.  Either urlSource or base64Source must be specified.
+     * Set the urlSource property: Document URL to analyze. Either urlSource or base64Source must be specified.
      * 
      * @param urlSource the urlSource value to set.
      * @return the AnalyzeDocumentRequest object itself.
@@ -61,7 +61,7 @@ public final class AnalyzeDocumentRequest implements JsonSerializable<AnalyzeDoc
     }
 
     /**
-     * Get the base64Source property: Base64 encoding of the document to analyze.  Either urlSource or base64Source
+     * Get the base64Source property: Base64 encoding of the document to analyze. Either urlSource or base64Source
      * must be specified.
      * 
      * @return the base64Source value.
@@ -72,7 +72,7 @@ public final class AnalyzeDocumentRequest implements JsonSerializable<AnalyzeDoc
     }
 
     /**
-     * Set the base64Source property: Base64 encoding of the document to analyze.  Either urlSource or base64Source
+     * Set the base64Source property: Base64 encoding of the document to analyze. Either urlSource or base64Source
      * must be specified.
      * 
      * @param base64Source the base64Source value to set.
@@ -100,7 +100,8 @@ public final class AnalyzeDocumentRequest implements JsonSerializable<AnalyzeDoc
      * Reads an instance of AnalyzeDocumentRequest from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AnalyzeDocumentRequest if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of AnalyzeDocumentRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AnalyzeDocumentRequest.
      */
     @Generated

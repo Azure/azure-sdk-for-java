@@ -62,7 +62,8 @@ public final class LineagesImpl {
     }
 
     /**
-     * The interface defining all the services for DataMapClientLineages to be used by the proxy service to perform REST calls.
+     * The interface defining all the services for DataMapClientLineages to be used by the proxy service to perform REST
+     * calls.
      */
     @Host("{endpoint}/datamap/api")
     @ServiceInterface(name = "DataMapClientLineage")
@@ -134,12 +135,13 @@ public final class LineagesImpl {
      * Get lineage info of the entity specified by GUID.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>depth</td><td>Integer</td><td>No</td><td>The number of hops for lineage.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>depth</td><td>Integer</td><td>No</td><td>The number of hops for lineage.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     baseEntityGuid: String (Optional)
@@ -224,13 +226,15 @@ public final class LineagesImpl {
      * }</pre>
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT", "OUTPUT", "BOTH".
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT",
+     * "OUTPUT", "BOTH".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return lineage info of the entity specified by GUID along with {@link Response} on successful completion of {@link Mono}.
+     * @return lineage info of the entity specified by GUID along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(String guid, String direction,
@@ -244,12 +248,13 @@ public final class LineagesImpl {
      * Get lineage info of the entity specified by GUID.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>depth</td><td>Integer</td><td>No</td><td>The number of hops for lineage.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>depth</td><td>Integer</td><td>No</td><td>The number of hops for lineage.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     baseEntityGuid: String (Optional)
@@ -334,7 +339,8 @@ public final class LineagesImpl {
      * }</pre>
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT", "OUTPUT", "BOTH".
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT",
+     * "OUTPUT", "BOTH".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -352,13 +358,14 @@ public final class LineagesImpl {
      * Return immediate next page lineage info about entity with pagination.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     baseEntityGuid: String (Optional)
@@ -443,7 +450,8 @@ public final class LineagesImpl {
      * }</pre>
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT", "OUTPUT", "BOTH".
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT",
+     * "OUTPUT", "BOTH".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -463,13 +471,14 @@ public final class LineagesImpl {
      * Return immediate next page lineage info about entity with pagination.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     baseEntityGuid: String (Optional)
@@ -554,7 +563,8 @@ public final class LineagesImpl {
      * }</pre>
      * 
      * @param guid The globally unique identifier of the entity.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT", "OUTPUT", "BOTH".
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT",
+     * "OUTPUT", "BOTH".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -588,14 +598,16 @@ public final class LineagesImpl {
      * /v2/lineage/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>depth</td><td>Integer</td><td>No</td><td>The number of hops for lineage.</td></tr>
-     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity. (This is only an example. qualifiedName can
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>depth</td><td>Integer</td><td>No</td><td>The number of hops for lineage.</td></tr>
+     * <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity. (This is only an
+     * example. qualifiedName can
      * be changed to other unique attributes)</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     baseEntityGuid: String (Optional)
@@ -680,7 +692,8 @@ public final class LineagesImpl {
      * }</pre>
      * 
      * @param typeName The name of the type.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT", "OUTPUT", "BOTH".
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT",
+     * "OUTPUT", "BOTH".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -715,14 +728,16 @@ public final class LineagesImpl {
      * /v2/lineage/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>depth</td><td>Integer</td><td>No</td><td>The number of hops for lineage.</td></tr>
-     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity. (This is only an example. qualifiedName can
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>depth</td><td>Integer</td><td>No</td><td>The number of hops for lineage.</td></tr>
+     * <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity. (This is only an
+     * example. qualifiedName can
      * be changed to other unique attributes)</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     baseEntityGuid: String (Optional)
@@ -807,7 +822,8 @@ public final class LineagesImpl {
      * }</pre>
      * 
      * @param typeName The name of the type.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT", "OUTPUT", "BOTH".
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT",
+     * "OUTPUT", "BOTH".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

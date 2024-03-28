@@ -70,7 +70,7 @@ public final class ClassifierDocumentTypeDetails implements JsonSerializable<Cla
 
     /**
      * Get the azureBlobSource property: Azure Blob Storage location containing the training data for a classifier
-     * document type.  Either azureBlobSource or azureBlobFileListSource must be
+     * document type. Either azureBlobSource or azureBlobFileListSource must be
      * specified.
      * 
      * @return the azureBlobSource value.
@@ -82,7 +82,7 @@ public final class ClassifierDocumentTypeDetails implements JsonSerializable<Cla
 
     /**
      * Set the azureBlobSource property: Azure Blob Storage location containing the training data for a classifier
-     * document type.  Either azureBlobSource or azureBlobFileListSource must be
+     * document type. Either azureBlobSource or azureBlobFileListSource must be
      * specified.
      * 
      * @param azureBlobSource the azureBlobSource value to set.
@@ -95,8 +95,9 @@ public final class ClassifierDocumentTypeDetails implements JsonSerializable<Cla
     }
 
     /**
-     * Get the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data for a classifier
-     * document type.  Either azureBlobSource or azureBlobFileListSource must be
+     * Get the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data for a
+     * classifier
+     * document type. Either azureBlobSource or azureBlobFileListSource must be
      * specified.
      * 
      * @return the azureBlobFileListSource value.
@@ -107,8 +108,9 @@ public final class ClassifierDocumentTypeDetails implements JsonSerializable<Cla
     }
 
     /**
-     * Set the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data for a classifier
-     * document type.  Either azureBlobSource or azureBlobFileListSource must be
+     * Set the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data for a
+     * classifier
+     * document type. Either azureBlobSource or azureBlobFileListSource must be
      * specified.
      * 
      * @param azureBlobFileListSource the azureBlobFileListSource value to set.
@@ -138,7 +140,8 @@ public final class ClassifierDocumentTypeDetails implements JsonSerializable<Cla
      * Reads an instance of ClassifierDocumentTypeDetails from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ClassifierDocumentTypeDetails if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of ClassifierDocumentTypeDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ClassifierDocumentTypeDetails.
      */
     @Generated

@@ -5,18 +5,16 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * A record of a call to a retrieval tool, issued by the model in evaluation of a defined tool, that represents
  * executed retrieval actions.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("retrieval")
 @Immutable
 public final class RunStepRetrievalToolCall extends RunStepToolCall {
 
@@ -24,8 +22,7 @@ public final class RunStepRetrievalToolCall extends RunStepToolCall {
      * The key/value pairs produced by the retrieval tool.
      */
     @Generated
-    @JsonProperty(value = "retrieval")
-    private Map<String, String> retrieval;
+    private final Map<String, String> retrieval;
 
     /**
      * Creates an instance of RunStepRetrievalToolCall class.
@@ -34,9 +31,7 @@ public final class RunStepRetrievalToolCall extends RunStepToolCall {
      * @param retrieval the retrieval value to set.
      */
     @Generated
-    @JsonCreator
-    private RunStepRetrievalToolCall(@JsonProperty(value = "id") String id,
-        @JsonProperty(value = "retrieval") Map<String, String> retrieval) {
+    private RunStepRetrievalToolCall(String id, Map<String, String> retrieval) {
         super(id);
         this.retrieval = retrieval;
     }
@@ -49,5 +44,69 @@ public final class RunStepRetrievalToolCall extends RunStepToolCall {
     @Generated
     public Map<String, String> getRetrieval() {
         return this.retrieval;
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "retrieval";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeMapField("retrieval", this.retrieval, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunStepRetrievalToolCall from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunStepRetrievalToolCall if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RunStepRetrievalToolCall.
+     */
+    @Generated
+    public static RunStepRetrievalToolCall fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            Map<String, String> retrieval = null;
+            String type = "retrieval";
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("retrieval".equals(fieldName)) {
+                    retrieval = reader.readMap(reader1 -> reader1.getString());
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            RunStepRetrievalToolCall deserializedRunStepRetrievalToolCall = new RunStepRetrievalToolCall(id, retrieval);
+            deserializedRunStepRetrievalToolCall.type = type;
+            return deserializedRunStepRetrievalToolCall;
+        });
     }
 }

@@ -217,7 +217,8 @@ public final class AtlasRelatedObjectId implements JsonSerializable<AtlasRelated
     }
 
     /**
-     * Get the relationshipAttributes property: Captures details of struct contents. Not instantiated directly, used only via
+     * Get the relationshipAttributes property: Captures details of struct contents. Not instantiated directly, used
+     * only via
      * AtlasEntity, AtlasClassification.
      * 
      * @return the relationshipAttributes value.
@@ -228,7 +229,8 @@ public final class AtlasRelatedObjectId implements JsonSerializable<AtlasRelated
     }
 
     /**
-     * Set the relationshipAttributes property: Captures details of struct contents. Not instantiated directly, used only via
+     * Set the relationshipAttributes property: Captures details of struct contents. Not instantiated directly, used
+     * only via
      * AtlasEntity, AtlasClassification.
      * 
      * @param relationshipAttributes the relationshipAttributes value to set.
@@ -309,7 +311,8 @@ public final class AtlasRelatedObjectId implements JsonSerializable<AtlasRelated
      * Reads an instance of AtlasRelatedObjectId from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AtlasRelatedObjectId if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of AtlasRelatedObjectId if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AtlasRelatedObjectId.
      */
     @Generated

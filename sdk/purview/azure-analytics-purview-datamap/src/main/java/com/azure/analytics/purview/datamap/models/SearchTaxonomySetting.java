@@ -97,7 +97,8 @@ public final class SearchTaxonomySetting implements JsonSerializable<SearchTaxon
      * Reads an instance of SearchTaxonomySetting from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SearchTaxonomySetting if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of SearchTaxonomySetting if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SearchTaxonomySetting.
      */
     @Generated

@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * A laterality mismatch occurs when there is a discrepancy between the clinical documentation and the ordered procedure (orderLateralityMismatch), a contradiction within the clinical document (textLateralityContradiction), or when no laterality is mentioned (textLateralityMissing).
+ * A laterality mismatch occurs when there is a discrepancy between the clinical documentation and the ordered procedure
+ * (orderLateralityMismatch), a contradiction within the clinical document (textLateralityContradiction), or when no
+ * laterality is mentioned (textLateralityMissing).
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -60,7 +62,8 @@ public final class LateralityDiscrepancyInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the discrepancyType property: Mismatch type : orderLateralityMismatch, textLateralityContradiction, textLateralityMissing.
+     * Get the discrepancyType property: Mismatch type : orderLateralityMismatch, textLateralityContradiction,
+     * textLateralityMissing.
      *
      * @return the discrepancyType value.
      */

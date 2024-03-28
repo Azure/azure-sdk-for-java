@@ -83,7 +83,8 @@ public final class Translation {
     }
 
     /**
-     * Get the transliteration property: An object giving the translated text in the script specified by the toScript parameter.
+     * Get the transliteration property: An object giving the translated text in the script specified by the toScript
+     * parameter.
      *
      * @return the transliteration value.
      */

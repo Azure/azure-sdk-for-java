@@ -158,7 +158,7 @@ public final class DataMapClientImpl {
     /**
      * Initializes an instance of DataMapClient client.
      * 
-     * @param endpoint 
+     * @param endpoint
      * @param serviceVersion Service version.
      */
     public DataMapClientImpl(String endpoint, PurviewDataMapServiceVersion serviceVersion) {
@@ -170,7 +170,7 @@ public final class DataMapClientImpl {
      * Initializes an instance of DataMapClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint 
+     * @param endpoint
      * @param serviceVersion Service version.
      */
     public DataMapClientImpl(HttpPipeline httpPipeline, String endpoint, PurviewDataMapServiceVersion serviceVersion) {
@@ -182,7 +182,7 @@ public final class DataMapClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint 
+     * @param endpoint
      * @param serviceVersion Service version.
      */
     public DataMapClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,

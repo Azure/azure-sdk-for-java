@@ -42,7 +42,8 @@ public final class BreakSentenceItem {
     }
 
     /**
-     * Get the detectedLanguage property: The detectedLanguage property is only present in the result object when language auto-detection is requested.
+     * Get the detectedLanguage property: The detectedLanguage property is only present in the result object when
+     * language auto-detection is requested.
      *
      * @return the detectedLanguage value.
      */

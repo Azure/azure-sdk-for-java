@@ -91,7 +91,8 @@ public final class RouterWorkerSelectorInternal {
     }
 
     /**
-     * Get the labelOperator property: Describes how the value of the label is compared to the value defined on the worker selector.
+     * Get the labelOperator property: Describes how the value of the label is compared to the value defined on the
+     * worker selector.
      *
      * @return the labelOperator value.
      */
@@ -101,7 +102,8 @@ public final class RouterWorkerSelectorInternal {
     }
 
     /**
-     * Get the value property: The value to compare against the actual label value with the given operator. Values must be primitive values - number, string, boolean.
+     * Get the value property: The value to compare against the actual label value with the given operator. Values must
+     * be primitive values - number, string, boolean.
      *
      * @return the value value.
      */
@@ -111,7 +113,8 @@ public final class RouterWorkerSelectorInternal {
     }
 
     /**
-     * Set the value property: The value to compare against the actual label value with the given operator. Values must be primitive values - number, string, boolean.
+     * Set the value property: The value to compare against the actual label value with the given operator. Values must
+     * be primitive values - number, string, boolean.
      *
      * @param value the value value to set.
      * @return the RouterWorkerSelectorInternal object itself.

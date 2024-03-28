@@ -89,7 +89,8 @@ public final class ParentRelation implements JsonSerializable<ParentRelation> {
      * Reads an instance of ParentRelation from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ParentRelation if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of ParentRelation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ParentRelation.
      */
     @Generated

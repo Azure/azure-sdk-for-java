@@ -38,7 +38,8 @@ public final class StaticRouterRuleInternal extends RouterRuleInternal {
     }
 
     /**
-     * Get the value property: The static value this rule always returns. Values must be primitive values - number, string, boolean.
+     * Get the value property: The static value this rule always returns. Values must be primitive values - number,
+     * string, boolean.
      *
      * @return the value value.
      */
@@ -48,7 +49,8 @@ public final class StaticRouterRuleInternal extends RouterRuleInternal {
     }
 
     /**
-     * Set the value property: The static value this rule always returns. Values must be primitive values - number, string, boolean.
+     * Set the value property: The static value this rule always returns. Values must be primitive values - number,
+     * string, boolean.
      *
      * @param value the value value to set.
      * @return the StaticRouterRuleInternal object itself.

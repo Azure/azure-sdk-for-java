@@ -75,7 +75,8 @@ public final class WebhookRouterRuleInternal extends RouterRuleInternal {
     }
 
     /**
-     * Get the clientCredential property: OAuth2.0 Credentials used to Contoso's Authorization server. Reference: https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/.
+     * Get the clientCredential property: OAuth2.0 Credentials used to Contoso's Authorization server. Reference:
+     * https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/.
      *
      * @return the clientCredential value.
      */
@@ -107,7 +108,8 @@ public final class WebhookRouterRuleInternal extends RouterRuleInternal {
     }
 
     /**
-     * Set the clientCredential property: OAuth2.0 Credentials used to Contoso's Authorization server. Reference: https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/.
+     * Set the clientCredential property: OAuth2.0 Credentials used to Contoso's Authorization server. Reference:
+     * https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/.
      *
      * @param clientCredential the clientCredential value to set.
      * @return the WebhookRouterRuleInternal object itself.

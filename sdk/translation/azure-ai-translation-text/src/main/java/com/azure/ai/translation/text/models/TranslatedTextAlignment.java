@@ -38,7 +38,8 @@ public final class TranslatedTextAlignment {
     }
 
     /**
-     * Get the proj property: Maps input text to translated text. The alignment information is only provided when the request
+     * Get the proj property: Maps input text to translated text. The alignment information is only provided when the
+     * request
      * parameter includeAlignment is true. Alignment is returned as a string value of the following
      * format: [[SourceTextStartIndex]:[SourceTextEndIndex]–[TgtTextStartIndex]:[TgtTextEndIndex]].
      * The colon separates start and end index, the dash separates the languages, and space separates the words.

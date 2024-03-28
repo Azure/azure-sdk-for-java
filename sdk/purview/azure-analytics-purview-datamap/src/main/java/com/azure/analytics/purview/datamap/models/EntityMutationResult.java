@@ -94,7 +94,8 @@ public final class EntityMutationResult implements JsonSerializable<EntityMutati
      * Reads an instance of EntityMutationResult from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of EntityMutationResult if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of EntityMutationResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the EntityMutationResult.
      */
     @Generated
