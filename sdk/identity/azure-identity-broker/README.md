@@ -94,7 +94,9 @@ InteractiveBrowserCredential cred = new InteractiveBrowserBrokerCredentialBuilde
 When this option is enabled, the credential will attempt to silently use the default broker account. If using the default account fails, the credential will fall back to interactive authentication.
 
 ```java com.azure.identity.broker.interactivebrowserbrokercredentialbuilder.useinteractivebrowserbroker.defaultaccount
+long windowHandle = getWindowHandle(); // Samples below
 InteractiveBrowserCredential cred = new InteractiveBrowserBrokerCredentialBuilder()
+    .setWindowHandle(windowHandle)
     .useDefaultBrokerAccount()
     .build();
 ```
