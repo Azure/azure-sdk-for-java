@@ -119,34 +119,6 @@ public class Batcher implements Iterator<LogsIngestionRequest> {
         LogsIngestionRequest result = null;
         while (iterator.hasNext() && result == null) {
             Object currentLog = iterator.next();
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            JsonWriter writer = JsonProviders.createWriter(stream);
-            writer.write
-            writer.close();
-            byte[] bytes = stream.toByteArray();
-
-            currentBatchSize += bytes.length;
-            if (currentBatchSize > MAX_REQUEST_PAYLOAD_SIZE) {
-                result = createRequest(false);
-                currentBatchSize = bytes.length;
-            }
-
-            serializedLogs.add(new String(bytes, StandardCharsets.UTF_8));
-            originalLogsRequest.add(currentLog);
-        }
-
-        if (result == null && currentBatchSize > 0) {
-            currentBatchSize = 0;
-            return createRequest(true);
-        }
-
-        return result;
-    }
-
-    /*private LogsIngestionRequest nextInternal() throws IOException {
-        LogsIngestionRequest result = null;
-        while (iterator.hasNext() && result == null) {
-            Object currentLog = iterator.next();
             byte[] bytes = serializer.serializeToBytes(currentLog);
             currentBatchSize += bytes.length;
             if (currentBatchSize > MAX_REQUEST_PAYLOAD_SIZE) {
@@ -164,7 +136,7 @@ public class Batcher implements Iterator<LogsIngestionRequest> {
         }
 
         return result;
-    }*/
+    }
 
     private LogsIngestionRequest createRequest(boolean last) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
