@@ -24,7 +24,7 @@ class EnvironmentTests extends DevCenterClientTestBase {
         DevCenterEnvironment environment = new DevCenterEnvironment(devEnvironmentName, envTypeName, catalogName, envDefinitionName);
 
         SyncPoller<DevCenterOperationDetails, DevCenterEnvironment> environmentCreateResponse =
-                deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment(projectName, meUserId, environment);
+                setPlaybackSyncPollerPollInterval(deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment(projectName, meUserId, environment));
         Assertions.assertEquals(
             LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, environmentCreateResponse.waitForCompletion().getStatus());
         Assertions.assertEquals(devEnvironmentName, environmentCreateResponse.getFinalResult().getName());
@@ -61,7 +61,7 @@ class EnvironmentTests extends DevCenterClientTestBase {
         setupEnvironment();
 
         SyncPoller<DevCenterOperationDetails, Void> environmentDeleteResponse =
-                deploymentEnvironmentsClient.beginDeleteEnvironment(projectName, meUserId, devEnvironmentName);
+                setPlaybackSyncPollerPollInterval(deploymentEnvironmentsClient.beginDeleteEnvironment(projectName, meUserId, devEnvironmentName));
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, environmentDeleteResponse.waitForCompletion().getStatus());
     }
@@ -123,7 +123,7 @@ class EnvironmentTests extends DevCenterClientTestBase {
             DevCenterEnvironment createEnvironment = new DevCenterEnvironment(devEnvironmentName, envTypeName, catalogName, envDefinitionName);
 
             SyncPoller<DevCenterOperationDetails, DevCenterEnvironment> environmentCreateResponse =
-                    deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment(projectName, meUserId, createEnvironment);
+                    setPlaybackSyncPollerPollInterval(deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment(projectName, meUserId, createEnvironment));
             Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, environmentCreateResponse.waitForCompletion().getStatus());
             

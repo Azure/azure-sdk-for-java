@@ -27,7 +27,7 @@ class DevBoxTests extends DevCenterClientTestBase {
     @Test
     public void testCreateDevBox() {
         SyncPoller<DevCenterOperationDetails, DevBox> devBoxCreateResponse =
-            devBoxesClient.beginCreateDevBox(projectName, meUserId, new DevBox(devBoxName, poolName));
+            setPlaybackSyncPollerPollInterval(devBoxesClient.beginCreateDevBox(projectName, meUserId, new DevBox(devBoxName, poolName)));
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxCreateResponse.waitForCompletion().getStatus());
         Assertions.assertEquals(devBoxName, devBoxCreateResponse.getFinalResult().getName());
@@ -82,12 +82,12 @@ class DevBoxTests extends DevCenterClientTestBase {
         setupDevBox();
         
         SyncPoller<DevCenterOperationDetails, Void> devBoxStopResponse =
-                devBoxesClient.beginStopDevBox(projectName, meUserId, devBoxName);
+                setPlaybackSyncPollerPollInterval(devBoxesClient.beginStopDevBox(projectName, meUserId, devBoxName));
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxStopResponse.waitForCompletion().getStatus());
 
         SyncPoller<DevCenterOperationDetails, Void> devBoxStartResponse =
-                devBoxesClient.beginStartDevBox(projectName, meUserId, devBoxName);
+                setPlaybackSyncPollerPollInterval(devBoxesClient.beginStartDevBox(projectName, meUserId, devBoxName));
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxStartResponse.waitForCompletion().getStatus());
     }
@@ -97,7 +97,7 @@ class DevBoxTests extends DevCenterClientTestBase {
         setupDevBox();
 
         SyncPoller<DevCenterOperationDetails, Void> devBoxRestartResponse =
-                devBoxesClient.beginRestartDevBox(projectName, meUserId, devBoxName);
+                setPlaybackSyncPollerPollInterval(devBoxesClient.beginRestartDevBox(projectName, meUserId, devBoxName));
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxRestartResponse.waitForCompletion().getStatus());
     }
@@ -172,7 +172,7 @@ class DevBoxTests extends DevCenterClientTestBase {
         devBoxesClient.skipAction(projectName, meUserId, devBoxName, "schedule-default");
 
         SyncPoller<DevCenterOperationDetails, Void> devBoxDeleteResponse =
-                devBoxesClient.beginDeleteDevBox(projectName, meUserId, devBoxName);
+                setPlaybackSyncPollerPollInterval(devBoxesClient.beginDeleteDevBox(projectName, meUserId, devBoxName));
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxDeleteResponse.waitForCompletion().getStatus());
     }
@@ -185,7 +185,7 @@ class DevBoxTests extends DevCenterClientTestBase {
             devBox = devBoxesClient.getDevBox(projectName, meUserId, devBoxName);
         } catch (Exception e) {
             SyncPoller<DevCenterOperationDetails, DevBox> devBoxCreateResponse =
-                    devBoxesClient.beginCreateDevBox(projectName, meUserId, new DevBox(devBoxName, poolName));
+                    setPlaybackSyncPollerPollInterval(devBoxesClient.beginCreateDevBox(projectName, meUserId, new DevBox(devBoxName, poolName)));
             Assertions.assertEquals(
                     LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxCreateResponse.waitForCompletion().getStatus());
     
