@@ -211,10 +211,11 @@ public class LeaseAsyncApiTests extends BlobTestBase {
     @Test
     public void renewBlobLeaseMin() {
         BlobAsyncClientBase bc = createBlobAsyncClient();
-        String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
 
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(bc, leaseID)
-            .renewLeaseWithResponse(new BlobRenewLeaseOptions()), 200);
+        Mono<Response<String>> response = setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID)
+            .flatMap(r -> createLeaseAsyncClient(bc, r).renewLeaseWithResponse(new BlobRenewLeaseOptions()));
+
+        assertAsyncResponseStatusCode(response, 200);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -292,9 +293,11 @@ public class LeaseAsyncApiTests extends BlobTestBase {
     @Test
     public void releaseBlobLease() {
         BlobAsyncClientBase bc = createBlobAsyncClient();
-        String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
 
-        StepVerifier.create(createLeaseAsyncClient(bc, leaseID).releaseLeaseWithResponse(new BlobReleaseLeaseOptions()))
+        Mono<Response<Void>> response = setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID)
+            .flatMap(r -> createLeaseAsyncClient(bc, r).releaseLeaseWithResponse(new BlobReleaseLeaseOptions()));
+
+        StepVerifier.create(response)
             .assertNext(r -> assertTrue(validateBasicHeaders(r.getHeaders())))
             .verifyComplete();
 
@@ -306,9 +309,12 @@ public class LeaseAsyncApiTests extends BlobTestBase {
     @Test
     public void releaseBlobLeaseMin() {
         BlobAsyncClientBase bc = createBlobAsyncClient();
-        String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(bc, leaseID).releaseLeaseWithResponse(
-            new BlobReleaseLeaseOptions()), 200);
+
+        Mono<Response<Void>> response = setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID)
+            .flatMap(r -> createLeaseAsyncClient(bc, r).releaseLeaseWithResponse(
+                new BlobReleaseLeaseOptions()));
+
+        assertAsyncResponseStatusCode(response, 200);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -414,9 +420,9 @@ public class LeaseAsyncApiTests extends BlobTestBase {
     @Test
     public void breakBlobLeaseMin() {
         BlobAsyncClientBase bc = createBlobAsyncClient();
-        setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
 
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(bc).breakLeaseWithResponse(new BlobBreakLeaseOptions()),
+        assertAsyncResponseStatusCode(setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID)
+            .then(createLeaseAsyncClient(bc).breakLeaseWithResponse(new BlobBreakLeaseOptions())),
             202);
     }
 
@@ -459,17 +465,25 @@ public class LeaseAsyncApiTests extends BlobTestBase {
     public void breakBlobLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                      String tags) {
         BlobAsyncClientBase bc = createBlobAsyncClient();
-        noneMatch = setupBlobMatchCondition(bc, noneMatch);
-        setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setTagsConditions(tags);
 
-        StepVerifier.create(createLeaseAsyncClient(bc).breakLeaseWithResponse(new BlobBreakLeaseOptions().
-            setRequestConditions(mac)))
+        Mono<Response<Integer>> response = Mono.zip(setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID), setupBlobMatchConditionAsync(bc, noneMatch))
+            .flatMap(tuple -> {
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setTagsConditions(tags);
+
+                return createLeaseAsyncClient(bc).breakLeaseWithResponse(new BlobBreakLeaseOptions().
+                    setRequestConditions(mac));
+            });
+
+        StepVerifier.create(response)
             .verifyError(BlobStorageException.class);
     }
 
@@ -502,9 +516,12 @@ public class LeaseAsyncApiTests extends BlobTestBase {
     @Test
     public void changeBlobLeaseMin() {
         BlobAsyncClientBase bc = createBlobAsyncClient();
-        String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(bc, leaseID).changeLeaseWithResponse(
-            new BlobChangeLeaseOptions(testResourceNamer.randomUuid())), 200);
+
+        Mono<Response<String>> response = setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID)
+            .flatMap(r -> createLeaseAsyncClient(bc, r).changeLeaseWithResponse(
+                new BlobChangeLeaseOptions(testResourceNamer.randomUuid())));
+
+        assertAsyncResponseStatusCode(response, 200);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -673,15 +690,18 @@ public class LeaseAsyncApiTests extends BlobTestBase {
 
     @Test
     public void renewContainerLease() {
-        String leaseID = setupContainerAsyncLeaseCondition(ccAsync, RECEIVED_LEASE_ID);
-        BlobLeaseAsyncClient leaseClient = createLeaseAsyncClient(ccAsync, leaseID);
+        Mono <Tuple2<Response<String>, BlobLeaseAsyncClient>> response = setupContainerLeaseConditionAsync(ccAsync, RECEIVED_LEASE_ID)
+            .flatMap(leaseID -> {
+                BlobLeaseAsyncClient leaseClient = createLeaseAsyncClient(ccAsync, leaseID);
+                // If running in live mode wait for the lease to expire to ensure we are actually renewing it
+                sleepIfRunningAgainstService(16000);
+                return Mono.zip(leaseClient.renewLeaseWithResponse(new BlobRenewLeaseOptions()), Mono.just(leaseClient));
+            });
 
-        // If running in live mode wait for the lease to expire to ensure we are actually renewing it
-        sleepIfRunningAgainstService(16000);
-        StepVerifier.create(leaseClient.renewLeaseWithResponse(new BlobRenewLeaseOptions()))
+        StepVerifier.create(response)
             .assertNext(r -> {
-                assertEquals(leaseClient.getLeaseId(), r.getValue());
-                assertTrue(validateBasicHeaders(r.getHeaders()));
+                assertEquals(r.getT2().getLeaseId(), r.getT1().getValue());
+                assertTrue(validateBasicHeaders(r.getT1().getHeaders()));
             })
             .verifyComplete();
 
@@ -692,21 +712,25 @@ public class LeaseAsyncApiTests extends BlobTestBase {
 
     @Test
     public void renewContainerLeaseMin() {
-        String leaseID = setupContainerAsyncLeaseCondition(ccAsync, RECEIVED_LEASE_ID);
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(ccAsync, leaseID).renewLeaseWithResponse(
-            new BlobRenewLeaseOptions()), 200);
+        Mono<Response<String>> response = setupContainerLeaseConditionAsync(ccAsync, RECEIVED_LEASE_ID)
+            .flatMap(r -> createLeaseAsyncClient(ccAsync, r).renewLeaseWithResponse(
+                new BlobRenewLeaseOptions()));
+
+        assertAsyncResponseStatusCode(response, 200);
     }
 
     @ParameterizedTest
     @MethodSource("renewContainerLeaseACSupplier")
     public void renewContainerLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified) {
-        String leaseID = setupContainerAsyncLeaseCondition(ccAsync, RECEIVED_LEASE_ID);
         BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(ccAsync, leaseID).renewLeaseWithResponse(
-            new BlobRenewLeaseOptions().setRequestConditions(mac)), 200);
+        Mono<Response<String>> response = setupContainerLeaseConditionAsync(ccAsync, RECEIVED_LEASE_ID)
+            .flatMap(r -> createLeaseAsyncClient(ccAsync, r).renewLeaseWithResponse(
+                new BlobRenewLeaseOptions().setRequestConditions(mac)));
+
+        assertAsyncResponseStatusCode(response, 200);
     }
 
     private static Stream<Arguments> renewContainerLeaseACSupplier() {
@@ -718,13 +742,15 @@ public class LeaseAsyncApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("acquireContainerLeaseACFailSupplier")
     public void renewContainerLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified) {
-        String leaseID = setupContainerAsyncLeaseCondition(ccAsync, RECEIVED_LEASE_ID);
         BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(createLeaseAsyncClient(ccAsync, leaseID).renewLeaseWithResponse(
-            new BlobRenewLeaseOptions().setRequestConditions(mac)))
+        Mono<Response<String>> response = setupContainerLeaseConditionAsync(ccAsync, RECEIVED_LEASE_ID)
+            .flatMap(r -> createLeaseAsyncClient(ccAsync, r).renewLeaseWithResponse(
+                new BlobRenewLeaseOptions().setRequestConditions(mac)));
+
+        StepVerifier.create(response)
             .verifyError(BlobStorageException.class);
     }
 
@@ -750,10 +776,11 @@ public class LeaseAsyncApiTests extends BlobTestBase {
 
     @Test
     public void releaseContainerLease() {
-        String leaseID = setupContainerAsyncLeaseCondition(ccAsync, RECEIVED_LEASE_ID);
+        Mono<Response<Void>> response = setupContainerLeaseConditionAsync(ccAsync, RECEIVED_LEASE_ID)
+            .flatMap(r -> createLeaseAsyncClient(ccAsync, r).releaseLeaseWithResponse(
+                new BlobReleaseLeaseOptions()));
 
-        StepVerifier.create(createLeaseAsyncClient(ccAsync, leaseID).releaseLeaseWithResponse(
-            new BlobReleaseLeaseOptions()))
+        StepVerifier.create(response)
             .assertNext(r -> assertTrue(validateBasicHeaders(r.getHeaders())))
             .verifyComplete();
 
@@ -764,34 +791,39 @@ public class LeaseAsyncApiTests extends BlobTestBase {
 
     @Test
     public void releaseContainerLeaseMin() {
-        String leaseID = setupContainerAsyncLeaseCondition(ccAsync, RECEIVED_LEASE_ID);
+        Mono<Response<Void>> response = setupContainerLeaseConditionAsync(ccAsync, RECEIVED_LEASE_ID)
+            .flatMap(r -> createLeaseAsyncClient(ccAsync, r)
+                .releaseLeaseWithResponse(new BlobReleaseLeaseOptions()));
 
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(ccAsync, leaseID)
-            .releaseLeaseWithResponse(new BlobReleaseLeaseOptions()), 200);
+        assertAsyncResponseStatusCode(response, 200);
     }
 
     @ParameterizedTest
     @MethodSource("renewContainerLeaseACSupplier")
     public void releaseContainerLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified) {
-        String leaseID = setupContainerAsyncLeaseCondition(ccAsync, RECEIVED_LEASE_ID);
         BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(ccAsync, leaseID).releaseLeaseWithResponse(
-            new BlobReleaseLeaseOptions().setRequestConditions(mac)), 200);
+        Mono<Response<Void>> response = setupContainerLeaseConditionAsync(ccAsync, RECEIVED_LEASE_ID)
+            .flatMap(r -> createLeaseAsyncClient(ccAsync, r).releaseLeaseWithResponse(
+                new BlobReleaseLeaseOptions().setRequestConditions(mac)));
+
+        assertAsyncResponseStatusCode(response, 200);
     }
 
     @ParameterizedTest
     @MethodSource("acquireContainerLeaseACFailSupplier")
     public void releaseContainerLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified) {
-        String leaseID = setupContainerAsyncLeaseCondition(ccAsync, RECEIVED_LEASE_ID);
         BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(createLeaseAsyncClient(ccAsync, leaseID).releaseLeaseWithResponse(
-            new BlobReleaseLeaseOptions().setRequestConditions(mac)))
+        Mono<Response<Void>> response = setupContainerLeaseConditionAsync(ccAsync, RECEIVED_LEASE_ID)
+            .flatMap(r -> createLeaseAsyncClient(ccAsync, r).releaseLeaseWithResponse(
+                new BlobReleaseLeaseOptions().setRequestConditions(mac)));
+
+        StepVerifier.create(response)
             .verifyError(BlobStorageException.class);
     }
 
@@ -841,33 +873,33 @@ public class LeaseAsyncApiTests extends BlobTestBase {
 
     @Test
     public void breakContainerLeaseMin() {
-        setupContainerAsyncLeaseCondition(ccAsync, RECEIVED_LEASE_ID);
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(ccAsync).breakLeaseWithResponse(new BlobBreakLeaseOptions()),
+        assertAsyncResponseStatusCode(setupContainerLeaseConditionAsync(ccAsync, RECEIVED_LEASE_ID)
+            .then(createLeaseAsyncClient(ccAsync).breakLeaseWithResponse(new BlobBreakLeaseOptions())),
             202);
     }
 
     @ParameterizedTest
     @MethodSource("renewContainerLeaseACSupplier")
     public void breakContainerLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified) {
-        setupContainerAsyncLeaseCondition(ccAsync, RECEIVED_LEASE_ID);
         BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(ccAsync).breakLeaseWithResponse(new BlobBreakLeaseOptions()
-            .setRequestConditions(mac)), 202);
+        assertAsyncResponseStatusCode(setupContainerLeaseConditionAsync(ccAsync, RECEIVED_LEASE_ID)
+            .then(createLeaseAsyncClient(ccAsync).breakLeaseWithResponse(new BlobBreakLeaseOptions()
+            .setRequestConditions(mac))), 202);
     }
 
     @ParameterizedTest
     @MethodSource("acquireContainerLeaseACFailSupplier")
     public void breakContainerLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified) {
-        setupContainerAsyncLeaseCondition(ccAsync, RECEIVED_LEASE_ID);
         BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(createLeaseAsyncClient(ccAsync).breakLeaseWithResponse(
-            new BlobBreakLeaseOptions().setRequestConditions(mac)))
+        StepVerifier.create(setupContainerLeaseConditionAsync(ccAsync, RECEIVED_LEASE_ID)
+            .then(createLeaseAsyncClient(ccAsync).breakLeaseWithResponse(
+                new BlobBreakLeaseOptions().setRequestConditions(mac))))
             .verifyError(BlobStorageException.class);
     }
 
@@ -890,17 +922,17 @@ public class LeaseAsyncApiTests extends BlobTestBase {
 
     @Test
     public void changeContainerLease() {
-        String leaseID = setupContainerAsyncLeaseCondition(ccAsync, RECEIVED_LEASE_ID);
-        BlobLeaseAsyncClient leaseClient = createLeaseAsyncClient(ccAsync, leaseID);
-
-        assertEquals(leaseClient.getLeaseId(), leaseID);
-
-        Mono<BlobLeaseAsyncClient> client = leaseClient.changeLeaseWithResponse(new BlobChangeLeaseOptions(testResourceNamer.randomUuid()))
-            .flatMap(r -> {
-                assertTrue(validateBasicHeaders(r.getHeaders()));
-                String newLeaseId = r.getValue();
-                assertEquals(newLeaseId, leaseClient.getLeaseId());
-                assertNotEquals(newLeaseId, leaseID);
+        Mono<BlobLeaseAsyncClient> client = setupContainerLeaseConditionAsync(ccAsync, RECEIVED_LEASE_ID)
+            .flatMap(leaseID -> {
+                BlobLeaseAsyncClient leaseClient = createLeaseAsyncClient(ccAsync, leaseID);
+                assertEquals(leaseClient.getLeaseId(), leaseID);
+                return Mono.zip(leaseClient.changeLeaseWithResponse(new BlobChangeLeaseOptions(testResourceNamer.randomUuid())), Mono.just(leaseClient), Mono.just(leaseID));
+            })
+            .flatMap(tuple -> {
+                assertTrue(validateBasicHeaders(tuple.getT1().getHeaders()));
+                String newLeaseId = tuple.getT1().getValue();
+                assertEquals(newLeaseId, tuple.getT2().getLeaseId());
+                assertNotEquals(newLeaseId, tuple.getT3());
                 return Mono.just(createLeaseAsyncClient(ccAsync, newLeaseId));
             });
 
@@ -910,34 +942,39 @@ public class LeaseAsyncApiTests extends BlobTestBase {
 
     @Test
     public void changeContainerLeaseMin() {
-        String leaseID = setupContainerAsyncLeaseCondition(ccAsync, RECEIVED_LEASE_ID);
+        Mono<Response<String>> response = setupContainerLeaseConditionAsync(ccAsync, RECEIVED_LEASE_ID)
+            .flatMap(r -> createLeaseAsyncClient(ccAsync, r).changeLeaseWithResponse(
+                new BlobChangeLeaseOptions(testResourceNamer.randomUuid())));
 
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(ccAsync, leaseID).changeLeaseWithResponse(
-            new BlobChangeLeaseOptions(testResourceNamer.randomUuid())), 200);
+        assertAsyncResponseStatusCode(response, 200);
     }
 
     @ParameterizedTest
     @MethodSource("renewContainerLeaseACSupplier")
     public void changeContainerLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified) {
-        String leaseID = setupContainerAsyncLeaseCondition(ccAsync, RECEIVED_LEASE_ID);
         BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(ccAsync, leaseID).changeLeaseWithResponse(
-            new BlobChangeLeaseOptions(testResourceNamer.randomUuid()).setRequestConditions(mac)), 200);
+        Mono<Response<String>> response = setupContainerLeaseConditionAsync(ccAsync, RECEIVED_LEASE_ID)
+            .flatMap(r -> createLeaseAsyncClient(ccAsync, r).changeLeaseWithResponse(
+                new BlobChangeLeaseOptions(testResourceNamer.randomUuid()).setRequestConditions(mac)));
+
+        assertAsyncResponseStatusCode(response, 200);
     }
 
     @ParameterizedTest
     @MethodSource("acquireContainerLeaseACFailSupplier")
     public void changeContainerLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified) {
-        String leaseID = setupContainerAsyncLeaseCondition(ccAsync, RECEIVED_LEASE_ID);
         BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(createLeaseAsyncClient(ccAsync, leaseID).changeLeaseWithResponse(
-            new BlobChangeLeaseOptions(testResourceNamer.randomUuid()).setRequestConditions(mac)))
+        Mono<Response<String>> response = setupContainerLeaseConditionAsync(ccAsync, RECEIVED_LEASE_ID)
+            .flatMap(r -> createLeaseAsyncClient(ccAsync, r).changeLeaseWithResponse(
+                new BlobChangeLeaseOptions(testResourceNamer.randomUuid()).setRequestConditions(mac)));
+
+        StepVerifier.create(response)
             .verifyError(BlobStorageException.class);
     }
 
