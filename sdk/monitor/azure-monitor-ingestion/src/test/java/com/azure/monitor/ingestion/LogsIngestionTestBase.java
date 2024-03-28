@@ -21,7 +21,9 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.InteractiveBrowserCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
@@ -51,7 +53,7 @@ public abstract class LogsIngestionTestBase extends TestProxyTestBase {
     @Override
     public void beforeTest() {
         dataCollectionEndpoint = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCE", "https://dce.monitor.azure.com");
-        dataCollectionRuleId = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCR_ID", "dcr-6f7abecd801541e69a6bfd9c9a7af2b9");
+        dataCollectionRuleId = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCR_ID", "dcr-01584ffffeac4f7abbd4fbc24aa64130");
         streamName = "Custom-MyTableRawData";
 
         LogsIngestionClientBuilder clientBuilder = new LogsIngestionClientBuilder()
