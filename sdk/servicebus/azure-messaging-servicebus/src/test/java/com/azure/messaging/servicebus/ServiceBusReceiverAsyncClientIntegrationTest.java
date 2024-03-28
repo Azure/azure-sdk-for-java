@@ -52,7 +52,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static com.azure.messaging.servicebus.TestUtils.MESSAGE_POSITION_ID;
 import static com.azure.messaging.servicebus.TestUtils.USE_CASE_AUTO_COMPLETE;
@@ -66,7 +65,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -381,9 +379,10 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
         setReceiver(entityType, USE_CASE_PEEK_MESSAGE, isSessionEnabled);
 
         Mono<ServiceBusReceivedMessage> peek = receiver.peekMessage()
+            .delayElement(Duration.ofMillis(100))
             .filter(m -> messageId.equals(m.getMessageId()))
-            .repeatWhenEmpty(10, i -> i)
-            .delayElement(Duration.ofMillis(100));
+            .repeatWhenEmpty(10, i -> i);
+
 
         // Assert & Act
         StepVerifier.create(peek

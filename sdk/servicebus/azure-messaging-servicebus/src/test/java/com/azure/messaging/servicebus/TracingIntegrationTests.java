@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.DeferOptions;
@@ -433,7 +434,13 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .expectComplete()
             .verify(TIMEOUT);
 
-        ServiceBusReceivedMessage receivedMessage = receiverSync.receiveMessages(1, Duration.ofSeconds(10)).stream().findFirst().get();
+        ServiceBusReceivedMessage receivedMessage = null;
+        while (receivedMessage == null) {
+            IterableStream<ServiceBusReceivedMessage> messages = receiverSync.receiveMessages(1, Duration.ofSeconds(10));
+            if (messages.iterator().hasNext()) {
+                receivedMessage = messages.iterator().next();
+            }
+        }
 
         receiverSync.renewMessageLock(receivedMessage);
         receiverSync.defer(receivedMessage, new DeferOptions());
