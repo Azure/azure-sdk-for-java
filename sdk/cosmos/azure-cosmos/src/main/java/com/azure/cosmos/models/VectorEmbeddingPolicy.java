@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -18,7 +19,7 @@ public final class VectorEmbeddingPolicy {
     /**
      * Paths for embeddings along with path-specific settings for the item.
      */
-    @JsonProperty("vectorEmbeddings")
+    @JsonProperty(Constants.Properties.VECTOR_EMBEDDINGS)
     private List<Embedding> embeddings;
 
     /**

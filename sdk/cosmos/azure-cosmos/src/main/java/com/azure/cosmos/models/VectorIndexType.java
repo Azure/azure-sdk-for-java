@@ -10,17 +10,17 @@ public enum VectorIndexType {
     /**
      * Represents a flat vector index type.
      */
-    FLAT("Flat"),
+    FLAT("flat"),
 
     /**
      * Represents a quantized flat vector index type.
      */
-    QUANTIZED_FLAT("QuantizedFlat"),
+    QUANTIZED_FLAT("quantizedFlat"),
 
     /**
      * Represents a disk ANN vector index type.
      */
-    DISK_ANN("DiskANN");
+    DISK_ANN("diskANN");
 
 
     private final String overWireValue;

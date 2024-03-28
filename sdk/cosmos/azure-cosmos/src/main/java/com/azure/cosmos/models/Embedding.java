@@ -3,19 +3,20 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.implementation.Constants;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Embedding settings within {@link VectorEmbeddingPolicy}
  */
 public final class Embedding {
-    @JsonProperty("path")
+    @JsonProperty(Constants.Properties.PATH)
     private String path;
-    @JsonProperty("dataType")
+    @JsonProperty(Constants.Properties.VECTOR_DATA_TYPE)
     private VectorDataType vectorDataType;
-    @JsonProperty("dimensions")
+    @JsonProperty(Constants.Properties.VECTOR_DIMENSIONS)
     private Long dimensions;
-    @JsonProperty("distanceFunction")
+    @JsonProperty(Constants.Properties.DISTANCE_FUNCTION)
     private DistanceFunction distanceFunction;
 
     /**
@@ -53,8 +54,8 @@ public final class Embedding {
      * @param vectorDataType the data type for the embedding
      * @return Embedding
      */
-    public Embedding setVectorDataType(String vectorDataType) {
-        this.vectorDataType = VectorDataType.valueOf(vectorDataType);
+    public Embedding setVectorDataType(VectorDataType vectorDataType) {
+        this.vectorDataType = vectorDataType;
         return this;
     }
 
@@ -93,8 +94,8 @@ public final class Embedding {
      * @param distanceFunction the distanceFunction for the embedding
      * @return Embedding
      */
-    public Embedding setDistanceFunction(String distanceFunction) {
-        this.distanceFunction = DistanceFunction.valueOf(distanceFunction);
+    public Embedding setDistanceFunction(DistanceFunction distanceFunction) {
+        this.distanceFunction = distanceFunction;
         return this;
     }
 }

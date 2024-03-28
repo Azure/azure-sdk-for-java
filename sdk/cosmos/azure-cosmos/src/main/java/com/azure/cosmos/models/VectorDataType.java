@@ -8,14 +8,24 @@ package com.azure.cosmos.models;
  */
 public enum VectorDataType {
     /**
-     * Represents a byte data type.
+     * Represents a int8 data type.
      */
-    BYTE("Int8"),
+    Int8("int8"),
 
     /**
-     * Represents a float data type.
+     * Represents a uint8 data type.
      */
-    FLOAT("Float32");
+    Uint8("uint8"),
+
+    /**
+     * Represents a float16 data type.
+     */
+    Float16("float16"),
+
+    /**
+     * Represents a float32 data type.
+     */
+    Float32("float32");
 
     private final String overWireValue;
 

@@ -17,17 +17,13 @@ public final class VectorIndexSpec {
 
     /**
      * Constructor
-     */
-    public VectorIndexSpec() {
-        this.jsonSerializable = new JsonSerializable();
-    }
-
-    /**
-     * Constructor.
      *
-     * @param jsonString the json string that represents the included path.
+     * @param path the path.
      */
-    public VectorIndexSpec(String jsonString) { this.jsonSerializable = new JsonSerializable(jsonString); }
+    public VectorIndexSpec(String path) {
+        this.jsonSerializable = new JsonSerializable();
+        this.setPath(path);
+    }
 
     /**
      * Constructor.

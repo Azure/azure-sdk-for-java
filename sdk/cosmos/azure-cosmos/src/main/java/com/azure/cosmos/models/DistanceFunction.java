@@ -10,17 +10,17 @@ public enum DistanceFunction {
     /**
      * Represents the euclidean distance function.
      */
-    EUCLIDEAN("EUCLIDEAN"),
+    EUCLIDEAN("euclidean"),
 
     /**
      * Represents the cosine distance function.
      */
-    COSINE("COSINE"),
+    COSINE("cosine"),
 
     /**
      * Represents the dot product distance function.
      */
-    DOT_PRODUCT("DOTPRODUCT");
+    DOT_PRODUCT("dotproduct");
 
     private final String overWireValue;
 

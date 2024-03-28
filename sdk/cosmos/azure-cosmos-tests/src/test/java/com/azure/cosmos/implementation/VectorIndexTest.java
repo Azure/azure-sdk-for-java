@@ -62,7 +62,7 @@ public class VectorIndexTest {
         indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
 
 
-        VectorIndexSpec vectorIndexSpec = new VectorIndexSpec();
+        VectorIndexSpec vectorIndexSpec = new VectorIndexSpec("/vector1");
         vectorIndexSpec.setPath("/vector1");
         vectorIndexSpec.setVectorIndexType(VectorIndexType.FLAT);
         indexingPolicy.setVectorIndexes(ImmutableList.of(vectorIndexSpec));
