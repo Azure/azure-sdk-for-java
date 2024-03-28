@@ -5,22 +5,24 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Optional settings to control how fields are processed when using a configured Azure Cosmos DB resource.
  */
 @Fluent
-public final class AzureCosmosDBFieldMappingOptions {
+public final class AzureCosmosDBFieldMappingOptions implements JsonSerializable<AzureCosmosDBFieldMappingOptions> {
 
     /*
      * The names of fields that represent vector data.
      */
     @Generated
-    @JsonProperty(value = "vector_fields")
-    private List<String> vectorFields;
+    private final List<String> vectorFields;
 
     /**
      * Get the vectorFields property: The names of fields that represent vector data.
@@ -36,35 +38,30 @@ public final class AzureCosmosDBFieldMappingOptions {
      * The name of the index field to use as a title.
      */
     @Generated
-    @JsonProperty(value = "title_field")
     private String titleField;
 
     /*
      * The name of the index field to use as a URL.
      */
     @Generated
-    @JsonProperty(value = "url_field")
     private String urlField;
 
     /*
      * The name of the index field to use as a filepath.
      */
     @Generated
-    @JsonProperty(value = "filepath_field")
     private String filepathField;
 
     /*
      * The names of index fields that should be treated as content.
      */
     @Generated
-    @JsonProperty(value = "content_fields")
-    private List<String> contentFields;
+    private final List<String> contentFields;
 
     /*
      * The separator pattern that content fields should use.
      */
     @Generated
-    @JsonProperty(value = "content_fields_separator")
     private String contentFieldsSeparator;
 
     /**
@@ -74,9 +71,7 @@ public final class AzureCosmosDBFieldMappingOptions {
      * @param vectorFields the vectorFields value to set.
      */
     @Generated
-    @JsonCreator
-    public AzureCosmosDBFieldMappingOptions(@JsonProperty(value = "content_fields") List<String> contentFields,
-        @JsonProperty(value = "vector_fields") List<String> vectorFields) {
+    public AzureCosmosDBFieldMappingOptions(List<String> contentFields, List<String> vectorFields) {
         this.contentFields = contentFields;
         this.vectorFields = vectorFields;
     }
@@ -177,5 +172,70 @@ public final class AzureCosmosDBFieldMappingOptions {
     public AzureCosmosDBFieldMappingOptions setContentFieldsSeparator(String contentFieldsSeparator) {
         this.contentFieldsSeparator = contentFieldsSeparator;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("content_fields", this.contentFields,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("vector_fields", this.vectorFields,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("title_field", this.titleField);
+        jsonWriter.writeStringField("url_field", this.urlField);
+        jsonWriter.writeStringField("filepath_field", this.filepathField);
+        jsonWriter.writeStringField("content_fields_separator", this.contentFieldsSeparator);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureCosmosDBFieldMappingOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureCosmosDBFieldMappingOptions if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureCosmosDBFieldMappingOptions.
+     */
+    @Generated
+    public static AzureCosmosDBFieldMappingOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            List<String> contentFields = null;
+            List<String> vectorFields = null;
+            String titleField = null;
+            String urlField = null;
+            String filepathField = null;
+            String contentFieldsSeparator = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("content_fields".equals(fieldName)) {
+                    contentFields = reader.readArray(reader1 -> reader1.getString());
+                } else if ("vector_fields".equals(fieldName)) {
+                    vectorFields = reader.readArray(reader1 -> reader1.getString());
+                } else if ("title_field".equals(fieldName)) {
+                    titleField = reader.getString();
+                } else if ("url_field".equals(fieldName)) {
+                    urlField = reader.getString();
+                } else if ("filepath_field".equals(fieldName)) {
+                    filepathField = reader.getString();
+                } else if ("content_fields_separator".equals(fieldName)) {
+                    contentFieldsSeparator = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            AzureCosmosDBFieldMappingOptions deserializedAzureCosmosDBFieldMappingOptions
+                = new AzureCosmosDBFieldMappingOptions(contentFields, vectorFields);
+            deserializedAzureCosmosDBFieldMappingOptions.titleField = titleField;
+            deserializedAzureCosmosDBFieldMappingOptions.urlField = urlField;
+            deserializedAzureCosmosDBFieldMappingOptions.filepathField = filepathField;
+            deserializedAzureCosmosDBFieldMappingOptions.contentFieldsSeparator = contentFieldsSeparator;
+            return deserializedAzureCosmosDBFieldMappingOptions;
+        });
     }
 }

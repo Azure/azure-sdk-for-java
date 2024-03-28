@@ -5,7 +5,6 @@ package com.azure.ai.vision.imageanalysis;
 
 import com.azure.ai.vision.imageanalysis.implementation.ImageAnalysisClientImpl;
 import com.azure.ai.vision.imageanalysis.implementation.models.ImageUrl;
-import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.annotation.Generated;
@@ -25,21 +24,10 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 
 /**
  * Initializes a new instance of the synchronous ImageAnalysisClient type.
- *
- * <!-- src_embed com.azure.ai.vision.imageanalysis.sync-client -->
- * <pre>
- * &#47;&#47;
- * &#47;&#47; Create a synchronous Image Analysis client.
- * &#47;&#47;
- * ImageAnalysisClient client = new ImageAnalysisClientBuilder&#40;&#41;
- *     .endpoint&#40;endpoint&#41;
- *     .credential&#40;new KeyCredential&#40;key&#41;&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.ai.vision.imageanalysis.sync-client -->
  */
 @ServiceClient(builder = ImageAnalysisClientBuilder.class)
 public final class ImageAnalysisClient {
@@ -59,68 +47,43 @@ public final class ImageAnalysisClient {
 
     /**
      * Performs a single Image Analysis operation.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>language</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The desired language for result generation (a two-letter language code).
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>language</td><td>String</td><td>No</td><td>The desired language for result generation (a two-letter
+     * language code).
      * If this option is not specified, the default value 'en' is used (English).
-     * See https://aka.ms/cv-languages for a list of supported languages.</td>
-     * </tr>
-     * <tr>
-     * <td>gender-neutral-caption</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Boolean flag for enabling gender-neutral captioning for Caption and Dense Captions features.
+     * See https://aka.ms/cv-languages for a list of supported languages.</td></tr>
+     * <tr><td>gender-neutral-caption</td><td>Boolean</td><td>No</td><td>Boolean flag for enabling gender-neutral
+     * captioning for Caption and Dense Captions features.
      * By default captions may contain gender terms (for example: 'man', 'woman', or 'boy', 'girl').
      * If you set this to "true", those will be replaced with gender-neutral terms (for example: 'person' or
-     * 'child').</td>
-     * </tr>
-     * <tr>
-     * <td>smartcrops-aspect-ratios</td>
-     * <td>List&lt;Double&gt;</td>
-     * <td>No</td>
-     * <td>A list of aspect ratios to use for smart cropping.
+     * 'child').</td></tr>
+     * <tr><td>smartcrops-aspect-ratios</td><td>List&lt;Double&gt;</td><td>No</td><td>A list of aspect ratios to use for
+     * smart cropping.
      * Aspect ratios are calculated by dividing the target crop width in pixels by the height in pixels.
      * Supported values are between 0.75 and 1.8 (inclusive).
      * If this parameter is not specified, the service will return one crop region with an aspect
-     * ratio it sees fit between 0.5 and 2.0 (inclusive). In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>model-version</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The version of cloud AI-model used for analysis.
+     * ratio it sees fit between 0.5 and 2.0 (inclusive). In the form of "," separated string.</td></tr>
+     * <tr><td>model-version</td><td>String</td><td>No</td><td>The version of cloud AI-model used for analysis.
      * The format is the following: 'latest' (default value) or 'YYYY-MM-DD' or 'YYYY-MM-DD-preview', where 'YYYY',
      * 'MM', 'DD' are the year, month and day associated with the model.
      * This is not commonly set, as the default always gives the latest AI model with recent improvements.
      * If however you would like to make sure analysis results do not change over time, set this value to a specific
-     * model version.</td>
-     * </tr>
+     * model version.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     url: String (Required)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     captionResult (Optional): {
@@ -218,7 +181,7 @@ public final class ImageAnalysisClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents the outcome of an Image Analysis operation along with <a href="https://learn.microsoft.com/java/api/com.azure.core.http.rest.response">Response</a>.
+     * @return represents the outcome of an Image Analysis operation along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -280,8 +243,9 @@ public final class ImageAnalysisClient {
             requestOptions.addQueryParam("model-version", modelVersion, false);
         }
         return analyzeFromUrlWithResponse(visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList()),
-            BinaryData.fromObject(imageContent), requestOptions).getValue().toObject(ImageAnalysisResult.class);
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.toList()), BinaryData.fromObject(imageContent), requestOptions).getValue()
+            .toObject(ImageAnalysisResult.class);
     }
 
     /**
@@ -305,72 +269,48 @@ public final class ImageAnalysisClient {
         // Generated convenience method for analyzeFromUrlWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return analyzeFromUrlWithResponse(visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList()),
-            BinaryData.fromObject(imageContent), requestOptions).getValue().toObject(ImageAnalysisResult.class);
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.toList()), BinaryData.fromObject(imageContent), requestOptions).getValue()
+            .toObject(ImageAnalysisResult.class);
     }
 
     /**
      * Performs a single Image Analysis operation.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>language</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The desired language for result generation (a two-letter language code).
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>language</td><td>String</td><td>No</td><td>The desired language for result generation (a two-letter
+     * language code).
      * If this option is not specified, the default value 'en' is used (English).
-     * See https://aka.ms/cv-languages for a list of supported languages.</td>
-     * </tr>
-     * <tr>
-     * <td>gender-neutral-caption</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Boolean flag for enabling gender-neutral captioning for Caption and Dense Captions features.
+     * See https://aka.ms/cv-languages for a list of supported languages.</td></tr>
+     * <tr><td>gender-neutral-caption</td><td>Boolean</td><td>No</td><td>Boolean flag for enabling gender-neutral
+     * captioning for Caption and Dense Captions features.
      * By default captions may contain gender terms (for example: 'man', 'woman', or 'boy', 'girl').
      * If you set this to "true", those will be replaced with gender-neutral terms (for example: 'person' or
-     * 'child').</td>
-     * </tr>
-     * <tr>
-     * <td>smartcrops-aspect-ratios</td>
-     * <td>List&lt;Double&gt;</td>
-     * <td>No</td>
-     * <td>A list of aspect ratios to use for smart cropping.
+     * 'child').</td></tr>
+     * <tr><td>smartcrops-aspect-ratios</td><td>List&lt;Double&gt;</td><td>No</td><td>A list of aspect ratios to use for
+     * smart cropping.
      * Aspect ratios are calculated by dividing the target crop width in pixels by the height in pixels.
      * Supported values are between 0.75 and 1.8 (inclusive).
      * If this parameter is not specified, the service will return one crop region with an aspect
-     * ratio it sees fit between 0.5 and 2.0 (inclusive). In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>model-version</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The version of cloud AI-model used for analysis.
+     * ratio it sees fit between 0.5 and 2.0 (inclusive). In the form of "," separated string.</td></tr>
+     * <tr><td>model-version</td><td>String</td><td>No</td><td>The version of cloud AI-model used for analysis.
      * The format is the following: 'latest' (default value) or 'YYYY-MM-DD' or 'YYYY-MM-DD-preview', where 'YYYY',
      * 'MM', 'DD' are the year, month and day associated with the model.
      * This is not commonly set, as the default always gives the latest AI model with recent improvements.
      * If however you would like to make sure analysis results do not change over time, set this value to a specific
-     * model version.</td>
-     * </tr>
+     * model version.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * BinaryData
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     captionResult (Optional): {
@@ -468,7 +408,7 @@ public final class ImageAnalysisClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents the outcome of an Image Analysis operation along with <a href="https://learn.microsoft.com/java/api/com.azure.core.http.rest.response">Response</a>.
+     * @return represents the outcome of an Image Analysis operation along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -530,8 +470,8 @@ public final class ImageAnalysisClient {
             requestOptions.addQueryParam("model-version", modelVersion, false);
         }
         return analyzeFromImageDataWithResponse(visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList()), imageContent,
-            requestOptions).getValue().toObject(ImageAnalysisResult.class);
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.toList()), imageContent, requestOptions).getValue().toObject(ImageAnalysisResult.class);
     }
 
     /**
@@ -555,8 +495,8 @@ public final class ImageAnalysisClient {
         // Generated convenience method for analyzeFromImageDataWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return analyzeFromImageDataWithResponse(visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList()), imageContent,
-            requestOptions).getValue().toObject(ImageAnalysisResult.class);
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.toList()), imageContent, requestOptions).getValue().toObject(ImageAnalysisResult.class);
     }
 
     /**
@@ -577,7 +517,9 @@ public final class ImageAnalysisClient {
             Boolean isGenderNeutralCaption = imageAnalysisOptions.isGenderNeutralCaption();
             List<Double> smartCropsAspectRatios = imageAnalysisOptions.getSmartCropsAspectRatios();
             String modelVersion = imageAnalysisOptions.getModelVersion();
-            if (language != null || isGenderNeutralCaption != null || smartCropsAspectRatios != null
+            if (language != null
+                || isGenderNeutralCaption != null
+                || smartCropsAspectRatios != null
                 || modelVersion != null) {
                 if (outputRequestOptions == null) {
                     outputRequestOptions = new RequestOptions();
@@ -591,8 +533,8 @@ public final class ImageAnalysisClient {
                 }
                 if (smartCropsAspectRatios != null) {
                     outputRequestOptions.addQueryParam("smartcrops-aspect-ratios",
-                        JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(smartCropsAspectRatios,
-                            CollectionFormat.CSV),
+                        JacksonAdapter.createDefaultSerializerAdapter()
+                            .serializeIterable(smartCropsAspectRatios, CollectionFormat.CSV),
                         false);
                 }
                 if (modelVersion != null) {
@@ -622,30 +564,26 @@ public final class ImageAnalysisClient {
      * @return represents the outcome of an Image Analysis operation.
      *
      * <!-- src_embed com.azure.ai.vision.imageanalysis.sync-analysis-from-url -->
+     * 
      * <pre>
      * &#47;&#47;
      * &#47;&#47; Synchronous analysis of an image file &#40;https:&#47;&#47;aka.ms&#47;azsdk&#47;image-analysis&#47;sample.jpg&#41;,
      * &#47;&#47; using all visual features, with all options set. You will likely need fewer visual features
      * &#47;&#47; and only some &#40;or no&#41; options set.
      * &#47;&#47;
-     * ImageAnalysisOptions options = new ImageAnalysisOptions&#40;&#41;
-     *     .setLanguage&#40;&quot;en&quot;&#41;
+     * ImageAnalysisOptions options = new ImageAnalysisOptions&#40;&#41;.setLanguage&#40;&quot;en&quot;&#41;
      *     .setGenderNeutralCaption&#40;true&#41;
      *     .setSmartCropsAspectRatios&#40;Arrays.asList&#40;0.9, 1.33&#41;&#41;
      *     .setModelVersion&#40;&quot;latest&quot;&#41;;
      *
-     * ImageAnalysisResult result = client.analyzeFromUrl&#40;
-     *     &quot;https:&#47;&#47;aka.ms&#47;azsdk&#47;image-analysis&#47;sample.jpg&quot;,
-     *     Arrays.asList&#40;
-     *         VisualFeatures.SMART_CROPS,
-     *         VisualFeatures.CAPTION,
-     *         VisualFeatures.DENSE_CAPTIONS,
-     *         VisualFeatures.OBJECTS,
-     *         VisualFeatures.PEOPLE,
-     *         VisualFeatures.READ,
-     *         VisualFeatures.TAGS&#41;,
-     *     options&#41;;
+     * ImageAnalysisResult result
+     *     = client
+     *         .analyzeFromUrl&#40;&quot;https:&#47;&#47;aka.ms&#47;azsdk&#47;image-analysis&#47;sample.jpg&quot;,
+     *             Arrays.asList&#40;VisualFeatures.SMART_CROPS, VisualFeatures.CAPTION, VisualFeatures.DENSE_CAPTIONS,
+     *                 VisualFeatures.OBJECTS, VisualFeatures.PEOPLE, VisualFeatures.READ, VisualFeatures.TAGS&#41;,
+     *             options&#41;;
      * </pre>
+     * 
      * <!-- end com.azure.ai.vision.imageanalysis.sync-analysis-from-url -->
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -673,30 +611,26 @@ public final class ImageAnalysisClient {
      * @return represents the outcome of an Image Analysis operation.
      *
      * <!-- src_embed com.azure.ai.vision.imageanalysis.sync-analysis-from-file -->
+     * 
      * <pre>
      * &#47;&#47;
      * &#47;&#47; Synchronous analysis of an image file &#40;sample.jpg&#41;, using all visual features,
      * &#47;&#47; with all options set. You will likely need fewer visual features and only
      * &#47;&#47; some &#40;or no&#41; options set.
      * &#47;&#47;
-     * ImageAnalysisOptions options = new ImageAnalysisOptions&#40;&#41;
-     *     .setLanguage&#40;&quot;en&quot;&#41;
+     * ImageAnalysisOptions options = new ImageAnalysisOptions&#40;&#41;.setLanguage&#40;&quot;en&quot;&#41;
      *     .setGenderNeutralCaption&#40;true&#41;
      *     .setSmartCropsAspectRatios&#40;Arrays.asList&#40;0.9, 1.33&#41;&#41;
      *     .setModelVersion&#40;&quot;latest&quot;&#41;;
      *
-     * ImageAnalysisResult result = client.analyze&#40;
-     *     BinaryData.fromFile&#40;new File&#40;&quot;sample.jpg&quot;&#41;.toPath&#40;&#41;&#41;,
-     *     Arrays.asList&#40;
-     *         VisualFeatures.SMART_CROPS,
-     *         VisualFeatures.CAPTION,
-     *         VisualFeatures.DENSE_CAPTIONS,
-     *         VisualFeatures.OBJECTS,
-     *         VisualFeatures.PEOPLE,
-     *         VisualFeatures.READ,
-     *         VisualFeatures.TAGS&#41;,
-     *     options&#41;;
+     * ImageAnalysisResult result
+     *     = client
+     *         .analyze&#40;BinaryData.fromFile&#40;new File&#40;&quot;sample.jpg&quot;&#41;.toPath&#40;&#41;&#41;,
+     *             Arrays.asList&#40;VisualFeatures.SMART_CROPS, VisualFeatures.CAPTION, VisualFeatures.DENSE_CAPTIONS,
+     *                 VisualFeatures.OBJECTS, VisualFeatures.PEOPLE, VisualFeatures.READ, VisualFeatures.TAGS&#41;,
+     *             options&#41;;
      * </pre>
+     * 
      * <!-- end com.azure.ai.vision.imageanalysis.sync-analysis-from-file -->
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -730,7 +664,8 @@ public final class ImageAnalysisClient {
     public Response<ImageAnalysisResult> analyzeFromUrlWithResponse(String imageUrl,
         List<VisualFeatures> visualFeatures, ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions) {
         List<String> visualFeaturesAsStrings = visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList());
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.toList());
         Response<BinaryData> response = analyzeFromUrlWithResponse(visualFeaturesAsStrings,
             BinaryData.fromObject(new ImageUrl(imageUrl)), updateRequestOptions(requestOptions, imageAnalysisOptions));
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -762,7 +697,8 @@ public final class ImageAnalysisClient {
     public Response<ImageAnalysisResult> analyzeWithResponse(BinaryData imageData, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions) {
         List<String> visualFeaturesAsStrings = visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList());
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.toList());
         Response<BinaryData> response = analyzeFromImageDataWithResponse(visualFeaturesAsStrings, imageData,
             updateRequestOptions(requestOptions, imageAnalysisOptions));
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),

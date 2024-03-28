@@ -5,21 +5,23 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The details of a message created as a part of a run step.
  */
 @Immutable
-public final class RunStepMessageCreationReference {
+public final class RunStepMessageCreationReference implements JsonSerializable<RunStepMessageCreationReference> {
 
     /*
      * The ID of the message created by this run step.
      */
     @Generated
-    @JsonProperty(value = "message_id")
-    private String messageId;
+    private final String messageId;
 
     /**
      * Creates an instance of RunStepMessageCreationReference class.
@@ -27,8 +29,7 @@ public final class RunStepMessageCreationReference {
      * @param messageId the messageId value to set.
      */
     @Generated
-    @JsonCreator
-    private RunStepMessageCreationReference(@JsonProperty(value = "message_id") String messageId) {
+    private RunStepMessageCreationReference(String messageId) {
         this.messageId = messageId;
     }
 
@@ -40,5 +41,42 @@ public final class RunStepMessageCreationReference {
     @Generated
     public String getMessageId() {
         return this.messageId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("message_id", this.messageId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunStepMessageCreationReference from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunStepMessageCreationReference if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RunStepMessageCreationReference.
+     */
+    @Generated
+    public static RunStepMessageCreationReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String messageId = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("message_id".equals(fieldName)) {
+                    messageId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new RunStepMessageCreationReference(messageId);
+        });
     }
 }

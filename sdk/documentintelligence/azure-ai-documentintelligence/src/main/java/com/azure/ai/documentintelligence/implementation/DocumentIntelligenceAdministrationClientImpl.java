@@ -518,9 +518,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Builds a custom document analysis model.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -558,9 +557,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Builds a custom document analysis model.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -597,9 +595,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Builds a custom document analysis model.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -634,7 +631,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
             () -> this.buildDocumentModelWithResponseAsync(buildRequest, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
@@ -642,9 +640,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Builds a custom document analysis model.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -679,7 +676,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
             () -> this.buildDocumentModelWithResponse(buildRequest, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
@@ -687,9 +685,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Builds a custom document analysis model.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -724,7 +721,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
             () -> this.buildDocumentModelWithResponseAsync(buildRequest, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentModelBuildOperationDetails.class),
@@ -733,9 +731,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Builds a custom document analysis model.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -770,7 +767,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
             () -> this.buildDocumentModelWithResponse(buildRequest, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentModelBuildOperationDetails.class),
@@ -779,9 +777,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Creates a new document model from document types of existing document models.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -815,9 +812,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Creates a new document model from document types of existing document models.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -850,9 +846,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Creates a new document model from document types of existing document models.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -883,7 +878,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
             () -> this.composeModelWithResponseAsync(composeRequest, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
@@ -891,9 +887,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Creates a new document model from document types of existing document models.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -924,7 +919,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
             () -> this.composeModelWithResponse(composeRequest, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
@@ -932,9 +928,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Creates a new document model from document types of existing document models.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -965,7 +960,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
             () -> this.composeModelWithResponseAsync(composeRequest, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentModelComposeOperationDetails.class),
@@ -974,9 +970,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Creates a new document model from document types of existing document models.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -1007,7 +1002,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
             () -> this.composeModelWithResponse(composeRequest, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentModelComposeOperationDetails.class),
@@ -1017,9 +1013,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
     /**
      * Generates authorization to copy a document model to this location with
      * specified modelId and optional description.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -1029,9 +1024,9 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     targetResourceId: String (Required)
@@ -1063,9 +1058,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
     /**
      * Generates authorization to copy a document model to this location with
      * specified modelId and optional description.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -1075,9 +1069,9 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     targetResourceId: String (Required)
@@ -1108,9 +1102,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     targetResourceId: String (Required)
@@ -1141,9 +1134,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     targetResourceId: String (Required)
@@ -1174,9 +1166,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     targetResourceId: String (Required)
@@ -1204,7 +1195,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
             () -> this.copyModelToWithResponseAsync(modelId, copyToRequest, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
@@ -1212,9 +1204,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     targetResourceId: String (Required)
@@ -1242,7 +1233,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
             () -> this.copyModelToWithResponse(modelId, copyToRequest, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
@@ -1250,9 +1242,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     targetResourceId: String (Required)
@@ -1280,7 +1271,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
             () -> this.copyModelToWithResponseAsync(modelId, copyToRequest, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentModelCopyToOperationDetails.class),
@@ -1289,9 +1281,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     targetResourceId: String (Required)
@@ -1319,7 +1310,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
             () -> this.copyModelToWithResponse(modelId, copyToRequest, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentModelCopyToOperationDetails.class),
@@ -1328,9 +1320,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Gets detailed document model information.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -1397,9 +1388,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Gets detailed document model information.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -1466,9 +1456,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * List all document models.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -1538,9 +1527,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * List all document models.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -1608,9 +1596,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * List all document models.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -1678,9 +1665,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * List all document models.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -1784,9 +1770,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Return information about the current resource.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     customDocumentModels (Required): {
@@ -1818,9 +1803,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Return information about the current resource.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     customDocumentModels (Required): {
@@ -1851,11 +1835,11 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Gets operation info.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
      *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
@@ -1899,11 +1883,11 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Gets operation info.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
      *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
@@ -1947,11 +1931,11 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Lists all operations.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
      *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
@@ -1998,11 +1982,11 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Lists all operations.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
      *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
@@ -2047,11 +2031,11 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Lists all operations.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
      *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
@@ -2096,11 +2080,11 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Lists all operations.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
      *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
@@ -2145,9 +2129,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Builds a custom document classifier.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -2187,9 +2170,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Builds a custom document classifier.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -2228,9 +2210,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Builds a custom document classifier.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -2267,7 +2248,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
             () -> this.buildClassifierWithResponseAsync(buildRequest, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
@@ -2275,9 +2257,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Builds a custom document classifier.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -2314,7 +2295,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
             () -> this.buildClassifierWithResponse(buildRequest, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
@@ -2322,9 +2304,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Builds a custom document classifier.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -2361,7 +2342,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
             () -> this.buildClassifierWithResponseAsync(buildRequest, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentClassifierBuildOperationDetails.class),
@@ -2370,9 +2352,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Builds a custom document classifier.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -2409,7 +2390,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
             () -> this.buildClassifierWithResponse(buildRequest, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentClassifierBuildOperationDetails.class),
@@ -2418,9 +2400,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Gets detailed document classifier information.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -2471,9 +2452,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Gets detailed document classifier information.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -2522,9 +2502,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * List all document classifiers.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -2576,9 +2555,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * List all document classifiers.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -2628,9 +2606,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * List all document classifiers.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -2680,9 +2657,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * List all document classifiers.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -2768,9 +2744,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -2844,9 +2819,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     modelId: String (Required)
@@ -2917,11 +2891,11 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
      *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
@@ -2972,11 +2946,11 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
      *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
@@ -3024,9 +2998,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     classifierId: String (Required)
@@ -3082,9 +3055,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     classifierId: String (Required)

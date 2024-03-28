@@ -5,42 +5,41 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Represents the outcome of a detection operation against protected resources as performed by content filtering.
  */
 @Immutable
-public final class ContentFilterCitedDetectionResult {
+public final class ContentFilterCitedDetectionResult implements JsonSerializable<ContentFilterCitedDetectionResult> {
 
     /*
      * A value indicating whether or not the content has been filtered.
      */
     @Generated
-    @JsonProperty(value = "filtered")
-    private boolean filtered;
+    private final boolean filtered;
 
     /*
      * A value indicating whether detection occurred, irrespective of severity or whether the content was filtered.
      */
     @Generated
-    @JsonProperty(value = "detected")
-    private boolean detected;
+    private final boolean detected;
 
     /*
      * The internet location associated with the detection.
      */
     @Generated
-    @JsonProperty(value = "URL")
     private String url;
 
     /*
      * The license description associated with the detection.
      */
     @Generated
-    @JsonProperty(value = "license")
-    private String license;
+    private final String license;
 
     /**
      * Creates an instance of ContentFilterCitedDetectionResult class.
@@ -50,9 +49,7 @@ public final class ContentFilterCitedDetectionResult {
      * @param license the license value to set.
      */
     @Generated
-    @JsonCreator
-    private ContentFilterCitedDetectionResult(@JsonProperty(value = "filtered") boolean filtered,
-        @JsonProperty(value = "detected") boolean detected, @JsonProperty(value = "license") String license) {
+    private ContentFilterCitedDetectionResult(boolean filtered, boolean detected, String license) {
         this.filtered = filtered;
         this.detected = detected;
         this.license = license;
@@ -69,8 +66,8 @@ public final class ContentFilterCitedDetectionResult {
     }
 
     /**
-     * Get the detected property: A value indicating whether detection occurred, irrespective of severity or whether
-     * the content was filtered.
+     * Get the detected property: A value indicating whether detection occurred, irrespective of severity or whether the
+     * content was filtered.
      *
      * @return the detected value.
      */
@@ -97,5 +94,57 @@ public final class ContentFilterCitedDetectionResult {
     @Generated
     public String getLicense() {
         return this.license;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("filtered", this.filtered);
+        jsonWriter.writeBooleanField("detected", this.detected);
+        jsonWriter.writeStringField("license", this.license);
+        jsonWriter.writeStringField("URL", this.url);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContentFilterCitedDetectionResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContentFilterCitedDetectionResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContentFilterCitedDetectionResult.
+     */
+    @Generated
+    public static ContentFilterCitedDetectionResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean filtered = false;
+            boolean detected = false;
+            String license = null;
+            String url = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("filtered".equals(fieldName)) {
+                    filtered = reader.getBoolean();
+                } else if ("detected".equals(fieldName)) {
+                    detected = reader.getBoolean();
+                } else if ("license".equals(fieldName)) {
+                    license = reader.getString();
+                } else if ("URL".equals(fieldName)) {
+                    url = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            ContentFilterCitedDetectionResult deserializedContentFilterCitedDetectionResult
+                = new ContentFilterCitedDetectionResult(filtered, detected, license);
+            deserializedContentFilterCitedDetectionResult.url = url;
+            return deserializedContentFilterCitedDetectionResult;
+        });
     }
 }

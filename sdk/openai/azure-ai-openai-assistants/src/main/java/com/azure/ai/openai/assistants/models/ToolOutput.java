@@ -5,26 +5,28 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The data provided during a tool outputs submission to resolve pending tool calls and allow the model to continue.
  */
 @Fluent
-public final class ToolOutput {
+public final class ToolOutput implements JsonSerializable<ToolOutput> {
 
     /*
      * The ID of the tool call being resolved, as provided in the tool calls of a required action from a run.
      */
     @Generated
-    @JsonProperty(value = "tool_call_id")
     private String toolCallId;
 
     /*
      * The output from the tool to be submitted.
      */
     @Generated
-    @JsonProperty(value = "output")
     private String output;
 
     /**
@@ -78,5 +80,44 @@ public final class ToolOutput {
     public ToolOutput setOutput(String output) {
         this.output = output;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tool_call_id", this.toolCallId);
+        jsonWriter.writeStringField("output", this.output);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ToolOutput from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ToolOutput if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the ToolOutput.
+     */
+    @Generated
+    public static ToolOutput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ToolOutput deserializedToolOutput = new ToolOutput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("tool_call_id".equals(fieldName)) {
+                    deserializedToolOutput.toolCallId = reader.getString();
+                } else if ("output".equals(fieldName)) {
+                    deserializedToolOutput.output = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedToolOutput;
+        });
     }
 }

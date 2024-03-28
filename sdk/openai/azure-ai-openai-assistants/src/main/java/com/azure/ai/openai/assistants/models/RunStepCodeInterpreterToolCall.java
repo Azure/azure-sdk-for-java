@@ -5,17 +5,15 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A record of a call to a code interpreter tool, issued by the model in evaluation of a defined tool, that
  * represents inputs and outputs consumed and emitted by the code interpreter.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("code_interpreter")
 @Immutable
 public final class RunStepCodeInterpreterToolCall extends RunStepToolCall {
 
@@ -23,8 +21,7 @@ public final class RunStepCodeInterpreterToolCall extends RunStepToolCall {
      * The details of the tool call to the code interpreter tool.
      */
     @Generated
-    @JsonProperty(value = "code_interpreter")
-    private RunStepCodeInterpreterToolCallDetails codeInterpreter;
+    private final RunStepCodeInterpreterToolCallDetails codeInterpreter;
 
     /**
      * Creates an instance of RunStepCodeInterpreterToolCall class.
@@ -33,9 +30,7 @@ public final class RunStepCodeInterpreterToolCall extends RunStepToolCall {
      * @param codeInterpreter the codeInterpreter value to set.
      */
     @Generated
-    @JsonCreator
-    private RunStepCodeInterpreterToolCall(@JsonProperty(value = "id") String id,
-        @JsonProperty(value = "code_interpreter") RunStepCodeInterpreterToolCallDetails codeInterpreter) {
+    private RunStepCodeInterpreterToolCall(String id, RunStepCodeInterpreterToolCallDetails codeInterpreter) {
         super(id);
         this.codeInterpreter = codeInterpreter;
     }
@@ -48,5 +43,70 @@ public final class RunStepCodeInterpreterToolCall extends RunStepToolCall {
     @Generated
     public RunStepCodeInterpreterToolCallDetails getCodeInterpreter() {
         return this.codeInterpreter;
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "code_interpreter";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeJsonField("code_interpreter", this.codeInterpreter);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunStepCodeInterpreterToolCall from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunStepCodeInterpreterToolCall if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RunStepCodeInterpreterToolCall.
+     */
+    @Generated
+    public static RunStepCodeInterpreterToolCall fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            RunStepCodeInterpreterToolCallDetails codeInterpreter = null;
+            String type = "code_interpreter";
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("code_interpreter".equals(fieldName)) {
+                    codeInterpreter = RunStepCodeInterpreterToolCallDetails.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            RunStepCodeInterpreterToolCall deserializedRunStepCodeInterpreterToolCall
+                = new RunStepCodeInterpreterToolCall(id, codeInterpreter);
+            deserializedRunStepCodeInterpreterToolCall.type = type;
+            return deserializedRunStepCodeInterpreterToolCall;
+        });
     }
 }

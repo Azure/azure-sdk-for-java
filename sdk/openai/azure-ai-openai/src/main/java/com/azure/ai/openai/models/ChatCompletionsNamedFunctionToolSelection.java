@@ -5,16 +5,14 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A tool selection of a specific, named function tool that will limit chat completions to using the named function.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("function")
 @Immutable
 public final class ChatCompletionsNamedFunctionToolSelection extends ChatCompletionsNamedToolSelection {
 
@@ -22,8 +20,7 @@ public final class ChatCompletionsNamedFunctionToolSelection extends ChatComplet
      * The function that should be called.
      */
     @Generated
-    @JsonProperty(value = "function")
-    private ChatCompletionsFunctionToolSelection function;
+    private final ChatCompletionsFunctionToolSelection function;
 
     /**
      * Creates an instance of ChatCompletionsNamedFunctionToolSelection class.
@@ -31,9 +28,7 @@ public final class ChatCompletionsNamedFunctionToolSelection extends ChatComplet
      * @param function the function value to set.
      */
     @Generated
-    @JsonCreator
-    public ChatCompletionsNamedFunctionToolSelection(
-        @JsonProperty(value = "function") ChatCompletionsFunctionToolSelection function) {
+    public ChatCompletionsNamedFunctionToolSelection(ChatCompletionsFunctionToolSelection function) {
         this.function = function;
     }
 
@@ -45,5 +40,66 @@ public final class ChatCompletionsNamedFunctionToolSelection extends ChatComplet
     @Generated
     public ChatCompletionsFunctionToolSelection getFunction() {
         return this.function;
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "function";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("function", this.function);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChatCompletionsNamedFunctionToolSelection from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChatCompletionsNamedFunctionToolSelection if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChatCompletionsNamedFunctionToolSelection.
+     */
+    @Generated
+    public static ChatCompletionsNamedFunctionToolSelection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChatCompletionsFunctionToolSelection function = null;
+            String type = "function";
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("function".equals(fieldName)) {
+                    function = ChatCompletionsFunctionToolSelection.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            ChatCompletionsNamedFunctionToolSelection deserializedChatCompletionsNamedFunctionToolSelection
+                = new ChatCompletionsNamedFunctionToolSelection(function);
+            deserializedChatCompletionsNamedFunctionToolSelection.type = type;
+            return deserializedChatCompletionsNamedFunctionToolSelection;
+        });
     }
 }

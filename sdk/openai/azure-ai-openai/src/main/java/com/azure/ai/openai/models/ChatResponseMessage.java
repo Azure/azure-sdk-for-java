@@ -5,36 +5,36 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A representation of a chat message as received in a response.
  */
 @Immutable
-public final class ChatResponseMessage {
+public final class ChatResponseMessage implements JsonSerializable<ChatResponseMessage> {
 
     /*
      * The chat role associated with the message.
      */
     @Generated
-    @JsonProperty(value = "role")
-    private ChatRole role;
+    private final ChatRole role;
 
     /*
      * The content of the message.
      */
     @Generated
-    @JsonProperty(value = "content")
-    private String content;
+    private final String content;
 
     /*
      * The tool calls that must be resolved and have their outputs appended to subsequent input messages for the chat
      * completions request to resolve as configured.
      */
     @Generated
-    @JsonProperty(value = "tool_calls")
     private List<ChatCompletionsToolCall> toolCalls;
 
     /*
@@ -42,7 +42,6 @@ public final class ChatResponseMessage {
      * completions request to resolve as configured.
      */
     @Generated
-    @JsonProperty(value = "function_call")
     private FunctionCall functionCall;
 
     /*
@@ -50,7 +49,6 @@ public final class ChatResponseMessage {
      * extensions while processing the chat completions request.
      */
     @Generated
-    @JsonProperty(value = "context")
     private AzureChatExtensionsMessageContext context;
 
     /**
@@ -60,9 +58,7 @@ public final class ChatResponseMessage {
      * @param content the content value to set.
      */
     @Generated
-    @JsonCreator
-    private ChatResponseMessage(@JsonProperty(value = "role") ChatRole role,
-        @JsonProperty(value = "content") String content) {
+    private ChatResponseMessage(ChatRole role, String content) {
         this.role = role;
         this.content = content;
     }
@@ -100,8 +96,8 @@ public final class ChatResponseMessage {
     }
 
     /**
-     * Get the functionCall property: The function call that must be resolved and have its output appended to
-     * subsequent input messages for the chat
+     * Get the functionCall property: The function call that must be resolved and have its output appended to subsequent
+     * input messages for the chat
      * completions request to resolve as configured.
      *
      * @return the functionCall value.
@@ -121,5 +117,62 @@ public final class ChatResponseMessage {
     @Generated
     public AzureChatExtensionsMessageContext getContext() {
         return this.context;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeArrayField("tool_calls", this.toolCalls, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("function_call", this.functionCall);
+        jsonWriter.writeJsonField("context", this.context);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChatResponseMessage from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChatResponseMessage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChatResponseMessage.
+     */
+    @Generated
+    public static ChatResponseMessage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChatRole role = null;
+            String content = null;
+            List<ChatCompletionsToolCall> toolCalls = null;
+            FunctionCall functionCall = null;
+            AzureChatExtensionsMessageContext context = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("role".equals(fieldName)) {
+                    role = ChatRole.fromString(reader.getString());
+                } else if ("content".equals(fieldName)) {
+                    content = reader.getString();
+                } else if ("tool_calls".equals(fieldName)) {
+                    toolCalls = reader.readArray(reader1 -> ChatCompletionsToolCall.fromJson(reader1));
+                } else if ("function_call".equals(fieldName)) {
+                    functionCall = FunctionCall.fromJson(reader);
+                } else if ("context".equals(fieldName)) {
+                    context = AzureChatExtensionsMessageContext.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            ChatResponseMessage deserializedChatResponseMessage = new ChatResponseMessage(role, content);
+            deserializedChatResponseMessage.toolCalls = toolCalls;
+            deserializedChatResponseMessage.functionCall = functionCall;
+            deserializedChatResponseMessage.context = context;
+            return deserializedChatResponseMessage;
+        });
     }
 }

@@ -5,17 +5,15 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A citation within the message that points to a specific quote from a specific File associated with the assistant or
  * the message. Generated when the assistant uses the 'retrieval' tool to search files.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("file_citation")
 @Immutable
 public final class MessageTextFileCitationAnnotation extends MessageTextAnnotation {
 
@@ -24,8 +22,7 @@ public final class MessageTextFileCitationAnnotation extends MessageTextAnnotati
      * Generated when the assistant uses the "retrieval" tool to search files.
      */
     @Generated
-    @JsonProperty(value = "file_citation")
-    private MessageTextFileCitationDetails fileCitation;
+    private final MessageTextFileCitationDetails fileCitation;
 
     /**
      * Creates an instance of MessageTextFileCitationAnnotation class.
@@ -36,10 +33,8 @@ public final class MessageTextFileCitationAnnotation extends MessageTextAnnotati
      * @param fileCitation the fileCitation value to set.
      */
     @Generated
-    @JsonCreator
-    private MessageTextFileCitationAnnotation(@JsonProperty(value = "text") String text,
-        @JsonProperty(value = "start_index") int startIndex, @JsonProperty(value = "end_index") int endIndex,
-        @JsonProperty(value = "file_citation") MessageTextFileCitationDetails fileCitation) {
+    private MessageTextFileCitationAnnotation(String text, int startIndex, int endIndex,
+        MessageTextFileCitationDetails fileCitation) {
         super(text, startIndex, endIndex);
         this.fileCitation = fileCitation;
     }
@@ -54,5 +49,78 @@ public final class MessageTextFileCitationAnnotation extends MessageTextAnnotati
     @Generated
     public MessageTextFileCitationDetails getFileCitation() {
         return this.fileCitation;
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "file_citation";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("text", getText());
+        jsonWriter.writeIntField("start_index", getStartIndex());
+        jsonWriter.writeIntField("end_index", getEndIndex());
+        jsonWriter.writeJsonField("file_citation", this.fileCitation);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MessageTextFileCitationAnnotation from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MessageTextFileCitationAnnotation if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MessageTextFileCitationAnnotation.
+     */
+    @Generated
+    public static MessageTextFileCitationAnnotation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String text = null;
+            int startIndex = 0;
+            int endIndex = 0;
+            MessageTextFileCitationDetails fileCitation = null;
+            String type = "file_citation";
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("text".equals(fieldName)) {
+                    text = reader.getString();
+                } else if ("start_index".equals(fieldName)) {
+                    startIndex = reader.getInt();
+                } else if ("end_index".equals(fieldName)) {
+                    endIndex = reader.getInt();
+                } else if ("file_citation".equals(fieldName)) {
+                    fileCitation = MessageTextFileCitationDetails.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            MessageTextFileCitationAnnotation deserializedMessageTextFileCitationAnnotation
+                = new MessageTextFileCitationAnnotation(text, startIndex, endIndex, fileCitation);
+            deserializedMessageTextFileCitationAnnotation.type = type;
+            return deserializedMessageTextFileCitationAnnotation;
+        });
     }
 }

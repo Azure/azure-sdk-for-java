@@ -5,7 +5,6 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -60,7 +59,6 @@ public final class AzureSearchQueryType extends ExpandableStringEnum<AzureSearch
      * @return the corresponding AzureSearchQueryType.
      */
     @Generated
-    @JsonCreator
     public static AzureSearchQueryType fromString(String name) {
         return fromString(name, AzureSearchQueryType.class);
     }

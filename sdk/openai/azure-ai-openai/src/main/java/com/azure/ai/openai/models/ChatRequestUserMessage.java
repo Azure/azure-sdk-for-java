@@ -6,19 +6,19 @@ package com.azure.ai.openai.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.Arrays;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 
 /**
  * A request chat message representing user input to the assistant.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "role")
-@JsonTypeName("user")
 @Fluent
 public final class ChatRequestUserMessage extends ChatRequestMessage {
 
@@ -26,14 +26,12 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      * The contents of the user message, with available input types varying by selected model.
      */
     @Generated
-    @JsonProperty(value = "content")
-    private BinaryData content;
+    private final BinaryData content;
 
     /*
      * An optional name for the participant.
      */
     @Generated
-    @JsonProperty(value = "name")
     private String name;
 
     /**
@@ -74,8 +72,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
     }
 
     /**
-     * Get the content property: The contents of the user message, with available input types varying by selected
-     * model.
+     * Get the content property: The contents of the user message, with available input types varying by selected model.
      *
      * @return the content value.
      */
@@ -104,5 +101,70 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
     public ChatRequestUserMessage setName(String name) {
         this.name = name;
         return this;
+    }
+
+    /*
+     * The chat role associated with this message.
+     */
+    @Generated
+    private ChatRole role = ChatRole.USER;
+
+    /**
+     * Get the role property: The chat role associated with this message.
+     *
+     * @return the role value.
+     */
+    @Generated
+    @Override
+    public ChatRole getRole() {
+        return this.role;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("content", this.content.toObject(Object.class));
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChatRequestUserMessage from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChatRequestUserMessage if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChatRequestUserMessage.
+     */
+    @Generated
+    public static ChatRequestUserMessage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BinaryData content = null;
+            ChatRole role = ChatRole.USER;
+            String name = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("content".equals(fieldName)) {
+                    content = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("role".equals(fieldName)) {
+                    role = ChatRole.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            ChatRequestUserMessage deserializedChatRequestUserMessage = new ChatRequestUserMessage(content);
+            deserializedChatRequestUserMessage.role = role;
+            deserializedChatRequestUserMessage.name = name;
+            return deserializedChatRequestUserMessage;
+        });
     }
 }

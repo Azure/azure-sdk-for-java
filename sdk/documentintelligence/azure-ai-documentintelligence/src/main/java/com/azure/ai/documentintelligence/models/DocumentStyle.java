@@ -6,20 +6,22 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * An object representing observed text styles.
  */
 @Immutable
-public final class DocumentStyle {
+public final class DocumentStyle implements JsonSerializable<DocumentStyle> {
     /*
      * Is content handwritten?
      */
     @Generated
-    @JsonProperty(value = "isHandwritten")
     private Boolean isHandwritten;
 
     /*
@@ -27,50 +29,43 @@ public final class DocumentStyle {
      * fallback fonts following CSS convention (ex. 'Arial, sans-serif').
      */
     @Generated
-    @JsonProperty(value = "similarFontFamily")
     private String similarFontFamily;
 
     /*
      * Font style.
      */
     @Generated
-    @JsonProperty(value = "fontStyle")
     private FontStyle fontStyle;
 
     /*
      * Font weight.
      */
     @Generated
-    @JsonProperty(value = "fontWeight")
     private FontWeight fontWeight;
 
     /*
      * Foreground color in #rrggbb hexadecimal format.
      */
     @Generated
-    @JsonProperty(value = "color")
     private String color;
 
     /*
      * Background color in #rrggbb hexadecimal format..
      */
     @Generated
-    @JsonProperty(value = "backgroundColor")
     private String backgroundColor;
 
     /*
      * Location of the text elements in the concatenated content the style applies to.
      */
     @Generated
-    @JsonProperty(value = "spans")
-    private List<DocumentSpan> spans;
+    private final List<DocumentSpan> spans;
 
     /*
      * Confidence of correctly identifying the style.
      */
     @Generated
-    @JsonProperty(value = "confidence")
-    private double confidence;
+    private final double confidence;
 
     /**
      * Creates an instance of DocumentStyle class.
@@ -79,9 +74,7 @@ public final class DocumentStyle {
      * @param confidence the confidence value to set.
      */
     @Generated
-    @JsonCreator
-    private DocumentStyle(@JsonProperty(value = "spans") List<DocumentSpan> spans,
-        @JsonProperty(value = "confidence") double confidence) {
+    private DocumentStyle(List<DocumentSpan> spans, double confidence) {
         this.spans = spans;
         this.confidence = confidence;
     }
@@ -166,5 +159,79 @@ public final class DocumentStyle {
     @Generated
     public double getConfidence() {
         return this.confidence;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("spans", this.spans, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeDoubleField("confidence", this.confidence);
+        jsonWriter.writeBooleanField("isHandwritten", this.isHandwritten);
+        jsonWriter.writeStringField("similarFontFamily", this.similarFontFamily);
+        jsonWriter.writeStringField("fontStyle", this.fontStyle == null ? null : this.fontStyle.toString());
+        jsonWriter.writeStringField("fontWeight", this.fontWeight == null ? null : this.fontWeight.toString());
+        jsonWriter.writeStringField("color", this.color);
+        jsonWriter.writeStringField("backgroundColor", this.backgroundColor);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentStyle from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentStyle if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DocumentStyle.
+     */
+    @Generated
+    public static DocumentStyle fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            List<DocumentSpan> spans = null;
+            double confidence = 0.0;
+            Boolean isHandwritten = null;
+            String similarFontFamily = null;
+            FontStyle fontStyle = null;
+            FontWeight fontWeight = null;
+            String color = null;
+            String backgroundColor = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("spans".equals(fieldName)) {
+                    spans = reader.readArray(reader1 -> DocumentSpan.fromJson(reader1));
+                } else if ("confidence".equals(fieldName)) {
+                    confidence = reader.getDouble();
+                } else if ("isHandwritten".equals(fieldName)) {
+                    isHandwritten = reader.getNullable(JsonReader::getBoolean);
+                } else if ("similarFontFamily".equals(fieldName)) {
+                    similarFontFamily = reader.getString();
+                } else if ("fontStyle".equals(fieldName)) {
+                    fontStyle = FontStyle.fromString(reader.getString());
+                } else if ("fontWeight".equals(fieldName)) {
+                    fontWeight = FontWeight.fromString(reader.getString());
+                } else if ("color".equals(fieldName)) {
+                    color = reader.getString();
+                } else if ("backgroundColor".equals(fieldName)) {
+                    backgroundColor = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            DocumentStyle deserializedDocumentStyle = new DocumentStyle(spans, confidence);
+            deserializedDocumentStyle.isHandwritten = isHandwritten;
+            deserializedDocumentStyle.similarFontFamily = similarFontFamily;
+            deserializedDocumentStyle.fontStyle = fontStyle;
+            deserializedDocumentStyle.fontWeight = fontWeight;
+            deserializedDocumentStyle.color = color;
+            deserializedDocumentStyle.backgroundColor = backgroundColor;
+
+            return deserializedDocumentStyle;
+        });
     }
 }

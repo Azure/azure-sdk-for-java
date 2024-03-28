@@ -5,8 +5,11 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -15,49 +18,43 @@ import java.time.ZoneOffset;
  * Represents an assistant that can call the model and use tools.
  */
 @Immutable
-public final class OpenAIFile {
+public final class OpenAIFile implements JsonSerializable<OpenAIFile> {
 
     /*
      * The object type, which is always 'file'.
      */
     @Generated
-    @JsonProperty(value = "object")
-    private String object = "file";
+    private final String object = "file";
 
     /*
      * The identifier, which can be referenced in API endpoints.
      */
     @Generated
-    @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     /*
      * The size of the file, in bytes.
      */
     @Generated
-    @JsonProperty(value = "bytes")
-    private int bytes;
+    private final int bytes;
 
     /*
      * The name of the file.
      */
     @Generated
-    @JsonProperty(value = "filename")
-    private String filename;
+    private final String filename;
 
     /*
      * The Unix timestamp, in seconds, representing when this object was created.
      */
     @Generated
-    @JsonProperty(value = "created_at")
-    private long createdAt;
+    private final long createdAt;
 
     /*
      * The intended purpose of a file.
      */
     @Generated
-    @JsonProperty(value = "purpose")
-    private FilePurpose purpose;
+    private final FilePurpose purpose;
 
     /**
      * Creates an instance of OpenAIFile class.
@@ -75,14 +72,6 @@ public final class OpenAIFile {
         this.filename = filename;
         this.createdAt = createdAt.toEpochSecond();
         this.purpose = purpose;
-    }
-
-    @Generated
-    @JsonCreator
-    private OpenAIFile(@JsonProperty(value = "id") String id, @JsonProperty(value = "bytes") int bytes,
-        @JsonProperty(value = "filename") String filename, @JsonProperty(value = "created_at") long createdAt,
-        @JsonProperty(value = "purpose") FilePurpose purpose) {
-        this(id, bytes, filename, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), purpose);
     }
 
     /**
@@ -143,5 +132,59 @@ public final class OpenAIFile {
     @Generated
     public FilePurpose getPurpose() {
         return this.purpose;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("object", this.object);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeIntField("bytes", this.bytes);
+        jsonWriter.writeStringField("filename", this.filename);
+        jsonWriter.writeLongField("created_at", this.createdAt);
+        jsonWriter.writeStringField("purpose", this.purpose == null ? null : this.purpose.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OpenAIFile from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OpenAIFile if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OpenAIFile.
+     */
+    @Generated
+    public static OpenAIFile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            int bytes = 0;
+            String filename = null;
+            OffsetDateTime createdAt = null;
+            FilePurpose purpose = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("bytes".equals(fieldName)) {
+                    bytes = reader.getInt();
+                } else if ("filename".equals(fieldName)) {
+                    filename = reader.getString();
+                } else if ("created_at".equals(fieldName)) {
+                    createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
+                } else if ("purpose".equals(fieldName)) {
+                    purpose = FilePurpose.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new OpenAIFile(id, bytes, filename, createdAt, purpose);
+        });
     }
 }

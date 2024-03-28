@@ -5,49 +5,47 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Position and estimated wait time for a job.
  */
 @Immutable
-public final class RouterJobPositionDetails {
+public final class RouterJobPositionDetails implements JsonSerializable<RouterJobPositionDetails> {
 
     /*
      * Id of the job these details are about.
      */
     @Generated
-    @JsonProperty(value = "jobId")
-    private String jobId;
+    private final String jobId;
 
     /*
      * Position of the job in question within that queue.
      */
     @Generated
-    @JsonProperty(value = "position")
-    private int position;
+    private final int position;
 
     /*
      * Id of the queue this job is enqueued in.
      */
     @Generated
-    @JsonProperty(value = "queueId")
-    private String queueId;
+    private final String queueId;
 
     /*
      * Length of the queue: total number of enqueued jobs.
      */
     @Generated
-    @JsonProperty(value = "queueLength")
-    private int queueLength;
+    private final int queueLength;
 
     /*
      * Estimated wait time of the job rounded up to the nearest minute.
      */
     @Generated
-    @JsonProperty(value = "estimatedWaitTimeMinutes")
-    private double estimatedWaitTimeMinutes;
+    private final double estimatedWaitTimeMinutes;
 
     /**
      * Creates an instance of RouterJobPositionDetails class.
@@ -59,11 +57,8 @@ public final class RouterJobPositionDetails {
      * @param estimatedWaitTimeMinutes the estimatedWaitTimeMinutes value to set.
      */
     @Generated
-    @JsonCreator
-    private RouterJobPositionDetails(@JsonProperty(value = "jobId") String jobId,
-        @JsonProperty(value = "position") int position, @JsonProperty(value = "queueId") String queueId,
-        @JsonProperty(value = "queueLength") int queueLength,
-        @JsonProperty(value = "estimatedWaitTimeMinutes") double estimatedWaitTimeMinutes) {
+    private RouterJobPositionDetails(String jobId, int position, String queueId, int queueLength,
+        double estimatedWaitTimeMinutes) {
         this.jobId = jobId;
         this.position = position;
         this.queueId = queueId;
@@ -119,5 +114,58 @@ public final class RouterJobPositionDetails {
     @Generated
     public double getEstimatedWaitTimeMinutes() {
         return this.estimatedWaitTimeMinutes;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobId", this.jobId);
+        jsonWriter.writeIntField("position", this.position);
+        jsonWriter.writeStringField("queueId", this.queueId);
+        jsonWriter.writeIntField("queueLength", this.queueLength);
+        jsonWriter.writeDoubleField("estimatedWaitTimeMinutes", this.estimatedWaitTimeMinutes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouterJobPositionDetails from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouterJobPositionDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RouterJobPositionDetails.
+     */
+    @Generated
+    public static RouterJobPositionDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String jobId = null;
+            int position = 0;
+            String queueId = null;
+            int queueLength = 0;
+            double estimatedWaitTimeMinutes = 0.0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("jobId".equals(fieldName)) {
+                    jobId = reader.getString();
+                } else if ("position".equals(fieldName)) {
+                    position = reader.getInt();
+                } else if ("queueId".equals(fieldName)) {
+                    queueId = reader.getString();
+                } else if ("queueLength".equals(fieldName)) {
+                    queueLength = reader.getInt();
+                } else if ("estimatedWaitTimeMinutes".equals(fieldName)) {
+                    estimatedWaitTimeMinutes = reader.getDouble();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new RouterJobPositionDetails(jobId, position, queueId, queueLength, estimatedWaitTimeMinutes);
+        });
     }
 }

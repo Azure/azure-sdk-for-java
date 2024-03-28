@@ -5,7 +5,6 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -74,7 +73,6 @@ public final class EncounterClass extends ExpandableStringEnum<EncounterClass> {
      * @return the corresponding EncounterClass.
      */
     @Generated
-    @JsonCreator
     public static EncounterClass fromString(String name) {
         return fromString(name, EncounterClass.class);
     }

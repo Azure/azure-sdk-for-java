@@ -6,7 +6,11 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -14,26 +18,23 @@ import java.util.Map;
  * AtlasEntity, AtlasClassification.
  */
 @Fluent
-public final class AtlasStruct {
+public final class AtlasStruct implements JsonSerializable<AtlasStruct> {
     /*
      * The attributes of the struct.
      */
     @Generated
-    @JsonProperty(value = "attributes")
     private Map<String, Object> attributes;
 
     /*
      * The name of the type.
      */
     @Generated
-    @JsonProperty(value = "typeName")
     private String typeName;
 
     /*
      * ETag for concurrency control.
      */
     @Generated
-    @JsonProperty(value = "lastModifiedTS")
     private String lastModifiedTS;
 
     /**
@@ -107,5 +108,50 @@ public final class AtlasStruct {
     public AtlasStruct setLastModifiedTS(String lastModifiedTS) {
         this.lastModifiedTS = lastModifiedTS;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("attributes", this.attributes, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("typeName", this.typeName);
+        jsonWriter.writeStringField("lastModifiedTS", this.lastModifiedTS);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AtlasStruct from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AtlasStruct if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AtlasStruct.
+     */
+    @Generated
+    public static AtlasStruct fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AtlasStruct deserializedAtlasStruct = new AtlasStruct();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("attributes".equals(fieldName)) {
+                    Map<String, Object> attributes = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedAtlasStruct.attributes = attributes;
+                } else if ("typeName".equals(fieldName)) {
+                    deserializedAtlasStruct.typeName = reader.getString();
+                } else if ("lastModifiedTS".equals(fieldName)) {
+                    deserializedAtlasStruct.lastModifiedTS = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAtlasStruct;
+        });
     }
 }

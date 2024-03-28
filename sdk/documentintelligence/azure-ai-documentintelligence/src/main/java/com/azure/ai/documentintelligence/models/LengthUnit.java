@@ -6,7 +6,6 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class LengthUnit extends ExpandableStringEnum<LengthUnit> {
      * @return the corresponding LengthUnit.
      */
     @Generated
-    @JsonCreator
     public static LengthUnit fromString(String name) {
         return fromString(name, LengthUnit.class);
     }

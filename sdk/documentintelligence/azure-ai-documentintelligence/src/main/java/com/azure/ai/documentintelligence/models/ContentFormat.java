@@ -6,7 +6,6 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class ContentFormat extends ExpandableStringEnum<ContentFormat> {
      * @return the corresponding ContentFormat.
      */
     @Generated
-    @JsonCreator
     public static ContentFormat fromString(String name) {
         return fromString(name, ContentFormat.class);
     }

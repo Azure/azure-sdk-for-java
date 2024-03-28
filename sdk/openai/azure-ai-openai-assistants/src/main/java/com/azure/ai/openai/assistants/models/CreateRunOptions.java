@@ -5,8 +5,11 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,52 +17,43 @@ import java.util.Map;
  * The details used when creating a new run of an assistant thread.
  */
 @Fluent
-public final class CreateRunOptions {
+public final class CreateRunOptions implements JsonSerializable<CreateRunOptions> {
 
     /*
      * The ID of the assistant that should run the thread.
      */
     @Generated
-    @JsonProperty(value = "assistant_id")
-    private String assistantId;
+    private final String assistantId;
 
     /*
      * The overridden model name that the assistant should use to run the thread.
      */
     @Generated
-    @JsonProperty(value = "model")
     private String model;
 
     /*
      * The overridden system instructions that the assistant should use to run the thread.
      */
     @Generated
-    @JsonProperty(value = "instructions")
     private String instructions;
 
     /*
-     * Additional instructions to append at the end of the instructions for the run. This is useful for modifying the
-     * behavior
+     * Additional instructions to append at the end of the instructions for the run. This is useful for modifying the behavior
      * on a per-run basis without overriding other instructions.
      */
     @Generated
-    @JsonProperty(value = "additional_instructions")
     private String additionalInstructions;
 
     /*
      * The overridden list of enabled tools that the assistant should use to run the thread.
      */
     @Generated
-    @JsonProperty(value = "tools")
     private List<ToolDefinition> tools;
 
     /*
-     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
-     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
-     * characters in length.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
      */
     @Generated
-    @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
 
     /**
@@ -119,8 +113,8 @@ public final class CreateRunOptions {
     }
 
     /**
-     * Get the additionalInstructions property: Additional instructions to append at the end of the instructions for
-     * the run. This is useful for modifying the behavior
+     * Get the additionalInstructions property: Additional instructions to append at the end of the instructions for the
+     * run. This is useful for modifying the behavior
      * on a per-run basis without overriding other instructions.
      *
      * @return the additionalInstructions value.
@@ -184,14 +178,13 @@ public final class CreateRunOptions {
      * @param assistantId the assistantId value to set.
      */
     @Generated
-    @JsonCreator
-    public CreateRunOptions(@JsonProperty(value = "assistant_id") String assistantId) {
+    public CreateRunOptions(String assistantId) {
         this.assistantId = assistantId;
     }
 
     /**
-     * Set the additionalInstructions property: Additional instructions to append at the end of the instructions for
-     * the run. This is useful for modifying the behavior
+     * Set the additionalInstructions property: Additional instructions to append at the end of the instructions for the
+     * run. This is useful for modifying the behavior
      * on a per-run basis without overriding other instructions.
      *
      * @param additionalInstructions the additionalInstructions value to set.
@@ -201,5 +194,68 @@ public final class CreateRunOptions {
     public CreateRunOptions setAdditionalInstructions(String additionalInstructions) {
         this.additionalInstructions = additionalInstructions;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("assistant_id", this.assistantId);
+        jsonWriter.writeStringField("model", this.model);
+        jsonWriter.writeStringField("instructions", this.instructions);
+        jsonWriter.writeStringField("additional_instructions", this.additionalInstructions);
+        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateRunOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateRunOptions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CreateRunOptions.
+     */
+    @Generated
+    public static CreateRunOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String assistantId = null;
+            String model = null;
+            String instructions = null;
+            String additionalInstructions = null;
+            List<ToolDefinition> tools = null;
+            Map<String, String> metadata = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("assistant_id".equals(fieldName)) {
+                    assistantId = reader.getString();
+                } else if ("model".equals(fieldName)) {
+                    model = reader.getString();
+                } else if ("instructions".equals(fieldName)) {
+                    instructions = reader.getString();
+                } else if ("additional_instructions".equals(fieldName)) {
+                    additionalInstructions = reader.getString();
+                } else if ("tools".equals(fieldName)) {
+                    tools = reader.readArray(reader1 -> ToolDefinition.fromJson(reader1));
+                } else if ("metadata".equals(fieldName)) {
+                    metadata = reader.readMap(reader1 -> reader1.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            CreateRunOptions deserializedCreateRunOptions = new CreateRunOptions(assistantId);
+            deserializedCreateRunOptions.model = model;
+            deserializedCreateRunOptions.instructions = instructions;
+            deserializedCreateRunOptions.additionalInstructions = additionalInstructions;
+            deserializedCreateRunOptions.tools = tools;
+            deserializedCreateRunOptions.metadata = metadata;
+            return deserializedCreateRunOptions;
+        });
     }
 }

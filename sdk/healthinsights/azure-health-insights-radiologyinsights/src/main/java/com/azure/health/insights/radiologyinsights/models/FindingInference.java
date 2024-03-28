@@ -5,17 +5,16 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Findings in a radiology report typically describe abnormalities, lesions, or other notable observations related to
  * the anatomy or pathology of the imaged area.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("finding")
 @Immutable
 public final class FindingInference extends FhirR4Extendible1 {
 
@@ -23,8 +22,7 @@ public final class FindingInference extends FhirR4Extendible1 {
      * Finding data : contains extensions, fields and components linked with the finding.
      */
     @Generated
-    @JsonProperty(value = "finding")
-    private FhirR4Observation finding;
+    private final FhirR4Observation finding;
 
     /**
      * Creates an instance of FindingInference class.
@@ -32,8 +30,7 @@ public final class FindingInference extends FhirR4Extendible1 {
      * @param finding the finding value to set.
      */
     @Generated
-    @JsonCreator
-    private FindingInference(@JsonProperty(value = "finding") FhirR4Observation finding) {
+    private FindingInference(FhirR4Observation finding) {
         this.finding = finding;
     }
 
@@ -45,5 +42,70 @@ public final class FindingInference extends FhirR4Extendible1 {
     @Generated
     public FhirR4Observation getFinding() {
         return this.finding;
+    }
+
+    /*
+     * Inference type.
+     */
+    @Generated
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.FINDING;
+
+    /**
+     * Get the kind property: Inference type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RadiologyInsightsInferenceType getKind() {
+        return this.kind;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("extension", getExtension(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("finding", this.finding);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FindingInference from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FindingInference if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FindingInference.
+     */
+    @Generated
+    public static FindingInference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            List<FhirR4Extension> extension = null;
+            FhirR4Observation finding = null;
+            RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.FINDING;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("extension".equals(fieldName)) {
+                    extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                } else if ("finding".equals(fieldName)) {
+                    finding = FhirR4Observation.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    kind = RadiologyInsightsInferenceType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            FindingInference deserializedFindingInference = new FindingInference(finding);
+            deserializedFindingInference.setExtension(extension);
+            deserializedFindingInference.kind = kind;
+            return deserializedFindingInference;
+        });
     }
 }
