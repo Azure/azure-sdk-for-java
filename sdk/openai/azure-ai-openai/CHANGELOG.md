@@ -3,6 +3,7 @@
 ## 1.0.0-beta.8 (Unreleased)
 
 ### Features Added
+- Spring native support, to benefit from GraalVM native image generation when using the Spring framework.
 
 - Added a new overload `getChatCompletionsStreamWithResponse` that takes `RequestOptions` to provide the flexibility to
   modify the HTTP request.

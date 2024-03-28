@@ -1,0 +1,14 @@
+[
+    {
+        "name": "com.azure.ai.openai.OpenAIClient",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.ai.openai.OpenAIAsyncClient",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    }
+]
