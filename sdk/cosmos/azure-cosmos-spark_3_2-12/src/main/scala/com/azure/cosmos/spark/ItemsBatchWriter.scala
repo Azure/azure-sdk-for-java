@@ -40,6 +40,11 @@ private class ItemsBatchWriter
       sparkEnvironmentInfo)
   }
 
+  override def useCommitCoordinator(): Boolean = {
+    return false
+    // TODO
+  }
+
   override def commit(writerCommitMessages: Array[WriterCommitMessage]): Unit = {
     // TODO
   }
