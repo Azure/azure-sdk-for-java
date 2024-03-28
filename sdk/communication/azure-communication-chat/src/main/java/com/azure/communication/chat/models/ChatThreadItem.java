@@ -8,31 +8,29 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * Summary information of a chat thread.
- */
+/** Summary information of a chat thread. */
 @Fluent
 public final class ChatThreadItem {
-    /**
+    /*
      * Chat thread id.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
 
-    /**
+    /*
      * Chat thread topic.
      */
     @JsonProperty(value = "topic", required = true)
     private String topic;
 
-    /**
+    /*
      * The timestamp when the chat thread was deleted. The timestamp is in
      * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
     @JsonProperty(value = "deletedOn")
     private OffsetDateTime deletedOn;
 
-    /**
+    /*
      * The timestamp when the last message arrived at the server. The timestamp
      * is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */

@@ -22,6 +22,9 @@ public final class CommunicationIdentifierModelKind extends ExpandableStringEnum
     /** Static value microsoftTeamsUser for CommunicationIdentifierModelKind. */
     public static final CommunicationIdentifierModelKind MICROSOFT_TEAMS_USER = fromString("microsoftTeamsUser");
 
+    /** Static value microsoftTeamsApp for CommunicationIdentifierModelKind. */
+    public static final CommunicationIdentifierModelKind MICROSOFT_TEAMS_APP = fromString("microsoftTeamsApp");
+
     /**
      * Creates or finds a CommunicationIdentifierModelKind from its string representation.
      *
