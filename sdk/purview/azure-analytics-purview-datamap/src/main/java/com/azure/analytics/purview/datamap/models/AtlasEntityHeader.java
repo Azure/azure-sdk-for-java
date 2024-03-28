@@ -6,7 +6,11 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,82 +18,71 @@ import java.util.Map;
  * An instance of an entity - like hive_table, hive_database.
  */
 @Fluent
-public final class AtlasEntityHeader {
+public final class AtlasEntityHeader implements JsonSerializable<AtlasEntityHeader> {
     /*
      * The attributes of the struct.
      */
     @Generated
-    @JsonProperty(value = "attributes")
     private Map<String, Object> attributes;
 
     /*
      * The name of the type.
      */
     @Generated
-    @JsonProperty(value = "typeName")
     private String typeName;
 
     /*
      * ETag for concurrency control.
      */
     @Generated
-    @JsonProperty(value = "lastModifiedTS")
     private String lastModifiedTS;
 
     /*
      * An array of classification names.
      */
     @Generated
-    @JsonProperty(value = "classificationNames")
     private List<String> classificationNames;
 
     /*
      * An array of classifications.
      */
     @Generated
-    @JsonProperty(value = "classifications")
     private List<AtlasClassification> classifications;
 
     /*
      * The display text.
      */
     @Generated
-    @JsonProperty(value = "displayText")
     private String displayText;
 
     /*
      * The GUID of the record.
      */
     @Generated
-    @JsonProperty(value = "guid")
     private String guid;
 
     /*
      * Whether it is a shell entity
      */
     @Generated
-    @JsonProperty(value = "isIncomplete")
     private Boolean isIncomplete;
 
     /*
      * labels
      */
     @Generated
-    @JsonProperty(value = "labels")
     private List<String> labels;
 
     /*
      * An array of meanings.
      */
     @Generated
-    @JsonProperty(value = "meaningNames")
     private List<String> meaningNames;
 
     /*
      * An array of term assignment headers.
      */
     @Generated
-    @JsonProperty(value = "meanings")
     private List<AtlasTermAssignmentHeader> meanings;
 
     /*
@@ -97,7 +90,6 @@ public final class AtlasEntityHeader {
      * removed.
      */
     @Generated
-    @JsonProperty(value = "status")
     private EntityStatus status;
 
     /**
@@ -371,5 +363,86 @@ public final class AtlasEntityHeader {
     public AtlasEntityHeader setStatus(EntityStatus status) {
         this.status = status;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("attributes", this.attributes, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("typeName", this.typeName);
+        jsonWriter.writeStringField("lastModifiedTS", this.lastModifiedTS);
+        jsonWriter.writeArrayField("classificationNames", this.classificationNames,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("classifications", this.classifications,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("displayText", this.displayText);
+        jsonWriter.writeStringField("guid", this.guid);
+        jsonWriter.writeBooleanField("isIncomplete", this.isIncomplete);
+        jsonWriter.writeArrayField("labels", this.labels, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("meaningNames", this.meaningNames, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("meanings", this.meanings, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AtlasEntityHeader from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AtlasEntityHeader if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AtlasEntityHeader.
+     */
+    @Generated
+    public static AtlasEntityHeader fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AtlasEntityHeader deserializedAtlasEntityHeader = new AtlasEntityHeader();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("attributes".equals(fieldName)) {
+                    Map<String, Object> attributes = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedAtlasEntityHeader.attributes = attributes;
+                } else if ("typeName".equals(fieldName)) {
+                    deserializedAtlasEntityHeader.typeName = reader.getString();
+                } else if ("lastModifiedTS".equals(fieldName)) {
+                    deserializedAtlasEntityHeader.lastModifiedTS = reader.getString();
+                } else if ("classificationNames".equals(fieldName)) {
+                    List<String> classificationNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAtlasEntityHeader.classificationNames = classificationNames;
+                } else if ("classifications".equals(fieldName)) {
+                    List<AtlasClassification> classifications
+                        = reader.readArray(reader1 -> AtlasClassification.fromJson(reader1));
+                    deserializedAtlasEntityHeader.classifications = classifications;
+                } else if ("displayText".equals(fieldName)) {
+                    deserializedAtlasEntityHeader.displayText = reader.getString();
+                } else if ("guid".equals(fieldName)) {
+                    deserializedAtlasEntityHeader.guid = reader.getString();
+                } else if ("isIncomplete".equals(fieldName)) {
+                    deserializedAtlasEntityHeader.isIncomplete = reader.getNullable(JsonReader::getBoolean);
+                } else if ("labels".equals(fieldName)) {
+                    List<String> labels = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAtlasEntityHeader.labels = labels;
+                } else if ("meaningNames".equals(fieldName)) {
+                    List<String> meaningNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAtlasEntityHeader.meaningNames = meaningNames;
+                } else if ("meanings".equals(fieldName)) {
+                    List<AtlasTermAssignmentHeader> meanings
+                        = reader.readArray(reader1 -> AtlasTermAssignmentHeader.fromJson(reader1));
+                    deserializedAtlasEntityHeader.meanings = meanings;
+                } else if ("status".equals(fieldName)) {
+                    deserializedAtlasEntityHeader.status = EntityStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAtlasEntityHeader;
+        });
     }
 }

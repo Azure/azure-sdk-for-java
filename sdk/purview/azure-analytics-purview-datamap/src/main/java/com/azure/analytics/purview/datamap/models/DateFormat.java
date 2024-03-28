@@ -6,75 +6,70 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The date format.
  */
 @Fluent
-public final class DateFormat {
+public final class DateFormat implements JsonSerializable<DateFormat> {
     /*
      * An array of available locales.
      */
     @Generated
-    @JsonProperty(value = "availableLocales")
     private List<String> availableLocales;
 
     /*
      * Calendar
      */
     @Generated
-    @JsonProperty(value = "calendar")
     private Double calendar;
 
     /*
      * The date format.
      */
     @Generated
-    @JsonProperty(value = "dateInstance")
     private DateFormat dateInstance;
 
     /*
      * The date format.
      */
     @Generated
-    @JsonProperty(value = "dateTimeInstance")
     private DateFormat dateTimeInstance;
 
     /*
      * The date format.
      */
     @Generated
-    @JsonProperty(value = "instance")
     private DateFormat instance;
 
     /*
      * Determines the leniency of the date format.
      */
     @Generated
-    @JsonProperty(value = "lenient")
     private Boolean lenient;
 
     /*
      * The number format.
      */
     @Generated
-    @JsonProperty(value = "numberFormat")
     private NumberFormat numberFormat;
 
     /*
      * The date format.
      */
     @Generated
-    @JsonProperty(value = "timeInstance")
     private DateFormat timeInstance;
 
     /*
      * The timezone information.
      */
     @Generated
-    @JsonProperty(value = "timeZone")
     private TimeZone timeZone;
 
     /**
@@ -280,5 +275,69 @@ public final class DateFormat {
     public DateFormat setTimeZone(TimeZone timeZone) {
         this.timeZone = timeZone;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("availableLocales", this.availableLocales,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("calendar", this.calendar);
+        jsonWriter.writeJsonField("dateInstance", this.dateInstance);
+        jsonWriter.writeJsonField("dateTimeInstance", this.dateTimeInstance);
+        jsonWriter.writeJsonField("instance", this.instance);
+        jsonWriter.writeBooleanField("lenient", this.lenient);
+        jsonWriter.writeJsonField("numberFormat", this.numberFormat);
+        jsonWriter.writeJsonField("timeInstance", this.timeInstance);
+        jsonWriter.writeJsonField("timeZone", this.timeZone);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DateFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DateFormat if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the DateFormat.
+     */
+    @Generated
+    public static DateFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DateFormat deserializedDateFormat = new DateFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("availableLocales".equals(fieldName)) {
+                    List<String> availableLocales = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDateFormat.availableLocales = availableLocales;
+                } else if ("calendar".equals(fieldName)) {
+                    deserializedDateFormat.calendar = reader.getNullable(JsonReader::getDouble);
+                } else if ("dateInstance".equals(fieldName)) {
+                    deserializedDateFormat.dateInstance = DateFormat.fromJson(reader);
+                } else if ("dateTimeInstance".equals(fieldName)) {
+                    deserializedDateFormat.dateTimeInstance = DateFormat.fromJson(reader);
+                } else if ("instance".equals(fieldName)) {
+                    deserializedDateFormat.instance = DateFormat.fromJson(reader);
+                } else if ("lenient".equals(fieldName)) {
+                    deserializedDateFormat.lenient = reader.getNullable(JsonReader::getBoolean);
+                } else if ("numberFormat".equals(fieldName)) {
+                    deserializedDateFormat.numberFormat = NumberFormat.fromJson(reader);
+                } else if ("timeInstance".equals(fieldName)) {
+                    deserializedDateFormat.timeInstance = DateFormat.fromJson(reader);
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedDateFormat.timeZone = TimeZone.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDateFormat;
+        });
     }
 }

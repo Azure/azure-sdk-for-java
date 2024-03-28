@@ -7,13 +7,18 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Generic procedure information.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = GenericProcedureRecommendation.class,
+    visible = true)
 @JsonTypeName("genericProcedureRecommendation")
 @Immutable
 public final class GenericProcedureRecommendation extends ProcedureRecommendation {
@@ -23,7 +28,7 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
      */
     @Generated
     @JsonProperty(value = "code")
-    private FhirR4CodeableConcept code;
+    private final FhirR4CodeableConcept code;
 
     /*
      * Procedure description : MANAGEMENT PROCEDURE (PROCEDURE) or CONSULTATION (PROCEDURE) based on SNOMED CT.
@@ -62,5 +67,24 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
     @Generated
     public String getDescription() {
         return this.description;
+    }
+
+    /*
+     * Procedure type : generic.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private String kind = "genericProcedureRecommendation";
+
+    /**
+     * Get the kind property: Procedure type : generic.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public String getKind() {
+        return this.kind;
     }
 }

@@ -28,9 +28,7 @@ public final class FollowupRecommendationOptions {
     private Boolean includeRecommendationsInReferences;
 
     /*
-     * If this is true, provide one or more sentences as evidence for the recommendation, next to the token evidence.
-     * The start and end positions of these sentences will be put in an extension with url 'modality_sentences'.
-     * Default is false.
+     * If this is true, provide one or more sentences as evidence for the recommendation, next to the token evidence. The start and end positions of these sentences will be put in an extension with url 'modality_sentences'. Default is false.
      */
     @Generated
     @JsonProperty(value = "provideFocusedSentenceEvidence")
@@ -44,8 +42,8 @@ public final class FollowupRecommendationOptions {
     }
 
     /**
-     * Get the includeRecommendationsWithNoSpecifiedModality property: Include/Exclude follow-up recommendations
-     * without a specific radiology procedure. Default is false.
+     * Get the includeRecommendationsWithNoSpecifiedModality property: Include/Exclude follow-up recommendations without
+     * a specific radiology procedure. Default is false.
      *
      * @return the includeRecommendationsWithNoSpecifiedModality value.
      */
@@ -55,8 +53,8 @@ public final class FollowupRecommendationOptions {
     }
 
     /**
-     * Set the includeRecommendationsWithNoSpecifiedModality property: Include/Exclude follow-up recommendations
-     * without a specific radiology procedure. Default is false.
+     * Set the includeRecommendationsWithNoSpecifiedModality property: Include/Exclude follow-up recommendations without
+     * a specific radiology procedure. Default is false.
      *
      * @param includeRecommendationsWithNoSpecifiedModality the includeRecommendationsWithNoSpecifiedModality value to
      * set.
@@ -70,8 +68,8 @@ public final class FollowupRecommendationOptions {
     }
 
     /**
-     * Get the includeRecommendationsInReferences property: Include/Exclude follow-up recommendations in references to
-     * a guideline or article. Default is false.
+     * Get the includeRecommendationsInReferences property: Include/Exclude follow-up recommendations in references to a
+     * guideline or article. Default is false.
      *
      * @return the includeRecommendationsInReferences value.
      */
@@ -81,8 +79,8 @@ public final class FollowupRecommendationOptions {
     }
 
     /**
-     * Set the includeRecommendationsInReferences property: Include/Exclude follow-up recommendations in references to
-     * a guideline or article. Default is false.
+     * Set the includeRecommendationsInReferences property: Include/Exclude follow-up recommendations in references to a
+     * guideline or article. Default is false.
      *
      * @param includeRecommendationsInReferences the includeRecommendationsInReferences value to set.
      * @return the FollowupRecommendationOptions object itself.

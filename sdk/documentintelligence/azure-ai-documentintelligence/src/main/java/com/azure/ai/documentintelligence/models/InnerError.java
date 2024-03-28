@@ -6,32 +6,33 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An object containing more specific information about the error.
  */
 @Immutable
-public final class InnerError {
+public final class InnerError implements JsonSerializable<InnerError> {
     /*
      * One of a server-defined set of error codes.
      */
     @Generated
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * A human-readable representation of the error.
      */
     @Generated
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * Inner error.
      */
     @Generated
-    @JsonProperty(value = "innererror")
     private InnerError innererror;
 
     /**
@@ -69,5 +70,49 @@ public final class InnerError {
     @Generated
     public InnerError getInnererror() {
         return this.innererror;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeJsonField("innererror", this.innererror);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InnerError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InnerError if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the InnerError.
+     */
+    @Generated
+    public static InnerError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InnerError deserializedInnerError = new InnerError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedInnerError.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedInnerError.message = reader.getString();
+                } else if ("innererror".equals(fieldName)) {
+                    deserializedInnerError.innererror = InnerError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInnerError;
+        });
     }
 }

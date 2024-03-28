@@ -7,13 +7,18 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Trigger for an exception action on exceeding queue length.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = QueueLengthExceptionTriggerInternal.class,
+    visible = true)
 @JsonTypeName("queueLength")
 @Immutable
 public final class QueueLengthExceptionTriggerInternal extends ExceptionTriggerInternal {
@@ -23,7 +28,7 @@ public final class QueueLengthExceptionTriggerInternal extends ExceptionTriggerI
      */
     @Generated
     @JsonProperty(value = "threshold")
-    private int threshold;
+    private final int threshold;
 
     /**
      * Creates an instance of QueueLengthExceptionTriggerInternal class.
@@ -44,5 +49,24 @@ public final class QueueLengthExceptionTriggerInternal extends ExceptionTriggerI
     @Generated
     public int getThreshold() {
         return this.threshold;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of ExceptionTrigger.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private ExceptionTriggerKind kind = ExceptionTriggerKind.QUEUE_LENGTH;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of ExceptionTrigger.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public ExceptionTriggerKind getKind() {
+        return this.kind;
     }
 }

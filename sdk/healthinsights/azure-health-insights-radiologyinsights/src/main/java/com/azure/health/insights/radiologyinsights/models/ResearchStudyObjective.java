@@ -19,7 +19,7 @@ public final class ResearchStudyObjective {
      */
     @Generated
     @JsonProperty(value = "name")
-    private String name;
+    private final String name;
 
     /*
      * primary | secondary | exploratory

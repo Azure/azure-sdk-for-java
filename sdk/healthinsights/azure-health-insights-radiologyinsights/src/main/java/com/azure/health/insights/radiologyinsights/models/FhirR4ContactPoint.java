@@ -8,8 +8,8 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Details for all kinds of technology mediated contact points for a person or organization, including telephone,
- * email, etc.
+ * Details for all kinds of technology mediated contact points for a person or organization, including telephone, email,
+ * etc.
  * See https://www.hl7.org/fhir/R4/datatypes.html#ContactPoint.
  */
 @Fluent

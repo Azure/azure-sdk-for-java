@@ -35,7 +35,7 @@ public final class FhirR4Annotation extends FhirR4Element {
      */
     @Generated
     @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /**
      * Creates an instance of FhirR4Annotation class.

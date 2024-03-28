@@ -6,46 +6,45 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The header of the related category.
  */
 @Fluent
-public final class AtlasRelatedCategoryHeader {
+public final class AtlasRelatedCategoryHeader implements JsonSerializable<AtlasRelatedCategoryHeader> {
     /*
      * The GUID of the category.
      */
     @Generated
-    @JsonProperty(value = "categoryGuid")
     private String categoryGuid;
 
     /*
      * The description of the category header.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The display text.
      */
     @Generated
-    @JsonProperty(value = "displayText")
     private String displayText;
 
     /*
      * The GUID of the parent category.
      */
     @Generated
-    @JsonProperty(value = "parentCategoryGuid")
     private String parentCategoryGuid;
 
     /*
      * The GUID of the relationship.
      */
     @Generated
-    @JsonProperty(value = "relationGuid")
     private String relationGuid;
 
     /**
@@ -163,5 +162,55 @@ public final class AtlasRelatedCategoryHeader {
     public AtlasRelatedCategoryHeader setRelationGuid(String relationGuid) {
         this.relationGuid = relationGuid;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("categoryGuid", this.categoryGuid);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("displayText", this.displayText);
+        jsonWriter.writeStringField("parentCategoryGuid", this.parentCategoryGuid);
+        jsonWriter.writeStringField("relationGuid", this.relationGuid);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AtlasRelatedCategoryHeader from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AtlasRelatedCategoryHeader if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AtlasRelatedCategoryHeader.
+     */
+    @Generated
+    public static AtlasRelatedCategoryHeader fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AtlasRelatedCategoryHeader deserializedAtlasRelatedCategoryHeader = new AtlasRelatedCategoryHeader();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("categoryGuid".equals(fieldName)) {
+                    deserializedAtlasRelatedCategoryHeader.categoryGuid = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedAtlasRelatedCategoryHeader.description = reader.getString();
+                } else if ("displayText".equals(fieldName)) {
+                    deserializedAtlasRelatedCategoryHeader.displayText = reader.getString();
+                } else if ("parentCategoryGuid".equals(fieldName)) {
+                    deserializedAtlasRelatedCategoryHeader.parentCategoryGuid = reader.getString();
+                } else if ("relationGuid".equals(fieldName)) {
+                    deserializedAtlasRelatedCategoryHeader.relationGuid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAtlasRelatedCategoryHeader;
+        });
     }
 }

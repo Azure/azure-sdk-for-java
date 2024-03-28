@@ -6,7 +6,6 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class SplitMode extends ExpandableStringEnum<SplitMode> {
      * @return the corresponding SplitMode.
      */
     @Generated
-    @JsonCreator
     public static SplitMode fromString(String name) {
         return fromString(name, SplitMode.class);
     }

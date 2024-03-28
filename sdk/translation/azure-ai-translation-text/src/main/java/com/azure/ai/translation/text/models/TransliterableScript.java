@@ -20,7 +20,7 @@ public final class TransliterableScript extends CommonScriptModel {
      */
     @Generated
     @JsonProperty(value = "toScripts")
-    private List<CommonScriptModel> toScripts;
+    private final List<CommonScriptModel> toScripts;
 
     /**
      * Creates an instance of TransliterableScript class.

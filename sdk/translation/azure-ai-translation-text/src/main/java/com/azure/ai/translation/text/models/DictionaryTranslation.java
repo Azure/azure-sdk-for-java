@@ -21,7 +21,7 @@ public final class DictionaryTranslation {
      */
     @Generated
     @JsonProperty(value = "normalizedTarget")
-    private String normalizedTarget;
+    private final String normalizedTarget;
 
     /*
      * A string giving the term in the target language and in a form best suited
@@ -31,34 +31,34 @@ public final class DictionaryTranslation {
      */
     @Generated
     @JsonProperty(value = "displayTarget")
-    private String displayTarget;
+    private final String displayTarget;
 
     /*
      * A string associating this term with a part-of-speech tag.
      */
     @Generated
     @JsonProperty(value = "posTag")
-    private String posTag;
+    private final String posTag;
 
     /*
-     * A value between 0.0 and 1.0 which represents the "confidence"
-     * (or perhaps more accurately, "probability in the training data") of that translation pair.
+     * A value between 0.0 and 1.0 which represents the "confidence" 
+     * (or perhaps more accurately, "probability in the training data") of that translation pair. 
      * The sum of confidence scores for one source word may or may not sum to 1.0.
      */
     @Generated
     @JsonProperty(value = "confidence")
-    private double confidence;
+    private final double confidence;
 
     /*
      * A string giving the word to display as a prefix of the translation. Currently,
      * this is the gendered determiner of nouns, in languages that have gendered determiners.
-     * For example, the prefix of the Spanish word "mosca" is "la", since "mosca" is a feminine noun in Spanish.
-     * This is only dependent on the translation, and not on the source.
+     * For example, the prefix of the Spanish word "mosca" is "la", since "mosca" is a feminine noun in Spanish. 
+     * This is only dependent on the translation, and not on the source. 
      * If there is no prefix, it will be the empty string.
      */
     @Generated
     @JsonProperty(value = "prefixWord")
-    private String prefixWord;
+    private final String prefixWord;
 
     /*
      * A list of "back translations" of the target. For example, source words that the target can translate to.
@@ -68,7 +68,7 @@ public final class DictionaryTranslation {
      */
     @Generated
     @JsonProperty(value = "backTranslations")
-    private List<BackTranslation> backTranslations;
+    private final List<BackTranslation> backTranslations;
 
     /**
      * Creates an instance of DictionaryTranslation class.

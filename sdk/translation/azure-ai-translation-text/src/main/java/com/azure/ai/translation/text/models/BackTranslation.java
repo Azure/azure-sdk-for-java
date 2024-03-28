@@ -20,7 +20,7 @@ public final class BackTranslation {
      */
     @Generated
     @JsonProperty(value = "normalizedText")
-    private String normalizedText;
+    private final String normalizedText;
 
     /*
      * A string giving the source term that is a back-translation of the target in a form best
@@ -28,7 +28,7 @@ public final class BackTranslation {
      */
     @Generated
     @JsonProperty(value = "displayText")
-    private String displayText;
+    private final String displayText;
 
     /*
      * An integer representing the number of examples that are available for this translation pair.
@@ -41,16 +41,15 @@ public final class BackTranslation {
      */
     @Generated
     @JsonProperty(value = "numExamples")
-    private int numExamples;
+    private final int numExamples;
 
     /*
      * An integer representing the frequency of this translation pair in the data. The main purpose of this
-     * field is to provide a user interface with a means to sort back-translations so the most frequent terms are
-     * first.
+     * field is to provide a user interface with a means to sort back-translations so the most frequent terms are first.
      */
     @Generated
     @JsonProperty(value = "frequencyCount")
-    private int frequencyCount;
+    private final int frequencyCount;
 
     /**
      * Creates an instance of BackTranslation class.
@@ -115,8 +114,7 @@ public final class BackTranslation {
     /**
      * Get the frequencyCount property: An integer representing the frequency of this translation pair in the data. The
      * main purpose of this
-     * field is to provide a user interface with a means to sort back-translations so the most frequent terms are
-     * first.
+     * field is to provide a user interface with a means to sort back-translations so the most frequent terms are first.
      *
      * @return the frequencyCount value.
      */

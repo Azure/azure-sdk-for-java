@@ -19,7 +19,7 @@ public final class DetectedLanguage {
      */
     @Generated
     @JsonProperty(value = "language")
-    private String language;
+    private final String language;
 
     /*
      * A float value indicating the confidence in the result.
@@ -27,7 +27,7 @@ public final class DetectedLanguage {
      */
     @Generated
     @JsonProperty(value = "score")
-    private double score;
+    private final double score;
 
     /**
      * Creates an instance of DetectedLanguage class.

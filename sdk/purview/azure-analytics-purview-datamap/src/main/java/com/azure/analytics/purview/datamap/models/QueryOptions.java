@@ -6,19 +6,22 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The search query of advanced search request.
  */
 @Fluent
-public final class QueryOptions {
+public final class QueryOptions implements JsonSerializable<QueryOptions> {
     /*
      * The keywords applied to all searchable fields.
      */
     @Generated
-    @JsonProperty(value = "keywords")
     private String keywords;
 
     /*
@@ -26,7 +29,6 @@ public final class QueryOptions {
      * value is 1000.
      */
     @Generated
-    @JsonProperty(value = "limit")
     private Integer limit;
 
     /*
@@ -34,35 +36,30 @@ public final class QueryOptions {
      * batch, and will return new token in each response unless there's no more data.
      */
     @Generated
-    @JsonProperty(value = "continuationToken")
     private String continuationToken;
 
     /*
      * The sort order of search results, can specify multiple fields.
      */
     @Generated
-    @JsonProperty(value = "orderby")
     private List<Object> orderby;
 
     /*
      * The filter for the search. See examples for the usage of supported filters.
      */
     @Generated
-    @JsonProperty(value = "filter")
     private Object filter;
 
     /*
      * The facets for search. See examples for the usage of supported facets.
      */
     @Generated
-    @JsonProperty(value = "facets")
     private List<SearchFacetItem> facets;
 
     /*
      * The taxonomy setting for search.
      */
     @Generated
-    @JsonProperty(value = "taxonomySetting")
     private SearchTaxonomySetting taxonomySetting;
 
     /**
@@ -228,5 +225,63 @@ public final class QueryOptions {
     public QueryOptions setTaxonomySetting(SearchTaxonomySetting taxonomySetting) {
         this.taxonomySetting = taxonomySetting;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keywords", this.keywords);
+        jsonWriter.writeNumberField("limit", this.limit);
+        jsonWriter.writeStringField("continuationToken", this.continuationToken);
+        jsonWriter.writeArrayField("orderby", this.orderby, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeUntypedField("filter", this.filter);
+        jsonWriter.writeArrayField("facets", this.facets, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("taxonomySetting", this.taxonomySetting);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryOptions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QueryOptions.
+     */
+    @Generated
+    public static QueryOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueryOptions deserializedQueryOptions = new QueryOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keywords".equals(fieldName)) {
+                    deserializedQueryOptions.keywords = reader.getString();
+                } else if ("limit".equals(fieldName)) {
+                    deserializedQueryOptions.limit = reader.getNullable(JsonReader::getInt);
+                } else if ("continuationToken".equals(fieldName)) {
+                    deserializedQueryOptions.continuationToken = reader.getString();
+                } else if ("orderby".equals(fieldName)) {
+                    List<Object> orderby = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedQueryOptions.orderby = orderby;
+                } else if ("filter".equals(fieldName)) {
+                    deserializedQueryOptions.filter = reader.readUntyped();
+                } else if ("facets".equals(fieldName)) {
+                    List<SearchFacetItem> facets = reader.readArray(reader1 -> SearchFacetItem.fromJson(reader1));
+                    deserializedQueryOptions.facets = facets;
+                } else if ("taxonomySetting".equals(fieldName)) {
+                    deserializedQueryOptions.taxonomySetting = SearchTaxonomySetting.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueryOptions;
+        });
     }
 }

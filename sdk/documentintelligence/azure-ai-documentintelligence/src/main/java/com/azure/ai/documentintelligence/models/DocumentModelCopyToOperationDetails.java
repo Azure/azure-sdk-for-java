@@ -6,24 +6,29 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 /**
  * Get Operation response object.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("documentModelCopyTo")
 @Immutable
 public final class DocumentModelCopyToOperationDetails extends OperationDetails {
+    /*
+     * Type of operation.
+     */
+    @Generated
+    private OperationKind kind = OperationKind.DOCUMENT_MODEL_COPY_TO;
+
     /*
      * Operation result upon success.
      */
     @Generated
-    @JsonProperty(value = "result")
     private DocumentModelDetails result;
 
     /**
@@ -35,12 +40,20 @@ public final class DocumentModelCopyToOperationDetails extends OperationDetails 
      * @param resourceLocation the resourceLocation value to set.
      */
     @Generated
-    @JsonCreator
-    private DocumentModelCopyToOperationDetails(@JsonProperty(value = "status") OperationStatus status,
-        @JsonProperty(value = "createdDateTime") OffsetDateTime createdDateTime,
-        @JsonProperty(value = "lastUpdatedDateTime") OffsetDateTime lastUpdatedDateTime,
-        @JsonProperty(value = "resourceLocation") String resourceLocation) {
+    private DocumentModelCopyToOperationDetails(OperationStatus status, OffsetDateTime createdDateTime,
+        OffsetDateTime lastUpdatedDateTime, String resourceLocation) {
         super(status, createdDateTime, lastUpdatedDateTime, resourceLocation);
+    }
+
+    /**
+     * Get the kind property: Type of operation.
+     * 
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public OperationKind getKind() {
+        return this.kind;
     }
 
     /**
@@ -51,5 +64,99 @@ public final class DocumentModelCopyToOperationDetails extends OperationDetails 
     @Generated
     public DocumentModelDetails getResult() {
         return this.result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
+        jsonWriter.writeStringField("createdDateTime",
+            getCreatedDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedDateTime()));
+        jsonWriter.writeStringField("lastUpdatedDateTime",
+            getLastUpdatedDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastUpdatedDateTime()));
+        jsonWriter.writeStringField("resourceLocation", getResourceLocation());
+        jsonWriter.writeNumberField("percentCompleted", getPercentCompleted());
+        jsonWriter.writeStringField("apiVersion", getApiVersion());
+        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("error", getError());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("result", this.result);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentModelCopyToOperationDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentModelCopyToOperationDetails if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DocumentModelCopyToOperationDetails.
+     */
+    @Generated
+    public static DocumentModelCopyToOperationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String operationId = null;
+            OperationStatus status = null;
+            OffsetDateTime createdDateTime = null;
+            OffsetDateTime lastUpdatedDateTime = null;
+            String resourceLocation = null;
+            Integer percentCompleted = null;
+            String apiVersion = null;
+            Map<String, String> tags = null;
+            Error error = null;
+            OperationKind kind = OperationKind.DOCUMENT_MODEL_COPY_TO;
+            DocumentModelDetails result = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operationId".equals(fieldName)) {
+                    operationId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    status = OperationStatus.fromString(reader.getString());
+                } else if ("createdDateTime".equals(fieldName)) {
+                    createdDateTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("lastUpdatedDateTime".equals(fieldName)) {
+                    lastUpdatedDateTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("resourceLocation".equals(fieldName)) {
+                    resourceLocation = reader.getString();
+                } else if ("percentCompleted".equals(fieldName)) {
+                    percentCompleted = reader.getNullable(JsonReader::getInt);
+                } else if ("apiVersion".equals(fieldName)) {
+                    apiVersion = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    tags = reader.readMap(reader1 -> reader1.getString());
+                } else if ("error".equals(fieldName)) {
+                    error = Error.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    kind = OperationKind.fromString(reader.getString());
+                } else if ("result".equals(fieldName)) {
+                    result = DocumentModelDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            DocumentModelCopyToOperationDetails deserializedDocumentModelCopyToOperationDetails
+                = new DocumentModelCopyToOperationDetails(status, createdDateTime, lastUpdatedDateTime,
+                    resourceLocation);
+            deserializedDocumentModelCopyToOperationDetails.setOperationId(operationId);
+            deserializedDocumentModelCopyToOperationDetails.setPercentCompleted(percentCompleted);
+            deserializedDocumentModelCopyToOperationDetails.setApiVersion(apiVersion);
+            deserializedDocumentModelCopyToOperationDetails.setTags(tags);
+            deserializedDocumentModelCopyToOperationDetails.setError(error);
+            deserializedDocumentModelCopyToOperationDetails.kind = kind;
+            deserializedDocumentModelCopyToOperationDetails.result = result;
+
+            return deserializedDocumentModelCopyToOperationDetails;
+        });
     }
 }

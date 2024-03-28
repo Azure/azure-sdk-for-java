@@ -6,26 +6,28 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The relationship with extended information.
  */
 @Immutable
-public final class AtlasRelationshipWithExtInfo {
+public final class AtlasRelationshipWithExtInfo implements JsonSerializable<AtlasRelationshipWithExtInfo> {
     /*
      * The referred entity header.
      */
     @Generated
-    @JsonProperty(value = "referredEntities")
     private Map<String, AtlasEntityHeader> referredEntities;
 
     /*
      * Atlas relationship instance.
      */
     @Generated
-    @JsonProperty(value = "relationship")
     private AtlasRelationship relationship;
 
     /**
@@ -53,5 +55,49 @@ public final class AtlasRelationshipWithExtInfo {
     @Generated
     public AtlasRelationship getRelationship() {
         return this.relationship;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("referredEntities", this.referredEntities,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("relationship", this.relationship);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AtlasRelationshipWithExtInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AtlasRelationshipWithExtInfo if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AtlasRelationshipWithExtInfo.
+     */
+    @Generated
+    public static AtlasRelationshipWithExtInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AtlasRelationshipWithExtInfo deserializedAtlasRelationshipWithExtInfo = new AtlasRelationshipWithExtInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("referredEntities".equals(fieldName)) {
+                    Map<String, AtlasEntityHeader> referredEntities
+                        = reader.readMap(reader1 -> AtlasEntityHeader.fromJson(reader1));
+                    deserializedAtlasRelationshipWithExtInfo.referredEntities = referredEntities;
+                } else if ("relationship".equals(fieldName)) {
+                    deserializedAtlasRelationshipWithExtInfo.relationship = AtlasRelationship.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAtlasRelationshipWithExtInfo;
+        });
     }
 }

@@ -41,7 +41,7 @@ public final class FhirR4Extendible2 {
      */
     @Generated
     @JsonProperty(value = "recommendationFindingStatus")
-    private RecommendationFindingStatusType recommendationFindingStatus;
+    private final RecommendationFindingStatusType recommendationFindingStatus;
 
     /**
      * Creates an instance of FhirR4Extendible2 class.

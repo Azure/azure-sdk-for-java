@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Defines values for TextType.
+ * Translation text type.
  */
 public final class TextType extends ExpandableStringEnum<TextType> {
 

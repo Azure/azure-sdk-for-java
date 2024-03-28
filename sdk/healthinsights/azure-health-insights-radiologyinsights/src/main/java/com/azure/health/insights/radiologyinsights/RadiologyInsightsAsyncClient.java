@@ -13,8 +13,8 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.health.insights.radiologyinsights.implementation.RadiologyInsightsClientImpl;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsData;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
@@ -42,34 +42,17 @@ public final class RadiologyInsightsAsyncClient {
      * Create Radiology Insights job
      *
      * Creates a Radiology Insights job with the given request body.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>repeatability-request-id</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Repeatability request ID header</td>
-     * </tr>
-     * <tr>
-     * <td>repeatability-first-sent</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Repeatability first sent header as HTTP-date</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
+     * <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as
+     * HTTP-date</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     patients (Required): [
@@ -267,9 +250,9 @@ public final class RadiologyInsightsAsyncClient {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)

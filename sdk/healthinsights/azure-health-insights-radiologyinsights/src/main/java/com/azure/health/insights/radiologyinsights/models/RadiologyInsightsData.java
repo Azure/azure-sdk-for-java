@@ -20,7 +20,7 @@ public final class RadiologyInsightsData {
      */
     @Generated
     @JsonProperty(value = "patients")
-    private List<PatientRecord> patients;
+    private final List<PatientRecord> patients;
 
     /*
      * Configuration affecting the Radiology Insights model's inference.
