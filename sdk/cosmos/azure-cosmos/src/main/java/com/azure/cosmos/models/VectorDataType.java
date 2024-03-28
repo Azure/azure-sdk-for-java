@@ -10,22 +10,22 @@ public enum VectorDataType {
     /**
      * Represents a int8 data type.
      */
-    Int8("int8"),
+    INT8("int8"),
 
     /**
      * Represents a uint8 data type.
      */
-    Uint8("uint8"),
+    UINT8("uint8"),
 
     /**
      * Represents a float16 data type.
      */
-    Float16("float16"),
+    FLOAT16("float16"),
 
     /**
      * Represents a float32 data type.
      */
-    Float32("float32");
+    FLOAT32("float32");
 
     private final String overWireValue;
 
