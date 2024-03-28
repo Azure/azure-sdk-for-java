@@ -415,7 +415,6 @@ public class JdkHttpClientTests {
         HttpClient client = new JdkHttpClientProvider().createInstance(
             new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(1)).setReadTimeout(Duration.ofSeconds(1)));
 
-
         RuntimeException ex = assertThrows(RuntimeException.class, () -> assertTimeout(Duration.ofSeconds(5), () -> {
             try (HttpResponse response = doRequestSync(client, "/slowResponse")) {
                 assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());

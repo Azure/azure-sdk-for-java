@@ -120,7 +120,12 @@ public final class InputStreamTimeoutResponseSubscriber extends InputStream
     private void validateState() throws IOException {
         // Stream is closed, it's invalid to attempt to read after closure.
         if (closed) {
-            throw new IOException("closed", failed);
+            // If the failure was a timeout, throw a HttpTimeoutException instead.
+            if (failed instanceof HttpTimeoutException) {
+                throw (HttpTimeoutException) failed;
+            } else {
+                throw new IOException("closed", failed);
+            }
         }
 
         // Stream has failed, propagate the exception.
@@ -303,6 +308,7 @@ public final class InputStreamTimeoutResponseSubscriber extends InputStream
                 // it.
                 failed = new HttpTimeoutException("Timeout reading response body.");
                 subscription.cancel();
+                close();
             }
         };
 
