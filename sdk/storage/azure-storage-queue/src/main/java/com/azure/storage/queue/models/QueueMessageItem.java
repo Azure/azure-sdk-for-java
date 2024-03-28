@@ -6,56 +6,62 @@ package com.azure.storage.queue.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 /** The object returned in the QueueMessageList array when calling Get Messages on a Queue. */
-@JacksonXmlRootElement(localName = "QueueMessage")
 @Fluent
-public final class QueueMessageItem {
+public final class QueueMessageItem implements XmlSerializable<QueueMessageItem> {
     /*
      * The Id of the Message.
      */
-    @JsonProperty(value = "MessageId", required = true)
     private String messageId;
 
     /*
      * The time the Message was inserted into the Queue.
      */
-    @JsonProperty(value = "InsertionTime", required = true)
     private DateTimeRfc1123 insertionTime;
 
     /*
      * The time that the Message will expire and be automatically deleted.
      */
-    @JsonProperty(value = "ExpirationTime", required = true)
     private DateTimeRfc1123 expirationTime;
 
     /*
      * This value is required to delete the Message. If deletion fails using
      * this popreceipt then the message has been dequeued by another client.
      */
-    @JsonProperty(value = "PopReceipt", required = true)
     private String popReceipt;
 
     /*
      * The time that the message will again become visible in the Queue.
      */
-    @JsonProperty(value = "TimeNextVisible", required = true)
     private DateTimeRfc1123 timeNextVisible;
 
     /*
      * The number of times the message has been dequeued.
      */
-    @JsonProperty(value = "DequeueCount", required = true)
     private long dequeueCount;
 
     /*
      * The content of the Message.
      */
     private BinaryData body;
+
+    /**
+     * Creates an instance of QueueMessageItem.
+     */
+    public QueueMessageItem() {
+    }
 
     /**
      * Get the messageId property: The Id of the Message.
@@ -242,5 +248,83 @@ public final class QueueMessageItem {
     public QueueMessageItem setBody(BinaryData body) {
         this.body = body;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueMessage" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeStringElement("MessageId", this.messageId);
+        xmlWriter.writeStringElement("InsertionTime", Objects.toString(this.insertionTime, null));
+        xmlWriter.writeStringElement("ExpirationTime", Objects.toString(this.expirationTime, null));
+        xmlWriter.writeStringElement("PopReceipt", this.popReceipt);
+        xmlWriter.writeStringElement("TimeNextVisible", Objects.toString(this.timeNextVisible, null));
+        xmlWriter.writeLongElement("DequeueCount", this.dequeueCount);
+        // TODO (alzimmer): What does Jackson do with 'BinaryData body' when this model is serialized?
+        // xmlWriter.writeStringElement("MessageText", this.messageText);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of QueueMessageItem from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of QueueMessageItem if the XmlReader was pointing to an instance of it, or null if it
+     * was pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the QueueMessageItem.
+     */
+    public static QueueMessageItem fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of QueueMessageItem from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of QueueMessageItem if the XmlReader was pointing to an instance of it, or null if it
+     * was pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the QueueMessageItem.
+     */
+    public static QueueMessageItem fromXml(XmlReader xmlReader, String rootElementName)
+        throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueMessage" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            QueueMessageItem deserializedQueueMessageItem = new QueueMessageItem();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("MessageId".equals(elementName.getLocalPart())) {
+                    deserializedQueueMessageItem.messageId = reader.getStringElement();
+                } else if ("InsertionTime".equals(elementName.getLocalPart())) {
+                    deserializedQueueMessageItem.insertionTime
+                        = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("ExpirationTime".equals(elementName.getLocalPart())) {
+                    deserializedQueueMessageItem.expirationTime
+                        = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("PopReceipt".equals(elementName.getLocalPart())) {
+                    deserializedQueueMessageItem.popReceipt = reader.getStringElement();
+                } else if ("TimeNextVisible".equals(elementName.getLocalPart())) {
+                    deserializedQueueMessageItem.timeNextVisible
+                        = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("DequeueCount".equals(elementName.getLocalPart())) {
+                    deserializedQueueMessageItem.dequeueCount = reader.getLongElement();
+                } else if ("MessageText".equals(elementName.getLocalPart())) {
+                    deserializedQueueMessageItem.setMessageText(reader.getStringElement());
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedQueueMessageItem;
+        });
     }
 }

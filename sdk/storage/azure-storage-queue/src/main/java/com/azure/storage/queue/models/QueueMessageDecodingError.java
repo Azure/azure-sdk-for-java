@@ -28,11 +28,8 @@ public final class QueueMessageDecodingError {
      * @param peekedMessageItem the {@link PeekedMessageItem} that has been peeked and could not be decoded.
      * @param cause the {@link Exception} thrown at decoding attempt if present.
      */
-    public QueueMessageDecodingError(
-        QueueAsyncClient queueAsyncClient,
-        QueueClient queueClient,
-        QueueMessageItem queueMessageItem,
-        PeekedMessageItem peekedMessageItem, Exception cause) {
+    public QueueMessageDecodingError(QueueAsyncClient queueAsyncClient, QueueClient queueClient,
+        QueueMessageItem queueMessageItem, PeekedMessageItem peekedMessageItem, Exception cause) {
         Objects.requireNonNull(queueAsyncClient, "'queueAsyncClient' cannot be null.");
         Objects.requireNonNull(queueClient, "'queueClient' cannot be null.");
         this.queueAsyncClient = queueAsyncClient;

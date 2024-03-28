@@ -31,11 +31,11 @@ import com.azure.storage.common.implementation.connectionstring.StorageConnectio
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-import com.azure.storage.queue.implementation.AzureQueueStorageImplBuilder;
 import com.azure.storage.queue.implementation.util.BuilderHelper;
 import com.azure.storage.queue.models.QueueAudience;
 import com.azure.storage.queue.models.QueueMessageDecodingError;
 import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -702,11 +702,7 @@ public final class QueueServiceClientBuilder implements
             endpoint, retryOptions, coreRetryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
 
-        return new AzureQueueStorageImplBuilder()
-            .url(endpoint)
-            .pipeline(pipeline)
-            .version(version.getVersion())
-            .buildClient();
+        return new AzureQueueStorageImpl(pipeline, endpoint, version.getVersion());
     }
 
     /**

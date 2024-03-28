@@ -6,43 +6,51 @@ package com.azure.storage.queue.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 /** The object returned in the QueueMessageList array when calling Peek Messages on a Queue. */
-@JacksonXmlRootElement(localName = "QueueMessage")
 @Fluent
-public final class PeekedMessageItem {
+public final class PeekedMessageItem implements XmlSerializable<PeekedMessageItem> {
     /*
      * The Id of the Message.
      */
-    @JsonProperty(value = "MessageId", required = true)
     private String messageId;
 
     /*
      * The time the Message was inserted into the Queue.
      */
-    @JsonProperty(value = "InsertionTime", required = true)
     private DateTimeRfc1123 insertionTime;
 
     /*
      * The time that the Message will expire and be automatically deleted.
      */
-    @JsonProperty(value = "ExpirationTime", required = true)
     private DateTimeRfc1123 expirationTime;
 
     /*
      * The number of times the message has been dequeued.
      */
-    @JsonProperty(value = "DequeueCount", required = true)
     private long dequeueCount;
 
     /*
      * The content of the Message.
      */
     private BinaryData body;
+
+    /**
+     * Creates an instance of PeekedMessageItem.
+     */
+    public PeekedMessageItem() {
+    }
 
     /**
      * Get the messageId property: The Id of the Message.
@@ -181,5 +189,76 @@ public final class PeekedMessageItem {
     public PeekedMessageItem setBody(BinaryData body) {
         this.body = body;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueMessage" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeStringElement("MessageId", this.messageId);
+        xmlWriter.writeStringElement("InsertionTime", Objects.toString(this.insertionTime, null));
+        xmlWriter.writeStringElement("ExpirationTime", Objects.toString(this.expirationTime, null));
+        xmlWriter.writeLongElement("DequeueCount", this.dequeueCount);
+        // TODO (alzimmer): What does Jackson do with 'BinaryData body' when this model is serialized?
+        // xmlWriter.writeStringElement("MessageText", this.messageText);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of PeekedMessageItem from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of PeekedMessageItem if the XmlReader was pointing to an instance of it, or null if
+     * it was pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the PeekedMessageItem.
+     */
+    public static PeekedMessageItem fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of PeekedMessageItem from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of PeekedMessageItem if the XmlReader was pointing to an instance of it, or null if
+     * it was pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the PeekedMessageItem.
+     */
+    public static PeekedMessageItem fromXml(XmlReader xmlReader, String rootElementName)
+        throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueMessage" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            PeekedMessageItem deserializedPeekedMessageItem = new PeekedMessageItem();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("MessageId".equals(elementName.getLocalPart())) {
+                    deserializedPeekedMessageItem.messageId = reader.getStringElement();
+                } else if ("InsertionTime".equals(elementName.getLocalPart())) {
+                    deserializedPeekedMessageItem.insertionTime
+                        = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("ExpirationTime".equals(elementName.getLocalPart())) {
+                    deserializedPeekedMessageItem.expirationTime
+                        = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("DequeueCount".equals(elementName.getLocalPart())) {
+                    deserializedPeekedMessageItem.dequeueCount = reader.getLongElement();
+                } else if ("MessageText".equals(elementName.getLocalPart())) {
+                    deserializedPeekedMessageItem.setMessageText(reader.getStringElement());
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedPeekedMessageItem;
+        });
     }
 }

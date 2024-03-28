@@ -59,6 +59,8 @@ public class QueueAudience extends ExpandableStringEnum<QueueAudience> {
     }
 
     /**
+     * Gets known QueueAudience values.
+     *
      * @return known QueueAudience values.
      */
     public static Collection<QueueAudience> values() {

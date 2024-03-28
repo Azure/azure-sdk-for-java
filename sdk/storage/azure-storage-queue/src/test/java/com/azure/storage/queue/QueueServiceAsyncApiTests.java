@@ -130,7 +130,7 @@ public class QueueServiceAsyncApiTests extends QueueTestBase {
         QueuesSegmentOptions options = new QueuesSegmentOptions().setPrefix(prefix);
         String queueName = getRandomName(60);
         for (int i = 0; i < 3; i++) {
-            primaryQueueServiceAsyncClient.createQueueWithResponse(queueName + i, null, null).block();
+            primaryQueueServiceAsyncClient.createQueueWithResponse(queueName + i, null).block();
         }
 
         Flux<PagedResponse<QueueItem>> listQueuesResult = primaryQueueServiceAsyncClient.listQueues(options).byPage(2);
