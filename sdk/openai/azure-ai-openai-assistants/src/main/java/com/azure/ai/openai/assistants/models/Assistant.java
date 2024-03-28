@@ -5,11 +5,8 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -20,67 +17,79 @@ import java.util.Map;
  * Represents an assistant that can call the model and use tools.
  */
 @Immutable
-public final class Assistant implements JsonSerializable<Assistant> {
+public final class Assistant {
 
     /*
      * The identifier, which can be referenced in API endpoints.
      */
     @Generated
-    private final String id;
+    @JsonProperty(value = "id")
+    private String id;
 
     /*
      * The object type, which is always assistant.
      */
     @Generated
-    private final String object = "assistant";
+    @JsonProperty(value = "object")
+    private String object = "assistant";
 
     /*
      * The Unix timestamp, in seconds, representing when this object was created.
      */
     @Generated
-    private final long createdAt;
+    @JsonProperty(value = "created_at")
+    private long createdAt;
 
     /*
      * The name of the assistant.
      */
     @Generated
-    private final String name;
+    @JsonProperty(value = "name")
+    private String name;
 
     /*
      * The description of the assistant.
      */
     @Generated
-    private final String description;
+    @JsonProperty(value = "description")
+    private String description;
 
     /*
      * The ID of the model to use.
      */
     @Generated
-    private final String model;
+    @JsonProperty(value = "model")
+    private String model;
 
     /*
      * The system instructions for the assistant to use.
      */
     @Generated
-    private final String instructions;
+    @JsonProperty(value = "instructions")
+    private String instructions;
 
     /*
      * The collection of tools enabled for the assistant.
      */
     @Generated
-    private final List<ToolDefinition> tools;
+    @JsonProperty(value = "tools")
+    private List<ToolDefinition> tools;
 
     /*
      * A list of attached file IDs, ordered by creation date in ascending order.
      */
     @Generated
-    private final List<String> fileIds;
+    @JsonProperty(value = "file_ids")
+    private List<String> fileIds;
 
     /*
-     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
+     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
+     * characters in length.
      */
     @Generated
-    private final Map<String, String> metadata;
+    @JsonProperty(value = "metadata")
+    private Map<String, String> metadata;
 
     /**
      * Get the id property: The identifier, which can be referenced in API endpoints.
@@ -211,73 +220,15 @@ public final class Assistant implements JsonSerializable<Assistant> {
         this.metadata = metadata;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("object", this.object);
-        jsonWriter.writeLongField("created_at", this.createdAt);
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeStringField("model", this.model);
-        jsonWriter.writeStringField("instructions", this.instructions);
-        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("file_ids", this.fileIds, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of Assistant from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of Assistant if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the Assistant.
-     */
-    @Generated
-    public static Assistant fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String id = null;
-            OffsetDateTime createdAt = null;
-            String name = null;
-            String description = null;
-            String model = null;
-            String instructions = null;
-            List<ToolDefinition> tools = null;
-            List<String> fileIds = null;
-            Map<String, String> metadata = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("id".equals(fieldName)) {
-                    id = reader.getString();
-                } else if ("created_at".equals(fieldName)) {
-                    createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else if ("model".equals(fieldName)) {
-                    model = reader.getString();
-                } else if ("instructions".equals(fieldName)) {
-                    instructions = reader.getString();
-                } else if ("tools".equals(fieldName)) {
-                    tools = reader.readArray(reader1 -> ToolDefinition.fromJson(reader1));
-                } else if ("file_ids".equals(fieldName)) {
-                    fileIds = reader.readArray(reader1 -> reader1.getString());
-                } else if ("metadata".equals(fieldName)) {
-                    metadata = reader.readMap(reader1 -> reader1.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new Assistant(id, createdAt, name, description, model, instructions, tools, fileIds, metadata);
-        });
+    @JsonCreator
+    private Assistant(@JsonProperty(value = "id") String id, @JsonProperty(value = "created_at") long createdAt,
+        @JsonProperty(value = "name") String name, @JsonProperty(value = "description") String description,
+        @JsonProperty(value = "model") String model, @JsonProperty(value = "instructions") String instructions,
+        @JsonProperty(value = "tools") List<ToolDefinition> tools,
+        @JsonProperty(value = "file_ids") List<String> fileIds,
+        @JsonProperty(value = "metadata") Map<String, String> metadata) {
+        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), name, description, model,
+            instructions, tools, fileIds, metadata);
     }
 }

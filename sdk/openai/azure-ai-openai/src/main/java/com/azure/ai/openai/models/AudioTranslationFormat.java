@@ -5,6 +5,7 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -61,6 +62,7 @@ public final class AudioTranslationFormat extends ExpandableStringEnum<AudioTran
      * @return the corresponding AudioTranslationFormat.
      */
     @Generated
+    @JsonCreator
     public static AudioTranslationFormat fromString(String name) {
         return fromString(name, AudioTranslationFormat.class);
     }

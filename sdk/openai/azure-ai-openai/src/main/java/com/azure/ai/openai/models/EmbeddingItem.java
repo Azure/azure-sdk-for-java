@@ -5,25 +5,23 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
  * Representation of a single embeddings relatedness comparison.
  */
 @Immutable
-public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
+public final class EmbeddingItem {
 
     /*
      * List of embeddings value for the input prompt. These represent a measurement of the
      * vector-based relatedness of the provided input.
      */
     @Generated
-    private final List<Double> embedding;
+    @JsonProperty(value = "embedding")
+    private List<Double> embedding;
 
     /**
      * Creates an instance of EmbeddingItem class.
@@ -32,7 +30,9 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
      * @param promptIndex the promptIndex value to set.
      */
     @Generated
-    private EmbeddingItem(List<Double> embedding, int promptIndex) {
+    @JsonCreator
+    private EmbeddingItem(@JsonProperty(value = "embedding") List<Double> embedding,
+        @JsonProperty(value = "index") int promptIndex) {
         this.embedding = embedding;
         this.promptIndex = promptIndex;
     }
@@ -52,7 +52,8 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
      * Index of the prompt to which the EmbeddingItem corresponds.
      */
     @Generated
-    private final int promptIndex;
+    @JsonProperty(value = "index")
+    private int promptIndex;
 
     /**
      * Get the promptIndex property: Index of the prompt to which the EmbeddingItem corresponds.
@@ -62,46 +63,5 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
     @Generated
     public int getPromptIndex() {
         return this.promptIndex;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("embedding", this.embedding, (writer, element) -> writer.writeDouble(element));
-        jsonWriter.writeIntField("index", this.promptIndex);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of EmbeddingItem from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of EmbeddingItem if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the EmbeddingItem.
-     */
-    @Generated
-    public static EmbeddingItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            List<Double> embedding = null;
-            int promptIndex = 0;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("embedding".equals(fieldName)) {
-                    embedding = reader.readArray(reader1 -> reader1.getDouble());
-                } else if ("index".equals(fieldName)) {
-                    promptIndex = reader.getInt();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new EmbeddingItem(embedding, promptIndex);
-        });
     }
 }

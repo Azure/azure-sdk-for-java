@@ -5,11 +5,8 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
@@ -18,19 +15,21 @@ import java.util.List;
  * recommendations, and other similar scenarios.
  */
 @Immutable
-public final class Embeddings implements JsonSerializable<Embeddings> {
+public final class Embeddings {
 
     /*
      * Embedding values for the prompts submitted in the request.
      */
     @Generated
-    private final List<EmbeddingItem> data;
+    @JsonProperty(value = "data")
+    private List<EmbeddingItem> data;
 
     /*
      * Usage counts for tokens input using the embeddings API.
      */
     @Generated
-    private final EmbeddingsUsage usage;
+    @JsonProperty(value = "usage")
+    private EmbeddingsUsage usage;
 
     /**
      * Creates an instance of Embeddings class.
@@ -39,7 +38,9 @@ public final class Embeddings implements JsonSerializable<Embeddings> {
      * @param usage the usage value to set.
      */
     @Generated
-    private Embeddings(List<EmbeddingItem> data, EmbeddingsUsage usage) {
+    @JsonCreator
+    private Embeddings(@JsonProperty(value = "data") List<EmbeddingItem> data,
+        @JsonProperty(value = "usage") EmbeddingsUsage usage) {
         this.data = data;
         this.usage = usage;
     }
@@ -62,46 +63,5 @@ public final class Embeddings implements JsonSerializable<Embeddings> {
     @Generated
     public EmbeddingsUsage getUsage() {
         return this.usage;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("data", this.data, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("usage", this.usage);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of Embeddings from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of Embeddings if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the Embeddings.
-     */
-    @Generated
-    public static Embeddings fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            List<EmbeddingItem> data = null;
-            EmbeddingsUsage usage = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("data".equals(fieldName)) {
-                    data = reader.readArray(reader1 -> EmbeddingItem.fromJson(reader1));
-                } else if ("usage".equals(fieldName)) {
-                    usage = EmbeddingsUsage.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new Embeddings(data, usage);
-        });
     }
 }

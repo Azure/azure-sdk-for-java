@@ -5,85 +5,94 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.util.List;
 
 /**
  * Extended information about a single segment of transcribed audio data.
- * Segments generally represent roughly 5-10 seconds of speech. Segment boundaries typically occur between words but not
+ * Segments generally represent roughly 5-10 seconds of speech. Segment boundaries typically occur between words but
+ * not
  * necessarily sentences.
  */
 @Immutable
-public final class AudioTranscriptionSegment implements JsonSerializable<AudioTranscriptionSegment> {
+public final class AudioTranscriptionSegment {
 
     /*
      * The 0-based index of this segment within a transcription.
      */
     @Generated
-    private final int id;
+    @JsonProperty(value = "id")
+    private int id;
 
     /*
      * The time at which this segment started relative to the beginning of the transcribed audio.
      */
     @Generated
-    private final double start;
+    @JsonProperty(value = "start")
+    private double start;
 
     /*
      * The time at which this segment ended relative to the beginning of the transcribed audio.
      */
     @Generated
-    private final double end;
+    @JsonProperty(value = "end")
+    private double end;
 
     /*
      * The transcribed text that was part of this audio segment.
      */
     @Generated
-    private final String text;
+    @JsonProperty(value = "text")
+    private String text;
 
     /*
      * The temperature score associated with this audio segment.
      */
     @Generated
-    private final double temperature;
+    @JsonProperty(value = "temperature")
+    private double temperature;
 
     /*
      * The average log probability associated with this audio segment.
      */
     @Generated
-    private final double avgLogprob;
+    @JsonProperty(value = "avg_logprob")
+    private double avgLogprob;
 
     /*
      * The compression ratio of this audio segment.
      */
     @Generated
-    private final double compressionRatio;
+    @JsonProperty(value = "compression_ratio")
+    private double compressionRatio;
 
     /*
      * The probability of no speech detection within this audio segment.
      */
     @Generated
-    private final double noSpeechProb;
+    @JsonProperty(value = "no_speech_prob")
+    private double noSpeechProb;
 
     /*
      * The token IDs matching the transcribed text in this audio segment.
      */
     @Generated
-    private final List<Integer> tokens;
+    @JsonProperty(value = "tokens")
+    private List<Integer> tokens;
 
     /*
      * The seek position associated with the processing of this audio segment.
      * Seek positions are expressed as hundredths of seconds.
-     * The model may process several segments from a single seek position, so while the seek position will never represent
+     * The model may process several segments from a single seek position, so while the seek position will never
+     * represent
      * a later time than the segment's start, the segment's start may represent a significantly later time than the
      * segment's associated seek position.
      */
     @Generated
-    private final int seek;
+    @JsonProperty(value = "seek")
+    private int seek;
 
     /**
      * Creates an instance of AudioTranscriptionSegment class.
@@ -112,6 +121,18 @@ public final class AudioTranscriptionSegment implements JsonSerializable<AudioTr
         this.noSpeechProb = noSpeechProb;
         this.tokens = tokens;
         this.seek = seek;
+    }
+
+    @Generated
+    @JsonCreator
+    private AudioTranscriptionSegment(@JsonProperty(value = "id") int id, @JsonProperty(value = "start") double start,
+        @JsonProperty(value = "end") double end, @JsonProperty(value = "text") String text,
+        @JsonProperty(value = "temperature") double temperature, @JsonProperty(value = "avg_logprob") double avgLogprob,
+        @JsonProperty(value = "compression_ratio") double compressionRatio,
+        @JsonProperty(value = "no_speech_prob") double noSpeechProb,
+        @JsonProperty(value = "tokens") List<Integer> tokens, @JsonProperty(value = "seek") int seek) {
+        this(id, Duration.ofNanos((long) (start * 1000_000_000L)), Duration.ofNanos((long) (end * 1000_000_000L)), text,
+            temperature, avgLogprob, compressionRatio, noSpeechProb, tokens, seek);
     }
 
     /**
@@ -218,79 +239,5 @@ public final class AudioTranscriptionSegment implements JsonSerializable<AudioTr
     @Generated
     public int getSeek() {
         return this.seek;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("id", this.id);
-        jsonWriter.writeDoubleField("start", this.start);
-        jsonWriter.writeDoubleField("end", this.end);
-        jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeDoubleField("temperature", this.temperature);
-        jsonWriter.writeDoubleField("avg_logprob", this.avgLogprob);
-        jsonWriter.writeDoubleField("compression_ratio", this.compressionRatio);
-        jsonWriter.writeDoubleField("no_speech_prob", this.noSpeechProb);
-        jsonWriter.writeArrayField("tokens", this.tokens, (writer, element) -> writer.writeInt(element));
-        jsonWriter.writeIntField("seek", this.seek);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AudioTranscriptionSegment from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AudioTranscriptionSegment if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AudioTranscriptionSegment.
-     */
-    @Generated
-    public static AudioTranscriptionSegment fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            int id = 0;
-            Duration start = null;
-            Duration end = null;
-            String text = null;
-            double temperature = 0.0;
-            double avgLogprob = 0.0;
-            double compressionRatio = 0.0;
-            double noSpeechProb = 0.0;
-            List<Integer> tokens = null;
-            int seek = 0;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("id".equals(fieldName)) {
-                    id = reader.getInt();
-                } else if ("start".equals(fieldName)) {
-                    start = Duration.ofNanos((long) (reader.getDouble() * 1000_000_000L));
-                } else if ("end".equals(fieldName)) {
-                    end = Duration.ofNanos((long) (reader.getDouble() * 1000_000_000L));
-                } else if ("text".equals(fieldName)) {
-                    text = reader.getString();
-                } else if ("temperature".equals(fieldName)) {
-                    temperature = reader.getDouble();
-                } else if ("avg_logprob".equals(fieldName)) {
-                    avgLogprob = reader.getDouble();
-                } else if ("compression_ratio".equals(fieldName)) {
-                    compressionRatio = reader.getDouble();
-                } else if ("no_speech_prob".equals(fieldName)) {
-                    noSpeechProb = reader.getDouble();
-                } else if ("tokens".equals(fieldName)) {
-                    tokens = reader.readArray(reader1 -> reader1.getInt());
-                } else if ("seek".equals(fieldName)) {
-                    seek = reader.getInt();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new AudioTranscriptionSegment(id, start, end, text, temperature, avgLogprob, compressionRatio,
-                noSpeechProb, tokens, seek);
-        });
     }
 }

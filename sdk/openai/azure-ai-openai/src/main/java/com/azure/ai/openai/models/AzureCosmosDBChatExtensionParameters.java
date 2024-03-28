@@ -5,83 +5,93 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Parameters to use when configuring Azure OpenAI On Your Data chat extensions when using Azure Cosmos DB for
  * MongoDB vCore. The supported authentication type is ConnectionString.
  */
 @Fluent
-public final class AzureCosmosDBChatExtensionParameters
-    implements JsonSerializable<AzureCosmosDBChatExtensionParameters> {
+public final class AzureCosmosDBChatExtensionParameters {
 
     /*
      * The authentication method to use when accessing the defined data source.
-     * Each data source type supports a specific set of available authentication methods; please see the documentation of
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
      * the data source for supported mechanisms.
      * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
      * authentication.
      */
     @Generated
+    @JsonProperty(value = "authentication")
     private OnYourDataAuthenticationOptions authentication;
 
     /*
      * The configured top number of documents to feature for the configured query.
      */
     @Generated
+    @JsonProperty(value = "top_n_documents")
     private Integer topNDocuments;
 
     /*
      * Whether queries should be restricted to use of indexed data.
      */
     @Generated
+    @JsonProperty(value = "in_scope")
     private Boolean inScope;
 
     /*
-     * The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but lower recall of the answer.
+     * The configured strictness of the search relevance filtering. The higher of strictness, the higher of the
+     * precision but lower recall of the answer.
      */
     @Generated
+    @JsonProperty(value = "strictness")
     private Integer strictness;
 
     /*
-     * Give the model instructions about how it should behave and any context it should reference when generating a response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token limit for it, and it counts against the overall token limit.
+     * Give the model instructions about how it should behave and any context it should reference when generating a
+     * response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token
+     * limit for it, and it counts against the overall token limit.
      */
     @Generated
+    @JsonProperty(value = "role_information")
     private String roleInformation;
 
     /*
      * The MongoDB vCore database name to use with Azure Cosmos DB.
      */
     @Generated
-    private final String databaseName;
+    @JsonProperty(value = "database_name")
+    private String databaseName;
 
     /*
      * The name of the Azure Cosmos DB resource container.
      */
     @Generated
-    private final String containerName;
+    @JsonProperty(value = "container_name")
+    private String containerName;
 
     /*
      * The MongoDB vCore index name to use with Azure Cosmos DB.
      */
     @Generated
-    private final String indexName;
+    @JsonProperty(value = "index_name")
+    private String indexName;
 
     /*
      * Customized field mapping behavior to use when interacting with the search index.
      */
     @Generated
-    private final AzureCosmosDBFieldMappingOptions fieldsMapping;
+    @JsonProperty(value = "fields_mapping")
+    private AzureCosmosDBFieldMappingOptions fieldsMapping;
 
     /*
      * The embedding dependency for vector search.
      */
     @Generated
-    private final OnYourDataVectorizationSource embeddingDependency;
+    @JsonProperty(value = "embedding_dependency")
+    private OnYourDataVectorizationSource embeddingDependency;
 
     /**
      * Get the authentication property: The authentication method to use when accessing the defined data source.
@@ -269,93 +279,16 @@ public final class AzureCosmosDBChatExtensionParameters
      * @param embeddingDependency the embeddingDependency value to set.
      */
     @Generated
-    public AzureCosmosDBChatExtensionParameters(String databaseName, String containerName, String indexName,
-        AzureCosmosDBFieldMappingOptions fieldsMapping, OnYourDataVectorizationSource embeddingDependency) {
+    @JsonCreator
+    public AzureCosmosDBChatExtensionParameters(@JsonProperty(value = "database_name") String databaseName,
+        @JsonProperty(value = "container_name") String containerName,
+        @JsonProperty(value = "index_name") String indexName,
+        @JsonProperty(value = "fields_mapping") AzureCosmosDBFieldMappingOptions fieldsMapping,
+        @JsonProperty(value = "embedding_dependency") OnYourDataVectorizationSource embeddingDependency) {
         this.databaseName = databaseName;
         this.containerName = containerName;
         this.indexName = indexName;
         this.fieldsMapping = fieldsMapping;
         this.embeddingDependency = embeddingDependency;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("database_name", this.databaseName);
-        jsonWriter.writeStringField("container_name", this.containerName);
-        jsonWriter.writeStringField("index_name", this.indexName);
-        jsonWriter.writeJsonField("fields_mapping", this.fieldsMapping);
-        jsonWriter.writeJsonField("embedding_dependency", this.embeddingDependency);
-        jsonWriter.writeJsonField("authentication", this.authentication);
-        jsonWriter.writeNumberField("top_n_documents", this.topNDocuments);
-        jsonWriter.writeBooleanField("in_scope", this.inScope);
-        jsonWriter.writeNumberField("strictness", this.strictness);
-        jsonWriter.writeStringField("role_information", this.roleInformation);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AzureCosmosDBChatExtensionParameters from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AzureCosmosDBChatExtensionParameters if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AzureCosmosDBChatExtensionParameters.
-     */
-    @Generated
-    public static AzureCosmosDBChatExtensionParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String databaseName = null;
-            String containerName = null;
-            String indexName = null;
-            AzureCosmosDBFieldMappingOptions fieldsMapping = null;
-            OnYourDataVectorizationSource embeddingDependency = null;
-            OnYourDataAuthenticationOptions authentication = null;
-            Integer topNDocuments = null;
-            Boolean inScope = null;
-            Integer strictness = null;
-            String roleInformation = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("database_name".equals(fieldName)) {
-                    databaseName = reader.getString();
-                } else if ("container_name".equals(fieldName)) {
-                    containerName = reader.getString();
-                } else if ("index_name".equals(fieldName)) {
-                    indexName = reader.getString();
-                } else if ("fields_mapping".equals(fieldName)) {
-                    fieldsMapping = AzureCosmosDBFieldMappingOptions.fromJson(reader);
-                } else if ("embedding_dependency".equals(fieldName)) {
-                    embeddingDependency = OnYourDataVectorizationSource.fromJson(reader);
-                } else if ("authentication".equals(fieldName)) {
-                    authentication = OnYourDataAuthenticationOptions.fromJson(reader);
-                } else if ("top_n_documents".equals(fieldName)) {
-                    topNDocuments = reader.getNullable(JsonReader::getInt);
-                } else if ("in_scope".equals(fieldName)) {
-                    inScope = reader.getNullable(JsonReader::getBoolean);
-                } else if ("strictness".equals(fieldName)) {
-                    strictness = reader.getNullable(JsonReader::getInt);
-                } else if ("role_information".equals(fieldName)) {
-                    roleInformation = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            AzureCosmosDBChatExtensionParameters deserializedAzureCosmosDBChatExtensionParameters
-                = new AzureCosmosDBChatExtensionParameters(databaseName, containerName, indexName, fieldsMapping,
-                    embeddingDependency);
-            deserializedAzureCosmosDBChatExtensionParameters.authentication = authentication;
-            deserializedAzureCosmosDBChatExtensionParameters.topNDocuments = topNDocuments;
-            deserializedAzureCosmosDBChatExtensionParameters.inScope = inScope;
-            deserializedAzureCosmosDBChatExtensionParameters.strictness = strictness;
-            deserializedAzureCosmosDBChatExtensionParameters.roleInformation = roleInformation;
-            return deserializedAzureCosmosDBChatExtensionParameters;
-        });
     }
 }

@@ -5,15 +5,11 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -21,115 +17,135 @@ import java.util.Map;
  * Data representing a single evaluation run of an assistant thread.
  */
 @Immutable
-public final class ThreadRun implements JsonSerializable<ThreadRun> {
+public final class ThreadRun {
 
     /*
      * The identifier, which can be referenced in API endpoints.
      */
     @Generated
-    private final String id;
+    @JsonProperty(value = "id")
+    private String id;
 
     /*
      * The object type, which is always 'thread.run'.
      */
     @Generated
-    private final String object = "thread.run";
+    @JsonProperty(value = "object")
+    private String object = "thread.run";
 
     /*
      * The ID of the thread associated with this run.
      */
     @Generated
-    private final String threadId;
+    @JsonProperty(value = "thread_id")
+    private String threadId;
 
     /*
      * The ID of the assistant associated with the thread this run was performed against.
      */
     @Generated
-    private final String assistantId;
+    @JsonProperty(value = "assistant_id")
+    private String assistantId;
 
     /*
      * The status of the assistant thread run.
      */
     @Generated
-    private final RunStatus status;
+    @JsonProperty(value = "status")
+    private RunStatus status;
 
     /*
      * The details of the action required for the assistant thread run to continue.
      */
     @Generated
+    @JsonProperty(value = "required_action")
     private RequiredAction requiredAction;
 
     /*
      * The last error, if any, encountered by this assistant thread run.
      */
     @Generated
-    private final RunError lastError;
+    @JsonProperty(value = "last_error")
+    private RunError lastError;
 
     /*
      * The ID of the model to use.
      */
     @Generated
-    private final String model;
+    @JsonProperty(value = "model")
+    private String model;
 
     /*
      * The overridden system instructions used for this assistant thread run.
      */
     @Generated
-    private final String instructions;
+    @JsonProperty(value = "instructions")
+    private String instructions;
 
     /*
      * The overridden enabled tools used for this assistant thread run.
      */
     @Generated
-    private final List<ToolDefinition> tools;
+    @JsonProperty(value = "tools")
+    private List<ToolDefinition> tools;
 
     /*
      * A list of attached file IDs, ordered by creation date in ascending order.
      */
     @Generated
-    private final List<String> fileIds;
+    @JsonProperty(value = "file_ids")
+    private List<String> fileIds;
 
     /*
      * The Unix timestamp, in seconds, representing when this object was created.
      */
     @Generated
-    private final long createdAt;
+    @JsonProperty(value = "created_at")
+    private long createdAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this item expires.
      */
     @Generated
-    private final OffsetDateTime expiresAt;
+    @JsonProperty(value = "expires_at")
+    private OffsetDateTime expiresAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this item was started.
      */
     @Generated
-    private final OffsetDateTime startedAt;
+    @JsonProperty(value = "started_at")
+    private OffsetDateTime startedAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this completed.
      */
     @Generated
-    private final OffsetDateTime completedAt;
+    @JsonProperty(value = "completed_at")
+    private OffsetDateTime completedAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this was cancelled.
      */
     @Generated
-    private final OffsetDateTime cancelledAt;
+    @JsonProperty(value = "cancelled_at")
+    private OffsetDateTime cancelledAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this failed.
      */
     @Generated
-    private final OffsetDateTime failedAt;
+    @JsonProperty(value = "failed_at")
+    private OffsetDateTime failedAt;
 
     /*
-     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
+     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
+     * characters in length.
      */
     @Generated
-    private final Map<String, String> metadata;
+    @JsonProperty(value = "metadata")
+    private Map<String, String> metadata;
 
     /**
      * Get the id property: The identifier, which can be referenced in API endpoints.
@@ -356,114 +372,22 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
         this.metadata = metadata;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("object", this.object);
-        jsonWriter.writeStringField("thread_id", this.threadId);
-        jsonWriter.writeStringField("assistant_id", this.assistantId);
-        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
-        jsonWriter.writeJsonField("last_error", this.lastError);
-        jsonWriter.writeStringField("model", this.model);
-        jsonWriter.writeStringField("instructions", this.instructions);
-        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("file_ids", this.fileIds, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeLongField("created_at", this.createdAt);
-        jsonWriter.writeStringField("expires_at",
-            this.expiresAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiresAt));
-        jsonWriter.writeStringField("started_at",
-            this.startedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startedAt));
-        jsonWriter.writeStringField("completed_at",
-            this.completedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.completedAt));
-        jsonWriter.writeStringField("cancelled_at",
-            this.cancelledAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.cancelledAt));
-        jsonWriter.writeStringField("failed_at",
-            this.failedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.failedAt));
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("required_action", this.requiredAction);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ThreadRun from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ThreadRun if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ThreadRun.
-     */
-    @Generated
-    public static ThreadRun fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String id = null;
-            String threadId = null;
-            String assistantId = null;
-            RunStatus status = null;
-            RunError lastError = null;
-            String model = null;
-            String instructions = null;
-            List<ToolDefinition> tools = null;
-            List<String> fileIds = null;
-            OffsetDateTime createdAt = null;
-            OffsetDateTime expiresAt = null;
-            OffsetDateTime startedAt = null;
-            OffsetDateTime completedAt = null;
-            OffsetDateTime cancelledAt = null;
-            OffsetDateTime failedAt = null;
-            Map<String, String> metadata = null;
-            RequiredAction requiredAction = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("id".equals(fieldName)) {
-                    id = reader.getString();
-                } else if ("thread_id".equals(fieldName)) {
-                    threadId = reader.getString();
-                } else if ("assistant_id".equals(fieldName)) {
-                    assistantId = reader.getString();
-                } else if ("status".equals(fieldName)) {
-                    status = RunStatus.fromString(reader.getString());
-                } else if ("last_error".equals(fieldName)) {
-                    lastError = RunError.fromJson(reader);
-                } else if ("model".equals(fieldName)) {
-                    model = reader.getString();
-                } else if ("instructions".equals(fieldName)) {
-                    instructions = reader.getString();
-                } else if ("tools".equals(fieldName)) {
-                    tools = reader.readArray(reader1 -> ToolDefinition.fromJson(reader1));
-                } else if ("file_ids".equals(fieldName)) {
-                    fileIds = reader.readArray(reader1 -> reader1.getString());
-                } else if ("created_at".equals(fieldName)) {
-                    createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
-                } else if ("expires_at".equals(fieldName)) {
-                    expiresAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("started_at".equals(fieldName)) {
-                    startedAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("completed_at".equals(fieldName)) {
-                    completedAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("cancelled_at".equals(fieldName)) {
-                    cancelledAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("failed_at".equals(fieldName)) {
-                    failedAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("metadata".equals(fieldName)) {
-                    metadata = reader.readMap(reader1 -> reader1.getString());
-                } else if ("required_action".equals(fieldName)) {
-                    requiredAction = RequiredAction.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            ThreadRun deserializedThreadRun
-                = new ThreadRun(id, threadId, assistantId, status, lastError, model, instructions, tools, fileIds,
-                    createdAt, expiresAt, startedAt, completedAt, cancelledAt, failedAt, metadata);
-            deserializedThreadRun.requiredAction = requiredAction;
-            return deserializedThreadRun;
-        });
+    @JsonCreator
+    private ThreadRun(@JsonProperty(value = "id") String id, @JsonProperty(value = "thread_id") String threadId,
+        @JsonProperty(value = "assistant_id") String assistantId, @JsonProperty(value = "status") RunStatus status,
+        @JsonProperty(value = "last_error") RunError lastError, @JsonProperty(value = "model") String model,
+        @JsonProperty(value = "instructions") String instructions,
+        @JsonProperty(value = "tools") List<ToolDefinition> tools,
+        @JsonProperty(value = "file_ids") List<String> fileIds, @JsonProperty(value = "created_at") long createdAt,
+        @JsonProperty(value = "expires_at") OffsetDateTime expiresAt,
+        @JsonProperty(value = "started_at") OffsetDateTime startedAt,
+        @JsonProperty(value = "completed_at") OffsetDateTime completedAt,
+        @JsonProperty(value = "cancelled_at") OffsetDateTime cancelledAt,
+        @JsonProperty(value = "failed_at") OffsetDateTime failedAt,
+        @JsonProperty(value = "metadata") Map<String, String> metadata) {
+        this(id, threadId, assistantId, status, lastError, model, instructions, tools, fileIds,
+            OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), expiresAt, startedAt,
+            completedAt, cancelledAt, failedAt, metadata);
     }
 }

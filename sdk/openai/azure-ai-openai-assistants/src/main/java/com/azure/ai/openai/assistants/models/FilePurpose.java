@@ -5,6 +5,7 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -53,6 +54,7 @@ public final class FilePurpose extends ExpandableStringEnum<FilePurpose> {
      * @return the corresponding FilePurpose.
      */
     @Generated
+    @JsonCreator
     public static FilePurpose fromString(String name) {
         return fromString(name, FilePurpose.class);
     }

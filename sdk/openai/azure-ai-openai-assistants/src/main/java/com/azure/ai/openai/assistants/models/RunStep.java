@@ -5,112 +5,125 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 /**
  * Detailed information about a single step of an assistant thread run.
  */
 @Immutable
-public final class RunStep implements JsonSerializable<RunStep> {
+public final class RunStep {
 
     /*
      * The identifier, which can be referenced in API endpoints.
      */
     @Generated
-    private final String id;
+    @JsonProperty(value = "id")
+    private String id;
 
     /*
      * The object type, which is always 'thread.run.step'.
      */
     @Generated
-    private final String object = "thread.run.step";
+    @JsonProperty(value = "object")
+    private String object = "thread.run.step";
 
     /*
      * The type of run step, which can be either message_creation or tool_calls.
      */
     @Generated
-    private final RunStepType type;
+    @JsonProperty(value = "type")
+    private RunStepType type;
 
     /*
      * The ID of the assistant associated with the run step.
      */
     @Generated
-    private final String assistantId;
+    @JsonProperty(value = "assistant_id")
+    private String assistantId;
 
     /*
      * The ID of the thread that was run.
      */
     @Generated
-    private final String threadId;
+    @JsonProperty(value = "thread_id")
+    private String threadId;
 
     /*
      * The ID of the run that this run step is a part of.
      */
     @Generated
-    private final String runId;
+    @JsonProperty(value = "run_id")
+    private String runId;
 
     /*
      * The status of this run step.
      */
     @Generated
-    private final RunStepStatus status;
+    @JsonProperty(value = "status")
+    private RunStepStatus status;
 
     /*
      * The details for this run step.
      */
     @Generated
-    private final RunStepDetails stepDetails;
+    @JsonProperty(value = "step_details")
+    private RunStepDetails stepDetails;
 
     /*
      * If applicable, information about the last error encountered by this run step.
      */
     @Generated
-    private final RunStepError lastError;
+    @JsonProperty(value = "last_error")
+    private RunStepError lastError;
 
     /*
      * The Unix timestamp, in seconds, representing when this object was created.
      */
     @Generated
-    private final long createdAt;
+    @JsonProperty(value = "created_at")
+    private long createdAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this item expired.
      */
     @Generated
-    private final OffsetDateTime expiredAt;
+    @JsonProperty(value = "expired_at")
+    private OffsetDateTime expiredAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this completed.
      */
     @Generated
-    private final OffsetDateTime completedAt;
+    @JsonProperty(value = "completed_at")
+    private OffsetDateTime completedAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this was cancelled.
      */
     @Generated
-    private final OffsetDateTime cancelledAt;
+    @JsonProperty(value = "cancelled_at")
+    private OffsetDateTime cancelledAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this failed.
      */
     @Generated
-    private final OffsetDateTime failedAt;
+    @JsonProperty(value = "failed_at")
+    private OffsetDateTime failedAt;
 
     /*
-     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
+     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
+     * characters in length.
      */
     @Generated
-    private final Map<String, String> metadata;
+    @JsonProperty(value = "metadata")
+    private Map<String, String> metadata;
 
     /**
      * Get the id property: The identifier, which can be referenced in API endpoints.
@@ -303,98 +316,20 @@ public final class RunStep implements JsonSerializable<RunStep> {
         this.metadata = metadata;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("object", this.object);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("assistant_id", this.assistantId);
-        jsonWriter.writeStringField("thread_id", this.threadId);
-        jsonWriter.writeStringField("run_id", this.runId);
-        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
-        jsonWriter.writeJsonField("step_details", this.stepDetails);
-        jsonWriter.writeJsonField("last_error", this.lastError);
-        jsonWriter.writeLongField("created_at", this.createdAt);
-        jsonWriter.writeStringField("expired_at",
-            this.expiredAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiredAt));
-        jsonWriter.writeStringField("completed_at",
-            this.completedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.completedAt));
-        jsonWriter.writeStringField("cancelled_at",
-            this.cancelledAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.cancelledAt));
-        jsonWriter.writeStringField("failed_at",
-            this.failedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.failedAt));
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RunStep from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RunStep if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     * JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RunStep.
-     */
-    @Generated
-    public static RunStep fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String id = null;
-            RunStepType type = null;
-            String assistantId = null;
-            String threadId = null;
-            String runId = null;
-            RunStepStatus status = null;
-            RunStepDetails stepDetails = null;
-            RunStepError lastError = null;
-            OffsetDateTime createdAt = null;
-            OffsetDateTime expiredAt = null;
-            OffsetDateTime completedAt = null;
-            OffsetDateTime cancelledAt = null;
-            OffsetDateTime failedAt = null;
-            Map<String, String> metadata = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("id".equals(fieldName)) {
-                    id = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    type = RunStepType.fromString(reader.getString());
-                } else if ("assistant_id".equals(fieldName)) {
-                    assistantId = reader.getString();
-                } else if ("thread_id".equals(fieldName)) {
-                    threadId = reader.getString();
-                } else if ("run_id".equals(fieldName)) {
-                    runId = reader.getString();
-                } else if ("status".equals(fieldName)) {
-                    status = RunStepStatus.fromString(reader.getString());
-                } else if ("step_details".equals(fieldName)) {
-                    stepDetails = RunStepDetails.fromJson(reader);
-                } else if ("last_error".equals(fieldName)) {
-                    lastError = RunStepError.fromJson(reader);
-                } else if ("created_at".equals(fieldName)) {
-                    createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
-                } else if ("expired_at".equals(fieldName)) {
-                    expiredAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("completed_at".equals(fieldName)) {
-                    completedAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("cancelled_at".equals(fieldName)) {
-                    cancelledAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("failed_at".equals(fieldName)) {
-                    failedAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("metadata".equals(fieldName)) {
-                    metadata = reader.readMap(reader1 -> reader1.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new RunStep(id, type, assistantId, threadId, runId, status, stepDetails, lastError, createdAt,
-                expiredAt, completedAt, cancelledAt, failedAt, metadata);
-        });
+    @JsonCreator
+    private RunStep(@JsonProperty(value = "id") String id, @JsonProperty(value = "type") RunStepType type,
+        @JsonProperty(value = "assistant_id") String assistantId, @JsonProperty(value = "thread_id") String threadId,
+        @JsonProperty(value = "run_id") String runId, @JsonProperty(value = "status") RunStepStatus status,
+        @JsonProperty(value = "step_details") RunStepDetails stepDetails,
+        @JsonProperty(value = "last_error") RunStepError lastError, @JsonProperty(value = "created_at") long createdAt,
+        @JsonProperty(value = "expired_at") OffsetDateTime expiredAt,
+        @JsonProperty(value = "completed_at") OffsetDateTime completedAt,
+        @JsonProperty(value = "cancelled_at") OffsetDateTime cancelledAt,
+        @JsonProperty(value = "failed_at") OffsetDateTime failedAt,
+        @JsonProperty(value = "metadata") Map<String, String> metadata) {
+        this(id, type, assistantId, threadId, runId, status, stepDetails, lastError,
+            OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), expiredAt, completedAt,
+            cancelledAt, failedAt, metadata);
     }
 }
