@@ -150,7 +150,7 @@ public class CosmosDBSourceConnector extends SourceConnector {
         Map<String, List<FeedRange>> updatedContainerToFeedRangesMap = new ConcurrentHashMap<>();
 
         for (CosmosContainerProperties containerProperties : allContainers) {
-            Map<FeedRange, String> effectiveFeedRangesContinuationMap =
+            Map<FeedRange, KafkaCosmosChangeFeedState> effectiveFeedRangesContinuationMap =
                 this.getEffectiveFeedRangesContinuationMap(
                     this.config.getContainersConfig().getDatabaseName(),
                     containerProperties);
@@ -185,7 +185,7 @@ public class CosmosDBSourceConnector extends SourceConnector {
         return Pair.of(metadataTaskUnit, allFeedRangeTaskUnits);
     }
 
-    private Map<FeedRange, String> getEffectiveFeedRangesContinuationMap(
+    private Map<FeedRange, KafkaCosmosChangeFeedState> getEffectiveFeedRangesContinuationMap(
         String databaseName,
         CosmosContainerProperties containerProperties) {
         // Return effective feed ranges to be used for copying data from container
@@ -202,14 +202,14 @@ public class CosmosDBSourceConnector extends SourceConnector {
         FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffset =
             this.offsetStorageReader.getFeedRangesMetadataOffset(databaseName, containerProperties.getResourceId());
 
-        Map<FeedRange, String> effectiveFeedRangesContinuationMap = new LinkedHashMap<>();
+        Map<FeedRange, KafkaCosmosChangeFeedState> effectiveFeedRangesContinuationMap = new LinkedHashMap<>();
         CosmosAsyncContainer container = this.cosmosClient.getDatabase(databaseName).getContainer(containerProperties.getId());
 
         Flux.fromIterable(containerFeedRanges)
             .flatMap(containerFeedRange -> {
                 if (feedRangesMetadataTopicOffset == null) {
                     return Mono.just(
-                        Collections.singletonMap(containerFeedRange, Strings.Emtpy));
+                        Collections.singletonMap(containerFeedRange, (KafkaCosmosChangeFeedState)null));
                 } else {
                     // there is existing offsets, need to find out effective feedRanges based on the offset
                     return this.getEffectiveContinuationMapForSingleFeedRange(
@@ -228,7 +228,7 @@ public class CosmosDBSourceConnector extends SourceConnector {
         return effectiveFeedRangesContinuationMap;
     }
 
-    private Mono<Map<FeedRange, String>> getEffectiveContinuationMapForSingleFeedRange(
+    private Mono<Map<FeedRange, KafkaCosmosChangeFeedState>> getEffectiveContinuationMapForSingleFeedRange(
         String databaseName,
         String containerRid,
         FeedRange containerFeedRange,
@@ -239,7 +239,7 @@ public class CosmosDBSourceConnector extends SourceConnector {
         FeedRangeContinuationTopicOffset feedRangeContinuationTopicOffset =
             this.offsetStorageReader.getFeedRangeContinuationOffset(databaseName, containerRid, containerFeedRange);
 
-        Map<FeedRange, String> effectiveContinuationMap = new LinkedHashMap<>();
+        Map<FeedRange, KafkaCosmosChangeFeedState> effectiveContinuationMap = new LinkedHashMap<>();
         if (feedRangeContinuationTopicOffset != null) {
             // we can find the continuation offset based on exact feedRange matching
             effectiveContinuationMap.put(
@@ -299,7 +299,7 @@ public class CosmosDBSourceConnector extends SourceConnector {
                     });
     }
 
-    private String getContinuationStateFromOffset(
+    private KafkaCosmosChangeFeedState getContinuationStateFromOffset(
         FeedRangeContinuationTopicOffset feedRangeContinuationTopicOffset,
         FeedRange feedRange) {
 
@@ -309,11 +309,7 @@ public class CosmosDBSourceConnector extends SourceConnector {
                 feedRange,
                 feedRangeContinuationTopicOffset.getItemLsn());
 
-        try {
-            return Utils.getSimpleObjectMapper().writeValueAsString(changeFeedState);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        return changeFeedState;
     }
 
     private List<FeedRange> getFeedRanges(CosmosContainerProperties containerProperties) {
