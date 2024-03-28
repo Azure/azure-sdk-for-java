@@ -485,7 +485,8 @@ private class BulkWriter(container: CosmosAsyncContainer,
                       s"statusCode=[${e.getStatusCode}:${e.getSubStatusCode}] " +
                       s"itemId=[${requestOperationContext.itemId}], partitionKeyValue=[${requestOperationContext.partitionKeyValue}]"
 
-                  val exceptionToBeThrown = new BulkOperationFailedException(e.getStatusCode, e.getSubStatusCode, message, e)
+                  val exceptionToBeThrown = new BulkOperationFailedException(e.getStatusCode, e.getSubStatusCode, message, e,
+                      requestOperationContext.itemId, requestOperationContext.partitionKeyValue)
                   captureIfFirstFailure(exceptionToBeThrown)
                   cancelWork()
                   markTaskCompletion()
@@ -856,9 +857,11 @@ private class BulkWriter(container: CosmosAsyncContainer,
 
       val exceptionToBeThrown = responseException match {
         case Some(e) =>
-          new BulkOperationFailedException(effectiveStatusCode, effectiveSubStatusCode, message, e)
+          new BulkOperationFailedException(effectiveStatusCode, effectiveSubStatusCode, message, e,
+              context.itemId, context.partitionKeyValue)
         case None =>
-          new BulkOperationFailedException(effectiveStatusCode, effectiveSubStatusCode, message, null)
+          new BulkOperationFailedException(effectiveStatusCode, effectiveSubStatusCode, message, null,
+              context.itemId, context.partitionKeyValue)
       }
 
       captureIfFirstFailure(exceptionToBeThrown)
@@ -1337,8 +1340,9 @@ private object BulkWriter {
     s"Thread[Name: ${t.getName}, Group: $group, IsDaemon: ${t.isDaemon} Id: ${t.getId}]"
   }
 
-  private class BulkOperationFailedException(statusCode: Int, subStatusCode: Int, message:String, cause: Throwable)
-    extends CosmosException(statusCode, message, null, cause) {
+  private class BulkOperationFailedException(statusCode: Int, subStatusCode: Int, message:String, cause: Throwable,
+                                             itemId: String, partitionKey: PartitionKey)
+    extends CosmosException(statusCode, message, null, cause, itemId, partitionKey) {
       BridgeInternal.setSubStatusCode(this, subStatusCode)
   }
 }
