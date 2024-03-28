@@ -76,6 +76,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
 
       cosmosPartitioningConfig.partitioningStrategy match {
         case PartitioningStrategies.Restrictive =>
+          applyRestrictiveStrategy(planningInfo)
         case PartitioningStrategies.Default =>
           applyRestrictiveStrategy(planningInfo)
         case PartitioningStrategies.Custom =>
