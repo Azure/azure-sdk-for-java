@@ -6,10 +6,12 @@ package com.azure.storage.file.datalake.implementation.util;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureSasCredentialPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
@@ -22,6 +24,7 @@ import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
@@ -45,6 +48,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
@@ -56,6 +60,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 public final class BuilderHelper {
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
+    private static final HttpHeaderName X_MS_UPN = HttpHeaderName.fromString("x-ms-upn");
 
     static {
         Map<String, String> properties = CoreUtils.getProperties("azure-storage-file-datalake.properties");
@@ -104,6 +109,8 @@ public final class BuilderHelper {
         policies.add(BuilderUtils.createRetryPolicy(retryOptions, coreRetryOptions, logger));
 
         policies.add(new AddDatePolicy());
+
+        policies.add(new AddHeadersFromContextPolicy());
 
         // We need to place this policy right before the credential policy since headers may affect the string to sign
         // of the request.
@@ -232,5 +239,21 @@ public final class BuilderHelper {
         TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
         return TracerProvider.getDefaultProvider()
             .createTracer(CLIENT_NAME, CLIENT_VERSION, STORAGE_TRACING_NAMESPACE_VALUE, tracingOptions);
+    }
+
+    public static Context addUpnHeader(Supplier<Boolean> upnHeaderValue, Context context) {
+        Boolean value = upnHeaderValue.get();
+        if (value == null) {
+            return context;
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(X_MS_UPN, Boolean.toString(value));
+        if (context == null) {
+            return new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+        } else {
+            return context.addData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+        }
+
     }
 }

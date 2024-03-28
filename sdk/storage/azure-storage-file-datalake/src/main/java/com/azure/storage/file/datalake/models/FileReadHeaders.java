@@ -7,6 +7,7 @@ package com.azure.storage.file.datalake.models;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,6 +47,7 @@ public final class FileReadHeaders {
     private String errorCode;
     private OffsetDateTime creationTime;
     private String encryptionContext;
+    private List<PathAccessControlEntry> accessControlList;
 
     /**
      * Get the lastModified property: Returns the date and time the container
@@ -852,6 +854,26 @@ public final class FileReadHeaders {
      */
     public FileReadHeaders setEncryptionContext(String encryptionContext) {
         this.encryptionContext = encryptionContext;
+        return this;
+    }
+
+    /**
+     * Optional. The POSIX access control list for the file or directory.
+     *
+     * @return the access control list.
+     */
+    public List<PathAccessControlEntry> getAccessControlList() {
+        return accessControlList;
+    }
+
+    /**
+     * Optional. The POSIX access control list for the file or directory.
+     *
+     * @param accessControlList the access control list to be set on the file or directory.
+     * @return the FileReadHeaders object itself.
+     */
+    public FileReadHeaders setAccessControlList(List<PathAccessControlEntry> accessControlList) {
+        this.accessControlList = accessControlList;
         return this;
     }
 }

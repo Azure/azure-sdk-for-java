@@ -892,10 +892,10 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void audienceError() {
-        AppendBlobAsyncClient aadBlob = new SpecializedBlobClientBuilder()
+        AppendBlobAsyncClient aadBlob = instrument(new SpecializedBlobClientBuilder()
             .endpoint(bc.getBlobUrl())
             .credential(new MockTokenCredential())
-            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience")))
             .buildAppendBlobAsyncClient();
 
         StepVerifier.create(aadBlob.exists())
