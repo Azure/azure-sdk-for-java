@@ -215,34 +215,17 @@ public final class DevCenterClientImpl {
 
     /**
      * Lists all projects.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData filter clause to apply to the operation.</td>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -271,34 +254,17 @@ public final class DevCenterClientImpl {
 
     /**
      * Lists all projects.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData filter clause to apply to the operation.</td>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -325,34 +291,17 @@ public final class DevCenterClientImpl {
 
     /**
      * Lists all projects.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData filter clause to apply to the operation.</td>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -379,34 +328,17 @@ public final class DevCenterClientImpl {
 
     /**
      * Lists all projects.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData filter clause to apply to the operation.</td>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -433,9 +365,8 @@ public final class DevCenterClientImpl {
 
     /**
      * Gets a project.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -461,9 +392,8 @@ public final class DevCenterClientImpl {
 
     /**
      * Gets a project.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -489,9 +419,8 @@ public final class DevCenterClientImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -524,9 +453,8 @@ public final class DevCenterClientImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)

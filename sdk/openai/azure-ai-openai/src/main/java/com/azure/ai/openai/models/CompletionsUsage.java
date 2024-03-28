@@ -5,8 +5,11 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Representation of the token counts processed for a completions request.
@@ -14,28 +17,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * other consumers.
  */
 @Immutable
-public final class CompletionsUsage {
+public final class CompletionsUsage implements JsonSerializable<CompletionsUsage> {
 
     /*
      * The number of tokens generated across all completions emissions.
      */
     @Generated
-    @JsonProperty(value = "completion_tokens")
-    private int completionTokens;
+    private final int completionTokens;
 
     /*
      * The number of tokens in the provided prompts for the completions request.
      */
     @Generated
-    @JsonProperty(value = "prompt_tokens")
-    private int promptTokens;
+    private final int promptTokens;
 
     /*
      * The total number of tokens processed for the completions request and response.
      */
     @Generated
-    @JsonProperty(value = "total_tokens")
-    private int totalTokens;
+    private final int totalTokens;
 
     /**
      * Creates an instance of CompletionsUsage class.
@@ -45,10 +45,7 @@ public final class CompletionsUsage {
      * @param totalTokens the totalTokens value to set.
      */
     @Generated
-    @JsonCreator
-    private CompletionsUsage(@JsonProperty(value = "completion_tokens") int completionTokens,
-        @JsonProperty(value = "prompt_tokens") int promptTokens,
-        @JsonProperty(value = "total_tokens") int totalTokens) {
+    private CompletionsUsage(int completionTokens, int promptTokens, int totalTokens) {
         this.completionTokens = completionTokens;
         this.promptTokens = promptTokens;
         this.totalTokens = totalTokens;
@@ -82,5 +79,50 @@ public final class CompletionsUsage {
     @Generated
     public int getTotalTokens() {
         return this.totalTokens;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("completion_tokens", this.completionTokens);
+        jsonWriter.writeIntField("prompt_tokens", this.promptTokens);
+        jsonWriter.writeIntField("total_tokens", this.totalTokens);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CompletionsUsage from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CompletionsUsage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CompletionsUsage.
+     */
+    @Generated
+    public static CompletionsUsage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            int completionTokens = 0;
+            int promptTokens = 0;
+            int totalTokens = 0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("completion_tokens".equals(fieldName)) {
+                    completionTokens = reader.getInt();
+                } else if ("prompt_tokens".equals(fieldName)) {
+                    promptTokens = reader.getInt();
+                } else if ("total_tokens".equals(fieldName)) {
+                    totalTokens = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new CompletionsUsage(completionTokens, promptTokens, totalTokens);
+        });
     }
 }

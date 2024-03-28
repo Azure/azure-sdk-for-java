@@ -39,28 +39,16 @@ public final class DeploymentEnvironmentsClient {
 
     /**
      * Lists the environments for a project.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -102,28 +90,16 @@ public final class DeploymentEnvironmentsClient {
 
     /**
      * Lists the environments for a project and user.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -168,9 +144,8 @@ public final class DeploymentEnvironmentsClient {
 
     /**
      * Gets an environment.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -216,9 +191,8 @@ public final class DeploymentEnvironmentsClient {
 
     /**
      * Creates or updates an environment.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -243,9 +217,9 @@ public final class DeploymentEnvironmentsClient {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     parameters: Object (Optional)
@@ -293,9 +267,8 @@ public final class DeploymentEnvironmentsClient {
 
     /**
      * Deletes an environment and all its associated resources.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -333,28 +306,16 @@ public final class DeploymentEnvironmentsClient {
 
     /**
      * Lists all of the catalogs available for a project.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -377,9 +338,8 @@ public final class DeploymentEnvironmentsClient {
 
     /**
      * Gets the specified catalog within the project.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -404,28 +364,16 @@ public final class DeploymentEnvironmentsClient {
 
     /**
      * Lists all environment definitions available for a project.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -467,28 +415,16 @@ public final class DeploymentEnvironmentsClient {
 
     /**
      * Lists all environment definitions available within a catalog.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -532,9 +468,8 @@ public final class DeploymentEnvironmentsClient {
 
     /**
      * Get an environment definition from a catalog.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -580,28 +515,16 @@ public final class DeploymentEnvironmentsClient {
 
     /**
      * Lists all environment types configured for a project.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)

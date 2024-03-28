@@ -40,34 +40,17 @@ public final class DevBoxesClient {
 
     /**
      * Lists available pools.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData filter clause to apply to the operation.</td>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -116,9 +99,8 @@ public final class DevBoxesClient {
 
     /**
      * Gets a pool.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -169,34 +151,17 @@ public final class DevBoxesClient {
 
     /**
      * Lists available schedules for a pool.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData filter clause to apply to the operation.</td>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -224,9 +189,8 @@ public final class DevBoxesClient {
 
     /**
      * Gets a schedule.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -256,34 +220,17 @@ public final class DevBoxesClient {
 
     /**
      * Lists Dev Boxes that the caller has access to in the DevCenter.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData filter clause to apply to the operation.</td>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -346,34 +293,17 @@ public final class DevBoxesClient {
 
     /**
      * Lists Dev Boxes in the Dev Center for a particular user.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData filter clause to apply to the operation.</td>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -438,34 +368,17 @@ public final class DevBoxesClient {
 
     /**
      * Lists Dev Boxes in the project for a particular user.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData filter clause to apply to the operation.</td>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation.
+     * Example: 'top=10'.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -531,9 +444,8 @@ public final class DevBoxesClient {
 
     /**
      * Gets a Dev Box.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -601,9 +513,8 @@ public final class DevBoxesClient {
 
     /**
      * Creates or replaces a Dev Box.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -650,9 +561,9 @@ public final class DevBoxesClient {
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -721,9 +632,8 @@ public final class DevBoxesClient {
 
     /**
      * Deletes a Dev Box.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -761,9 +671,8 @@ public final class DevBoxesClient {
 
     /**
      * Starts a Dev Box.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -801,28 +710,15 @@ public final class DevBoxesClient {
 
     /**
      * Stops a Dev Box.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>hibernate</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Optional parameter to hibernate the dev box.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>hibernate</td><td>Boolean</td><td>No</td><td>Optional parameter to hibernate the dev box.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -860,9 +756,8 @@ public final class DevBoxesClient {
 
     /**
      * Restarts a Dev Box.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -900,9 +795,8 @@ public final class DevBoxesClient {
 
     /**
      * Gets RDP Connection info.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     webUrl: String (Optional)
@@ -930,9 +824,8 @@ public final class DevBoxesClient {
 
     /**
      * Lists actions on a Dev Box.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -965,9 +858,8 @@ public final class DevBoxesClient {
 
     /**
      * Gets an action.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1024,9 +916,8 @@ public final class DevBoxesClient {
 
     /**
      * Delays the occurrence of an action.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -1062,9 +953,8 @@ public final class DevBoxesClient {
 
     /**
      * Delays all actions.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)

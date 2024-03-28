@@ -6,117 +6,106 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Atlas relationship instance.
  */
 @Fluent
-public final class AtlasRelationship {
+public final class AtlasRelationship implements JsonSerializable<AtlasRelationship> {
     /*
      * The attributes of the struct.
      */
     @Generated
-    @JsonProperty(value = "attributes")
     private Map<String, Object> attributes;
 
     /*
      * The name of the type.
      */
     @Generated
-    @JsonProperty(value = "typeName")
     private String typeName;
 
     /*
      * ETag for concurrency control.
      */
     @Generated
-    @JsonProperty(value = "lastModifiedTS")
     private String lastModifiedTS;
 
     /*
      * The created time of the record.
      */
     @Generated
-    @JsonProperty(value = "createTime")
     private Long createTime;
 
     /*
      * The user who created the record.
      */
     @Generated
-    @JsonProperty(value = "createdBy")
     private String createdBy;
 
     /*
      * Reference to an object-instance of a type - like entity.
      */
     @Generated
-    @JsonProperty(value = "end1")
     private AtlasObjectId end1;
 
     /*
      * Reference to an object-instance of a type - like entity.
      */
     @Generated
-    @JsonProperty(value = "end2")
     private AtlasObjectId end2;
 
     /*
      * The GUID of the relationship.
      */
     @Generated
-    @JsonProperty(value = "guid")
     private String guid;
 
     /*
      * The home ID of the relationship.
      */
     @Generated
-    @JsonProperty(value = "homeId")
     private String homeId;
 
     /*
      * The label of the relationship.
      */
     @Generated
-    @JsonProperty(value = "label")
     private String label;
 
     /*
      * Used to record the provenance of an instance of an entity or relationship
      */
     @Generated
-    @JsonProperty(value = "provenanceType")
     private Integer provenanceType;
 
     /*
      * The enum of relationship status.
      */
     @Generated
-    @JsonProperty(value = "status")
     private StatusAtlasRelationship status;
 
     /*
      * The update time of the record.
      */
     @Generated
-    @JsonProperty(value = "updateTime")
     private Long updateTime;
 
     /*
      * The user who updated the record.
      */
     @Generated
-    @JsonProperty(value = "updatedBy")
     private String updatedBy;
 
     /*
      * The version of the relationship.
      */
     @Generated
-    @JsonProperty(value = "version")
     private Long version;
 
     /**
@@ -454,5 +443,86 @@ public final class AtlasRelationship {
     public AtlasRelationship setVersion(Long version) {
         this.version = version;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("attributes", this.attributes, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("typeName", this.typeName);
+        jsonWriter.writeStringField("lastModifiedTS", this.lastModifiedTS);
+        jsonWriter.writeNumberField("createTime", this.createTime);
+        jsonWriter.writeStringField("createdBy", this.createdBy);
+        jsonWriter.writeJsonField("end1", this.end1);
+        jsonWriter.writeJsonField("end2", this.end2);
+        jsonWriter.writeStringField("guid", this.guid);
+        jsonWriter.writeStringField("homeId", this.homeId);
+        jsonWriter.writeStringField("label", this.label);
+        jsonWriter.writeNumberField("provenanceType", this.provenanceType);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeNumberField("updateTime", this.updateTime);
+        jsonWriter.writeStringField("updatedBy", this.updatedBy);
+        jsonWriter.writeNumberField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AtlasRelationship from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AtlasRelationship if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AtlasRelationship.
+     */
+    @Generated
+    public static AtlasRelationship fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AtlasRelationship deserializedAtlasRelationship = new AtlasRelationship();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("attributes".equals(fieldName)) {
+                    Map<String, Object> attributes = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedAtlasRelationship.attributes = attributes;
+                } else if ("typeName".equals(fieldName)) {
+                    deserializedAtlasRelationship.typeName = reader.getString();
+                } else if ("lastModifiedTS".equals(fieldName)) {
+                    deserializedAtlasRelationship.lastModifiedTS = reader.getString();
+                } else if ("createTime".equals(fieldName)) {
+                    deserializedAtlasRelationship.createTime = reader.getNullable(JsonReader::getLong);
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedAtlasRelationship.createdBy = reader.getString();
+                } else if ("end1".equals(fieldName)) {
+                    deserializedAtlasRelationship.end1 = AtlasObjectId.fromJson(reader);
+                } else if ("end2".equals(fieldName)) {
+                    deserializedAtlasRelationship.end2 = AtlasObjectId.fromJson(reader);
+                } else if ("guid".equals(fieldName)) {
+                    deserializedAtlasRelationship.guid = reader.getString();
+                } else if ("homeId".equals(fieldName)) {
+                    deserializedAtlasRelationship.homeId = reader.getString();
+                } else if ("label".equals(fieldName)) {
+                    deserializedAtlasRelationship.label = reader.getString();
+                } else if ("provenanceType".equals(fieldName)) {
+                    deserializedAtlasRelationship.provenanceType = reader.getNullable(JsonReader::getInt);
+                } else if ("status".equals(fieldName)) {
+                    deserializedAtlasRelationship.status = StatusAtlasRelationship.fromString(reader.getString());
+                } else if ("updateTime".equals(fieldName)) {
+                    deserializedAtlasRelationship.updateTime = reader.getNullable(JsonReader::getLong);
+                } else if ("updatedBy".equals(fieldName)) {
+                    deserializedAtlasRelationship.updatedBy = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedAtlasRelationship.version = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAtlasRelationship;
+        });
     }
 }

@@ -5,22 +5,24 @@ package com.azure.ai.vision.imageanalysis.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Represents a list of physical object detected in an image and their location.
  */
 @Immutable
-public final class ObjectsResult {
+public final class ObjectsResult implements JsonSerializable<ObjectsResult> {
 
     /*
      * A list of physical object detected in an image and their location.
      */
     @Generated
-    @JsonProperty(value = "values")
-    private List<DetectedObject> values;
+    private final List<DetectedObject> values;
 
     /**
      * Creates an instance of ObjectsResult class.
@@ -28,8 +30,7 @@ public final class ObjectsResult {
      * @param values the values value to set.
      */
     @Generated
-    @JsonCreator
-    private ObjectsResult(@JsonProperty(value = "values") List<DetectedObject> values) {
+    private ObjectsResult(List<DetectedObject> values) {
         this.values = values;
     }
 
@@ -41,5 +42,42 @@ public final class ObjectsResult {
     @Generated
     public List<DetectedObject> getValues() {
         return this.values;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ObjectsResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ObjectsResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ObjectsResult.
+     */
+    @Generated
+    public static ObjectsResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            List<DetectedObject> values = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("values".equals(fieldName)) {
+                    values = reader.readArray(reader1 -> DetectedObject.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new ObjectsResult(values);
+        });
     }
 }

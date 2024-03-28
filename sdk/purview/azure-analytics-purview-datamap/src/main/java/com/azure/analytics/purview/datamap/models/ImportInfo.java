@@ -6,39 +6,39 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * ImportInfo.
  */
 @Immutable
-public final class ImportInfo {
+public final class ImportInfo implements JsonSerializable<ImportInfo> {
     /*
      * childObjectName
      */
     @Generated
-    @JsonProperty(value = "childObjectName")
     private String childObjectName;
 
     /*
      * importStatus
      */
     @Generated
-    @JsonProperty(value = "importStatus")
     private ImportStatus importStatus;
 
     /*
      * parentObjectName
      */
     @Generated
-    @JsonProperty(value = "parentObjectName")
     private String parentObjectName;
 
     /*
      * remarks
      */
     @Generated
-    @JsonProperty(value = "remarks")
     private String remarks;
 
     /**
@@ -86,5 +86,52 @@ public final class ImportInfo {
     @Generated
     public String getRemarks() {
         return this.remarks;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("childObjectName", this.childObjectName);
+        jsonWriter.writeStringField("importStatus", this.importStatus == null ? null : this.importStatus.toString());
+        jsonWriter.writeStringField("parentObjectName", this.parentObjectName);
+        jsonWriter.writeStringField("remarks", this.remarks);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImportInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImportInfo if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the ImportInfo.
+     */
+    @Generated
+    public static ImportInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImportInfo deserializedImportInfo = new ImportInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("childObjectName".equals(fieldName)) {
+                    deserializedImportInfo.childObjectName = reader.getString();
+                } else if ("importStatus".equals(fieldName)) {
+                    deserializedImportInfo.importStatus = ImportStatus.fromString(reader.getString());
+                } else if ("parentObjectName".equals(fieldName)) {
+                    deserializedImportInfo.parentObjectName = reader.getString();
+                } else if ("remarks".equals(fieldName)) {
+                    deserializedImportInfo.remarks = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImportInfo;
+        });
     }
 }

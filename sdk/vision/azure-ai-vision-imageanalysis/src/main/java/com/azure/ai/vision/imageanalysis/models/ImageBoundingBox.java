@@ -5,42 +5,41 @@ package com.azure.ai.vision.imageanalysis.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A basic rectangle specifying a sub-region of the image.
  */
 @Immutable
-public final class ImageBoundingBox {
+public final class ImageBoundingBox implements JsonSerializable<ImageBoundingBox> {
 
     /*
      * X-coordinate of the top left point of the area, in pixels.
      */
     @Generated
-    @JsonProperty(value = "x")
-    private int x;
+    private final int x;
 
     /*
      * Y-coordinate of the top left point of the area, in pixels.
      */
     @Generated
-    @JsonProperty(value = "y")
-    private int y;
+    private final int y;
 
     /*
      * Width of the area, in pixels.
      */
     @Generated
-    @JsonProperty(value = "w")
-    private int width;
+    private final int width;
 
     /*
      * Height of the area, in pixels.
      */
     @Generated
-    @JsonProperty(value = "h")
-    private int height;
+    private final int height;
 
     /**
      * Creates an instance of ImageBoundingBox class.
@@ -51,9 +50,7 @@ public final class ImageBoundingBox {
      * @param height the height value to set.
      */
     @Generated
-    @JsonCreator
-    private ImageBoundingBox(@JsonProperty(value = "x") int x, @JsonProperty(value = "y") int y,
-        @JsonProperty(value = "w") int width, @JsonProperty(value = "h") int height) {
+    private ImageBoundingBox(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -106,8 +103,64 @@ public final class ImageBoundingBox {
      * @return a string containing the bounding box values.
      */
     public String toString() {
-        return new StringBuilder().append("{x=").append(this.getX()).append(", y=").append(this.getY())
-            .append(", width=").append(this.getWidth()).append(", height=").append(this.getHeight()).append("}")
+        return new StringBuilder().append("{x=")
+            .append(this.getX())
+            .append(", y=")
+            .append(this.getY())
+            .append(", width=")
+            .append(this.getWidth())
+            .append(", height=")
+            .append(this.getHeight())
+            .append("}")
             .toString();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("x", this.x);
+        jsonWriter.writeIntField("y", this.y);
+        jsonWriter.writeIntField("w", this.width);
+        jsonWriter.writeIntField("h", this.height);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageBoundingBox from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageBoundingBox if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImageBoundingBox.
+     */
+    @Generated
+    public static ImageBoundingBox fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            int x = 0;
+            int y = 0;
+            int width = 0;
+            int height = 0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("x".equals(fieldName)) {
+                    x = reader.getInt();
+                } else if ("y".equals(fieldName)) {
+                    y = reader.getInt();
+                } else if ("w".equals(fieldName)) {
+                    width = reader.getInt();
+                } else if ("h".equals(fieldName)) {
+                    height = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new ImageBoundingBox(x, y, width, height);
+        });
     }
 }

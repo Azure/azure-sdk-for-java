@@ -6,7 +6,6 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class DocumentSelectionMarkState extends ExpandableStringEnum<Docum
      * @return the corresponding DocumentSelectionMarkState.
      */
     @Generated
-    @JsonCreator
     public static DocumentSelectionMarkState fromString(String name) {
         return fromString(name, DocumentSelectionMarkState.class);
     }

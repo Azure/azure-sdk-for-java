@@ -5,7 +5,6 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -46,7 +45,6 @@ public final class ImageGenerationStyle extends ExpandableStringEnum<ImageGenera
      * @return the corresponding ImageGenerationStyle.
      */
     @Generated
-    @JsonCreator
     public static ImageGenerationStyle fromString(String name) {
         return fromString(name, ImageGenerationStyle.class);
     }

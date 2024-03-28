@@ -6,48 +6,46 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The error object.
  */
 @Immutable
-public final class Error {
+public final class Error implements JsonSerializable<Error> {
     /*
      * One of a server-defined set of error codes.
      */
     @Generated
-    @JsonProperty(value = "code")
-    private String code;
+    private final String code;
 
     /*
      * A human-readable representation of the error.
      */
     @Generated
-    @JsonProperty(value = "message")
-    private String message;
+    private final String message;
 
     /*
      * The target of the error.
      */
     @Generated
-    @JsonProperty(value = "target")
     private String target;
 
     /*
      * An array of details about specific errors that led to this reported error.
      */
     @Generated
-    @JsonProperty(value = "details")
     private List<Error> details;
 
     /*
      * An object containing more specific information than the current object about the error.
      */
     @Generated
-    @JsonProperty(value = "innererror")
     private InnerError innererror;
 
     /**
@@ -57,8 +55,7 @@ public final class Error {
      * @param message the message value to set.
      */
     @Generated
-    @JsonCreator
-    private Error(@JsonProperty(value = "code") String code, @JsonProperty(value = "message") String message) {
+    private Error(String code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -112,5 +109,64 @@ public final class Error {
     @Generated
     public InnerError getInnererror() {
         return this.innererror;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("target", this.target);
+        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("innererror", this.innererror);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Error from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Error if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Error.
+     */
+    @Generated
+    public static Error fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String code = null;
+            String message = null;
+            String target = null;
+            List<Error> details = null;
+            InnerError innererror = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    message = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    target = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    details = reader.readArray(reader1 -> Error.fromJson(reader1));
+                } else if ("innererror".equals(fieldName)) {
+                    innererror = InnerError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            Error deserializedError = new Error(code, message);
+            deserializedError.target = target;
+            deserializedError.details = details;
+            deserializedError.innererror = innererror;
+
+            return deserializedError;
+        });
     }
 }

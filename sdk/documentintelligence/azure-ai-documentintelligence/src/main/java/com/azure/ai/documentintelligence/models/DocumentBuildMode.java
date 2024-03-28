@@ -6,7 +6,6 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class DocumentBuildMode extends ExpandableStringEnum<DocumentBuildM
      * @return the corresponding DocumentBuildMode.
      */
     @Generated
-    @JsonCreator
     public static DocumentBuildMode fromString(String name) {
         return fromString(name, DocumentBuildMode.class);
     }

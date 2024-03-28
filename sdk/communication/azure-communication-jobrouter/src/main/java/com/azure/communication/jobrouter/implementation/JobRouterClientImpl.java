@@ -559,34 +559,18 @@ public final class JobRouterClientImpl {
 
     /**
      * Creates or updates a router job.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The request should only proceed if an entity matches this string.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>The request should only proceed if the entity was not modified after this time.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -601,8 +585,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -620,7 +604,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -630,18 +614,19 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
+     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -656,8 +641,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -675,7 +660,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -685,12 +670,13 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
+     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
      * }</pre>
@@ -715,34 +701,18 @@ public final class JobRouterClientImpl {
 
     /**
      * Creates or updates a router job.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The request should only proceed if an entity matches this string.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>The request should only proceed if the entity was not modified after this time.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -757,8 +727,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -776,7 +746,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -786,18 +756,19 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
+     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -812,8 +783,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -831,7 +802,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -841,12 +812,13 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
+     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
      * }</pre>
@@ -871,9 +843,8 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves an existing job by Id.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -888,8 +859,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -907,7 +878,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -917,12 +888,13 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
+     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
      * }</pre>
@@ -944,9 +916,8 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves an existing job by Id.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -961,8 +932,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -980,7 +951,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -990,12 +961,13 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
+     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
      * }</pre>
@@ -1053,19 +1025,16 @@ public final class JobRouterClientImpl {
 
     /**
      * Reclassify a job.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
-     * {
-     * }
+     * { }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
-     * {
-     * }
+     * { }
      * }</pre>
      * 
      * @param jobId Id of a job.
@@ -1092,19 +1061,16 @@ public final class JobRouterClientImpl {
 
     /**
      * Reclassify a job.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
-     * {
-     * }
+     * { }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
-     * {
-     * }
+     * { }
      * }</pre>
      * 
      * @param jobId Id of a job.
@@ -1130,21 +1096,19 @@ public final class JobRouterClientImpl {
 
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     note: String (Optional)
      *     dispositionCode: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
-     * {
-     * }
+     * { }
      * }</pre>
      * 
      * @param jobId Id of a job.
@@ -1171,21 +1135,19 @@ public final class JobRouterClientImpl {
 
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     note: String (Optional)
      *     dispositionCode: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
-     * {
-     * }
+     * { }
      * }</pre>
      * 
      * @param jobId Id of a job.
@@ -1211,20 +1173,18 @@ public final class JobRouterClientImpl {
 
     /**
      * Completes an assigned job.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     note: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
-     * {
-     * }
+     * { }
      * }</pre>
      * 
      * @param jobId Id of a job.
@@ -1253,20 +1213,18 @@ public final class JobRouterClientImpl {
 
     /**
      * Completes an assigned job.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     note: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
-     * {
-     * }
+     * { }
      * }</pre>
      * 
      * @param jobId Id of a job.
@@ -1294,9 +1252,8 @@ public final class JobRouterClientImpl {
 
     /**
      * Closes a completed job.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     dispositionCode: String (Optional)
@@ -1304,12 +1261,11 @@ public final class JobRouterClientImpl {
      *     note: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
-     * {
-     * }
+     * { }
      * }</pre>
      * 
      * @param jobId Id of a job.
@@ -1337,9 +1293,8 @@ public final class JobRouterClientImpl {
 
     /**
      * Closes a completed job.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     dispositionCode: String (Optional)
@@ -1347,12 +1302,11 @@ public final class JobRouterClientImpl {
      *     note: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
-     * {
-     * }
+     * { }
      * }</pre>
      * 
      * @param jobId Id of a job.
@@ -1379,67 +1333,26 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves list of jobs based on filter parameters.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of objects to return per page.</td>
-     * </tr>
-     * <tr>
-     * <td>status</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, filter jobs by status. Allowed values: "all", "pendingClassification", "queued", "assigned",
-     * "completed", "closed", "cancelled", "classificationFailed", "created", "pendingSchedule", "scheduled",
-     * "scheduleFailed", "waitingForActivation", "active".</td>
-     * </tr>
-     * <tr>
-     * <td>queueId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, filter jobs by queue.</td>
-     * </tr>
-     * <tr>
-     * <td>channelId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, filter jobs by channel.</td>
-     * </tr>
-     * <tr>
-     * <td>classificationPolicyId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, filter jobs by classificationPolicy.</td>
-     * </tr>
-     * <tr>
-     * <td>scheduledBefore</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>If specified, filter on jobs that was scheduled before or at given timestamp. Range: (-Inf,
-     * scheduledBefore].</td>
-     * </tr>
-     * <tr>
-     * <td>scheduledAfter</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>If specified, filter on jobs that was scheduled at or after given value. Range: [scheduledAfter, +Inf).</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>If specified, filter jobs by status. Allowed values: "all",
+     * "pendingClassification", "queued", "assigned", "completed", "closed", "cancelled", "classificationFailed",
+     * "created", "pendingSchedule", "scheduled", "scheduleFailed", "waitingForActivation", "active".</td></tr>
+     * <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, filter jobs by queue.</td></tr>
+     * <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, filter jobs by channel.</td></tr>
+     * <tr><td>classificationPolicyId</td><td>String</td><td>No</td><td>If specified, filter jobs by
+     * classificationPolicy.</td></tr>
+     * <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled
+     * before or at given timestamp. Range: (-Inf, scheduledBefore].</td></tr>
+     * <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled
+     * at or after given value. Range: [scheduledAfter, +Inf).</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1454,8 +1367,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1473,7 +1386,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -1483,12 +1396,13 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
+     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
      * }</pre>
@@ -1513,67 +1427,26 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves list of jobs based on filter parameters.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of objects to return per page.</td>
-     * </tr>
-     * <tr>
-     * <td>status</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, filter jobs by status. Allowed values: "all", "pendingClassification", "queued", "assigned",
-     * "completed", "closed", "cancelled", "classificationFailed", "created", "pendingSchedule", "scheduled",
-     * "scheduleFailed", "waitingForActivation", "active".</td>
-     * </tr>
-     * <tr>
-     * <td>queueId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, filter jobs by queue.</td>
-     * </tr>
-     * <tr>
-     * <td>channelId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, filter jobs by channel.</td>
-     * </tr>
-     * <tr>
-     * <td>classificationPolicyId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, filter jobs by classificationPolicy.</td>
-     * </tr>
-     * <tr>
-     * <td>scheduledBefore</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>If specified, filter on jobs that was scheduled before or at given timestamp. Range: (-Inf,
-     * scheduledBefore].</td>
-     * </tr>
-     * <tr>
-     * <td>scheduledAfter</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>If specified, filter on jobs that was scheduled at or after given value. Range: [scheduledAfter, +Inf).</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>If specified, filter jobs by status. Allowed values: "all",
+     * "pendingClassification", "queued", "assigned", "completed", "closed", "cancelled", "classificationFailed",
+     * "created", "pendingSchedule", "scheduled", "scheduleFailed", "waitingForActivation", "active".</td></tr>
+     * <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, filter jobs by queue.</td></tr>
+     * <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, filter jobs by channel.</td></tr>
+     * <tr><td>classificationPolicyId</td><td>String</td><td>No</td><td>If specified, filter jobs by
+     * classificationPolicy.</td></tr>
+     * <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled
+     * before or at given timestamp. Range: (-Inf, scheduledBefore].</td></tr>
+     * <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled
+     * at or after given value. Range: [scheduledAfter, +Inf).</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1588,8 +1461,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1607,7 +1480,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -1617,12 +1490,13 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
+     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
      * }</pre>
@@ -1665,67 +1539,26 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves list of jobs based on filter parameters.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of objects to return per page.</td>
-     * </tr>
-     * <tr>
-     * <td>status</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, filter jobs by status. Allowed values: "all", "pendingClassification", "queued", "assigned",
-     * "completed", "closed", "cancelled", "classificationFailed", "created", "pendingSchedule", "scheduled",
-     * "scheduleFailed", "waitingForActivation", "active".</td>
-     * </tr>
-     * <tr>
-     * <td>queueId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, filter jobs by queue.</td>
-     * </tr>
-     * <tr>
-     * <td>channelId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, filter jobs by channel.</td>
-     * </tr>
-     * <tr>
-     * <td>classificationPolicyId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, filter jobs by classificationPolicy.</td>
-     * </tr>
-     * <tr>
-     * <td>scheduledBefore</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>If specified, filter on jobs that was scheduled before or at given timestamp. Range: (-Inf,
-     * scheduledBefore].</td>
-     * </tr>
-     * <tr>
-     * <td>scheduledAfter</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>If specified, filter on jobs that was scheduled at or after given value. Range: [scheduledAfter, +Inf).</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>If specified, filter jobs by status. Allowed values: "all",
+     * "pendingClassification", "queued", "assigned", "completed", "closed", "cancelled", "classificationFailed",
+     * "created", "pendingSchedule", "scheduled", "scheduleFailed", "waitingForActivation", "active".</td></tr>
+     * <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, filter jobs by queue.</td></tr>
+     * <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, filter jobs by channel.</td></tr>
+     * <tr><td>classificationPolicyId</td><td>String</td><td>No</td><td>If specified, filter jobs by
+     * classificationPolicy.</td></tr>
+     * <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled
+     * before or at given timestamp. Range: (-Inf, scheduledBefore].</td></tr>
+     * <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled
+     * at or after given value. Range: [scheduledAfter, +Inf).</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1740,8 +1573,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1759,7 +1592,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -1769,12 +1602,13 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
+     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
      * }</pre>
@@ -1797,67 +1631,26 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves list of jobs based on filter parameters.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of objects to return per page.</td>
-     * </tr>
-     * <tr>
-     * <td>status</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, filter jobs by status. Allowed values: "all", "pendingClassification", "queued", "assigned",
-     * "completed", "closed", "cancelled", "classificationFailed", "created", "pendingSchedule", "scheduled",
-     * "scheduleFailed", "waitingForActivation", "active".</td>
-     * </tr>
-     * <tr>
-     * <td>queueId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, filter jobs by queue.</td>
-     * </tr>
-     * <tr>
-     * <td>channelId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, filter jobs by channel.</td>
-     * </tr>
-     * <tr>
-     * <td>classificationPolicyId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, filter jobs by classificationPolicy.</td>
-     * </tr>
-     * <tr>
-     * <td>scheduledBefore</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>If specified, filter on jobs that was scheduled before or at given timestamp. Range: (-Inf,
-     * scheduledBefore].</td>
-     * </tr>
-     * <tr>
-     * <td>scheduledAfter</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>If specified, filter on jobs that was scheduled at or after given value. Range: [scheduledAfter, +Inf).</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>If specified, filter jobs by status. Allowed values: "all",
+     * "pendingClassification", "queued", "assigned", "completed", "closed", "cancelled", "classificationFailed",
+     * "created", "pendingSchedule", "scheduled", "scheduleFailed", "waitingForActivation", "active".</td></tr>
+     * <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, filter jobs by queue.</td></tr>
+     * <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, filter jobs by channel.</td></tr>
+     * <tr><td>classificationPolicyId</td><td>String</td><td>No</td><td>If specified, filter jobs by
+     * classificationPolicy.</td></tr>
+     * <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled
+     * before or at given timestamp. Range: (-Inf, scheduledBefore].</td></tr>
+     * <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled
+     * at or after given value. Range: [scheduledAfter, +Inf).</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1872,8 +1665,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1891,7 +1684,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -1901,12 +1694,13 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
+     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
      * }</pre>
@@ -1949,9 +1743,8 @@ public final class JobRouterClientImpl {
 
     /**
      * Gets a job's position details.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     jobId: String (Required)
@@ -1979,9 +1772,8 @@ public final class JobRouterClientImpl {
 
     /**
      * Gets a job's position details.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     jobId: String (Required)
@@ -2009,17 +1801,16 @@ public final class JobRouterClientImpl {
 
     /**
      * Unassign a job.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     suspendMatching: Boolean (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     jobId: String (Required)
@@ -2053,17 +1844,16 @@ public final class JobRouterClientImpl {
 
     /**
      * Unassign a job.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     suspendMatching: Boolean (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     jobId: String (Required)
@@ -2096,9 +1886,8 @@ public final class JobRouterClientImpl {
 
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     assignmentId: String (Required)
@@ -2127,9 +1916,8 @@ public final class JobRouterClientImpl {
 
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     assignmentId: String (Required)
@@ -2158,20 +1946,18 @@ public final class JobRouterClientImpl {
 
     /**
      * Declines an offer to work on a job.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     retryOfferAt: OffsetDateTime (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
-     * {
-     * }
+     * { }
      * }</pre>
      * 
      * @param workerId Id of a worker.
@@ -2200,20 +1986,18 @@ public final class JobRouterClientImpl {
 
     /**
      * Declines an offer to work on a job.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     retryOfferAt: OffsetDateTime (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
-     * {
-     * }
+     * { }
      * }</pre>
      * 
      * @param workerId Id of a worker.
@@ -2241,9 +2025,8 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves a queue's statistics.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     queueId: String (Required)
@@ -2273,9 +2056,8 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves a queue's statistics.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     queueId: String (Required)
@@ -2304,34 +2086,18 @@ public final class JobRouterClientImpl {
 
     /**
      * Creates or updates a worker.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The request should only proceed if an entity matches this string.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>The request should only proceed if the entity was not modified after this time.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2349,26 +2115,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -2376,9 +2142,9 @@ public final class JobRouterClientImpl {
      *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2396,26 +2162,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -2444,34 +2210,18 @@ public final class JobRouterClientImpl {
 
     /**
      * Creates or updates a worker.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The request should only proceed if an entity matches this string.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>The request should only proceed if the entity was not modified after this time.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2489,26 +2239,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -2516,9 +2266,9 @@ public final class JobRouterClientImpl {
      *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2536,26 +2286,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -2584,9 +2334,8 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves an existing worker by Id.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2604,26 +2353,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -2649,9 +2398,8 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves an existing worker by Id.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2669,26 +2417,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -2750,54 +2498,24 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves existing workers.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of objects to return per page.</td>
-     * </tr>
-     * <tr>
-     * <td>state</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, select workers by worker state. Allowed values: "active", "draining", "inactive", "all".</td>
-     * </tr>
-     * <tr>
-     * <td>channelId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, select workers who have a channel configuration with this channel.</td>
-     * </tr>
-     * <tr>
-     * <td>queueId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, select workers who are assigned to this queue.</td>
-     * </tr>
-     * <tr>
-     * <td>hasCapacity</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>If set to true, select only workers who have capacity for the channel specified by `channelId` or for any
-     * channel if `channelId` not specified. If set to false, then will return all workers including workers without any
-     * capacity for jobs. Defaults to false.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr><td>state</td><td>String</td><td>No</td><td>If specified, select workers by worker state. Allowed values:
+     * "active", "draining", "inactive", "all".</td></tr>
+     * <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, select workers who have a channel configuration
+     * with this channel.</td></tr>
+     * <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, select workers who are assigned to this
+     * queue.</td></tr>
+     * <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>If set to true, select only workers who have capacity for
+     * the channel specified by `channelId` or for any channel if `channelId` not specified. If set to false, then will
+     * return all workers including workers without any capacity for jobs. Defaults to false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2815,26 +2533,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -2863,54 +2581,24 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves existing workers.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of objects to return per page.</td>
-     * </tr>
-     * <tr>
-     * <td>state</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, select workers by worker state. Allowed values: "active", "draining", "inactive", "all".</td>
-     * </tr>
-     * <tr>
-     * <td>channelId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, select workers who have a channel configuration with this channel.</td>
-     * </tr>
-     * <tr>
-     * <td>queueId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, select workers who are assigned to this queue.</td>
-     * </tr>
-     * <tr>
-     * <td>hasCapacity</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>If set to true, select only workers who have capacity for the channel specified by `channelId` or for any
-     * channel if `channelId` not specified. If set to false, then will return all workers including workers without any
-     * capacity for jobs. Defaults to false.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr><td>state</td><td>String</td><td>No</td><td>If specified, select workers by worker state. Allowed values:
+     * "active", "draining", "inactive", "all".</td></tr>
+     * <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, select workers who have a channel configuration
+     * with this channel.</td></tr>
+     * <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, select workers who are assigned to this
+     * queue.</td></tr>
+     * <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>If set to true, select only workers who have capacity for
+     * the channel specified by `channelId` or for any channel if `channelId` not specified. If set to false, then will
+     * return all workers including workers without any capacity for jobs. Defaults to false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -2928,26 +2616,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -2994,54 +2682,24 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves existing workers.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of objects to return per page.</td>
-     * </tr>
-     * <tr>
-     * <td>state</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, select workers by worker state. Allowed values: "active", "draining", "inactive", "all".</td>
-     * </tr>
-     * <tr>
-     * <td>channelId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, select workers who have a channel configuration with this channel.</td>
-     * </tr>
-     * <tr>
-     * <td>queueId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, select workers who are assigned to this queue.</td>
-     * </tr>
-     * <tr>
-     * <td>hasCapacity</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>If set to true, select only workers who have capacity for the channel specified by `channelId` or for any
-     * channel if `channelId` not specified. If set to false, then will return all workers including workers without any
-     * capacity for jobs. Defaults to false.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr><td>state</td><td>String</td><td>No</td><td>If specified, select workers by worker state. Allowed values:
+     * "active", "draining", "inactive", "all".</td></tr>
+     * <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, select workers who have a channel configuration
+     * with this channel.</td></tr>
+     * <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, select workers who are assigned to this
+     * queue.</td></tr>
+     * <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>If set to true, select only workers who have capacity for
+     * the channel specified by `channelId` or for any channel if `channelId` not specified. If set to false, then will
+     * return all workers including workers without any capacity for jobs. Defaults to false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -3059,26 +2717,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -3105,54 +2763,24 @@ public final class JobRouterClientImpl {
 
     /**
      * Retrieves existing workers.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of objects to return per page.</td>
-     * </tr>
-     * <tr>
-     * <td>state</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, select workers by worker state. Allowed values: "active", "draining", "inactive", "all".</td>
-     * </tr>
-     * <tr>
-     * <td>channelId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, select workers who have a channel configuration with this channel.</td>
-     * </tr>
-     * <tr>
-     * <td>queueId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, select workers who are assigned to this queue.</td>
-     * </tr>
-     * <tr>
-     * <td>hasCapacity</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>If set to true, select only workers who have capacity for the channel specified by `channelId` or for any
-     * channel if `channelId` not specified. If set to false, then will return all workers including workers without any
-     * capacity for jobs. Defaults to false.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr><td>state</td><td>String</td><td>No</td><td>If specified, select workers by worker state. Allowed values:
+     * "active", "draining", "inactive", "all".</td></tr>
+     * <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, select workers who have a channel configuration
+     * with this channel.</td></tr>
+     * <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, select workers who are assigned to this
+     * queue.</td></tr>
+     * <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>If set to true, select only workers who have capacity for
+     * the channel specified by `channelId` or for any channel if `channelId` not specified. If set to false, then will
+     * return all workers including workers without any capacity for jobs. Defaults to false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -3170,26 +2798,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -3238,9 +2866,8 @@ public final class JobRouterClientImpl {
      * Retrieves list of jobs based on filter parameters.
      * 
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -3255,8 +2882,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -3274,7 +2901,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -3284,12 +2911,13 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
+     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
      * }</pre>
@@ -3319,9 +2947,8 @@ public final class JobRouterClientImpl {
      * Retrieves list of jobs based on filter parameters.
      * 
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -3336,8 +2963,8 @@ public final class JobRouterClientImpl {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -3355,7 +2982,7 @@ public final class JobRouterClientImpl {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -3365,12 +2992,13 @@ public final class JobRouterClientImpl {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
+     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
      * }</pre>
@@ -3398,9 +3026,8 @@ public final class JobRouterClientImpl {
      * Retrieves existing workers.
      * 
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -3418,26 +3045,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -3472,9 +3099,8 @@ public final class JobRouterClientImpl {
      * Retrieves existing workers.
      * 
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -3492,26 +3118,26 @@ public final class JobRouterClientImpl {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)

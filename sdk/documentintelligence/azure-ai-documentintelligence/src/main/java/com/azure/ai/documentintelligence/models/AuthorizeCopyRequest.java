@@ -6,34 +6,34 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Request body to authorize document model copy.
  */
 @Fluent
-public final class AuthorizeCopyRequest {
+public final class AuthorizeCopyRequest implements JsonSerializable<AuthorizeCopyRequest> {
     /*
      * Unique document model name.
      */
     @Generated
-    @JsonProperty(value = "modelId")
-    private String modelId;
+    private final String modelId;
 
     /*
      * Document model description.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * List of key-value tag attributes associated with the document model.
      */
     @Generated
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**
@@ -42,8 +42,7 @@ public final class AuthorizeCopyRequest {
      * @param modelId the modelId value to set.
      */
     @Generated
-    @JsonCreator
-    public AuthorizeCopyRequest(@JsonProperty(value = "modelId") String modelId) {
+    public AuthorizeCopyRequest(String modelId) {
         this.modelId = modelId;
     }
 
@@ -99,5 +98,55 @@ public final class AuthorizeCopyRequest {
     public AuthorizeCopyRequest setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("modelId", this.modelId);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthorizeCopyRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthorizeCopyRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AuthorizeCopyRequest.
+     */
+    @Generated
+    public static AuthorizeCopyRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String modelId = null;
+            String description = null;
+            Map<String, String> tags = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("modelId".equals(fieldName)) {
+                    modelId = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    tags = reader.readMap(reader1 -> reader1.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            AuthorizeCopyRequest deserializedAuthorizeCopyRequest = new AuthorizeCopyRequest(modelId);
+            deserializedAuthorizeCopyRequest.description = description;
+            deserializedAuthorizeCopyRequest.tags = tags;
+
+            return deserializedAuthorizeCopyRequest;
+        });
     }
 }

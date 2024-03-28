@@ -1,15 +1,15 @@
 {
   "main": "dist/src/index.js",
   "dependencies": {
-    "@azure-tools/typespec-java": "0.13.11"
+    "@azure-tools/typespec-java": "https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-js-test-autorest/npm/registry/@azure-tools/typespec-java/-/typespec-java-0.15.6-alpha.20240328.1.tgz"
   },
   "devDependencies": {
-    "@typespec/http": "0.54.0",
-    "@typespec/openapi": "0.54.0",
-    "@azure-tools/typespec-azure-core": "0.40.0",
-    "@azure-tools/typespec-client-generator-core": "0.40.0",
-    "@typespec/rest": "0.54.0",
-    "@typespec/versioning": "0.54.0",
-    "@typespec/compiler": "0.54.0"
+    "@azure-tools/typespec-client-generator-core": "0.41.0-dev.32",
+    "@typespec/http": "0.55.0-dev.3",
+    "@typespec/versioning": "0.55.0-dev.3",
+    "@typespec/compiler": "0.55.0-dev.10",
+    "@typespec/openapi": "0.55.0-dev.2",
+    "@typespec/rest": "0.55.0-dev.2",
+    "@azure-tools/typespec-azure-core": "0.41.0-dev.5"
   }
 }

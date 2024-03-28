@@ -5,8 +5,11 @@ package com.azure.ai.translation.text.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,28 +18,25 @@ import java.util.List;
  * to another script.
  */
 @Immutable
-public final class TransliterationLanguage {
+public final class TransliterationLanguage implements JsonSerializable<TransliterationLanguage> {
 
     /*
      * Display name of the language in the locale requested via Accept-Language header.
      */
     @Generated
-    @JsonProperty(value = "name")
-    private String name;
+    private final String name;
 
     /*
      * Display name of the language in the locale native for this language.
      */
     @Generated
-    @JsonProperty(value = "nativeName")
-    private String nativeName;
+    private final String nativeName;
 
     /*
      * List of scripts to convert from.
      */
     @Generated
-    @JsonProperty(value = "scripts")
-    private List<TransliterableScript> scripts;
+    private final List<TransliterableScript> scripts;
 
     /**
      * Creates an instance of TransliterationLanguage class.
@@ -46,10 +46,7 @@ public final class TransliterationLanguage {
      * @param scripts the scripts value to set.
      */
     @Generated
-    @JsonCreator
-    private TransliterationLanguage(@JsonProperty(value = "name") String name,
-        @JsonProperty(value = "nativeName") String nativeName,
-        @JsonProperty(value = "scripts") List<TransliterableScript> scripts) {
+    private TransliterationLanguage(String name, String nativeName, List<TransliterableScript> scripts) {
         this.name = name;
         this.nativeName = nativeName;
         this.scripts = scripts;
@@ -83,5 +80,50 @@ public final class TransliterationLanguage {
     @Generated
     public List<TransliterableScript> getScripts() {
         return this.scripts;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("nativeName", this.nativeName);
+        jsonWriter.writeArrayField("scripts", this.scripts, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TransliterationLanguage from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TransliterationLanguage if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TransliterationLanguage.
+     */
+    @Generated
+    public static TransliterationLanguage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            String nativeName = null;
+            List<TransliterableScript> scripts = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("nativeName".equals(fieldName)) {
+                    nativeName = reader.getString();
+                } else if ("scripts".equals(fieldName)) {
+                    scripts = reader.readArray(reader1 -> TransliterableScript.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new TransliterationLanguage(name, nativeName, scripts);
+        });
     }
 }

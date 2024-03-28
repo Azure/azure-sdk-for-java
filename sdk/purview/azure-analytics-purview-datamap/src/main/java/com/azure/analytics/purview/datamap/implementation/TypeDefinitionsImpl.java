@@ -498,9 +498,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the businessMetadata definition for the given guid.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -605,9 +604,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the businessMetadata definition for the given guid.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -710,9 +708,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the businessMetadata definition by it's name (unique).
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -817,9 +814,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the businessMetadata definition by it's name (unique).
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -922,9 +918,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the classification definition for the given GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -1038,9 +1033,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the classification definition for the given GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -1151,9 +1145,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the classification definition by its name (unique).
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -1267,9 +1260,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the classification definition by its name (unique).
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -1381,9 +1373,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the Entity definition for the given GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -1516,9 +1507,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the Entity definition for the given GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -1649,9 +1639,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the entity definition by its name (unique).
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -1784,9 +1773,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the entity definition by its name (unique).
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -1917,9 +1905,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the enum definition for the given GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -2005,9 +1992,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the enum definition for the given GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -2091,9 +2077,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the enum definition by its name (unique).
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -2179,9 +2164,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the enum definition by its name (unique).
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -2265,9 +2249,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the relationship definition for the given GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -2382,9 +2365,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the relationship definition for the given GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -2497,9 +2479,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the relationship definition by its name (unique).
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -2615,9 +2596,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the relationship definition by its name (unique).
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -2730,9 +2710,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the struct definition for the given GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -2836,9 +2815,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the struct definition for the given GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -2940,9 +2918,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the struct definition by its name (unique).
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -3046,9 +3023,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the struct definition by its name (unique).
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -3150,9 +3126,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the type definition for the given GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -3307,9 +3282,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the type definition for the given GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -3462,9 +3436,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the type definition by its name (unique).
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -3619,9 +3592,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the type definition by its name (unique).
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -3809,37 +3781,21 @@ public final class TypeDefinitionsImpl {
 
     /**
      * List all type definitions in bulk.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>includeTermTemplate</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether include termtemplatedef when return all typedefs.
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>includeTermTemplate</td><td>Boolean</td><td>No</td><td>Whether include termtemplatedef when return all
+     * typedefs.
      * This is always true
-     * when search filter type=term_template</td>
-     * </tr>
-     * <tr>
-     * <td>type</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Typedef name as search filter when get typedefs. Allowed values: "PRIMITIVE", "OBJECT_ID_TYPE", "ENUM",
-     * "STRUCT", "CLASSIFICATION", "ENTITY", "ARRAY", "MAP", "RELATIONSHIP", "TERM_TEMPLATE".</td>
-     * </tr>
+     * when search filter type=term_template</td></tr>
+     * <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs. Allowed values:
+     * "PRIMITIVE", "OBJECT_ID_TYPE", "ENUM", "STRUCT", "CLASSIFICATION", "ENTITY", "ARRAY", "MAP", "RELATIONSHIP",
+     * "TERM_TEMPLATE".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     businessMetadataDefs (Optional): [
@@ -4137,37 +4093,21 @@ public final class TypeDefinitionsImpl {
 
     /**
      * List all type definitions in bulk.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>includeTermTemplate</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether include termtemplatedef when return all typedefs.
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>includeTermTemplate</td><td>Boolean</td><td>No</td><td>Whether include termtemplatedef when return all
+     * typedefs.
      * This is always true
-     * when search filter type=term_template</td>
-     * </tr>
-     * <tr>
-     * <td>type</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Typedef name as search filter when get typedefs. Allowed values: "PRIMITIVE", "OBJECT_ID_TYPE", "ENUM",
-     * "STRUCT", "CLASSIFICATION", "ENTITY", "ARRAY", "MAP", "RELATIONSHIP", "TERM_TEMPLATE".</td>
-     * </tr>
+     * when search filter type=term_template</td></tr>
+     * <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs. Allowed values:
+     * "PRIMITIVE", "OBJECT_ID_TYPE", "ENUM", "STRUCT", "CLASSIFICATION", "ENTITY", "ARRAY", "MAP", "RELATIONSHIP",
+     * "TERM_TEMPLATE".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     businessMetadataDefs (Optional): [
@@ -4467,9 +4407,8 @@ public final class TypeDefinitionsImpl {
      * Create all atlas type definitions in bulk, only new definitions will be
      * created.
      * Any changes to the existing definitions will be discarded.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     businessMetadataDefs (Optional): [
@@ -4750,9 +4689,9 @@ public final class TypeDefinitionsImpl {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     businessMetadataDefs (Optional): [
@@ -5054,9 +4993,8 @@ public final class TypeDefinitionsImpl {
      * Create all atlas type definitions in bulk, only new definitions will be
      * created.
      * Any changes to the existing definitions will be discarded.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     businessMetadataDefs (Optional): [
@@ -5337,9 +5275,9 @@ public final class TypeDefinitionsImpl {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     businessMetadataDefs (Optional): [
@@ -5638,9 +5576,8 @@ public final class TypeDefinitionsImpl {
     /**
      * Update all types in bulk, changes detected in the type definitions would be
      * persisted.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     businessMetadataDefs (Optional): [
@@ -5921,9 +5858,9 @@ public final class TypeDefinitionsImpl {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     businessMetadataDefs (Optional): [
@@ -6224,9 +6161,8 @@ public final class TypeDefinitionsImpl {
     /**
      * Update all types in bulk, changes detected in the type definitions would be
      * persisted.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     businessMetadataDefs (Optional): [
@@ -6507,9 +6443,9 @@ public final class TypeDefinitionsImpl {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     businessMetadataDefs (Optional): [
@@ -6807,9 +6743,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Delete API for all types in bulk.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     businessMetadataDefs (Optional): [
@@ -7108,9 +7043,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Delete API for all types in bulk.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     businessMetadataDefs (Optional): [
@@ -7408,37 +7342,21 @@ public final class TypeDefinitionsImpl {
 
     /**
      * List all type definitions returned as a list of minimal information header.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>includeTermTemplate</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether include termtemplatedef when return all typedefs.
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>includeTermTemplate</td><td>Boolean</td><td>No</td><td>Whether include termtemplatedef when return all
+     * typedefs.
      * This is always true
-     * when search filter type=term_template</td>
-     * </tr>
-     * <tr>
-     * <td>type</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Typedef name as search filter when get typedefs. Allowed values: "PRIMITIVE", "OBJECT_ID_TYPE", "ENUM",
-     * "STRUCT", "CLASSIFICATION", "ENTITY", "ARRAY", "MAP", "RELATIONSHIP", "TERM_TEMPLATE".</td>
-     * </tr>
+     * when search filter type=term_template</td></tr>
+     * <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs. Allowed values:
+     * "PRIMITIVE", "OBJECT_ID_TYPE", "ENUM", "STRUCT", "CLASSIFICATION", "ENTITY", "ARRAY", "MAP", "RELATIONSHIP",
+     * "TERM_TEMPLATE".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -7465,37 +7383,21 @@ public final class TypeDefinitionsImpl {
 
     /**
      * List all type definitions returned as a list of minimal information header.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>includeTermTemplate</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether include termtemplatedef when return all typedefs.
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>includeTermTemplate</td><td>Boolean</td><td>No</td><td>Whether include termtemplatedef when return all
+     * typedefs.
      * This is always true
-     * when search filter type=term_template</td>
-     * </tr>
-     * <tr>
-     * <td>type</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Typedef name as search filter when get typedefs. Allowed values: "PRIMITIVE", "OBJECT_ID_TYPE", "ENUM",
-     * "STRUCT", "CLASSIFICATION", "ENTITY", "ARRAY", "MAP", "RELATIONSHIP", "TERM_TEMPLATE".</td>
-     * </tr>
+     * when search filter type=term_template</td></tr>
+     * <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs. Allowed values:
+     * "PRIMITIVE", "OBJECT_ID_TYPE", "ENUM", "STRUCT", "CLASSIFICATION", "ENTITY", "ARRAY", "MAP", "RELATIONSHIP",
+     * "TERM_TEMPLATE".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -7522,9 +7424,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the term template definition for the given GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -7628,9 +7529,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the term template definition for the given GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -7733,9 +7633,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the term template definition by its name (unique).
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -7840,9 +7739,8 @@ public final class TypeDefinitionsImpl {
 
     /**
      * Get the term template definition by its name (unique).
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)

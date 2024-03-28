@@ -6,110 +6,100 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The number format.
  */
 @Fluent
-public final class NumberFormat {
+public final class NumberFormat implements JsonSerializable<NumberFormat> {
     /*
      * The number format.
      */
     @Generated
-    @JsonProperty(value = "availableLocales")
     private List<String> availableLocales;
 
     /*
      * The currency.
      */
     @Generated
-    @JsonProperty(value = "currency")
     private String currency;
 
     /*
      * The number format.
      */
     @Generated
-    @JsonProperty(value = "currencyInstance")
     private NumberFormat currencyInstance;
 
     /*
      * Determines if grouping is used.
      */
     @Generated
-    @JsonProperty(value = "groupingUsed")
     private Boolean groupingUsed;
 
     /*
      * The number format.
      */
     @Generated
-    @JsonProperty(value = "instance")
     private NumberFormat instance;
 
     /*
      * The number format.
      */
     @Generated
-    @JsonProperty(value = "integerInstance")
     private NumberFormat integerInstance;
 
     /*
      * The maximum of fraction digits.
      */
     @Generated
-    @JsonProperty(value = "maximumFractionDigits")
     private Integer maximumFractionDigits;
 
     /*
      * The maximum of integer digits.
      */
     @Generated
-    @JsonProperty(value = "maximumIntegerDigits")
     private Integer maximumIntegerDigits;
 
     /*
      * The minimum of fraction digits.
      */
     @Generated
-    @JsonProperty(value = "minimumFractionDigits")
     private Integer minimumFractionDigits;
 
     /*
      * The minimum of integer digits.
      */
     @Generated
-    @JsonProperty(value = "minimumIntegerDigits")
     private Integer minimumIntegerDigits;
 
     /*
      * The number format.
      */
     @Generated
-    @JsonProperty(value = "numberInstance")
     private NumberFormat numberInstance;
 
     /*
      * Determines if only integer is parsed.
      */
     @Generated
-    @JsonProperty(value = "parseIntegerOnly")
     private Boolean parseIntegerOnly;
 
     /*
      * The number format.
      */
     @Generated
-    @JsonProperty(value = "percentInstance")
     private NumberFormat percentInstance;
 
     /*
      * The enum of rounding mode.
      */
     @Generated
-    @JsonProperty(value = "roundingMode")
     private RoundingMode roundingMode;
 
     /**
@@ -425,5 +415,84 @@ public final class NumberFormat {
     public NumberFormat setRoundingMode(RoundingMode roundingMode) {
         this.roundingMode = roundingMode;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("availableLocales", this.availableLocales,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("currency", this.currency);
+        jsonWriter.writeJsonField("currencyInstance", this.currencyInstance);
+        jsonWriter.writeBooleanField("groupingUsed", this.groupingUsed);
+        jsonWriter.writeJsonField("instance", this.instance);
+        jsonWriter.writeJsonField("integerInstance", this.integerInstance);
+        jsonWriter.writeNumberField("maximumFractionDigits", this.maximumFractionDigits);
+        jsonWriter.writeNumberField("maximumIntegerDigits", this.maximumIntegerDigits);
+        jsonWriter.writeNumberField("minimumFractionDigits", this.minimumFractionDigits);
+        jsonWriter.writeNumberField("minimumIntegerDigits", this.minimumIntegerDigits);
+        jsonWriter.writeJsonField("numberInstance", this.numberInstance);
+        jsonWriter.writeBooleanField("parseIntegerOnly", this.parseIntegerOnly);
+        jsonWriter.writeJsonField("percentInstance", this.percentInstance);
+        jsonWriter.writeStringField("roundingMode", this.roundingMode == null ? null : this.roundingMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NumberFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NumberFormat if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NumberFormat.
+     */
+    @Generated
+    public static NumberFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NumberFormat deserializedNumberFormat = new NumberFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("availableLocales".equals(fieldName)) {
+                    List<String> availableLocales = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNumberFormat.availableLocales = availableLocales;
+                } else if ("currency".equals(fieldName)) {
+                    deserializedNumberFormat.currency = reader.getString();
+                } else if ("currencyInstance".equals(fieldName)) {
+                    deserializedNumberFormat.currencyInstance = NumberFormat.fromJson(reader);
+                } else if ("groupingUsed".equals(fieldName)) {
+                    deserializedNumberFormat.groupingUsed = reader.getNullable(JsonReader::getBoolean);
+                } else if ("instance".equals(fieldName)) {
+                    deserializedNumberFormat.instance = NumberFormat.fromJson(reader);
+                } else if ("integerInstance".equals(fieldName)) {
+                    deserializedNumberFormat.integerInstance = NumberFormat.fromJson(reader);
+                } else if ("maximumFractionDigits".equals(fieldName)) {
+                    deserializedNumberFormat.maximumFractionDigits = reader.getNullable(JsonReader::getInt);
+                } else if ("maximumIntegerDigits".equals(fieldName)) {
+                    deserializedNumberFormat.maximumIntegerDigits = reader.getNullable(JsonReader::getInt);
+                } else if ("minimumFractionDigits".equals(fieldName)) {
+                    deserializedNumberFormat.minimumFractionDigits = reader.getNullable(JsonReader::getInt);
+                } else if ("minimumIntegerDigits".equals(fieldName)) {
+                    deserializedNumberFormat.minimumIntegerDigits = reader.getNullable(JsonReader::getInt);
+                } else if ("numberInstance".equals(fieldName)) {
+                    deserializedNumberFormat.numberInstance = NumberFormat.fromJson(reader);
+                } else if ("parseIntegerOnly".equals(fieldName)) {
+                    deserializedNumberFormat.parseIntegerOnly = reader.getNullable(JsonReader::getBoolean);
+                } else if ("percentInstance".equals(fieldName)) {
+                    deserializedNumberFormat.percentInstance = NumberFormat.fromJson(reader);
+                } else if ("roundingMode".equals(fieldName)) {
+                    deserializedNumberFormat.roundingMode = RoundingMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNumberFormat;
+        });
     }
 }

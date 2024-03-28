@@ -6,22 +6,24 @@ package com.azure.ai.openai.assistants.implementation.models;
 import com.azure.ai.openai.assistants.models.ToolOutput;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The SubmitToolOutputsToRunRequest model.
  */
 @Immutable
-public final class SubmitToolOutputsToRunRequest {
+public final class SubmitToolOutputsToRunRequest implements JsonSerializable<SubmitToolOutputsToRunRequest> {
 
     /*
      * The list of tool outputs requested by tool calls from the specified run.
      */
     @Generated
-    @JsonProperty(value = "tool_outputs")
-    private List<ToolOutput> toolOutputs;
+    private final List<ToolOutput> toolOutputs;
 
     /**
      * Creates an instance of SubmitToolOutputsToRunRequest class.
@@ -29,8 +31,7 @@ public final class SubmitToolOutputsToRunRequest {
      * @param toolOutputs the toolOutputs value to set.
      */
     @Generated
-    @JsonCreator
-    public SubmitToolOutputsToRunRequest(@JsonProperty(value = "tool_outputs") List<ToolOutput> toolOutputs) {
+    public SubmitToolOutputsToRunRequest(List<ToolOutput> toolOutputs) {
         this.toolOutputs = toolOutputs;
     }
 
@@ -42,5 +43,42 @@ public final class SubmitToolOutputsToRunRequest {
     @Generated
     public List<ToolOutput> getToolOutputs() {
         return this.toolOutputs;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tool_outputs", this.toolOutputs, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubmitToolOutputsToRunRequest from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubmitToolOutputsToRunRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SubmitToolOutputsToRunRequest.
+     */
+    @Generated
+    public static SubmitToolOutputsToRunRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            List<ToolOutput> toolOutputs = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("tool_outputs".equals(fieldName)) {
+                    toolOutputs = reader.readArray(reader1 -> ToolOutput.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new SubmitToolOutputsToRunRequest(toolOutputs);
+        });
     }
 }
