@@ -37,9 +37,9 @@ public interface CosmosDBAccount
     DatabaseAccountOfferType databaseAccountOfferType();
 
     /**
-     * Whether the CosmosD account can be accessed from public network.
+     * Whether the CosmosDB account can be accessed from public network.
      *
-     * @return whether the CosmosD account can be accessed from public network.
+     * @return whether the CosmosDB account can be accessed from public network.
      */
     PublicNetworkAccess publicNetworkAccess();
 
