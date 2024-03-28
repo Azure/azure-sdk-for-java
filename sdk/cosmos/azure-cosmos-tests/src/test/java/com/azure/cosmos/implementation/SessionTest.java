@@ -129,12 +129,12 @@ public class SessionTest extends TestSuiteBase {
 
             spyClient.clearCapturedRequests();
 
-            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), options).block();
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), options, getCollectionLink(true)).block();
 
             assertThat(getSessionTokensInRequests()).hasSize(1);
             assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
 
-            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), options).block();
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), options, getCollectionLink(true)).block();
 
             // same session token expected - because we collect
             // distinct session tokens only one of them should be kept
@@ -171,14 +171,14 @@ public class SessionTest extends TestSuiteBase {
         spyClient.clearCapturedRequests();
 
         // Session token set for default session consistency
-        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions, getCollectionLink(true)).block();
         assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
         assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
 
         // Session token set for request session consistency
         spyClient.clearCapturedRequests();
         requestOptions.setConsistencyLevel(ConsistencyLevel.SESSION);
-        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions, getCollectionLink(true)).block();
         assertThat(getSessionTokensInRequests()).hasSize(1);
         assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
         assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
@@ -337,13 +337,13 @@ public class SessionTest extends TestSuiteBase {
         // No session token set for EVENTUAL consistency
         spyClient.clearCapturedRequests();
         requestOptions.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
-        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions, getCollectionLink(true)).block();
         assertThat(getSessionTokensInRequests()).hasSize(0);
 
         // No session token set for CONSISTENT_PREFIX consistency
         spyClient.clearCapturedRequests();
         requestOptions.setConsistencyLevel(ConsistencyLevel.CONSISTENT_PREFIX);
-        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions, getCollectionLink(true)).block();
         assertThat(getSessionTokensInRequests()).hasSize(0);
 
         if (globalEndpointManager.getLatestDatabaseAccount().getConsistencyPolicy().getDefaultConsistencyLevel().equals(ConsistencyLevel.STRONG) ||
@@ -351,7 +351,7 @@ public class SessionTest extends TestSuiteBase {
             // No session token set for BOUNDED_STALENESS consistency
             spyClient.clearCapturedRequests();
             requestOptions.setConsistencyLevel(ConsistencyLevel.BOUNDED_STALENESS);
-            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions, getCollectionLink(true)).block();
             assertThat(getSessionTokensInRequests()).hasSize(0);
         }
 
@@ -359,7 +359,7 @@ public class SessionTest extends TestSuiteBase {
             // No session token set for STRONG consistency
             spyClient.clearCapturedRequests();
             requestOptions.setConsistencyLevel(ConsistencyLevel.STRONG);
-            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions, getCollectionLink(true)).block();
             assertThat(getSessionTokensInRequests()).hasSize(0);
         }
     }
@@ -394,7 +394,7 @@ public class SessionTest extends TestSuiteBase {
                 .getResource();
 
         final String documentLink = getDocumentLink(document, isNameBased);
-        spyClient.readDocument(documentLink, options).block()
+        spyClient.readDocument(documentLink, options, getCollectionLink(true)).block()
                 .getResource();
 
         List<HttpRequest> documentReadHttpRequests = spyClient.getCapturedRequests().stream()

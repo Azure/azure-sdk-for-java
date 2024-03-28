@@ -25,6 +25,7 @@ import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyReader;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyWriter;
@@ -230,7 +231,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mockito.when(retryPolicy.getRetryContext()).thenReturn(retryContext);
         Mockito.when(retryContext.getRetryCount()).thenReturn(1);
         Mockito.when(mockRetryFactory.getRequestPolicy(ArgumentMatchers.any(DiagnosticsClientContext.class))).thenReturn(retryPolicy);
-        responseFlux = rxDocumentClient.readDocument(itemSelfLink, requestOptions);
+        responseFlux = rxDocumentClient.readDocument(itemSelfLink, requestOptions, cosmosAsyncContainer.getLinkWithoutTrailingSlash());
         validateServiceResponseSuccess(responseFlux);
 
         Mockito.verify(retryContext, Mockito.times(1)).getRetryCount();
@@ -240,7 +241,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mockito.when(retryPolicy.getRetryContext()).thenReturn(retryContext);
         Mockito.when(retryContext.getRetryCount()).thenReturn(1);
         Mockito.when(mockRetryFactory.getRequestPolicy(ArgumentMatchers.any(DiagnosticsClientContext.class))).thenReturn(retryPolicy);
-        responseFlux = rxDocumentClient.deleteDocument(itemSelfLink, requestOptions);
+        responseFlux = rxDocumentClient.deleteDocument(itemSelfLink, requestOptions, cosmosAsyncContainer.getLinkWithoutTrailingSlash());
         validateServiceResponseSuccess(responseFlux);
 
         Mockito.verify(retryContext, Mockito.times(1)).getRetryCount();
@@ -250,7 +251,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mockito.when(retryPolicy.getRetryContext()).thenReturn(retryContext);
         Mockito.when(retryContext.getRetryCount()).thenReturn(1);
         Mockito.when(mockRetryFactory.getRequestPolicy(ArgumentMatchers.any(DiagnosticsClientContext.class))).thenReturn(retryPolicy);
-        responseFlux = rxDocumentClient.replaceDocument(itemSelfLink, new Document(), requestOptions);
+        responseFlux = rxDocumentClient.replaceDocument(itemSelfLink, new Document(), requestOptions, cosmosAsyncContainer.getLinkWithoutTrailingSlash());
         validateServiceResponseSuccess(responseFlux);
 
         Mockito.verify(retryContext, Mockito.times(1)).getRetryCount();

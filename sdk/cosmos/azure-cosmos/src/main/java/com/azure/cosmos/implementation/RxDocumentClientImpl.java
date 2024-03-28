@@ -2110,8 +2110,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientCtxOverride,
                 isRequestHedged),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
-        );
+            options != null && options.getNonIdempotentWriteRetriesEnabled(),
+            collectionLink);
     }
 
     private Mono<ResourceResponse<Document>> createDocumentCore(
@@ -2279,8 +2279,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             (opt, e2ecfg, clientCtxOverride, isRequestHedged) -> upsertDocumentCore(
                 collectionLink, document, opt, disableAutomaticIdGeneration, e2ecfg, clientCtxOverride, isRequestHedged),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
-        );
+            options != null && options.getNonIdempotentWriteRetriesEnabled(),
+            collectionLink);
     }
 
     private Mono<ResourceResponse<Document>> upsertDocumentCore(
@@ -2355,7 +2355,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Document>> replaceDocument(String documentLink, Object document,
-                                                            RequestOptions options) {
+                                                            RequestOptions options, String collectionLink) {
 
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
@@ -2368,8 +2368,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientCtxOverride,
                 isRequestHedged),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
-        );
+            options != null && options.getNonIdempotentWriteRetriesEnabled(),
+            collectionLink);
     }
 
     private Mono<ResourceResponse<Document>> replaceDocumentCore(
@@ -2443,7 +2443,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Mono<ResourceResponse<Document>> replaceDocument(Document document, RequestOptions options) {
+    public Mono<ResourceResponse<Document>> replaceDocument(Document document, RequestOptions options, String collectionLink) {
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Replace,
@@ -2454,8 +2454,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientCtxOverride,
                 isRequestHedged),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
-        );
+            options != null && options.getNonIdempotentWriteRetriesEnabled(),
+            collectionLink);
     }
 
     private Mono<ResourceResponse<Document>> replaceDocumentCore(
@@ -2614,7 +2614,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<Document>> patchDocument(String documentLink,
                                                           CosmosPatchOperations cosmosPatchOperations,
-                                                          RequestOptions options) {
+                                                          RequestOptions options,
+                                                          String collectionLink) {
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Patch,
@@ -2626,8 +2627,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientCtxOverride,
                 isRequestHedged),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
-        );
+            options != null && options.getNonIdempotentWriteRetriesEnabled(),
+            collectionLink);
     }
 
     private Mono<ResourceResponse<Document>> patchDocumentCore(
@@ -2737,7 +2738,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, RequestOptions options) {
+    public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, RequestOptions options, String collectionLink) {
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Delete,
@@ -2749,12 +2750,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientCtxOverride,
                 isRequestHedged),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
-        );
+            options != null && options.getNonIdempotentWriteRetriesEnabled(),
+            collectionLink);
     }
 
     @Override
-    public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, InternalObjectNode internalObjectNode, RequestOptions options) {
+    public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, InternalObjectNode internalObjectNode, RequestOptions options, String collectionLink) {
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Delete,
@@ -2766,8 +2767,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientCtxOverride,
                 isRequestHedged),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
-        );
+            options != null && options.getNonIdempotentWriteRetriesEnabled(),
+            collectionLink);
     }
 
     private Mono<ResourceResponse<Document>> deleteDocumentCore(
@@ -2893,14 +2894,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Mono<ResourceResponse<Document>> readDocument(String documentLink, RequestOptions options) {
-        return readDocument(documentLink, options, this);
+    public Mono<ResourceResponse<Document>> readDocument(String documentLink, RequestOptions options, String collectionLink) {
+        return readDocument(documentLink, options, this, collectionLink);
     }
 
     private Mono<ResourceResponse<Document>> readDocument(
         String documentLink,
         RequestOptions options,
-        DiagnosticsClientContext innerDiagnosticsFactory) {
+        DiagnosticsClientContext innerDiagnosticsFactory,
+        String collectionLink) {
 
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
@@ -2908,8 +2910,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             (opt, e2ecfg, clientCtxOverride, isRequestHedged) -> readDocumentCore(documentLink, opt, e2ecfg, clientCtxOverride, isRequestHedged),
             options,
             false,
-            innerDiagnosticsFactory
-        );
+            innerDiagnosticsFactory,
+            collectionLink);
     }
 
     private Mono<ResourceResponse<Document>> readDocumentCore(
@@ -3083,7 +3085,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 partitionRangeItemKeyMap,
                                 resourceLink,
                                 state.getQueryOptions(),
-                                klass);
+                                klass,
+                                collectionLink);
 
                             // create the executable query
                             Flux<FeedResponse<T>> queries = queryForReadMany(
@@ -3366,7 +3369,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         List<CosmosItemIdentity>> singleItemPartitionRequestMap,
         String resourceLink,
         CosmosQueryRequestOptions queryRequestOptions,
-        Class<T> klass) {
+        Class<T> klass,
+        String collectionLink) {
 
         // if there is any factory method being passed in, use the factory method to deserializ the object
         // else fallback to use the original way
@@ -3382,7 +3386,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         .getCosmosQueryRequestOptionsAccessor()
                         .toRequestOptions(queryRequestOptions);
                     requestOptions.setPartitionKey(firstIdentity.getPartitionKey());
-                    return this.readDocument((resourceLink + firstIdentity.getId()), requestOptions, diagnosticsFactory)
+                    return this.readDocument((resourceLink + firstIdentity.getId()), requestOptions, diagnosticsFactory, collectionLink)
                         .flatMap(resourceResponse -> Mono.just(
                             new ImmutablePair<ResourceResponse<Document>, CosmosException>(resourceResponse, null)
                         ))
@@ -5410,7 +5414,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         OperationType operationType,
         DocumentPointOperation callback,
         RequestOptions initialRequestOptions,
-        boolean idempotentWriteRetriesEnabled) {
+        boolean idempotentWriteRetriesEnabled,
+        String collectionLink) {
 
         return wrapPointOperationWithAvailabilityStrategy(
             resourceType,
@@ -5418,8 +5423,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             callback,
             initialRequestOptions,
             idempotentWriteRetriesEnabled,
-            this
-        );
+            this,
+            collectionLink);
     }
 
     private Mono<ResourceResponse<Document>> wrapPointOperationWithAvailabilityStrategy(
@@ -5428,7 +5433,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentPointOperation callback,
         RequestOptions initialRequestOptions,
         boolean idempotentWriteRetriesEnabled,
-        DiagnosticsClientContext innerDiagnosticsFactory) {
+        DiagnosticsClientContext innerDiagnosticsFactory,
+        String collectionLink) {
 
         checkNotNull(resourceType, "Argument 'resourceType' must not be null.");
         checkNotNull(operationType, "Argument 'operationType' must not be null.");
@@ -5462,129 +5468,136 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(innerDiagnosticsFactory, false);
 
-        orderedApplicableRegionsForSpeculation
-            .forEach(region -> {
-                RequestOptions clonedOptions = new RequestOptions(nonNullRequestOptions);
+        return this.collectionCache.resolveByNameAsync(null, collectionLink, null)
+                .flatMap(collection -> {
+                    PartitionKeyDefinition partitionKeyDefinition = collection.getPartitionKey();
+                    PartitionKey partitionKey = nonNullRequestOptions.getPartitionKey();
 
-                if (monoList.isEmpty()) {
-                    // no special error handling for transient errors to suppress them here
-                    // because any cross-regional retries are expected to be processed
-                    // by the ClientRetryPolicy for the initial request - so, any outcome of the
-                    // initial Mono should be treated as non-transient error - even when
-                    // the error would otherwise be treated as transient
-                    Mono<NonTransientPointOperationResult> initialMonoAcrossAllRegions =
-                        callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, false)
-                                .map(NonTransientPointOperationResult::new)
-                                .onErrorResume(
-                                    RxDocumentClientImpl::isCosmosException,
-                                    t -> Mono.just(
-                                        new NonTransientPointOperationResult(
-                                            Utils.as(Exceptions.unwrap(t), CosmosException.class))));
+                    orderedApplicableRegionsForSpeculation
+                        .forEach(region -> {
+                            RequestOptions clonedOptions = new RequestOptions(nonNullRequestOptions);
 
-                        if (logger.isDebugEnabled()) {
-                            monoList.add(initialMonoAcrossAllRegions.doOnSubscribe(c -> logger.debug(
-                                "STARTING to process {} operation in region '{}'",
-                                operationType,
-                                region)));
-                        } else {
-                            monoList.add(initialMonoAcrossAllRegions);
-                        }
-                } else {
-                    clonedOptions.setExcludeRegions(
-                        getEffectiveExcludedRegionsForHedging(
-                            nonNullRequestOptions.getExcludeRegions(),
-                            orderedApplicableRegionsForSpeculation,
-                            region)
-                    );
+                            if (monoList.isEmpty()) {
+                                // no special error handling for transient errors to suppress them here
+                                // because any cross-regional retries are expected to be processed
+                                // by the ClientRetryPolicy for the initial request - so, any outcome of the
+                                // initial Mono should be treated as non-transient error - even when
+                                // the error would otherwise be treated as transient
+                                Mono<NonTransientPointOperationResult> initialMonoAcrossAllRegions =
+                                    callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, false)
+                                        .map(NonTransientPointOperationResult::new)
+                                        .onErrorResume(
+                                            RxDocumentClientImpl::isCosmosException,
+                                            t -> Mono.just(
+                                                new NonTransientPointOperationResult(
+                                                    Utils.as(Exceptions.unwrap(t), CosmosException.class))));
 
-                    // Non-Transient errors are mapped to a value - this ensures the firstWithValue
-                    // operator below will complete the composite Mono for both successful values
-                    // and non-transient errors
-                    Mono<NonTransientPointOperationResult> regionalCrossRegionRetryMono =
-                        callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, true)
-                                .map(NonTransientPointOperationResult::new)
-                                .onErrorResume(
-                                    RxDocumentClientImpl::isNonTransientCosmosException,
-                                    t -> Mono.just(
-                                        new NonTransientPointOperationResult(
-                                            Utils.as(Exceptions.unwrap(t), CosmosException.class))));
+                                if (logger.isDebugEnabled()) {
+                                    monoList.add(initialMonoAcrossAllRegions.doOnSubscribe(c -> logger.debug(
+                                        "STARTING to process {} operation in region '{}'",
+                                        operationType,
+                                        region)));
+                                } else {
+                                    monoList.add(initialMonoAcrossAllRegions);
+                                }
+                            } else {
+                                clonedOptions.setExcludeRegions(
+                                    getEffectiveExcludedRegionsForHedging(
+                                        nonNullRequestOptions.getExcludeRegions(),
+                                        orderedApplicableRegionsForSpeculation,
+                                        region)
+                                );
 
-                    Duration delayForCrossRegionalRetry = (availabilityStrategy)
-                        .getThreshold()
-                        .plus((availabilityStrategy)
-                            .getThresholdStep()
-                            .multipliedBy(monoList.size() - 1));
+                                // Non-Transient errors are mapped to a value - this ensures the firstWithValue
+                                // operator below will complete the composite Mono for both successful values
+                                // and non-transient errors
+                                Mono<NonTransientPointOperationResult> regionalCrossRegionRetryMono =
+                                    callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, true)
+                                        .map(NonTransientPointOperationResult::new)
+                                        .onErrorResume(
+                                            RxDocumentClientImpl::isNonTransientCosmosException,
+                                            t -> Mono.just(
+                                                new NonTransientPointOperationResult(
+                                                    Utils.as(Exceptions.unwrap(t), CosmosException.class))));
 
-                    if (logger.isDebugEnabled()) {
-                        monoList.add(
-                            regionalCrossRegionRetryMono
-                                .doOnSubscribe(c -> logger.debug("STARTING to process {} operation in region '{}'", operationType, region))
-                                .delaySubscription(delayForCrossRegionalRetry));
-                    } else {
-                        monoList.add(
-                            regionalCrossRegionRetryMono
-                                .delaySubscription(delayForCrossRegionalRetry));
-                    }
-                }
-            });
+                                Duration delayForCrossRegionalRetry = (availabilityStrategy)
+                                    .getThreshold()
+                                    .plus((availabilityStrategy)
+                                        .getThresholdStep()
+                                        .multipliedBy(monoList.size() - 1));
 
-        // NOTE - merging diagnosticsFactory cannot only happen in
-        // doFinally operator because the doFinally operator is a side effect method -
-        // meaning it executes concurrently with firing the onComplete/onError signal
-        // doFinally is also triggered by cancellation
-        // So, to make sure merging the Context happens synchronously in line we
-        // have to ensure merging is happening on error/completion
-        // and also in doOnCancel.
-        return Mono
-            .firstWithValue(monoList)
-            .flatMap(nonTransientResult -> {
-                diagnosticsFactory.merge(nonNullRequestOptions);
-                if (nonTransientResult.isError()) {
-                    return Mono.error(nonTransientResult.exception);
-                }
+                                if (logger.isDebugEnabled()) {
+                                    monoList.add(
+                                        regionalCrossRegionRetryMono
+                                            .doOnSubscribe(c -> logger.debug("STARTING to process {} operation in region '{}'", operationType, region))
+                                            .delaySubscription(delayForCrossRegionalRetry));
+                                } else {
+                                    monoList.add(
+                                        regionalCrossRegionRetryMono
+                                            .delaySubscription(delayForCrossRegionalRetry));
+                                }
+                            }
+                        });
 
-                return Mono.just(nonTransientResult.response);
-            })
-            .onErrorMap(throwable -> {
-                Throwable exception = Exceptions.unwrap(throwable);
-
-                if (exception instanceof NoSuchElementException) {
-
-                    List<Throwable> innerThrowables = Exceptions
-                        .unwrapMultiple(exception.getCause());
-
-                    int index = 0;
-                    for (Throwable innerThrowable : innerThrowables) {
-                        Throwable innerException = Exceptions.unwrap(innerThrowable);
-
-                        // collect latest CosmosException instance bubbling up for a region
-                        if (innerException instanceof CosmosException) {
-                            CosmosException cosmosException = Utils.as(innerException, CosmosException.class);
+                    // NOTE - merging diagnosticsFactory cannot only happen in
+                    // doFinally operator because the doFinally operator is a side effect method -
+                    // meaning it executes concurrently with firing the onComplete/onError signal
+                    // doFinally is also triggered by cancellation
+                    // So, to make sure merging the Context happens synchronously in line we
+                    // have to ensure merging is happening on error/completion
+                    // and also in doOnCancel.
+                    return Mono
+                        .firstWithValue(monoList)
+                        .flatMap(nonTransientResult -> {
                             diagnosticsFactory.merge(nonNullRequestOptions);
-                            return cosmosException;
-                        } else if (innerException instanceof NoSuchElementException) {
-                            logger.trace(
-                                "Operation in {} completed with empty result because it was cancelled.",
-                                orderedApplicableRegionsForSpeculation.get(index));
-                        } else if (logger.isWarnEnabled()) {
-                            String message = "Unexpected Non-CosmosException when processing operation in '"
-                                + orderedApplicableRegionsForSpeculation.get(index)
-                                + "'.";
-                            logger.warn(
-                                message,
-                                innerException
-                            );
-                        }
+                            if (nonTransientResult.isError()) {
+                                return Mono.error(nonTransientResult.exception);
+                            }
 
-                        index++;
-                    }
-                }
+                            return Mono.just(nonTransientResult.response);
+                        })
+                        .onErrorMap(throwable -> {
+                            Throwable exception = Exceptions.unwrap(throwable);
 
-                diagnosticsFactory.merge(nonNullRequestOptions);
+                            if (exception instanceof NoSuchElementException) {
 
-                return exception;
-            })
-            .doOnCancel(() -> diagnosticsFactory.merge(nonNullRequestOptions));
+                                List<Throwable> innerThrowables = Exceptions
+                                    .unwrapMultiple(exception.getCause());
+
+                                int index = 0;
+                                for (Throwable innerThrowable : innerThrowables) {
+                                    Throwable innerException = Exceptions.unwrap(innerThrowable);
+
+                                    // collect latest CosmosException instance bubbling up for a region
+                                    if (innerException instanceof CosmosException) {
+                                        CosmosException cosmosException = Utils.as(innerException, CosmosException.class);
+                                        diagnosticsFactory.merge(nonNullRequestOptions);
+                                        return cosmosException;
+                                    } else if (innerException instanceof NoSuchElementException) {
+                                        logger.trace(
+                                            "Operation in {} completed with empty result because it was cancelled.",
+                                            orderedApplicableRegionsForSpeculation.get(index));
+                                    } else if (logger.isWarnEnabled()) {
+                                        String message = "Unexpected Non-CosmosException when processing operation in '"
+                                            + orderedApplicableRegionsForSpeculation.get(index)
+                                            + "'.";
+                                        logger.warn(
+                                            message,
+                                            innerException
+                                        );
+                                    }
+
+                                    index++;
+                                }
+                            }
+
+                            diagnosticsFactory.merge(nonNullRequestOptions);
+
+                            return exception;
+                        })
+                        .doOnCancel(() -> diagnosticsFactory.merge(nonNullRequestOptions));
+
+                });
     }
 
     private static boolean isCosmosException(Throwable t) {
@@ -5826,6 +5839,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             orderedApplicableRegionsForSpeculation,
                             region)
                     );
+
+                    clonedRequest.requestContext.setIsRequestHedged(true);
 
                     // Non-Transient errors are mapped to a value - this ensures the firstWithValue
                     // operator below will complete the composite Mono for both successful values

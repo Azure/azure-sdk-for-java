@@ -216,7 +216,7 @@ public class TestSuiteBase extends DocumentClientTest {
                             requestOptions.setPartitionKey(new PartitionKey(propertyValue));
                         }
 
-                        return houseKeepingClient.deleteDocument(doc.getSelfLink(), requestOptions);
+                        return houseKeepingClient.deleteDocument(doc.getSelfLink(), requestOptions, collection.getSelfLink());
                     }).then().block();
 
             logger.info("Truncating DocumentCollection {} triggers ...", collection.getId());
@@ -578,27 +578,14 @@ public class TestSuiteBase extends DocumentClientTest {
                     Document.class)
                 .single().block().getResults();
         if (!res.isEmpty()) {
-            deleteDocument(client, TestUtils.getDocumentNameLink(databaseId, collectionId, docId), pk);
+            deleteDocument(client, TestUtils.getDocumentNameLink(databaseId, collectionId, docId), pk, TestUtils.getCollectionNameLink(databaseId, collectionId));
         }
     }
 
-    public static void safeDeleteDocument(AsyncDocumentClient client, String documentLink, RequestOptions options) {
-        if (client != null && documentLink != null) {
-            try {
-                client.deleteDocument(documentLink, options).block();
-            } catch (Exception e) {
-                CosmosException dce = Utils.as(e, CosmosException.class);
-                if (dce == null || dce.getStatusCode() != 404) {
-                    throw e;
-                }
-            }
-        }
-    }
-
-    public static void deleteDocument(AsyncDocumentClient client, String documentLink, PartitionKey pk) {
+    public static void deleteDocument(AsyncDocumentClient client, String documentLink, PartitionKey pk, String collectionLink) {
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(pk);
-        client.deleteDocument(documentLink, options).block();
+        client.deleteDocument(documentLink, options, collectionLink).block();
     }
 
     public static void deleteUserIfExists(AsyncDocumentClient client, String databaseId, String userId) {

@@ -77,13 +77,13 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(documentDefinition, "mypk")));
         Document document = createDocument(this.writeClient, createdDatabase.getId(), createdCollection.getId(), documentDefinition);
-        ResourceResponse<Document> response = this.writeClient.deleteDocument(document.getSelfLink(), options).block();
+        ResourceResponse<Document> response = this.writeClient.deleteDocument(document.getSelfLink(), options, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId())).block();
         assertThat(response.getStatusCode()).isEqualTo(204);
 
         long quorumAckedLSN = Long.parseLong(response.getResponseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN));
         assertThat(quorumAckedLSN > 0).isTrue();
         FailureValidator validator = new FailureValidator.Builder().statusCode(404).lsnGreaterThan(quorumAckedLSN).build();
-        Mono<ResourceResponse<Document>> readObservable = this.readClient.readDocument(document.getSelfLink(), options);
+        Mono<ResourceResponse<Document>> readObservable = this.readClient.readDocument(document.getSelfLink(), options, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId()));
         validateFailure(readObservable, validator);
     }
 
@@ -92,14 +92,14 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(documentDefinition, "mypk")));
         Document document = createDocument(this.writeClient, createdDatabase.getId(), createdCollection.getId(), documentDefinition);
-        ResourceResponse<Document> response = this.writeClient.deleteDocument(document.getSelfLink(), options).block();
+        ResourceResponse<Document> response = this.writeClient.deleteDocument(document.getSelfLink(), options, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId())).block();
         assertThat(response.getStatusCode()).isEqualTo(204);
 
         long quorumAckedLSN = Long.parseLong(response.getResponseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN));
         assertThat(quorumAckedLSN > 0).isTrue();
 
         FailureValidator validator = new FailureValidator.Builder().statusCode(404).lsnGreaterThanEqualsTo(quorumAckedLSN).exceptionQuorumAckedLSNInNotNull().build();
-        Mono<ResourceResponse<Document>> readObservable = this.readClient.deleteDocument(document.getSelfLink(), options);
+        Mono<ResourceResponse<Document>> readObservable = this.readClient.deleteDocument(document.getSelfLink(), options, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId()));
         validateFailure(readObservable, validator);
 
     }
@@ -146,10 +146,10 @@ public class ConsistencyTestsBase extends TestSuiteBase {
 
         Document documentDefinition = getDocumentDefinition();
         Document document = createDocument(this.writeClient, createdDatabase.getId(), createdCollection.getId(), documentDefinition);
-        validateStrongConsistency(document);
+        validateStrongConsistency(document, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId()));
     }
 
-    void validateStrongConsistency(Document documentToWorkWith) throws InterruptedException {
+    void validateStrongConsistency(Document documentToWorkWith, String collectionLink) throws InterruptedException {
         int numberOfTestIteration = 5;
         Document writeDocument = documentToWorkWith;
         while (numberOfTestIteration-- > 0) {
@@ -157,10 +157,10 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             Thread.sleep(1000);//Timestamp is in granularity of seconds.
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(documentToWorkWith, "mypk")));
-            Document updatedDocument = this.writeClient.replaceDocument(writeDocument, options).block().getResource();
+            Document updatedDocument = this.writeClient.replaceDocument(writeDocument, options, collectionLink).block().getResource();
             assertThat(updatedDocument.getTimestamp().isAfter(sourceTimestamp)).isTrue();
 
-            Document readDocument = this.readClient.readDocument(documentToWorkWith.getSelfLink(), options).block().getResource();
+            Document readDocument = this.readClient.readDocument(documentToWorkWith.getSelfLink(), options, collectionLink).block().getResource();
             assertThat(updatedDocument.getTimestamp().equals(readDocument.getTimestamp()));
         }
     }
@@ -284,7 +284,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             } else if (resourceToWorkWith instanceof Document) {
                 RequestOptions options = new RequestOptions();
                 options.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(resourceToWorkWith, "mypk")));
-                readResource = this.readClient.readDocument(resourceToWorkWith.getSelfLink(), options)
+                readResource = this.readClient.readDocument(resourceToWorkWith.getSelfLink(), options, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId()))
                         .block()
                         .getResource();
             }
@@ -320,7 +320,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(resourceToWorkWith, "mypk")));
             if (resourceToWorkWith instanceof Document) {
-                readResource = this.readClient.readDocument(resourceToWorkWith.getSelfLink(), requestOptions).block().getResource();
+                readResource = this.readClient.readDocument(resourceToWorkWith.getSelfLink(), requestOptions, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId())).block().getResource();
             }
             assertThat(readResource.getTimestamp().compareTo(lastReadDateTime) >= 0).isTrue();
             lastReadDateTime = readResource.getTimestamp();
@@ -353,7 +353,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(resourceToWorkWith, "mypk")));
             if (resourceToWorkWith instanceof Document) {
                 readResource =
-                        this.readClient.readDocument(resourceToWorkWith.getSelfLink(), requestOptions)
+                        this.readClient.readDocument(resourceToWorkWith.getSelfLink(), requestOptions, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId()))
                                 .block()
                                 .getResource();
             }
@@ -428,8 +428,8 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                 Document documentCreated = client2.createDocument(collection.getSelfLink(), documentDefinition, null, true).block().getResource();
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(documentCreated, "mypk")));
-                client2.readDocument(BridgeInternal.getAltLink(documentCreated), requestOptions).block();
-                client2.readDocument(documentCreated.getSelfLink(), requestOptions).block();
+                client2.readDocument(BridgeInternal.getAltLink(documentCreated), requestOptions, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId())).block();
+                client2.readDocument(documentCreated.getSelfLink(), requestOptions, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId())).block();
             }
 
             {
@@ -464,7 +464,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             ResourceResponseValidator<Document> successValidator = new ResourceResponseValidator.Builder<Document>()
                     .withId(createdDocument.getId())
                     .build();
-            Mono<ResourceResponse<Document>> readObservable = client1.readDocument(createdDocument.getSelfLink(), requestOptions);
+            Mono<ResourceResponse<Document>> readObservable = client1.readDocument(createdDocument.getSelfLink(), requestOptions, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId()));
             validateSuccess(readObservable, successValidator);
             {
                 String token1 = ((SessionContainer) client1.getSession()).getSessionToken(BridgeInternal.getAltLink(collectionSameName));
@@ -480,7 +480,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                 RequestOptions requestOptions1 = new RequestOptions();
                 requestOptions1.setSessionToken(higherLsnToken);
                 requestOptions1.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(createdDocument, "mypk")));
-                readObservable = client2.readDocument(BridgeInternal.getAltLink(createdDocument), requestOptions1);
+                readObservable = client2.readDocument(BridgeInternal.getAltLink(createdDocument), requestOptions1, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId()));
                 FailureValidator failureValidator = new FailureValidator.Builder().subStatusCode(1002).build();
                 validateFailure(readObservable, failureValidator);
             }
@@ -494,7 +494,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             }
             {
                 // second read should succeed!
-                readObservable = client2.readDocument(BridgeInternal.getAltLink(createdDocument), requestOptions);
+                readObservable = client2.readDocument(BridgeInternal.getAltLink(createdDocument), requestOptions, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId()));
                 validateSuccess(readObservable, successValidator);
             }
             // verify deleting indeed delete the collection session token
@@ -506,7 +506,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                 successValidator = new ResourceResponseValidator.Builder<Document>()
                         .withId(documentTest.getId())
                         .build();
-                readObservable = client1.readDocument(documentTest.getSelfLink(), options);
+                readObservable = client1.readDocument(documentTest.getSelfLink(), options, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId()));
                 validateSuccess(readObservable, successValidator);
 
                 client1.deleteCollection(collectionSameName.getSelfLink(), null).block();
@@ -615,7 +615,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(documentResponse.getResource(), "mypk")));
             // try to read a non existent document in the same partition that we previously wrote to
-            Mono<ResourceResponse<Document>> readObservable = validationClient.readDocument(BridgeInternal.getAltLink(documentResponse.getResource()) + "dummy", requestOptions);
+            Mono<ResourceResponse<Document>> readObservable = validationClient.readDocument(BridgeInternal.getAltLink(documentResponse.getResource()) + "dummy", requestOptions, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId()));
             validateFailure(readObservable, failureValidator);
             assertThat(isSessionEqual(((SessionContainer) validationClient.getSession()), (SessionContainer) writeClient.getSession())).isTrue();
         } finally {
@@ -655,7 +655,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             requestOptions.setSessionToken(higherLsnToken);
             // try to read a non existent document in the same partition that we previously wrote to
             Mono<ResourceResponse<Document>> readObservable = writeClient.readDocument(BridgeInternal.getAltLink(documentResponse.getResource()),
-                    requestOptions);
+                    requestOptions, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId()));
             validateFailure(readObservable, failureValidator);
 
         } finally {
@@ -763,22 +763,22 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             RequestOptions option = new RequestOptions();
             option.setSessionToken(sessionToken);
             option.setPartitionKey(new PartitionKey(2));
-            writeClient.readDocument(childResource2.getResource().getSelfLink(), option).block();
+            writeClient.readDocument(childResource2.getResource().getSelfLink(), option, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId())).block();
 
             option = new RequestOptions();
             option.setSessionToken(StringUtils.EMPTY);
             option.setPartitionKey(new PartitionKey(1));
-            writeClient.readDocument(childResource1.getResource().getSelfLink(), option).block();
+            writeClient.readDocument(childResource1.getResource().getSelfLink(), option, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId())).block();
 
             option = new RequestOptions();
             option.setSessionToken(sessionToken);
             option.setPartitionKey(new PartitionKey(1));
-            Mono<ResourceResponse<Document>> readObservable = writeClient.readDocument(childResource1.getResource().getSelfLink(), option);
+            Mono<ResourceResponse<Document>> readObservable = writeClient.readDocument(childResource1.getResource().getSelfLink(), option, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId()));
             FailureValidator failureValidator =
                     new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.NOTFOUND).subStatusCode(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE).build();
             validateFailure(readObservable, failureValidator);
 
-            readObservable = writeClient.readDocument(childResource2.getResource().getSelfLink(), option);
+            readObservable = writeClient.readDocument(childResource2.getResource().getSelfLink(), option, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId()));
             failureValidator =
                     new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.NOTFOUND).subStatusCode(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE).build();
             validateFailure(readObservable, failureValidator);
@@ -816,7 +816,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             Document doc = client1.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(), null, true).block().getResource();
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(doc, "mypk")));
-            Document doc1 = client1.readDocument(BridgeInternal.getAltLink(doc), requestOptions).block().getResource();
+            Document doc1 = client1.readDocument(BridgeInternal.getAltLink(doc), requestOptions, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId())).block().getResource();
 
             String token1 = ((SessionContainer) client1.getSession()).getSessionToken(createdCollection.getSelfLink());
             client2 = (RxDocumentClientImpl) new AsyncDocumentClient.Builder()

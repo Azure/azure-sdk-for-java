@@ -348,11 +348,11 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
             documentDefinition.setId("1");
             Document document = client.createDocument(collection.getSelfLink(), documentDefinition, requestOptions, false).block().getResource();
 
-            Mono<ResourceResponse<Document>> deleteObservable = client.deleteDocument(document.getSelfLink(), requestOptions);
+            Mono<ResourceResponse<Document>> deleteObservable = client.deleteDocument(document.getSelfLink(), requestOptions, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId()));
             ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                     .nullResource().build();
             validateSuccess(deleteObservable, validator);
-            Mono<ResourceResponse<Document>> readObservable = client.readDocument(document.getSelfLink(), requestOptions);
+            Mono<ResourceResponse<Document>> readObservable = client.readDocument(document.getSelfLink(), requestOptions, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId()));
             FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().unknownSubStatusCode().build();
             validateFailure(readObservable, notFoundValidator);
 

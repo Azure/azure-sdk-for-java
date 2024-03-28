@@ -62,31 +62,31 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
         init(null, null);
     }
 
-    RxGatewayStoreModel createRxGatewayProxy(
-            ISessionContainer sessionContainer,
-            ConsistencyLevel consistencyLevel,
-            QueryCompatibilityMode queryCompatibilityMode,
-            UserAgentContainer userAgentContainer,
-            GlobalEndpointManager globalEndpointManager,
-            HttpClient rxOrigClient,
-            ApiType apiType) {
-
-        origHttpClient = rxOrigClient;
-        spyHttpClient = Mockito.spy(rxOrigClient);
-
-        doAnswer((Answer<Mono<HttpResponse>>) invocationOnMock -> {
-            HttpRequest httpRequest = invocationOnMock.getArgument(0, HttpRequest.class);
-            Duration responseTimeout = invocationOnMock.getArgument(1, Duration.class);
-            httpRequests.add(httpRequest);
-            return origHttpClient.send(httpRequest, responseTimeout);
-        }).when(spyHttpClient).send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
-
-        return super.createRxGatewayProxy(sessionContainer,
-                consistencyLevel,
-                queryCompatibilityMode,
-                userAgentContainer,
-                globalEndpointManager,
-                spyHttpClient,
-                apiType);
-    }
+//    RxGatewayStoreModel createRxGatewayProxy(
+//            ISessionContainer sessionContainer,
+//            ConsistencyLevel consistencyLevel,
+//            QueryCompatibilityMode queryCompatibilityMode,
+//            UserAgentContainer userAgentContainer,
+//            GlobalEndpointManager globalEndpointManager,
+//            HttpClient rxOrigClient,
+//            ApiType apiType) {
+//
+//        origHttpClient = rxOrigClient;
+//        spyHttpClient = Mockito.spy(rxOrigClient);
+//
+//        doAnswer((Answer<Mono<HttpResponse>>) invocationOnMock -> {
+//            HttpRequest httpRequest = invocationOnMock.getArgument(0, HttpRequest.class);
+//            Duration responseTimeout = invocationOnMock.getArgument(1, Duration.class);
+//            httpRequests.add(httpRequest);
+//            return origHttpClient.send(httpRequest, responseTimeout);
+//        }).when(spyHttpClient).send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
+//
+//        return super.createRxGatewayProxy(sessionContainer,
+//                consistencyLevel,
+//                queryCompatibilityMode,
+//                userAgentContainer,
+//                globalEndpointManager,
+//                spyHttpClient,
+//                apiType);
+//    }
 }
