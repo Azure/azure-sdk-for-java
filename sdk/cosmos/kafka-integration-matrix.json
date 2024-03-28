@@ -1,0 +1,14 @@
+{
+  "matrix": {
+    "Cosmos": {
+      "Session_Integration": {
+        "ArmTemplateParameters": "@{ defaultConsistencyLevel = 'Session'; enableMultipleWriteLocations = $false }",
+        "ProfileFlag": "-P kafka-integration",
+        "Pool": "azsdk-pool-mms-ubuntu-2004-general",
+        "OSVmImage": "MMSUbuntu2004"
+      }
+    },
+    "TestFromSource": true,
+    "JavaTestVersion": ["1.8", "1.11", "1.17", "1.21"]
+  }
+}
