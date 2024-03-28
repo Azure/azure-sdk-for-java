@@ -7,17 +7,17 @@
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Sat, 16 Mar 2024 06:59:57 GMT",
+      "date" : "Thu, 28 Mar 2024 09:04:25 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "dataserviceid" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-testpool3",
       "retry-after" : "0",
-      "request-id" : "da2eb0a1-8c63-481a-a1a8-c1e8695f401a",
+      "request-id" : "59a96394-5147-4f61-af36-f384fcb4f0b1",
       "StatusCode" : "201",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Sat, 16 Mar 2024 06:59:57 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:04:26 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "9031aa6a-324e-4b79-9121-8acbf043e837",
-      "etag" : "0x8DC4586B0EFDA99",
+      "client-request-id" : "a75cd82d-7ee6-4871-8dbb-d90fdca46698",
+      "etag" : "0x8DC4F061183C763",
       "location" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-testpool3",
       "dataserviceversion" : "3.0",
       "Body" : ""
@@ -30,19 +30,19 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Sat, 16 Mar 2024 06:59:57 GMT",
+      "date" : "Thu, 28 Mar 2024 09:04:25 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "f4f21fc6-5d72-4c7e-b83d-70ac7d14ada5",
+      "request-id" : "92379ec1-15d7-4072-bd0e-83632a884b2d",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Sat, 16 Mar 2024 06:59:57 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:04:26 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "9325e7c9-045f-49d4-a9d4-045b76478c0f",
+      "client-request-id" : "873161ba-77a9-4b44-b9a0-a65c752b165a",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DC4586B0EFDA99",
+      "etag" : "0x8DC4F061183C763",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool3\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-testpool3\",\"eTag\":\"0x8DC4586B0EFDA99\",\"lastModified\":\"2024-03-16T06:59:57.6211097Z\",\"creationTime\":\"2024-03-16T06:59:57.6211097Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-16T06:59:57.6211097Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-16T06:59:57.6211097Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"dataDisks\":[\r\n      {\r\n        \"lun\":50,\"caching\":\"none\",\"diskSizeGB\":50,\"storageAccountType\":\"standard_lrs\"\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  }\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool3\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-testpool3\",\"eTag\":\"0x8DC4F061183C763\",\"lastModified\":\"2024-03-28T09:04:26.2014819Z\",\"creationTime\":\"2024-03-28T09:04:26.20148Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-28T09:04:26.20148Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:04:26.2014819Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"dataDisks\":[\r\n      {\r\n        \"lun\":50,\"caching\":\"none\",\"diskSizeGB\":50,\"storageAccountType\":\"standard_lrs\"\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  }\r\n}"
     }
   }, {
     "Method" : "HEAD",
@@ -52,14 +52,14 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Sat, 16 Mar 2024 06:59:57 GMT",
-      "last-modified" : "Sat, 16 Mar 2024 06:59:57 GMT",
+      "date" : "Thu, 28 Mar 2024 09:04:26 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:04:26 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "bf77222f-7bab-4acd-9c4d-3633ca16a80e",
-      "etag" : "0x8DC4586B0EFDA99",
+      "client-request-id" : "8b322a5d-ea89-4fac-8d01-c9403f195754",
+      "etag" : "0x8DC4F061183C763",
       "retry-after" : "0",
-      "request-id" : "4368ff0f-7e3f-4698-b5fe-84c13b7f592e",
+      "request-id" : "58de6013-0ff5-4bfa-88ee-1bf21f63f9b9",
       "StatusCode" : "200",
       "dataserviceversion" : "3.0",
       "Body" : "",
@@ -73,12 +73,12 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Sat, 16 Mar 2024 06:59:59 GMT",
+      "date" : "Thu, 28 Mar 2024 09:04:27 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "c21c33ee-47b0-4ec7-8576-bb9ed793cc61",
+      "client-request-id" : "7e8c64f3-fb31-4f11-b808-82de8419d1d4",
       "retry-after" : "0",
-      "request-id" : "225ccac5-e0ef-4811-b0fd-7191c012502c",
+      "request-id" : "9877de38-3495-4623-87fe-057dac83dfe5",
       "StatusCode" : "202",
       "dataserviceversion" : "3.0",
       "Body" : "",

@@ -7,17 +7,17 @@
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Sat, 16 Mar 2024 06:52:07 GMT",
+      "date" : "Thu, 28 Mar 2024 09:41:34 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "dataserviceid" : "https://sanjbatch.eastus.batch.azure.com/jobs/job-1",
       "retry-after" : "0",
-      "request-id" : "cc175980-e57d-43a4-9389-f3fd26bfb998",
+      "request-id" : "a00e6fa0-742a-48da-bccc-10b6532f91e5",
       "StatusCode" : "201",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Sat, 16 Mar 2024 06:52:07 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:41:34 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "dbfb234b-9185-4f16-a8bd-92bdb26b1218",
-      "etag" : "0x8DC4585989E5F01",
+      "client-request-id" : "9d350dda-acac-44cf-84b3-08c09d836e78",
+      "etag" : "0x8DC4F0B41C3F5B4",
       "location" : "https://sanjbatch.eastus.batch.azure.com/jobs/job-1",
       "dataserviceversion" : "3.0",
       "Body" : ""
@@ -30,19 +30,19 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Sat, 16 Mar 2024 06:52:07 GMT",
+      "date" : "Thu, 28 Mar 2024 09:41:34 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "3e6df78c-ba93-4ff3-beab-5e4daf8c7d0b",
+      "request-id" : "bd3fe83f-be39-4345-a018-8934364e7a64",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Sat, 16 Mar 2024 06:52:07 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:41:34 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "ffcc96de-38ce-4c37-a496-c83dd444b019",
+      "client-request-id" : "f33885f6-958a-4d00-a0c1-2fa9baaec6a6",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DC4585989E5F01",
+      "etag" : "0x8DC4F0B41C3F5B4",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#jobs/@Element\",\"id\":\"BatchUser-Job-canCRUDWithPoolNodeComm\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-canCRUDWithPoolNodeComm\",\"eTag\":\"0x8DC4585989E5F01\",\"lastModified\":\"2024-03-16T06:52:07.3250561Z\",\"creationTime\":\"2024-03-16T06:52:07.3080615Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-16T06:52:07.3250561Z\",\"priority\":0,\"maxParallelTasks\":-1,\"usesTaskDependencies\":false,\"allowTaskPreemption\":false,\"constraints\":{\r\n    \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":0\r\n  },\"poolInfo\":{\r\n    \"autoPoolSpecification\":{\r\n      \"poolLifetimeOption\":\"job\",\"keepAlive\":false,\"pool\":{\r\n        \"vmSize\":\"standard_d1_v2\",\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n          \"nodeFillType\":\"Spread\"\r\n        },\"resizeTimeout\":\"PT15M\",\"targetDedicatedNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"virtualMachineConfiguration\":{\r\n          \"imageReference\":{\r\n            \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n          },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n        },\"targetNodeCommunicationMode\":\"simplified\"\r\n      }\r\n    }\r\n  },\"executionInfo\":{\r\n    \"startTime\":\"2024-03-16T06:52:07.3250561Z\",\"poolId\":\"2289BDD4-C2A2-48ED-A557-5180C7B8321E\"\r\n  },\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#jobs/@Element\",\"id\":\"BatchUser-Job-canCRUDWithPoolNodeComm\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-canCRUDWithPoolNodeComm\",\"eTag\":\"0x8DC4F0B41C3F5B4\",\"lastModified\":\"2024-03-28T09:41:34.6363828Z\",\"creationTime\":\"2024-03-28T09:41:34.6203878Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-28T09:41:34.6363828Z\",\"priority\":0,\"maxParallelTasks\":-1,\"usesTaskDependencies\":false,\"allowTaskPreemption\":false,\"constraints\":{\r\n    \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":0\r\n  },\"poolInfo\":{\r\n    \"autoPoolSpecification\":{\r\n      \"poolLifetimeOption\":\"job\",\"keepAlive\":false,\"pool\":{\r\n        \"vmSize\":\"standard_d1_v2\",\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n          \"nodeFillType\":\"Spread\"\r\n        },\"resizeTimeout\":\"PT15M\",\"targetDedicatedNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"virtualMachineConfiguration\":{\r\n          \"imageReference\":{\r\n            \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n          },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n        },\"targetNodeCommunicationMode\":\"simplified\"\r\n      }\r\n    }\r\n  },\"executionInfo\":{\r\n    \"startTime\":\"2024-03-28T09:41:34.6363828Z\",\"poolId\":\"3205B27A-9C07-4FF0-9A5D-04970181C5CC\"\r\n  },\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\"\r\n}"
     }
   }, {
     "Method" : "DELETE",
@@ -52,12 +52,12 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Sat, 16 Mar 2024 06:52:07 GMT",
+      "date" : "Thu, 28 Mar 2024 09:41:34 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "940ecf4d-9d35-4559-822a-a076cf386cc1",
+      "client-request-id" : "99b08b45-8940-493b-8ff0-7d19cef11cdc",
       "retry-after" : "0",
-      "request-id" : "ab119513-3f87-457a-aa60-db3aec61704d",
+      "request-id" : "0f40c01a-baac-4a9d-ba87-9ca109a8fc8f",
       "StatusCode" : "202",
       "dataserviceversion" : "3.0",
       "Body" : "",
@@ -71,19 +71,19 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Sat, 16 Mar 2024 06:52:07 GMT",
+      "date" : "Thu, 28 Mar 2024 09:41:34 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "31247b85-c002-4f16-b6e1-40d0450deb4a",
+      "request-id" : "20d85b77-0beb-4b27-8256-1565f4aac88f",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Sat, 16 Mar 2024 06:52:07 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:41:34 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "974a40f5-0e60-43f2-9951-ce6871e0c5ce",
+      "client-request-id" : "50e374f8-df7b-43df-b0aa-623a55f97d23",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DC4585989E5F01",
+      "etag" : "0x8DC4F0B41C3F5B4",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#jobs/@Element\",\"id\":\"BatchUser-Job-canCRUDWithPoolNodeComm\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-canCRUDWithPoolNodeComm\",\"eTag\":\"0x8DC4585989E5F01\",\"lastModified\":\"2024-03-16T06:52:07.3250561Z\",\"creationTime\":\"2024-03-16T06:52:07.3080615Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-16T06:52:07.7100595Z\",\"previousState\":\"active\",\"previousStateTransitionTime\":\"2024-03-16T06:52:07.3250561Z\",\"priority\":0,\"maxParallelTasks\":-1,\"usesTaskDependencies\":false,\"allowTaskPreemption\":false,\"constraints\":{\r\n    \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":0\r\n  },\"poolInfo\":{\r\n    \"autoPoolSpecification\":{\r\n      \"poolLifetimeOption\":\"job\",\"keepAlive\":false,\"pool\":{\r\n        \"vmSize\":\"standard_d1_v2\",\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n          \"nodeFillType\":\"Spread\"\r\n        },\"resizeTimeout\":\"PT15M\",\"targetDedicatedNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"virtualMachineConfiguration\":{\r\n          \"imageReference\":{\r\n            \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n          },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n        },\"targetNodeCommunicationMode\":\"simplified\"\r\n      }\r\n    }\r\n  },\"executionInfo\":{\r\n    \"startTime\":\"2024-03-16T06:52:07.3250561Z\",\"poolId\":\"2289BDD4-C2A2-48ED-A557-5180C7B8321E\"\r\n  },\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#jobs/@Element\",\"id\":\"BatchUser-Job-canCRUDWithPoolNodeComm\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/jobs/BatchUser-Job-canCRUDWithPoolNodeComm\",\"eTag\":\"0x8DC4F0B41C3F5B4\",\"lastModified\":\"2024-03-28T09:41:34.6363828Z\",\"creationTime\":\"2024-03-28T09:41:34.6203878Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-28T09:41:34.9923877Z\",\"previousState\":\"active\",\"previousStateTransitionTime\":\"2024-03-28T09:41:34.6363828Z\",\"priority\":0,\"maxParallelTasks\":-1,\"usesTaskDependencies\":false,\"allowTaskPreemption\":false,\"constraints\":{\r\n    \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":0\r\n  },\"poolInfo\":{\r\n    \"autoPoolSpecification\":{\r\n      \"poolLifetimeOption\":\"job\",\"keepAlive\":false,\"pool\":{\r\n        \"vmSize\":\"standard_d1_v2\",\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n          \"nodeFillType\":\"Spread\"\r\n        },\"resizeTimeout\":\"PT15M\",\"targetDedicatedNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"virtualMachineConfiguration\":{\r\n          \"imageReference\":{\r\n            \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n          },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n        },\"targetNodeCommunicationMode\":\"simplified\"\r\n      }\r\n    }\r\n  },\"executionInfo\":{\r\n    \"startTime\":\"2024-03-28T09:41:34.6363828Z\",\"poolId\":\"3205B27A-9C07-4FF0-9A5D-04970181C5CC\"\r\n  },\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\"\r\n}"
     }
   }, {
     "Method" : "DELETE",
@@ -93,17 +93,17 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Sat, 16 Mar 2024 06:52:08 GMT",
+      "date" : "Thu, 28 Mar 2024 09:41:36 GMT",
       "content-length" : "377",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "74e8a279-23db-4c1f-beaa-5aa9055f8add",
+      "client-request-id" : "daa98fca-1499-48da-8a10-90ba1f6ffe77",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "3caabbd2-267f-48b8-bf92-e912f98d3831",
+      "request-id" : "d47ab984-977b-4ffd-aed7-59df99b71d25",
       "StatusCode" : "409",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"JobBeingDeleted\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The specified job has been marked for deletion and is being garbage collected.\\nRequestId:3caabbd2-267f-48b8-bf92-e912f98d3831\\nTime:2024-03-16T06:52:08.9667843Z\"\r\n  }\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"JobBeingDeleted\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The specified job has been marked for deletion and is being garbage collected.\\nRequestId:d47ab984-977b-4ffd-aed7-59df99b71d25\\nTime:2024-03-28T09:41:36.2313569Z\"\r\n  }\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   } ],

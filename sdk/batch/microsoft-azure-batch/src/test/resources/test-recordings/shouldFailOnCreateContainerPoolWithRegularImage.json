@@ -7,17 +7,17 @@
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Sat, 16 Mar 2024 07:05:38 GMT",
+      "date" : "Thu, 28 Mar 2024 09:09:57 GMT",
       "content-length" : "635",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "c52e91ca-c28c-41cb-b97b-f90c5df14e32",
+      "client-request-id" : "81b32fa0-0604-493e-adc7-a9aff84ef60a",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "9007cec2-5554-49fd-a73d-25d1a2d9971a",
+      "request-id" : "1e628988-bee2-4871-9d6c-8f4734118a49",
       "StatusCode" : "400",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"InvalidPropertyValue\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The value provided for one of the properties in the request body is invalid.\\nRequestId:9007cec2-5554-49fd-a73d-25d1a2d9971a\\nTime:2024-03-16T07:05:38.4994859Z\"\r\n  },\"values\":[\r\n    {\r\n      \"key\":\"PropertyName\",\"value\":\"containerConfiguration\"\r\n    },{\r\n      \"key\":\"Reason\",\"value\":\"The specified imageReference with publisher Canonical offer UbuntuServer sku 18.04-LTS does not support container feature.\"\r\n    }\r\n  ]\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"InvalidPropertyValue\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The value provided for one of the properties in the request body is invalid.\\nRequestId:1e628988-bee2-4871-9d6c-8f4734118a49\\nTime:2024-03-28T09:09:57.3063811Z\"\r\n  },\"values\":[\r\n    {\r\n      \"key\":\"PropertyName\",\"value\":\"containerConfiguration\"\r\n    },{\r\n      \"key\":\"Reason\",\"value\":\"The specified imageReference with publisher Canonical offer UbuntuServer sku 18.04-LTS does not support container feature.\"\r\n    }\r\n  ]\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
@@ -28,12 +28,12 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Sat, 16 Mar 2024 07:05:38 GMT",
+      "date" : "Thu, 28 Mar 2024 09:09:57 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "a0b0eb68-787f-4849-9d74-2545933e357c",
+      "client-request-id" : "7a8027df-6752-4e2c-985f-b07c818529d3",
       "retry-after" : "0",
-      "request-id" : "4c6f233b-6b50-477b-881a-94c9bef41cdd",
+      "request-id" : "7c8df854-4f3e-4302-9402-fecfbb68174a",
       "StatusCode" : "404",
       "dataserviceversion" : "3.0",
       "Body" : "",
