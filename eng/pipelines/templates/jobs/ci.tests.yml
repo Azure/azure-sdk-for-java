@@ -47,7 +47,7 @@ parameters:
     default: 60
 
 jobs:
-  - job:
+  - job: Test_${{ parameters.OSName }}
     displayName: 'Test'
     dependsOn:
       - ${{ parameters.DependsOn }}
