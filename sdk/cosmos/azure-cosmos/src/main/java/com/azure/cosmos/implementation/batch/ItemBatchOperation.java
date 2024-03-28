@@ -29,6 +29,7 @@ public final class ItemBatchOperation<TInternal> extends CosmosItemOperationBase
     private final PartitionKey partitionKey;
     private final CosmosItemOperationType operationType;
     private final RequestOptions requestOptions;
+    private CosmosItemSerializer effectiveItemSerializer;
 
     public ItemBatchOperation(
         final CosmosItemOperationType operationType,
@@ -46,6 +47,13 @@ public final class ItemBatchOperation<TInternal> extends CosmosItemOperationBase
         this.requestOptions = requestOptions;
     }
 
+    @Override
+    public CosmosItemSerializer getEffectiveItemSerializer() {
+        return this.effectiveItemSerializer != null
+            ? this.effectiveItemSerializer
+            : CosmosItemSerializer.DEFAULT_SERIALIZER;
+    }
+
     /**
      * Writes a single operation to JsonSerializable.
      * TODO(rakkuma): Similarly for hybrid row, operation needs to be written in Hybrid row.
@@ -54,8 +62,11 @@ public final class ItemBatchOperation<TInternal> extends CosmosItemOperationBase
      * @return instance of JsonSerializable containing values for a operation.
      */
     @Override
-    JsonSerializable getSerializedOperationInternal() {
+    JsonSerializable getSerializedOperationInternal(CosmosItemSerializer clientItemSerializer) {
         final JsonSerializable jsonSerializable = new JsonSerializable();
+        this.effectiveItemSerializer = requestOptions.getEffectiveItemSerializer() != null
+            ? requestOptions.getEffectiveItemSerializer()
+            : clientItemSerializer != null ? clientItemSerializer : CosmosItemSerializer.DEFAULT_SERIALIZER;
 
         jsonSerializable.set(
             BatchRequestResponseConstants.FIELD_OPERATION_TYPE,
@@ -79,7 +90,8 @@ public final class ItemBatchOperation<TInternal> extends CosmosItemOperationBase
                 jsonSerializable.set(
                     BatchRequestResponseConstants.FIELD_RESOURCE_BODY,
                     this.getItemInternal(),
-                    this.getRequestOptions().getEffectiveItemSerializer());
+                    effectiveItemSerializer,
+                    true);
             }
         }
 

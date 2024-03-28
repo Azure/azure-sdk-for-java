@@ -245,22 +245,36 @@ public class JsonSerializable {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public <T> void set(String propertyName, T value, CosmosItemSerializer itemSerializer) {
         checkNotNull(itemSerializer, "Argument 'itemSerializer' must not be null.");
+        checkNotNull(itemSerializer, "Argument 'itemSerializer' must be the DEFAULT_SERIALIZER when using this method.");
+        set(propertyName, value, itemSerializer, false);
+    }
+
+    /**
+     * Sets the value of a property.
+     *
+     * @param <T> the type of the object.
+     * @param propertyName the property to set.
+     * @param value the value of the property.
+     */
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public <T> void set(String propertyName, T value, CosmosItemSerializer itemSerializer, boolean forceSerialization) {
+        checkNotNull(itemSerializer, "Argument 'itemSerializer' must not be null.");
         if (value == null) {
             // Sets null.
             this.propertyBag.putNull(propertyName);
-        } else if (value instanceof Collection) {
+        } else if (!forceSerialization && value instanceof Collection) {
             // Collection.
             ArrayNode jsonArray = propertyBag.arrayNode();
             this.internalSetCollection(propertyName, (Collection) value, jsonArray);
             this.propertyBag.set(propertyName, jsonArray);
-        } else if (value instanceof JsonNode) {
+        } else if (!forceSerialization && value instanceof JsonNode) {
             this.propertyBag.set(propertyName, (JsonNode) value);
-        } else if (value instanceof JsonSerializable) {
+        } else if (!forceSerialization && value instanceof JsonSerializable) {
             // JsonSerializable
             JsonSerializable castedValue = (JsonSerializable) value;
             castedValue.populatePropertyBag();
             this.propertyBag.set(propertyName, castedValue.propertyBag);
-        } else if (containsJsonSerializable(value.getClass())) {
+        } else if (!forceSerialization && containsJsonSerializable(value.getClass())) {
             ModelBridgeInternal.populatePropertyBag(value);
             this.propertyBag.set(propertyName, ModelBridgeInternal.getJsonSerializable(value).propertyBag);
         } else {

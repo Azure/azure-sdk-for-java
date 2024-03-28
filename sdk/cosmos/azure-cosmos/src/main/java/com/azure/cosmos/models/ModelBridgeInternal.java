@@ -736,7 +736,8 @@ public final class ModelBridgeInternal {
             result.getRetryAfterDuration(),
             result.getSubStatusCode(),
             response.getResponseHeaders(),
-            response.getDiagnostics());
+            response.getDiagnostics(),
+            result.getEffectiveItemSerializer());
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

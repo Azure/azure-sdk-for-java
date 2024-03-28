@@ -548,7 +548,6 @@ public class RequestOptions {
     }
 
     public void setEffectiveItemSerializer(CosmosItemSerializer serializer) {
-        checkNotNull(serializer, "Argument 'serializer' must not be null.");
         this.effectiveItemSerializer = serializer;
     }
 }

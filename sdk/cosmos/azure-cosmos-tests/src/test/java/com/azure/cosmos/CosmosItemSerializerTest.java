@@ -7,10 +7,19 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkItemRequestOptions;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
+import com.azure.cosmos.models.CosmosBulkOperations;
+import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonParser;
@@ -26,15 +35,18 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.testng.AssertJUnit.fail;
 
 public class CosmosItemSerializerTest extends TestSuiteBase {
     private final static ObjectMapper objectMapper = new ObjectMapper()
@@ -75,7 +87,7 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         };
 
         List<Object[]> providers = new ArrayList<>();
-        for (CosmosItemSerializer serializer: itemSerializers) {
+        for (CosmosItemSerializer serializer : itemSerializers) {
             for (boolean isContentResponseOnWriteEnabled : contentResponseOnWriteValues) {
                 for (boolean nonIdempotentWriteRetriesEnabled : nonIdempotentWriteRetriesEnabledValues) {
                     for (boolean trackingIdUsageForWriteRetriesEnabled : trackingIdUsageForWriteRetriesEnabledValues) {
@@ -132,7 +144,7 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         return providers.toArray(array);
     }
 
-    @BeforeClass(groups = {"fast", "emulator"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast", "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildClient();
@@ -140,7 +152,7 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
 
-    @AfterClass(groups = {"fast", "emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "fast", "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
         this.client.close();
@@ -169,7 +181,7 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
             ? useTrackingIdForCreateAndReplace ? "WriteRetriesWithTrackingId|" : "WriteRetriesNoTrackingId|"
             : "NoWriteRetries|";
 
-        CosmosItemSerializer requestOptionsSerializer = (CosmosItemSerializer)row[0];
+        CosmosItemSerializer requestOptionsSerializer = (CosmosItemSerializer) row[0];
         if (requestOptionsSerializer == CosmosItemSerializer.DEFAULT_SERIALIZER) {
             prefix += "RequestOptions_DEFAULT";
         } else if (requestOptionsSerializer == null) {
@@ -184,15 +196,15 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
             return prefix + "|Client_DEFAULT";
         }
 
-        return prefix + "|Client_" +  this.getClientBuilder().getCustomSerializer().getClass().getSimpleName();
+        return prefix + "|Client_" + this.getClientBuilder().getCustomSerializer().getClass().getSimpleName();
     }
 
     @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
-    public void pointOperationsWithPojo(CosmosItemSerializer requestLevelSerializer) {
+    public void pointOperationsAndQueryWithPojo(CosmosItemSerializer requestLevelSerializer) {
         String id = UUID.randomUUID().toString();
         TestDocument doc = TestDocument.create(id);
         Consumer<TestDocument> onBeforeReplace = item -> item.someNumber = 999;
-        BiFunction<TestDocument,Boolean, CosmosPatchOperations> onBeforePatch = (item, isEnvelopeWrapped) -> {
+        BiFunction<TestDocument, Boolean, CosmosPatchOperations> onBeforePatch = (item, isEnvelopeWrapped) -> {
 
             doc.someNumber = 555;
             if (!isEnvelopeWrapped) {
@@ -206,7 +218,7 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
             }
         };
 
-        runPointOperationTestCase(
+        runPointOperationAndQueryTestCase(
             doc,
             id,
             onBeforeReplace,
@@ -216,7 +228,7 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
     }
 
     @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
-    public void pointOperationsWithObjectNode(CosmosItemSerializer requestLevelSerializer) {
+    public void pointOperationsAndQueryWithObjectNode(CosmosItemSerializer requestLevelSerializer) {
         String id = UUID.randomUUID().toString();
         ObjectNode doc = TestDocument.createAsObjectNode(id);
         Consumer<ObjectNode> onBeforeReplace = item -> item.put("someNumber", 999);
@@ -235,7 +247,7 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
             }
         };
 
-        runPointOperationTestCase(
+        runPointOperationAndQueryTestCase(
             doc,
             id,
             onBeforeReplace,
@@ -244,7 +256,98 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
             ObjectNode.class);
     }
 
-    private <T> void runPointOperationTestCase(
+    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
+    public void bulkAndReadManyWithObjectNode(CosmosItemSerializer requestLevelSerializer) {
+
+        runBulkAndReadManyTestCase(
+            id -> TestDocument.createAsObjectNode(id),
+            requestLevelSerializer,
+            ObjectNode.class
+        );
+    }
+
+    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
+    public void bulkAndReadManyWithPojo(CosmosItemSerializer requestLevelSerializer) {
+
+        runBulkAndReadManyTestCase(
+            id -> TestDocument.create(id),
+            requestLevelSerializer,
+            TestDocument.class
+        );
+    }
+
+
+    private <T> void runBulkAndReadManyTestCase(
+        Function<String, T> docGenerator,
+        CosmosItemSerializer requestLevelSerializer,
+        Class<T> classType) {
+
+        CosmosBulkExecutionOptions bulkExecOptions = new CosmosBulkExecutionOptions();
+
+        List<CosmosItemOperation> bulkOperations = new ArrayList<>();
+        Map<String, T> inputItems = new HashMap<>();
+        for (int i = 0; i < 10; i++) {
+            String id = UUID.randomUUID().toString();
+            T doc = docGenerator.apply(id);
+            inputItems.put(id, doc);
+            CosmosBulkItemRequestOptions itemRequestOptions = new CosmosBulkItemRequestOptions()
+                .setCustomSerializer(requestLevelSerializer);
+            bulkOperations.add(CosmosBulkOperations.getCreateItemOperation(
+                doc,
+                new PartitionKey(id),
+                itemRequestOptions,
+                id));
+        }
+
+        Iterable<CosmosBulkOperationResponse<Object>> responseFlux =
+            container.executeBulkOperations(bulkOperations, bulkExecOptions);
+        for(CosmosBulkOperationResponse<Object> response: responseFlux) {
+            assertThat(response.getException()).isNull();
+            assertThat(response.getResponse()).isNotNull();
+            assertThat(response.getResponse().getStatusCode()).isBetween(200, 201);
+            assertThat(response.getOperation().<String>getContext()).isNotNull();
+            String id = response.getOperation().getContext();
+            assertThat(inputItems.containsKey(id)).isTrue();
+            T responseItem = response.getResponse().getItem(classType);
+
+            if (isContentOnWriteEnabled) {
+                assertSameDocument(inputItems.get(id), responseItem);
+            } else {
+                assertThat(responseItem).isNull();
+            }
+        }
+
+        List<CosmosItemIdentity> readManyTuples = new ArrayList<>();
+        for (String id: inputItems.keySet().stream().limit(3).toArray(count -> new String[count])) {
+            readManyTuples.add(new CosmosItemIdentity(new PartitionKey(id), id));
+        }
+
+        CosmosReadManyRequestOptions readManyRequestOptions = new CosmosReadManyRequestOptions()
+            .setCustomSerializer(requestLevelSerializer);
+
+        FeedResponse<T> response = container.readMany(readManyTuples, readManyRequestOptions, classType);
+        assertThat(response).isNotNull();
+        Object[] items = response.getElements().stream().toArray();
+        assertThat(items).isNotNull();
+        assertThat(items).hasSize(3);
+        for(Object responseItem: items) {
+            assertThat(responseItem).isNotNull();
+            if (responseItem instanceof TestDocument) {
+                TestDocument doc = (TestDocument) responseItem;
+                assertThat(inputItems.containsKey(doc.id)).isTrue();
+                assertSameDocument(inputItems.get(doc.id), doc);
+            } else if (responseItem instanceof ObjectNode) {
+                ObjectNode doc = (ObjectNode) responseItem;
+                String id = doc.get("id").asText();
+                assertThat(inputItems.containsKey(id)).isTrue();
+                assertSameDocument(inputItems.get(id), doc);
+            } else {
+                fail("Unexpected response item type '" + responseItem.getClass().getSimpleName() + "'.");
+            }
+        }
+    }
+
+    private <T> void runPointOperationAndQueryTestCase(
         T doc,
         String id,
         Consumer<T> beforeReplace,
@@ -254,7 +357,7 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
 
         boolean useEnvelopeWrapper =
             requestLevelSerializer == EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION
-            || (requestLevelSerializer == null
+                || (requestLevelSerializer == null
                 && this.getClientBuilder()
                        .getCustomSerializer() == EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION);
         if (requestLevelSerializer == EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION
@@ -286,7 +389,7 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
             assertThat(pojoResponse.getItem()).isNull();
         }
 
-        CosmosPatchOperations patchOperations = beforePatch.apply(  doc, useEnvelopeWrapper);
+        CosmosPatchOperations patchOperations = beforePatch.apply(doc, useEnvelopeWrapper);
         CosmosPatchItemRequestOptions patchRequestOptions = new CosmosPatchItemRequestOptions();
         if (useEnvelopeWrapper) {
             patchRequestOptions.setCustomSerializer(EnvelopWrappingItemSerializer.INSTANCE_FOR_PATCH);
@@ -305,6 +408,9 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         assertSameDocument(doc, pojoResponse.getItem());
 
         beforeReplace.accept(doc);
+        if (requestLevelSerializer == EnvelopWrappingItemSerializer.INSTANCE_WITH_TRACKING_ID_VALIDATION) {
+            requestLevelSerializer = EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION;
+        }
         CosmosItemRequestOptions upsertRequestOptions = new CosmosItemRequestOptions();
         if (useEnvelopeWrapper) {
             upsertRequestOptions.setCustomSerializer(EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION);
@@ -318,19 +424,28 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
             assertThat(pojoResponse.getItem()).isNull();
         }
 
+        CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
+        if (useEnvelopeWrapper) {
+            queryRequestOptions.setCustomSerializer(EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION);
+        } else {
+            queryRequestOptions.setCustomSerializer(requestOptions.getCustomSerializer());
+        }
+        List<T> results = container
+            .queryItems("SELECT * FROM c where c.id = '" + id + "'", queryRequestOptions, classType)
+            .stream().collect(Collectors.toList());
+        assertThat(results).isNotNull();
+        assertThat(results).hasSize(1);
+        assertSameDocument(doc, results.get(0));
+
+        results = container.readAllItems(new PartitionKey(id), queryRequestOptions, classType)
+                           .stream().collect(Collectors.toList());
+        assertThat(results).isNotNull();
+        assertThat(results).hasSize(1);
+        assertSameDocument(doc, results.get(0));
+
         // TODO @fabianm - add missing test cases
 
         // Batch
-
-
-        // Bulk
-
-        // Query
-
-        // Query VALUE
-
-        // QUERY SubNode
-
         // Change feed
     }
 
@@ -360,13 +475,13 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
             doc.id = id;
             doc.mypk = id;
             doc.someNumber = 5;
-            doc.someStringArray = new String[] {id, "someString2", "someString3"};
-            doc.someNumberArray = new Integer[] {1, 3, 5};
+            doc.someStringArray = new String[] { id, "someString2", "someString3" };
+            doc.someNumberArray = new Integer[] { 1, 3, 5 };
             TestChildObject child = new TestChildObject();
             child.childId = "C1_" + id;
             child.someNumber = 9;
             doc.someChildObject = child;
-            doc.someChildObjectArray = new TestChildObject[] {child, child};
+            doc.someChildObjectArray = new TestChildObject[] { child, child };
 
             return doc;
         }
@@ -401,18 +516,18 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         assertThat(deserializedDoc).isNotNull();
 
         if (doc instanceof TestDocument) {
-            assertSameDocument((TestDocument)doc, (TestDocument)deserializedDoc);
+            assertSameDocument((TestDocument) doc, (TestDocument) deserializedDoc);
             return;
         }
 
-        assertSameDocument((ObjectNode)doc, (ObjectNode)deserializedDoc);
+        assertSameDocument((ObjectNode) doc, (ObjectNode) deserializedDoc);
     }
 
     private static void assertSameDocument(ObjectNode doc, ObjectNode deserializedDoc) {
         assertThat(doc).isNotNull();
         assertThat(deserializedDoc).isNotNull();
 
-       assertSameDocument(TestDocument.parse(doc), TestDocument.parse(deserializedDoc));
+        assertSameDocument(TestDocument.parse(doc), TestDocument.parse(deserializedDoc));
     }
 
     private static void assertSameDocument(TestDocument doc, TestDocument deserializedDoc) {
@@ -520,7 +635,7 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
             }
 
             return CosmosItemSerializer.DEFAULT_SERIALIZER.deserialize(
-                (Map<String, Object>)objectMapper.convertValue(envelope.wrappedContent, mapClass),
+                (Map<String, Object>) objectMapper.convertValue(envelope.wrappedContent, mapClass),
                 classType);
         }
     }

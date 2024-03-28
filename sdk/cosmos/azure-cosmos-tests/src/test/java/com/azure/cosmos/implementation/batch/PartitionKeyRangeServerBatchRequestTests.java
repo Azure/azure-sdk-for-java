@@ -44,7 +44,8 @@ public class PartitionKeyRangeServerBatchRequestTests {
             "0",
             operations,
             200000,
-            2);
+            2,
+            null);
 
         assertThat(serverOperationBatchRequest.getBatchRequest().getOperations().size()).isEqualTo(operations.size());
         assertThat(serverOperationBatchRequest.getBatchRequest().getOperations()).isEqualTo(operations);
@@ -64,7 +65,8 @@ public class PartitionKeyRangeServerBatchRequestTests {
             "0",
             operations,
             200000,
-            0);
+            0,
+            null);
 
         assertThat(serverOperationBatchRequest.getBatchRequest().getOperations().size()).isEqualTo(1);
         assertThat(serverOperationBatchRequest.getBatchRequest().getOperations().get(0).getId()).isEqualTo(operations.get(0).getId());
@@ -87,7 +89,8 @@ public class PartitionKeyRangeServerBatchRequestTests {
             "0",
             operations.subList(1, 3),
             200000,
-            1);
+            1,
+            null);
 
         assertThat(serverOperationBatchRequest.getBatchRequest().getOperations().size()).isEqualTo(1);
 
@@ -170,6 +173,7 @@ public class PartitionKeyRangeServerBatchRequestTests {
             "0",
             operations,
             maxServerRequestBodyLength,
-            maxServerRequestOperationCount);
+            maxServerRequestOperationCount,
+            null);
     }
 }
