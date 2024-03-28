@@ -19,6 +19,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.json.JsonSerializable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -277,7 +278,7 @@ public class AsyncRestProxy extends RestProxyBase {
                 }
             })
                 .doOnCancel(() -> tracer.end(CANCELLED_ERROR_TYPE, null, span))
-                .contextWrite(reactor.util.context.Context.of("TRACING_CONTEXT", span));
+                .contextWrite(reactor.util.context.Context.of(Tracer.PARENT_TRACE_CONTEXT_KEY, span));
         }
 
         return getResponse;

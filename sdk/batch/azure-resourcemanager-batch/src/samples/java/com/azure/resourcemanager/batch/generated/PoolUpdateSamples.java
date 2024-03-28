@@ -24,7 +24,7 @@ import java.util.Arrays;
 public final class PoolUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolUpdate_EnableAutoScale.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolUpdate_EnableAutoScale.json
      */
     /**
      * Sample code: UpdatePool - Enable Autoscale.
@@ -43,7 +43,7 @@ public final class PoolUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolUpdate_RemoveStartTask.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolUpdate_RemoveStartTask.json
      */
     /**
      * Sample code: UpdatePool - Remove Start Task.
@@ -59,7 +59,7 @@ public final class PoolUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolUpdate_ResizePool.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolUpdate_ResizePool.json
      */
     /**
      * Sample code: UpdatePool - Resize Pool.
@@ -79,7 +79,7 @@ public final class PoolUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolUpdate_OtherProperties.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolUpdate_OtherProperties.json
      */
     /**
      * Sample code: UpdatePool - Other Properties.

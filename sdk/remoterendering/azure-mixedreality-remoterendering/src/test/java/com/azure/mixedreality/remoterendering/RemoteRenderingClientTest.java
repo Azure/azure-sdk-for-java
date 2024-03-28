@@ -126,9 +126,10 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
 
         assertEquals(AssetConversionStatus.FAILED, conversion.getStatus());
         assertNotNull(conversion.getError());
-        // Invalid input provided. Check logs in output container for details.
-        assertTrue(conversion.getError().getMessage().toLowerCase(Locale.ROOT).contains("invalid input"));
-        assertTrue(conversion.getError().getMessage().toLowerCase(Locale.ROOT).contains("logs"));
+        assertEquals(conversion.getError().getCode(), "InputContainerError");
+        // Message: "Could not find the asset file in the storage account. Please make sure all paths and names are correct and the file is uploaded to storage."
+        assertNotNull(conversion.getError().getMessage());
+        assertTrue(conversion.getError().getMessage().toLowerCase(Locale.ROOT).contains("could not find the asset file in the storage account"));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
