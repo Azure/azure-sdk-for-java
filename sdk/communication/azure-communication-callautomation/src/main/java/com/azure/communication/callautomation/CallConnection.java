@@ -16,8 +16,6 @@ import com.azure.communication.callautomation.models.RemoveParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferCallToParticipantOptions;
-import com.azure.communication.callautomation.models.UnmuteParticipantOptions;
-import com.azure.communication.callautomation.models.UnmuteParticipantResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -236,37 +234,15 @@ public final class CallConnection {
     /**
      * Mutes a participant in the call.
      *
-     * @param options - Options for the request.
-     * @param context A {@link Context} representing the request context.
-     * @return a Response containing the MuteParticipantResult object.
+     * @param options -  MuteParticipantOptions configuration options.
+     * @param context Context
+     * @return Response with result of muting a participant from the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MuteParticipantResult> muteParticipantWithResponse(MuteParticipantOptions options, Context context) {
         return callConnectionAsync.muteParticipantWithResponseInternal(options, context).block();
     }
 
-    /**
-     * Unmutes participant in the call.
-     *
-     * @param targetParticipant - Participant to be unmuted. Only ACS Users are currently supported.
-     * @return An UnmuteParticipantResult object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UnmuteParticipantResult unmuteParticipant(CommunicationIdentifier targetParticipant) {
-        return callConnectionAsync.unmuteParticipant(targetParticipant).block();
-    }
-
-    /**
-     * Unmutes participant in the call.
-     *
-     * @param options - Options for the request.
-     * @param context A {@link Context} representing the request context.
-     * @return a Response containing the UnmuteParticipantResult object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UnmuteParticipantResult> unmuteParticipantWithResponse(UnmuteParticipantOptions options, Context context) {
-        return callConnectionAsync.unmuteParticipantWithResponseInternal(options, context).block();
-    }
 
     /**
      * Cancel add participant operation request.
@@ -304,16 +280,6 @@ public final class CallConnection {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallMedia getCallMedia() {
         return new CallMedia(callConnectionAsync.getCallMediaAsync());
-    }
-
-    /***
-     * Returns an object of CallDialog
-     *
-     * @return a CallDialogAsync.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallDialog getCallDialog() {
-        return new CallDialog(callConnectionAsync.getCallDialogAsync());
     }
 
     //endregion

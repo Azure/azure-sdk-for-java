@@ -16,6 +16,9 @@ public final class TransferCallResponseInternal {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
+    /** Creates an instance of TransferCallResponseInternal class. */
+    public TransferCallResponseInternal() {}
+
     /**
      * Get the operationContext property: The operation context provided by client.
      *

@@ -124,26 +124,4 @@ public final class PlayToAllOptions {
         this.operationCallbackUrl = operationCallbackUrl;
         return this;
     }
-
-     /**
-     * Get the interruptCallMediaOperation property: If set play can barge into other existing
-     * queued-up/currently-processing requests.
-     *
-     * @return the interruptCallMediaOperation value.
-     */
-    public boolean isInterruptCallMediaOperation() {
-        return this.interruptCallMediaOperation;
-    }
-
-    /**
-     * Set the interruptCallMediaOperation property: If set play can barge into other existing
-     * queued-up/currently-processing requests.
-     *
-     * @param interruptCallMediaOperation the interruptCallMediaOperation value to set.
-     * @return the PlayOptionsInternal object itself.
-     */
-    public PlayToAllOptions setInterruptCallMediaOperation(boolean interruptCallMediaOperation) {
-        this.interruptCallMediaOperation = interruptCallMediaOperation;
-        return this;
-    }
 }

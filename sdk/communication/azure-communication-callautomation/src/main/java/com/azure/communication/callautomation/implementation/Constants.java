@@ -4,7 +4,7 @@
 package com.azure.communication.callautomation.implementation;
 
 /***
- * Constants to be used by Call Automation.
+ * Constants to be used by CallingServer.
  */
 public final class Constants {
     public static final int KB = 1024;

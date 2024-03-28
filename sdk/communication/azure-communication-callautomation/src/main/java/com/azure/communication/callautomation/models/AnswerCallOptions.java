@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
 
 /**
@@ -21,16 +20,6 @@ public final class AnswerCallOptions {
      */
     private final String callbackUrl;
 
-    /**
-     * Media Streaming Configuration.
-     */
-    private MediaStreamingOptions mediaStreamingOptions;
-
-    /**
-     * Transcription Configuration.
-     */
-    private TranscriptionOptions transcriptionOptions;
-
     /*
      * AI options for the call.
      */
@@ -40,12 +29,6 @@ public final class AnswerCallOptions {
      * The operational context
      */
     private String operationContext;
-    
-    /**
-     * The source caller ID number which is a phone number that will be used when inviting a pstn target.
-     * Required only when this is an incoming voip call and there will be a transfer call request to a PSTN target.
-     */
-    private PhoneNumberIdentifier sourceCallerIdNumber;
 
     /**
      * Constructor
@@ -77,41 +60,12 @@ public final class AnswerCallOptions {
     }
 
     /**
-     * Get the Transcription configuration.
-     *
-     * @return the transcriptionConfiguration.
-     */
-    public TranscriptionOptions getTranscriptionConfiguration() {
-        return transcriptionOptions;
-    }
-
-    /**
      * Get the operationContext.
      *
      * @return the operationContext
      */
     public String getOperationContext() {
         return operationContext;
-    }
-
-     /**
-     * Get the sourceCallerIdNumber.
-     *
-     * @return the sourceCallerIdNumber
-     */
-    public PhoneNumberIdentifier getSourceCallerIdNumber() {
-        return sourceCallerIdNumber;
-    }
-
-    /**
-     * Set the transcription configuration.
-     *
-     * @param transcriptionOptions The transcription configuration.
-     * @return the AnswerCallOptions object itself.
-     */
-    public AnswerCallOptions setTranscriptionConfiguration(TranscriptionOptions transcriptionOptions) {
-        this.transcriptionOptions = transcriptionOptions;
-        return this;
     }
 
      /**
@@ -122,17 +76,6 @@ public final class AnswerCallOptions {
      */
     public AnswerCallOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
-        return this;
-    }
-
-    /**
-     * Set the sourceCallerIdNumber.
-     *
-     * @param sourceCallerIdNumber the sourceCallerIdNumber to set
-     * @return the AnswerCallOptions object itself.
-     */
-    public AnswerCallOptions setSourceCallerIdNumber(PhoneNumberIdentifier sourceCallerIdNumber) {
-        this.sourceCallerIdNumber = sourceCallerIdNumber;
         return this;
     }
 
@@ -153,26 +96,6 @@ public final class AnswerCallOptions {
      */
     public AnswerCallOptions setCallIntelligenceOptions(CallIntelligenceOptions callIntelligenceOptions) {
         this.callIntelligenceOptions = callIntelligenceOptions;
-        return this;
-    }
-
-    /**
-     * Get the Media Streaming configuration.
-     *
-     * @return the mediaStreamingConfiguration.
-     */
-    public MediaStreamingOptions getMediaStreamingConfiguration() {
-        return mediaStreamingOptions;
-    }
-
-    /**
-     * Set the media streaming configuration.
-     *
-     * @param mediaStreamingOptions The media streaming configuration.
-     * @return the AnswerCallOptions object itself.
-     */
-    public AnswerCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
-        this.mediaStreamingOptions = mediaStreamingOptions;
         return this;
     }
 }

@@ -16,10 +16,7 @@ public final class SendDtmfTonesCompleted extends CallAutomationEventBase {
     @JsonProperty(value = "resultInformation")
     private final ResultInformation resultInformation;
 
-    /**
-     * Constructor for SendDtmfTonesCompleted
-     */
-    public SendDtmfTonesCompleted() {
+    private SendDtmfTonesCompleted() {
         resultInformation = null;
     }
 

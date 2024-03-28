@@ -32,7 +32,7 @@ public final class ContinuousDtmfRecognitionToneReceived extends CallAutomationE
     /**
      * Constructor for ContinuousDtmfRecognitionToneReceived
      */
-    public ContinuousDtmfRecognitionToneReceived() {
+    private ContinuousDtmfRecognitionToneReceived() {
         resultInformation = null;
         sequenceId = 0;
         tone = null;
@@ -53,7 +53,7 @@ public final class ContinuousDtmfRecognitionToneReceived extends CallAutomationE
      *
      * @return the tone value.
      */
-    public DtmfTone getTone() {
+    public DtmfTone  getTone() {
         return this.tone;
     }
 

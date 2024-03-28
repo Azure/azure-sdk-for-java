@@ -16,12 +16,6 @@ public final class TranscriptionUpdate {
     @JsonProperty(value = "transcriptionStatus")
     private TranscriptionStatus transcriptionStatus;
 
-    /*
-     * The transcriptionStatusDetails property.
-     */
-    @JsonProperty(value = "transcriptionStatusDetails")
-    private TranscriptionStatusDetails transcriptionStatusDetails;
-
     /**
      * Get the transcriptionStatus property: The transcriptionStatus property.
      *
@@ -39,26 +33,6 @@ public final class TranscriptionUpdate {
      */
     public TranscriptionUpdate setTranscriptionStatus(TranscriptionStatus transcriptionStatus) {
         this.transcriptionStatus = transcriptionStatus;
-        return this;
-    }
-
-    /**
-     * Get the transcriptionStatusDetails property: The transcriptionStatusDetails property.
-     *
-     * @return the transcriptionStatusDetails value.
-     */
-    public TranscriptionStatusDetails getTranscriptionStatusDetails() {
-        return this.transcriptionStatusDetails;
-    }
-
-    /**
-     * Set the transcriptionStatusDetails property: The transcriptionStatusDetails property.
-     *
-     * @param transcriptionStatusDetails the transcriptionStatusDetails value to set.
-     * @return the TranscriptionUpdate object itself.
-     */
-    public TranscriptionUpdate setTranscriptionStatusDetails(TranscriptionStatusDetails transcriptionStatusDetails) {
-        this.transcriptionStatusDetails = transcriptionStatusDetails;
         return this;
     }
 }

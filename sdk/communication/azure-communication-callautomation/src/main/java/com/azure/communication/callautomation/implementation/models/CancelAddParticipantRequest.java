@@ -17,20 +17,21 @@ public final class CancelAddParticipantRequest {
     private String invitationId;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request
-     * to the response event.
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
-     * Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      */
     @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
+
+    /** Creates an instance of CancelAddParticipantRequest class. */
+    public CancelAddParticipantRequest() {}
 
     /**
      * Get the invitationId property: Invitation ID used to add a participant.

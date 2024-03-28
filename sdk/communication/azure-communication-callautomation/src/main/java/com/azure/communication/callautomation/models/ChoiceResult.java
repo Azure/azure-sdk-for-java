@@ -2,12 +2,19 @@
 // Licensed under the MIT License.
 
 package com.azure.communication.callautomation.models;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ChoiceResult model. */
 @Fluent
+@Immutable
 public final class ChoiceResult extends RecognizeResult {
+
+    private ChoiceResult() {
+    }
+
     /*
      * Label is the primary identifier for the choice detected
      */
@@ -32,17 +39,6 @@ public final class ChoiceResult extends RecognizeResult {
     }
 
     /**
-     * Set the label property: Label is the primary identifier for the choice detected.
-     *
-     * @param label the label value to set.
-     * @return the ChoiceResult object itself.
-     */
-    public ChoiceResult setLabel(String label) {
-        this.label = label;
-        return this;
-    }
-
-    /**
      * Get the recognizedPhrase property: Phrases are set to the value if choice is selected via phrase detection. If
      * Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set to
      * null.
@@ -51,18 +47,5 @@ public final class ChoiceResult extends RecognizeResult {
      */
     public String getRecognizedPhrase() {
         return this.recognizedPhrase;
-    }
-
-    /**
-     * Set the recognizedPhrase property: Phrases are set to the value if choice is selected via phrase detection. If
-     * Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set to
-     * null.
-     *
-     * @param recognizedPhrase the recognizedPhrase value to set.
-     * @return the ChoiceResult object itself.
-     */
-    public ChoiceResult setRecognizedPhrase(String recognizedPhrase) {
-        this.recognizedPhrase = recognizedPhrase;
-        return this;
     }
 }

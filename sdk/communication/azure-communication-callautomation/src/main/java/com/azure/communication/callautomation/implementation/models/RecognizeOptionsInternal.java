@@ -59,6 +59,9 @@ public final class RecognizeOptionsInternal {
     @JsonProperty(value = "speechOptions")
     private SpeechOptionsInternal speechOptions;
 
+    /** Creates an instance of RecognizeOptionsInternal class. */
+    public RecognizeOptionsInternal() {}
+
     /**
      * Get the interruptPrompt property: Determines if we interrupt the prompt and start recognizing.
      *

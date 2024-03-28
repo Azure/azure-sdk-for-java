@@ -44,11 +44,9 @@ public final class ReasonCode extends ExpandableStringEnum<ReasonCode> {
         /** Action failed, invalid file format. */
         public static final ReasonCode INVALID_FILE_FORMAT = fromReasonCode(8535);
         /** Action failed, cognitive service play error. */
-        public static final ReasonCode COGNITEIVE_SERVICE_PLAY_ERROR = fromReasonCode(8565);
+        public static final ReasonCode COGNITIVE_SERVICES_ERROR = fromReasonCode(8565);
         /** Action failed, text or ssml play source empty. */
         public static final ReasonCode TEXT_OR_SSML_SOURCE_EMPTY = fromReasonCode(8582);
-        /** Action failed, cognitive services error. */
-        public static final ReasonCode COGNITIVE_SERVICES_ERROR = fromReasonCode(8565);
     }
 
     /** Action completed successfully. */

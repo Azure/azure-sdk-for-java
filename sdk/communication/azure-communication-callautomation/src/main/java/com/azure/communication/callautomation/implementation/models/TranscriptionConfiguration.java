@@ -4,7 +4,6 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.communication.callautomation.models.TranscriptionTransportType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -18,12 +17,6 @@ public final class TranscriptionConfiguration {
      */
     @JsonProperty(value = "transportUrl", required = true)
     private String transportUrl;
-
-    /*
-     * The type of transport to be used for live transcription, eg. Websocket
-     */
-    @JsonProperty(value = "transportType", required = true)
-    private TranscriptionTransportType transportType;
 
     /*
      * Defines the locale for the data e.g en-CA, en-AU
@@ -60,26 +53,6 @@ public final class TranscriptionConfiguration {
      */
     public TranscriptionConfiguration setTransportUrl(String transportUrl) {
         this.transportUrl = transportUrl;
-        return this;
-    }
-
-    /**
-     * Get the transportType property: The type of transport to be used for live transcription, eg. Websocket.
-     * 
-     * @return the transportType value.
-     */
-    public TranscriptionTransportType getTransportType() {
-        return this.transportType;
-    }
-
-    /**
-     * Set the transportType property: The type of transport to be used for live transcription, eg. Websocket.
-     * 
-     * @param transportType the transportType value to set.
-     * @return the TranscriptionConfiguration object itself.
-     */
-    public TranscriptionConfiguration setTransportType(TranscriptionTransportType transportType) {
-        this.transportType = transportType;
         return this;
     }
 

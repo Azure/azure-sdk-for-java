@@ -46,6 +46,9 @@ public final class TextSourceInternal {
     @JsonProperty(value = "customVoiceEndpointId")
     private String customVoiceEndpointId;
 
+    /** Creates an instance of TextSourceInternal class. */
+    public TextSourceInternal() {}
+
     /**
      * Get the text property: Text for the cognitive service to be played.
      *
