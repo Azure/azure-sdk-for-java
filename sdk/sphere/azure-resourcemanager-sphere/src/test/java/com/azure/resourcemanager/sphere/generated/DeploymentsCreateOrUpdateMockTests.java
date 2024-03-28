@@ -14,6 +14,8 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.sphere.AzureSphereManager;
 import com.azure.resourcemanager.sphere.fluent.models.ImageInner;
 import com.azure.resourcemanager.sphere.models.Deployment;
+import com.azure.resourcemanager.sphere.models.DeploymentProperties;
+import com.azure.resourcemanager.sphere.models.ImageProperties;
 import com.azure.resourcemanager.sphere.models.RegionalDataBoundary;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -33,57 +35,38 @@ public final class DeploymentsCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"deploymentId\":\"dsrezpdrhneuyow\",\"deployedImages\":[{\"properties\":{\"image\":\"t\",\"imageId\":\"ib\",\"imageName\":\"cgpik\",\"regionalDataBoundary\":\"None\",\"uri\":\"ejzanlfz\",\"description\":\"av\",\"componentId\":\"bzonok\",\"imageType\":\"FirmwareUpdateManifest\",\"provisioningState\":\"Deleting\"},\"id\":\"cirgzp\",\"name\":\"rlazszrnw\",\"type\":\"iin\"}],\"deploymentDateUtc\":\"2021-01-06T22:30:17Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"jylwbtlhflsj\",\"name\":\"dhszfjv\",\"type\":\"bgofeljag\"}";
+        String responseStr
+            = "{\"properties\":{\"deploymentId\":\"wib\",\"deployedImages\":[{\"properties\":{\"image\":\"bhshfwpracstwity\",\"imageId\":\"evxccedcp\",\"imageName\":\"dyodnwzxltj\",\"regionalDataBoundary\":\"EU\",\"uri\":\"ltiugcxnavv\",\"description\":\"qiby\",\"componentId\":\"nyowxwlmdjrkvfg\",\"imageType\":\"FwConfig\",\"provisioningState\":\"Updating\"},\"id\":\"bodacizsjq\",\"name\":\"hkr\",\"type\":\"ibdeibq\"}],\"deploymentDateUtc\":\"2021-10-05T18:29:09Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"vxndz\",\"name\":\"mkrefajpjorwkq\",\"type\":\"yhgbijtjivfx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AzureSphereManager manager =
-            AzureSphereManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Deployment response =
-            manager
-                .deployments()
-                .define("nmdyodnwzxl")
-                .withExistingDeviceGroup("dl", "h", "hfwpracstwit", "khevxccedc")
-                .withDeploymentId("vnhltiugcx")
-                .withDeployedImages(
-                    Arrays
-                        .asList(
-                            new ImageInner()
-                                .withImage("xqi")
-                                .withImageId("qunyowxwlmdjr")
-                                .withRegionalDataBoundary(RegionalDataBoundary.EU),
-                            new ImageInner()
-                                .withImage("jivfxzsjabib")
-                                .withImageId("stawfsdjpvkv")
-                                .withRegionalDataBoundary(RegionalDataBoundary.NONE)))
-                .create();
+        Deployment response = manager.deployments().define("wpusdsttwvogv")
+            .withExistingDeviceGroup("bykutw", "fhpagmhrskdsnf", "sd", "akgtdlmkkzevdlh")
+            .withProperties(new DeploymentProperties().withDeploymentId("jdcngqqm")
+                .withDeployedImages(Arrays.asList(
+                    new ImageInner().withProperties(new ImageProperties().withImage("gm").withImageId("rwr")
+                        .withRegionalDataBoundary(RegionalDataBoundary.NONE)),
+                    new ImageInner().withProperties(new ImageProperties().withImage("kaivwit").withImageId("cywuggwol")
+                        .withRegionalDataBoundary(RegionalDataBoundary.EU)))))
+            .create();
 
-        Assertions.assertEquals("dsrezpdrhneuyow", response.deploymentId());
-        Assertions.assertEquals("t", response.deployedImages().get(0).image());
-        Assertions.assertEquals("ib", response.deployedImages().get(0).imageId());
-        Assertions.assertEquals(RegionalDataBoundary.NONE, response.deployedImages().get(0).regionalDataBoundary());
+        Assertions.assertEquals("wib", response.properties().deploymentId());
+        Assertions.assertEquals("bhshfwpracstwity", response.properties().deployedImages().get(0).properties().image());
+        Assertions.assertEquals("evxccedcp", response.properties().deployedImages().get(0).properties().imageId());
+        Assertions.assertEquals(RegionalDataBoundary.EU,
+            response.properties().deployedImages().get(0).properties().regionalDataBoundary());
     }
 }

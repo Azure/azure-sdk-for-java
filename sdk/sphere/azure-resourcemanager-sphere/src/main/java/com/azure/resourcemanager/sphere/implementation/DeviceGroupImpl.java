@@ -5,17 +5,15 @@
 package com.azure.resourcemanager.sphere.implementation;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.sphere.fluent.models.DeviceGroupInner;
-import com.azure.resourcemanager.sphere.models.AllowCrashDumpCollection;
 import com.azure.resourcemanager.sphere.models.ClaimDevicesRequest;
-import com.azure.resourcemanager.sphere.models.CountDeviceResponse;
+import com.azure.resourcemanager.sphere.models.CountDevicesResponse;
 import com.azure.resourcemanager.sphere.models.DeviceGroup;
+import com.azure.resourcemanager.sphere.models.DeviceGroupProperties;
 import com.azure.resourcemanager.sphere.models.DeviceGroupUpdate;
-import com.azure.resourcemanager.sphere.models.OSFeedType;
-import com.azure.resourcemanager.sphere.models.ProvisioningState;
-import com.azure.resourcemanager.sphere.models.RegionalDataBoundary;
-import com.azure.resourcemanager.sphere.models.UpdatePolicy;
+import com.azure.resourcemanager.sphere.models.DeviceGroupUpdateProperties;
 
 public final class DeviceGroupImpl implements DeviceGroup, DeviceGroup.Definition, DeviceGroup.Update {
     private DeviceGroupInner innerObject;
@@ -34,32 +32,12 @@ public final class DeviceGroupImpl implements DeviceGroup, DeviceGroup.Definitio
         return this.innerModel().type();
     }
 
-    public String description() {
-        return this.innerModel().description();
+    public DeviceGroupProperties properties() {
+        return this.innerModel().properties();
     }
 
-    public OSFeedType osFeedType() {
-        return this.innerModel().osFeedType();
-    }
-
-    public UpdatePolicy updatePolicy() {
-        return this.innerModel().updatePolicy();
-    }
-
-    public AllowCrashDumpCollection allowCrashDumpsCollection() {
-        return this.innerModel().allowCrashDumpsCollection();
-    }
-
-    public RegionalDataBoundary regionalDataBoundary() {
-        return this.innerModel().regionalDataBoundary();
-    }
-
-    public Boolean hasDeployment() {
-        return this.innerModel().hasDeployment();
-    }
-
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String resourceGroupName() {
@@ -92,22 +70,14 @@ public final class DeviceGroupImpl implements DeviceGroup, DeviceGroup.Definitio
     }
 
     public DeviceGroup create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeviceGroups()
-                .createOrUpdate(
-                    resourceGroupName, catalogName, productName, deviceGroupName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getDeviceGroups().createOrUpdate(resourceGroupName,
+            catalogName, productName, deviceGroupName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DeviceGroup create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeviceGroups()
-                .createOrUpdate(
-                    resourceGroupName, catalogName, productName, deviceGroupName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getDeviceGroups().createOrUpdate(resourceGroupName,
+            catalogName, productName, deviceGroupName, this.innerModel(), context);
         return this;
     }
 
@@ -123,125 +93,64 @@ public final class DeviceGroupImpl implements DeviceGroup, DeviceGroup.Definitio
     }
 
     public DeviceGroup apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeviceGroups()
-                .update(resourceGroupName, catalogName, productName, deviceGroupName, updateProperties, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getDeviceGroups().update(resourceGroupName, catalogName,
+            productName, deviceGroupName, updateProperties, Context.NONE);
         return this;
     }
 
     public DeviceGroup apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeviceGroups()
-                .update(resourceGroupName, catalogName, productName, deviceGroupName, updateProperties, context);
+        this.innerObject = serviceManager.serviceClient().getDeviceGroups().update(resourceGroupName, catalogName,
+            productName, deviceGroupName, updateProperties, context);
         return this;
     }
 
     DeviceGroupImpl(DeviceGroupInner innerObject, com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.catalogName = Utils.getValueFromIdByName(innerObject.id(), "catalogs");
-        this.productName = Utils.getValueFromIdByName(innerObject.id(), "products");
-        this.deviceGroupName = Utils.getValueFromIdByName(innerObject.id(), "deviceGroups");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.catalogName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "catalogs");
+        this.productName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "products");
+        this.deviceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "deviceGroups");
     }
 
     public DeviceGroup refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeviceGroups()
-                .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getDeviceGroups()
+            .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, Context.NONE).getValue();
         return this;
     }
 
     public DeviceGroup refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeviceGroups()
-                .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getDeviceGroups()
+            .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, context).getValue();
         return this;
     }
 
     public void claimDevices(ClaimDevicesRequest claimDevicesRequest) {
-        serviceManager
-            .deviceGroups()
-            .claimDevices(resourceGroupName, catalogName, productName, deviceGroupName, claimDevicesRequest);
+        serviceManager.deviceGroups().claimDevices(resourceGroupName, catalogName, productName, deviceGroupName,
+            claimDevicesRequest);
     }
 
     public void claimDevices(ClaimDevicesRequest claimDevicesRequest, Context context) {
-        serviceManager
-            .deviceGroups()
-            .claimDevices(resourceGroupName, catalogName, productName, deviceGroupName, claimDevicesRequest, context);
+        serviceManager.deviceGroups().claimDevices(resourceGroupName, catalogName, productName, deviceGroupName,
+            claimDevicesRequest, context);
     }
 
-    public Response<CountDeviceResponse> countDevicesWithResponse(Context context) {
-        return serviceManager
-            .deviceGroups()
-            .countDevicesWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, context);
+    public Response<CountDevicesResponse> countDevicesWithResponse(Context context) {
+        return serviceManager.deviceGroups().countDevicesWithResponse(resourceGroupName, catalogName, productName,
+            deviceGroupName, context);
     }
 
-    public CountDeviceResponse countDevices() {
+    public CountDevicesResponse countDevices() {
         return serviceManager.deviceGroups().countDevices(resourceGroupName, catalogName, productName, deviceGroupName);
     }
 
-    public DeviceGroupImpl withDescription(String description) {
-        if (isInCreateMode()) {
-            this.innerModel().withDescription(description);
-            return this;
-        } else {
-            this.updateProperties.withDescription(description);
-            return this;
-        }
+    public DeviceGroupImpl withProperties(DeviceGroupProperties properties) {
+        this.innerModel().withProperties(properties);
+        return this;
     }
 
-    public DeviceGroupImpl withOsFeedType(OSFeedType osFeedType) {
-        if (isInCreateMode()) {
-            this.innerModel().withOsFeedType(osFeedType);
-            return this;
-        } else {
-            this.updateProperties.withOsFeedType(osFeedType);
-            return this;
-        }
-    }
-
-    public DeviceGroupImpl withUpdatePolicy(UpdatePolicy updatePolicy) {
-        if (isInCreateMode()) {
-            this.innerModel().withUpdatePolicy(updatePolicy);
-            return this;
-        } else {
-            this.updateProperties.withUpdatePolicy(updatePolicy);
-            return this;
-        }
-    }
-
-    public DeviceGroupImpl withAllowCrashDumpsCollection(AllowCrashDumpCollection allowCrashDumpsCollection) {
-        if (isInCreateMode()) {
-            this.innerModel().withAllowCrashDumpsCollection(allowCrashDumpsCollection);
-            return this;
-        } else {
-            this.updateProperties.withAllowCrashDumpsCollection(allowCrashDumpsCollection);
-            return this;
-        }
-    }
-
-    public DeviceGroupImpl withRegionalDataBoundary(RegionalDataBoundary regionalDataBoundary) {
-        if (isInCreateMode()) {
-            this.innerModel().withRegionalDataBoundary(regionalDataBoundary);
-            return this;
-        } else {
-            this.updateProperties.withRegionalDataBoundary(regionalDataBoundary);
-            return this;
-        }
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+    public DeviceGroupImpl withProperties(DeviceGroupUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
+        return this;
     }
 }

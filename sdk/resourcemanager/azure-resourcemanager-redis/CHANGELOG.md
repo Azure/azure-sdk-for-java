@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported disabling public network access in `RedisCache` via `disablePublicNetworkAccess()`, for private link feature.
+
 ### Breaking Changes
 
 ### Bugs Fixed

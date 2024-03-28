@@ -60,6 +60,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisabledForJreRange(max = JRE.JAVA_11)
@@ -398,11 +399,11 @@ public class JdkHttpClientTests {
         HttpClient client = new JdkHttpClientProvider()
             .createInstance(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(1)));
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> {
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> assertTimeout(Duration.ofSeconds(5), () -> {
             try (HttpResponse response = doRequestSync(client, "/noResponse")) {
                 assertNotNull(response);
             }
-        });
+        }));
 
         assertInstanceOf(HttpTimeoutException.class, ex.getCause());
     }
@@ -414,11 +415,12 @@ public class JdkHttpClientTests {
         HttpClient client = new JdkHttpClientProvider().createInstance(
             new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(1)).setReadTimeout(Duration.ofSeconds(1)));
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> {
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> assertTimeout(Duration.ofSeconds(5), () -> {
             try (HttpResponse response = doRequestSync(client, "/slowResponse")) {
                 assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
             }
-        });
+        }));
 
         assertInstanceOf(HttpTimeoutException.class, ex.getCause());
     }
@@ -444,12 +446,12 @@ public class JdkHttpClientTests {
         HttpClient client = new JdkHttpClientProvider().createInstance(
             new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(1)).setReadTimeout(Duration.ofSeconds(1)));
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> {
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> assertTimeout(Duration.ofSeconds(5), () -> {
             try (HttpResponse response
                 = doRequestSync(client, "/slowResponse", new Context("azure-eagerly-read-response", true))) {
                 assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
             }
-        });
+        }));
 
         assertInstanceOf(HttpTimeoutException.class, ex.getCause());
     }

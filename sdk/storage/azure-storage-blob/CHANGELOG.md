@@ -16,6 +16,30 @@ URL-encoded. For example, if blob name is "test%25test" and is created by callin
 
 ### Other Changes
 
+## 12.25.3 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-storage-common` from `12.24.2` to version `12.24.3`.
+- Upgraded `azure-storage-internal-avro` from `12.10.2` to version `12.10.3`.
+
+
+## 12.25.2 (2024-02-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+- Upgraded `azure-storage-common` from `12.24.1` to version `12.24.2`.
+- Upgraded `azure-storage-internal-avro` from `12.10.1` to version `12.10.2`.
+
+
 ## 12.25.1 (2023-12-04)
 
 ### Other Changes

@@ -48,7 +48,7 @@ public class TestProxyUtils {
 
     private static final List<String> JSON_PROPERTIES_TO_REDACT
         = new ArrayList<>(Arrays.asList("authHeader", "accountKey", "accessToken", "accountName", "applicationId",
-            "apiKey", "connectionString", "url", "host", "password", "userName"));
+            "apiKey", "client_secret", "connectionString", "url", "host", "password", "userName"));
 
     private static final Map<String, String> HEADER_KEY_REGEX_TO_REDACT = new HashMap<String, String>() {
         {
