@@ -379,10 +379,8 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
         setReceiver(entityType, USE_CASE_PEEK_MESSAGE, isSessionEnabled);
 
         Mono<ServiceBusReceivedMessage> peek = receiver.peekMessage()
-            .delayElement(Duration.ofMillis(100))
             .filter(m -> messageId.equals(m.getMessageId()))
-            .repeatWhenEmpty(10, i -> i);
-
+            .repeatWhenEmpty(10, i -> Flux.interval(Duration.ofSeconds(1)));
 
         // Assert & Act
         StepVerifier.create(peek
