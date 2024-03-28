@@ -10,6 +10,7 @@ import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,9 +25,9 @@ public class AudioTranscriptionSample {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
-        String azureOpenaiKey = "{azure-open-ai-key}";
-        String endpoint = "{azure-open-ai-endpoint}";
-        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
+        String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
+        String deploymentOrModelId = "whisper";
         String fileName = "batman.wav";
         Path filePath = Paths.get("src/samples/java/com/azure/ai/openai/resources/" + fileName);
 

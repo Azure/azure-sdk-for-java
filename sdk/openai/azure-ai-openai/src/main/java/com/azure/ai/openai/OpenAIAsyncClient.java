@@ -11,8 +11,7 @@ import static com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.addMod
 import static com.azure.core.util.FluxUtil.monoError;
 
 import com.azure.ai.openai.implementation.CompletionsUtils;
-import com.azure.ai.openai.implementation.MultipartDataHelper;
-import com.azure.ai.openai.implementation.MultipartDataSerializationResult;
+import com.azure.ai.openai.implementation.MultipartFormDataHelper;
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
@@ -888,6 +887,10 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AudioTranscription>> getAudioTranscriptionWithResponse(String deploymentOrModelName,
         String fileName, AudioTranscriptionOptions audioTranscriptionOptions, RequestOptions requestOptions) {
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+        }
+
         // checking allowed formats for a JSON response
         try {
             validateAudioResponseFormatForTranscription(audioTranscriptionOptions);
@@ -902,10 +905,33 @@ public final class OpenAIAsyncClient {
         if (CoreUtils.isNullOrEmpty(audioTranscriptionOptions.getFilename())) {
             audioTranscriptionOptions.setFilename(fileName);
         }
-        final MultipartDataHelper helper = new MultipartDataHelper();
-        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions);
-        final BinaryData data = result.getData();
-        requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
+
+        MultipartFormDataHelper multipartFormDataHelper = new MultipartFormDataHelper(requestOptions);
+        if (audioTranscriptionOptions.getFile() != null) {
+            multipartFormDataHelper.serializeFileField("file",
+                    BinaryData.fromBytes(audioTranscriptionOptions.getFile()),
+                    null,
+                    audioTranscriptionOptions.getFilename());
+        }
+        if (audioTranscriptionOptions.getResponseFormat() != null) {
+            multipartFormDataHelper.serializeTextField("response_format", audioTranscriptionOptions.getResponseFormat().toString());
+        }
+        if (audioTranscriptionOptions.getModel() != null) {
+            multipartFormDataHelper.serializeTextField("model", audioTranscriptionOptions.getModel());
+        }
+        if (audioTranscriptionOptions.getPrompt() != null) {
+            multipartFormDataHelper.serializeTextField("prompt", audioTranscriptionOptions.getPrompt());
+        }
+        if (audioTranscriptionOptions.getTemperature() != null) {
+            multipartFormDataHelper.serializeTextField("temperature", String.valueOf(audioTranscriptionOptions.getTemperature()));
+        }
+        if (audioTranscriptionOptions.getLanguage() != null) {
+            multipartFormDataHelper.serializeTextField("language", audioTranscriptionOptions.getLanguage());
+        }
+
+        multipartFormDataHelper.end();
+        BinaryData data = multipartFormDataHelper.getRequestBody();
+
         Mono<Response<BinaryData>> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(deploymentOrModelName,
                 data, requestOptions)
@@ -960,6 +986,10 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> getAudioTranscriptionTextWithResponse(String deploymentOrModelName, String fileName,
         AudioTranscriptionOptions audioTranscriptionOptions, RequestOptions requestOptions) {
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+        }
+
         // checking allowed formats for a plain text response
         try {
             validateAudioResponseFormatForTranscriptionText(audioTranscriptionOptions);
@@ -974,10 +1004,33 @@ public final class OpenAIAsyncClient {
         if (CoreUtils.isNullOrEmpty(audioTranscriptionOptions.getFilename())) {
             audioTranscriptionOptions.setFilename(fileName);
         }
-        final MultipartDataHelper helper = new MultipartDataHelper();
-        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions);
-        final BinaryData data = result.getData();
-        requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
+
+        MultipartFormDataHelper multipartFormDataHelper = new MultipartFormDataHelper(requestOptions);
+        if (audioTranscriptionOptions.getFile() != null) {
+            multipartFormDataHelper.serializeFileField("file",
+                    BinaryData.fromBytes(audioTranscriptionOptions.getFile()),
+                    null,
+                    audioTranscriptionOptions.getFilename());
+        }
+        if (audioTranscriptionOptions.getResponseFormat() != null) {
+            multipartFormDataHelper.serializeTextField("response_format", audioTranscriptionOptions.getResponseFormat().toString());
+        }
+        if (audioTranscriptionOptions.getModel() != null) {
+            multipartFormDataHelper.serializeTextField("model", audioTranscriptionOptions.getModel());
+        }
+        if (audioTranscriptionOptions.getPrompt() != null) {
+            multipartFormDataHelper.serializeTextField("prompt", audioTranscriptionOptions.getPrompt());
+        }
+        if (audioTranscriptionOptions.getTemperature() != null) {
+            multipartFormDataHelper.serializeTextField("temperature", String.valueOf(audioTranscriptionOptions.getTemperature()));
+        }
+        if (audioTranscriptionOptions.getLanguage() != null) {
+            multipartFormDataHelper.serializeTextField("language", audioTranscriptionOptions.getLanguage());
+        }
+
+        multipartFormDataHelper.end();
+        BinaryData data = multipartFormDataHelper.getRequestBody();
+
         Mono<Response<BinaryData>> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponseAsync(deploymentOrModelName, data,
                 requestOptions)
@@ -1029,6 +1082,11 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AudioTranslation>> getAudioTranslationWithResponse(String deploymentOrModelName,
         String fileName, AudioTranslationOptions audioTranslationOptions, RequestOptions requestOptions) {
+
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+        }
+
         // checking allowed formats for a JSON response
         try {
             validateAudioResponseFormatForTranslation(audioTranslationOptions);
@@ -1043,10 +1101,30 @@ public final class OpenAIAsyncClient {
         if (CoreUtils.isNullOrEmpty(audioTranslationOptions.getFilename())) {
             audioTranslationOptions.setFilename(fileName);
         }
-        final MultipartDataHelper helper = new MultipartDataHelper();
-        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions);
-        final BinaryData data = result.getData();
-        requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
+
+        MultipartFormDataHelper multipartFormDataHelper = new MultipartFormDataHelper(requestOptions);
+        if (audioTranslationOptions.getFile() != null) {
+            multipartFormDataHelper.serializeFileField("file",
+                    BinaryData.fromBytes(audioTranslationOptions.getFile()),
+                    null,
+                    audioTranslationOptions.getFilename());
+        }
+        if (audioTranslationOptions.getResponseFormat() != null) {
+            multipartFormDataHelper.serializeTextField("response_format", audioTranslationOptions.getResponseFormat().toString());
+        }
+        if (audioTranslationOptions.getModel() != null) {
+            multipartFormDataHelper.serializeTextField("model", audioTranslationOptions.getModel());
+        }
+        if (audioTranslationOptions.getPrompt() != null) {
+            multipartFormDataHelper.serializeTextField("prompt", audioTranslationOptions.getPrompt());
+        }
+        if (audioTranslationOptions.getTemperature() != null) {
+            multipartFormDataHelper.serializeTextField("temperature", String.valueOf(audioTranslationOptions.getTemperature()));
+        }
+
+        multipartFormDataHelper.end();
+        BinaryData data = multipartFormDataHelper.getRequestBody();
+
         Mono<Response<BinaryData>> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranslationAsResponseObjectWithResponseAsync(deploymentOrModelName, data,
                 requestOptions)
@@ -1099,6 +1177,11 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> getAudioTranslationTextWithResponse(String deploymentOrModelName, String fileName,
         AudioTranslationOptions audioTranslationOptions, RequestOptions requestOptions) {
+
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+        }
+
         // checking allowed formats for a JSON response
         try {
             validateAudioResponseFormatForTranslationText(audioTranslationOptions);
@@ -1113,10 +1196,30 @@ public final class OpenAIAsyncClient {
         if (CoreUtils.isNullOrEmpty(audioTranslationOptions.getFilename())) {
             audioTranslationOptions.setFilename(fileName);
         }
-        final MultipartDataHelper helper = new MultipartDataHelper();
-        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions);
-        final BinaryData data = result.getData();
-        requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
+
+        MultipartFormDataHelper multipartFormDataHelper = new MultipartFormDataHelper(requestOptions);
+        if (audioTranslationOptions.getFile() != null) {
+            multipartFormDataHelper.serializeFileField("file",
+                    BinaryData.fromBytes(audioTranslationOptions.getFile()),
+                    null,
+                    audioTranslationOptions.getFilename());
+        }
+        if (audioTranslationOptions.getResponseFormat() != null) {
+            multipartFormDataHelper.serializeTextField("response_format", audioTranslationOptions.getResponseFormat().toString());
+        }
+        if (audioTranslationOptions.getModel() != null) {
+            multipartFormDataHelper.serializeTextField("model", audioTranslationOptions.getModel());
+        }
+        if (audioTranslationOptions.getPrompt() != null) {
+            multipartFormDataHelper.serializeTextField("prompt", audioTranslationOptions.getPrompt());
+        }
+        if (audioTranslationOptions.getTemperature() != null) {
+            multipartFormDataHelper.serializeTextField("temperature", String.valueOf(audioTranslationOptions.getTemperature()));
+        }
+
+        multipartFormDataHelper.end();
+        BinaryData data = multipartFormDataHelper.getRequestBody();
+
         Mono<Response<BinaryData>> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponseAsync(deploymentOrModelName, data,
                 requestOptions)
