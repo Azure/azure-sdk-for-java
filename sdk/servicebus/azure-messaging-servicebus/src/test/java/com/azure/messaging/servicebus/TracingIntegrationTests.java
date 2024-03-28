@@ -394,7 +394,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         CountDownLatch latch = new CountDownLatch(1);
         spanProcessor.notifyIfCondition(latch, s -> s.getName().equals("ServiceBus.receiveDeferredMessage") && receivedMessage.get() != null);
         toClose(receiver.receiveMessages()
-            .skipUntil(m -> traceparent.equals(m.getApplicationProperties().get("traceparent")))
+            .filter(m -> traceparent.equals(m.getApplicationProperties().get("traceparent")))
             .flatMap(m -> receiver.renewMessageLock(m).thenReturn(m))
             .flatMap(m -> receiver.defer(m, new DeferOptions()).thenReturn(m))
             .flatMap(m -> receiver.receiveDeferredMessage(m.getSequenceNumber()).thenReturn(m))
