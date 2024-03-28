@@ -45,12 +45,14 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
     private final IngestionUsingDataCollectionRulesClientService service;
 
     /**
-     * The Data Collection Endpoint for the Data Collection Rule, for example https://dce-name.eastus-2.ingest.monitor.azure.com.
+     * The Data Collection Endpoint for the Data Collection Rule, for example
+     * https://dce-name.eastus-2.ingest.monitor.azure.com.
      */
     private final String endpoint;
 
     /**
-     * Gets The Data Collection Endpoint for the Data Collection Rule, for example https://dce-name.eastus-2.ingest.monitor.azure.com.
+     * Gets The Data Collection Endpoint for the Data Collection Rule, for example
+     * https://dce-name.eastus-2.ingest.monitor.azure.com.
      * 
      * @return the endpoint value.
      */
@@ -103,7 +105,8 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
     /**
      * Initializes an instance of IngestionUsingDataCollectionRulesClient client.
      * 
-     * @param endpoint The Data Collection Endpoint for the Data Collection Rule, for example https://dce-name.eastus-2.ingest.monitor.azure.com.
+     * @param endpoint The Data Collection Endpoint for the Data Collection Rule, for example
+     * https://dce-name.eastus-2.ingest.monitor.azure.com.
      * @param serviceVersion Service version.
      */
     IngestionUsingDataCollectionRulesClientImpl(String endpoint,
@@ -116,7 +119,8 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
      * Initializes an instance of IngestionUsingDataCollectionRulesClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint The Data Collection Endpoint for the Data Collection Rule, for example https://dce-name.eastus-2.ingest.monitor.azure.com.
+     * @param endpoint The Data Collection Endpoint for the Data Collection Rule, for example
+     * https://dce-name.eastus-2.ingest.monitor.azure.com.
      * @param serviceVersion Service version.
      */
     IngestionUsingDataCollectionRulesClientImpl(HttpPipeline httpPipeline, String endpoint,
@@ -129,7 +133,8 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint The Data Collection Endpoint for the Data Collection Rule, for example https://dce-name.eastus-2.ingest.monitor.azure.com.
+     * @param endpoint The Data Collection Endpoint for the Data Collection Rule, for example
+     * https://dce-name.eastus-2.ingest.monitor.azure.com.
      * @param serviceVersion Service version.
      */
     IngestionUsingDataCollectionRulesClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
@@ -143,7 +148,8 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
     }
 
     /**
-     * The interface defining all the services for IngestionUsingDataCollectionRulesClient to be used by the proxy service to perform REST calls.
+     * The interface defining all the services for IngestionUsingDataCollectionRulesClient to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "IngestionUsingDataCo")
@@ -175,15 +181,34 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
      * Ingestion API used to directly ingest data using Data Collection Rules
      * 
      * See error response code and error response message for more detail.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Encoding</td><td>String</td><td>No</td><td>gzip</td></tr>
-     *     <tr><td>x-ms-client-request-id</td><td>String</td><td>No</td><td>Client request Id</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>Content-Encoding</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>gzip</td>
+     * </tr>
+     * <tr>
+     * <td>x-ms-client-request-id</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Client request Id</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * [
      *     Object (Required)
@@ -224,15 +249,34 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
      * Ingestion API used to directly ingest data using Data Collection Rules
      * 
      * See error response code and error response message for more detail.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Encoding</td><td>String</td><td>No</td><td>gzip</td></tr>
-     *     <tr><td>x-ms-client-request-id</td><td>String</td><td>No</td><td>Client request Id</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>Content-Encoding</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>gzip</td>
+     * </tr>
+     * <tr>
+     * <td>x-ms-client-request-id</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>Client request Id</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * [
      *     Object (Required)

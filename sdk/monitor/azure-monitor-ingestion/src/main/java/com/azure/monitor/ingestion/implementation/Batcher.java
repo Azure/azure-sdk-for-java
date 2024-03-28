@@ -7,9 +7,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonWriter;
 import com.azure.monitor.ingestion.models.LogsUploadOptions;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
+
 import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayOutputStream;
@@ -139,16 +140,18 @@ public class Batcher implements Iterator<LogsIngestionRequest> {
 
     private LogsIngestionRequest createRequest(boolean last) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        JsonGenerator generator = JsonFactory.builder().build().createGenerator(byteArrayOutputStream);
+        JsonWriter writer = JsonProviders.createWriter(byteArrayOutputStream);
         try {
-            generator.writeStartArray();
-            generator.writeRaw(serializedLogs.stream().collect(Collectors.joining(",")));
-            generator.writeEndArray();
-            generator.close();
-
+            writer.writeStartArray();
+            for (String log : serializedLogs) {
+                writer.writeRawValue(log);
+            }
+            writer.writeEndArray();
+            writer.close();
             byte[] zippedRequestBody = gzipRequest(byteArrayOutputStream.toByteArray());
             return new LogsIngestionRequest(originalLogsRequest, zippedRequestBody);
         } finally {
+
             if (!last) {
                 originalLogsRequest = new ArrayList<>();
                 serializedLogs.clear();

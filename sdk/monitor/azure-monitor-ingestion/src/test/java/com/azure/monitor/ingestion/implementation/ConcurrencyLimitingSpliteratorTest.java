@@ -4,6 +4,8 @@
 package com.azure.monitor.ingestion.implementation;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -26,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+@Execution(ExecutionMode.SAME_THREAD)
 public class ConcurrencyLimitingSpliteratorTest {
     private static final int TEST_TIMEOUT_SEC = 30;
     private static final ExecutorService TEST_THREAD_POOL = Executors.newCachedThreadPool();
