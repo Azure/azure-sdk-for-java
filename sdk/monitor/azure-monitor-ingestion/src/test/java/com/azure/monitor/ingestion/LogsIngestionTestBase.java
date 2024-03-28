@@ -21,9 +21,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.identity.InteractiveBrowserCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
