@@ -4,6 +4,7 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
+import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.jobrouter.implementation.JobRouterClientImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -13,6 +14,7 @@ import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.KeyCredentialTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -24,6 +26,7 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -49,8 +52,8 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = { JobRouterClient.class, JobRouterAsyncClient.class })
 public final class JobRouterClientBuilder
     implements HttpTrait<JobRouterClientBuilder>, ConfigurationTrait<JobRouterClientBuilder>,
-    EndpointTrait<JobRouterClientBuilder>, ConnectionStringTrait<JobRouterClientBuilder>,
-    KeyCredentialTrait<JobRouterClientBuilder>, TokenCredentialTrait<JobRouterClientBuilder> {
+    EndpointTrait<JobRouterClientBuilder>, TokenCredentialTrait<JobRouterClientBuilder>,
+    KeyCredentialTrait<JobRouterClientBuilder>, ConnectionStringTrait<JobRouterClientBuilder> {
 
     @Generated
     private static final String SDK_NAME = "name";
@@ -67,9 +70,7 @@ public final class JobRouterClientBuilder
 
     private TokenCredential tokenCredential;
 
-    private KeyCredential credential;
-
-    private CommunicationConnectionString connectionString;
+    private KeyCredential keyCredential;
 
     /**
      * Create an instance of the JobRouterClientBuilder.
@@ -268,6 +269,7 @@ public final class JobRouterClientBuilder
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
+        policies.add(createHttpPipelineAuthPolicy());
         this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -320,20 +322,7 @@ public final class JobRouterClientBuilder
      * @return the updated RouterClientBuilder object
      */
     public JobRouterClientBuilder credential(KeyCredential credential) {
-        this.credential = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        return this;
-    }
-
-    /**
-     * Set a connection string for authorization
-     *
-     * @param connectionString valid token credential as a string
-     * @return the updated RouterClientBuilder object
-     */
-    public JobRouterClientBuilder connectionString(String connectionString) {
-        this.connectionString = new CommunicationConnectionString(connectionString);
-        this.credential(new KeyCredential(this.connectionString.getAccessKey()));
-        this.endpoint(this.connectionString.getEndpoint());
+        this.keyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         return this;
     }
 
@@ -347,5 +336,30 @@ public final class JobRouterClientBuilder
     public JobRouterClientBuilder serviceVersion(JobRouterServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
+    }
+
+    /**
+     * Set a connection string for authorization.
+     * 
+     * @param connectionString valid connectionString as a string.
+     * @return the updated JobRouterClientBuilder object.
+     */
+    public JobRouterClientBuilder connectionString(String connectionString) {
+        CommunicationConnectionString connection = new CommunicationConnectionString(connectionString);
+        this.credential(new AzureKeyCredential(connection.getAccessKey()));
+        this.endpoint(connection.getEndpoint());
+        return this;
+    }
+
+    private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
+        if (this.tokenCredential != null) {
+            return new BearerTokenAuthenticationPolicy(this.tokenCredential,
+                "https://communication.azure.com/.default");
+        } else if (this.keyCredential != null) {
+            return new HmacAuthenticationPolicy(new AzureKeyCredential(this.keyCredential.getKey()));
+        } else {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Missing credential information while building a client."));
+        }
     }
 }
