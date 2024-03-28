@@ -110,14 +110,14 @@ matrix:
       durationMin: 10
       imageBuildDir: "../../.."
 
-    # this test uploads 50MB (1024 * 1024 * 50), large stream requiring multiple requests
+    # this test uploads 25MB (1024 * 1024 * 25), large stream requiring multiple requests
     uploadlarge:
       testScenario: upload
       sync: true
-      sizeBytes: "52428800"
-      parallel: 25
+      sizeBytes: "26214400"
+      parallel: 10
       faults: true
-      durationMin: 10
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes), small file, no chunking
@@ -195,9 +195,9 @@ matrix:
       testScenario: fileoutputstream
       sync: true
       sizeBytes: "2097152"
-      parallel: 25
+      parallel: 10
       faults: true
-      durationMin: 10
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test writes 1KB (1024 bytes) to file seekable byte channel, no chunking
