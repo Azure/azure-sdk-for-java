@@ -2,10 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.common;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-
-import static com.azure.cosmos.BridgeInternal.setProperty;
 
 class ChangeFeedStartFromLegacyContinuationImpl extends ChangeFeedStartFromInternal {
     public ChangeFeedStartFromLegacyContinuationImpl() {
@@ -17,10 +16,10 @@ class ChangeFeedStartFromLegacyContinuationImpl extends ChangeFeedStartFromInter
         super.populatePropertyBag();
 
         synchronized (this) {
-            setProperty(
-                this,
+            this.set(
                 Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
-                ChangeFeedStartFromTypes.LEGACY_CHECKPOINT);
+                ChangeFeedStartFromTypes.LEGACY_CHECKPOINT,
+                CosmosItemSerializer.DEFAULT_SERIALIZER);
         }
     }
 

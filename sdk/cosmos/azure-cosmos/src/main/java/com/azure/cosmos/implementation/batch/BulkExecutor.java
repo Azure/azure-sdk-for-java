@@ -552,7 +552,7 @@ public final class BulkExecutor<TContext> implements Disposable {
     private int calculateTotalSerializedLength(AtomicInteger currentTotalSerializedLength, CosmosItemOperation item) {
         if (item instanceof CosmosItemOperationBase) {
             return currentTotalSerializedLength.accumulateAndGet(
-                ((CosmosItemOperationBase) item).getSerializedLength(),
+                ((CosmosItemOperationBase) item).getSerializedLength(this.docClientWrapper.getItemSerializer()),
                 Integer::sum);
         }
 
@@ -571,7 +571,7 @@ public final class BulkExecutor<TContext> implements Disposable {
 
         String pkRange = thresholds.getPartitionKeyRangeId();
         ServerOperationBatchRequest serverOperationBatchRequest =
-            BulkExecutorUtil.createBatchRequest(operations, pkRange, this.maxMicroBatchPayloadSizeInBytes);
+            BulkExecutorUtil.createBatchRequest(operations, pkRange, this.maxMicroBatchPayloadSizeInBytes, docClientWrapper.getItemSerializer());
         if (serverOperationBatchRequest.getBatchPendingOperations().size() > 0) {
             serverOperationBatchRequest.getBatchPendingOperations().forEach(groupSink::next);
         }

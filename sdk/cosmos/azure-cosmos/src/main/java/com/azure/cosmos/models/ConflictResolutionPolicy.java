@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Paths;
@@ -223,7 +224,7 @@ public final class ConflictResolutionPolicy {
      * @param mode One of the values of the {@link ConflictResolutionMode} enum.
      */
     ConflictResolutionPolicy setMode(ConflictResolutionMode mode) {
-        this.jsonSerializable.set(Constants.Properties.MODE, mode.toString());
+        this.jsonSerializable.set(Constants.Properties.MODE, mode.toString(), CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 
@@ -258,7 +259,10 @@ public final class ConflictResolutionPolicy {
      * That path is a rooted path of the property in the item, such as "/name/first".
      */
     ConflictResolutionPolicy setConflictResolutionPath(String value) {
-        this.jsonSerializable.set(Constants.Properties.CONFLICT_RESOLUTION_PATH, value);
+        this.jsonSerializable.set(
+            Constants.Properties.CONFLICT_RESOLUTION_PATH,
+            value,
+            CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 
@@ -282,7 +286,10 @@ public final class ConflictResolutionPolicy {
     }
 
     ConflictResolutionPolicy setConflictResolutionProcedure(String value) {
-        this.jsonSerializable.set(Constants.Properties.CONFLICT_RESOLUTION_PROCEDURE, value);
+        this.jsonSerializable.set(
+            Constants.Properties.CONFLICT_RESOLUTION_PROCEDURE,
+            value,
+            CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 

@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.encryption.implementation.Constants;
 import com.azure.cosmos.encryption.implementation.EncryptionImplementationBridgeHelpers;
 import com.azure.cosmos.encryption.implementation.keyprovider.EncryptionKeyStoreProviderImpl;
@@ -45,6 +46,8 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
     private final String keyEncryptionKeyResolverName;
     private final EncryptionKeyStoreProviderImpl encryptionKeyStoreProviderImpl;
     private final static ImplementationBridgeHelpers.CosmosAsyncClientEncryptionKeyHelper.CosmosAsyncClientEncryptionKeyAccessor cosmosAsyncClientEncryptionKeyAccessor = ImplementationBridgeHelpers.CosmosAsyncClientEncryptionKeyHelper.getCosmosAsyncClientEncryptionKeyAccessor();
+
+    private final static ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor cosmosAsyncClientAccessor = ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
 
     CosmosEncryptionAsyncClient(CosmosAsyncClient cosmosAsyncClient,
                                 KeyEncryptionKeyResolver keyEncryptionKeyResolver,
@@ -230,6 +233,15 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
         return cosmosContainerResponse.getProperties();
     }
 
+    CosmosItemSerializer getEffectiveItemSerializer(
+        CosmosItemSerializer requestOptionsItemSerializer) {
+
+        return cosmosAsyncClientAccessor
+            .getEffectiveItemSerializer(
+                this.getCosmosAsyncClient(),
+                requestOptionsItemSerializer);
+    }
+
     static {
         EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncClientHelper.seCosmosEncryptionAsyncClientAccessor(new EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncClientHelper.CosmosEncryptionAsyncClientAccessor() {
             @Override
@@ -248,6 +260,14 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
             @Override
             public EncryptionKeyStoreProviderImpl getEncryptionKeyStoreProviderImpl(CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient) {
                 return cosmosEncryptionAsyncClient.getEncryptionKeyStoreProviderImpl();
+            }
+
+            @Override
+            public CosmosItemSerializer getEffectiveItemSerializer(
+                CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient,
+                CosmosItemSerializer requestOptionsItemSerializer) {
+
+                return cosmosEncryptionAsyncClient.getEffectiveItemSerializer(requestOptionsItemSerializer);
             }
         });
     }

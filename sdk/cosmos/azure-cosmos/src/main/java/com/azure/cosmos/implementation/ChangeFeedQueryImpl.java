@@ -3,10 +3,10 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextBase;
 import com.azure.cosmos.implementation.query.Paginator;
 import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -14,7 +14,6 @@ import com.azure.cosmos.implementation.spark.OperationListener;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -39,7 +38,7 @@ class ChangeFeedQueryImpl<T> {
     private final ResourceType resourceType;
     private final ChangeFeedState changeFeedState;
     private final OperationContextAndListenerTuple operationContextAndListener;
-    private final Function<JsonNode, T> factoryMethod;
+    private final CosmosItemSerializer itemSerializer;
 
     public ChangeFeedQueryImpl(
         RxDocumentClientImpl client,
@@ -72,8 +71,7 @@ class ChangeFeedQueryImpl<T> {
         this.klass = klass;
         this.documentsLink = Utils.joinPath(collectionLink, Paths.DOCUMENTS_PATH_SEGMENT);
         this.options = requestOptions;
-        this.factoryMethod = DocumentQueryExecutionContextBase
-            .getEffectiveFactoryMethod(options, klass);
+        this.itemSerializer = client.getEffectiveItemSerializer(requestOptions.getCustomSerializer());
         this.operationContextAndListener = ImplementationBridgeHelpers
                 .CosmosChangeFeedRequestOptionsHelper
                 .getCosmosChangeFeedRequestOptionsAccessor()
@@ -141,7 +139,7 @@ class ChangeFeedQueryImpl<T> {
         if (this.operationContextAndListener == null) {
             return client.readFeed(request)
                 .map(rsp -> {
-                    return BridgeInternal.toChangeFeedResponsePage(rsp, this.factoryMethod, klass);
+                    return BridgeInternal.toChangeFeedResponsePage(rsp, this.itemSerializer, klass);
                 });
         } else {
             final OperationListener listener = operationContextAndListener.getOperationListener();
@@ -156,7 +154,7 @@ class ChangeFeedQueryImpl<T> {
                              listener.responseListener(operationContext, rsp);
 
                              final FeedResponse<T> feedResponse = BridgeInternal.toChangeFeedResponsePage(
-                                 rsp, this.factoryMethod, klass);
+                                 rsp, this.itemSerializer, klass);
 
                              Map<String, String> rspHeaders = feedResponse.getResponseHeaders();
                              String requestPkRangeId = null;

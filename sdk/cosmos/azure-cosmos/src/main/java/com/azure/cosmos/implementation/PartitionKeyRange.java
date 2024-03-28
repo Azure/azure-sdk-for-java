@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.BridgeInternal;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.List;
@@ -75,7 +75,7 @@ public class PartitionKeyRange extends Resource {
     }
 
     public PartitionKeyRange setMinInclusive(String minInclusive) {
-        BridgeInternal.setProperty(this, "minInclusive", minInclusive);
+        this.set("minInclusive", minInclusive, CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 
@@ -84,7 +84,7 @@ public class PartitionKeyRange extends Resource {
     }
 
     public PartitionKeyRange setMaxExclusive(String maxExclusive) {
-        BridgeInternal.setProperty(this, "maxExclusive", maxExclusive);
+        this.set("maxExclusive", maxExclusive, CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 
@@ -115,7 +115,7 @@ public class PartitionKeyRange extends Resource {
     }
 
     public void setParents(List<String> parents) {
-        BridgeInternal.setProperty(this, Constants.Properties.PARENTS, parents);
+        this.set(Constants.Properties.PARENTS, parents, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     /**

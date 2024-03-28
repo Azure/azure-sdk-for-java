@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.batch;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -22,12 +23,13 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public final class ItemBatchOperation<TInternal> extends CosmosItemOperationBase {
 
-    private TInternal item;
+    private final TInternal item;
 
     private final String id;
     private final PartitionKey partitionKey;
     private final CosmosItemOperationType operationType;
     private final RequestOptions requestOptions;
+    private CosmosItemSerializer effectiveItemSerializer;
 
     public ItemBatchOperation(
         final CosmosItemOperationType operationType,
@@ -45,6 +47,13 @@ public final class ItemBatchOperation<TInternal> extends CosmosItemOperationBase
         this.requestOptions = requestOptions;
     }
 
+    @Override
+    public CosmosItemSerializer getEffectiveItemSerializer() {
+        return this.effectiveItemSerializer != null
+            ? this.effectiveItemSerializer
+            : CosmosItemSerializer.DEFAULT_SERIALIZER;
+    }
+
     /**
      * Writes a single operation to JsonSerializable.
      * TODO(rakkuma): Similarly for hybrid row, operation needs to be written in Hybrid row.
@@ -53,23 +62,36 @@ public final class ItemBatchOperation<TInternal> extends CosmosItemOperationBase
      * @return instance of JsonSerializable containing values for a operation.
      */
     @Override
-    JsonSerializable getSerializedOperationInternal() {
+    JsonSerializable getSerializedOperationInternal(CosmosItemSerializer clientItemSerializer) {
         final JsonSerializable jsonSerializable = new JsonSerializable();
+        this.effectiveItemSerializer = requestOptions.getEffectiveItemSerializer() != null
+            ? requestOptions.getEffectiveItemSerializer()
+            : clientItemSerializer != null ? clientItemSerializer : CosmosItemSerializer.DEFAULT_SERIALIZER;
 
         jsonSerializable.set(
             BatchRequestResponseConstants.FIELD_OPERATION_TYPE,
-            ModelBridgeInternal.getOperationValueForCosmosItemOperationType(this.getOperationType()));
+            ModelBridgeInternal.getOperationValueForCosmosItemOperationType(this.getOperationType()),
+            CosmosItemSerializer.DEFAULT_SERIALIZER);
 
         if (StringUtils.isNotEmpty(this.getId())) {
-            jsonSerializable.set(BatchRequestResponseConstants.FIELD_ID, this.getId());
+            jsonSerializable.set(
+                BatchRequestResponseConstants.FIELD_ID,
+                this.getId(),
+                CosmosItemSerializer.DEFAULT_SERIALIZER);
         }
 
         if (this.getItemInternal() != null) {
             if (this.getOperationType() == CosmosItemOperationType.PATCH) {
-                jsonSerializable.set(BatchRequestResponseConstants.FIELD_RESOURCE_BODY,
-                    PatchUtil.serializableBatchPatchOperation((CosmosPatchOperations) this.getItemInternal(), this.getRequestOptions()));
+                jsonSerializable.set(
+                    BatchRequestResponseConstants.FIELD_RESOURCE_BODY,
+                    PatchUtil.serializableBatchPatchOperation((CosmosPatchOperations) this.getItemInternal(), this.getRequestOptions()),
+                    CosmosItemSerializer.DEFAULT_SERIALIZER);
             } else {
-                jsonSerializable.set(BatchRequestResponseConstants.FIELD_RESOURCE_BODY, this.getItemInternal());
+                jsonSerializable.set(
+                    BatchRequestResponseConstants.FIELD_RESOURCE_BODY,
+                    this.getItemInternal(),
+                    effectiveItemSerializer,
+                    true);
             }
         }
 
@@ -77,11 +99,17 @@ public final class ItemBatchOperation<TInternal> extends CosmosItemOperationBase
             RequestOptions requestOptions = this.getRequestOptions();
 
             if (StringUtils.isNotEmpty(requestOptions.getIfMatchETag())) {
-                jsonSerializable.set(BatchRequestResponseConstants.FIELD_IF_MATCH, requestOptions.getIfMatchETag());
+                jsonSerializable.set(
+                    BatchRequestResponseConstants.FIELD_IF_MATCH,
+                    requestOptions.getIfMatchETag(),
+                    CosmosItemSerializer.DEFAULT_SERIALIZER);
             }
 
             if (StringUtils.isNotEmpty(requestOptions.getIfNoneMatchETag())) {
-                jsonSerializable.set(BatchRequestResponseConstants.FIELD_IF_NONE_MATCH, requestOptions.getIfNoneMatchETag());
+                jsonSerializable.set(
+                    BatchRequestResponseConstants.FIELD_IF_NONE_MATCH,
+                    requestOptions.getIfNoneMatchETag(),
+                    CosmosItemSerializer.DEFAULT_SERIALIZER);
             }
         }
 

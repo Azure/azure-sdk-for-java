@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -83,7 +84,7 @@ public final class RangeIndex extends Index {
      * @return the RangeIndex.
      */
     public RangeIndex setDataType(DataType dataType) {
-        super.set(Constants.Properties.DATA_TYPE, dataType.toString());
+        super.set(Constants.Properties.DATA_TYPE, dataType.toString(), CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 
@@ -103,7 +104,7 @@ public final class RangeIndex extends Index {
      * @return the RangeIndex.
      */
     public RangeIndex setPrecision(int precision) {
-        super.set(Constants.Properties.PRECISION, precision);
+        super.set(Constants.Properties.PRECISION, precision, CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 

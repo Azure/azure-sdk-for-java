@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.RequestOptions;
 
 /**
@@ -47,8 +47,9 @@ public class CosmosPatchItemRequestOptions extends CosmosItemRequestOptions {
         return this;
     }
 
-    RequestOptions toRequestOptions() {
-        RequestOptions requestOptions = super.toRequestOptions();
+    @Override
+    RequestOptions toRequestOptions(CosmosItemSerializer effectiveItemSerializer) {
+        RequestOptions requestOptions = super.toRequestOptions(effectiveItemSerializer);
         requestOptions.setFilterPredicate(filterPredicate);
         return requestOptions;
     }

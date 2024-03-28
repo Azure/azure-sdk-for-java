@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Document;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +12,6 @@ import org.testng.annotations.Test;
 
 import java.io.Serializable;
 
-import static com.azure.cosmos.BridgeInternal.setProperty;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.fail;
 
@@ -58,29 +58,29 @@ public class JsonSerializableTests {
     public void getObjectAndCastToClass() {
         Document document = new Document();
         // numeric values
-        setProperty(document, "intValue", Integer.MAX_VALUE);
-        setProperty(document, "doubleValue", Double.MAX_VALUE);
-        setProperty(document, "longValue", Long.MAX_VALUE);
+        document.set("intValue", Integer.MAX_VALUE, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        document.set("doubleValue", Double.MAX_VALUE, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        document.set("longValue", Long.MAX_VALUE, CosmosItemSerializer.DEFAULT_SERIALIZER);
 
         assertThat(document.getObject("intValue", Integer.class).intValue()).isEqualTo(Integer.MAX_VALUE);
         assertThat(document.getObject("doubleValue", Double.class).doubleValue()).isEqualTo(Double.MAX_VALUE);
         assertThat(document.getObject("longValue", Long.class).longValue()).isEqualTo(Long.MAX_VALUE);
 
         // string
-        setProperty(document, "stringValue", "stringField");
+        document.set("stringValue", "stringField", CosmosItemSerializer.DEFAULT_SERIALIZER);
         assertThat(document.getObject("stringValue", String.class)).isEqualTo("stringField");
 
         // boolean
-        setProperty(document, "boolValue", true);
+        document.set("boolValue", true, CosmosItemSerializer.DEFAULT_SERIALIZER);
         assertThat(document.getObject("boolValue", Boolean.class)).isEqualTo(true);
 
         // enum
-        setProperty(document, "enumValue", "third");
+        document.set("enumValue", "third", CosmosItemSerializer.DEFAULT_SERIALIZER);
         assertThat(document.getObject("enumValue", enums.class)).isEqualTo(enums.third);
 
         // Pojo
         Pojo pojo = new Pojo(1, 2);
-        setProperty(document, "pojoValue", pojo);
+        document.set( "pojoValue", pojo, CosmosItemSerializer.DEFAULT_SERIALIZER);
         Pojo readPojo = document.getObject("pojoValue", Pojo.class);
         assertThat(readPojo.getA()).isEqualTo(pojo.getA());
         assertThat(readPojo.getB()).isEqualTo(pojo.getB());
@@ -88,7 +88,7 @@ public class JsonSerializableTests {
         // JsonSerializable
         Document innerDocument = new Document();
         innerDocument.setId("innerDocument");
-        setProperty(document, "innerDocument", innerDocument);
+        document.set("innerDocument", innerDocument, CosmosItemSerializer.DEFAULT_SERIALIZER);
         Document readInnerDocument = document.getObject("innerDocument", Document.class);
         assertThat(readInnerDocument.getId()).isEqualTo(innerDocument.getId());
     }

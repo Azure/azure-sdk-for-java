@@ -138,7 +138,7 @@ public class UniqueIndexTest extends TestSuiteBase {
         InternalObjectNode doc2Inserted = BridgeInternal.getProperties(collection
                                                                              .createItem(doc2, new CosmosItemRequestOptions())
                                                                              .block());
-        InternalObjectNode doc2Replacement = new InternalObjectNode(ModelBridgeInternal.toJsonFromJsonSerializable(doc1Inserted));
+        InternalObjectNode doc2Replacement = new InternalObjectNode(doc1Inserted.toJson());
         doc2Replacement.setId( doc2Inserted.getId());
 
         try {

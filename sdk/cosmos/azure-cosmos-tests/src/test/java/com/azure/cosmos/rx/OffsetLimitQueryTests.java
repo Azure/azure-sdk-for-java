@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -250,12 +251,12 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         // The pipeline execution sequence is Aggregrate, skip, and top/limit, hence finding the max from among the docs
         InternalObjectNode expectedDoc = docs
             .stream()
-            .max(Comparator.comparing(r -> ModelBridgeInternal.getIntFromJsonSerializable(r, field)))
+            .max(Comparator.comparing(r -> r.getInt(field)))
             .get();
 
         FeedResponseListValidator<JsonNode> validator =
             new FeedResponseListValidator.Builder<JsonNode>()
-                .withAggregateValue(ModelBridgeInternal.getIntFromJsonSerializable(expectedDoc, field))
+                .withAggregateValue(expectedDoc.getInt(field))
                 .numberOfPages(1)
                 .hasValidQueryMetrics(qmEnabled)
                 .build();
@@ -313,24 +314,24 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         for (int i = 0; i < 10; i++) {
             InternalObjectNode d = new InternalObjectNode();
             d.setId(Integer.toString(i));
-            BridgeInternal.setProperty(d, field, i);
-            BridgeInternal.setProperty(d, partitionKey, firstPk);
+            d.set(field, i, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            d.set(partitionKey, firstPk, CosmosItemSerializer.DEFAULT_SERIALIZER);
             docs.add(d);
         }
 
         for (int i = 10; i < 20; i++) {
             InternalObjectNode d = new InternalObjectNode();
             d.setId(Integer.toString(i));
-            BridgeInternal.setProperty(d, field, i);
-            BridgeInternal.setProperty(d, partitionKey, secondPk);
+            d.set(field, i, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            d.set(partitionKey, secondPk, CosmosItemSerializer.DEFAULT_SERIALIZER);
             docs.add(d);
         }
 
         for (int i = 20; i < 100; i++) {
             InternalObjectNode d = new InternalObjectNode();
             d.setId(Integer.toString(i));
-            BridgeInternal.setProperty(d, field, i);
-            BridgeInternal.setProperty(d, partitionKey, thirdPk);
+            d.set(field, i, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            d.set(partitionKey, thirdPk, CosmosItemSerializer.DEFAULT_SERIALIZER);
             docs.add(d);
         }
     }

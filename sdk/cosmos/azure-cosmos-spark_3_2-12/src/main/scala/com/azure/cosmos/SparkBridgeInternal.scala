@@ -82,7 +82,7 @@ private[cosmos] object SparkBridgeInternal {
     val link = container.getLinkWithoutTrailingSlash;
 
     val obsoleteValue = new DocumentCollection
-    ModelBridgeInternal.setResourceId(obsoleteValue, obsoleteRid)
+    obsoleteValue.setResourceId(obsoleteRid)
 
     clientWrapper
       .getCollectionCache()

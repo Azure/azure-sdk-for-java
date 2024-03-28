@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.feedranges;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GoneException;
@@ -29,7 +30,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public final class FeedRangeEpkImpl extends FeedRangeInternal {
@@ -258,7 +258,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
 
         if (this.range != null) {
             ModelBridgeInternal.populatePropertyBag(this.range);
-            setProperty(serializable, Constants.Properties.RANGE, this.range);
+            serializable.set(Constants.Properties.RANGE, this.range, CosmosItemSerializer.DEFAULT_SERIALIZER);
         }
     }
 

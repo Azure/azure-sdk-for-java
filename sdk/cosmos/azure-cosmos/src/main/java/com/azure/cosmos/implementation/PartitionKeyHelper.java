@@ -33,7 +33,7 @@ public class PartitionKeyHelper {
                     String path = partitionKeyDefinition.getPaths().iterator().next();
                     List<String> parts = PathParser.getPathParts(path);
                     if (parts.size() >= 1) {
-                        Object value = ModelBridgeInternal.getObjectByPathFromJsonSerializable(document, parts);
+                        Object value = document.getObjectByPath(parts);
                         if (value == null || value.getClass() == ObjectNode.class) {
                             value = ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
                         }
@@ -56,7 +56,7 @@ public class PartitionKeyHelper {
                     for(int pathIter = 0 ; pathIter < partitionKeyDefinition.getPaths().size(); pathIter++){
                         String partitionPath = partitionKeyDefinition.getPaths().get(pathIter);
                         List<String> partitionPathParts = PathParser.getPathParts(partitionPath);
-                        partitionKeyValues[pathIter] = ModelBridgeInternal.getObjectByPathFromJsonSerializable(document, partitionPathParts);
+                        partitionKeyValues[pathIter] = document.getObjectByPath(partitionPathParts);
                     }
 
                     return ImplementationBridgeHelpers

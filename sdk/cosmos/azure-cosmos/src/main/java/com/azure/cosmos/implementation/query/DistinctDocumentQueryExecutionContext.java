@@ -98,7 +98,7 @@ public class DistinctDocumentQueryExecutionContext<T>
                     new DistinctContinuationToken(this.lastHash.get(),
                         sourceContinuationToken);
                 headers.put(HttpConstants.HttpHeaders.CONTINUATION,
-                            ModelBridgeInternal.toJsonFromJsonSerializable(distinctContinuationToken));
+                            distinctContinuationToken.toJson());
             }
 
             return BridgeInternal.createFeedResponseWithQueryMetrics(distinctResults,

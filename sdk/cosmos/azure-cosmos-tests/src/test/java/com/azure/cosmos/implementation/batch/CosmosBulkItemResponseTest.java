@@ -51,7 +51,8 @@ public class CosmosBulkItemResponseTest {
             PartitionKey.NONE.toString(),
             Arrays.asList(arrayOperations),
             BatchRequestResponseConstants.DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES,
-            BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);
+            BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST,
+            null);
 
         // Create dummy result
         CosmosBatchOperationResult transactionalBatchOperationResult = ModelBridgeInternal.createCosmosBatchResult(
@@ -140,7 +141,8 @@ public class CosmosBulkItemResponseTest {
             PartitionKey.NONE.toString(),
             Arrays.asList(arrayOperations),
             BatchRequestResponseConstants.DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES,
-            BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);
+            BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST,
+            null);
 
 
         // Create dummy result

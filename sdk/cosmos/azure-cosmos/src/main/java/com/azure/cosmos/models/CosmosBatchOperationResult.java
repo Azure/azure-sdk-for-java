@@ -3,8 +3,11 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.batch.CosmosItemOperationBase;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Duration;
@@ -22,6 +25,7 @@ public final class CosmosBatchOperationResult {
     private final Duration retryAfter;
     private final int subStatusCode;
     private final CosmosItemOperation cosmosItemOperation;
+    private final CosmosItemSerializer effectiveItemSerializer;
     private ObjectNode resourceObject;
 
     /**
@@ -44,6 +48,9 @@ public final class CosmosBatchOperationResult {
         this.retryAfter = retryAfter;
         this.subStatusCode = subStatusCode;
         this.cosmosItemOperation = cosmosItemOperation;
+        this.effectiveItemSerializer = cosmosItemOperation instanceof CosmosItemOperationBase
+            ? ((CosmosItemOperationBase)cosmosItemOperation).getEffectiveItemSerializer()
+            : CosmosItemSerializer.DEFAULT_SERIALIZER;
     }
 
     /**
@@ -82,7 +89,11 @@ public final class CosmosBatchOperationResult {
         T item = null;
 
         if (this.getResourceObject() != null) {
-            item = new JsonSerializable(this.getResourceObject()).toObject(type);
+            if (effectiveItemSerializer == CosmosItemSerializer.DEFAULT_SERIALIZER) {
+                item = new JsonSerializable(this.getResourceObject()).toObject(type);
+            } else {
+                item = Utils.parse(this.getResourceObject(), type, effectiveItemSerializer);
+            }
         }
 
         return item;
@@ -126,6 +137,10 @@ public final class CosmosBatchOperationResult {
 
     ObjectNode getResourceObject() {
         return resourceObject;
+    }
+
+    CosmosItemSerializer getEffectiveItemSerializer() {
+        return this.effectiveItemSerializer;
     }
 
     /**

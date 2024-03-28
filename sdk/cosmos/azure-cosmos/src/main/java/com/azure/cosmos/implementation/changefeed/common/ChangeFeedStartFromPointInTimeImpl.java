@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.common;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -9,7 +10,6 @@ import com.azure.cosmos.implementation.Utils;
 
 import java.time.Instant;
 
-import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 class ChangeFeedStartFromPointInTimeImpl extends ChangeFeedStartFromInternal {
@@ -50,15 +50,15 @@ class ChangeFeedStartFromPointInTimeImpl extends ChangeFeedStartFromInternal {
         super.populatePropertyBag();
 
         synchronized(this) {
-            setProperty(
-                this,
+            this.set(
                 com.azure.cosmos.implementation.Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
-                ChangeFeedStartFromTypes.POINT_IN_TIME);
+                ChangeFeedStartFromTypes.POINT_IN_TIME,
+                CosmosItemSerializer.DEFAULT_SERIALIZER);
 
-            setProperty(
-                this,
+            this.set(
                 Constants.Properties.CHANGE_FEED_START_FROM_POINT_IN_TIME_MS,
-                this.pointInTime.toEpochMilli());
+                this.pointInTime.toEpochMilli(),
+                CosmosItemSerializer.DEFAULT_SERIALIZER);
         }
     }
 
