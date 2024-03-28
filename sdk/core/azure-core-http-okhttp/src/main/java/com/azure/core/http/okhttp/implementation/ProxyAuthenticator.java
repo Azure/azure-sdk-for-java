@@ -83,14 +83,12 @@ public final class ProxyAuthenticator implements Authenticator {
      */
     @Override
     public Request authenticate(Route route, Response response) {
-        String authorizationHeader = challengeHandler
-            .attemptToPipelineAuthorization(PROXY_METHOD, PROXY_URI_PATH, NO_BODY);
+        String authorizationHeader
+            = challengeHandler.attemptToPipelineAuthorization(PROXY_METHOD, PROXY_URI_PATH, NO_BODY);
 
         // Pipelining was successful, use the generated authorization header.
         if (!CoreUtils.isNullOrEmpty(authorizationHeader)) {
-            return response.request().newBuilder()
-                .header(PROXY_AUTHORIZATION, authorizationHeader)
-                .build();
+            return response.request().newBuilder().header(PROXY_AUTHORIZATION, authorizationHeader).build();
         }
 
         // If this is a pre-emptive challenge quit now if pipelining doesn't produce anything.
@@ -111,8 +109,8 @@ public final class ProxyAuthenticator implements Authenticator {
 
         // Prefer digest challenges over basic.
         if (digestChallenges.size() > 0) {
-            authorizationHeader = challengeHandler
-                .handleDigest(PROXY_METHOD, PROXY_URI_PATH, digestChallenges, NO_BODY);
+            authorizationHeader
+                = challengeHandler.handleDigest(PROXY_METHOD, PROXY_URI_PATH, digestChallenges, NO_BODY);
         }
 
         /*

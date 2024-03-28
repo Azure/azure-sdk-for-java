@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The native cloud connection configuration. */
+/**
+ * The native cloud connection configuration.
+ */
 @Fluent
 public final class CspmMonitorGcpOfferingNativeCloudConnection {
     /*
@@ -22,13 +24,15 @@ public final class CspmMonitorGcpOfferingNativeCloudConnection {
     @JsonProperty(value = "serviceAccountEmailAddress")
     private String serviceAccountEmailAddress;
 
-    /** Creates an instance of CspmMonitorGcpOfferingNativeCloudConnection class. */
+    /**
+     * Creates an instance of CspmMonitorGcpOfferingNativeCloudConnection class.
+     */
     public CspmMonitorGcpOfferingNativeCloudConnection() {
     }
 
     /**
      * Get the workloadIdentityProviderId property: The GCP workload identity provider id for the offering.
-     *
+     * 
      * @return the workloadIdentityProviderId value.
      */
     public String workloadIdentityProviderId() {
@@ -37,19 +41,19 @@ public final class CspmMonitorGcpOfferingNativeCloudConnection {
 
     /**
      * Set the workloadIdentityProviderId property: The GCP workload identity provider id for the offering.
-     *
+     * 
      * @param workloadIdentityProviderId the workloadIdentityProviderId value to set.
      * @return the CspmMonitorGcpOfferingNativeCloudConnection object itself.
      */
-    public CspmMonitorGcpOfferingNativeCloudConnection withWorkloadIdentityProviderId(
-        String workloadIdentityProviderId) {
+    public CspmMonitorGcpOfferingNativeCloudConnection
+        withWorkloadIdentityProviderId(String workloadIdentityProviderId) {
         this.workloadIdentityProviderId = workloadIdentityProviderId;
         return this;
     }
 
     /**
      * Get the serviceAccountEmailAddress property: The service account email address in GCP for this offering.
-     *
+     * 
      * @return the serviceAccountEmailAddress value.
      */
     public String serviceAccountEmailAddress() {
@@ -58,19 +62,19 @@ public final class CspmMonitorGcpOfferingNativeCloudConnection {
 
     /**
      * Set the serviceAccountEmailAddress property: The service account email address in GCP for this offering.
-     *
+     * 
      * @param serviceAccountEmailAddress the serviceAccountEmailAddress value to set.
      * @return the CspmMonitorGcpOfferingNativeCloudConnection object itself.
      */
-    public CspmMonitorGcpOfferingNativeCloudConnection withServiceAccountEmailAddress(
-        String serviceAccountEmailAddress) {
+    public CspmMonitorGcpOfferingNativeCloudConnection
+        withServiceAccountEmailAddress(String serviceAccountEmailAddress) {
         this.serviceAccountEmailAddress = serviceAccountEmailAddress;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

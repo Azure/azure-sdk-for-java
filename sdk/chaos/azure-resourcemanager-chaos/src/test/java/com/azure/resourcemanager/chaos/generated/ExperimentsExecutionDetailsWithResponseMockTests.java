@@ -29,40 +29,27 @@ public final class ExperimentsExecutionDetailsWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"type\":\"eclze\",\"id\":\"bcvhzlhpl\",\"name\":\"qkdlw\",\"properties\":{\"failureReason\":\"bum\",\"lastActionAt\":\"2021-01-09T13:22:40Z\",\"runInformation\":{\"steps\":[{\"stepName\":\"fsmlmbtxhwgfw\",\"stepId\":\"tawc\",\"status\":\"zbrhubskhudyg\",\"branches\":[{},{},{}]},{\"stepName\":\"kqfqjbvl\",\"stepId\":\"rfmluiqtq\",\"status\":\"avyvnqqyba\",\"branches\":[{},{},{},{}]},{\"stepName\":\"ayjkqa\",\"stepId\":\"gzslesjcbhernnti\",\"status\":\"djc\",\"branches\":[{},{},{}]}]},\"status\":\"wr\",\"startedAt\":\"2021-03-14T01:37:10Z\",\"stoppedAt\":\"2021-08-03T09:19:04Z\"}}";
+        String responseStr
+            = "{\"type\":\"qkdlw\",\"id\":\"fbumlkx\",\"name\":\"qjfsmlmbtxhw\",\"properties\":{\"failureReason\":\"srtawcoezbr\",\"lastActionAt\":\"2021-02-21T07:03:26Z\",\"runInformation\":{\"steps\":[{\"stepName\":\"dyg\",\"stepId\":\"okkqfqjbvleo\",\"status\":\"ml\",\"branches\":[{},{},{}]}]},\"status\":\"qzfavyv\",\"startedAt\":\"2021-03-05T04:35Z\",\"stoppedAt\":\"2021-05-23T06:21:06Z\"}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ChaosManager manager =
-            ChaosManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ChaosManager manager = ChaosManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ExperimentExecutionDetails response =
-            manager
-                .experiments()
-                .executionDetailsWithResponse(
-                    "wrck", "yklyhpluodpvruud", "gzibthostgktstv", com.azure.core.util.Context.NONE)
-                .getValue();
+        ExperimentExecutionDetails response = manager.experiments()
+            .executionDetailsWithResponse("stgktst", "dxeclzedqbcvh", "lhpl", com.azure.core.util.Context.NONE)
+            .getValue();
+
     }
 }

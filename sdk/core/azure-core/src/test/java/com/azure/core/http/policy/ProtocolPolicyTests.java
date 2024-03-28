@@ -37,7 +37,8 @@ public class ProtocolPolicyTests {
             .policies(new ProtocolPolicy(protocol, true), (context, next) -> {
                 assertEquals(expectedUrl, context.getHttpRequest().getUrl().toString());
                 return next.process();
-            }).build();
+            })
+            .build();
     }
 
     private static HttpPipeline createPipeline(String protocol, boolean overwrite, String expectedUrl) {
@@ -45,7 +46,8 @@ public class ProtocolPolicyTests {
             .policies(new ProtocolPolicy(protocol, overwrite), (context, next) -> {
                 assertEquals(expectedUrl, context.getHttpRequest().getUrl().toString());
                 return next.process();
-            }).build();
+            })
+            .build();
     }
 
     private static HttpRequest createHttpRequest(String url) throws MalformedURLException {

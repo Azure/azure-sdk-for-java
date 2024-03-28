@@ -10,7 +10,7 @@
 
 	<groupId>com.azure.spring</groupId>
 	<artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
-	<version>4.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config-web;current} -->
+	<version>4.17.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config-web;current} -->
 	<name>Spring Cloud Azure App Configuration Config Web</name>
 	<description>Integration of Spring Cloud Config and Azure App Configuration Service</description>
 
@@ -24,7 +24,7 @@
 		<dependency>
 			<groupId>com.azure.spring</groupId>
 			<artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
-			<version>4.16.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config;current} -->
+			<version>4.17.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config;current} -->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -40,7 +40,7 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-bus</artifactId>
-			<version>3.1.2</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
+			<version>3.1.3</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -60,13 +60,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.14.8</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.14.8</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
 	</dependencies>
@@ -83,7 +83,7 @@
 							<includes>
 								<include>org.springframework.boot:spring-boot-starter-actuator:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
 								<include>org.springframework.boot:spring-boot-starter-web:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
-								<include>org.springframework.cloud:spring-cloud-bus:[3.1.2]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
+								<include>org.springframework.cloud:spring-cloud-bus:[3.1.3]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
 							</includes>
 						</bannedDependencies>
 					</rules>

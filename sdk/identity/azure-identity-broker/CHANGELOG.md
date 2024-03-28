@@ -4,11 +4,22 @@
 
 ### Features Added
 
+- Added support for using the default broker account
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.4 (2024-03-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.11.3` to version `1.11.4`.
+- Upgraded `msal4j` from `1.14.0` to version `1.14.3`.
 
 ## 1.0.2 (2024-02-05)
 

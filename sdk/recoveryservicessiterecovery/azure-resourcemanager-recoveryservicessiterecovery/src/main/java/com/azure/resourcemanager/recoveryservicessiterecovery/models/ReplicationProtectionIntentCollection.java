@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.Repl
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Replication protection intent objects collection. */
+/**
+ * Replication protection intent objects collection.
+ */
 @Fluent
 public final class ReplicationProtectionIntentCollection {
     /*
@@ -24,13 +26,15 @@ public final class ReplicationProtectionIntentCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ReplicationProtectionIntentCollection class. */
+    /**
+     * Creates an instance of ReplicationProtectionIntentCollection class.
+     */
     public ReplicationProtectionIntentCollection() {
     }
 
     /**
      * Get the value property: The Replication protection intent details.
-     *
+     * 
      * @return the value value.
      */
     public List<ReplicationProtectionIntentInner> value() {
@@ -39,7 +43,7 @@ public final class ReplicationProtectionIntentCollection {
 
     /**
      * Set the value property: The Replication protection intent details.
-     *
+     * 
      * @param value the value value to set.
      * @return the ReplicationProtectionIntentCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class ReplicationProtectionIntentCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ReplicationProtectionIntentCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ReplicationProtectionIntentCollection object itself.
      */
@@ -70,7 +74,7 @@ public final class ReplicationProtectionIntentCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

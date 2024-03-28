@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.SparkBridgeInternal
 import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
 import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, SparkBridgeImplementationInternal, SparkRowItem, Strings}
 import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions, ModelBridgeInternal, PartitionKey, PartitionKeyDefinition}
@@ -67,14 +68,11 @@ private case class ItemsPartitionReader
 
       val ctxAndListener = new OperationContextAndListenerTuple(operationContext, listener)
 
-      ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper
-        .getCosmosQueryRequestOptionsBaseAccessor
-        .setOperationContext(
-          ImplementationBridgeHelpers
-            .CosmosQueryRequestOptionsHelper
-            .getCosmosQueryRequestOptionsAccessor
-            .getImpl(queryOptions),
-          ctxAndListener)
+      ImplementationBridgeHelpers
+        .CosmosQueryRequestOptionsHelper
+        .getCosmosQueryRequestOptionsAccessor
+        .getImpl(queryOptions)
+        .setOperationContextAndListenerTuple(ctxAndListener)
 
       Some(ctxAndListener)
     } else {
@@ -109,13 +107,13 @@ private case class ItemsPartitionReader
       containerTargetConfig,
       clientCacheItem,
       throughputControlClientCacheItemOpt)
-  SparkUtils.safeOpenConnectionInitCaches(cosmosAsyncContainer, log)
 
   private val partitionKeyDefinitionOpt: Option[PartitionKeyDefinition] = {
     if (shouldLogDetailedFeedDiagnostics() || readConfig.readManyFilteringConfig.readManyFilteringEnabled) {
       Some(
         TransientErrorsRetryPolicy.executeWithRetry(() => {
-          cosmosAsyncContainer.read().block().getProperties.getPartitionKeyDefinition
+          SparkBridgeInternal
+            .getContainerPropertiesFromCollectionCache(cosmosAsyncContainer).getPartitionKeyDefinition
         }))
     } else {
       None
@@ -156,14 +154,11 @@ private case class ItemsPartitionReader
         DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getLogger(this.getClass)
 
       val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
-      ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper
-        .getCosmosQueryRequestOptionsBaseAccessor
-        .setOperationContext(
-          ImplementationBridgeHelpers
-            .CosmosQueryRequestOptionsHelper
-            .getCosmosQueryRequestOptionsAccessor
-            .getImpl(queryOptions),
-          operationContextAndListenerTuple)
+      ImplementationBridgeHelpers
+        .CosmosQueryRequestOptionsHelper
+        .getCosmosQueryRequestOptionsAccessor
+        .getImpl(queryOptions)
+        .setOperationContextAndListenerTuple(operationContextAndListenerTuple)
 
       taskDiagnosticsContext
     } else{
@@ -178,13 +173,10 @@ private case class ItemsPartitionReader
   queryOptions.setFeedRange(SparkBridgeImplementationInternal.toFeedRange(feedRange))
 
   ImplementationBridgeHelpers
-    .CosmosQueryRequestOptionsBaseHelper
-    .getCosmosQueryRequestOptionsBaseAccessor
+    .CosmosQueryRequestOptionsHelper
+    .getCosmosQueryRequestOptionsAccessor
+    .getImpl(queryOptions)
     .setItemFactoryMethod(
-      ImplementationBridgeHelpers
-        .CosmosQueryRequestOptionsHelper
-        .getCosmosQueryRequestOptionsAccessor
-        .getImpl(queryOptions),
       jsonNode => {
         val objectNode = cosmosRowConverter.ensureObjectNode(jsonNode)
 
@@ -251,13 +243,10 @@ private case class ItemsPartitionReader
       queryOptions.setDedicatedGatewayRequestOptions(readConfig.dedicatedGatewayRequestOptions)
 
       ImplementationBridgeHelpers
-        .CosmosQueryRequestOptionsBaseHelper
-        .getCosmosQueryRequestOptionsBaseAccessor
+        .CosmosQueryRequestOptionsHelper
+        .getCosmosQueryRequestOptionsAccessor
+        .getImpl(queryOptions)
         .setCorrelationActivityId(
-          ImplementationBridgeHelpers
-            .CosmosQueryRequestOptionsHelper
-            .getCosmosQueryRequestOptionsAccessor
-            .getImpl(queryOptions),
           diagnosticsContext.correlationActivityId)
 
       cosmosAsyncContainer.queryItems(cosmosQuery.toSqlQuerySpec, queryOptions, classOf[SparkRowItem])

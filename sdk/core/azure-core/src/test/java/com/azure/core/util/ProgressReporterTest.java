@@ -100,14 +100,19 @@ public class ProgressReporterTest {
     public void testConcurrentReporting() {
         ProgressReporter progressReporter = ProgressReporter.withProgressListener(listener);
 
-        Flux.range(1, 100).parallel(10).runOn(Schedulers.boundedElastic())
-            .map(ignored -> progressReporter.createChild()).doOnNext(childReporter -> {
+        Flux.range(1, 100)
+            .parallel(10)
+            .runOn(Schedulers.boundedElastic())
+            .map(ignored -> progressReporter.createChild())
+            .doOnNext(childReporter -> {
                 childReporter.reportProgress(1L);
                 childReporter.reportProgress(3L);
                 childReporter.reportProgress(5L);
                 childReporter.reportProgress(7L);
                 childReporter.reportProgress(11L);
-            }).sequential().blockLast();
+            })
+            .sequential()
+            .blockLast();
 
         List<Long> progresses = listener.getProgresses();
         assertEquals(2700L, progresses.get(progresses.size() - 1));

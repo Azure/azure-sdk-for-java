@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.PolicyProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Protection profile details. */
+/**
+ * Protection profile details.
+ */
 @Fluent
 public final class PolicyInner extends ProxyResource {
     /*
@@ -24,13 +26,15 @@ public final class PolicyInner extends ProxyResource {
     @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of PolicyInner class. */
+    /**
+     * Creates an instance of PolicyInner class.
+     */
     public PolicyInner() {
     }
 
     /**
      * Get the properties property: The custom data.
-     *
+     * 
      * @return the properties value.
      */
     public PolicyProperties properties() {
@@ -39,7 +43,7 @@ public final class PolicyInner extends ProxyResource {
 
     /**
      * Set the properties property: The custom data.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the PolicyInner object itself.
      */
@@ -50,7 +54,7 @@ public final class PolicyInner extends ProxyResource {
 
     /**
      * Get the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -59,7 +63,7 @@ public final class PolicyInner extends ProxyResource {
 
     /**
      * Set the location property: Resource Location.
-     *
+     * 
      * @param location the location value to set.
      * @return the PolicyInner object itself.
      */
@@ -70,7 +74,7 @@ public final class PolicyInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

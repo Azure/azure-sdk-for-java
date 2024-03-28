@@ -6,35 +6,40 @@ package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Description of a NotificationHub BaiduCredential. */
+/**
+ * Description of a NotificationHub BaiduCredential.
+ */
 @Fluent
 public final class BaiduCredentialProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BaiduCredentialProperties.class);
-
     /*
-     * Baidu Api Key.
+     * Gets or sets baidu Api Key.
      */
     @JsonProperty(value = "baiduApiKey")
     private String baiduApiKey;
 
     /*
-     * Baidu Endpoint.
+     * Gets or sets baidu Endpoint.
      */
     @JsonProperty(value = "baiduEndPoint")
     private String baiduEndPoint;
 
     /*
-     * Baidu Secret Key
+     * Gets or sets baidu Secret Key
      */
     @JsonProperty(value = "baiduSecretKey")
     private String baiduSecretKey;
 
     /**
-     * Get the baiduApiKey property: Baidu Api Key.
-     *
+     * Creates an instance of BaiduCredentialProperties class.
+     */
+    public BaiduCredentialProperties() {
+    }
+
+    /**
+     * Get the baiduApiKey property: Gets or sets baidu Api Key.
+     * 
      * @return the baiduApiKey value.
      */
     public String baiduApiKey() {
@@ -42,8 +47,8 @@ public final class BaiduCredentialProperties {
     }
 
     /**
-     * Set the baiduApiKey property: Baidu Api Key.
-     *
+     * Set the baiduApiKey property: Gets or sets baidu Api Key.
+     * 
      * @param baiduApiKey the baiduApiKey value to set.
      * @return the BaiduCredentialProperties object itself.
      */
@@ -53,8 +58,8 @@ public final class BaiduCredentialProperties {
     }
 
     /**
-     * Get the baiduEndPoint property: Baidu Endpoint.
-     *
+     * Get the baiduEndPoint property: Gets or sets baidu Endpoint.
+     * 
      * @return the baiduEndPoint value.
      */
     public String baiduEndPoint() {
@@ -62,8 +67,8 @@ public final class BaiduCredentialProperties {
     }
 
     /**
-     * Set the baiduEndPoint property: Baidu Endpoint.
-     *
+     * Set the baiduEndPoint property: Gets or sets baidu Endpoint.
+     * 
      * @param baiduEndPoint the baiduEndPoint value to set.
      * @return the BaiduCredentialProperties object itself.
      */
@@ -73,8 +78,8 @@ public final class BaiduCredentialProperties {
     }
 
     /**
-     * Get the baiduSecretKey property: Baidu Secret Key.
-     *
+     * Get the baiduSecretKey property: Gets or sets baidu Secret Key.
+     * 
      * @return the baiduSecretKey value.
      */
     public String baiduSecretKey() {
@@ -82,8 +87,8 @@ public final class BaiduCredentialProperties {
     }
 
     /**
-     * Set the baiduSecretKey property: Baidu Secret Key.
-     *
+     * Set the baiduSecretKey property: Gets or sets baidu Secret Key.
+     * 
      * @param baiduSecretKey the baiduSecretKey value to set.
      * @return the BaiduCredentialProperties object itself.
      */
@@ -94,9 +99,23 @@ public final class BaiduCredentialProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (baiduApiKey() == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property baiduApiKey in model BaiduCredentialProperties"));
+        }
+        if (baiduEndPoint() == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property baiduEndPoint in model BaiduCredentialProperties"));
+        }
+        if (baiduSecretKey() == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property baiduSecretKey in model BaiduCredentialProperties"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BaiduCredentialProperties.class);
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Optional set of properties to configure geo replication for this database. */
+/**
+ * Optional set of properties to configure geo replication for this database.
+ */
 @Fluent
 public final class DatabasePropertiesGeoReplication {
     /*
@@ -23,13 +25,15 @@ public final class DatabasePropertiesGeoReplication {
     @JsonProperty(value = "linkedDatabases")
     private List<LinkedDatabase> linkedDatabases;
 
-    /** Creates an instance of DatabasePropertiesGeoReplication class. */
+    /**
+     * Creates an instance of DatabasePropertiesGeoReplication class.
+     */
     public DatabasePropertiesGeoReplication() {
     }
 
     /**
      * Get the groupNickname property: Name for the group of linked database resources.
-     *
+     * 
      * @return the groupNickname value.
      */
     public String groupNickname() {
@@ -38,7 +42,7 @@ public final class DatabasePropertiesGeoReplication {
 
     /**
      * Set the groupNickname property: Name for the group of linked database resources.
-     *
+     * 
      * @param groupNickname the groupNickname value to set.
      * @return the DatabasePropertiesGeoReplication object itself.
      */
@@ -49,7 +53,7 @@ public final class DatabasePropertiesGeoReplication {
 
     /**
      * Get the linkedDatabases property: List of database resources to link with this database.
-     *
+     * 
      * @return the linkedDatabases value.
      */
     public List<LinkedDatabase> linkedDatabases() {
@@ -58,7 +62,7 @@ public final class DatabasePropertiesGeoReplication {
 
     /**
      * Set the linkedDatabases property: List of database resources to link with this database.
-     *
+     * 
      * @param linkedDatabases the linkedDatabases value to set.
      * @return the DatabasePropertiesGeoReplication object itself.
      */
@@ -69,7 +73,7 @@ public final class DatabasePropertiesGeoReplication {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

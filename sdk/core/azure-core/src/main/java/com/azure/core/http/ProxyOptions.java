@@ -22,7 +22,18 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 /**
- * This represents proxy configuration to be used in http clients.
+ * <p>Represents the proxy configuration to be used in HTTP clients.</p>
+ *
+ * <p>This class encapsulates the proxy settings, including the proxy type, address, and optional credentials. It
+ * provides methods to set and get these properties.</p>
+ *
+ * <p>This class is useful when you want to configure a proxy for an HTTP client. For example, you can use it to
+ * create a proxy with specific credentials, or to specify hosts that should bypass the proxy.</p>
+ *
+ * <p>Note: This class provides a {@link Type} enum to represent the proxy type, which can be HTTP, SOCKS4, or SOCKS5.</p>
+ *
+ * @see Type
+ * @see InetSocketAddress
  */
 public class ProxyOptions {
     private static final ClientLogger LOGGER = new ClientLogger(ProxyOptions.class);
@@ -62,14 +73,26 @@ public class ProxyOptions {
     private static final Pattern UNESCAPED_PERIOD = Pattern.compile("(?<!\\\\)\\.");
     private static final Pattern ANY = Pattern.compile("\\*");
 
-    private static final ConfigurationProperty<String> NON_PROXY_PROPERTY = ConfigurationPropertyBuilder
-        .ofString(ConfigurationProperties.HTTP_PROXY_NON_PROXY_HOSTS).shared(true).logValue(true).build();
-    private static final ConfigurationProperty<String> HOST_PROPERTY = ConfigurationPropertyBuilder
-        .ofString(ConfigurationProperties.HTTP_PROXY_HOST).shared(true).logValue(true).build();
-    private static final ConfigurationProperty<Integer> PORT_PROPERTY = ConfigurationPropertyBuilder
-        .ofInteger(ConfigurationProperties.HTTP_PROXY_PORT).shared(true).defaultValue(DEFAULT_HTTPS_PORT).build();
-    private static final ConfigurationProperty<String> USER_PROPERTY = ConfigurationPropertyBuilder
-        .ofString(ConfigurationProperties.HTTP_PROXY_USER).shared(true).logValue(true).build();
+    private static final ConfigurationProperty<String> NON_PROXY_PROPERTY
+        = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_NON_PROXY_HOSTS)
+            .shared(true)
+            .logValue(true)
+            .build();
+    private static final ConfigurationProperty<String> HOST_PROPERTY
+        = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_HOST)
+            .shared(true)
+            .logValue(true)
+            .build();
+    private static final ConfigurationProperty<Integer> PORT_PROPERTY
+        = ConfigurationPropertyBuilder.ofInteger(ConfigurationProperties.HTTP_PROXY_PORT)
+            .shared(true)
+            .defaultValue(DEFAULT_HTTPS_PORT)
+            .build();
+    private static final ConfigurationProperty<String> USER_PROPERTY
+        = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_USER)
+            .shared(true)
+            .logValue(true)
+            .build();
     private static final ConfigurationProperty<String> PASSWORD_PROPERTY
         = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_PASSWORD).shared(true).build();
 
@@ -282,9 +305,9 @@ public class ProxyOptions {
             URL proxyUrl = ImplUtils.createUrl(proxyConfiguration);
             int port = (proxyUrl.getPort() == -1) ? proxyUrl.getDefaultPort() : proxyUrl.getPort();
 
-            InetSocketAddress socketAddress
-                = (createUnresolved) ? InetSocketAddress.createUnresolved(proxyUrl.getHost(), port)
-                    : new InetSocketAddress(proxyUrl.getHost(), port);
+            InetSocketAddress socketAddress = (createUnresolved)
+                ? InetSocketAddress.createUnresolved(proxyUrl.getHost(), port)
+                : new InetSocketAddress(proxyUrl.getHost(), port);
 
             ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, socketAddress);
 
@@ -467,7 +490,10 @@ public class ProxyOptions {
                 sanitizedNonProxyHost = Pattern.quote(sanitizedNonProxyHost);
             }
 
-            sanitizedBuilder.append("(").append(prefixWildcard).append(sanitizedNonProxyHost).append(suffixWildcard)
+            sanitizedBuilder.append("(")
+                .append(prefixWildcard)
+                .append(sanitizedNonProxyHost)
+                .append(suffixWildcard)
                 .append(")");
         }
 

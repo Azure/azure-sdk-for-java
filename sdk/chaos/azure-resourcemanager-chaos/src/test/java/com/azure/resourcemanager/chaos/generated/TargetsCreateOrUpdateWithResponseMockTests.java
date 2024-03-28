@@ -33,60 +33,32 @@ public final class TargetsCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"location\":\"qwogfnzjvus\",\"properties\":{\"ozuxylfsbtkadpys\":\"datald\",\"tgkbugrjqctojc\":\"datawn\",\"cuplcplcwkhih\":\"dataisofieypefojyqd\"},\"id\":\"hlhzdsqtzbsrgno\",\"name\":\"cjhfgmvecactxmw\",\"type\":\"teyowclu\"}";
+        String responseStr
+            = "{\"location\":\"ocxvdfffwafqr\",\"properties\":{\"unzo\":\"datadaspavehhrvk\",\"cxgkmoyxcdyui\":\"dataud\",\"aeoisrvh\":\"datahmfdnbzydvfvfcj\"},\"id\":\"gorf\",\"name\":\"ukiscvwmzhw\",\"type\":\"lefaxvxilcbtgn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ChaosManager manager =
-            ChaosManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ChaosManager manager = ChaosManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Target response =
-            manager
-                .targets()
-                .createOrUpdateWithResponse(
-                    "spave",
-                    "hrv",
-                    "bunzozudh",
-                    "xg",
-                    "moy",
-                    new TargetInner()
-                        .withLocation("yuibhm")
-                        .withProperties(
-                            mapOf(
-                                "aeoisrvh",
-                                "datanbzydvfvfcj",
-                                "ukiscvwmzhw",
-                                "datagorf",
-                                "nzeyqxtjj",
-                                "datalefaxvxilcbtgn",
-                                "vodggxdbee",
-                                "datazqlqhyc")),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        Target response = manager.targets()
+            .createOrUpdateWithResponse("vluwmncsttij", "y", "vpo", "krsgsgb", "huzqgn",
+                new TargetInner().withLocation("kynscliqhzv")
+                    .withProperties(mapOf("mtk", "datank", "ppnvdxz", "databo", "hlfkqojpy", "datahihfrbbcevqagtlt")),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("qwogfnzjvus", response.location());
+        Assertions.assertEquals("ocxvdfffwafqr", response.location());
     }
 
     // Use "Map.of" if available

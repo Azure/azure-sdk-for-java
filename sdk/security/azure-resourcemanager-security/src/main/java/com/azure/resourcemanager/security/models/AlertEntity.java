@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Changing set of properties depending on the entity type. */
+/**
+ * Changing set of properties depending on the entity type.
+ */
 @Fluent
 public final class AlertEntity {
     /*
@@ -24,15 +26,18 @@ public final class AlertEntity {
     /*
      * Changing set of properties depending on the entity type.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of AlertEntity class. */
+    /**
+     * Creates an instance of AlertEntity class.
+     */
     public AlertEntity() {
     }
 
     /**
      * Get the type property: Type of entity.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -41,7 +46,7 @@ public final class AlertEntity {
 
     /**
      * Get the additionalProperties property: Changing set of properties depending on the entity type.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -51,7 +56,7 @@ public final class AlertEntity {
 
     /**
      * Set the additionalProperties property: Changing set of properties depending on the entity type.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the AlertEntity object itself.
      */
@@ -70,7 +75,7 @@ public final class AlertEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

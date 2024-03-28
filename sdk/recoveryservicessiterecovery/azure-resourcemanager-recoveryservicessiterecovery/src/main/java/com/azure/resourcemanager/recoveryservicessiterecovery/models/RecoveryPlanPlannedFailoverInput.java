@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Recovery plan planned failover input. */
+/**
+ * Recovery plan planned failover input.
+ */
 @Fluent
 public final class RecoveryPlanPlannedFailoverInput {
     /*
@@ -17,13 +19,15 @@ public final class RecoveryPlanPlannedFailoverInput {
     @JsonProperty(value = "properties", required = true)
     private RecoveryPlanPlannedFailoverInputProperties properties;
 
-    /** Creates an instance of RecoveryPlanPlannedFailoverInput class. */
+    /**
+     * Creates an instance of RecoveryPlanPlannedFailoverInput class.
+     */
     public RecoveryPlanPlannedFailoverInput() {
     }
 
     /**
      * Get the properties property: The recovery plan planned failover input properties.
-     *
+     * 
      * @return the properties value.
      */
     public RecoveryPlanPlannedFailoverInputProperties properties() {
@@ -32,7 +36,7 @@ public final class RecoveryPlanPlannedFailoverInput {
 
     /**
      * Set the properties property: The recovery plan planned failover input properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the RecoveryPlanPlannedFailoverInput object itself.
      */
@@ -43,15 +47,13 @@ public final class RecoveryPlanPlannedFailoverInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model RecoveryPlanPlannedFailoverInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property properties in model RecoveryPlanPlannedFailoverInput"));
         } else {
             properties().validate();
         }

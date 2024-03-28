@@ -48,8 +48,7 @@ import java.time.Duration;
     @JsonSubTypes.Type(name = "TwinUpdatesNotInAllowedRange", value = TwinUpdatesNotInAllowedRange.class),
     @JsonSubTypes.Type(
         name = "UnauthorizedOperationsNotInAllowedRange",
-        value = UnauthorizedOperationsNotInAllowedRange.class)
-})
+        value = UnauthorizedOperationsNotInAllowedRange.class) })
 @Fluent
 public class TimeWindowCustomAlertRule extends ThresholdCustomAlertRule {
     /*
@@ -58,13 +57,15 @@ public class TimeWindowCustomAlertRule extends ThresholdCustomAlertRule {
     @JsonProperty(value = "timeWindowSize", required = true)
     private Duration timeWindowSize;
 
-    /** Creates an instance of TimeWindowCustomAlertRule class. */
+    /**
+     * Creates an instance of TimeWindowCustomAlertRule class.
+     */
     public TimeWindowCustomAlertRule() {
     }
 
     /**
      * Get the timeWindowSize property: The time window size in iso8601 format.
-     *
+     * 
      * @return the timeWindowSize value.
      */
     public Duration timeWindowSize() {
@@ -73,7 +74,7 @@ public class TimeWindowCustomAlertRule extends ThresholdCustomAlertRule {
 
     /**
      * Set the timeWindowSize property: The time window size in iso8601 format.
-     *
+     * 
      * @param timeWindowSize the timeWindowSize value to set.
      * @return the TimeWindowCustomAlertRule object itself.
      */
@@ -82,21 +83,27 @@ public class TimeWindowCustomAlertRule extends ThresholdCustomAlertRule {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TimeWindowCustomAlertRule withMinThreshold(int minThreshold) {
         super.withMinThreshold(minThreshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TimeWindowCustomAlertRule withMaxThreshold(int maxThreshold) {
         super.withMaxThreshold(maxThreshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TimeWindowCustomAlertRule withIsEnabled(boolean isEnabled) {
         super.withIsEnabled(isEnabled);
@@ -105,17 +112,15 @@ public class TimeWindowCustomAlertRule extends ThresholdCustomAlertRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (timeWindowSize() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property timeWindowSize in model TimeWindowCustomAlertRule"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property timeWindowSize in model TimeWindowCustomAlertRule"));
         }
     }
 

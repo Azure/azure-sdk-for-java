@@ -13,7 +13,7 @@ import com.azure.resourcemanager.communication.models.ManagedServiceIdentityType
 public final class CommunicationServicesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
      * communicationServices/createOrUpdate.json
      */
     /**
@@ -28,7 +28,7 @@ public final class CommunicationServicesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
      * communicationServices/createOrUpdateWithSystemAssignedIdentity.json
      */
     /**

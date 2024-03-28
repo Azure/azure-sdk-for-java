@@ -17,6 +17,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.attribute.FileAttribute;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -31,7 +32,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
 
 public class AzureResourceTests extends BlobNioTestBase {
     private Map<String, Object> config;
@@ -58,7 +58,7 @@ public class AzureResourceTests extends BlobNioTestBase {
 
     @Test
     public void instanceType() {
-        assertThrows(IllegalArgumentException.class, () -> new AzureResource(mock(Path.class)));
+        assertThrows(IllegalArgumentException.class, () -> new AzureResource(Paths.get("")));
     }
 
     @ParameterizedTest

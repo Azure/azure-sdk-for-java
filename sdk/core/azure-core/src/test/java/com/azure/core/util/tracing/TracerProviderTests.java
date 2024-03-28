@@ -31,7 +31,8 @@ public class TracerProviderTests {
     @Test
     public void createTracerCustomProviderDoesNotExistConfiguration() {
         Configuration config = new ConfigurationBuilder()
-            .putProperty("tracing.provider.implementation", "com.azure.core.util.tracing.TestTracerProvider").build();
+            .putProperty("tracing.provider.implementation", "com.azure.core.util.tracing.TestTracerProvider")
+            .build();
 
         assertThrows(RuntimeException.class, () -> TracingOptions.fromConfiguration(config));
     }

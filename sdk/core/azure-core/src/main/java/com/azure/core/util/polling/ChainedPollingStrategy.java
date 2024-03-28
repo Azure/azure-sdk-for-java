@@ -21,7 +21,7 @@ import java.util.Objects;
  *
  * @param <T> the type of the response type from a polling call, or BinaryData if raw response body should be kept
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
- *        kept
+ * kept
  */
 public final class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U> {
     private static final ClientLogger LOGGER = new ClientLogger(ChainedPollingStrategy.class);
@@ -49,10 +49,13 @@ public final class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U>
         // pollableStrategy is only set once
         return Flux.fromIterable(pollingStrategies)
             .concatMap(strategy -> strategy.canPoll(initialResponse).map(canPoll -> Tuples.of(strategy, canPoll)))
-            .takeUntil(Tuple2::getT2).last().map(tuple2 -> {
+            .takeUntil(Tuple2::getT2)
+            .last()
+            .map(tuple2 -> {
                 this.pollableStrategy = tuple2.getT1();
                 return true;
-            }).defaultIfEmpty(false);
+            })
+            .defaultIfEmpty(false);
     }
 
     /**

@@ -117,8 +117,7 @@ public class SendLinkHandler extends LinkHandler {
 
         creditProcessor.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
         deliveryProcessor.emitComplete((signalType, emitResult) -> {
-            addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
-                .addKeyValue(LINK_NAME_KEY, linkName)
+            addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult).addKeyValue(LINK_NAME_KEY, linkName)
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .log("Unable to emit complete on deliverySink.");
             return false;
@@ -146,9 +145,8 @@ public class SendLinkHandler extends LinkHandler {
             return;
         }
 
-        LoggingEventBuilder logBuilder = logger.atInfo()
-            .addKeyValue(LINK_NAME_KEY, link.getName())
-            .addKeyValue(ENTITY_PATH_KEY, entityPath);
+        LoggingEventBuilder logBuilder
+            = logger.atInfo().addKeyValue(LINK_NAME_KEY, link.getName()).addKeyValue(ENTITY_PATH_KEY, entityPath);
 
         if (link.getRemoteTarget() != null) {
             logBuilder.addKeyValue("remoteTarget", link.getRemoteTarget());
@@ -157,8 +155,7 @@ public class SendLinkHandler extends LinkHandler {
                 onNext(EndpointState.ACTIVE);
             }
         } else {
-            logBuilder.addKeyValue("remoteTarget", NOT_APPLICABLE)
-                .addKeyValue("action", "waitingForError");
+            logBuilder.addKeyValue("remoteTarget", NOT_APPLICABLE).addKeyValue("action", "waitingForError");
         }
         logBuilder.log("onLinkRemoteOpen");
     }

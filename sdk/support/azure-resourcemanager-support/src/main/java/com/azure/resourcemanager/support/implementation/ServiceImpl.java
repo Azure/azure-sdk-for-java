@@ -8,6 +8,7 @@ import com.azure.resourcemanager.support.fluent.models.ServiceInner;
 import com.azure.resourcemanager.support.models.Service;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public final class ServiceImpl implements Service {
     private ServiceInner innerObject;
@@ -41,6 +42,15 @@ public final class ServiceImpl implements Service {
             return Collections.unmodifiableList(inner);
         } else {
             return Collections.emptyList();
+        }
+    }
+
+    public Map<String, String> metadata() {
+        Map<String, String> inner = this.innerModel().metadata();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
         }
     }
 

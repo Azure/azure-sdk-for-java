@@ -9,7 +9,9 @@ import com.azure.resourcemanager.security.fluent.models.ComplianceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of Compliance objects response. */
+/**
+ * List of Compliance objects response.
+ */
 @Fluent
 public final class ComplianceList {
     /*
@@ -24,13 +26,15 @@ public final class ComplianceList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ComplianceList class. */
+    /**
+     * Creates an instance of ComplianceList class.
+     */
     public ComplianceList() {
     }
 
     /**
      * Get the value property: List of Compliance objects.
-     *
+     * 
      * @return the value value.
      */
     public List<ComplianceInner> value() {
@@ -39,7 +43,7 @@ public final class ComplianceList {
 
     /**
      * Set the value property: List of Compliance objects.
-     *
+     * 
      * @param value the value value to set.
      * @return the ComplianceList object itself.
      */
@@ -50,7 +54,7 @@ public final class ComplianceList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ComplianceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -65,7 +65,8 @@ public class HttpPipelinePolicyTests {
         URL url = createUrl("http://localhost/");
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
-            .policies(policyWithDefaultSyncImplementation).build();
+            .policies(policyWithDefaultSyncImplementation)
+            .build();
 
         pipeline.send(new HttpRequest(HttpMethod.GET, url)).block();
         assertEquals(1, policyWithDefaultSyncImplementation.asyncCalls.get());

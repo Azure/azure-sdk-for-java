@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A List custom alert rule. */
+/**
+ * A List custom alert rule.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,8 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ListCustomAlertRule")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AllowlistCustomAlertRule", value = AllowlistCustomAlertRule.class),
-    @JsonSubTypes.Type(name = "DenylistCustomAlertRule", value = DenylistCustomAlertRule.class)
-})
+    @JsonSubTypes.Type(name = "DenylistCustomAlertRule", value = DenylistCustomAlertRule.class) })
 @Fluent
 public class ListCustomAlertRule extends CustomAlertRule {
     /*
@@ -29,20 +30,24 @@ public class ListCustomAlertRule extends CustomAlertRule {
     @JsonProperty(value = "valueType", access = JsonProperty.Access.WRITE_ONLY)
     private ValueType valueType;
 
-    /** Creates an instance of ListCustomAlertRule class. */
+    /**
+     * Creates an instance of ListCustomAlertRule class.
+     */
     public ListCustomAlertRule() {
     }
 
     /**
      * Get the valueType property: The value type of the items in the list.
-     *
+     * 
      * @return the valueType value.
      */
     public ValueType valueType() {
         return this.valueType;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ListCustomAlertRule withIsEnabled(boolean isEnabled) {
         super.withIsEnabled(isEnabled);
@@ -51,7 +56,7 @@ public class ListCustomAlertRule extends CustomAlertRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

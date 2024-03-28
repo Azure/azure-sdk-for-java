@@ -32,16 +32,10 @@ public final class ReplicationObject {
     private ReplicationSchedule replicationSchedule;
 
     /*
-     * The resource ID of the remote volume. Required for cross region and cross zone replication
+     * The resource ID of the remote volume.
      */
     @JsonProperty(value = "remoteVolumeResourceId", required = true)
     private String remoteVolumeResourceId;
-
-    /*
-     * The full path to a volume that is to be migrated into ANF. Required for Migration volumes
-     */
-    @JsonProperty(value = "remotePath")
-    private RemotePath remotePath;
 
     /*
      * The remote region for the other end of the Volume Replication.
@@ -107,8 +101,7 @@ public final class ReplicationObject {
     }
 
     /**
-     * Get the remoteVolumeResourceId property: The resource ID of the remote volume. Required for cross region and
-     * cross zone replication.
+     * Get the remoteVolumeResourceId property: The resource ID of the remote volume.
      * 
      * @return the remoteVolumeResourceId value.
      */
@@ -117,36 +110,13 @@ public final class ReplicationObject {
     }
 
     /**
-     * Set the remoteVolumeResourceId property: The resource ID of the remote volume. Required for cross region and
-     * cross zone replication.
+     * Set the remoteVolumeResourceId property: The resource ID of the remote volume.
      * 
      * @param remoteVolumeResourceId the remoteVolumeResourceId value to set.
      * @return the ReplicationObject object itself.
      */
     public ReplicationObject withRemoteVolumeResourceId(String remoteVolumeResourceId) {
         this.remoteVolumeResourceId = remoteVolumeResourceId;
-        return this;
-    }
-
-    /**
-     * Get the remotePath property: The full path to a volume that is to be migrated into ANF. Required for Migration
-     * volumes.
-     * 
-     * @return the remotePath value.
-     */
-    public RemotePath remotePath() {
-        return this.remotePath;
-    }
-
-    /**
-     * Set the remotePath property: The full path to a volume that is to be migrated into ANF. Required for Migration
-     * volumes.
-     * 
-     * @param remotePath the remotePath value to set.
-     * @return the ReplicationObject object itself.
-     */
-    public ReplicationObject withRemotePath(RemotePath remotePath) {
-        this.remotePath = remotePath;
         return this;
     }
 
@@ -179,9 +149,6 @@ public final class ReplicationObject {
         if (remoteVolumeResourceId() == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "Missing required property remoteVolumeResourceId in model ReplicationObject"));
-        }
-        if (remotePath() != null) {
-            remotePath().validate();
         }
     }
 

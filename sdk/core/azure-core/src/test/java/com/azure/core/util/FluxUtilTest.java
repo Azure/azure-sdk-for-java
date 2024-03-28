@@ -66,7 +66,8 @@ public class FluxUtilTest {
     public void testCallWithContextGetSingle() {
         StepVerifier
             .create(getSingle().contextWrite(reactor.util.context.Context.of("FirstName", "Foo", "LastName", "Bar")))
-            .assertNext(response -> assertEquals("Hello, Foo Bar", response)).verifyComplete();
+            .assertNext(response -> assertEquals("Hello, Foo Bar", response))
+            .verifyComplete();
     }
 
     @Test
@@ -75,7 +76,8 @@ public class FluxUtilTest {
             .create(
                 getCollection().contextWrite(reactor.util.context.Context.of("FirstName", "Foo", "LastName", "Bar")))
             .assertNext(response -> assertEquals("Hello,", response))
-            .assertNext(response -> assertEquals("Foo", response)).assertNext(response -> assertEquals("Bar", response))
+            .assertNext(response -> assertEquals("Foo", response))
+            .assertNext(response -> assertEquals("Bar", response))
             .verifyComplete();
     }
 
@@ -83,7 +85,8 @@ public class FluxUtilTest {
     public void testCallWithDefaultContextGetSingle() {
         StepVerifier
             .create(getSingleWithContextAttributes().contextWrite(reactor.util.context.Context.of("FirstName", "Foo")))
-            .assertNext(response -> assertEquals("Hello, Foo additionalContextValue", response)).verifyComplete();
+            .assertNext(response -> assertEquals("Hello, Foo additionalContextValue", response))
+            .verifyComplete();
     }
 
     @Test
@@ -367,14 +370,16 @@ public class FluxUtilTest {
         try (AsynchronousFileChannel channel = mockAsynchronousFileChannel) {
             StepVerifier
                 .create(FluxUtil.collectBytesInByteBufferStream(FluxUtil.readFile(channel), expectedFileBytes.length))
-                .assertNext(bytes -> assertArraysEqual(expectedFileBytes, bytes)).verifyComplete();
+                .assertNext(bytes -> assertArraysEqual(expectedFileBytes, bytes))
+                .verifyComplete();
         }
     }
 
     @ParameterizedTest
     @MethodSource("toFluxByteBufferSupplier")
     public void toFluxByteBuffer(InputStream inputStream, Integer chunkSize, byte[] expected) {
-        Flux<ByteBuffer> conversionFlux = (chunkSize == null) ? FluxUtil.toFluxByteBuffer(inputStream)
+        Flux<ByteBuffer> conversionFlux = (chunkSize == null)
+            ? FluxUtil.toFluxByteBuffer(inputStream)
             : FluxUtil.toFluxByteBuffer(inputStream, chunkSize);
 
         // If the stream is null or empty the Flux will only trigger complete.
@@ -387,7 +392,8 @@ public class FluxUtilTest {
         AtomicLong requestCount = new AtomicLong((long) Math.ceil((double) expected.length / unboxedChunkSize));
         ByteBuffer collectionBuffer = ByteBuffer.allocate(expected.length);
 
-        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(conversionFlux)).thenRequest(requestCount.get())
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(conversionFlux))
+            .thenRequest(requestCount.get())
             .thenConsumeWhile(bytes -> {
                 collectionBuffer.put(bytes, collectionBuffer.position(), bytes.length);
 
@@ -398,7 +404,8 @@ public class FluxUtilTest {
                 } else {
                     return true;
                 }
-            }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
     private static Stream<Arguments> toFluxByteBufferSupplier() {
@@ -428,10 +435,12 @@ public class FluxUtilTest {
         Flux<ByteBuffer> conversionFlux = FluxUtil.toFluxByteBuffer(inputStream);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(conversionFlux))
-            .assertNext(actual -> assertArraysEqual(singleRead, actual)).verifyComplete();
+            .assertNext(actual -> assertArraysEqual(singleRead, actual))
+            .verifyComplete();
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(conversionFlux))
-            .assertNext(actual -> assertArraysEqual(new byte[0], actual)).verifyComplete();
+            .assertNext(actual -> assertArraysEqual(new byte[0], actual))
+            .verifyComplete();
     }
 
     @Test

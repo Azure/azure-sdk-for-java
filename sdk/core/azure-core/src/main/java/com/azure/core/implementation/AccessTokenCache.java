@@ -146,8 +146,10 @@ public final class AccessTokenCache {
                         fallback = Mono.just(cachedToken);
                     }
 
-                    return Mono.using(() -> wip, ignored -> tokenRefresh.materialize()
-                        .flatMap(processTokenRefreshResult(sinksOne, now, fallback)).doOnError(sinksOne::tryEmitError),
+                    return Mono.using(() -> wip,
+                        ignored -> tokenRefresh.materialize()
+                            .flatMap(processTokenRefreshResult(sinksOne, now, fallback))
+                            .doOnError(sinksOne::tryEmitError),
                         w -> w.set(null));
                 } else if (cachedToken != null && !cachedToken.isExpired() && !checkToForceFetchToken) {
                     // another thread might be refreshing the token proactively, but the current token is still valid
@@ -248,8 +250,10 @@ public final class AccessTokenCache {
 
     private boolean checkIfForceRefreshRequired(TokenRequestContext tokenRequestContext) {
         return !(this.tokenRequestContext != null
-            && (this.tokenRequestContext.getClaims() == null ? tokenRequestContext.getClaims() == null
-                : (tokenRequestContext.getClaims() == null ? false
+            && (this.tokenRequestContext.getClaims() == null
+                ? tokenRequestContext.getClaims() == null
+                : (tokenRequestContext.getClaims() == null
+                    ? false
                     : tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
             && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
     }
@@ -287,6 +291,7 @@ public final class AccessTokenCache {
         Duration tte = Duration.between(now, cache.getExpiresAt());
         return logBuilder.addKeyValue("expiresAt", cache.getExpiresAt())
             .addKeyValue("tteSeconds", String.valueOf(tte.abs().getSeconds()))
-            .addKeyValue("retryAfterSeconds", REFRESH_DELAY_STRING).addKeyValue("expired", tte.isNegative());
+            .addKeyValue("retryAfterSeconds", REFRESH_DELAY_STRING)
+            .addKeyValue("expired", tte.isNegative());
     }
 }

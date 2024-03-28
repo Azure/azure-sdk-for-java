@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Base class for provider specific input. */
+/**
+ * Base class for provider specific input.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -25,17 +27,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "InMage", value = InMagePolicyInput.class),
     @JsonSubTypes.Type(name = "InMageRcmFailback", value = InMageRcmFailbackPolicyCreationInput.class),
     @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmPolicyCreationInput.class),
-    @JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtPolicyCreationInput.class)
-})
+    @JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtPolicyCreationInput.class) })
 @Immutable
 public class PolicyProviderSpecificInput {
-    /** Creates an instance of PolicyProviderSpecificInput class. */
+    /**
+     * Creates an instance of PolicyProviderSpecificInput class.
+     */
     public PolicyProviderSpecificInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

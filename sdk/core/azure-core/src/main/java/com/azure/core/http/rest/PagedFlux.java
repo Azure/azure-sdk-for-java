@@ -153,7 +153,8 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      */
     public PagedFlux(Supplier<Mono<PagedResponse<T>>> firstPageRetriever,
         Function<String, Mono<PagedResponse<T>>> nextPageRetriever) {
-        this(() -> (continuationToken, pageSize) -> continuationToken == null ? firstPageRetriever.get().flux()
+        this(() -> (continuationToken, pageSize) -> continuationToken == null
+            ? firstPageRetriever.get().flux()
             : nextPageRetriever.apply(continuationToken).flux(), true);
     }
 
@@ -181,8 +182,8 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
     public PagedFlux(Function<Integer, Mono<PagedResponse<T>>> firstPageRetriever,
         BiFunction<String, Integer, Mono<PagedResponse<T>>> nextPageRetriever) {
         this(() -> (continuationToken, pageSize) -> continuationToken == null
-            ? firstPageRetriever.apply(pageSize).flux() : nextPageRetriever.apply(continuationToken, pageSize).flux(),
-            true);
+            ? firstPageRetriever.apply(pageSize).flux()
+            : nextPageRetriever.apply(continuationToken, pageSize).flux(), true);
     }
 
     /**

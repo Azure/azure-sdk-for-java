@@ -45,7 +45,7 @@ public final class ChangeDataCapturesStopWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.changeDataCaptures().stopWithResponse("ltuxwfwlfqbgu", "vrwnweiwkbkhdxq", "ccdzb",
+        manager.changeDataCaptures().stopWithResponse("sbpueymimicjjy", "tupqtlgzuykt", "bbvbsl",
             com.azure.core.util.Context.NONE);
 
     }

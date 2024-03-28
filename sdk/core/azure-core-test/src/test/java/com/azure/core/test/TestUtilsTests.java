@@ -28,12 +28,8 @@ public class TestUtilsTests {
 
     private static Stream<Arguments> arraysAreEqualSupplier() {
         byte[] sameInstance = new byte[] { 1, 2, 3 };
-        return Stream.of(
-            Arguments.of(null, null),
-            Arguments.of(new byte[0], new byte[0]),
-            Arguments.of(sameInstance, sameInstance),
-            Arguments.of(new byte[] { 1, 2, 3 }, new byte[] { 1, 2, 3 })
-        );
+        return Stream.of(Arguments.of(null, null), Arguments.of(new byte[0], new byte[0]),
+            Arguments.of(sameInstance, sameInstance), Arguments.of(new byte[] { 1, 2, 3 }, new byte[] { 1, 2, 3 }));
     }
 
     @Test
@@ -49,17 +45,14 @@ public class TestUtilsTests {
 
     private static Stream<Arguments> byteBuffersAreEqualSupplier() {
         ByteBuffer sameInstance = ByteBuffer.wrap(new byte[] { 1, 2, 3 });
-        return Stream.of(
-            Arguments.of(null, null),
-            Arguments.of(ByteBuffer.allocate(0), ByteBuffer.allocate(0)),
+        return Stream.of(Arguments.of(null, null), Arguments.of(ByteBuffer.allocate(0), ByteBuffer.allocate(0)),
             Arguments.of(sameInstance, sameInstance),
-            Arguments.of(ByteBuffer.wrap(new byte[] { 1, 2, 3 }), ByteBuffer.wrap(new byte[] { 1, 2, 3 }))
-        );
+            Arguments.of(ByteBuffer.wrap(new byte[] { 1, 2, 3 }), ByteBuffer.wrap(new byte[] { 1, 2, 3 })));
     }
 
     @Test
     public void byteBuffersAreNotEqual() {
-        assertThrows(AssertionFailedError.class, () -> TestUtils.assertByteBuffersEqual(
-            ByteBuffer.wrap(new byte[] { 1 }), ByteBuffer.wrap(new byte[] { 1, 2 })));
+        assertThrows(AssertionFailedError.class, () -> TestUtils
+            .assertByteBuffersEqual(ByteBuffer.wrap(new byte[] { 1 }), ByteBuffer.wrap(new byte[] { 1, 2 })));
     }
 }

@@ -32,9 +32,9 @@ import com.azure.core.util.serializer.TypeReference;
  * overridden to accomplish the polling requirements, without writing an entire polling strategy from scratch.
  *
  * @param <T> the {@link TypeReference} of the response type from a polling call, or BinaryData if raw response body
- *        should be kept
+ * should be kept
  * @param <U> the {@link TypeReference} of the final result object to deserialize into, or BinaryData if raw response
- *        body should be kept
+ * body should be kept
  */
 public interface SyncPollingStrategy<T, U> {
     /**

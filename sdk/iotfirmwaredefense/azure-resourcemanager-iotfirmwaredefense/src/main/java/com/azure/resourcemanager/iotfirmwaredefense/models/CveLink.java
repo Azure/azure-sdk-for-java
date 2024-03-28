@@ -7,28 +7,32 @@ package com.azure.resourcemanager.iotfirmwaredefense.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Link for CVE. */
+/**
+ * Properties of a reference link for a CVE.
+ */
 @Fluent
 public final class CveLink {
     /*
-     * Href of CVE link
+     * The destination of the reference link.
      */
     @JsonProperty(value = "href")
     private String href;
 
     /*
-     * Label of CVE link
+     * The label of the reference link.
      */
     @JsonProperty(value = "label")
     private String label;
 
-    /** Creates an instance of CveLink class. */
+    /**
+     * Creates an instance of CveLink class.
+     */
     public CveLink() {
     }
 
     /**
-     * Get the href property: Href of CVE link.
-     *
+     * Get the href property: The destination of the reference link.
+     * 
      * @return the href value.
      */
     public String href() {
@@ -36,8 +40,8 @@ public final class CveLink {
     }
 
     /**
-     * Set the href property: Href of CVE link.
-     *
+     * Set the href property: The destination of the reference link.
+     * 
      * @param href the href value to set.
      * @return the CveLink object itself.
      */
@@ -47,8 +51,8 @@ public final class CveLink {
     }
 
     /**
-     * Get the label property: Label of CVE link.
-     *
+     * Get the label property: The label of the reference link.
+     * 
      * @return the label value.
      */
     public String label() {
@@ -56,8 +60,8 @@ public final class CveLink {
     }
 
     /**
-     * Set the label property: Label of CVE link.
-     *
+     * Set the label property: The label of the reference link.
+     * 
      * @param label the label value to set.
      * @return the CveLink object itself.
      */
@@ -68,7 +72,7 @@ public final class CveLink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

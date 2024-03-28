@@ -18,9 +18,35 @@ import java.util.EnumSet;
 import java.util.Set;
 
 /**
- * A default implementation of {@link RedirectStrategy} that uses the provided maximum retry attempts,
- * header name to look up redirect url value for, http methods and a known set of
- * redirect status response codes (301, 302, 307, 308) to determine if request should be redirected.
+ * The {@code DefaultRedirectStrategy} class is an implementation of the {@link RedirectStrategy} interface. This
+ * strategy uses the provided maximum retry attempts, header name to look up redirect URL value for, HTTP methods and
+ * a known set of redirect status response codes (301, 302, 307, 308) to determine if a request should be redirected.
+ *
+ * <p>This class is useful when you need to handle HTTP redirects. It ensures that the requests are redirected
+ * correctly based on the response status code and the maximum number of redirect attempts.</p>
+ *
+ * <p><strong>Code sample:</strong></p>
+ *
+ * <p>In this example, a {@code DefaultRedirectStrategy} is created with a maximum of 3 redirect attempts,
+ * "Location" as the header name to locate the redirect URL, and GET and HEAD as the allowed methods for performing
+ * the redirect. The strategy is then used in a {@code RedirectPolicy} which can be added to the pipeline. For a request
+ * sent by the pipeline, if the server responds with a redirect status code and provides a "Location" header,
+ * the request will be redirected up to 3 times as needed.</p>
+ *
+ * <!-- src_embed com.azure.core.http.policy.DefaultRedirectStrategy.constructor -->
+ * <pre>
+ * DefaultRedirectStrategy redirectStrategy = new DefaultRedirectStrategy&#40;3, &quot;Location&quot;,
+ *     EnumSet.of&#40;HttpMethod.GET, HttpMethod.HEAD&#41;&#41;;
+ * RedirectPolicy redirectPolicy = new RedirectPolicy&#40;redirectStrategy&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.policy.DefaultRedirectStrategy.constructor -->
+ *
+ * @see com.azure.core.http.policy
+ * @see com.azure.core.http.policy.RedirectStrategy
+ * @see com.azure.core.http.policy.RedirectPolicy
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
  */
 public final class DefaultRedirectStrategy implements RedirectStrategy {
     private static final ClientLogger LOGGER = new ClientLogger(DefaultRedirectStrategy.class);
@@ -102,12 +128,15 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
     public boolean shouldAttemptRedirect(HttpPipelineCallContext context, HttpResponse httpResponse, int tryCount,
         Set<String> attemptedRedirectUrls) {
 
-        if (isValidRedirectStatusCode(httpResponse.getStatusCode()) && isValidRedirectCount(tryCount)
+        if (isValidRedirectStatusCode(httpResponse.getStatusCode())
+            && isValidRedirectCount(tryCount)
             && isAllowedRedirectMethod(httpResponse.getRequest().getHttpMethod())) {
             String redirectUrl = httpResponse.getHeaderValue(locationHeader);
             if (redirectUrl != null && !alreadyAttemptedRedirectUrl(redirectUrl, attemptedRedirectUrls)) {
-                LOGGER.atVerbose().addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-                    .addKeyValue(REDIRECT_URLS_KEY, attemptedRedirectUrls::toString).log("Redirecting.");
+                LOGGER.atVerbose()
+                    .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+                    .addKeyValue(REDIRECT_URLS_KEY, attemptedRedirectUrls::toString)
+                    .log("Redirecting.");
                 attemptedRedirectUrls.add(redirectUrl);
                 return true;
             } else {
@@ -138,7 +167,8 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
      */
     private boolean alreadyAttemptedRedirectUrl(String redirectUrl, Set<String> attemptedRedirectUrls) {
         if (attemptedRedirectUrls.contains(redirectUrl)) {
-            LOGGER.atError().addKeyValue(LoggingKeys.REDIRECT_URL_KEY, redirectUrl)
+            LOGGER.atError()
+                .addKeyValue(LoggingKeys.REDIRECT_URL_KEY, redirectUrl)
                 .log("Request was redirected more than once to the same URL.");
 
             return true;
@@ -171,7 +201,8 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
         if (allowedRedirectHttpMethods.contains(httpMethod)) {
             return true;
         } else {
-            LOGGER.atError().addKeyValue(LoggingKeys.HTTP_METHOD_KEY, httpMethod)
+            LOGGER.atError()
+                .addKeyValue(LoggingKeys.HTTP_METHOD_KEY, httpMethod)
                 .log("Request was redirected from an invalid redirect allowed method.");
 
             return false;
@@ -185,7 +216,9 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
      * @return {@code true} if the request {@code statusCode} is a valid http redirect method, {@code false} otherwise.
      */
     private boolean isValidRedirectStatusCode(int statusCode) {
-        return statusCode == HttpURLConnection.HTTP_MOVED_TEMP || statusCode == HttpURLConnection.HTTP_MOVED_PERM
-            || statusCode == PERMANENT_REDIRECT_STATUS_CODE || statusCode == TEMPORARY_REDIRECT_STATUS_CODE;
+        return statusCode == HttpURLConnection.HTTP_MOVED_TEMP
+            || statusCode == HttpURLConnection.HTTP_MOVED_PERM
+            || statusCode == PERMANENT_REDIRECT_STATUS_CODE
+            || statusCode == TEMPORARY_REDIRECT_STATUS_CODE;
     }
 }

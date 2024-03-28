@@ -544,7 +544,8 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      */
     @JsonAnyGetter
     public Map<String, Object> getExtensionAttributes() {
-        return this.extensionAttributes == null ? Collections.emptyMap()
+        return this.extensionAttributes == null
+            ? Collections.emptyMap()
             : Collections.unmodifiableMap(this.extensionAttributes);
     }
 
@@ -624,8 +625,10 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
             jsonWriter.writeStringField("time", time.toString());
         }
 
-        jsonWriter.writeStringField("specversion", specVersion).writeStringField("dataschema", dataSchema)
-            .writeStringField("datacontenttype", dataContentType).writeStringField("subject", subject);
+        jsonWriter.writeStringField("specversion", specVersion)
+            .writeStringField("dataschema", dataSchema)
+            .writeStringField("datacontenttype", dataContentType)
+            .writeStringField("subject", subject);
 
         if (!CoreUtils.isNullOrEmpty(extensionAttributes)) {
             for (Map.Entry<String, Object> extensionAttribute : extensionAttributes.entrySet()) {

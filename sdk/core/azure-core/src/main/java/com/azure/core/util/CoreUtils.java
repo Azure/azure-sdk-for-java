@@ -14,7 +14,15 @@ import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.DateTimeException;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalQueries;
+import java.time.temporal.TemporalQuery;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -202,7 +210,8 @@ public final class CoreUtils {
             if (inputStream != null) {
                 Properties properties = new Properties();
                 properties.load(inputStream);
-                return Collections.unmodifiableMap(properties.entrySet().stream()
+                return Collections.unmodifiableMap(properties.entrySet()
+                    .stream()
                     .collect(Collectors.toMap(entry -> (String) entry.getKey(), entry -> (String) entry.getValue())));
             }
         } catch (IOException ex) {
@@ -313,14 +322,16 @@ public final class CoreUtils {
         try {
             long timeoutMillis = Long.parseLong(environmentTimeout);
             if (timeoutMillis < 0) {
-                logger.atVerbose().addKeyValue(timeoutPropertyName, timeoutMillis)
+                logger.atVerbose()
+                    .addKeyValue(timeoutPropertyName, timeoutMillis)
                     .log("Negative timeout values are not allowed. Using 'Duration.ZERO' to indicate no timeout.");
                 return Duration.ZERO;
             }
 
             return Duration.ofMillis(timeoutMillis);
         } catch (NumberFormatException ex) {
-            logger.atInfo().addKeyValue(timeoutPropertyName, environmentTimeout)
+            logger.atInfo()
+                .addKeyValue(timeoutPropertyName, environmentTimeout)
                 .addKeyValue("defaultTimeout", defaultTimeout)
                 .log("Timeout is not valid number. Using default value.", ex);
 
@@ -520,7 +531,8 @@ public final class CoreUtils {
      * @return An {@link Iterator} over the query parameter key-value pairs.
      */
     public static Iterator<Map.Entry<String, String>> parseQueryParameters(String queryParameters) {
-        return (CoreUtils.isNullOrEmpty(queryParameters)) ? Collections.emptyIterator()
+        return (CoreUtils.isNullOrEmpty(queryParameters))
+            ? Collections.emptyIterator()
             : new ImplUtils.QueryParameterIterator(queryParameters);
     }
 
@@ -622,6 +634,32 @@ public final class CoreUtils {
             }
         });
 
+        CoreUtils.addShutdownHookSafely(shutdownThread);
+
+        return executorService;
+    }
+
+    /**
+     * Helper method that safely adds a {@link Runtime#addShutdownHook(Thread)} to the JVM that will run when the JVM is
+     * shutting down.
+     * <p>
+     * {@link Runtime#addShutdownHook(Thread)} checks for security privileges and will throw an exception if the proper
+     * security isn't available. So, if running with a security manager, setting
+     * {@code AZURE_ENABLE_SHUTDOWN_HOOK_WITH_PRIVILEGE} to true will have this method use access controller to add
+     * the shutdown hook with privileged permissions.
+     * <p>
+     * If {@code shutdownThread} is null, no shutdown hook will be added and this method will return null.
+     *
+     * @param shutdownThread The {@link Thread} that will be added as a
+     * {@link Runtime#addShutdownHook(Thread) shutdown hook}.
+     * @return The {@link Thread} that was passed in.
+     */
+    @SuppressWarnings({ "deprecation", "removal" })
+    public static Thread addShutdownHookSafely(Thread shutdownThread) {
+        if (shutdownThread == null) {
+            return null;
+        }
+
         if (ShutdownHookAccessHelperHolder.shutdownHookAccessHelper) {
             java.security.AccessController.doPrivileged((java.security.PrivilegedAction<Void>) () -> {
                 Runtime.getRuntime().addShutdownHook(shutdownThread);
@@ -631,7 +669,7 @@ public final class CoreUtils {
             Runtime.getRuntime().addShutdownHook(shutdownThread);
         }
 
-        return executorService;
+        return shutdownThread;
     }
 
     /**
@@ -731,6 +769,36 @@ public final class CoreUtils {
         }
 
         return builder.toString();
+    }
+
+    /**
+     * Parses a string into an {@link OffsetDateTime}.
+     * <p>
+     * If {@code dateString} is null, null will be returned.
+     * <p>
+     * This method attempts to parse the {@code dateString} using
+     * {@link DateTimeFormatter#parseBest(CharSequence, TemporalQuery[])}. This will use
+     * {@link OffsetDateTime#from(TemporalAccessor)} as the first attempt and will fall back to
+     * {@link LocalDateTime#from(TemporalAccessor)} with setting the offset as {@link ZoneOffset#UTC}.
+     *
+     * @param dateString The string to parse into an {@link OffsetDateTime}.
+     * @return The parsed {@link OffsetDateTime}, or null if {@code dateString} was null.
+     * @throws DateTimeException If the {@code dateString} cannot be parsed by either
+     * {@link OffsetDateTime#from(TemporalAccessor)} or {@link LocalDateTime#from(TemporalAccessor)}.
+     */
+    public static OffsetDateTime parseBestOffsetDateTime(String dateString) {
+        if (dateString == null) {
+            return null;
+        }
+
+        TemporalAccessor temporal
+            = DateTimeFormatter.ISO_DATE_TIME.parseBest(dateString, OffsetDateTime::from, LocalDateTime::from);
+
+        if (temporal.query(TemporalQueries.offset()) == null) {
+            return LocalDateTime.from(temporal).atOffset(ZoneOffset.UTC);
+        } else {
+            return OffsetDateTime.from(temporal);
+        }
     }
 
     /*

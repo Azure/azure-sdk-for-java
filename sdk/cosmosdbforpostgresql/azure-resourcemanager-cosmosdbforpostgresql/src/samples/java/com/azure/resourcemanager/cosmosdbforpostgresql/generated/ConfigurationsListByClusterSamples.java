@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.cosmosdbforpostgresql.generated;
 
-/** Samples for Configurations ListByCluster. */
+/**
+ * Samples for Configurations ListByCluster.
+ */
 public final class ConfigurationsListByClusterSamples {
     /*
-     * x-ms-original-file: specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ConfigurationListByCluster.json
+     * x-ms-original-file:
+     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
+     * ConfigurationListByCluster.json
      */
     /**
      * Sample code: List configurations of the cluster.
-     *
+     * 
      * @param manager Entry point to CosmosDBForPostgreSqlManager.
      */
     public static void listConfigurationsOfTheCluster(

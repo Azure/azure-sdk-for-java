@@ -13,23 +13,17 @@ import java.util.Arrays;
 public final class OperationsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationsListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"quvgjxpybczme\",\"display\":{\"description\":\"zopbsphrupidgs\",\"operation\":\"bejhphoycmsxa\",\"provider\":\"hdxbmtqio\",\"resource\":\"zehtbmu\"}},{\"name\":\"ownoizhw\",\"display\":{\"description\":\"ybqsoqijg\",\"operation\":\"mbpazlobcufpdzn\",\"provider\":\"t\",\"resource\":\"qjnqglhqgnufoooj\"}},{\"name\":\"ifsqesaagdfmg\",\"display\":{\"description\":\"hjxri\",\"operation\":\"wmrvktsizntocipa\",\"provider\":\"ajpsquc\",\"resource\":\"o\"}}]}")
-                .toObject(OperationsListResult.class);
+        OperationsListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"quvgjxpybczme\",\"display\":{\"description\":\"zopbsphrupidgs\",\"operation\":\"bejhphoycmsxa\",\"provider\":\"hdxbmtqio\",\"resource\":\"zehtbmu\"}},{\"name\":\"ownoizhw\",\"display\":{\"description\":\"ybqsoqijg\",\"operation\":\"mbpazlobcufpdzn\",\"provider\":\"t\",\"resource\":\"qjnqglhqgnufoooj\"}},{\"name\":\"ifsqesaagdfmg\",\"display\":{\"description\":\"hjxri\",\"operation\":\"wmrvktsizntocipa\",\"provider\":\"ajpsquc\",\"resource\":\"o\"}}]}")
+            .toObject(OperationsListResult.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationsListResult model =
-            new OperationsListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new OperationInner().withDisplay(new OperationDisplay()),
-                            new OperationInner().withDisplay(new OperationDisplay()),
-                            new OperationInner().withDisplay(new OperationDisplay())));
+        OperationsListResult model = new OperationsListResult()
+            .withValue(Arrays.asList(new OperationInner().withDisplay(new OperationDisplay()),
+                new OperationInner().withDisplay(new OperationDisplay()),
+                new OperationInner().withDisplay(new OperationDisplay())));
         model = BinaryData.fromObject(model).toObject(OperationsListResult.class);
     }
 }

@@ -29,39 +29,26 @@ public final class IotSecuritySolutionAnalyticsListWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"id\":\"bjgmnzj\",\"name\":\"t\",\"type\":\"mrxkhlobvv\"},{\"id\":\"hvhd\",\"name\":\"qayfl\",\"type\":\"iyu\"}],\"nextLink\":\"n\"}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"metrics\":{\"high\":3568641065334108128,\"medium\":7706474001064410297,\"low\":5018714034482083999},\"unhealthyDeviceCount\":4440505411721346230,\"devicesMetrics\":[{},{}],\"topAlertedDevices\":[{},{},{}],\"mostPrevalentDeviceAlerts\":[{},{},{}],\"mostPrevalentDeviceRecommendations\":[{}]},\"id\":\"whlbpjuajz\",\"name\":\"xav\",\"type\":\"itnwlyhbujysv\"}],\"nextLink\":\"yy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        IoTSecuritySolutionAnalyticsModelList response =
-            manager
-                .iotSecuritySolutionAnalytics()
-                .listWithResponse("aaqgzeka", "clyzgs", com.azure.core.util.Context.NONE)
-                .getValue();
+        IoTSecuritySolutionAnalyticsModelList response = manager.iotSecuritySolutionAnalytics()
+            .listWithResponse("ocygoyineuaxpmez", "trgu", com.azure.core.util.Context.NONE).getValue();
+
     }
 }

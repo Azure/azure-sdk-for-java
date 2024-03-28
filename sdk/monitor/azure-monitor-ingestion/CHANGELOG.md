@@ -4,11 +4,35 @@
 
 ### Features Added
 
+- Introduced `LogsIngestionAudience` to allow specification of the audience of logs ingestion clients.
+- Support for the scopes of non-public clouds. 
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.5 (2024-03-11)
+
+### Other Changes
+
+- Updated the JavaDoc documentation to increase support for our clients.
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+
+## 1.1.4 (2024-02-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+
 
 ## 1.1.3 (2023-12-04)
 

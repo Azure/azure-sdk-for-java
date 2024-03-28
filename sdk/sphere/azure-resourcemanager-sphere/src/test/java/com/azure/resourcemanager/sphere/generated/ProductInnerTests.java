@@ -6,23 +6,22 @@ package com.azure.resourcemanager.sphere.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sphere.fluent.models.ProductInner;
+import com.azure.resourcemanager.sphere.models.ProductProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class ProductInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProductInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"pnazzm\",\"provisioningState\":\"Updating\"},\"id\":\"unmpxttd\",\"name\":\"hrbnlankxmyskpbh\",\"type\":\"nbtkcxywnytnr\"}")
-                .toObject(ProductInner.class);
-        Assertions.assertEquals("pnazzm", model.description());
+        ProductInner model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"s\",\"provisioningState\":\"Provisioning\"},\"id\":\"nxytxh\",\"name\":\"zxbzpfzabglc\",\"type\":\"hxw\"}")
+            .toObject(ProductInner.class);
+        Assertions.assertEquals("s", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProductInner model = new ProductInner().withDescription("pnazzm");
+        ProductInner model = new ProductInner().withProperties(new ProductProperties().withDescription("s"));
         model = BinaryData.fromObject(model).toObject(ProductInner.class);
-        Assertions.assertEquals("pnazzm", model.description());
+        Assertions.assertEquals("s", model.properties().description());
     }
 }

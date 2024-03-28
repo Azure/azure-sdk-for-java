@@ -17,6 +17,8 @@ import com.azure.resourcemanager.redisenterprise.models.ClusteringPolicy;
 import com.azure.resourcemanager.redisenterprise.models.Database;
 import com.azure.resourcemanager.redisenterprise.models.DatabasePropertiesGeoReplication;
 import com.azure.resourcemanager.redisenterprise.models.EvictionPolicy;
+import com.azure.resourcemanager.redisenterprise.models.LinkedDatabase;
+import com.azure.resourcemanager.redisenterprise.models.Module;
 import com.azure.resourcemanager.redisenterprise.models.Persistence;
 import com.azure.resourcemanager.redisenterprise.models.Protocol;
 import com.azure.resourcemanager.redisenterprise.models.RdbFrequency;
@@ -38,65 +40,51 @@ public final class DatabasesCreateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"clientProtocol\":\"Encrypted\",\"port\":1688847935,\"provisioningState\":\"Succeeded\",\"resourceState\":\"CreateFailed\",\"clusteringPolicy\":\"OSSCluster\",\"evictionPolicy\":\"VolatileLFU\",\"persistence\":{\"aofEnabled\":true,\"rdbEnabled\":false,\"aofFrequency\":\"1s\",\"rdbFrequency\":\"12h\"},\"modules\":[],\"geoReplication\":{\"groupNickname\":\"qaqtdoqmcbxvwvxy\",\"linkedDatabases\":[]}},\"id\":\"bhsfxob\",\"name\":\"ytkblmpew\",\"type\":\"wfbkrvrns\"}";
+        String responseStr
+            = "{\"properties\":{\"clientProtocol\":\"Plaintext\",\"port\":2046724372,\"provisioningState\":\"Succeeded\",\"resourceState\":\"UpdateFailed\",\"clusteringPolicy\":\"OSSCluster\",\"evictionPolicy\":\"VolatileTTL\",\"persistence\":{\"aofEnabled\":true,\"rdbEnabled\":true,\"aofFrequency\":\"1s\",\"rdbFrequency\":\"6h\"},\"modules\":[{\"name\":\"pvjymjhxxjyng\",\"args\":\"ivkrtsw\",\"version\":\"qzvszjf\"},{\"name\":\"uvjfdxxive\",\"args\":\"t\",\"version\":\"aqtdoqmcbx\"},{\"name\":\"wvxysl\",\"args\":\"hsfxoblytkb\",\"version\":\"pe\"}],\"geoReplication\":{\"groupNickname\":\"fbkrvrnsvs\",\"linkedDatabases\":[{\"id\":\"hxcr\",\"state\":\"UnlinkFailed\"},{\"id\":\"vasrruvwb\",\"state\":\"Linking\"}]}},\"id\":\"fsubcgjbirxbpy\",\"name\":\"srfbjfdtwss\",\"type\":\"t\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        RedisEnterpriseManager manager =
-            RedisEnterpriseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        RedisEnterpriseManager manager = RedisEnterpriseManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Database response =
-            manager
-                .databases()
-                .define("pfqbuaceopzf")
-                .withExistingRedisEnterprise("pkteo", "llwptfdy")
-                .withClientProtocol(Protocol.ENCRYPTED)
-                .withPort(350693240)
-                .withClusteringPolicy(ClusteringPolicy.ENTERPRISE_CLUSTER)
-                .withEvictionPolicy(EvictionPolicy.VOLATILE_LFU)
-                .withPersistence(
-                    new Persistence()
-                        .withAofEnabled(true)
-                        .withRdbEnabled(true)
-                        .withAofFrequency(AofFrequency.ONES)
-                        .withRdbFrequency(RdbFrequency.ONEH))
-                .withModules(Arrays.asList())
-                .withGeoReplication(
-                    new DatabasePropertiesGeoReplication()
-                        .withGroupNickname("gbkdmoizpos")
-                        .withLinkedDatabases(Arrays.asList()))
+        Database response
+            = manager.databases().define("vawjvzunlu").withExistingRedisEnterprise("vgqzcjrvxd", "zlmwlxkvugfhz")
+                .withClientProtocol(Protocol.ENCRYPTED).withPort(1845273018)
+                .withClusteringPolicy(ClusteringPolicy.OSSCLUSTER).withEvictionPolicy(EvictionPolicy.ALL_KEYS_LRU)
+                .withPersistence(new Persistence().withAofEnabled(true).withRdbEnabled(false)
+                    .withAofFrequency(AofFrequency.ONES).withRdbFrequency(RdbFrequency.SIXH))
+                .withModules(Arrays.asList(new Module().withName("skzbb").withArgs("zumveekgpwo"),
+                    new Module().withName("yofd").withArgs("uusdttouwa"),
+                    new Module().withName("mvb").withArgs("yjsflhhcaalnji"),
+                    new Module().withName("yjpkiidzyexz").withArgs("lixhnrztfol")))
+                .withGeoReplication(new DatabasePropertiesGeoReplication().withGroupNickname("dtpnapnyiropuhp")
+                    .withLinkedDatabases(Arrays.asList(new LinkedDatabase().withId("gylgqgitxmedjvcs"),
+                        new LinkedDatabase().withId("wwncwzzhxgk"), new LinkedDatabase().withId("ucnapkteoellwp"),
+                        new LinkedDatabase().withId("gpfqbuace"))))
                 .create();
 
-        Assertions.assertEquals(Protocol.ENCRYPTED, response.clientProtocol());
-        Assertions.assertEquals(1688847935, response.port());
+        Assertions.assertEquals(Protocol.PLAINTEXT, response.clientProtocol());
+        Assertions.assertEquals(2046724372, response.port());
         Assertions.assertEquals(ClusteringPolicy.OSSCLUSTER, response.clusteringPolicy());
-        Assertions.assertEquals(EvictionPolicy.VOLATILE_LFU, response.evictionPolicy());
+        Assertions.assertEquals(EvictionPolicy.VOLATILE_TTL, response.evictionPolicy());
         Assertions.assertEquals(true, response.persistence().aofEnabled());
-        Assertions.assertEquals(false, response.persistence().rdbEnabled());
+        Assertions.assertEquals(true, response.persistence().rdbEnabled());
         Assertions.assertEquals(AofFrequency.ONES, response.persistence().aofFrequency());
-        Assertions.assertEquals(RdbFrequency.ONE_TWOH, response.persistence().rdbFrequency());
-        Assertions.assertEquals("qaqtdoqmcbxvwvxy", response.geoReplication().groupNickname());
+        Assertions.assertEquals(RdbFrequency.SIXH, response.persistence().rdbFrequency());
+        Assertions.assertEquals("pvjymjhxxjyng", response.modules().get(0).name());
+        Assertions.assertEquals("ivkrtsw", response.modules().get(0).args());
+        Assertions.assertEquals("fbkrvrnsvs", response.geoReplication().groupNickname());
+        Assertions.assertEquals("hxcr", response.geoReplication().linkedDatabases().get(0).id());
     }
 }

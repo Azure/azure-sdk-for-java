@@ -168,7 +168,8 @@ public final class InputStreamContent extends BinaryDataContent {
         }
 
         InputStream inputStream = this.content.get();
-        return Mono.just(inputStream).publishOn(Schedulers.boundedElastic()) // reading stream can be blocking.
+        return Mono.just(inputStream)
+            .publishOn(Schedulers.boundedElastic()) // reading stream can be blocking.
             .map(is -> readAndBuffer(is, length));
     }
 
@@ -214,7 +215,8 @@ public final class InputStreamContent extends BinaryDataContent {
     private byte[] getBytes() {
         try {
             AccessibleByteArrayOutputStream dataOutputBuffer = (length == null || length < MAX_ARRAY_LENGTH)
-                ? new AccessibleByteArrayOutputStream() : new AccessibleByteArrayOutputStream(length.intValue());
+                ? new AccessibleByteArrayOutputStream()
+                : new AccessibleByteArrayOutputStream(length.intValue());
             int nRead;
             byte[] data = new byte[STREAM_READ_SIZE];
             InputStream inputStream = this.content.get();

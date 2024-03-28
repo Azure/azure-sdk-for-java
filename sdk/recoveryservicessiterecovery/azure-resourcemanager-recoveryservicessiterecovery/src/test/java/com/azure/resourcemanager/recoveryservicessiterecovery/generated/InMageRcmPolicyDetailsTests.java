@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageRcmPolicyDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageRcmPolicyDetails model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"InMageRcm\",\"recoveryPointHistoryInMinutes\":1469596791,\"appConsistentFrequencyInMinutes\":1577824897,\"crashConsistentFrequencyInMinutes\":2133269081,\"enableMultiVmSync\":\"vmyifopxf\"}")
-                .toObject(InMageRcmPolicyDetails.class);
+        InMageRcmPolicyDetails model = BinaryData.fromString(
+            "{\"instanceType\":\"InMageRcm\",\"recoveryPointHistoryInMinutes\":1469596791,\"appConsistentFrequencyInMinutes\":1577824897,\"crashConsistentFrequencyInMinutes\":2133269081,\"enableMultiVmSync\":\"vmyifopxf\"}")
+            .toObject(InMageRcmPolicyDetails.class);
         Assertions.assertEquals(1469596791, model.recoveryPointHistoryInMinutes());
         Assertions.assertEquals(1577824897, model.appConsistentFrequencyInMinutes());
         Assertions.assertEquals(2133269081, model.crashConsistentFrequencyInMinutes());
@@ -24,12 +22,9 @@ public final class InMageRcmPolicyDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmPolicyDetails model =
-            new InMageRcmPolicyDetails()
-                .withRecoveryPointHistoryInMinutes(1469596791)
-                .withAppConsistentFrequencyInMinutes(1577824897)
-                .withCrashConsistentFrequencyInMinutes(2133269081)
-                .withEnableMultiVmSync("vmyifopxf");
+        InMageRcmPolicyDetails model = new InMageRcmPolicyDetails().withRecoveryPointHistoryInMinutes(1469596791)
+            .withAppConsistentFrequencyInMinutes(1577824897).withCrashConsistentFrequencyInMinutes(2133269081)
+            .withEnableMultiVmSync("vmyifopxf");
         model = BinaryData.fromObject(model).toObject(InMageRcmPolicyDetails.class);
         Assertions.assertEquals(1469596791, model.recoveryPointHistoryInMinutes());
         Assertions.assertEquals(1577824897, model.appConsistentFrequencyInMinutes());

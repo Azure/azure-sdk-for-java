@@ -12,20 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class AppServicesGetRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AppServicesGetRequest model =
-            BinaryData
-                .fromString("{\"azureResourceIds\":[\"dudgwdslfhot\"],\"userEmail\":\"mcy\"}")
+        AppServicesGetRequest model
+            = BinaryData.fromString("{\"azureResourceIds\":[\"sglumma\",\"tjaodxobnb\"],\"userEmail\":\"xkqpxo\"}")
                 .toObject(AppServicesGetRequest.class);
-        Assertions.assertEquals("dudgwdslfhot", model.azureResourceIds().get(0));
-        Assertions.assertEquals("mcy", model.userEmail());
+        Assertions.assertEquals("sglumma", model.azureResourceIds().get(0));
+        Assertions.assertEquals("xkqpxo", model.userEmail());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AppServicesGetRequest model =
-            new AppServicesGetRequest().withAzureResourceIds(Arrays.asList("dudgwdslfhot")).withUserEmail("mcy");
+        AppServicesGetRequest model = new AppServicesGetRequest()
+            .withAzureResourceIds(Arrays.asList("sglumma", "tjaodxobnb")).withUserEmail("xkqpxo");
         model = BinaryData.fromObject(model).toObject(AppServicesGetRequest.class);
-        Assertions.assertEquals("dudgwdslfhot", model.azureResourceIds().get(0));
-        Assertions.assertEquals("mcy", model.userEmail());
+        Assertions.assertEquals("sglumma", model.azureResourceIds().get(0));
+        Assertions.assertEquals("xkqpxo", model.userEmail());
     }
 }

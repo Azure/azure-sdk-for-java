@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.security.generated;
 
-/** Samples for Automations ListByResourceGroup. */
+/**
+ * Samples for Automations ListByResourceGroup.
+ */
 public final class AutomationsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/Automations/GetAutomationsResourceGroup_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/
+     * GetAutomationsResourceGroup_example.json
      */
     /**
      * Sample code: List all security automations of a specified resource group.
-     *
+     * 
      * @param manager Entry point to SecurityManager.
      */
     public static void listAllSecurityAutomationsOfASpecifiedResourceGroup(

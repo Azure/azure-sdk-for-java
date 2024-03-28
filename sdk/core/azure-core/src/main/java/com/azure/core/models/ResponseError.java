@@ -14,7 +14,17 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * This class represents the error details of an HTTP response.
+ * <p>Represents the error details of an HTTP response.</p>
+ *
+ * <p>This class encapsulates the details of an HTTP error response, including the error code, message, target,
+ * inner error, and additional error details. It provides methods to access these properties.</p>
+ *
+ * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the error details to JSON, and
+ * a {@link #fromJson(JsonReader)} method to deserialize the error details from JSON.</p>
+ *
+ * @see JsonSerializable
+ * @see JsonReader
+ * @see JsonWriter
  */
 public final class ResponseError implements JsonSerializable<ResponseError> {
 
@@ -126,9 +136,13 @@ public final class ResponseError implements JsonSerializable<ResponseError> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject().writeStringField("code", code).writeStringField("message", message)
-            .writeStringField("target", target).writeJsonField("innererror", innerError)
-            .writeArrayField("details", errorDetails, JsonWriter::writeJson).writeEndObject();
+        return jsonWriter.writeStartObject()
+            .writeStringField("code", code)
+            .writeStringField("message", message)
+            .writeStringField("target", target)
+            .writeJsonField("innererror", innerError)
+            .writeArrayField("details", errorDetails, JsonWriter::writeJson)
+            .writeEndObject();
     }
 
     /**
@@ -178,17 +192,17 @@ public final class ResponseError implements JsonSerializable<ResponseError> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("code".equals(fieldName)) {
+                if ("code".equalsIgnoreCase(fieldName)) {
                     code = reader.getString();
                     codeFound = true;
-                } else if ("message".equals(fieldName)) {
+                } else if ("message".equalsIgnoreCase(fieldName)) {
                     message = reader.getString();
                     messageFound = true;
-                } else if ("target".equals(fieldName)) {
+                } else if ("target".equalsIgnoreCase(fieldName)) {
                     target = reader.getString();
-                } else if ("innererror".equals(fieldName)) {
+                } else if ("innererror".equalsIgnoreCase(fieldName)) {
                     innerError = ResponseInnerError.fromJson(reader);
-                } else if ("details".equals(fieldName)) {
+                } else if ("details".equalsIgnoreCase(fieldName)) {
                     errorDetails = reader.readArray(ResponseError::fromJson);
                 } else {
                     reader.skipChildren();
@@ -203,7 +217,8 @@ public final class ResponseError implements JsonSerializable<ResponseError> {
                 throw new IllegalStateException("Missing required property: message");
             }
 
-            return new ResponseError(code, message).setTarget(target).setInnerError(innerError)
+            return new ResponseError(code, message).setTarget(target)
+                .setInnerError(innerError)
                 .setErrorDetails(errorDetails);
         });
     }

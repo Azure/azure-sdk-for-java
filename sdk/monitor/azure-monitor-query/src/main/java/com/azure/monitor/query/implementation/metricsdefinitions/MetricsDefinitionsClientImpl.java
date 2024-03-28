@@ -12,9 +12,23 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
 /**
- * Initializes a new instance of the MonitorManagementClient type.
+ * Initializes a new instance of the AzureMonitorMetricsDefinitionsAPI type.
  */
 public final class MetricsDefinitionsClientImpl {
+    /**
+     * The ID of the target subscription.
+     */
+    private final String subscriptionId;
+
+    /**
+     * Gets The ID of the target subscription.
+     * 
+     * @return the subscriptionId value.
+     */
+    public String getSubscriptionId() {
+        return this.subscriptionId;
+    }
+
     /**
      * server parameter.
      */
@@ -86,39 +100,43 @@ public final class MetricsDefinitionsClientImpl {
     }
 
     /**
-     * Initializes an instance of MonitorManagementClient client.
+     * Initializes an instance of AzureMonitorMetricsDefinitionsAPI client.
      * 
+     * @param subscriptionId The ID of the target subscription.
      * @param host server parameter.
      * @param apiVersion Api Version.
      */
-    MetricsDefinitionsClientImpl(String host, String apiVersion) {
+    MetricsDefinitionsClientImpl(String subscriptionId, String host, String apiVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
-            JacksonAdapter.createDefaultSerializerAdapter(), host, apiVersion);
+            JacksonAdapter.createDefaultSerializerAdapter(), subscriptionId, host, apiVersion);
     }
 
     /**
-     * Initializes an instance of MonitorManagementClient client.
+     * Initializes an instance of AzureMonitorMetricsDefinitionsAPI client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param subscriptionId The ID of the target subscription.
      * @param host server parameter.
      * @param apiVersion Api Version.
      */
-    MetricsDefinitionsClientImpl(HttpPipeline httpPipeline, String host, String apiVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), host, apiVersion);
+    MetricsDefinitionsClientImpl(HttpPipeline httpPipeline, String subscriptionId, String host, String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), subscriptionId, host, apiVersion);
     }
 
     /**
-     * Initializes an instance of MonitorManagementClient client.
+     * Initializes an instance of AzureMonitorMetricsDefinitionsAPI client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param subscriptionId The ID of the target subscription.
      * @param host server parameter.
      * @param apiVersion Api Version.
      */
-    MetricsDefinitionsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String host,
-        String apiVersion) {
+    MetricsDefinitionsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String subscriptionId,
+        String host, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
+        this.subscriptionId = subscriptionId;
         this.host = host;
         this.apiVersion = apiVersion;
         this.metricDefinitions = new MetricDefinitionsImpl(this);

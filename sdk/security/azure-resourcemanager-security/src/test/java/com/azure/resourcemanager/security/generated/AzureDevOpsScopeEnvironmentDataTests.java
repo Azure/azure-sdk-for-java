@@ -10,10 +10,8 @@ import com.azure.resourcemanager.security.models.AzureDevOpsScopeEnvironmentData
 public final class AzureDevOpsScopeEnvironmentDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureDevOpsScopeEnvironmentData model =
-            BinaryData
-                .fromString("{\"environmentType\":\"AzureDevOpsScope\"}")
-                .toObject(AzureDevOpsScopeEnvironmentData.class);
+        AzureDevOpsScopeEnvironmentData model = BinaryData.fromString("{\"environmentType\":\"AzureDevOpsScope\"}")
+            .toObject(AzureDevOpsScopeEnvironmentData.class);
     }
 
     @org.junit.jupiter.api.Test

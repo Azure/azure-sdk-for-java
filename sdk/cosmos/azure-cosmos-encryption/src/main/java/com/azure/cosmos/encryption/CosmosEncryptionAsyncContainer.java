@@ -82,7 +82,6 @@ public final class CosmosEncryptionAsyncContainer {
     private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
     private final static ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor cosmosItemResponseBuilderAccessor = ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
     private final static ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor cosmosItemRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
-    private final static ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper.CosmosQueryRequestOptionsBaseAccessor cosmosQueryRequestOptionsBaseAccessor = ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper.getCosmosQueryRequestOptionsBaseAccessor();
     private final static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor cosmosQueryRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
     private final static ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor cosmosChangeFeedRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor();
     private final static ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor cosmosAsyncContainerAccessor = ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
@@ -1496,21 +1495,22 @@ public final class CosmosEncryptionAsyncContainer {
         });
     }
 
-
     private void setRequestHeaders(CosmosItemRequestOptions requestOptions) {
         cosmosItemRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
         cosmosItemRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
     }
 
     private CosmosQueryRequestOptions setRequestHeaders(CosmosQueryRequestOptions requestOptions) {
-        cosmosQueryRequestOptionsBaseAccessor.setHeader(
-            cosmosQueryRequestOptionsAccessor.getImpl(requestOptions),
-            Constants.IS_CLIENT_ENCRYPTED_HEADER,
-            "true");
-        cosmosQueryRequestOptionsBaseAccessor.setHeader(
-            cosmosQueryRequestOptionsAccessor.getImpl(requestOptions),
-            Constants.INTENDED_COLLECTION_RID_HEADER,
-            this.encryptionProcessor.getContainerRid());
+        cosmosQueryRequestOptionsAccessor
+            .getImpl(requestOptions)
+            .setHeader(
+                Constants.IS_CLIENT_ENCRYPTED_HEADER,
+                "true");
+        cosmosQueryRequestOptionsAccessor
+            .getImpl(requestOptions)
+            .setHeader(
+                Constants.INTENDED_COLLECTION_RID_HEADER,
+                this.encryptionProcessor.getContainerRid());
         return requestOptions;
     }
 

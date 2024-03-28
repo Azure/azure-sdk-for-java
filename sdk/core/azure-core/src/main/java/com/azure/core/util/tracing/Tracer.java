@@ -237,7 +237,9 @@ public interface Tracer {
                 if (spanBuilder == null) {
                     // we can't return context here, because caller would not know that span was not created.
                     // it will add attributes or events to parent span and end parent span.
-                    Utils.LOGGER.atWarning().addKeyValue("spanName", spanName).addKeyValue("processKind", processKind)
+                    Utils.LOGGER.atWarning()
+                        .addKeyValue("spanName", spanName)
+                        .addKeyValue("processKind", processKind)
                         .log("Start span is called without builder on the context, creating default builder.");
                     spanBuilder = new StartSpanOptions(SpanKind.CLIENT);
                 }
@@ -269,7 +271,9 @@ public interface Tracer {
                 return start(spanName, spanBuilder, context);
 
             default:
-                Utils.LOGGER.atWarning().addKeyValue("spanName", spanName).addKeyValue("processKind", processKind)
+                Utils.LOGGER.atWarning()
+                    .addKeyValue("spanName", spanName)
+                    .addKeyValue("processKind", processKind)
                     .log("Start span is called with unknown process kind, suppressing the span.");
                 return context;
         }
@@ -367,13 +371,34 @@ public interface Tracer {
      * tracer.setAttribute&#40;&quot;foo&quot;, 42, span&#41;;
      * </pre>
      * <!-- end com.azure.core.util.tracing.set-attribute#int -->
-    
      * @param key attribute name
      * @param value atteribute value
      * @param context tracing context
      */
     default void setAttribute(String key, long value, Context context) {
         setAttribute(key, Long.toString(value), context);
+    }
+
+    /**
+     * Sets an attribute on span.
+     * Adding duplicate attributes, update, or removal is discouraged, since underlying implementations
+     * behavior can vary.
+     *
+     * @param key attribute key.
+     * @param value attribute value. Note that underlying tracer implementations limit supported value types.
+     *              OpenTelemetry implementation supports following types:
+     * <ul>
+     *     <li>{@link String}</li>
+     *     <li>{@code int}</li>
+     *     <li>{@code double}</li>
+     *     <li>{@code boolean}</li>
+     *     <li>{@code long}</li>
+     * </ul>
+     * @param context context containing span to which attribute is added.
+     */
+    default void setAttribute(String key, Object value, Context context) {
+        Objects.requireNonNull(value, "'value' cannot be null.");
+        setAttribute(key, value.toString(), context);
     }
 
     /**
@@ -614,6 +639,16 @@ public interface Tracer {
      */
     default AutoCloseable makeSpanCurrent(Context context) {
         return NoopTracer.INSTANCE.makeSpanCurrent(context);
+    }
+
+    /**
+     * Checks if span is sampled in.
+     *
+     * @param span Span to check.
+     * @return true if span is recording, false otherwise.
+     */
+    default boolean isRecording(Context span) {
+        return true;
     }
 
     /**

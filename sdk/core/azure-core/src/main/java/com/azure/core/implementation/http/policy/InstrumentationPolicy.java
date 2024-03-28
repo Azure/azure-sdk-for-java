@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 import static com.azure.core.http.HttpHeaderName.X_MS_CLIENT_REQUEST_ID;
 import static com.azure.core.http.HttpHeaderName.X_MS_REQUEST_ID;
@@ -54,6 +55,8 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     private static final String SERVER_PORT = "server.port";
     private static final ClientLogger LOGGER = new ClientLogger(InstrumentationPolicy.class);
 
+    // magic OpenTelemetry string that represents unknown error.
+    private static final String OTHER_ERROR_TYPE = "_OTHER";
     private Tracer tracer;
 
     /**
@@ -79,9 +82,10 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
 
         return Mono.defer(() -> {
             Context span = startSpan(context);
-            return next.process().doOnSuccess(response -> onResponseCode(response, span))
+            return next.process()
+                .doOnSuccess(response -> onResponseCode(response, span))
                 // TODO: maybe we can optimize it? https://github.com/Azure/azure-sdk-for-java/issues/38228
-                .map(response -> new TraceableResponse(response, span))
+                .map(response -> TraceableResponse.create(response, tracer, span))
                 .doOnCancel(() -> tracer.end(CANCELLED_ERROR_TYPE, null, span))
                 .doOnError(exception -> tracer.end(null, exception, span));
         });
@@ -99,7 +103,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
             HttpResponse response = next.processSync();
             onResponseCode(response, span);
             // TODO: maybe we can optimize it? https://github.com/Azure/azure-sdk-for-java/issues/38228
-            return new TraceableResponse(response, span);
+            return TraceableResponse.create(response, tracer, span);
         } catch (RuntimeException ex) {
             tracer.end(null, ex, span);
             throw ex;
@@ -149,7 +153,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     }
 
     private void onResponseCode(HttpResponse response, Context span) {
-        if (response != null) {
+        if (response != null && tracer.isRecording(span)) {
             int statusCode = response.getStatusCode();
             tracer.setAttribute(HTTP_STATUS_CODE, statusCode, span);
             String requestId = response.getHeaderValue(X_MS_REQUEST_ID);
@@ -163,16 +167,29 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         return tracer != null && tracer.isEnabled() && !((boolean) context.getData(DISABLE_TRACING_KEY).orElse(false));
     }
 
-    private final class TraceableResponse extends HttpResponse {
+    private static final class TraceableResponse extends HttpResponse {
         private final HttpResponse response;
         private final Context span;
-        private Throwable exception;
-        private String errorType;
+        private final Tracer tracer;
+        private volatile int ended = 0;
+        private static final AtomicIntegerFieldUpdater<TraceableResponse> ENDED_UPDATER
+            = AtomicIntegerFieldUpdater.newUpdater(TraceableResponse.class, "ended");
 
-        TraceableResponse(HttpResponse response, Context span) {
+        private TraceableResponse(HttpResponse response, Tracer tracer, Context span) {
             super(response.getRequest());
             this.response = response;
             this.span = span;
+            this.tracer = tracer;
+        }
+
+        public static HttpResponse create(HttpResponse response, Tracer tracer, Context span) {
+            if (tracer.isRecording(span)) {
+                return new TraceableResponse(response, tracer, span);
+            }
+
+            // OTel does not need to end sampled-out spans, but let's do it just in case
+            tracer.end(null, null, span);
+            return response;
         }
 
         @Override
@@ -198,19 +215,21 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
 
         @Override
         public Flux<ByteBuffer> getBody() {
-            return response.getBody().doOnError(e -> exception = e).doOnCancel(() -> errorType = CANCELLED_ERROR_TYPE);
+            return Flux.using(() -> span,
+                s -> response.getBody()
+                    .doOnError(e -> onError(null, e))
+                    .doOnCancel(() -> onError(CANCELLED_ERROR_TYPE, null)),
+                s -> endNoError());
         }
 
         @Override
         public Mono<byte[]> getBodyAsByteArray() {
-            return response.getBodyAsByteArray().doOnError(e -> exception = e)
-                .doOnCancel(() -> errorType = CANCELLED_ERROR_TYPE);
+            return endSpanWhen(response.getBodyAsByteArray());
         }
 
         @Override
         public Mono<String> getBodyAsString() {
-            return response.getBodyAsString().doOnError(e -> exception = e)
-                .doOnCancel(() -> errorType = CANCELLED_ERROR_TYPE);
+            return endSpanWhen(response.getBodyAsString());
         }
 
         @Override
@@ -218,32 +237,52 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
             try {
                 return response.getBodyAsBinaryData();
             } catch (Exception e) {
-                exception = e;
+                onError(null, e);
                 throw e;
+            } finally {
+                endNoError();
             }
         }
 
         @Override
         public Mono<String> getBodyAsString(Charset charset) {
-            return response.getBodyAsString(charset).doOnError(e -> exception = e)
-                .doOnCancel(() -> errorType = CANCELLED_ERROR_TYPE);
+            return endSpanWhen(response.getBodyAsString(charset));
         }
 
         @Override
         public Mono<InputStream> getBodyAsInputStream() {
-            return response.getBodyAsInputStream().doOnError(e -> exception = e)
-                .doOnCancel(() -> errorType = CANCELLED_ERROR_TYPE);
+            return endSpanWhen(response.getBodyAsInputStream());
         }
 
         @Override
         public void close() {
             response.close();
-            int statusCode = response.getStatusCode();
+            endNoError();
+        }
 
-            if (errorType == null && statusCode >= 400) {
-                errorType = String.valueOf(statusCode);
+        private <T> Mono<T> endSpanWhen(Mono<T> publisher) {
+            return Mono.using(() -> span,
+                s -> publisher.doOnError(e -> onError(null, e)).doOnCancel(() -> onError(CANCELLED_ERROR_TYPE, null)),
+                s -> endNoError());
+        }
+
+        private void onError(String errorType, Throwable error) {
+            if (ENDED_UPDATER.compareAndSet(this, 0, 1)) {
+                tracer.end(errorType, error, span);
             }
-            tracer.end(errorType, exception, span);
+        }
+
+        private void endNoError() {
+            if (ENDED_UPDATER.compareAndSet(this, 0, 1)) {
+                String errorType = null;
+                if (response == null) {
+                    errorType = OTHER_ERROR_TYPE;
+                } else if (response.getStatusCode() >= 400) {
+                    errorType = String.valueOf(response.getStatusCode());
+                }
+
+                tracer.end(errorType, null, span);
+            }
         }
     }
 }

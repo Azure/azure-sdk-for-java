@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for QuotaNames. */
+/**
+ * Defines values for QuotaNames.
+ */
 public final class QuotaNames extends ExpandableStringEnum<QuotaNames> {
-    /** Static value ScalableExecution for QuotaNames. */
+    /**
+     * Static value ScalableExecution for QuotaNames.
+     */
     public static final QuotaNames SCALABLE_EXECUTION = fromString("ScalableExecution");
 
     /**
      * Creates a new instance of QuotaNames value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class QuotaNames extends ExpandableStringEnum<QuotaNames> {
 
     /**
      * Creates or finds a QuotaNames from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding QuotaNames.
      */
@@ -35,7 +39,7 @@ public final class QuotaNames extends ExpandableStringEnum<QuotaNames> {
 
     /**
      * Gets known QuotaNames values.
-     *
+     * 
      * @return known QuotaNames values.
      */
     public static Collection<QuotaNames> values() {

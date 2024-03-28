@@ -12,7 +12,9 @@ import com.azure.resourcemanager.newrelicobservability.models.LogRules;
 import com.azure.resourcemanager.newrelicobservability.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A tag rule belonging to NewRelic account. */
+/**
+ * A tag rule belonging to NewRelic account.
+ */
 @Fluent
 public final class TagRuleInner extends ProxyResource {
     /*
@@ -27,13 +29,15 @@ public final class TagRuleInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of TagRuleInner class. */
+    /**
+     * Creates an instance of TagRuleInner class.
+     */
     public TagRuleInner() {
     }
 
     /**
      * Get the innerProperties property: The resource-specific properties for this resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MonitoringTagRulesPropertiesInner innerProperties() {
@@ -42,7 +46,7 @@ public final class TagRuleInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -51,7 +55,7 @@ public final class TagRuleInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning State of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -60,7 +64,7 @@ public final class TagRuleInner extends ProxyResource {
 
     /**
      * Get the logRules property: Set of rules for sending logs for the Monitor resource.
-     *
+     * 
      * @return the logRules value.
      */
     public LogRules logRules() {
@@ -69,7 +73,7 @@ public final class TagRuleInner extends ProxyResource {
 
     /**
      * Set the logRules property: Set of rules for sending logs for the Monitor resource.
-     *
+     * 
      * @param logRules the logRules value to set.
      * @return the TagRuleInner object itself.
      */
@@ -83,7 +87,7 @@ public final class TagRuleInner extends ProxyResource {
 
     /**
      * Get the metricRules property: Set of rules for sending metrics for the Monitor resource.
-     *
+     * 
      * @return the metricRules value.
      */
     public MetricRulesInner metricRules() {
@@ -92,7 +96,7 @@ public final class TagRuleInner extends ProxyResource {
 
     /**
      * Set the metricRules property: Set of rules for sending metrics for the Monitor resource.
-     *
+     * 
      * @param metricRules the metricRules value to set.
      * @return the TagRuleInner object itself.
      */
@@ -106,14 +110,13 @@ public final class TagRuleInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model TagRuleInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model TagRuleInner"));
         } else {
             innerProperties().validate();
         }

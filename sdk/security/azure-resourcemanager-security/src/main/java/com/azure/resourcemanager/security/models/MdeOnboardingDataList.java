@@ -7,18 +7,20 @@ package com.azure.resourcemanager.security.models;
 import com.azure.resourcemanager.security.fluent.models.MdeOnboardingDataListInner;
 import java.util.List;
 
-/** An immutable client-side representation of MdeOnboardingDataList. */
+/**
+ * An immutable client-side representation of MdeOnboardingDataList.
+ */
 public interface MdeOnboardingDataList {
     /**
      * Gets the value property: List of the resources of the configuration or data needed to onboard the machine to MDE.
-     *
+     * 
      * @return the value value.
      */
     List<MdeOnboardingData> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.MdeOnboardingDataListInner object.
-     *
+     * 
      * @return the inner object.
      */
     MdeOnboardingDataListInner innerModel();

@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class HyperVReplicaAzureReprotectInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HyperVReplicaAzureReprotectInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"HyperVReplicaAzure\",\"hvHostVmId\":\"zbnobr\",\"vmName\":\"pbcjtrpzuyudivbx\",\"osType\":\"sqeaeonqelwg\",\"vHDId\":\"uruzy\",\"storageAccountId\":\"arogatmolji\",\"logStorageAccountId\":\"mpinmzvfkneerzzt\"}")
-                .toObject(HyperVReplicaAzureReprotectInput.class);
+        HyperVReplicaAzureReprotectInput model = BinaryData.fromString(
+            "{\"instanceType\":\"HyperVReplicaAzure\",\"hvHostVmId\":\"zbnobr\",\"vmName\":\"pbcjtrpzuyudivbx\",\"osType\":\"sqeaeonqelwg\",\"vHDId\":\"uruzy\",\"storageAccountId\":\"arogatmolji\",\"logStorageAccountId\":\"mpinmzvfkneerzzt\"}")
+            .toObject(HyperVReplicaAzureReprotectInput.class);
         Assertions.assertEquals("zbnobr", model.hvHostVmId());
         Assertions.assertEquals("pbcjtrpzuyudivbx", model.vmName());
         Assertions.assertEquals("sqeaeonqelwg", model.osType());
@@ -26,14 +24,9 @@ public final class HyperVReplicaAzureReprotectInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HyperVReplicaAzureReprotectInput model =
-            new HyperVReplicaAzureReprotectInput()
-                .withHvHostVmId("zbnobr")
-                .withVmName("pbcjtrpzuyudivbx")
-                .withOsType("sqeaeonqelwg")
-                .withVHDId("uruzy")
-                .withStorageAccountId("arogatmolji")
-                .withLogStorageAccountId("mpinmzvfkneerzzt");
+        HyperVReplicaAzureReprotectInput model = new HyperVReplicaAzureReprotectInput().withHvHostVmId("zbnobr")
+            .withVmName("pbcjtrpzuyudivbx").withOsType("sqeaeonqelwg").withVHDId("uruzy")
+            .withStorageAccountId("arogatmolji").withLogStorageAccountId("mpinmzvfkneerzzt");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzureReprotectInput.class);
         Assertions.assertEquals("zbnobr", model.hvHostVmId());
         Assertions.assertEquals("pbcjtrpzuyudivbx", model.vmName());

@@ -68,13 +68,6 @@ public interface NetAppManagementClient {
     NetAppResourceQuotaLimitsClient getNetAppResourceQuotaLimits();
 
     /**
-     * Gets the NetAppResourceRegionInfosClient object to access its operations.
-     * 
-     * @return the NetAppResourceRegionInfosClient object.
-     */
-    NetAppResourceRegionInfosClient getNetAppResourceRegionInfos();
-
-    /**
      * Gets the AccountsClient object to access its operations.
      * 
      * @return the AccountsClient object.
@@ -117,13 +110,6 @@ public interface NetAppManagementClient {
     BackupsClient getBackups();
 
     /**
-     * Gets the AccountBackupsClient object to access its operations.
-     * 
-     * @return the AccountBackupsClient object.
-     */
-    AccountBackupsClient getAccountBackups();
-
-    /**
      * Gets the BackupPoliciesClient object to access its operations.
      * 
      * @return the BackupPoliciesClient object.
@@ -150,32 +136,4 @@ public interface NetAppManagementClient {
      * @return the SubvolumesClient object.
      */
     SubvolumesClient getSubvolumes();
-
-    /**
-     * Gets the BackupVaultsClient object to access its operations.
-     * 
-     * @return the BackupVaultsClient object.
-     */
-    BackupVaultsClient getBackupVaults();
-
-    /**
-     * Gets the BackupsUnderBackupVaultsClient object to access its operations.
-     * 
-     * @return the BackupsUnderBackupVaultsClient object.
-     */
-    BackupsUnderBackupVaultsClient getBackupsUnderBackupVaults();
-
-    /**
-     * Gets the BackupsUnderVolumesClient object to access its operations.
-     * 
-     * @return the BackupsUnderVolumesClient object.
-     */
-    BackupsUnderVolumesClient getBackupsUnderVolumes();
-
-    /**
-     * Gets the BackupsUnderAccountsClient object to access its operations.
-     * 
-     * @return the BackupsUnderAccountsClient object.
-     */
-    BackupsUnderAccountsClient getBackupsUnderAccounts();
 }
