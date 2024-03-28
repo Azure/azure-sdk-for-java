@@ -997,7 +997,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         RoomsClientBuilder builder = getRoomsClientWithConnectionString(
                 buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
                 : httpClient),
-                RoomsServiceVersion.V2023_10_30_PREVIEW);
+                RoomsServiceVersion.V2024_04_15);
         communicationClient = getCommunicationIdentityClientBuilder(httpClient).buildClient();
         return addLoggingPolicy(builder, testName).buildAsyncClient();
     }
