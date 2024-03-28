@@ -10,6 +10,7 @@ package com.microsoft.azure.batch.protocol.models;
 
 import org.joda.time.Period;
 import java.util.List;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -250,6 +251,24 @@ public class PoolAddParameter {
      */
     @JsonProperty(value = "targetNodeCommunicationMode")
     private NodeCommunicationMode targetNodeCommunicationMode;
+
+    /**
+     * The upgrade policy for the Pool.
+     * Describes an upgrade policy - automatic, manual, or rolling.
+     */
+    @JsonProperty(value = "upgradePolicy")
+    private UpgradePolicy upgradePolicy;
+
+    /**
+     * The user-specified tags associated with the pool.
+     * The user-defined tags to be associated with the Azure Batch Pool. When
+     * specified, these tags are propagated to the backing Azure resources
+     * associated with the pool. This property can only be specified when the
+     * Batch account was created with the poolAllocationMode property set to
+     * 'UserSubscription'.
+     */
+    @JsonProperty(value = "resourceTags")
+    private Map<String, String> resourceTags;
 
     /**
      * Get the ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two Pool IDs within an Account that differ only by case).
@@ -710,6 +729,46 @@ public class PoolAddParameter {
      */
     public PoolAddParameter withTargetNodeCommunicationMode(NodeCommunicationMode targetNodeCommunicationMode) {
         this.targetNodeCommunicationMode = targetNodeCommunicationMode;
+        return this;
+    }
+
+    /**
+     * Get describes an upgrade policy - automatic, manual, or rolling.
+     *
+     * @return the upgradePolicy value
+     */
+    public UpgradePolicy upgradePolicy() {
+        return this.upgradePolicy;
+    }
+
+    /**
+     * Set describes an upgrade policy - automatic, manual, or rolling.
+     *
+     * @param upgradePolicy the upgradePolicy value to set
+     * @return the PoolAddParameter object itself.
+     */
+    public PoolAddParameter withUpgradePolicy(UpgradePolicy upgradePolicy) {
+        this.upgradePolicy = upgradePolicy;
+        return this;
+    }
+
+    /**
+     * Get the user-defined tags to be associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This property can only be specified when the Batch account was created with the poolAllocationMode property set to 'UserSubscription'.
+     *
+     * @return the resourceTags value
+     */
+    public Map<String, String> resourceTags() {
+        return this.resourceTags;
+    }
+
+    /**
+     * Set the user-defined tags to be associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This property can only be specified when the Batch account was created with the poolAllocationMode property set to 'UserSubscription'.
+     *
+     * @param resourceTags the resourceTags value to set
+     * @return the PoolAddParameter object itself.
+     */
+    public PoolAddParameter withResourceTags(Map<String, String> resourceTags) {
+        this.resourceTags = resourceTags;
         return this;
     }
 

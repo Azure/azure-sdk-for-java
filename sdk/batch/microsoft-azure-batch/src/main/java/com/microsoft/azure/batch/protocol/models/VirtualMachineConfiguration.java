@@ -118,6 +118,23 @@ public class VirtualMachineConfiguration {
     private OSDisk osDisk;
 
     /**
+     * Specifies the security profile settings for the virtual machine or
+     * virtual machine scale set.
+     */
+    @JsonProperty(value = "securityProfile")
+    private SecurityProfile securityProfile;
+
+    /**
+     * Specifies the service artifact reference id used to set same image
+     * version for all virtual machines in the scale set when using 'latest'
+     * image version.
+     * The service artifact reference id in the form of
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}.
+     */
+    @JsonProperty(value = "serviceArtifactReference")
+    private ServiceArtifactReference serviceArtifactReference;
+
+    /**
      * Get the imageReference value.
      *
      * @return the imageReference value
@@ -318,6 +335,46 @@ public class VirtualMachineConfiguration {
      */
     public VirtualMachineConfiguration withOsDisk(OSDisk osDisk) {
         this.osDisk = osDisk;
+        return this;
+    }
+
+    /**
+     * Get the securityProfile value.
+     *
+     * @return the securityProfile value
+     */
+    public SecurityProfile securityProfile() {
+        return this.securityProfile;
+    }
+
+    /**
+     * Set the securityProfile value.
+     *
+     * @param securityProfile the securityProfile value to set
+     * @return the VirtualMachineConfiguration object itself.
+     */
+    public VirtualMachineConfiguration withSecurityProfile(SecurityProfile securityProfile) {
+        this.securityProfile = securityProfile;
+        return this;
+    }
+
+    /**
+     * Get the service artifact reference id in the form of /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}.
+     *
+     * @return the serviceArtifactReference value
+     */
+    public ServiceArtifactReference serviceArtifactReference() {
+        return this.serviceArtifactReference;
+    }
+
+    /**
+     * Set the service artifact reference id in the form of /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}.
+     *
+     * @param serviceArtifactReference the serviceArtifactReference value to set
+     * @return the VirtualMachineConfiguration object itself.
+     */
+    public VirtualMachineConfiguration withServiceArtifactReference(ServiceArtifactReference serviceArtifactReference) {
+        this.serviceArtifactReference = serviceArtifactReference;
         return this;
     }
 

@@ -1,165 +1,231 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 26 May 2023 07:07:43 GMT",
+      "date" : "Thu, 28 Mar 2024 09:04:33 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "dataserviceid" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension",
+      "dataserviceid" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension",
       "retry-after" : "0",
-      "request-id" : "36ab4dc1-0555-439d-b062-2699975a6138",
+      "request-id" : "be7041c7-13b8-4d75-a1b2-bbd5e35494ad",
       "StatusCode" : "201",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Fri, 26 May 2023 07:07:43 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:04:33 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "8f989bfd-d037-44d0-a11a-829adff16fdc",
-      "etag" : "0x8DB5DB7E6E1C5BD",
-      "location" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension",
+      "client-request-id" : "11b8b781-781f-4662-ad64-46255b941511",
+      "etag" : "0x8DC4F061614525F",
+      "location" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension",
       "dataserviceversion" : "3.0",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 26 May 2023 07:07:43 GMT",
+      "date" : "Thu, 28 Mar 2024 09:04:33 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "7f989dd0-4e82-4527-9106-6cbb88ffb318",
+      "request-id" : "a685e0ef-ac1e-4fd3-8a6c-f2a32ef89f6d",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Fri, 26 May 2023 07:07:43 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:04:33 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "9b9c428f-f5a8-4cc5-9fd1-6499b7d3f5b0",
+      "client-request-id" : "35013943-b856-4183-a70b-c66926699c6a",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DB5DB7E6E1C5BD",
+      "etag" : "0x8DC4F061614525F",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DB5DB7E6E1C5BD\",\"lastModified\":\"2023-05-26T07:07:43.7011389Z\",\"creationTime\":\"2023-05-26T07:07:43.7011389Z\",\"state\":\"active\",\"stateTransitionTime\":\"2023-05-26T07:07:43.7011389Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-26T07:07:43.7011389Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":1,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/2a0bcf2a-e173-4d51-9d17-6286e2c2aa94/resourceGroups/javasdktest/providers/Microsoft.Network/virtualNetworks/sdkvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DC4F061614525F\",\"lastModified\":\"2024-03-28T09:04:33.8596447Z\",\"creationTime\":\"2024-03-28T09:04:33.8596434Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-28T09:04:33.8596434Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:04:33.8596448Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":1,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 26 May 2023 07:08:14 GMT",
+      "date" : "Thu, 28 Mar 2024 09:05:03 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "caa8cf4c-b00a-4b70-bacd-5af406edad0a",
+      "request-id" : "028c9f53-63ec-4216-9c37-518808d2411f",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Fri, 26 May 2023 07:07:43 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:04:33 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "fceb84a4-3cf2-4c65-b43e-b297e4c93ba6",
+      "client-request-id" : "4da82399-c271-490f-9474-3755e8cc1609",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DB5DB7E6E1C5BD",
+      "etag" : "0x8DC4F061614525F",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DB5DB7E6E1C5BD\",\"lastModified\":\"2023-05-26T07:07:43.7011389Z\",\"creationTime\":\"2023-05-26T07:07:43.7011389Z\",\"state\":\"active\",\"stateTransitionTime\":\"2023-05-26T07:07:43.7011389Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-26T07:07:43.7011389Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":1,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/2a0bcf2a-e173-4d51-9d17-6286e2c2aa94/resourceGroups/javasdktest/providers/Microsoft.Network/virtualNetworks/sdkvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DC4F061614525F\",\"lastModified\":\"2024-03-28T09:04:33.8596447Z\",\"creationTime\":\"2024-03-28T09:04:33.8596434Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-28T09:04:33.8596434Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:04:33.8596448Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":1,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 26 May 2023 07:08:43 GMT",
+      "date" : "Thu, 28 Mar 2024 09:05:33 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "d13a8e5f-f2df-4df3-baab-d33f5a02a8fb",
+      "request-id" : "8c609f9d-f11c-42aa-af18-e9335302af8e",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Fri, 26 May 2023 07:07:43 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:04:33 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "fcaa1293-032d-4c78-a7d7-975ce3546baf",
+      "client-request-id" : "5e0e3e26-82c4-49cf-9647-f5172cb90187",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DB5DB7E6E1C5BD",
+      "etag" : "0x8DC4F061614525F",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DB5DB7E6E1C5BD\",\"lastModified\":\"2023-05-26T07:07:43.7011389Z\",\"creationTime\":\"2023-05-26T07:07:43.7011389Z\",\"state\":\"active\",\"stateTransitionTime\":\"2023-05-26T07:07:43.7011389Z\",\"allocationState\":\"steady\",\"allocationStateTransitionTime\":\"2023-05-26T07:08:40.4179036Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":1,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/2a0bcf2a-e173-4d51-9d17-6286e2c2aa94/resourceGroups/javasdktest/providers/Microsoft.Network/virtualNetworks/sdkvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DC4F061614525F\",\"lastModified\":\"2024-03-28T09:04:33.8596447Z\",\"creationTime\":\"2024-03-28T09:04:33.8596434Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-28T09:04:33.8596434Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:04:33.8596448Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":1,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension/nodes?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 26 May 2023 07:08:43 GMT",
+      "date" : "Thu, 28 Mar 2024 09:06:04 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "c6d86c30-3dba-411b-b71c-0f75a40cf197",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Thu, 28 Mar 2024 09:04:33 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "21439f15-5ab0-425a-809f-efe5be4f453e",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DC4F061614525F",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DC4F061614525F\",\"lastModified\":\"2024-03-28T09:04:33.8596447Z\",\"creationTime\":\"2024-03-28T09:04:33.8596434Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-28T09:04:33.8596434Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:04:33.8596448Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":1,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2024-02-01.19.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Mar 2024 09:06:34 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "221e6d02-9430-4a37-a3d0-976735739eee",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Thu, 28 Mar 2024 09:04:33 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "e38d789c-b53d-4557-8044-28dc0f3e49d9",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DC4F061614525F",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DC4F061614525F\",\"lastModified\":\"2024-03-28T09:04:33.8596447Z\",\"creationTime\":\"2024-03-28T09:04:33.8596434Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-28T09:04:33.8596434Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:04:33.8596448Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":1,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2024-02-01.19.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Mar 2024 09:07:04 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "ff9ac2b0-baab-4f93-8be0-42e1621d4e02",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Thu, 28 Mar 2024 09:04:33 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "6024301f-734c-4033-99d0-519f65b6b0c3",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DC4F061614525F",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DC4F061614525F\",\"lastModified\":\"2024-03-28T09:04:33.8596447Z\",\"creationTime\":\"2024-03-28T09:04:33.8596434Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-28T09:04:33.8596434Z\",\"allocationState\":\"steady\",\"allocationStateTransitionTime\":\"2024-03-28T09:07:00.4388647Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":1,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension/nodes?api-version=2024-02-01.19.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Mar 2024 09:07:04 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "cdfc37ca-3d0b-4a43-b679-35de8fbd2c67",
+      "client-request-id" : "4464a2ba-4617-4f6a-b810-2283cc3a3022",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "707f1d9e-01d0-48f1-a36e-91555ed1fad7",
+      "request-id" : "2f8e067e-493d-4923-b195-9cf3f497e420",
       "StatusCode" : "200",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#nodes\",\"value\":[\r\n    {\r\n      \"id\":\"tvmps_2f7c121b21ffeeae448f8f212e0e5f23d316d779f804f6d526d46855637daf6b_d\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension/nodes/tvmps_2f7c121b21ffeeae448f8f212e0e5f23d316d779f804f6d526d46855637daf6b_d\",\"state\":\"starting\",\"schedulingState\":\"enabled\",\"stateTransitionTime\":\"2023-05-26T07:08:40.4805868Z\",\"allocationTime\":\"2023-05-26T07:08:40.1039003Z\",\"ipAddress\":\"10.0.0.7\",\"affinityId\":\"TVM:tvmps_2f7c121b21ffeeae448f8f212e0e5f23d316d779f804f6d526d46855637daf6b_d\",\"vmSize\":\"standard_d1_v2\",\"totalTasksRun\":0,\"totalTasksSucceeded\":0,\"runningTasksCount\":0,\"runningTaskSlotsCount\":0,\"isDedicated\":true,\"endpointConfiguration\":{\r\n        \"inboundEndpoints\":[\r\n          {\r\n            \"name\":\"SSHRule.0\",\"protocol\":\"tcp\",\"publicIPAddress\":\"4.255.200.109\",\"publicFQDN\":\"dns1b5d797d-1c75-4dcf-b2ad-5b32d79ccefc-azurebatch-cloudservice.westcentralus.cloudapp.azure.com\",\"frontendPort\":50000,\"backendPort\":22\r\n          }\r\n        ]\r\n      },\"virtualMachineInfo\":{\r\n        \"imageReference\":{\r\n          \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\",\"exactVersion\":\"18.04.202305220\"\r\n        }\r\n      }\r\n    },{\r\n      \"id\":\"tvmps_d2e269fbf89ba49268413f9fbfe6805ec6758743c9c5a7292de70e4cf0b23ef1_p\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension/nodes/tvmps_d2e269fbf89ba49268413f9fbfe6805ec6758743c9c5a7292de70e4cf0b23ef1_p\",\"state\":\"starting\",\"schedulingState\":\"enabled\",\"stateTransitionTime\":\"2023-05-26T07:08:35.6221143Z\",\"allocationTime\":\"2023-05-26T07:08:35.1209451Z\",\"ipAddress\":\"10.0.0.6\",\"affinityId\":\"TVM:tvmps_d2e269fbf89ba49268413f9fbfe6805ec6758743c9c5a7292de70e4cf0b23ef1_p\",\"vmSize\":\"standard_d1_v2\",\"totalTasksRun\":0,\"totalTasksSucceeded\":0,\"runningTasksCount\":0,\"runningTaskSlotsCount\":0,\"isDedicated\":false,\"endpointConfiguration\":{\r\n        \"inboundEndpoints\":[\r\n          {\r\n            \"name\":\"SSHRule.0\",\"protocol\":\"tcp\",\"publicIPAddress\":\"4.255.200.94\",\"publicFQDN\":\"dnse5d9c488-5a02-4852-adea-dc59325b9bfb-azurebatch-cloudservice.westcentralus.cloudapp.azure.com\",\"frontendPort\":50000,\"backendPort\":22\r\n          }\r\n        ]\r\n      },\"virtualMachineInfo\":{\r\n        \"imageReference\":{\r\n          \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\",\"exactVersion\":\"18.04.202305220\"\r\n        }\r\n      }\r\n    }\r\n  ]\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#nodes\",\"value\":[\r\n    {\r\n      \"id\":\"tvmps_1881bd27bf2c22e5ae0be9ec0c535d8bb3e0ffde78c237662b6f9ed3508a39dd_d\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension/nodes/tvmps_1881bd27bf2c22e5ae0be9ec0c535d8bb3e0ffde78c237662b6f9ed3508a39dd_d\",\"state\":\"creating\",\"schedulingState\":\"enabled\",\"stateTransitionTime\":\"2024-03-28T09:06:59.3424617Z\",\"allocationTime\":\"2024-03-28T09:06:59.3424695Z\",\"ipAddress\":\"192.168.0.13\",\"affinityId\":\"TVM:tvmps_1881bd27bf2c22e5ae0be9ec0c535d8bb3e0ffde78c237662b6f9ed3508a39dd_d\",\"vmSize\":\"standard_d1_v2\",\"totalTasksRun\":0,\"totalTasksSucceeded\":0,\"runningTasksCount\":0,\"runningTaskSlotsCount\":0,\"isDedicated\":true,\"endpointConfiguration\":{\r\n        \"inboundEndpoints\":[\r\n          {\r\n            \"name\":\"SSHRule.0\",\"protocol\":\"tcp\",\"publicIPAddress\":\"4.255.125.151\",\"publicFQDN\":\"dns5aa518e0-8c92-4d19-897d-1301d9235b7c-azurebatch-cloudservice.eastus.cloudapp.azure.com\",\"frontendPort\":50000,\"backendPort\":22\r\n          }\r\n        ]\r\n      },\"virtualMachineInfo\":{\r\n        \"imageReference\":{\r\n          \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\",\"exactVersion\":\"18.04.202401161\"\r\n        }\r\n      }\r\n    },{\r\n      \"id\":\"tvmps_dd58dc9805653e2d5489f2528e4346e0192665086096d0aabd2f1e4185bd2c8c_p\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension/nodes/tvmps_dd58dc9805653e2d5489f2528e4346e0192665086096d0aabd2f1e4185bd2c8c_p\",\"state\":\"starting\",\"schedulingState\":\"enabled\",\"stateTransitionTime\":\"2024-03-28T09:07:00.4173558Z\",\"allocationTime\":\"2024-03-28T09:06:59.3424903Z\",\"ipAddress\":\"192.168.0.12\",\"affinityId\":\"TVM:tvmps_dd58dc9805653e2d5489f2528e4346e0192665086096d0aabd2f1e4185bd2c8c_p\",\"vmSize\":\"standard_d1_v2\",\"totalTasksRun\":0,\"totalTasksSucceeded\":0,\"runningTasksCount\":0,\"runningTaskSlotsCount\":0,\"isDedicated\":false,\"endpointConfiguration\":{\r\n        \"inboundEndpoints\":[\r\n          {\r\n            \"name\":\"SSHRule.0\",\"protocol\":\"tcp\",\"publicIPAddress\":\"4.255.124.42\",\"publicFQDN\":\"dns263a4b3c-9c01-4b78-8fcf-c05bbef7e8c3-azurebatch-cloudservice.eastus.cloudapp.azure.com\",\"frontendPort\":50000,\"backendPort\":22\r\n          }\r\n        ]\r\n      },\"virtualMachineInfo\":{\r\n        \"imageReference\":{\r\n          \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\",\"exactVersion\":\"18.04.202401161\"\r\n        }\r\n      }\r\n    }\r\n  ]\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension/nodes/tvmps_2f7c121b21ffeeae448f8f212e0e5f23d316d779f804f6d526d46855637daf6b_d/extensions/secretext?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension/nodes/tvmps_1881bd27bf2c22e5ae0be9ec0c535d8bb3e0ffde78c237662b6f9ed3508a39dd_d/extensions/secretext?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 26 May 2023 07:08:44 GMT",
+      "date" : "Thu, 28 Mar 2024 09:07:08 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "e9add905-bce3-439b-8cc5-51326cc70c35",
+      "request-id" : "6ed2a4e3-d77a-4672-8eef-85c5b17190fa",
       "StatusCode" : "200",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#extensions/@Element\",\"provisioningState\":\"Creating\",\"instanceView\":{},\"vmExtension\":{\r\n    \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"autoUpgradeMinorVersion\":false,\"enableAutomaticUpgrade\":true\r\n  }\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#extensions/@Element\",\"provisioningState\":\"Succeeded\",\"instanceView\":{\r\n    \"name\":\"secretext\",\"statuses\":[\r\n      {\r\n        \"code\":\"ProvisioningState/succeeded\",\"level\":0,\"displayStatus\":\"Provisioning succeeded\",\"message\":\"Plugin enabled\"\r\n      }\r\n    ]\r\n  },\"vmExtension\":{\r\n    \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"autoUpgradeMinorVersion\":false,\"enableAutomaticUpgrade\":true\r\n  }\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension/nodes/tvmps_d2e269fbf89ba49268413f9fbfe6805ec6758743c9c5a7292de70e4cf0b23ef1_p/extensions/secretext?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension/nodes/tvmps_dd58dc9805653e2d5489f2528e4346e0192665086096d0aabd2f1e4185bd2c8c_p/extensions/secretext?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 26 May 2023 07:08:44 GMT",
+      "date" : "Thu, 28 Mar 2024 09:07:08 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "54ceffd9-2599-4b3e-a9c7-5a3a48e67ec7",
+      "request-id" : "21e930f3-78b0-4ee6-93cf-f964851af3e0",
       "StatusCode" : "200",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#extensions/@Element\",\"provisioningState\":\"Creating\",\"instanceView\":{},\"vmExtension\":{\r\n    \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"autoUpgradeMinorVersion\":false,\"enableAutomaticUpgrade\":true\r\n  }\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#extensions/@Element\",\"provisioningState\":\"Succeeded\",\"instanceView\":{\r\n    \"name\":\"secretext\",\"statuses\":[\r\n      {\r\n        \"code\":\"ProvisioningState/succeeded\",\"level\":0,\"displayStatus\":\"Provisioning succeeded\",\"message\":\"Plugin enabled\"\r\n      }\r\n    ]\r\n  },\"vmExtension\":{\r\n    \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"autoUpgradeMinorVersion\":false,\"enableAutomaticUpgrade\":true\r\n  }\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 26 May 2023 07:08:45 GMT",
+      "date" : "Thu, 28 Mar 2024 09:07:08 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "c7f58038-1491-4b1e-9392-8f094b73022f",
+      "client-request-id" : "ae120a42-2972-424f-8c17-8af730fb5993",
       "retry-after" : "0",
-      "request-id" : "4aff743e-34b3-48f9-8fa2-8a41e2a25f9c",
+      "request-id" : "7e8a7fb7-50ad-47e8-80bb-d490636d8222",
       "StatusCode" : "202",
       "dataserviceversion" : "3.0",
       "Body" : "",
@@ -167,171 +233,281 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 26 May 2023 07:08:45 GMT",
+      "date" : "Thu, 28 Mar 2024 09:07:08 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "2b6feaaf-58e0-4683-b154-660eba9fb0be",
+      "request-id" : "15002abc-0c0f-4f5f-90bf-9dfb278a54d5",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Fri, 26 May 2023 07:08:45 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:07:09 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "333d3310-75ca-440b-a944-98e2b550c491",
+      "client-request-id" : "39a2ffa3-1e7a-4e9d-9bf9-bc166d602b6e",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DB5DB80BD4D04A",
+      "etag" : "0x8DC4F0672FA319F",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DB5DB80BD4D04A\",\"lastModified\":\"2023-05-26T07:08:45.6919114Z\",\"creationTime\":\"2023-05-26T07:07:43.7011389Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-26T07:08:45.6919114Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-26T07:08:45.7059062Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/2a0bcf2a-e173-4d51-9d17-6286e2c2aa94/resourceGroups/javasdktest/providers/Microsoft.Network/virtualNetworks/sdkvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DC4F0672FA319F\",\"lastModified\":\"2024-03-28T09:07:09.7165215Z\",\"creationTime\":\"2024-03-28T09:04:33.8596434Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-28T09:07:09.7165215Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:07:09.7232306Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 26 May 2023 07:09:00 GMT",
+      "date" : "Thu, 28 Mar 2024 09:07:24 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "ce00dc92-c6a7-42d5-9f33-dcb03666181e",
+      "request-id" : "0acb634a-92eb-41d4-b9a0-0e1cac789e4e",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Fri, 26 May 2023 07:08:45 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:07:09 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "eaa77d7c-6667-46fc-8e87-38c53bdda4a0",
+      "client-request-id" : "953d0be2-2c62-4504-bf83-ebfab1daa6a0",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DB5DB80BD4D04A",
+      "etag" : "0x8DC4F0672FA319F",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DB5DB80BD4D04A\",\"lastModified\":\"2023-05-26T07:08:45.6919114Z\",\"creationTime\":\"2023-05-26T07:07:43.7011389Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-26T07:08:45.6919114Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-26T07:08:45.7059062Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/2a0bcf2a-e173-4d51-9d17-6286e2c2aa94/resourceGroups/javasdktest/providers/Microsoft.Network/virtualNetworks/sdkvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DC4F0672FA319F\",\"lastModified\":\"2024-03-28T09:07:09.7165215Z\",\"creationTime\":\"2024-03-28T09:04:33.8596434Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-28T09:07:09.7165215Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:07:09.7232306Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 26 May 2023 07:09:15 GMT",
+      "date" : "Thu, 28 Mar 2024 09:07:39 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "e3f0a505-c8a6-48f9-a5c1-d4eedd47e58f",
+      "request-id" : "23113a55-ddbe-4acc-82ab-0607e2aae647",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Fri, 26 May 2023 07:08:45 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:07:09 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "532a4134-5015-4f21-8f89-79fa0c2e1c13",
+      "client-request-id" : "10eb9a85-3632-4318-8df2-85502586e7c9",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DB5DB80BD4D04A",
+      "etag" : "0x8DC4F0672FA319F",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DB5DB80BD4D04A\",\"lastModified\":\"2023-05-26T07:08:45.6919114Z\",\"creationTime\":\"2023-05-26T07:07:43.7011389Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-26T07:08:45.6919114Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-26T07:08:45.7059062Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/2a0bcf2a-e173-4d51-9d17-6286e2c2aa94/resourceGroups/javasdktest/providers/Microsoft.Network/virtualNetworks/sdkvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DC4F0672FA319F\",\"lastModified\":\"2024-03-28T09:07:09.7165215Z\",\"creationTime\":\"2024-03-28T09:04:33.8596434Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-28T09:07:09.7165215Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:07:09.7232306Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 26 May 2023 07:09:31 GMT",
+      "date" : "Thu, 28 Mar 2024 09:07:55 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "52cb4210-0262-4a9a-b8b0-bd2970ce3afc",
+      "request-id" : "0e3cc5d4-3fc4-4b38-8963-4b883f04a9aa",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Fri, 26 May 2023 07:08:45 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:07:09 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "2d0140d4-0cce-4fde-a9ed-d089f01a9b0c",
+      "client-request-id" : "fffca111-c83f-4cc8-a449-e51e353c8367",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DB5DB80BD4D04A",
+      "etag" : "0x8DC4F0672FA319F",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DB5DB80BD4D04A\",\"lastModified\":\"2023-05-26T07:08:45.6919114Z\",\"creationTime\":\"2023-05-26T07:07:43.7011389Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-26T07:08:45.6919114Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-26T07:08:45.7059062Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/2a0bcf2a-e173-4d51-9d17-6286e2c2aa94/resourceGroups/javasdktest/providers/Microsoft.Network/virtualNetworks/sdkvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DC4F0672FA319F\",\"lastModified\":\"2024-03-28T09:07:09.7165215Z\",\"creationTime\":\"2024-03-28T09:04:33.8596434Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-28T09:07:09.7165215Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:07:09.7232306Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 26 May 2023 07:09:46 GMT",
+      "date" : "Thu, 28 Mar 2024 09:08:10 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "49cf818e-ee5e-430e-b516-42b8ce473b3c",
+      "request-id" : "65320f69-a941-4480-8157-3650ebb1c451",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Fri, 26 May 2023 07:08:45 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:07:09 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "7267bd17-7c38-40cc-a468-19138007baae",
+      "client-request-id" : "abaa0b4a-9cb7-45b9-97e9-c1c6232be645",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DB5DB80BD4D04A",
+      "etag" : "0x8DC4F0672FA319F",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DB5DB80BD4D04A\",\"lastModified\":\"2023-05-26T07:08:45.6919114Z\",\"creationTime\":\"2023-05-26T07:07:43.7011389Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-26T07:08:45.6919114Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-26T07:08:45.7059062Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/2a0bcf2a-e173-4d51-9d17-6286e2c2aa94/resourceGroups/javasdktest/providers/Microsoft.Network/virtualNetworks/sdkvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DC4F0672FA319F\",\"lastModified\":\"2024-03-28T09:07:09.7165215Z\",\"creationTime\":\"2024-03-28T09:04:33.8596434Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-28T09:07:09.7165215Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:07:09.7232306Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 26 May 2023 07:10:01 GMT",
+      "date" : "Thu, 28 Mar 2024 09:08:25 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "ead7137c-9f9d-4dea-af4a-c3bd1923d8e9",
+      "request-id" : "c5b16a71-6eb7-4110-9fff-a97d200f9101",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Fri, 26 May 2023 07:08:45 GMT",
+      "last-modified" : "Thu, 28 Mar 2024 09:07:09 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "f9dd84ef-97dc-46d8-82fe-6b6213ecb952",
+      "client-request-id" : "b653944d-4fee-4d53-bfa4-21efc71e786f",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DB5DB80BD4D04A",
+      "etag" : "0x8DC4F0672FA319F",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DB5DB80BD4D04A\",\"lastModified\":\"2023-05-26T07:08:45.6919114Z\",\"creationTime\":\"2023-05-26T07:07:43.7011389Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-26T07:08:45.6919114Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-26T07:08:45.7059062Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/2a0bcf2a-e173-4d51-9d17-6286e2c2aa94/resourceGroups/javasdktest/providers/Microsoft.Network/virtualNetworks/sdkvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DC4F0672FA319F\",\"lastModified\":\"2024-03-28T09:07:09.7165215Z\",\"creationTime\":\"2024-03-28T09:04:33.8596434Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-28T09:07:09.7165215Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:07:09.7232306Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 26 May 2023 07:10:16 GMT",
-      "content-length" : "343",
+      "date" : "Thu, 28 Mar 2024 09:08:39 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "1da56256-bf73-45a9-83b3-638673db58e6",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Thu, 28 Mar 2024 09:07:09 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "c204ebba-ef69-4c1e-9039-77b92b6d5722",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DC4F0672FA319F",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DC4F0672FA319F\",\"lastModified\":\"2024-03-28T09:07:09.7165215Z\",\"creationTime\":\"2024-03-28T09:04:33.8596434Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-28T09:07:09.7165215Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:07:09.7232306Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2024-02-01.19.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Mar 2024 09:08:55 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "f3e14331-e47c-486e-9bca-ab22a774f97a",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Thu, 28 Mar 2024 09:07:09 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "579e1b21-0f63-473f-ae86-1ef8116159a7",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DC4F0672FA319F",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DC4F0672FA319F\",\"lastModified\":\"2024-03-28T09:07:09.7165215Z\",\"creationTime\":\"2024-03-28T09:04:33.8596434Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-28T09:07:09.7165215Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:07:09.7232306Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2024-02-01.19.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Mar 2024 09:09:10 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "cf62b5b3-f68e-48ff-8513-c161981965e4",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Thu, 28 Mar 2024 09:07:09 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "3009c5ea-890c-4d4f-bfd7-393cd8e5d301",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DC4F0672FA319F",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DC4F0672FA319F\",\"lastModified\":\"2024-03-28T09:07:09.7165215Z\",\"creationTime\":\"2024-03-28T09:04:33.8596434Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-28T09:07:09.7165215Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:07:09.7232306Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2024-02-01.19.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Mar 2024 09:09:25 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "7ea93549-9782-4382-8dd7-e18602a747d6",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Thu, 28 Mar 2024 09:07:09 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "fdc50413-4a80-4a4e-91eb-955eda2b98ab",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DC4F0672FA319F",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DC4F0672FA319F\",\"lastModified\":\"2024-03-28T09:07:09.7165215Z\",\"creationTime\":\"2024-03-28T09:04:33.8596434Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-28T09:07:09.7165215Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:07:09.7232306Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2024-02-01.19.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Mar 2024 09:09:40 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "3100b7c5-54fb-42f0-bdae-423c0ad9cd8d",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Thu, 28 Mar 2024 09:07:09 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "c9034db3-fd02-42b6-9466-b7f85142f3bf",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DC4F0672FA319F",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-installVMExtension\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension\",\"eTag\":\"0x8DC4F0672FA319F\",\"lastModified\":\"2024-03-28T09:07:09.7165215Z\",\"creationTime\":\"2024-03-28T09:04:33.8596434Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-28T09:07:09.7165215Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:07:09.7232306Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"extensions\":[\r\n      {\r\n        \"name\":\"secretext\",\"publisher\":\"Microsoft.Azure.KeyVault\",\"type\":\"KeyVaultForLinux\",\"typeHandlerVersion\":\"1.0\",\"enableAutomaticUpgrade\":true\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"targetNodeCommunicationMode\":\"default\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2024-02-01.19.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Mar 2024 09:09:56 GMT",
+      "content-length" : "330",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "63763018-bae4-40ce-bb7b-5a08f3c1163f",
+      "client-request-id" : "c004adbb-f929-4150-a290-0c27457fffb6",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "98362910-583b-4293-9ae6-89baad2be2c4",
+      "request-id" : "efccac45-c04c-45b0-a5a6-6e84e6ba72c7",
       "StatusCode" : "404",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"PoolNotFound\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The specified pool does not exist.\\nRequestId:98362910-583b-4293-9ae6-89baad2be2c4\\nTime:2023-05-26T07:10:17.0048862Z\"\r\n  }\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"PoolNotFound\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The specified pool does not exist.\\nRequestId:efccac45-c04c-45b0-a5a6-6e84e6ba72c7\\nTime:2024-03-28T09:09:56.3402460Z\"\r\n  }\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2023-05-01.17.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-installVMExtension?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 26 May 2023 07:10:16 GMT",
+      "date" : "Thu, 28 Mar 2024 09:09:56 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "ba82b782-1dc2-49e3-9a1c-f08f9d5b43ba",
+      "client-request-id" : "9d06451c-0b4a-44d1-a2d4-169cd9708b36",
       "retry-after" : "0",
-      "request-id" : "e9e4fda0-82ea-467e-a0ca-368a87cdb9be",
+      "request-id" : "b32e3225-1cfb-4eb5-b6d0-4fc634b63171",
       "StatusCode" : "404",
       "dataserviceversion" : "3.0",
       "Body" : "",
