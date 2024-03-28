@@ -125,7 +125,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
                 Flux.just(ByteBuffer.wrap(serializedBody.getBytes(StandardCharsets.UTF_8))))).block();
             assertNotNull(response);
             if (response.getStatusCode() != 201) {
-                System.out.println(response.getBodyAsString().block());
+                LOGGER.warning(response.getBodyAsString().block());
             }
             assertEquals(201, response.getStatusCode());
         }
@@ -243,7 +243,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
                 new HttpHeaders(), Flux.empty())).block();
             assertNotNull(response);
             if (response.getStatusCode() != 200) {
-                System.out.println(response.getBodyAsString().block());
+                LOGGER.warning(response.getBodyAsString().block());
             }
             assertEquals(200, response.getStatusCode());
         }

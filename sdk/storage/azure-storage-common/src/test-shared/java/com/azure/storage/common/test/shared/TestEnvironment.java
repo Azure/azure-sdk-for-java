@@ -44,7 +44,7 @@ public final class TestEnvironment {
         this.serviceVersion = readServiceVersionFromEnvironment();
         this.httpClientType = readHttpClientTypeFromEnvironment();
 
-        System.out.printf("Tests will run with %s http client%n", this.httpClientType);
+        LOGGER.info("Tests will run with " + this.httpClientType + " http client");
         this.resourceGroupName = Configuration.getGlobalConfiguration().get("STORAGE_RESOURCE_GROUP_NAME");
         this.subscriptionId = Configuration.getGlobalConfiguration().get("STORAGE_SUBSCRIPTION_ID");
         this.primaryAccount = readTestAccountFromEnvironment("PRIMARY_STORAGE_", this.testMode);
@@ -78,17 +78,17 @@ public final class TestEnvironment {
             testMode = TestMode.PLAYBACK;
         }
 
-        System.out.printf("--------%s---------%n", testMode);
+        LOGGER.atInfo().log("--------" + testMode + "---------");
         return testMode;
     }
 
     private String readServiceVersionFromEnvironment() {
         String serviceVersion = Configuration.getGlobalConfiguration().get("AZURE_LIVE_TEST_SERVICE_VERSION");
         if (serviceVersion == null || serviceVersion.trim().isEmpty()) {
-            System.out.println("Tests will run with default service version");
+            LOGGER.info("Tests will run with default service version");
             return null;
         } else {
-            System.out.printf("Tests will run with %s service version%n", serviceVersion);
+            LOGGER.info("Tests will run with " + serviceVersion + " service version");
             return serviceVersion;
         }
     }
@@ -119,13 +119,16 @@ public final class TestEnvironment {
 
     private static TestHttpClientType readHttpClientTypeFromEnvironment() {
         String httpClients = Configuration.getGlobalConfiguration().get("AZURE_TEST_HTTP_CLIENTS", "netty");
-        switch (httpClients.toLowerCase()) {
-            case "netty":
-                return TestHttpClientType.NETTY;
-            case "okhttp":
-                return TestHttpClientType.OK_HTTP;
-            default:
-                throw new IllegalArgumentException("Unknown value of AZURE_TEST_HTTP_CLIENTS: " + httpClients);
+        if (httpClients.contains("netty")) {
+            return TestHttpClientType.NETTY;
+        } else if (httpClients.contains("okhttp")) {
+            return TestHttpClientType.OK_HTTP;
+        } else if (httpClients.contains("Vertx")) {
+            return TestHttpClientType.VERTX;
+        } else if (httpClients.contains("JdkHttp")) {
+            return TestHttpClientType.JDK_HTTP;
+        } else {
+            throw new IllegalArgumentException("Unknown value of AZURE_TEST_HTTP_CLIENTS: " + httpClients);
         }
     }
 

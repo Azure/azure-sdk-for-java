@@ -4,9 +4,10 @@ package com.azure.storage.common.test.shared;
 
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
+import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
+import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.vertx.VertxAsyncHttpClientProvider;
 import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.TestResourceNamer;
@@ -14,7 +15,6 @@ import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ServiceVersion;
 import com.azure.storage.common.implementation.Constants;
-import okhttp3.ConnectionPool;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -31,7 +31,6 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.zip.CRC32;
 
@@ -42,10 +41,27 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public final class StorageCommonTestUtils {
     public static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance();
-    private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build();
-    private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncHttpClientBuilder()
-        .connectionPool(new ConnectionPool(50, 5, TimeUnit.MINUTES))
-        .build();
+    private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientProvider().createInstance();
+    private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncClientProvider().createInstance();
+    private static final HttpClient VERTX_HTTP_CLIENT = new VertxAsyncHttpClientProvider().createInstance();
+    private static final HttpClient JDK_HTTP_HTTP_CLIENT;
+
+    static {
+        HttpClient jdkHttpHttpClient;
+        try {
+            jdkHttpHttpClient = createJdkHttpClient();
+        } catch (LinkageError | ReflectiveOperationException e) {
+            jdkHttpHttpClient = null;
+        }
+
+        JDK_HTTP_HTTP_CLIENT = jdkHttpHttpClient;
+    }
+
+    @SuppressWarnings("deprecation")
+    private static HttpClient createJdkHttpClient() throws ReflectiveOperationException {
+        Class<?> clazz = Class.forName("com.azure.core.http.jdk.httpclient.JdkHttpClientProvider");
+        return  (HttpClient) clazz.getDeclaredMethod("createInstance").invoke(clazz.newInstance());
+    }
 
     /**
      * Gets the CRC32 for the given string.
@@ -72,6 +88,10 @@ public final class StorageCommonTestUtils {
                     return NETTY_HTTP_CLIENT;
                 case OK_HTTP:
                     return OK_HTTP_CLIENT;
+                case VERTX:
+                    return VERTX_HTTP_CLIENT;
+                case JDK_HTTP:
+                    return JDK_HTTP_HTTP_CLIENT;
                 default:
                     throw new IllegalArgumentException("Unknown http client type: " + ENVIRONMENT.getHttpClientType());
             }
