@@ -21,7 +21,7 @@ public final class CallParticipantConverter {
         }
 
         return new CallParticipant(CommunicationIdentifierConverter.convert(acsCallParticipantDto.getIdentifier()),
-            acsCallParticipantDto.isMuted());
+            acsCallParticipantDto.isMuted(), acsCallParticipantDto.isOnHold());
     }
 
     private CallParticipantConverter() {

@@ -87,10 +87,11 @@ public final class CallConnectionPropertiesInternal {
     private CommunicationUserIdentifierModel answeredBy;
 
     /*
-     * The original PSTN target of the incoming Call.
+     * Identity of the original Pstn target of an incoming Call. Only populated
+     * when the original target is a Pstn number.
      */
-    @JsonProperty(value = "originalPstnTarget")
-    private PhoneNumberIdentifierModel originalPstnTarget;
+    @JsonProperty(value = "answeredFor")
+    private PhoneNumberIdentifierModel answeredFor;
 
     /**
      * Get the callConnectionId property: The call connection id.
@@ -338,22 +339,24 @@ public final class CallConnectionPropertiesInternal {
     }
 
     /**
-     * Get the originalPstnTarget property: The original PSTN target of the incoming Call.
+     * Get the answeredFor property: Identity of the original Pstn target of an incoming Call. Only populated when the
+     * original target is a Pstn number.
      *
-     * @return the originalPstnTarget value.
+     * @return the answeredFor value.
      */
-    public PhoneNumberIdentifierModel getOriginalPstnTarget() {
-        return this.originalPstnTarget;
+    public PhoneNumberIdentifierModel getAnsweredFor() {
+        return this.answeredFor;
     }
 
     /**
-     * Set the originalPstnTarget property: The original PSTN target of the incoming Call.
+     * Set the answeredFor property: Identity of the original Pstn target of an incoming Call. Only populated when the
+     * original target is a Pstn number.
      *
-     * @param originalPstnTarget the originalPstnTarget value to set.
+     * @param answeredFor the answeredFor value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionPropertiesInternal setOriginalPstnTarget(PhoneNumberIdentifierModel originalPstnTarget) {
-        this.originalPstnTarget = originalPstnTarget;
+    public CallConnectionPropertiesInternal setAnsweredFor(PhoneNumberIdentifierModel answeredFor) {
+        this.answeredFor = answeredFor;
         return this;
     }
 }

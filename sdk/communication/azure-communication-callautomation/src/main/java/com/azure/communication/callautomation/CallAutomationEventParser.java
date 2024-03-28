@@ -25,6 +25,7 @@ import com.azure.communication.callautomation.models.events.DialogLanguageChange
 import com.azure.communication.callautomation.models.events.DialogSensitivityUpdate;
 import com.azure.communication.callautomation.models.events.DialogStarted;
 import com.azure.communication.callautomation.models.events.DialogTransfer;
+import com.azure.communication.callautomation.models.events.HoldFailed;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
 import com.azure.communication.callautomation.models.events.PlayCanceled;
 import com.azure.communication.callautomation.models.events.PlayCompleted;
@@ -187,6 +188,8 @@ public final class CallAutomationEventParser {
                 ret = mapper.convertValue(eventData, AnswerFailed.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CreateCallFailed")) {
                 ret = mapper.convertValue(eventData, CreateCallFailed.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.HoldFailed")) {
+                ret = mapper.convertValue(eventData, HoldFailed.class);
             }
             return ret;
         } catch (RuntimeException e) {

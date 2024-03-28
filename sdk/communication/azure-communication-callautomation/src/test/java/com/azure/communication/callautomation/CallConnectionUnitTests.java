@@ -112,7 +112,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     public void getParticipant() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
-                new SimpleEntry<>(generateGetParticipantResponse(CALL_CALLER_ID, false), 200)
+                new SimpleEntry<>(generateGetParticipantResponse(CALL_CALLER_ID, false, false), 200)
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
@@ -126,7 +126,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     public void getParticipantWithResponse() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
-                new SimpleEntry<>(generateGetParticipantResponse(CALL_CALLER_ID, false), 200)
+                new SimpleEntry<>(generateGetParticipantResponse(CALL_CALLER_ID, false, false), 200)
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
