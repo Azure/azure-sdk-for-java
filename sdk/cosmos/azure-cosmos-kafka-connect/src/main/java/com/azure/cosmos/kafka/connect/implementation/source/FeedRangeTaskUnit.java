@@ -83,8 +83,14 @@ public class FeedRangeTaskUnit implements ITaskUnit {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
         FeedRangeTaskUnit that = (FeedRangeTaskUnit) o;
         return Objects.equals(databaseName, that.databaseName)
             && Objects.equals(containerName, that.containerName)
@@ -101,14 +107,14 @@ public class FeedRangeTaskUnit implements ITaskUnit {
 
     @Override
     public String toString() {
-        return "FeedRangeTaskUnit{" +
-            "databaseName='" + databaseName + '\'' +
-            ", containerName='" + containerName + '\'' +
-            ", containerRid='" + containerRid + '\'' +
-            ", feedRange=" + feedRange +
-            ", continuationState=" + continuationState +
-            ", topic='" + topic + '\'' +
-            '}';
+        return "FeedRangeTaskUnit{"
+            + "databaseName='" + databaseName + '\''
+            + ", containerName='" + containerName + '\''
+            + ", containerRid='" + containerRid + '\''
+            + ", feedRange=" + feedRange
+            + ", continuationState=" + continuationState
+            + ", topic='" + topic + '\''
+            + '}';
     }
 
     public static class FeedRangeTaskUnitSerializer extends com.fasterxml.jackson.databind.JsonSerializer<FeedRangeTaskUnit> {

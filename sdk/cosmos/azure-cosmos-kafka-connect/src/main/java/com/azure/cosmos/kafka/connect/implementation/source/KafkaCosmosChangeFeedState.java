@@ -54,8 +54,14 @@ public class KafkaCosmosChangeFeedState {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        
         KafkaCosmosChangeFeedState that = (KafkaCosmosChangeFeedState) o;
         return Objects.equals(responseContinuation, that.responseContinuation)
             && Objects.equals(targetRange, that.targetRange)
@@ -64,11 +70,11 @@ public class KafkaCosmosChangeFeedState {
 
     @Override
     public String toString() {
-        return "KafkaCosmosChangeFeedState{" +
-            "responseContinuation='" + responseContinuation + '\'' +
-            ", targetRange=" + targetRange +
-            ", itemLsn='" + itemLsn + '\'' +
-            '}';
+        return "KafkaCosmosChangeFeedState{"
+            + "responseContinuation='" + responseContinuation + '\''
+            + ", targetRange=" + targetRange
+            + ", itemLsn='" + itemLsn + '\''
+            + '}';
     }
 
     @Override

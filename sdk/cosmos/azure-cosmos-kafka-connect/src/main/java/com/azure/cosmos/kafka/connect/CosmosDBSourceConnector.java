@@ -6,8 +6,6 @@ package com.azure.cosmos.kafka.connect;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.CosmosConstants;
@@ -24,7 +22,6 @@ import com.azure.cosmos.kafka.connect.implementation.source.MetadataMonitorThrea
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataTaskUnit;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.FeedRange;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.connect.connector.Task;
 import org.apache.kafka.connect.source.SourceConnector;
@@ -209,7 +206,7 @@ public class CosmosDBSourceConnector extends SourceConnector {
             .flatMap(containerFeedRange -> {
                 if (feedRangesMetadataTopicOffset == null) {
                     return Mono.just(
-                        Collections.singletonMap(containerFeedRange, (KafkaCosmosChangeFeedState)null));
+                        Collections.singletonMap(containerFeedRange, (KafkaCosmosChangeFeedState) null));
                 } else {
                     // there is existing offsets, need to find out effective feedRanges based on the offset
                     return this.getEffectiveContinuationMapForSingleFeedRange(
