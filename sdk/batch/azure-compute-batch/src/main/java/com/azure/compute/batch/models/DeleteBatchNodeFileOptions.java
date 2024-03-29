@@ -15,7 +15,7 @@ public class DeleteBatchNodeFileOptions extends BatchBaseOptions {
      *
      * @return A value indicating whether to delete children of a directory.
      */
-    public Boolean getRecursive() {
+    public Boolean isRecursive() {
         return recursive;
     }
 

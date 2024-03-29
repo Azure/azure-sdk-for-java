@@ -35,7 +35,7 @@ public class ListBatchTaskFilesOptions extends BatchBaseOptions {
      *
      * @return A value indicating whether to list children of the Task directory.
      */
-    public Boolean getRecursive() {
+    public Boolean isRecursive() {
         return recursive;
     }
 

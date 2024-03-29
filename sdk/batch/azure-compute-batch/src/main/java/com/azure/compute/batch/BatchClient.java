@@ -2340,7 +2340,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     public void deleteTaskFile(String jobId, String taskId, String filePath, DeleteBatchTaskFileOptions options) {
-        deleteTaskFileInternal(jobId, taskId, filePath, options.getTimeOutInSeconds(), options.getRecursive());
+        deleteTaskFileInternal(jobId, taskId, filePath, options.getTimeOutInSeconds(), options.isRecursive());
     }
 
     /**
@@ -2454,7 +2454,7 @@ public final class BatchClient {
      */
     public PagedIterable<BatchNodeFile> listTaskFiles(String jobId, String taskId, ListBatchTaskFilesOptions options) {
         return listTaskFilesInternal(jobId, taskId, options.getTimeOutInSeconds(), options.getFilter(),
-            options.getRecursive());
+            options.isRecursive());
     }
 
     /**
@@ -2981,7 +2981,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     public void deleteNodeFile(String poolId, String nodeId, String filePath, DeleteBatchNodeFileOptions options) {
-        deleteNodeFileInternal(poolId, nodeId, filePath, options.getTimeOutInSeconds(), options.getRecursive());
+        deleteNodeFileInternal(poolId, nodeId, filePath, options.getTimeOutInSeconds(), options.isRecursive());
     }
 
     /**
@@ -3112,7 +3112,7 @@ public final class BatchClient {
      */
     public PagedIterable<BatchNodeFile> listNodeFiles(String poolId, String nodeId, ListBatchNodeFilesOptions options) {
         return listNodeFilesInternal(poolId, nodeId, options.getTimeOutInSeconds(), options.getFilter(),
-            options.getRecursive());
+            options.isRecursive());
     }
 
     /**

@@ -2484,7 +2484,7 @@ public final class BatchAsyncClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     public Mono<Void> deleteTaskFile(String jobId, String taskId, String filePath, DeleteBatchTaskFileOptions options) {
-        return deleteTaskFileInternal(jobId, taskId, filePath, options.getTimeOutInSeconds(), options.getRecursive());
+        return deleteTaskFileInternal(jobId, taskId, filePath, options.getTimeOutInSeconds(), options.isRecursive());
     }
 
     /**
@@ -2601,7 +2601,7 @@ public final class BatchAsyncClient {
      */
     public PagedFlux<BatchNodeFile> listTaskFiles(String jobId, String taskId, ListBatchTaskFilesOptions options) {
         return listTaskFilesInternal(jobId, taskId, options.getTimeOutInSeconds(), options.getFilter(),
-            options.getRecursive());
+            options.isRecursive());
     }
 
     /**
@@ -3144,7 +3144,7 @@ public final class BatchAsyncClient {
      */
     public Mono<Void> deleteNodeFile(String poolId, String nodeId, String filePath,
         DeleteBatchNodeFileOptions options) {
-        return deleteNodeFileInternal(poolId, nodeId, filePath, options.getTimeOutInSeconds(), options.getRecursive());
+        return deleteNodeFileInternal(poolId, nodeId, filePath, options.getTimeOutInSeconds(), options.isRecursive());
     }
 
     /**
@@ -3277,7 +3277,7 @@ public final class BatchAsyncClient {
      */
     public PagedFlux<BatchNodeFile> listNodeFiles(String poolId, String nodeId, ListBatchNodeFilesOptions options) {
         return listNodeFilesInternal(poolId, nodeId, options.getTimeOutInSeconds(), options.getFilter(),
-            options.getRecursive());
+            options.isRecursive());
     }
 
     /**

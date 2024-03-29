@@ -34,7 +34,7 @@ public class ListBatchNodeFilesOptions extends BatchBaseOptions {
      *
      * @return A value indicating whether to list children of a directory.
      */
-    public Boolean getRecursive() {
+    public Boolean isRecursive() {
         return recursive;
     }
 
