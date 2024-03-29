@@ -34,7 +34,7 @@ public final class PrivateEndpointConnectionsUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"uvscxkdmligov\"},\"groupIds\":[\"xk\",\"mloazuru\",\"cbgoor\",\"te\"],\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"hjxa\",\"actionsRequired\":\"vjgsl\"}},\"etag\":\"dilmyww\",\"id\":\"kgkxn\",\"name\":\"edabgyvudtjue\",\"type\":\"bcihxuuwhc\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"dnhxmsi\"},\"groupIds\":[\"miloxggdufiqndie\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"fjchvc\",\"actionsRequired\":\"ys\"}},\"etag\":\"dotcubiipuip\",\"id\":\"oqonma\",\"name\":\"jeknizshq\",\"type\":\"cimpevfg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -52,14 +52,14 @@ public final class PrivateEndpointConnectionsUpdateMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateEndpointConnection response
-            = manager.privateEndpointConnections().update("cgxxlxs", "fgcviz", "zdwlvwlyoupfgfb",
+            = manager.privateEndpointConnections().update("ajjziuxxpshne", "kulfg", "lqubkwdlen",
                 new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionState().withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
-                        .withDescription("tg")),
-                "atnwxyiopi", com.azure.core.util.Context.NONE);
+                    new PrivateLinkServiceConnectionState().withStatus(PrivateLinkServiceConnectionStatus.DISCONNECTED)
+                        .withDescription("rxgibbd")),
+                "biorktal", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED,
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.APPROVED,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("hjxa", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("fjchvc", response.privateLinkServiceConnectionState().description());
     }
 }

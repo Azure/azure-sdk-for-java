@@ -10,7 +10,9 @@ import com.azure.resourcemanager.sphere.fluent.models.ProductInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of a Product list operation. */
+/**
+ * The response of a Product list operation.
+ */
 @Fluent
 public final class ProductListResult {
     /*
@@ -22,16 +24,18 @@ public final class ProductListResult {
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink")
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ProductListResult class. */
+    /**
+     * Creates an instance of ProductListResult class.
+     */
     public ProductListResult() {
     }
 
     /**
      * Get the value property: The Product items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<ProductInner> value() {
@@ -40,7 +44,7 @@ public final class ProductListResult {
 
     /**
      * Set the value property: The Product items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the ProductListResult object itself.
      */
@@ -51,7 +55,7 @@ public final class ProductListResult {
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,26 +63,14 @@ public final class ProductListResult {
     }
 
     /**
-     * Set the nextLink property: The link to the next page of items.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the ProductListResult object itself.
-     */
-    public ProductListResult withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model ProductListResult"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model ProductListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

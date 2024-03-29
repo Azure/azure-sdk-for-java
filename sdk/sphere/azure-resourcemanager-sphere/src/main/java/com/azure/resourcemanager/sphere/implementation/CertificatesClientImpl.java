@@ -35,110 +35,91 @@ import com.azure.resourcemanager.sphere.models.CertificateListResult;
 import com.azure.resourcemanager.sphere.models.ProofOfPossessionNonceRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CertificatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CertificatesClient.
+ */
 public final class CertificatesClientImpl implements CertificatesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CertificatesService service;
 
-    /** The service client containing this operation class. */
-    private final AzureSphereManagementClientImpl client;
+    /**
+     * The service client containing this operation class.
+     */
+    private final AzureSphereMgmtClientImpl client;
 
     /**
      * Initializes an instance of CertificatesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
-    CertificatesClientImpl(AzureSphereManagementClientImpl client) {
-        this.service =
-            RestProxy.create(CertificatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    CertificatesClientImpl(AzureSphereMgmtClientImpl client) {
+        this.service
+            = RestProxy.create(CertificatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureSphereManagementClientCertificates to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for AzureSphereMgmtClientCertificates to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureSphereManagemen")
+    @ServiceInterface(name = "AzureSphereMgmtClien")
     public interface CertificatesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/certificates")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/certificates")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CertificateListResult>> listByCatalog(
-            @HostParam("$host") String endpoint,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$maxpagesize") Integer maxpagesize,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("catalogName") String catalogName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CertificateListResult>> listByCatalog(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip,
+            @QueryParam("$maxpagesize") Integer maxpagesize, @PathParam("catalogName") String catalogName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/certificates/{serialNumber}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/certificates/{serialNumber}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CertificateInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("catalogName") String catalogName,
-            @PathParam("serialNumber") String serialNumber,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CertificateInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("catalogName") String catalogName,
+            @PathParam("serialNumber") String serialNumber, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/certificates/{serialNumber}/retrieveCertChain")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/certificates/{serialNumber}/retrieveCertChain")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CertificateChainResponseInner>> retrieveCertChain(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("catalogName") String catalogName,
-            @PathParam("serialNumber") String serialNumber,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CertificateChainResponseInner>> retrieveCertChain(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("catalogName") String catalogName,
+            @PathParam("serialNumber") String serialNumber, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/certificates/{serialNumber}/retrieveProofOfPossessionNonce")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/certificates/{serialNumber}/retrieveProofOfPossessionNonce")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProofOfPossessionNonceResponseInner>> retrieveProofOfPossessionNonce(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("catalogName") String catalogName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("catalogName") String catalogName,
             @PathParam("serialNumber") String serialNumber,
             @BodyParam("application/json") ProofOfPossessionNonceRequest proofOfPossessionNonceRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CertificateListResult>> listByCatalogNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List Certificate resources by Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param filter Filter the result list using the given expression.
@@ -149,22 +130,18 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Certificate list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CertificateInner>> listByCatalogSinglePageAsync(
-        String resourceGroupName, String catalogName, String filter, Integer top, Integer skip, Integer maxpagesize) {
+    private Mono<PagedResponse<CertificateInner>> listByCatalogSinglePageAsync(String resourceGroupName,
+        String catalogName, String filter, Integer top, Integer skip, Integer maxpagesize) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -175,36 +152,17 @@ public final class CertificatesClientImpl implements CertificatesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByCatalog(
-                            this.client.getEndpoint(),
-                            filter,
-                            top,
-                            skip,
-                            maxpagesize,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            catalogName,
-                            accept,
-                            context))
-            .<PagedResponse<CertificateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByCatalog(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, filter, top, skip, maxpagesize, catalogName, accept,
+                context))
+            .<PagedResponse<CertificateInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List Certificate resources by Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param filter Filter the result list using the given expression.
@@ -216,28 +174,18 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Certificate list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CertificateInner>> listByCatalogSinglePageAsync(
-        String resourceGroupName,
-        String catalogName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
-        Context context) {
+    private Mono<PagedResponse<CertificateInner>> listByCatalogSinglePageAsync(String resourceGroupName,
+        String catalogName, String filter, Integer top, Integer skip, Integer maxpagesize, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -249,32 +197,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByCatalog(
-                this.client.getEndpoint(),
-                filter,
-                top,
-                skip,
-                maxpagesize,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                catalogName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByCatalog(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, filter, top, skip, maxpagesize, catalogName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List Certificate resources by Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param filter Filter the result list using the given expression.
@@ -287,8 +218,8 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the response of a Certificate list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CertificateInner> listByCatalogAsync(
-        String resourceGroupName, String catalogName, String filter, Integer top, Integer skip, Integer maxpagesize) {
+    private PagedFlux<CertificateInner> listByCatalogAsync(String resourceGroupName, String catalogName, String filter,
+        Integer top, Integer skip, Integer maxpagesize) {
         return new PagedFlux<>(
             () -> listByCatalogSinglePageAsync(resourceGroupName, catalogName, filter, top, skip, maxpagesize),
             nextLink -> listByCatalogNextSinglePageAsync(nextLink));
@@ -296,7 +227,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
     /**
      * List Certificate resources by Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -317,7 +248,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
     /**
      * List Certificate resources by Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param filter Filter the result list using the given expression.
@@ -331,14 +262,8 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the response of a Certificate list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CertificateInner> listByCatalogAsync(
-        String resourceGroupName,
-        String catalogName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
-        Context context) {
+    private PagedFlux<CertificateInner> listByCatalogAsync(String resourceGroupName, String catalogName, String filter,
+        Integer top, Integer skip, Integer maxpagesize, Context context) {
         return new PagedFlux<>(
             () -> listByCatalogSinglePageAsync(resourceGroupName, catalogName, filter, top, skip, maxpagesize, context),
             nextLink -> listByCatalogNextSinglePageAsync(nextLink, context));
@@ -346,7 +271,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
     /**
      * List Certificate resources by Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -365,7 +290,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
     /**
      * List Certificate resources by Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param filter Filter the result list using the given expression.
@@ -379,21 +304,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the response of a Certificate list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateInner> listByCatalog(
-        String resourceGroupName,
-        String catalogName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
-        Context context) {
+    public PagedIterable<CertificateInner> listByCatalog(String resourceGroupName, String catalogName, String filter,
+        Integer top, Integer skip, Integer maxpagesize, Context context) {
         return new PagedIterable<>(
             listByCatalogAsync(resourceGroupName, catalogName, filter, top, skip, maxpagesize, context));
     }
 
     /**
      * Get a Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -403,19 +322,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return a Certificate along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateInner>> getWithResponseAsync(
-        String resourceGroupName, String catalogName, String serialNumber) {
+    private Mono<Response<CertificateInner>> getWithResponseAsync(String resourceGroupName, String catalogName,
+        String serialNumber) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -429,24 +344,14 @@ public final class CertificatesClientImpl implements CertificatesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            catalogName,
-                            serialNumber,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, catalogName, serialNumber, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -457,19 +362,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return a Certificate along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateInner>> getWithResponseAsync(
-        String resourceGroupName, String catalogName, String serialNumber, Context context) {
+    private Mono<Response<CertificateInner>> getWithResponseAsync(String resourceGroupName, String catalogName,
+        String serialNumber, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -483,21 +384,13 @@ public final class CertificatesClientImpl implements CertificatesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                catalogName,
-                serialNumber,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, catalogName, serialNumber, accept, context);
     }
 
     /**
      * Get a Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -514,7 +407,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
     /**
      * Get a Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -525,14 +418,14 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return a Certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateInner> getWithResponse(
-        String resourceGroupName, String catalogName, String serialNumber, Context context) {
+    public Response<CertificateInner> getWithResponse(String resourceGroupName, String catalogName, String serialNumber,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, catalogName, serialNumber, context).block();
     }
 
     /**
      * Get a Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -548,7 +441,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
     /**
      * Retrieves cert chain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -558,19 +451,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the certificate chain response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateChainResponseInner>> retrieveCertChainWithResponseAsync(
-        String resourceGroupName, String catalogName, String serialNumber) {
+    private Mono<Response<CertificateChainResponseInner>> retrieveCertChainWithResponseAsync(String resourceGroupName,
+        String catalogName, String serialNumber) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -584,24 +473,14 @@ public final class CertificatesClientImpl implements CertificatesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .retrieveCertChain(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            catalogName,
-                            serialNumber,
-                            accept,
-                            context))
+            .withContext(context -> service.retrieveCertChain(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, catalogName, serialNumber, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves cert chain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -612,19 +491,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the certificate chain response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateChainResponseInner>> retrieveCertChainWithResponseAsync(
-        String resourceGroupName, String catalogName, String serialNumber, Context context) {
+    private Mono<Response<CertificateChainResponseInner>> retrieveCertChainWithResponseAsync(String resourceGroupName,
+        String catalogName, String serialNumber, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -638,21 +513,13 @@ public final class CertificatesClientImpl implements CertificatesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .retrieveCertChain(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                catalogName,
-                serialNumber,
-                accept,
-                context);
+        return service.retrieveCertChain(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, catalogName, serialNumber, accept, context);
     }
 
     /**
      * Retrieves cert chain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -662,15 +529,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the certificate chain response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificateChainResponseInner> retrieveCertChainAsync(
-        String resourceGroupName, String catalogName, String serialNumber) {
+    private Mono<CertificateChainResponseInner> retrieveCertChainAsync(String resourceGroupName, String catalogName,
+        String serialNumber) {
         return retrieveCertChainWithResponseAsync(resourceGroupName, catalogName, serialNumber)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieves cert chain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -681,14 +548,14 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the certificate chain response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateChainResponseInner> retrieveCertChainWithResponse(
-        String resourceGroupName, String catalogName, String serialNumber, Context context) {
+    public Response<CertificateChainResponseInner> retrieveCertChainWithResponse(String resourceGroupName,
+        String catalogName, String serialNumber, Context context) {
         return retrieveCertChainWithResponseAsync(resourceGroupName, catalogName, serialNumber, context).block();
     }
 
     /**
      * Retrieves cert chain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -698,14 +565,14 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the certificate chain response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateChainResponseInner retrieveCertChain(
-        String resourceGroupName, String catalogName, String serialNumber) {
+    public CertificateChainResponseInner retrieveCertChain(String resourceGroupName, String catalogName,
+        String serialNumber) {
         return retrieveCertChainWithResponse(resourceGroupName, catalogName, serialNumber, Context.NONE).getValue();
     }
 
     /**
      * Gets the proof of possession nonce.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -717,21 +584,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProofOfPossessionNonceResponseInner>> retrieveProofOfPossessionNonceWithResponseAsync(
-        String resourceGroupName,
-        String catalogName,
-        String serialNumber,
+        String resourceGroupName, String catalogName, String serialNumber,
         ProofOfPossessionNonceRequest proofOfPossessionNonceRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -744,34 +605,22 @@ public final class CertificatesClientImpl implements CertificatesClient {
             return Mono.error(new IllegalArgumentException("Parameter serialNumber is required and cannot be null."));
         }
         if (proofOfPossessionNonceRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter proofOfPossessionNonceRequest is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter proofOfPossessionNonceRequest is required and cannot be null."));
         } else {
             proofOfPossessionNonceRequest.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .retrieveProofOfPossessionNonce(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            catalogName,
-                            serialNumber,
-                            proofOfPossessionNonceRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.retrieveProofOfPossessionNonce(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, catalogName,
+                serialNumber, proofOfPossessionNonceRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the proof of possession nonce.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -784,22 +633,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProofOfPossessionNonceResponseInner>> retrieveProofOfPossessionNonceWithResponseAsync(
-        String resourceGroupName,
-        String catalogName,
-        String serialNumber,
-        ProofOfPossessionNonceRequest proofOfPossessionNonceRequest,
-        Context context) {
+        String resourceGroupName, String catalogName, String serialNumber,
+        ProofOfPossessionNonceRequest proofOfPossessionNonceRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -812,31 +654,21 @@ public final class CertificatesClientImpl implements CertificatesClient {
             return Mono.error(new IllegalArgumentException("Parameter serialNumber is required and cannot be null."));
         }
         if (proofOfPossessionNonceRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter proofOfPossessionNonceRequest is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter proofOfPossessionNonceRequest is required and cannot be null."));
         } else {
             proofOfPossessionNonceRequest.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .retrieveProofOfPossessionNonce(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                catalogName,
-                serialNumber,
-                proofOfPossessionNonceRequest,
-                accept,
-                context);
+        return service.retrieveProofOfPossessionNonce(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, catalogName, serialNumber,
+            proofOfPossessionNonceRequest, accept, context);
     }
 
     /**
      * Gets the proof of possession nonce.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -847,19 +679,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the proof of possession nonce on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProofOfPossessionNonceResponseInner> retrieveProofOfPossessionNonceAsync(
-        String resourceGroupName,
-        String catalogName,
-        String serialNumber,
-        ProofOfPossessionNonceRequest proofOfPossessionNonceRequest) {
-        return retrieveProofOfPossessionNonceWithResponseAsync(
-                resourceGroupName, catalogName, serialNumber, proofOfPossessionNonceRequest)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<ProofOfPossessionNonceResponseInner> retrieveProofOfPossessionNonceAsync(String resourceGroupName,
+        String catalogName, String serialNumber, ProofOfPossessionNonceRequest proofOfPossessionNonceRequest) {
+        return retrieveProofOfPossessionNonceWithResponseAsync(resourceGroupName, catalogName, serialNumber,
+            proofOfPossessionNonceRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the proof of possession nonce.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -872,19 +700,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProofOfPossessionNonceResponseInner> retrieveProofOfPossessionNonceWithResponse(
-        String resourceGroupName,
-        String catalogName,
-        String serialNumber,
-        ProofOfPossessionNonceRequest proofOfPossessionNonceRequest,
-        Context context) {
-        return retrieveProofOfPossessionNonceWithResponseAsync(
-                resourceGroupName, catalogName, serialNumber, proofOfPossessionNonceRequest, context)
-            .block();
+        String resourceGroupName, String catalogName, String serialNumber,
+        ProofOfPossessionNonceRequest proofOfPossessionNonceRequest, Context context) {
+        return retrieveProofOfPossessionNonceWithResponseAsync(resourceGroupName, catalogName, serialNumber,
+            proofOfPossessionNonceRequest, context).block();
     }
 
     /**
      * Gets the proof of possession nonce.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -895,26 +719,23 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the proof of possession nonce.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProofOfPossessionNonceResponseInner retrieveProofOfPossessionNonce(
-        String resourceGroupName,
-        String catalogName,
-        String serialNumber,
-        ProofOfPossessionNonceRequest proofOfPossessionNonceRequest) {
-        return retrieveProofOfPossessionNonceWithResponse(
-                resourceGroupName, catalogName, serialNumber, proofOfPossessionNonceRequest, Context.NONE)
-            .getValue();
+    public ProofOfPossessionNonceResponseInner retrieveProofOfPossessionNonce(String resourceGroupName,
+        String catalogName, String serialNumber, ProofOfPossessionNonceRequest proofOfPossessionNonceRequest) {
+        return retrieveProofOfPossessionNonceWithResponse(resourceGroupName, catalogName, serialNumber,
+            proofOfPossessionNonceRequest, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Certificate list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CertificateInner>> listByCatalogNextSinglePageAsync(String nextLink) {
@@ -922,37 +743,29 @@ public final class CertificatesClientImpl implements CertificatesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByCatalogNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CertificateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<CertificateInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Certificate list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CertificateInner>> listByCatalogNextSinglePageAsync(String nextLink, Context context) {
@@ -960,23 +773,13 @@ public final class CertificatesClientImpl implements CertificatesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByCatalogNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByCatalogNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }
