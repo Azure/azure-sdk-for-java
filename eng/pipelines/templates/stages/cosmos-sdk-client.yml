@@ -45,7 +45,7 @@ extends:
         jobs:
         - template: /eng/pipelines/templates/jobs/ci.yml
           parameters:
-            JavaBuildVersion: '1.17'
+            JavaBuildVersion: '1.21'
             ServiceDirectory: ${{parameters.ServiceDirectory}}
             Artifacts: ${{ parameters.Artifacts }}
             ReleaseArtifacts:
@@ -67,7 +67,6 @@ extends:
               - ${{ parameters.MatrixFilters }}
             MatrixReplace:
               - AZURE_TEST.*=.*/
-              - .*Version=1.21/1.17
             BuildParallelization: 1
             TestOptions: '-Punit'
 
