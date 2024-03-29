@@ -42,6 +42,7 @@ import com.azure.storage.file.datalake.models.FileQueryProgress;
 import com.azure.storage.file.datalake.models.FileQuerySerialization;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
+import com.azure.storage.file.datalake.models.FileReadResponse;
 import com.azure.storage.file.datalake.models.LeaseAction;
 import com.azure.storage.file.datalake.models.LeaseDurationType;
 import com.azure.storage.file.datalake.models.LeaseStateType;
@@ -4623,6 +4624,43 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         StepVerifier.create(aadFileClient.exists())
             .expectNext(true)
             .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2024-05-04")
+    @Test
+    public void aclHeaderTests() {
+        dataLakeFileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
+        dataLakeFileSystemClient.create();
+        dataLakeFileSystemClient.getDirectoryClient(generatePathName()).create();
+        fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
+
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES);
+
+        //getProperties
+        StepVerifier.create(fc.createWithResponse(options).then(fc.getProperties()))
+            .assertNext(r -> assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(r.getAccessControlList())))
+            .verifyComplete();
+
+        //readWithResponse
+        StepVerifier.create(fc.readWithResponse(null, null, null, false))
+            .assertNext(r -> assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(r.getDeserializedHeaders().getAccessControlList())))
+            .verifyComplete();
+
+        //readToFileWithResponse
+        File outFile = new File(testResourceNamer.randomName("", 60) + ".txt");
+        outFile.deleteOnExit();
+        createdFiles.add(outFile);
+
+        if (outFile.exists()) {
+            assertTrue(outFile.delete());
+        }
+
+        StepVerifier.create(fc.readToFileWithResponse(outFile.getPath(), null,
+            null, null, null, false, null))
+            .assertNext(r -> assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(r.getValue().getAccessControlList())))
+            .verifyComplete();
+
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2024-05-04")
