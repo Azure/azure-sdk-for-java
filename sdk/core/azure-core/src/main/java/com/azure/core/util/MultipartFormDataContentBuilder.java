@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 
-public final class MultipartFormData {
+public final class MultipartFormDataContentBuilder {
     /**
      * Line separator for the multipart HTTP request.
      */
@@ -30,12 +30,13 @@ public final class MultipartFormData {
     /**
      * The actual part separator in the request. This is obtained by prepending "--" to the "boundary".
      */
-    private final String boundaryDelimiterLine;
+    private final String boundaryDelimiter;
 
     /**
-     * The marker for the ending of a multipart request. This is obtained by post-pending "--" to the "partSeparator".
+     * The marker for the ending of a multipart request.
+     * This is obtained by post-pending "--" to the "boundaryDelimiter".
      */
-    private final String BoundaryDelimiterClosingLine;
+    private final String boundaryCloseDelimiter;
 
     /**
      * Charset used for encoding the multipart HTTP request.
@@ -53,15 +54,21 @@ public final class MultipartFormData {
      *
      * @param requestOptions the RequestOptions to update
      */
-    public MultipartFormData(RequestOptions requestOptions) {
+    public MultipartFormDataContentBuilder(RequestOptions requestOptions) {
         this(requestOptions, UUID.randomUUID().toString().substring(0, 16));
     }
 
-    public MultipartFormData(RequestOptions requestOptions, String boundary) {
+    /**
+     * Create an instance of MultipartFormData.
+     *
+     * @param requestOptions the RequestOptions to update
+     * @param boundary the boundary value
+     */
+    public MultipartFormDataContentBuilder(RequestOptions requestOptions, String boundary) {
         this.requestOptions = requestOptions;
         this.boundary = boundary;
-        this.boundaryDelimiterLine = "--" + boundary;
-        this.BoundaryDelimiterClosingLine = this.boundaryDelimiterLine + "--";
+        this.boundaryDelimiter = "--" + boundary;
+        this.boundaryCloseDelimiter = this.boundaryDelimiter + "--";
     }
 
     /**
@@ -69,11 +76,18 @@ public final class MultipartFormData {
      *
      * @return the BinaryData of the multipart HTTP request body
      */
-    public BinaryData getRequestBody() {
+    public BinaryData getContent() {
         return requestBody;
     }
 
-    // text/plain
+    public long getContentLength() {
+        return requestBody.getLength();
+    }
+
+    public String getBoundary() {
+        return boundary;
+    }
+
     /**
      * Formats a text/plain field for a multipart HTTP request.
      *
@@ -81,9 +95,9 @@ public final class MultipartFormData {
      * @param value the value of the text/plain field
      * @return the MultipartFormDataHelper instance
      */
-    public MultipartFormData serializeTextField(String fieldName, String value) {
+    public MultipartFormDataContentBuilder appendText(String fieldName, String value) {
         if (value != null) {
-            String serialized = boundaryDelimiterLine + CR_LF + "Content-Disposition: form-data; name=\""
+            String serialized = boundaryDelimiter + CR_LF + "Content-Disposition: form-data; name=\""
                     + escapeName(fieldName) + "\"" + CR_LF + CR_LF
                     + value + CR_LF;
 
@@ -93,7 +107,6 @@ public final class MultipartFormData {
         return this;
     }
 
-    // application/json
     /**
      * Formats a application/json field for a multipart HTTP request.
      *
@@ -101,9 +114,9 @@ public final class MultipartFormData {
      * @param jsonObject the object of the application/json field
      * @return the MultipartFormDataHelper instance
      */
-    public MultipartFormData serializeJsonField(String fieldName, Object jsonObject) {
+    public MultipartFormDataContentBuilder appendJson(String fieldName, Object jsonObject) {
         if (jsonObject != null) {
-            String serialized = boundaryDelimiterLine + CR_LF + "Content-Disposition: form-data; name=\""
+            String serialized = boundaryDelimiter + CR_LF + "Content-Disposition: form-data; name=\""
                 + escapeName(fieldName) + "\"" + CR_LF + "Content-Type: application/json" + CR_LF + CR_LF
                 + BinaryData.fromObject(jsonObject) + CR_LF;
 
@@ -119,10 +132,11 @@ public final class MultipartFormData {
      * @param fieldName the field name
      * @param file the BinaryData of the file
      * @param contentType the content-type of the file
-     * @param filename the filename
+     * @param filename Optional. The filename
      * @return the MultipartFormDataHelper instance
      */
-    public MultipartFormData serializeFileField(String fieldName, BinaryData file, String contentType, String filename) {
+    public MultipartFormDataContentBuilder appendFile(String fieldName, BinaryData file,
+                                                      String contentType, String filename) {
         if (file != null) {
             if (CoreUtils.isNullOrEmpty(contentType)) {
                 contentType = ContentType.APPLICATION_OCTET_STREAM;
@@ -141,15 +155,15 @@ public final class MultipartFormData {
      * @param filenames the List of filenames
      * @return the MultipartFormDataHelper instance
      */
-    public MultipartFormData serializeFileFields(String fieldName, List<BinaryData> files, List<String> contentTypes,
-                                                 List<String> filenames) {
+    public MultipartFormDataContentBuilder appendFiles(String fieldName, List<BinaryData> files,
+                                                       List<String> contentTypes, List<String> filenames) {
         if (!CoreUtils.isNullOrEmpty(files)) {
             for (int i = 0; i < files.size(); ++i) {
                 BinaryData file = files.get(i);
                 String contentType = contentTypes.get(i);
                 String filename = filenames.get(i);
                 // Each part shares the same field name
-                serializeFileField(fieldName, file, contentType, filename);
+                appendFile(fieldName, file, contentType, filename);
             }
         }
         return this;
@@ -160,14 +174,14 @@ public final class MultipartFormData {
      *
      * @return the MultipartFormDataHelper instance
      */
-    public MultipartFormData end() {
-        byte[] data = BoundaryDelimiterClosingLine.getBytes(encoderCharset);
+    public MultipartFormDataContentBuilder build() {
+        byte[] data = boundaryCloseDelimiter.getBytes(encoderCharset);
         appendBytes(data);
 
-        requestBody = BinaryData.fromStream(requestDataStream, requestLength);
-
-        requestOptions.setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data; boundary=" + this.boundary)
-            .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestLength));
+        requestBody = BinaryData.fromStream(requestDataStream);
+//
+//        requestOptions.setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data; boundary=" + this.boundary)
+//            .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestLength));
 
         return this;
     }
@@ -180,7 +194,7 @@ public final class MultipartFormData {
 
         // Multipart preamble
         String fileFieldPreamble
-            = boundaryDelimiterLine + CR_LF + "Content-Disposition: form-data; name=\"" + escapeName(fieldName) + "\""
+            = boundaryDelimiter + CR_LF + "Content-Disposition: form-data; name=\"" + escapeName(fieldName) + "\""
                 + contentDispositionFilename + CR_LF + "Content-Type: " + contentType + CR_LF + CR_LF;
         byte[] data = fileFieldPreamble.getBytes(encoderCharset);
         appendBytes(data);
