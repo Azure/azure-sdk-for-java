@@ -3,16 +3,16 @@
     "Method" : "HEAD",
     "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2024 09:21:50 GMT",
+      "date" : "Fri, 29 Mar 2024 06:20:18 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "aee0bfa8-622e-44db-9833-81e17fe1af8f",
+      "client-request-id" : "8c3b25dc-99d4-4d6d-a190-8d3442aabdd7",
       "retry-after" : "0",
-      "request-id" : "edc21699-f9dc-45f2-9e3e-74de03967105",
+      "request-id" : "e9f54e05-0b7a-4425-8440-0fef40e4c913",
       "StatusCode" : "404",
       "dataserviceversion" : "3.0",
       "Body" : "",
@@ -22,21 +22,21 @@
     "Method" : "POST",
     "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2024 09:21:51 GMT",
+      "date" : "Fri, 29 Mar 2024 06:20:19 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "dataserviceid" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool",
       "retry-after" : "0",
-      "request-id" : "94c1ae15-276a-4e32-bbf4-4d68598948af",
+      "request-id" : "c64d932f-221b-414d-8454-2d905bf21334",
       "StatusCode" : "201",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 28 Mar 2024 09:21:51 GMT",
+      "last-modified" : "Fri, 29 Mar 2024 06:20:19 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "a23c6f7b-7438-46c6-8929-152853332177",
-      "etag" : "0x8DC4F0880785D72",
+      "client-request-id" : "69cb38a2-a6cc-4140-a55a-e3bfa73ff4cb",
+      "etag" : "0x8DC4FB84F1C28B2",
       "location" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool",
       "dataserviceversion" : "3.0",
       "Body" : ""
@@ -45,18 +45,18 @@
     "Method" : "HEAD",
     "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2024 09:21:51 GMT",
-      "last-modified" : "Thu, 28 Mar 2024 09:21:51 GMT",
+      "date" : "Fri, 29 Mar 2024 06:20:19 GMT",
+      "last-modified" : "Fri, 29 Mar 2024 06:20:19 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "f40bbfce-b658-4986-b0cd-b9d358c94aa2",
-      "etag" : "0x8DC4F0880785D72",
+      "client-request-id" : "a4d8bae8-13e7-4cdc-8b4c-4db981ee2ce7",
+      "etag" : "0x8DC4FB84F1C28B2",
       "retry-after" : "0",
-      "request-id" : "a55fd0d5-bd05-4054-a8fe-55078b193955",
+      "request-id" : "30b58949-4994-4b22-8d73-73dfd5a5a670",
       "StatusCode" : "200",
       "dataserviceversion" : "3.0",
       "Body" : "",
@@ -66,148 +66,148 @@
     "Method" : "GET",
     "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2024 09:21:51 GMT",
+      "date" : "Fri, 29 Mar 2024 06:20:19 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "b59cb305-3ee6-4a45-996d-fbdec8c56e04",
+      "request-id" : "a6736d2e-427a-42ab-8092-c06aa08b50e2",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 28 Mar 2024 09:21:51 GMT",
+      "last-modified" : "Fri, 29 Mar 2024 06:20:19 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "cf5321cc-3fef-4074-b975-132d047e6480",
+      "client-request-id" : "0b9f24a0-dae7-4bf2-a1ce-6fe1456b99e4",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DC4F0880785D72",
+      "etag" : "0x8DC4FB84F1C28B2",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4F0880785D72\",\"lastModified\":\"2024-03-28T09:21:51.347237Z\",\"creationTime\":\"2024-03-28T09:21:51.3472356Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-28T09:21:51.3472356Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:21:51.3472371Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  }\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4FB84F1C28B2\",\"lastModified\":\"2024-03-29T06:20:19.9590066Z\",\"creationTime\":\"2024-03-29T06:20:19.9590054Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-29T06:20:19.9590054Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-29T06:20:19.9590066Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  }\r\n}"
     }
   }, {
     "Method" : "GET",
     "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2024 09:22:21 GMT",
+      "date" : "Fri, 29 Mar 2024 06:20:49 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "218e9517-d1c6-4fd0-9cea-021d5d27afd4",
+      "request-id" : "efce13ef-585a-472a-9221-70c7f4b77a92",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 28 Mar 2024 09:21:51 GMT",
+      "last-modified" : "Fri, 29 Mar 2024 06:20:19 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "a0b746bf-c5c4-4615-b5d3-1c7b3ea4fdf3",
+      "client-request-id" : "cf617f95-cfb5-4349-b79f-620791685f71",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DC4F0880785D72",
+      "etag" : "0x8DC4FB84F1C28B2",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4F0880785D72\",\"lastModified\":\"2024-03-28T09:21:51.347237Z\",\"creationTime\":\"2024-03-28T09:21:51.3472356Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-28T09:21:51.3472356Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:21:51.3472371Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  }\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4FB84F1C28B2\",\"lastModified\":\"2024-03-29T06:20:19.9590066Z\",\"creationTime\":\"2024-03-29T06:20:19.9590054Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-29T06:20:19.9590054Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-29T06:20:19.9590066Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  }\r\n}"
     }
   }, {
     "Method" : "GET",
     "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2024 09:22:51 GMT",
+      "date" : "Fri, 29 Mar 2024 06:21:19 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "e22dd002-1be5-4a99-9df7-3482a1130867",
+      "request-id" : "7d0afdb8-2cfa-4ced-84d2-378e3c677207",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 28 Mar 2024 09:21:51 GMT",
+      "last-modified" : "Fri, 29 Mar 2024 06:20:19 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "526c5dda-9344-4356-9f7b-2928787b1d94",
+      "client-request-id" : "a725538e-642e-4c8f-b25b-8f3bc5c7036c",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DC4F0880785D72",
+      "etag" : "0x8DC4FB84F1C28B2",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4F0880785D72\",\"lastModified\":\"2024-03-28T09:21:51.347237Z\",\"creationTime\":\"2024-03-28T09:21:51.3472356Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-28T09:21:51.3472356Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:21:51.3472371Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  }\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4FB84F1C28B2\",\"lastModified\":\"2024-03-29T06:20:19.9590066Z\",\"creationTime\":\"2024-03-29T06:20:19.9590054Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-29T06:20:19.9590054Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-29T06:20:19.9590066Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  }\r\n}"
     }
   }, {
     "Method" : "GET",
     "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2024 09:23:21 GMT",
+      "date" : "Fri, 29 Mar 2024 06:21:50 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "0d455757-eb89-47f4-b61f-0cef65c5cd23",
+      "request-id" : "a1d74aa6-fee4-4ee4-82a9-c83fb9306933",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 28 Mar 2024 09:21:51 GMT",
+      "last-modified" : "Fri, 29 Mar 2024 06:20:19 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "6a0fab39-799a-43cf-ae20-048139073eb8",
+      "client-request-id" : "e6766a75-1e28-4792-a04c-c06fc62ab4e8",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DC4F0880785D72",
+      "etag" : "0x8DC4FB84F1C28B2",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4F0880785D72\",\"lastModified\":\"2024-03-28T09:21:51.347237Z\",\"creationTime\":\"2024-03-28T09:21:51.3472356Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-28T09:21:51.3472356Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:21:51.3472371Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  }\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4FB84F1C28B2\",\"lastModified\":\"2024-03-29T06:20:19.9590066Z\",\"creationTime\":\"2024-03-29T06:20:19.9590054Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-29T06:20:19.9590054Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-29T06:20:19.9590066Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  }\r\n}"
     }
   }, {
     "Method" : "GET",
     "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2024 09:23:51 GMT",
+      "date" : "Fri, 29 Mar 2024 06:22:20 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "ec5d11ec-09f0-4f51-99b9-8799e87faabd",
+      "request-id" : "70880642-eef2-4a7b-a2d7-ba94824100b6",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 28 Mar 2024 09:21:51 GMT",
+      "last-modified" : "Fri, 29 Mar 2024 06:20:19 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "acea874c-3fb5-45c3-8c00-a2550ee060d9",
+      "client-request-id" : "07a04161-b7eb-40f9-81b2-f5f618b09c26",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DC4F0880785D72",
+      "etag" : "0x8DC4FB84F1C28B2",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4F0880785D72\",\"lastModified\":\"2024-03-28T09:21:51.347237Z\",\"creationTime\":\"2024-03-28T09:21:51.3472356Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-28T09:21:51.3472356Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:21:51.3472371Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  }\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4FB84F1C28B2\",\"lastModified\":\"2024-03-29T06:20:19.9590066Z\",\"creationTime\":\"2024-03-29T06:20:19.9590054Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-29T06:20:19.9590054Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-29T06:20:19.9590066Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  }\r\n}"
     }
   }, {
     "Method" : "GET",
     "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2024 09:24:22 GMT",
+      "date" : "Fri, 29 Mar 2024 06:22:50 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "0baa10ce-b100-47af-985b-6c965f4feb24",
+      "request-id" : "0bb2b82d-2a1f-4100-a8a3-7cb3056cb312",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 28 Mar 2024 09:21:51 GMT",
+      "last-modified" : "Fri, 29 Mar 2024 06:20:19 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "54d4a164-d749-4402-b0ef-82ab8d57830c",
+      "client-request-id" : "dbb10e04-1cb1-41fd-9770-d0d76a733b97",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DC4F0880785D72",
+      "etag" : "0x8DC4FB84F1C28B2",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4F0880785D72\",\"lastModified\":\"2024-03-28T09:21:51.347237Z\",\"creationTime\":\"2024-03-28T09:21:51.3472356Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-28T09:21:51.3472356Z\",\"allocationState\":\"steady\",\"allocationStateTransitionTime\":\"2024-03-28T09:24:10.2279486Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4FB84F1C28B2\",\"lastModified\":\"2024-03-29T06:20:19.9590066Z\",\"creationTime\":\"2024-03-29T06:20:19.9590054Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-29T06:20:19.9590054Z\",\"allocationState\":\"steady\",\"allocationStateTransitionTime\":\"2024-03-29T06:22:43.1600389Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "DELETE",
     "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2024 09:24:22 GMT",
+      "date" : "Fri, 29 Mar 2024 06:22:50 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "28c6d11d-aaa3-4de5-ba28-f129fb6a0968",
+      "client-request-id" : "4d65744a-008d-42b1-b1f0-715b14e53e57",
       "retry-after" : "0",
-      "request-id" : "48a180b2-368f-4320-98e6-811920280ada",
+      "request-id" : "57fb1bef-7798-49ae-9f47-7aeac56b167d",
       "StatusCode" : "202",
       "dataserviceversion" : "3.0",
       "Body" : "",
@@ -217,257 +217,301 @@
     "Method" : "GET",
     "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2024 09:24:22 GMT",
+      "date" : "Fri, 29 Mar 2024 06:22:50 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "33be2443-d9c9-4a53-b2a7-ae19296f07de",
+      "request-id" : "76bb6758-a2f8-4df8-a8d4-820fcb3ef937",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 28 Mar 2024 09:24:22 GMT",
+      "last-modified" : "Fri, 29 Mar 2024 06:22:50 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "d7e49dbf-335c-41fc-88f3-60296fd76379",
+      "client-request-id" : "32199183-3259-4a63-8319-30ebd5ae57a4",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DC4F08DA9020F4",
+      "etag" : "0x8DC4FB8A9224E2A",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4F08DA9020F4\",\"lastModified\":\"2024-03-28T09:24:22.4979188Z\",\"creationTime\":\"2024-03-28T09:21:51.3472356Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-28T09:24:22.4979188Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:24:22.5109472Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4FB8A9224E2A\",\"lastModified\":\"2024-03-29T06:22:50.9942314Z\",\"creationTime\":\"2024-03-29T06:20:19.9590054Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-29T06:22:50.9942314Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-29T06:22:51.0040692Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
     "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2024 09:24:37 GMT",
+      "date" : "Fri, 29 Mar 2024 06:23:06 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "5cac190b-8b52-48ab-bd95-cd01577151d1",
+      "request-id" : "717f3532-3577-44dd-9847-5a8d467b0454",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 28 Mar 2024 09:24:22 GMT",
+      "last-modified" : "Fri, 29 Mar 2024 06:22:50 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "191316f2-7cae-414d-bf82-235fffd72eb3",
+      "client-request-id" : "66e4f5c0-f897-4e28-b402-9ae0042b3a1c",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DC4F08DA9020F4",
+      "etag" : "0x8DC4FB8A9224E2A",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4F08DA9020F4\",\"lastModified\":\"2024-03-28T09:24:22.4979188Z\",\"creationTime\":\"2024-03-28T09:21:51.3472356Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-28T09:24:22.4979188Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:24:22.5109472Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4FB8A9224E2A\",\"lastModified\":\"2024-03-29T06:22:50.9942314Z\",\"creationTime\":\"2024-03-29T06:20:19.9590054Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-29T06:22:50.9942314Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-29T06:22:51.0040692Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
     "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2024 09:24:52 GMT",
+      "date" : "Fri, 29 Mar 2024 06:23:21 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "336bdc48-6ec3-43d5-9a53-90cac561032a",
+      "request-id" : "6b0fd475-3e0a-4548-a119-967d6229d097",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 28 Mar 2024 09:24:22 GMT",
+      "last-modified" : "Fri, 29 Mar 2024 06:22:50 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "3a794b9e-3e0a-4b0c-bf51-e4241c6b02fe",
+      "client-request-id" : "09a5f82f-d355-4e99-a50f-6c2f33d20e9b",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DC4F08DA9020F4",
+      "etag" : "0x8DC4FB8A9224E2A",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4F08DA9020F4\",\"lastModified\":\"2024-03-28T09:24:22.4979188Z\",\"creationTime\":\"2024-03-28T09:21:51.3472356Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-28T09:24:22.4979188Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:24:22.5109472Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4FB8A9224E2A\",\"lastModified\":\"2024-03-29T06:22:50.9942314Z\",\"creationTime\":\"2024-03-29T06:20:19.9590054Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-29T06:22:50.9942314Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-29T06:22:51.0040692Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
     "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2024 09:25:08 GMT",
+      "date" : "Fri, 29 Mar 2024 06:23:35 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "ad57366e-b7bd-45a7-b845-1fe0c1d3da90",
+      "request-id" : "8cfd3057-91fe-4658-a734-6a241a1d5b69",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 28 Mar 2024 09:24:22 GMT",
+      "last-modified" : "Fri, 29 Mar 2024 06:22:50 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "8a51779b-db8d-461b-9f2d-f116befb84e6",
+      "client-request-id" : "d7885360-3b45-420a-ad0f-de3be246de4a",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DC4F08DA9020F4",
+      "etag" : "0x8DC4FB8A9224E2A",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4F08DA9020F4\",\"lastModified\":\"2024-03-28T09:24:22.4979188Z\",\"creationTime\":\"2024-03-28T09:21:51.3472356Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-28T09:24:22.4979188Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:24:22.5109472Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4FB8A9224E2A\",\"lastModified\":\"2024-03-29T06:22:50.9942314Z\",\"creationTime\":\"2024-03-29T06:20:19.9590054Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-29T06:22:50.9942314Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-29T06:22:51.0040692Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
     "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2024 09:25:22 GMT",
+      "date" : "Fri, 29 Mar 2024 06:23:50 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "6ae55b58-73e0-45c3-a254-fa9976506ef0",
+      "request-id" : "ee81e2fb-3474-41fa-8e36-1665657c6300",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 28 Mar 2024 09:24:22 GMT",
+      "last-modified" : "Fri, 29 Mar 2024 06:22:50 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "64f12b36-6107-4214-b6cf-3012688a2b08",
+      "client-request-id" : "cc755325-8ec0-4f72-a7fa-8857b07029f8",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DC4F08DA9020F4",
+      "etag" : "0x8DC4FB8A9224E2A",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4F08DA9020F4\",\"lastModified\":\"2024-03-28T09:24:22.4979188Z\",\"creationTime\":\"2024-03-28T09:21:51.3472356Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-28T09:24:22.4979188Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:24:22.5109472Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4FB8A9224E2A\",\"lastModified\":\"2024-03-29T06:22:50.9942314Z\",\"creationTime\":\"2024-03-29T06:20:19.9590054Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-29T06:22:50.9942314Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-29T06:22:51.0040692Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
     "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2024 09:25:37 GMT",
+      "date" : "Fri, 29 Mar 2024 06:24:06 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "997c466d-044f-43ab-a477-068b8a03c8d6",
+      "request-id" : "e010f89b-31ba-4573-9ca7-26da90f14f44",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 28 Mar 2024 09:24:22 GMT",
+      "last-modified" : "Fri, 29 Mar 2024 06:22:50 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "6d020166-f959-414a-bcb4-e65742206552",
+      "client-request-id" : "003a0900-67c8-42a7-a8db-3586bf2e47cd",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DC4F08DA9020F4",
+      "etag" : "0x8DC4FB8A9224E2A",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4F08DA9020F4\",\"lastModified\":\"2024-03-28T09:24:22.4979188Z\",\"creationTime\":\"2024-03-28T09:21:51.3472356Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-28T09:24:22.4979188Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:24:22.5109472Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4FB8A9224E2A\",\"lastModified\":\"2024-03-29T06:22:50.9942314Z\",\"creationTime\":\"2024-03-29T06:20:19.9590054Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-29T06:22:50.9942314Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-29T06:22:51.0040692Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
     "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2024 09:25:53 GMT",
+      "date" : "Fri, 29 Mar 2024 06:24:21 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "dc9ab411-c51d-4f41-9120-5f3383729fc1",
+      "request-id" : "539204ed-e17f-4221-96ad-c799a92f263d",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 28 Mar 2024 09:24:22 GMT",
+      "last-modified" : "Fri, 29 Mar 2024 06:22:50 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "74e32291-7c23-4ecf-ab4c-676e0ff4161e",
+      "client-request-id" : "fa332b3e-cbd1-4578-9c05-6213b631e498",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DC4F08DA9020F4",
+      "etag" : "0x8DC4FB8A9224E2A",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4F08DA9020F4\",\"lastModified\":\"2024-03-28T09:24:22.4979188Z\",\"creationTime\":\"2024-03-28T09:21:51.3472356Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-28T09:24:22.4979188Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:24:22.5109472Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4FB8A9224E2A\",\"lastModified\":\"2024-03-29T06:22:50.9942314Z\",\"creationTime\":\"2024-03-29T06:20:19.9590054Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-29T06:22:50.9942314Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-29T06:22:51.0040692Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
     "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2024 09:26:08 GMT",
+      "date" : "Fri, 29 Mar 2024 06:24:36 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "b92c4a89-41fc-428b-a6dc-a620ef9b7acb",
+      "request-id" : "330c47b4-26b5-45a6-bc3c-5b4777563395",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 28 Mar 2024 09:24:22 GMT",
+      "last-modified" : "Fri, 29 Mar 2024 06:22:50 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "e5a9c6a6-b80d-433c-b2d3-a96a07210f3f",
+      "client-request-id" : "7fdf535c-58a6-4979-94c5-98c8625d1746",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DC4F08DA9020F4",
+      "etag" : "0x8DC4FB8A9224E2A",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4F08DA9020F4\",\"lastModified\":\"2024-03-28T09:24:22.4979188Z\",\"creationTime\":\"2024-03-28T09:21:51.3472356Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-28T09:24:22.4979188Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:24:22.5109472Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4FB8A9224E2A\",\"lastModified\":\"2024-03-29T06:22:50.9942314Z\",\"creationTime\":\"2024-03-29T06:20:19.9590054Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-29T06:22:50.9942314Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-29T06:22:51.0040692Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
     "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2024 09:26:23 GMT",
+      "date" : "Fri, 29 Mar 2024 06:24:50 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "de66c840-dcec-4608-b09c-959557721c32",
+      "request-id" : "1e64b6dc-3f46-409c-9294-29bf55dae782",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 28 Mar 2024 09:24:22 GMT",
+      "last-modified" : "Fri, 29 Mar 2024 06:22:50 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "5c799298-99f2-497f-b0e1-887652f1de7f",
+      "client-request-id" : "4a84ef27-9325-4e24-8d33-741a1bae1522",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DC4F08DA9020F4",
+      "etag" : "0x8DC4FB8A9224E2A",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4F08DA9020F4\",\"lastModified\":\"2024-03-28T09:24:22.4979188Z\",\"creationTime\":\"2024-03-28T09:21:51.3472356Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-28T09:24:22.4979188Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:24:22.5109472Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4FB8A9224E2A\",\"lastModified\":\"2024-03-29T06:22:50.9942314Z\",\"creationTime\":\"2024-03-29T06:20:19.9590054Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-29T06:22:50.9942314Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-29T06:22:51.0040692Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
     "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2024 09:26:37 GMT",
+      "date" : "Fri, 29 Mar 2024 06:25:06 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "45c218dd-1cd4-4425-936d-b929ee445824",
+      "request-id" : "3441169b-d585-46e4-843a-42b5af521e08",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 28 Mar 2024 09:24:22 GMT",
+      "last-modified" : "Fri, 29 Mar 2024 06:22:50 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "8a7f7947-e844-4ba0-a8d0-602e3875203e",
+      "client-request-id" : "d764fbd9-debc-4463-a8e8-d66407f1b665",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DC4F08DA9020F4",
+      "etag" : "0x8DC4FB8A9224E2A",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4F08DA9020F4\",\"lastModified\":\"2024-03-28T09:24:22.4979188Z\",\"creationTime\":\"2024-03-28T09:21:51.3472356Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-28T09:24:22.4979188Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-28T09:24:22.5109472Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4FB8A9224E2A\",\"lastModified\":\"2024-03-29T06:22:50.9942314Z\",\"creationTime\":\"2024-03-29T06:20:19.9590054Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-29T06:22:50.9942314Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-29T06:22:51.0040692Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
     "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2024 09:26:53 GMT",
+      "date" : "Fri, 29 Mar 2024 06:25:21 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "dbd7f8fb-e7e9-4336-bb9f-07ab6ff603ed",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Fri, 29 Mar 2024 06:22:50 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "38bcce7b-5564-4907-b2a3-ba94c4c14095",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DC4FB8A9224E2A",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4FB8A9224E2A\",\"lastModified\":\"2024-03-29T06:22:50.9942314Z\",\"creationTime\":\"2024-03-29T06:20:19.9590054Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-29T06:22:50.9942314Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-29T06:22:51.0040692Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 29 Mar 2024 06:25:36 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "40b671fa-6b3f-4cbc-95c9-590a7b2585f6",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Fri, 29 Mar 2024 06:22:50 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "335418d7-4615-4052-9511-b83e1ad9a4d1",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DC4FB8A9224E2A",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-createContainerPool\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool\",\"eTag\":\"0x8DC4FB8A9224E2A\",\"lastModified\":\"2024-03-29T06:22:50.9942314Z\",\"creationTime\":\"2024-03-29T06:20:19.9590054Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2024-03-29T06:22:50.9942314Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-29T06:22:51.0040692Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"microsoft-azure-batch\",\"offer\":\"ubuntu-server-container\",\"sku\":\"20-04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 20.04\",\"containerConfiguration\":{\r\n      \"type\":\"dockerCompatible\",\"containerImageNames\":[\r\n        \"tensorflow/tensorflow:latest-gpu\"\r\n      ]\r\n    }\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  },\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Fri, 29 Mar 2024 06:25:51 GMT",
       "content-length" : "330",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "d119b5a0-692d-468b-9174-bc2a0410fbf7",
+      "client-request-id" : "4d57075a-fee6-481c-a0ef-78b99b4afa58",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "6879f8eb-4611-4c53-a04c-3cb3d530ec4e",
+      "request-id" : "fe1e70f5-4a91-40c4-b572-d33d87da2208",
       "StatusCode" : "404",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"PoolNotFound\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The specified pool does not exist.\\nRequestId:6879f8eb-4611-4c53-a04c-3cb3d530ec4e\\nTime:2024-03-28T09:26:53.9241084Z\"\r\n  }\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"PoolNotFound\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The specified pool does not exist.\\nRequestId:fe1e70f5-4a91-40c4-b572-d33d87da2208\\nTime:2024-03-29T06:25:52.3737545Z\"\r\n  }\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
     "Method" : "HEAD",
     "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-createContainerPool?api-version=2024-02-01.19.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:1622486f49728bd454b9a81631e9e75453d09e170266a7f266975c1a167bd82e Java:17.0.9 (BatchServiceClient, 2024-02-01.19.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 28 Mar 2024 09:26:53 GMT",
+      "date" : "Fri, 29 Mar 2024 06:25:51 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "24118f31-b9f7-4fd8-a202-9f666074c603",
+      "client-request-id" : "27c561ff-cc57-4a44-a52e-1ba610fd0c77",
       "retry-after" : "0",
-      "request-id" : "e038d728-9a0d-443e-9f97-fcb3b00951da",
+      "request-id" : "6e2c9b5e-4815-4705-b458-def07f92eae7",
       "StatusCode" : "404",
       "dataserviceversion" : "3.0",
       "Body" : "",
