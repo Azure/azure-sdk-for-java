@@ -7,17 +7,17 @@
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 29 Mar 2024 06:20:17 GMT",
+      "date" : "Fri, 29 Mar 2024 07:59:58 GMT",
       "content-length" : "666",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "6a13974a-2312-4195-9f26-a31db6060038",
+      "client-request-id" : "d68c2b60-1e1c-44c2-b7cb-9efa40fbf36f",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "d6c96989-8d4f-43f5-9a96-618e6f3a881b",
+      "request-id" : "2ec9d06c-7b5b-470e-a959-f1e4443df7b4",
       "StatusCode" : "400",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"InvalidPropertyValue\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The value provided for one of the properties in the request body is invalid.\\nRequestId:d6c96989-8d4f-43f5-9a96-618e6f3a881b\\nTime:2024-03-29T06:20:18.6330755Z\"\r\n  },\"values\":[\r\n    {\r\n      \"key\":\"PropertyName\",\"value\":\"windowsUserConfiguration\"\r\n    },{\r\n      \"key\":\"Reason\",\"value\":\"The user configuration for user account 'testaccount' has a mismatch with the OS (Windows/Linux) configuration specified in VirtualMachineConfiguration\"\r\n    }\r\n  ]\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"InvalidPropertyValue\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The value provided for one of the properties in the request body is invalid.\\nRequestId:2ec9d06c-7b5b-470e-a959-f1e4443df7b4\\nTime:2024-03-29T07:59:59.1354776Z\"\r\n  },\"values\":[\r\n    {\r\n      \"key\":\"PropertyName\",\"value\":\"windowsUserConfiguration\"\r\n    },{\r\n      \"key\":\"Reason\",\"value\":\"The user configuration for user account 'testaccount' has a mismatch with the OS (Windows/Linux) configuration specified in VirtualMachineConfiguration\"\r\n    }\r\n  ]\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
@@ -28,12 +28,12 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 29 Mar 2024 06:20:17 GMT",
+      "date" : "Fri, 29 Mar 2024 07:59:58 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "1ed6eba4-beeb-4397-bd9c-ed84cb3f9f47",
+      "client-request-id" : "4b061843-7808-4dee-99d2-ea7ff3a1830e",
       "retry-after" : "0",
-      "request-id" : "d7ed756e-a1cc-4cd2-88ce-f01a59d9f21b",
+      "request-id" : "bb1beac0-169c-4c62-a088-f886af085d7f",
       "StatusCode" : "404",
       "dataserviceversion" : "3.0",
       "Body" : "",

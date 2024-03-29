@@ -7,12 +7,12 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 29 Mar 2024 06:02:06 GMT",
+      "date" : "Fri, 29 Mar 2024 07:43:09 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "9f76a5bd-939b-473f-93b2-03619e662652",
+      "client-request-id" : "2e8be6b6-cb1e-4fe4-8e4b-3ccc1d235d5b",
       "retry-after" : "0",
-      "request-id" : "7b6e836c-7ff0-405e-94d5-e6ff31e1c5df",
+      "request-id" : "76a8b95f-3874-4e43-a01e-070fafcfa4f4",
       "StatusCode" : "404",
       "dataserviceversion" : "3.0",
       "Body" : "",
@@ -26,17 +26,17 @@
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 29 Mar 2024 06:02:07 GMT",
+      "date" : "Fri, 29 Mar 2024 07:43:10 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "dataserviceid" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-autoOSUpgradeRollingUpgrade",
       "retry-after" : "0",
-      "request-id" : "a83215a5-fc53-48f5-8507-e174acd49fa6",
+      "request-id" : "900dc357-2644-4927-993e-694029e098db",
       "StatusCode" : "201",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Fri, 29 Mar 2024 06:02:07 GMT",
+      "last-modified" : "Fri, 29 Mar 2024 07:43:10 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "6fd72781-716e-4d6a-be46-1b38b444dd30",
-      "etag" : "0x8DC4FB5C40B2BF0",
+      "client-request-id" : "ba491aa8-2045-430d-a3bf-fba3fd525125",
+      "etag" : "0x8DC4FC3E1C6434F",
       "location" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-autoOSUpgradeRollingUpgrade",
       "dataserviceversion" : "3.0",
       "Body" : ""
@@ -49,19 +49,19 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 29 Mar 2024 06:02:07 GMT",
+      "date" : "Fri, 29 Mar 2024 07:43:10 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "cb33ecba-a8b3-4a15-9162-478a840d13f9",
+      "request-id" : "f9df6b75-5ac9-437d-bcdb-3e99fa9ea994",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Fri, 29 Mar 2024 06:02:07 GMT",
+      "last-modified" : "Fri, 29 Mar 2024 07:43:10 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "73faf5c1-0bd2-49c4-9b28-28f376980708",
+      "client-request-id" : "c903195d-cf78-40e1-a7e8-8a84bf522e33",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DC4FB5C40B2BF0",
+      "etag" : "0x8DC4FC3E1C6434F",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-autoOSUpgradeRollingUpgrade\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-autoOSUpgradeRollingUpgrade\",\"eTag\":\"0x8DC4FB5C40B2BF0\",\"lastModified\":\"2024-03-29T06:02:07.6509168Z\",\"creationTime\":\"2024-03-29T06:02:07.6509157Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-29T06:02:07.6509157Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-29T06:02:07.6509169Z\",\"vmSize\":\"standard_d2s_v3\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"nodePlacementConfiguration\":{\r\n      \"policy\":\"Zonal\"\r\n    }\r\n  },\"upgradePolicy\":{\r\n    \"mode\":\"automatic\",\"automaticOSUpgradePolicy\":{\r\n      \"disableAutomaticRollback\":true,\"enableAutomaticOSUpgrade\":true,\"useRollingUpgradePolicy\":true,\"osRollingUpgradeDeferral\":true\r\n    },\"rollingUpgradePolicy\":{\r\n      \"enableCrossZoneUpgrade\":true,\"maxBatchInstancePercent\":20,\"maxUnhealthyInstancePercent\":20,\"maxUnhealthyUpgradedInstancePercent\":20,\"pauseTimeBetweenBatches\":\"PT5S\",\"prioritizeUnhealthyInstances\":false,\"rollbackFailedInstancesOnPolicyBreach\":false\r\n    }\r\n  }\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-autoOSUpgradeRollingUpgrade\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-autoOSUpgradeRollingUpgrade\",\"eTag\":\"0x8DC4FC3E1C6434F\",\"lastModified\":\"2024-03-29T07:43:10.4851791Z\",\"creationTime\":\"2024-03-29T07:43:10.4851777Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-03-29T07:43:10.4851777Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-03-29T07:43:10.4851792Z\",\"vmSize\":\"standard_d2s_v3\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"nodePlacementConfiguration\":{\r\n      \"policy\":\"Zonal\"\r\n    }\r\n  },\"upgradePolicy\":{\r\n    \"mode\":\"automatic\",\"automaticOSUpgradePolicy\":{\r\n      \"disableAutomaticRollback\":true,\"enableAutomaticOSUpgrade\":true,\"useRollingUpgradePolicy\":true,\"osRollingUpgradeDeferral\":true\r\n    },\"rollingUpgradePolicy\":{\r\n      \"enableCrossZoneUpgrade\":true,\"maxBatchInstancePercent\":20,\"maxUnhealthyInstancePercent\":20,\"maxUnhealthyUpgradedInstancePercent\":20,\"pauseTimeBetweenBatches\":\"PT5S\",\"prioritizeUnhealthyInstances\":false,\"rollbackFailedInstancesOnPolicyBreach\":false\r\n    }\r\n  }\r\n}"
     }
   }, {
     "Method" : "HEAD",
@@ -71,14 +71,14 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 29 Mar 2024 06:02:07 GMT",
-      "last-modified" : "Fri, 29 Mar 2024 06:02:07 GMT",
+      "date" : "Fri, 29 Mar 2024 07:43:10 GMT",
+      "last-modified" : "Fri, 29 Mar 2024 07:43:10 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "ab891a81-6647-4f07-953d-d7e1cc84458c",
-      "etag" : "0x8DC4FB5C40B2BF0",
+      "client-request-id" : "b541a2fe-bbdb-4c32-b37e-8ca5f5712d4f",
+      "etag" : "0x8DC4FC3E1C6434F",
       "retry-after" : "0",
-      "request-id" : "74ac4a41-6445-47e3-aee2-6fb8b30e92b3",
+      "request-id" : "257071bc-7616-474a-bf6d-527c97b8f039",
       "StatusCode" : "200",
       "dataserviceversion" : "3.0",
       "Body" : "",
@@ -92,12 +92,12 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 29 Mar 2024 06:02:08 GMT",
+      "date" : "Fri, 29 Mar 2024 07:43:11 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "ddbe9e19-84bd-4504-9728-3e23cacb759a",
+      "client-request-id" : "0aa859fd-d3a5-4faa-b153-e5c25a2aa08d",
       "retry-after" : "0",
-      "request-id" : "473318bc-3429-45eb-ba80-26c580dd2ea0",
+      "request-id" : "0e7b9fdc-aa01-4dbc-abb1-c670410e6bb4",
       "StatusCode" : "202",
       "dataserviceversion" : "3.0",
       "Body" : "",
