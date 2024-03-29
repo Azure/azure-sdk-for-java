@@ -73,8 +73,8 @@ public class LoggingTracerProvider implements TracerProvider {
             if (!isEnabled) {
                 return context;
             }
-            LoggingSpan span = new LoggingSpan(name, SpanKind.INTERNAL, getSpan(context));
-            return context.addData("span", span);
+
+            return start(name, new StartSpanOptions(SpanKind.INTERNAL), context);
         }
 
         @Override
@@ -84,10 +84,11 @@ public class LoggingTracerProvider implements TracerProvider {
             }
 
             LoggingSpan span = new LoggingSpan(name, options.getSpanKind(), getSpan(context));
+            span.startTimestamp = options.getStartTimestamp() == null ? Instant.now() : options.getStartTimestamp();
+
             if (options.getAttributes() != null) {
                 options.getAttributes().forEach((k, v) -> span.addKeyValue(k, v));
             }
-            span.start(options.getStartTimestamp());
 
             if (options.getLinks() != null) {
                 for (int i = 0; i < options.getLinks().size(); i++) {
@@ -201,10 +202,6 @@ public class LoggingTracerProvider implements TracerProvider {
                 log.addKeyValue(key, value);
             }
             return this;
-        }
-
-        public void start(Instant timestamp) {
-            this.startTimestamp = timestamp == null ? Instant.now() : timestamp;
         }
 
         public void end(Throwable throwable) {
