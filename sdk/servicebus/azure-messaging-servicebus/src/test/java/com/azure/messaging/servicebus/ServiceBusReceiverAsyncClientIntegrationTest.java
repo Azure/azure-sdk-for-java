@@ -551,7 +551,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
         setReceiver(entityType, USE_CASE_PEEK_BATCH_MESSAGES, isSessionEnabled);
 
         // Assert & Act
-        for (int i = 0; i < 5 && receivedPositions.size() < messages.size(); i ++) {
+        for (int i = 0; i < 5 && receivedPositions.size() < messages.size(); i++) {
             peekMessages(messages.size(), messageId, receivedPositions)
                     .doOnNext(receivedMessage -> receivedMessages.add(receivedMessage))
                     .blockLast();
