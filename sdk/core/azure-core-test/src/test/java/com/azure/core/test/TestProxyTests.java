@@ -297,8 +297,8 @@ public class TestProxyTests extends TestProxyTestBase {
         HttpClient client = interceptorManager.getPlaybackClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
-//        HttpClient client = new HttpURLConnectionHttpClient();
-//        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy()).build();
+        //        HttpClient client = new HttpURLConnectionHttpClient();
+        //        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy()).build();
 
         HttpRequest request = new HttpRequest(HttpMethod.POST, "http://localhost:" + server.port() + "/post");
         request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/x-www-form-urlencoded");
@@ -310,7 +310,6 @@ public class TestProxyTests extends TestProxyTestBase {
 
         RecordedTestProxyData recordedTestProxyData = readDataFromFile();
         RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
-
 
         assertEquals(record.getRequestBody(), "first_value=value&client_secret=REDACTED&other=value&is=cool");
 
