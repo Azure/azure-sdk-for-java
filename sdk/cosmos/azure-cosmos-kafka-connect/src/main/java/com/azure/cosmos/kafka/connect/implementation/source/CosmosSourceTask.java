@@ -11,7 +11,7 @@ import com.azure.cosmos.implementation.guava25.base.Stopwatch;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
-import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosThroughputControlHelper;
+import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -167,7 +167,7 @@ public class CosmosSourceTask extends SourceTask {
             this.cosmosClient
                 .getDatabase(feedRangeTaskUnit.getDatabaseName())
                 .getContainer(feedRangeTaskUnit.getContainerName());
-        KafkaCosmosThroughputControlHelper.tryEnableThroughputControl(
+        CosmosThroughputControlHelper.tryEnableThroughputControl(
             container,
             this.throughputControlCosmosClient,
             this.taskConfig.getThroughputControlConfig());
@@ -178,7 +178,7 @@ public class CosmosSourceTask extends SourceTask {
 
         // split/merge will be handled in source task
         ModelBridgeInternal.getChangeFeedIsSplitHandlingDisabled(changeFeedRequestOptions);
-        KafkaCosmosThroughputControlHelper
+        CosmosThroughputControlHelper
             .tryPopulateThroughputControlGroupName(
                 changeFeedRequestOptions,
                 this.taskConfig.getThroughputControlConfig());

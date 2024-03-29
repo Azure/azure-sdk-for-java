@@ -14,7 +14,7 @@ import com.azure.cosmos.models.PriorityLevel;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class KafkaCosmosThroughputControlHelper {
+public class CosmosThroughputControlHelper {
     public static CosmosAsyncContainer tryEnableThroughputControl(
         CosmosAsyncContainer container,
         CosmosAsyncClient throughputControlCosmosClient,

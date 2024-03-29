@@ -6,7 +6,9 @@ package com.azure.cosmos.kafka.connect;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
+import org.apache.kafka.common.config.Config;
 import org.apache.kafka.common.config.ConfigDef;
+import org.apache.kafka.common.config.ConfigValue;
 import org.apache.kafka.connect.connector.Task;
 import org.apache.kafka.connect.sink.SinkConnector;
 import org.slf4j.Logger;
@@ -15,6 +17,10 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateThroughputControlConfig;
 
 /**
  * A Sink connector that publishes topic messages to CosmosDB.
@@ -59,5 +65,23 @@ public class CosmosSinkConnector extends SinkConnector {
     @Override
     public String version() {
         return KafkaCosmosConstants.CURRENT_VERSION;
+    }
+
+    @Override
+    public Config validate(Map<String, String> connectorConfigs) {
+        Config config = super.validate(connectorConfigs);
+        //there are errors based on the config def
+        if (config.configValues().stream().anyMatch(cv -> !cv.errorMessages().isEmpty())) {
+            return config;
+        }
+
+        Map<String, ConfigValue> configValues =
+            config
+                .configValues()
+                .stream()
+                .collect(Collectors.toMap(ConfigValue::name, Function.identity()));
+
+        validateThroughputControlConfig(connectorConfigs, configValues);
+        return config;
     }
 }

@@ -12,7 +12,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlConfig;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosSchedulers;
-import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosThroughputControlHelper;
+import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkItemRequestOptions;
 import com.azure.cosmos.models.CosmosBulkItemResponse;
@@ -134,7 +134,7 @@ public class KafkaCosmosBulkWriter extends KafkaCosmosWriterBase {
                 .setMaxConcurrentCosmosPartitions(bulkExecutionOptions, this.writeConfig.getBulkMaxConcurrentCosmosPartitions());
         }
 
-        KafkaCosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(bulkExecutionOptions, this.throughputControlConfig);
+        CosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(bulkExecutionOptions, this.throughputControlConfig);
 
         return bulkExecutionOptions;
     }

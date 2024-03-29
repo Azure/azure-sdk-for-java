@@ -69,11 +69,7 @@ extends:
             - name: AdditionalArgs
               value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account)'
 
-<<<<<<< HEAD
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-=======
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
->>>>>>> main
         parameters:
           TestName: 'Kafka_Cosmos_Integration'
           CloudConfig:
@@ -98,10 +94,7 @@ extends:
             - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
           TestGoals: 'clean verify'
           TestOptions: '$(ProfileFlag)'
-<<<<<<< HEAD
-=======
           AdditionalVariables:
             - name: AdditionalArgs
               value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account)'
->>>>>>> main
 

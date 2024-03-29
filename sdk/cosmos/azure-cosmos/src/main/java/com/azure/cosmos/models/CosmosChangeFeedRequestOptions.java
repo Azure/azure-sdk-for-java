@@ -284,17 +284,12 @@ public final class CosmosChangeFeedRequestOptions {
             Range<String> normalizedRange =
                 FeedRangeInternal.normalizeRange(((FeedRangeEpkImpl) targetRange).getRange());
 
-<<<<<<< HEAD
-
-            final ChangeFeedState changeFeedState = ChangeFeedState.fromString(continuation);
-=======
             final ChangeFeedState changeFeedState = ChangeFeedState.fromString(continuation);
 
             if (StringUtils.isEmpty(continuationLsn)) {
                 continuationLsn = changeFeedState.getContinuation().getCurrentContinuationToken().getToken();
             }
 
->>>>>>> main
             ChangeFeedState targetChangeFeedState =
                 new ChangeFeedStateV1(
                     changeFeedState.getContainerRid(),

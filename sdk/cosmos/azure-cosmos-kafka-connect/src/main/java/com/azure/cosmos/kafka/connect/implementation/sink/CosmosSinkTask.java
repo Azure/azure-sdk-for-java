@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
-import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosThroughputControlHelper;
+import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
 import org.apache.kafka.connect.sink.SinkRecord;
 import org.apache.kafka.connect.sink.SinkTask;
 import org.slf4j.Logger;
@@ -96,7 +96,7 @@ public class CosmosSinkTask extends SinkTask {
                     .getDatabase(this.sinkTaskConfig.getContainersConfig().getDatabaseName())
                     .getContainer(containerName);
 
-            KafkaCosmosThroughputControlHelper
+            CosmosThroughputControlHelper
                 .tryEnableThroughputControl(
                     container,
                     this.throughputControlClient,

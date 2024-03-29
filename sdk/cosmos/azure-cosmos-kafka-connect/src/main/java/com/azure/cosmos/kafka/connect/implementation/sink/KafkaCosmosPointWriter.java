@@ -10,7 +10,7 @@ import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlConfig;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosSchedulers;
-import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosThroughputControlHelper;
+import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import org.apache.kafka.connect.sink.ErrantRecordReporter;
 import org.slf4j.Logger;
@@ -71,7 +71,7 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
         executeWithRetry(
             (operation) -> {
                 CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
-                KafkaCosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(cosmosItemRequestOptions, this.throughputControlConfig);
+                CosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(cosmosItemRequestOptions, this.throughputControlConfig);
                 return container.upsertItem(operation.getSinkRecord().value(), cosmosItemRequestOptions).then();
             },
             (throwable) -> false, // no exceptions should be ignored
@@ -83,7 +83,7 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
         executeWithRetry(
             (operation) -> {
                 CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
-                KafkaCosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(cosmosItemRequestOptions, this.throughputControlConfig);
+                CosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(cosmosItemRequestOptions, this.throughputControlConfig);
                 return container.createItem(operation.getSinkRecord().value(), cosmosItemRequestOptions).then();
             },
             (throwable) -> KafkaCosmosExceptionsHelper.isResourceExistsException(throwable),
@@ -96,7 +96,7 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
             (operation) -> {
                 CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
                 itemRequestOptions.setIfMatchETag(etag);
-                KafkaCosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(itemRequestOptions, this.throughputControlConfig);
+                CosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(itemRequestOptions, this.throughputControlConfig);
 
                 return ImplementationBridgeHelpers
                         .CosmosAsyncContainerHelper
@@ -129,7 +129,7 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
                     }
                 }
 
-                KafkaCosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(itemRequestOptions, this.throughputControlConfig);
+                CosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(itemRequestOptions, this.throughputControlConfig);
 
                 return ImplementationBridgeHelpers
                         .CosmosAsyncContainerHelper
