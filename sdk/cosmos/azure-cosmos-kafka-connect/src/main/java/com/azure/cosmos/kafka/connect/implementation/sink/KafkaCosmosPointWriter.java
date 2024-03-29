@@ -70,8 +70,7 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
     private void upsertWithRetry(CosmosAsyncContainer container, SinkOperation sinkOperation) {
         executeWithRetry(
             (operation) -> {
-                CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
-                CosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(cosmosItemRequestOptions, this.throughputControlConfig);
+                CosmosItemRequestOptions cosmosItemRequestOptions = this.getCosmosItemRequestOptions();
                 return container.upsertItem(operation.getSinkRecord().value(), cosmosItemRequestOptions).then();
             },
             (throwable) -> false, // no exceptions should be ignored
@@ -82,8 +81,7 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
     private void createWithRetry(CosmosAsyncContainer container, SinkOperation sinkOperation) {
         executeWithRetry(
             (operation) -> {
-                CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
-                CosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(cosmosItemRequestOptions, this.throughputControlConfig);
+                CosmosItemRequestOptions cosmosItemRequestOptions = this.getCosmosItemRequestOptions();
                 return container.createItem(operation.getSinkRecord().value(), cosmosItemRequestOptions).then();
             },
             (throwable) -> KafkaCosmosExceptionsHelper.isResourceExistsException(throwable),
@@ -94,9 +92,8 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
     private void replaceIfNotModifiedWithRetry(CosmosAsyncContainer container, SinkOperation sinkOperation, String etag) {
         executeWithRetry(
             (operation) -> {
-                CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+                CosmosItemRequestOptions itemRequestOptions = this.getCosmosItemRequestOptions();
                 itemRequestOptions.setIfMatchETag(etag);
-                CosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(itemRequestOptions, this.throughputControlConfig);
 
                 return ImplementationBridgeHelpers
                         .CosmosAsyncContainerHelper
@@ -121,15 +118,13 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
     private void deleteWithRetry(CosmosAsyncContainer container, SinkOperation sinkOperation, boolean onlyIfModified) {
         executeWithRetry(
             (operation) -> {
-                CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+                CosmosItemRequestOptions itemRequestOptions = this.getCosmosItemRequestOptions();
                 if (onlyIfModified) {
                     String etag = this.getEtag(operation.getSinkRecord().value());
                     if (StringUtils.isNotEmpty(etag)) {
                         itemRequestOptions.setIfMatchETag(etag);
                     }
                 }
-
-                CosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(itemRequestOptions, this.throughputControlConfig);
 
                 return ImplementationBridgeHelpers
                         .CosmosAsyncContainerHelper
@@ -197,6 +192,12 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
             .then()
             .subscribeOn(KafkaCosmosSchedulers.SINK_BOUNDED_ELASTIC)
             .block();
+    }
+
+    private CosmosItemRequestOptions getCosmosItemRequestOptions() {
+        CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+        CosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(itemRequestOptions, this.throughputControlConfig);
+        return itemRequestOptions;
     }
 }
 
