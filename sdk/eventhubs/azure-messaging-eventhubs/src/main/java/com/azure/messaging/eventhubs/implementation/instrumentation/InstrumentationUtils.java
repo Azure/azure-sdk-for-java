@@ -17,10 +17,10 @@ public final class InstrumentationUtils {
     public static final String ERROR_TYPE = "error.type";
     public static final String MESSAGING_BATCH_MESSAGE_COUNT = "messaging.batch.message_count";
     public static final String MESSAGING_DESTINATION_NAME = "messaging.destination.name";
+    public static final String MESSAGING_DESTINATION_PARTITION_ID = "messaging.destination.partition.id";
     public static final String MESSAGING_OPERATION = "messaging.operation";
     public static final String MESSAGING_SYSTEM = "messaging.system";
-    public static final String MESSAGING_EVENTHUBS_CONSUMER_GROUP = "messaging.eventhubs.consumer.group";
-    public static final String MESSAGING_EVENTHUBS_DESTINATION_PARTITION_ID = "messaging.eventhubs.destination.partition.id";
+    public static final String MESSAGING_CONSUMER_GROUP_NAME = "messaging.consumer.group.name";
     public static final String MESSAGING_EVENTHUBS_MESSAGE_ENQUEUED_TIME = "messaging.eventhubs.message.enqueued_time";
 
     // metrics

@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 import java.util.function.BiConsumer;
 
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_BATCH_MESSAGE_COUNT;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_EVENTHUBS_DESTINATION_PARTITION_ID;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_PARTITION_ID;
 
 class EventHubsProducerInstrumentation {
     private final EventHubsTracer tracer;
@@ -59,7 +59,7 @@ class EventHubsProducerInstrumentation {
         if (batch != null) {
             startOptions.setAttribute(MESSAGING_BATCH_MESSAGE_COUNT, batch.getCount());
             if (batch.getPartitionId() != null) {
-                startOptions.setAttribute(MESSAGING_EVENTHUBS_DESTINATION_PARTITION_ID, batch.getPartitionId());
+                startOptions.setAttribute(MESSAGING_DESTINATION_PARTITION_ID, batch.getPartitionId());
             }
             for (EventData event : batch.getEvents()) {
                 startOptions.addLink(tracer.createProducerLink(event.getProperties(), event.getContext()));

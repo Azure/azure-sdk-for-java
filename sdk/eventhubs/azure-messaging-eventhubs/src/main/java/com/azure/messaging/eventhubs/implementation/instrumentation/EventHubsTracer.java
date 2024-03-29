@@ -28,8 +28,8 @@ import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUM
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.DIAGNOSTIC_ID_KEY;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_BATCH_MESSAGE_COUNT;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_NAME;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_EVENTHUBS_CONSUMER_GROUP;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_EVENTHUBS_DESTINATION_PARTITION_ID;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_PARTITION_ID;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_EVENTHUBS_MESSAGE_ENQUEUED_TIME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM;
@@ -229,11 +229,11 @@ public class EventHubsTracer {
                 .setAttribute(MESSAGING_OPERATION, operationName.getAttributeValue());
 
         if (consumerGroup != null) {
-            startOptions.setAttribute(MESSAGING_EVENTHUBS_CONSUMER_GROUP, consumerGroup);
+            startOptions.setAttribute(MESSAGING_CONSUMER_GROUP_NAME, consumerGroup);
         }
 
         if (partitionId != null) {
-            startOptions.setAttribute(MESSAGING_EVENTHUBS_DESTINATION_PARTITION_ID, partitionId);
+            startOptions.setAttribute(MESSAGING_DESTINATION_PARTITION_ID, partitionId);
         }
 
         return startOptions;

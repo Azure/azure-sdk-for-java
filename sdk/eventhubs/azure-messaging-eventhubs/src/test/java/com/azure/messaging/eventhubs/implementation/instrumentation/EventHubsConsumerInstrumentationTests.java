@@ -585,7 +585,7 @@ public class EventHubsConsumerInstrumentationTests {
         TestHistogram processDuration = meter.getHistograms().get("messaging.process.duration");
         assertNotNull(processDuration);
         List<TestMeasurement<Double>> durationPerPartition = processDuration.getMeasurements().stream()
-                        .filter(m -> partitionId.equals(m.getAttributes().get("messaging.eventhubs.destination.partition.id")))
+                        .filter(m -> partitionId.equals(m.getAttributes().get("messaging.destination.partition.id")))
                         .collect(Collectors.toList());
         assertEquals(1, durationPerPartition.size());
         if (duration != null) {

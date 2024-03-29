@@ -23,7 +23,7 @@ import java.util.function.BiConsumer;
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.util.tracing.SpanKind.CONSUMER;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_BATCH_MESSAGE_COUNT;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_EVENTHUBS_DESTINATION_PARTITION_ID;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_PARTITION_ID;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.RECEIVE;
 
 public class EventHubsConsumerInstrumentation {
@@ -102,7 +102,7 @@ public class EventHubsConsumerInstrumentation {
                 scope -> {
                     if (startOptions != null) {
                         startOptions.setAttribute(MESSAGING_BATCH_MESSAGE_COUNT, receivedCount[0]);
-                        startOptions.setAttribute(MESSAGING_EVENTHUBS_DESTINATION_PARTITION_ID, partitionId);
+                        startOptions.setAttribute(MESSAGING_DESTINATION_PARTITION_ID, partitionId);
 
                         scope.setSpan(tracer.startSpan(RECEIVE, startOptions, Context.NONE));
                     }

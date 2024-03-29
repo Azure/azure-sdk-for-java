@@ -17,9 +17,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.ERROR_TYPE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_NAME;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_EVENTHUBS_CONSUMER_GROUP;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_EVENTHUBS_CONSUMER_LAG;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_EVENTHUBS_DESTINATION_PARTITION_ID;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_PARTITION_ID;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_PROCESS_DURATION;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_PROCESS_MESSAGES;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_PUBLISH_DURATION;
@@ -50,7 +50,7 @@ public class EventHubsMetricsProvider {
         this.isEnabled = meter != null && meter.isEnabled();
         if (this.isEnabled) {
             this.commonAttributes = getCommonAttributes(namespace, entityName, consumerGroup);
-            this.attributeCacheSuccess = new AttributeCache(MESSAGING_EVENTHUBS_DESTINATION_PARTITION_ID, commonAttributes);
+            this.attributeCacheSuccess = new AttributeCache(MESSAGING_DESTINATION_PARTITION_ID, commonAttributes);
 
             this.sendEventCounter = meter.createLongCounter(MESSAGING_PUBLISH_MESSAGES, "Number of sent events", "{event}");
             this.sendBatchDuration = meter.createDoubleHistogram(MESSAGING_PUBLISH_DURATION, "Duration of publish operation including all retries", "s");
@@ -122,7 +122,7 @@ public class EventHubsMetricsProvider {
         // the cost of creating attributes is negligible comparing to throwing an exception
         Map<String, Object> attributes = new HashMap<>(commonAttributes);
         if (partitionId != null) {
-            attributes.put(MESSAGING_EVENTHUBS_DESTINATION_PARTITION_ID, partitionId);
+            attributes.put(MESSAGING_DESTINATION_PARTITION_ID, partitionId);
         }
         attributes.put(ERROR_TYPE, errorType);
         return meter.createAttributes(attributes);
@@ -134,7 +134,7 @@ public class EventHubsMetricsProvider {
         commonAttributesMap.put(SERVER_ADDRESS, namespace);
         commonAttributesMap.put(MESSAGING_DESTINATION_NAME, entityName);
         if (consumerGroup != null) {
-            commonAttributesMap.put(MESSAGING_EVENTHUBS_CONSUMER_GROUP, consumerGroup);
+            commonAttributesMap.put(MESSAGING_CONSUMER_GROUP_NAME, consumerGroup);
         }
 
         return Collections.unmodifiableMap(commonAttributesMap);

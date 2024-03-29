@@ -161,7 +161,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         List<ReadableSpan> received = findSpans(spans, PROCESS).stream()
             .filter(s -> s == receivedSpan.get()).collect(toList());
         assertConsumerSpan(received.get(0), receivedMessage.get());
-        assertNull(received.get(0).getAttribute(AttributeKey.stringKey("messaging.eventhubs.consumer.group")));
+        assertNull(received.get(0).getAttribute(AttributeKey.stringKey("messaging.consumer.group.name")));
     }
 
     @Test
@@ -334,7 +334,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         List<ReadableSpan> send = findSpans(spans, OperationName.PUBLISH);
         assertSendSpan(send.get(0), Arrays.asList(event1, event2));
-        assertEquals(sendOptions.getPartitionId(), send.get(0).getAttribute(AttributeKey.stringKey("messaging.eventhubs.destination.partition.id")));
+        assertEquals(sendOptions.getPartitionId(), send.get(0).getAttribute(AttributeKey.stringKey("messaging.destination.partition.id")));
 
         List<ReadableSpan> received = findSpans(spans, PROCESS);
         assertEquals(2, received.size());
@@ -445,7 +445,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .stream().filter(p -> p == currentInProcess.get()).collect(toList());
         assertEquals(1, processed.size());
         assertConsumerSpan(processed.get(0), receivedMessage.get());
-        assertNull(processed.get(0).getAttribute(AttributeKey.stringKey("messaging.eventhubs.consumer.group")));
+        assertNull(processed.get(0).getAttribute(AttributeKey.stringKey("messaging.consumer.group.name")));
 
         SpanContext parentSpanContext = currentInProcess.get().getSpanContext();
         List<ReadableSpan> checkpointed = findSpans(spans, SETTLE)
@@ -681,7 +681,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(SpanKind.CONSUMER, actual.getKind());
         assertEquals(StatusCode.UNSET, spanData.getStatus().getStatusCode());
         assertEquals("process", actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
-        assertEquals(PARTITION_ID, actual.getAttribute(AttributeKey.stringKey("messaging.eventhubs.destination.partition.id")));
+        assertEquals(PARTITION_ID, actual.getAttribute(AttributeKey.stringKey("messaging.destination.partition.id")));
 
         String messageTraceparent = (String) message.getProperties().get("traceparent");
         if (messageTraceparent == null) {
@@ -707,7 +707,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(SpanKind.CONSUMER, actual.getKind());
         assertEquals(status, actual.toSpanData().getStatus().getStatusCode());
         assertEquals("process", actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
-        assertNotNull(actual.getAttribute(AttributeKey.stringKey("messaging.eventhubs.destination.partition.id")));
+        assertNotNull(actual.getAttribute(AttributeKey.stringKey("messaging.destination.partition.id")));
 
         List<EventData> receivedMessagesWithTraceContext = messages.stream().filter(m -> m.getProperties().containsKey("traceparent")).collect(toList());
         assertEquals(receivedMessagesWithTraceContext.size(), actual.toSpanData().getLinks().size());
@@ -735,8 +735,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(parent.getTraceId(), actual.getSpanContext().getTraceId());
         assertEquals(parent.getSpanId(), actual.getParentSpanContext().getSpanId());
 
-        assertNull(actual.getAttribute(AttributeKey.stringKey("messaging.eventhubs.consumer.group")));
-        assertNotNull(actual.getAttribute(AttributeKey.stringKey("messaging.eventhubs.destination.partition.id")));
+        assertNull(actual.getAttribute(AttributeKey.stringKey("messaging.consumer.group.name")));
+        assertNotNull(actual.getAttribute(AttributeKey.stringKey("messaging.destination.partition.id")));
     }
 
     private List<ReadableSpan> findSpans(List<ReadableSpan> spans, OperationName operationName) {

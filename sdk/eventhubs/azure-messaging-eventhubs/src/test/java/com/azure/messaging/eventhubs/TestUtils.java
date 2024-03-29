@@ -38,8 +38,8 @@ import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_N
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.ERROR_TYPE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_NAME;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_EVENTHUBS_CONSUMER_GROUP;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_EVENTHUBS_DESTINATION_PARTITION_ID;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_PARTITION_ID;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM_VALUE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.SERVER_ADDRESS;
@@ -205,8 +205,8 @@ public final class TestUtils {
         assertEquals(MESSAGING_SYSTEM_VALUE, attributes.get(MESSAGING_SYSTEM));
         assertEquals(hostname, attributes.get(SERVER_ADDRESS));
         assertEquals(entityName, attributes.get(MESSAGING_DESTINATION_NAME));
-        assertEquals(partitionId, attributes.get(MESSAGING_EVENTHUBS_DESTINATION_PARTITION_ID));
-        assertEquals(consumerGroup, attributes.get(MESSAGING_EVENTHUBS_CONSUMER_GROUP));
+        assertEquals(partitionId, attributes.get(MESSAGING_DESTINATION_PARTITION_ID));
+        assertEquals(consumerGroup, attributes.get(MESSAGING_CONSUMER_GROUP_NAME));
         assertEquals(errorType, attributes.get(ERROR_TYPE));
     }
 
