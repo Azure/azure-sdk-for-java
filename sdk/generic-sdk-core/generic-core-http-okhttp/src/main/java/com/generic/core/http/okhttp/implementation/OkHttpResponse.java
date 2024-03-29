@@ -21,7 +21,7 @@ public class OkHttpResponse extends HttpResponse<BinaryData> {
     private BinaryData body;
 
     public OkHttpResponse(okhttp3.Response response, HttpRequest request, boolean eagerlyConvertHeaders,
-                          byte[] bodyBytes) {
+                          BinaryData body) {
         super(request,
             response.code(),
             eagerlyConvertHeaders
@@ -34,14 +34,7 @@ public class OkHttpResponse extends HttpResponse<BinaryData> {
         // [b]. for the cases described here
         // [ref](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response/body/).
         this.responseBody = response.body();
-
-        if (bodyBytes == null) {
-            if (responseBody != null && responseBody.contentLength() != 0) {
-                this.body = BinaryData.fromStream(responseBody.byteStream());
-            }
-        } else {
-            this.body = BinaryData.fromBytes(bodyBytes);
-        }
+        this.body = body;
     }
 
     /**

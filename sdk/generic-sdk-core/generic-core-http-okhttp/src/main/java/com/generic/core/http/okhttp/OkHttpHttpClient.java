@@ -9,7 +9,6 @@ import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.Response;
 import com.generic.core.http.models.ResponseBodyMode;
 import com.generic.core.http.models.ServerSentEventListener;
@@ -155,7 +154,7 @@ class OkHttpHttpClient implements HttpClient {
                 throw LOGGER.logThrowableAsError(new RuntimeException(ServerSentEventUtil.NO_LISTENER_ERROR_MESSAGE));
             }
 
-            return new OkHttpResponse(response, request, eagerlyConvertHeaders, EMPTY_BODY);
+            return new OkHttpResponse(response, request, eagerlyConvertHeaders, BinaryData.fromBytes(EMPTY_BODY));
         }
 
         return processResponse(request, response, responseBodyMode, eagerlyConvertHeaders);
@@ -175,7 +174,7 @@ class OkHttpHttpClient implements HttpClient {
             request.getMetadata().setResponseBodyMode(responseBodyMode);
         }
 
-        final HttpResponse<?> httpResponse;
+        BinaryData body = null;
 
         switch (responseBodyMode) {
             case IGNORE:
@@ -183,28 +182,25 @@ class OkHttpHttpClient implements HttpClient {
                     response.body().close();
                 }
 
-                httpResponse = new OkHttpResponse(response, request, eagerlyConvertHeaders, EMPTY_BODY);
-
                 break;
             case STREAM:
-                httpResponse = new OkHttpResponse(response, request, eagerlyConvertHeaders, null);
+                if (response.body() != null && response.body().contentLength() != 0) {
+                    body = BinaryData.fromStream(response.body().byteStream());
+                }
 
                 break;
             case BUFFER:
             case DESERIALIZE:
             default:
-                try (ResponseBody body = response.body()) {
-                    byte[] bytes = null;
-
-                    if (body != null && body.contentLength() != 0) {
-                        bytes = body.bytes();
+                try (ResponseBody responseBody = response.body()) {
+                    if (responseBody != null && responseBody.contentLength() != 0) {
+                        body = BinaryData.fromBytes(responseBody.bytes());
                     }
-
-                    httpResponse = new OkHttpResponse(response, request, eagerlyConvertHeaders, bytes);
                 }
         }
 
-        return httpResponse;
+        return new OkHttpResponse(response, request, eagerlyConvertHeaders,
+            body == null ? BinaryData.fromBytes(EMPTY_BODY) : body);
     }
 
     private static boolean isTextEventStream(okhttp3.Headers responseHeaders) {
