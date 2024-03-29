@@ -516,12 +516,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
 
-            if (isRegionScopedSessionCapturingEnabled || Configs.isRegionScopedSessionTokenCapturingEnabled()) {
-                this.sessionContainer = new RegionScopedSessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing, this.globalEndpointManager);
-            } else {
-                this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
-            }
+//            if (isRegionScopedSessionCapturingEnabled || Configs.isRegionScopedSessionTokenCapturingEnabled()) {
+//                this.sessionContainer = new RegionScopedSessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing, this.globalEndpointManager);
+//            } else {
+//                this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
+//            }
 
+            // todo: revert to use config
+            this.sessionContainer = new RegionScopedSessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing, this.globalEndpointManager);
             this.retryPolicy = new RetryPolicy(this, this.globalEndpointManager, this.connectionPolicy);
             this.resetSessionTokenRetryPolicy = retryPolicy;
             CpuMemoryMonitor.register(this);
