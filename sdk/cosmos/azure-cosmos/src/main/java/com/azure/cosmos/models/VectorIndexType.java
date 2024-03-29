@@ -33,4 +33,12 @@ public enum VectorIndexType {
     public String toString() {
         return this.overWireValue;
     }
+
+    /**
+     *
+     * @return value for the enum
+     */
+    public String getValue() {
+        return this.overWireValue;
+    }
 }

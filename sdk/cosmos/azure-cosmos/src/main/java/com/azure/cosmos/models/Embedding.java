@@ -13,11 +13,11 @@ public final class Embedding {
     @JsonProperty(Constants.Properties.PATH)
     private String path;
     @JsonProperty(Constants.Properties.VECTOR_DATA_TYPE)
-    private VectorDataType vectorDataType;
+    private String vectorDataType;
     @JsonProperty(Constants.Properties.VECTOR_DIMENSIONS)
     private Long dimensions;
     @JsonProperty(Constants.Properties.DISTANCE_FUNCTION)
-    private DistanceFunction distanceFunction;
+    private String distanceFunction;
 
     /**
      * Gets the path for the embedding.
@@ -44,7 +44,7 @@ public final class Embedding {
      *
      * @return vectorDataType
      */
-    public VectorDataType getVectorDataType() {
+    public String getVectorDataType() {
         return vectorDataType;
     }
 
@@ -54,7 +54,7 @@ public final class Embedding {
      * @param vectorDataType the data type for the embedding
      * @return Embedding
      */
-    public Embedding setVectorDataType(VectorDataType vectorDataType) {
+    public Embedding setVectorDataType(String vectorDataType) {
         this.vectorDataType = vectorDataType;
         return this;
     }
@@ -84,7 +84,7 @@ public final class Embedding {
      *
      * @return distanceFunction
      */
-    public DistanceFunction getDistanceFunction() {
+    public String getDistanceFunction() {
         return distanceFunction;
     }
 
@@ -94,7 +94,7 @@ public final class Embedding {
      * @param distanceFunction the distanceFunction for the embedding
      * @return Embedding
      */
-    public Embedding setDistanceFunction(DistanceFunction distanceFunction) {
+    public Embedding setDistanceFunction(String distanceFunction) {
         this.distanceFunction = distanceFunction;
         return this;
     }

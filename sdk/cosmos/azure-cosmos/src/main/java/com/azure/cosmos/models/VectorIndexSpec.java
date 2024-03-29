@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 public final class VectorIndexSpec {
 
     private final JsonSerializable jsonSerializable;
-    private VectorIndexType vectorIndexType;
+    private String type;
 
     /**
      * Constructor
@@ -23,6 +23,13 @@ public final class VectorIndexSpec {
     public VectorIndexSpec(String path) {
         this.jsonSerializable = new JsonSerializable();
         this.setPath(path);
+    }
+
+    /**
+     * Constructor.
+     */
+    public VectorIndexSpec() {
+        this.jsonSerializable = new JsonSerializable();
     }
 
     /**
@@ -57,26 +64,26 @@ public final class VectorIndexSpec {
      *
      * @return the vector index type
      */
-    public VectorIndexType getVectorIndexType() {
-        if (this.vectorIndexType == null) {
-            this.vectorIndexType = VectorIndexType.valueOf(this.jsonSerializable.getString(Constants.Properties.VECTOR_INDEX_TYPE));
+    public String getType() {
+        if (this.type == null) {
+            this.type = this.jsonSerializable.getString(Constants.Properties.VECTOR_INDEX_TYPE);
 
-            if (this.vectorIndexType == null) {
+            if (this.type == null) {
                 throw new IllegalArgumentException("INVALID vectorIndexType of " + this.jsonSerializable.getString(Constants.Properties.VECTOR_INDEX_TYPE));
             }
         }
-        return this.vectorIndexType;
+        return this.type;
     }
 
     /**
      * Sets the vector index type for the vector index
      *
-     * @param vectorIndexType the vector index type
+     * @param type the vector index type
      * @return the VectorIndexSpec
      */
-    public VectorIndexSpec setVectorIndexType(VectorIndexType vectorIndexType) {
-        this.vectorIndexType = vectorIndexType;
-        this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_TYPE, vectorIndexType.toString());
+    public VectorIndexSpec setType(String type) {
+        this.type = type;
+        this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_TYPE, this.type);
         return this;
     }
 

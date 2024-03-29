@@ -285,15 +285,15 @@ public final class IndexingPolicy {
      * "vectorIndexes": [
      *      {
      *          "path": "/vector1",
-     *          "type": "DiskANN"
+     *          "type": "diskANN"
      *      },
      *      {
      *          "path": "/vector1",
-     *          "type": "Flat"
+     *          "type": "flat"
      *      },
      *      {
      *          "path": "/vector2",
-     *          "type": "QuantizedFlat"
+     *          "type": "quantizedFlat"
      *      }]
      *
      * @param vectorIndexes the vector indexes
@@ -301,6 +301,7 @@ public final class IndexingPolicy {
      */
     public IndexingPolicy setVectorIndexes(List<VectorIndexSpec> vectorIndexes) {
         this.vectorIndexes = vectorIndexes;
+        this.jsonSerializable.set(Constants.Properties.VECTOR_INDEXES,this.vectorIndexes);
         return this;
     }
 

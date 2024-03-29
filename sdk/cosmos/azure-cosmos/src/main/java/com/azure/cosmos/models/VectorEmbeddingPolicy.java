@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -15,6 +16,8 @@ import java.util.Optional;
  * Vector Embedding Policy
  */
 public final class VectorEmbeddingPolicy {
+
+    private JsonSerializable jsonSerializable;
 
     /**
      * Paths for embeddings along with path-specific settings for the item.
@@ -30,6 +33,13 @@ public final class VectorEmbeddingPolicy {
     public VectorEmbeddingPolicy(List<Embedding> embeddings) {
         validateEmbeddings(embeddings);
         this.embeddings = embeddings;
+    }
+
+    /**
+     * Constructor.
+     */
+    public VectorEmbeddingPolicy() {
+        this.jsonSerializable = new JsonSerializable();
     }
 
     private static void validateEmbeddings(List<Embedding> embeddings) {
@@ -60,24 +70,24 @@ public final class VectorEmbeddingPolicy {
         }
     }
 
-    private static void validateEmbeddingVectorDataType(VectorDataType value) {
+    private static void validateEmbeddingVectorDataType(String value) {
         Optional.ofNullable(value)
             .filter(vectorDataType -> !vectorDataType.isEmpty())
             .map(vectorDataType -> Arrays.stream(VectorDataType.values())
-                .filter(dataType -> dataType.getValue().equals(vectorDataType.getValue()))
+                .filter(dataType -> dataType.getValue().equals(vectorDataType))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("")))
-            .orElseThrow(() -> new IllegalArgumentException(""));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid vector data type for the vector embedding policy.")))
+            .orElseThrow(() -> new IllegalArgumentException("Vector data type cannot be empty for the vector embedding policy."));
     }
 
-    private static void validateEmbeddingDistanceFunction(DistanceFunction value) {
+    private static void validateEmbeddingDistanceFunction(String value) {
         Optional.ofNullable(value)
             .filter(distanceFunction -> !distanceFunction.isEmpty())
             .map(distanceFunction -> Arrays.stream(DistanceFunction.values())
-                .filter(distFunction -> distFunction.getValue().equals(distanceFunction.getValue()))
+                .filter(distFunction -> distFunction.getValue().equals(distanceFunction))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("")))
-            .orElseThrow(() -> new IllegalArgumentException(""));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid distance function for the vector embedding policy.")))
+            .orElseThrow(() -> new IllegalArgumentException("Distance function cannot be empty for the vector embedding policy."));
     }
 
     /**
