@@ -40,7 +40,7 @@ parameters:
     default: false
 
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: generic-sdk-core
     EnableBatchRelease: true
@@ -60,12 +60,6 @@ extends:
         releaseInBatch: ${{ parameters.release_genericjson }}
     MatrixReplace:
       - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
-    MatrixConfigs:
-      - Name: Generic_ci
-        Path: sdk/generic-sdk-core/platform-matrix.json
-        Selection: sparse
-        NonSparseParameters: Agent
-        GenerateVMJobs: true
 
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
@@ -83,9 +77,3 @@ extends:
               safeName: genericjson
           MatrixReplace:
             - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
-          MatrixConfigs:
-            - Name: Generic_ci
-              Path: sdk/generic-sdk-core/platform-matrix.json
-              Selection: sparse
-              NonSparseParameters: Agent
-              GenerateVMJobs: true
