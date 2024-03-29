@@ -48,7 +48,7 @@ public class CosmosSinkConnector extends SinkConnector {
 
     @Override
     public void stop() {
-        LOGGER.debug("Kafka Cosmos sink connector {} is stopped.");
+        LOGGER.info("Kafka Cosmos sink connector {} is stopped.");
     }
 
     @Override
