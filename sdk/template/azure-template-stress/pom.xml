@@ -49,8 +49,6 @@
 
     <dependency>
       <groupId>com.azure</groupId>
-<<<<<<< HEAD
-=======
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.14.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
@@ -77,7 +75,6 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
->>>>>>> f312575f3320fb6a628189b8c11d7ba142585647
       <artifactId>perf-test-core</artifactId>
       <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:perf-test-core;current} -->
     </dependency>
