@@ -1,14 +1,8 @@
 # Release History
 
-## 5.11.0-beta.1 (Unreleased)
+## 5.11.0 (2024-03-29)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#5110-2024-03-29) for more details.
 
 ## 5.10.0 (2024-03-01)
 
