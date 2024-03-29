@@ -32,6 +32,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -311,7 +312,7 @@ public class VectorIndexTest extends TestSuiteBase {
         VectorIndexSpec vectorIndexSpec3 = new VectorIndexSpec("/vector3");
         vectorIndexSpec3.setType(VectorIndexType.DISK_ANN.getValue());
 
-        return List.of(vectorIndexSpec1, vectorIndexSpec2, vectorIndexSpec3);
+        return Arrays.asList(vectorIndexSpec1, vectorIndexSpec2, vectorIndexSpec3);
     }
 
     private List<Embedding> populateEmbeddings() {
@@ -332,7 +333,6 @@ public class VectorIndexTest extends TestSuiteBase {
         embedding3.setDistanceFunction(DistanceFunction.EUCLIDEAN.getValue());
         embedding3.setDimensions(3L);
         embedding3.setVectorDataType(VectorDataType.UINT8.getValue());
-
-        return List.of(embedding1, embedding2, embedding3);
+        return Arrays.asList(embedding1, embedding2, embedding3);
     }
 }
