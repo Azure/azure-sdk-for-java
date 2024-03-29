@@ -12,51 +12,37 @@ import java.util.concurrent.TimeUnit;
 import com.microsoft.azure.batch.protocol.models.*;
 
 public class PoolTests extends BatchIntegrationTestBase {
-    private static CloudPool livePool;
-    private static String poolId;
     private static NetworkConfiguration networkConfiguration;
 
     @BeforeClass
     public static void setup() throws Exception {
-        poolId = getStringIdWithUserNamePrefix("-testpool");
         if(isRecordMode()) {
             createClient(AuthMode.AAD);
-            livePool = createIfNotExistIaaSPool(poolId);
-            Assert.assertNotNull(livePool);
         }
         // Need VNet to allow security to inject NSGs
         networkConfiguration = createNetworkConfiguration();
     }
 
-    @AfterClass
-    public static void cleanup() throws Exception {
-        try {
-            // batchClient.poolOperations().deletePool(livePool.id());
-        } catch (Exception e) {
-            // ignore any clean up exception
-        }
-    }
-
     @Test
     public void testPoolOData() throws Exception {
-        CloudPool pool = batchClient.poolOperations().getPool(poolId,
-                new DetailLevel.Builder().withExpandClause("stats").build());
-
-        //Temporarily Disabling the stats check, REST API doesn't provide the stats consistently for newly created pools
-        // Will be enabled back soon.
-        //Assert.assertNotNull(pool.stats());
-
-        List<CloudPool> pools = batchClient.poolOperations()
+        String poolId = getStringIdWithUserNamePrefix("-testPoolOData");
+        CloudPool testPool = createIfNotExistIaaSPool(poolId);
+        Assert.assertNotNull(testPool);
+        try {
+            List<CloudPool> pools = batchClient.poolOperations()
                 .listPools(new DetailLevel.Builder().withSelectClause("id, state").build());
-        Assert.assertTrue(pools.size() > 0);
-        Assert.assertNotNull(pools.get(0).id());
-        Assert.assertNull(pools.get(0).vmSize());
-
-        // When tests are being ran in parallel, there may be a previous pool delete still in progress
-        pools = batchClient.poolOperations()
-                .listPools(new DetailLevel.Builder().withFilterClause("state eq 'deleting'").build());
-        // Assert.assertTrue(pools.size() < 2);
-
+            Assert.assertTrue(pools.size() > 0);
+            Assert.assertNotNull(pools.get(0).id());
+            Assert.assertNull(pools.get(0).vmSize());
+        } finally {
+            try {
+                if (batchClient.poolOperations().existsPool(poolId)) {
+                    batchClient.poolOperations().deletePool(poolId);
+                }
+            } catch (Exception e) {
+                // Ignore exception
+            }
+        }
     }
 
     @Test
