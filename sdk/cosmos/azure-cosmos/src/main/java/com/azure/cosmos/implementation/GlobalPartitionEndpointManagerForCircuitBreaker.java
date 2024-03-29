@@ -137,6 +137,10 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
     @Override
     public boolean isRegionAvailableForPartitionKeyRange(RxDocumentServiceRequest request) {
 
+        if (request.isMetadataRequest()) {
+            return true;
+        }
+
         if (request == null) {
             throw new IllegalArgumentException("request cannot be null!");
         }

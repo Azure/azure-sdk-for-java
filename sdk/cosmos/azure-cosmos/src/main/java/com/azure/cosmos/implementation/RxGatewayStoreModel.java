@@ -544,7 +544,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
     private Mono<RxDocumentServiceResponse> invokeAsync(RxDocumentServiceRequest request) {
 
-        if (this.globalPartitionEndpointManager.isRegionAvailableForPartitionKeyRange(request)) {
+        if (!this.globalPartitionEndpointManager.isRegionAvailableForPartitionKeyRange(request)) {
             return Mono.error(new ServiceUnavailableException("PkRange is unavailable at region", null, request.requestContext.locationEndpointToRoute, HttpConstants.SubStatusCodes.UNKNOWN));
         }
 

@@ -5463,15 +5463,28 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         ThresholdBasedAvailabilityStrategy availabilityStrategy =
-            (ThresholdBasedAvailabilityStrategy)endToEndPolicyConfig.getAvailabilityStrategy();
+            (ThresholdBasedAvailabilityStrategy) endToEndPolicyConfig.getAvailabilityStrategy();
         List<Mono<NonTransientPointOperationResult>> monoList = new ArrayList<>();
 
         final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(innerDiagnosticsFactory, false);
 
         return this.collectionCache.resolveByNameAsync(null, collectionLink, null)
-                .flatMap(collection -> {
+            .flatMap(collection -> this.partitionKeyRangeCache.tryLookupAsync(null, collection.getResourceId(), null, null)
+                .flatMap(collectionRoutingMapValueHolder -> {
+
                     PartitionKeyDefinition partitionKeyDefinition = collection.getPartitionKey();
                     PartitionKey partitionKey = nonNullRequestOptions.getPartitionKey();
+
+                    // todo: validate if the below is possible
+                    if (collectionRoutingMapValueHolder.v == null) {
+                        // throw new BulkExecutorUtil.CollectionRoutingMapNotFoundException();
+                        return Mono.error(new IllegalStateException(""));
+                    }
+
+                    PartitionKeyRange partitionKeyRange = collectionRoutingMapValueHolder.v.getRangeByEffectivePartitionKey(
+                        PartitionKeyInternalHelper.getEffectivePartitionKeyString(
+                            ModelBridgeInternal.getPartitionKeyInternal(partitionKey),
+                            partitionKeyDefinition));
 
                     orderedApplicableRegionsForSpeculation
                         .forEach(region -> {
@@ -5596,9 +5609,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             return exception;
                         })
                         .doOnCancel(() -> diagnosticsFactory.merge(nonNullRequestOptions));
-
-                });
+                }));
     }
+
+
 
     private static boolean isCosmosException(Throwable t) {
         final Throwable unwrappedException = Exceptions.unwrap(t);

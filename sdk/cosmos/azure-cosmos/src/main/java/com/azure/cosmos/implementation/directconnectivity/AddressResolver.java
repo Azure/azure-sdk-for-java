@@ -88,7 +88,7 @@ public class AddressResolver implements IAddressResolver {
             request.requestContext.resolvedPartitionKeyRange = result.TargetPartitionKeyRange;
 
             // TODO: use GlobalPartitionEndpointManager to add a partition-level request override
-            if (this.globalPartitionEndpointManager.isRegionAvailableForPartitionKeyRange(request)) {
+            if (!this.globalPartitionEndpointManager.isRegionAvailableForPartitionKeyRange(request)) {
                 return Mono.error(new ServiceUnavailableException("PkRange is unavailable at region", null, request.requestContext.locationEndpointToRoute, HttpConstants.SubStatusCodes.UNKNOWN));
             }
 

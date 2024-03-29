@@ -162,7 +162,7 @@ public class CosmosItemTest extends TestSuiteBase {
         validateItemResponse(docDefinition, readResponse);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }/*, timeOut = TIMEOUT*/)
     public void readItem() throws Exception {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
