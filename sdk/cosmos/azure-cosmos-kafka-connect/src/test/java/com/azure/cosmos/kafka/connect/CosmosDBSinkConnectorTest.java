@@ -27,13 +27,13 @@ import static org.testng.Assert.assertEquals;
 public class CosmosDBSinkConnectorTest extends KafkaCosmosTestSuiteBase {
     @Test(groups = "unit")
     public void taskClass() {
-        CosmosDBSinkConnector sinkConnector = new CosmosDBSinkConnector();
+        CosmosSinkConnector sinkConnector = new CosmosSinkConnector();
         assertEquals(sinkConnector.taskClass(), CosmosSinkTask.class);
     }
 
     @Test(groups = "unit")
     public void config() {
-        CosmosDBSinkConnector sinkConnector = new CosmosDBSinkConnector();
+        CosmosSinkConnector sinkConnector = new CosmosSinkConnector();
         ConfigDef configDef = sinkConnector.config();
         Map<String, ConfigDef.ConfigKey> configs = configDef.configKeys();
         List<KafkaCosmosConfigEntry<?>> allValidConfigs = ALL_VALID_CONFIGS;
@@ -52,7 +52,7 @@ public class CosmosDBSinkConnectorTest extends KafkaCosmosTestSuiteBase {
 
     @Test(groups = "unit")
     public void requiredConfig() {
-        Config config = new CosmosDBSinkConnector().validate(Collections.emptyMap());
+        Config config = new CosmosSinkConnector().validate(Collections.emptyMap());
         Map<String, List<String>> errorMessages = config.configValues().stream()
             .collect(Collectors.toMap(ConfigValue::name, ConfigValue::errorMessages));
         assertThat(errorMessages.get("kafka.connect.cosmos.accountEndpoint").size()).isGreaterThan(0);
@@ -63,7 +63,7 @@ public class CosmosDBSinkConnectorTest extends KafkaCosmosTestSuiteBase {
 
     @Test(groups = "unit")
     public void taskConfigs() {
-        CosmosDBSinkConnector sinkConnector = new CosmosDBSinkConnector();
+        CosmosSinkConnector sinkConnector = new CosmosSinkConnector();
 
         Map<String, String> sinkConfigMap = new HashMap<>();
         sinkConfigMap.put("kafka.connect.cosmos.accountEndpoint", KafkaCosmosTestConfigurations.HOST);
@@ -87,7 +87,7 @@ public class CosmosDBSinkConnectorTest extends KafkaCosmosTestSuiteBase {
 
     @Test(groups = "unit")
     public void misFormattedConfig() {
-        CosmosDBSinkConnector sinkConnector = new CosmosDBSinkConnector();
+        CosmosSinkConnector sinkConnector = new CosmosSinkConnector();
         Map<String, String> sinkConfigMap = this.getValidSinkConfig();
 
         String topicMapConfigName = "kafka.connect.cosmos.sink.containers.topicMap";

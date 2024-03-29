@@ -8,8 +8,8 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
-import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
-import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
+import com.azure.cosmos.kafka.connect.implementation.CosmosConstants;
+import com.azure.cosmos.kafka.connect.implementation.CosmosExceptionsHelper;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceOffsetStorageReader;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTask;
@@ -43,8 +43,8 @@ import java.util.stream.Collectors;
 /***
  * The CosmosDb source connector.
  */
-public class CosmosDBSourceConnector extends SourceConnector {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosDBSourceConnector.class);
+public class CosmosSourceConnector extends SourceConnector {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSourceConnector.class);
     private CosmosSourceConfig config;
     private CosmosAsyncClient cosmosClient;
     private MetadataMonitorThread monitorThread;
@@ -100,8 +100,8 @@ public class CosmosDBSourceConnector extends SourceConnector {
 
     @Override
     public String version() {
-        return KafkaCosmosConstants.CURRENT_VERSION;
-    }
+        return CosmosConstants.CURRENT_VERSION;
+    } // TODO[public preview]: how this is being used
 
     private List<Map<String, String>> getTaskConfigs(int maxTasks) {
         Pair<MetadataTaskUnit, List<FeedRangeTaskUnit>> taskUnits = this.getAllTaskUnits();
@@ -315,14 +315,22 @@ public class CosmosDBSourceConnector extends SourceConnector {
             .getContainer(containerProperties.getId())
             .getFeedRanges()
             .onErrorMap(throwable ->
-                KafkaCosmosExceptionsHelper.convertToConnectException(
+                CosmosExceptionsHelper.convertToConnectException(
                     throwable,
                     "GetFeedRanges failed for container " + containerProperties.getId()))
             .block();
     }
 
     private Map<String, String> getContainersTopicMap(List<CosmosContainerProperties> allContainers) {
-        Map<String, String> topicMapFromConfig = this.config.getContainersConfig().getContainerToTopicMap();
+        Map<String, String> topicMapFromConfig =
+            this.config.getContainersConfig().getContainersTopicMap()
+                .stream()
+                .map(containerTopicMapString -> containerTopicMapString.split("#"))
+                .collect(
+                    Collectors.toMap(
+                        containerTopicMapArray -> containerTopicMapArray[1],
+                        containerTopicMapArray -> containerTopicMapArray[0]));
+
         Map<String, String> effectiveContainersTopicMap = new HashMap<>();
         allContainers.forEach(containerProperties -> {
             // by default, we are using container id as the topic name as well unless customer override through containers.topicMap 

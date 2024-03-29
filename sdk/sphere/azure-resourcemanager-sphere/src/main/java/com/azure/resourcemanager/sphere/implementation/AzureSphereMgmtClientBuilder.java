@@ -14,9 +14,11 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the AzureSphereManagementClientImpl type. */
-@ServiceClientBuilder(serviceClients = {AzureSphereManagementClientImpl.class})
-public final class AzureSphereManagementClientBuilder {
+/**
+ * A builder for creating a new instance of the AzureSphereMgmtClientImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { AzureSphereMgmtClientImpl.class })
+public final class AzureSphereMgmtClientBuilder {
     /*
      * The ID of the target subscription.
      */
@@ -24,11 +26,11 @@ public final class AzureSphereManagementClientBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
-     * @return the AzureSphereManagementClientBuilder.
+     * @return the AzureSphereMgmtClientBuilder.
      */
-    public AzureSphereManagementClientBuilder subscriptionId(String subscriptionId) {
+    public AzureSphereMgmtClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -40,11 +42,11 @@ public final class AzureSphereManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
-     * @return the AzureSphereManagementClientBuilder.
+     * @return the AzureSphereMgmtClientBuilder.
      */
-    public AzureSphereManagementClientBuilder endpoint(String endpoint) {
+    public AzureSphereMgmtClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -56,11 +58,11 @@ public final class AzureSphereManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
-     * @return the AzureSphereManagementClientBuilder.
+     * @return the AzureSphereMgmtClientBuilder.
      */
-    public AzureSphereManagementClientBuilder environment(AzureEnvironment environment) {
+    public AzureSphereMgmtClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -72,11 +74,11 @@ public final class AzureSphereManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
-     * @return the AzureSphereManagementClientBuilder.
+     * @return the AzureSphereMgmtClientBuilder.
      */
-    public AzureSphereManagementClientBuilder pipeline(HttpPipeline pipeline) {
+    public AzureSphereMgmtClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -88,11 +90,11 @@ public final class AzureSphereManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the AzureSphereManagementClientBuilder.
+     * @return the AzureSphereMgmtClientBuilder.
      */
-    public AzureSphereManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public AzureSphereMgmtClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -104,41 +106,31 @@ public final class AzureSphereManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
-     * @return the AzureSphereManagementClientBuilder.
+     * @return the AzureSphereMgmtClientBuilder.
      */
-    public AzureSphereManagementClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public AzureSphereMgmtClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of AzureSphereManagementClientImpl with the provided parameters.
-     *
-     * @return an instance of AzureSphereManagementClientImpl.
+     * Builds an instance of AzureSphereMgmtClientImpl with the provided parameters.
+     * 
+     * @return an instance of AzureSphereMgmtClientImpl.
      */
-    public AzureSphereManagementClientImpl buildClient() {
+    public AzureSphereMgmtClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        AzureSphereManagementClientImpl client =
-            new AzureSphereManagementClientImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null) ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        AzureSphereMgmtClientImpl client = new AzureSphereMgmtClientImpl(localPipeline, localSerializerAdapter,
+            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

@@ -19,8 +19,8 @@ import java.util.Map;
 /**
  * A Sink connector that publishes topic messages to CosmosDB.
  */
-public class CosmosDBSinkConnector extends SinkConnector {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosDBSinkConnector.class);
+public class CosmosSinkConnector extends SinkConnector {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSinkConnector.class);
 
     private CosmosSinkConfig sinkConfig;
 
