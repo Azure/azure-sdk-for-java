@@ -36,7 +36,7 @@ public class DefaultHttpClientBuilder {
     /**
      * Sets the connection timeout for a request to be sent.
      *
-     * <p>The connection timeout begins once the request attempts to connect to the remote host and finishes once the
+     * <p>The connection timeout begins git once the request attempts to connect to the remote host and finishes once the
      * connection is resolved.</p>
      *
      * <p>If {@code connectionTimeout} is null, a 10-second timeout will be used, if it is a {@link Duration} less than or

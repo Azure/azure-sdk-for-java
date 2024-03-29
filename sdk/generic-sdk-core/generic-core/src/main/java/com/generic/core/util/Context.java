@@ -4,8 +4,8 @@
 package com.generic.core.util;
 
 import com.generic.core.annotation.Metadata;
+import com.generic.core.implementation.util.InternalContext;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import static com.generic.core.annotation.TypeConditions.IMMUTABLE;
@@ -18,28 +18,16 @@ import static com.generic.core.annotation.TypeConditions.IMMUTABLE;
  * that refers to its parent, forming a linked list.</p>
  */
 @Metadata(conditions = IMMUTABLE)
-public class Context {
+public final class Context {
     private static final ClientLogger LOGGER = new ClientLogger(Context.class);
 
     // All fields must be immutable.
     /**
      * Signifies that no data needs to be passed to the pipeline.
      */
-    public static final Context NONE = new Context(null, new Object(), null, 0) {
-        @Override
-        public Optional<Object> getData(Object key) {
-            if (key == null) {
-                throw LOGGER.logThrowableAsError(new IllegalArgumentException("key cannot be null"));
-            }
+    public static final Context NONE = new Context(InternalContext.empty());
 
-            return Optional.empty();
-        }
-    };
-
-    private final Context parent;
-    private final Object key;
-    private final Object value;
-    private final int contextCount;
+    private final InternalContext internal;
 
     /**
      * Constructs a new {@link Context} object.
@@ -65,28 +53,11 @@ public class Context {
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Context(Object key, Object value) {
-        this.parent = null;
-        this.key = Objects.requireNonNull(key, "'key' cannot be null.");
-        this.value = value;
-        this.contextCount = 1;
+        this.internal = InternalContext.of(validateKey(key), value);
     }
 
-    private Context(Context parent, Object key, Object value, int contextCount) {
-        this.parent = parent;
-        this.key = key;
-        this.value = value;
-        this.contextCount = contextCount;
-    }
-
-    /**
-     * Gets the parent {@link Context} object.
-     * <p>
-     * Returns null is this is the root {@link Context}.
-     *
-     * @return The parent {@link Context} object, or null if this is the root {@link Context}.
-     */
-    public Context getParent() {
-        return parent;
+    private Context(InternalContext internal) {
+        this.internal = internal;
     }
 
     /**
@@ -97,7 +68,7 @@ public class Context {
      * @return The key associated with this {@link Context} object.
      */
     public Object getKey() {
-        return key;
+        return internal.getKey();
     }
 
     /**
@@ -108,7 +79,7 @@ public class Context {
      * @return The value associated with this {@link Context} object.
      */
     public Object getValue() {
-        return value;
+        return internal.getValue();
     }
 
     /**
@@ -146,11 +117,7 @@ public class Context {
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Context addData(Object key, Object value) {
-        if (key == null) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("key cannot be null"));
-        }
-
-        return new Context(this, key, value, contextCount + 1);
+        return new Context(internal.addData(validateKey(key), value));
     }
 
     /**
@@ -184,23 +151,16 @@ public class Context {
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Optional<Object> getData(Object key) {
+        Optional<Object> data = internal.getData(validateKey(key));
+
+        return (data == null) ? Optional.empty() : data;
+    }
+
+    private static Object validateKey(Object key) {
         if (key == null) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("key cannot be null"));
         }
 
-        for (Context c = this; c != null; c = c.parent) {
-            if (key.equals(c.key)) {
-                return Optional.ofNullable(c.value);
-            }
-
-            // If the contextCount is 1 that means the next parent Context is the NONE Context.
-            // Return Optional.empty now to prevent a meaningless check.
-            if (c.contextCount == 1) {
-                return Optional.empty();
-            }
-        }
-
-        // This should never be reached but is required by the compiler.
-        return Optional.empty();
+        return key;
     }
 }
