@@ -454,6 +454,9 @@
 # ServiceLabel: %Functions
 # ServiceOwners:                                     @ahmedelnably @fabiocav
 
+# ServiceLabel: %generic-core
+# ServiceOwners:                                     @samvaity @vcolin7 @jonathangiles @srnagar @alzimmermsft
+
 # ServiceLabel: %Graph.Microsoft
 # ServiceOwners:                                     @dkershaw10 @baywet
 
