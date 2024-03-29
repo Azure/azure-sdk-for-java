@@ -455,7 +455,7 @@
 # ServiceOwners:                                     @ahmedelnably @fabiocav
 
 # PRLabel: %generic-core
-/sdk/generic-core/                                   @samvaity @vcolin7 @jonathangiles @srnagar @alzimmermsft
+/sdk/generic-sdk-core/                                   @samvaity @vcolin7 @jonathangiles @srnagar @alzimmermsft
 
 # ServiceLabel: %generic-core
 # AzureSdkOwners:                                    @samvaity @vcolin7 @jonathangiles @srnagar @alzimmermsft
