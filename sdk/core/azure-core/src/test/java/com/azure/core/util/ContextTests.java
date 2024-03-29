@@ -8,6 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public class ContextTests {
 
     @Test
     public void constructorKeyCannotBeNull() {
-        assertThrows(NullPointerException.class, () -> new Context(null, null));
+        assertThrows(IllegalArgumentException.class, () -> new Context(null, null));
     }
 
     @ParameterizedTest
@@ -102,15 +103,16 @@ public class ContextTests {
     @Test
     public void getContextChain() {
         Context context = Context.NONE.addData("key", "value");
-        Context[] chain = context.getContextChain();
-        assertEquals(1, chain.length);
-        assertEquals("value", chain[0].getValue());
+        Map<Object, Object> values = context.getValues();
+        assertEquals(1, values.size());
+        assertEquals("value", values.entrySet().iterator().next().getValue());
 
-        context = FluxUtil.withContext(Mono::just).block();
-        context = context.addData("key1", "value1");
-        chain = context.getContextChain();
-        assertEquals(1, chain.length);
-        assertEquals("value1", chain[0].getValue());
+        StepVerifier.create(FluxUtil.withContext(Mono::just)).assertNext(context1 -> {
+            context1 = context1.addData("key1", "value1");
+            Map<Object, Object> values1 = context1.getValues();
+            assertEquals(1, values1.size());
+            assertEquals("value1", values1.entrySet().iterator().next().getValue());
+        }).verifyComplete();
     }
 
     private static Stream<Arguments> getValuesSupplier() {

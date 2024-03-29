@@ -75,6 +75,10 @@
           <Method name="getUpDownCounters" />
         </Or>
       </And>
+      <And>
+        <Class name="com.azure.core.test.utils.metrics.TestMeasurement" />
+        <Method name="getContext" />
+      </And>
     </Or>
   </Match>
 

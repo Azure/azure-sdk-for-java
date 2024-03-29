@@ -38,6 +38,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -342,12 +343,13 @@ public class CoreUtilsTests {
         expectedMergedContextChain.add(from);
 
         Context merged = CoreUtils.mergeContexts(into, from);
-        Context[] mergedContextChain = merged.getContextChain();
+        Map<Object, Object> values = merged.getValues();
 
-        assertEquals(expectedMergedContextChain.size(), mergedContextChain.length);
+        assertEquals(expectedMergedContextChain.size(), values.size());
+        List<Map.Entry<Object, Object>> mergedContextChain = values.entrySet().stream().collect(Collectors.toList());
         for (int i = 0; i < expectedMergedContextChain.size(); i++) {
             Context expected = expectedMergedContextChain.get(i);
-            Context actual = mergedContextChain[i];
+            Map.Entry<Object, Object> actual = mergedContextChain.get(i);
 
             assertEquals(expected.getKey(), actual.getKey());
             assertEquals(expected.getValue(), actual.getValue());

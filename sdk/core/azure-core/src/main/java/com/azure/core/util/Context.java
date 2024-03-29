@@ -4,12 +4,12 @@
 package com.azure.core.util;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.implementation.util.InternalContext;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -24,38 +24,14 @@ import java.util.Optional;
 public class Context {
     private static final ClientLogger LOGGER = new ClientLogger(Context.class);
 
-    private static final Context[] EMPTY_CHAIN = new Context[0];
-
     // All fields must be immutable.
     //
     /**
      * Signifies that no data needs to be passed to the pipeline.
      */
-    public static final Context NONE = new Context(null, null, null, 0) {
-        @Override
-        public Optional<Object> getData(Object key) {
-            if (key == null) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("key cannot be null"));
-            }
+    public static final Context NONE = new Context(InternalContext.empty());
 
-            return Optional.empty();
-        }
-
-        @Override
-        public Map<Object, Object> getValues() {
-            return Collections.emptyMap();
-        }
-
-        @Override
-        Context[] getContextChain() {
-            return EMPTY_CHAIN;
-        }
-    };
-
-    private final Context parent;
-    private final Object key;
-    private final Object value;
-    private final int contextCount;
+    private final InternalContext internal;
 
     private Map<Object, Object> valuesMap;
 
@@ -82,25 +58,19 @@ public class Context {
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Context(Object key, Object value) {
-        this.parent = null;
-        this.key = Objects.requireNonNull(key, "'key' cannot be null.");
-        this.value = value;
-        this.contextCount = 1;
+        this.internal = InternalContext.of(validateKey(key), value);
     }
 
-    private Context(Context parent, Object key, Object value, int contextCount) {
-        this.parent = parent;
-        this.key = key;
-        this.value = value;
-        this.contextCount = contextCount;
+    Context(InternalContext internal) {
+        this.internal = internal;
     }
 
     Object getKey() {
-        return key;
+        return internal.getKey();
     }
 
     Object getValue() {
-        return value;
+        return internal.getValue();
     }
 
     /**
@@ -136,10 +106,15 @@ public class Context {
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Context addData(Object key, Object value) {
+        return new Context(internal.addData(validateKey(key), value));
+    }
+
+    static Object validateKey(Object key) {
         if (key == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("key cannot be null"));
         }
-        return new Context(this, key, value, contextCount + 1);
+
+        return key;
     }
 
     /**
@@ -210,24 +185,9 @@ public class Context {
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Optional<Object> getData(Object key) {
-        if (key == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("key cannot be null"));
-        }
+        Optional<Object> data = internal.getData(validateKey(key));
 
-        for (Context c = this; c != null; c = c.parent) {
-            if (key.equals(c.key)) {
-                return Optional.ofNullable(c.value);
-            }
-
-            // If the contextCount is 1 that means the next parent Context is the NONE Context.
-            // Return Optional.empty now to prevent a meaningless check.
-            if (c.contextCount == 1) {
-                return Optional.empty();
-            }
-        }
-
-        // This should never be reached but is required by the compiler.
-        return Optional.empty();
+        return (data == null) ? Optional.empty() : data;
     }
 
     /**
@@ -267,49 +227,29 @@ public class Context {
             return valuesMap;
         }
 
-        if (contextCount == 1) {
-            this.valuesMap = Collections.singletonMap(key, value);
-            return this.valuesMap;
-        }
-
-        Map<Object, Object> map = new HashMap<>((int) Math.ceil(contextCount / 0.75F));
-
-        for (Context pointer = this; pointer != null; pointer = pointer.parent) {
-            if (pointer.key != null) {
-                map.putIfAbsent(pointer.key, pointer.value);
-            }
-
-            // If the contextCount is 1 that means the next parent Context is the NONE Context.
-            // Break out of the loop to prevent a meaningless check.
-            if (pointer.contextCount == 1) {
-                break;
-            }
-        }
-
+        LinkedHashMap<Object, Object> map = new LinkedHashMap<>();
+        internal.getValues(map);
         this.valuesMap = Collections.unmodifiableMap(map);
+
         return this.valuesMap;
     }
 
-    /**
-     * Gets the {@link Context Contexts} in the chain of Contexts that this Context is the tail.
-     *
-     * @return The Contexts, in oldest to newest order, in the chain of Contexts that this Context is the tail.
-     */
-    Context[] getContextChain() {
-        Context[] chain = new Context[contextCount];
-
-        int chainPosition = contextCount - 1;
-
-        for (Context pointer = this; pointer != null; pointer = pointer.parent) {
-            chain[chainPosition--] = pointer;
-
-            // If the contextCount is 1 that means the next parent Context is the NONE Context.
-            // Break out of the loop to prevent a meaningless check.
-            if (pointer.contextCount == 1) {
-                break;
-            }
+    static Context merge(Context into, Context from) {
+        // If the 'into' Context is the NONE Context just return the 'from' Context.
+        // This is safe as Context is immutable and prevents needing to create any new Contexts and temporary arrays.
+        if (into == NONE) {
+            return from;
         }
 
-        return chain;
+        // Same goes the other way, where if the 'from' Context is the NONE Context just return the 'into' Context.
+        if (from == NONE) {
+            return into;
+        }
+
+        return new Context(into.internal.merge(from.internal));
+    }
+
+    reactor.util.context.Context putIntoReactorContext(reactor.util.context.Context reactorContext) {
+        return internal.putIntoReactorContext(reactorContext);
     }
 }

@@ -13,6 +13,7 @@
       <Class name="com.azure.core.http.policy.KeyCredentialPolicy" />
       <Class name="com.azure.core.implementation.http.UnexpectedExceptionInformation" />
       <Class name="com.azure.core.implementation.http.rest.SwaggerMethodParser" />
+      <Class name="com.azure.core.util.Context" />
       <Class name="com.azure.core.util.paging.ContinuablePagedFluxCore" />
       <Class name="com.azure.core.util.paging.ContinuablePagedIterable" />
       <Class name="com.azure.core.util.serializer.TypeReference" />
@@ -143,6 +144,13 @@
         <Class name="com.azure.core.implementation.ReflectionUtilsMethodHandle" />
         <Method name="getLookupToUse" />
       </And>
+      <And>
+        <Or>
+          <Class name="com.azure.core.implementation.util.InternalContext1" />
+          <Class name="com.azure.core.implementation.util.InternalContext2" />
+        </Or>
+        <Method name="merge" />
+      </And>
     </Or>
   </Match>
 
@@ -207,7 +215,10 @@
         <Method name="getScopes" />
       </And>
       <And>
-        <Class name="com.azure.core.exception.HttpRequestException" />
+        <Or>
+          <Class name="com.azure.core.exception.HttpRequestException" />
+          <Class name="com.azure.core.http.HttpResponse" />
+        </Or>
         <Method name="getRequest" />
       </And>
       <And>
@@ -219,7 +230,10 @@
         <Method name="getTracer" />
       </And>
       <And>
-        <Class name="com.azure.core.http.HttpPipelineCallContext" />
+        <Or>
+          <Class name="com.azure.core.http.HttpPipelineCallContext" />
+          <Class name="com.azure.core.http.policy.HttpRequestLoggingContext" />
+        </Or>
         <Method name="getHttpRequest" />
       </And>
       <And>
@@ -230,19 +244,11 @@
         </Or>
       </And>
       <And>
-        <Class name="com.azure.core.http.HttpResponse" />
-        <Method name="getRequest" />
-      </And>
-      <And>
         <Class name="com.azure.core.http.policy.HttpLogOptions" />
         <Or>
           <Method name="getAllowedHeaderNames" />
           <Method name="getAllowedQueryParamNames" />
         </Or>
-      </And>
-      <And>
-        <Class name="com.azure.core.http.policy.HttpRequestLoggingContext" />
-        <Method name="getHttpRequest" />
       </And>
       <And>
         <Class name="com.azure.core.http.policy.HttpResponseLoggingContext" />
@@ -343,6 +349,7 @@
         <Or>
           <Method name="getAttributes" />
           <Method name="getLinks" />
+          <Method name="getRemoteParent" />
         </Or>
       </And>
       <And>
@@ -364,6 +371,18 @@
           <Method name="getThrowable" />
           <Method name="getRetriedThrowables" />
         </Or>
+      </And>
+      <And>
+        <Or>
+          <Class name="com.azure.core.http.HttpPipelineCallContext" />
+          <Class name="com.azure.core.http.policy.HttpRequestLoggingContext" />
+          <Class name="com.azure.core.http.policy.HttpResponseLoggingContext" />
+          <Class name="com.azure.core.http.rest.RequestOptions" />
+          <Class name="com.azure.core.util.Contexts" />
+          <Class name="com.azure.core.util.polling.PollingStrategyOptions" />
+          <Class name="com.azure.core.util.tracing.TracingLink" />
+        </Or>
+        <Method name="getContext" />
       </And>
     </Or>
   </Match>
@@ -421,6 +440,17 @@
         <Class name="com.azure.core.models.MessageContent" />
         <Method name="setBodyAsBinaryData" />
       </And>
+      <And>
+        <Or>
+          <Class name="com.azure.core.http.rest.RequestOptions" />
+          <Class name="com.azure.core.util.polling.PollingStrategyOptions" />
+        </Or>
+        <Method name="setContext" />
+      </And>
+      <And>
+        <Class name="com.azure.core.util.tracing.StartSpanOptions" />
+        <Method name="setRemoteParent" />
+      </And>
     </Or>
   </Match>
 
@@ -440,5 +470,19 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" />
     <Class name="com.azure.core.implementation.http.rest.SwaggerMethodParser" />
     <Method name="serialize" />
+  </Match>
+
+  <Match>
+    <Bug pattern="NP_OPTIONAL_RETURN_NULL" />
+    <And>
+      <Or>
+        <Class name="com.azure.core.implementation.util.InternalContext0" />
+        <Class name="com.azure.core.implementation.util.InternalContext1" />
+        <Class name="com.azure.core.implementation.util.InternalContext2" />
+        <Class name="com.azure.core.implementation.util.InternalContext3" />
+        <Class name="com.azure.core.implementation.util.InternalContext4" />
+      </Or>
+      <Method name="getData" />
+    </And>
   </Match>
 </FindBugsFilter>

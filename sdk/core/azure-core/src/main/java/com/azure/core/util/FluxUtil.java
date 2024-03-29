@@ -517,23 +517,11 @@ public final class FluxUtil {
      * @return The Reactor context.
      */
     public static reactor.util.context.Context toReactorContext(Context context) {
-        if (context == null) {
+        if (context == null || context == Context.NONE) {
             return reactor.util.context.Context.empty();
         }
 
-        reactor.util.context.Context returnContext = reactor.util.context.Context.empty();
-
-        Context[] contextChain = context.getContextChain();
-        for (Context toAdd : contextChain) {
-            // Filter out null value entries as Reactor's context doesn't allow null values.
-            if (toAdd == null || toAdd.getValue() == null) {
-                continue;
-            }
-
-            returnContext = returnContext.put(toAdd.getKey(), toAdd.getValue());
-        }
-
-        return returnContext;
+        return context.putIntoReactorContext(reactor.util.context.Context.empty());
     }
 
     /**
