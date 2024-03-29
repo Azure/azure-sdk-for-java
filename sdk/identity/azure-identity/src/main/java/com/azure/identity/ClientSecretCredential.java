@@ -21,12 +21,12 @@ import java.util.Objects;
 /**
  * <p>The ClientSecretCredential acquires a token via service principal authentication. It is a type of authentication
  * in Azure that enables a non-interactive login to
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>, allowing an
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>, allowing an
  * application or service to authenticate itself with Azure resources.
  * A Service Principal is essentially an identity created for an application in Microsoft Entra ID that can be used to
  * authenticate with Azure resources. It's like a "user identity" for the application or service, and it provides
  * a way for the application to authenticate itself with Azure resources without needing to use a user's credentials.
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a> allows users to
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a> allows users to
  * register service principals which can be used as an identity for authentication.
  * A client secret associated with the registered service principal is used as the password when authenticating the
  * service principal.

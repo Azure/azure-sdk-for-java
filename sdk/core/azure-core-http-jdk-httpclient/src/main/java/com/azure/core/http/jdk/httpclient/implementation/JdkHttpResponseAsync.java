@@ -7,9 +7,12 @@ import com.azure.core.http.HttpRequest;
 import reactor.adapter.JdkFlowAdapter;
 import reactor.core.publisher.Flux;
 
+import java.net.http.HttpTimeoutException;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.Flow;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 import static com.azure.core.http.jdk.httpclient.implementation.JdkHttpUtils.fromJdkHttpHeaders;
@@ -27,12 +30,28 @@ public final class JdkHttpResponseAsync extends JdkHttpResponseBase {
      * Creates an instance of {@link JdkHttpResponseAsync}.
      *
      * @param request the request which resulted in this response.
+     * @param readTimeout the read timeout for the response.
+     * @param hasReadTimeout flag indicating if the read timeout is set.
      * @param response the JDK HttpClient response.
      */
-    public JdkHttpResponseAsync(final HttpRequest request,
+    public JdkHttpResponseAsync(HttpRequest request, Duration readTimeout, boolean hasReadTimeout,
         java.net.http.HttpResponse<Flow.Publisher<List<ByteBuffer>>> response) {
         super(request, response.statusCode(), fromJdkHttpHeaders(response.headers()));
-        this.contentFlux = JdkFlowAdapter.flowPublisherToFlux(response.body()).flatMapSequential(Flux::fromIterable);
+        if (hasReadTimeout) {
+            this.contentFlux = JdkFlowAdapter.flowPublisherToFlux(response.body())
+                .timeout(readTimeout)
+                .onErrorMap(TimeoutException.class, e -> {
+                    // Map the TimeoutException to HttpTimeoutException to be consistent with all other handling in
+                    // JDK HttpClient which uses HttpTimeoutException rather than TimeoutException.
+                    HttpTimeoutException ex = new HttpTimeoutException("Read timed out");
+                    ex.addSuppressed(e);
+                    return ex;
+                })
+                .flatMapSequential(Flux::fromIterable);
+        } else {
+            this.contentFlux
+                = JdkFlowAdapter.flowPublisherToFlux(response.body()).flatMapSequential(Flux::fromIterable);
+        }
     }
 
     @Override

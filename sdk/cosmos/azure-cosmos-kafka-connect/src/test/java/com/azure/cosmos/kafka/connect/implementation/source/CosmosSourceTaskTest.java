@@ -230,7 +230,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
                 databaseName,
                 singlePartitionContainer.getId(),
                 singlePartitionContainer.getResourceId(),
-                FeedRangeEpkImpl.forFullRange().getRange(),
+                FeedRange.forFullRange(),
                 null,
                 singlePartitionContainer.getId());
             taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));

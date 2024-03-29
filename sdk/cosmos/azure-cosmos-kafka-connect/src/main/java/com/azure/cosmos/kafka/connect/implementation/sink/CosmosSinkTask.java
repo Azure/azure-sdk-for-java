@@ -34,11 +34,10 @@ public class CosmosSinkTask extends SinkTask {
 
     @Override
     public void start(Map<String, String> props) {
-        LOGGER.info("Starting the kafka cosmos sink task...");
+        LOGGER.info("Starting the kafka cosmos sink task");
         this.sinkTaskConfig = new CosmosSinkTaskConfig(props);
         this.cosmosClient = CosmosClientStore.getCosmosClient(this.sinkTaskConfig.getAccountConfig());
         this.throughputControlClient = this.getThroughputControlCosmosClient();
-
         this.sinkRecordTransformer = new SinkRecordTransformer(this.sinkTaskConfig);
 
         if (this.sinkTaskConfig.getWriteConfig().isBulkEnabled()) {
@@ -111,11 +110,9 @@ public class CosmosSinkTask extends SinkTask {
 
     @Override
     public void stop() {
-        LOGGER.info("Stopping Kafka CosmosDB sink task...");
+        LOGGER.info("Stopping Kafka CosmosDB sink task");
         if (this.cosmosClient != null) {
             this.cosmosClient.close();
         }
-
-        this.cosmosClient = null;
     }
 }

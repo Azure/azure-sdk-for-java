@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * <p>Username password authentication is a common type of authentication flow used by many applications and services,
- * including <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>.
+ * including <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>.
  * With username password authentication, users enter their username and password credentials to sign
  * in to an application or service.
  * The UsernamePasswordCredential authenticates a public client application and acquires a token using the

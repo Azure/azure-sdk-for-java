@@ -10,7 +10,7 @@ package com.azure.resourcemanager.batch.generated;
 public final class CertificateGetSamples {
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/CertificateGetWithDeletionError.
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/CertificateGetWithDeletionError.
      * json
      */
     /**
@@ -25,7 +25,7 @@ public final class CertificateGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/CertificateGet.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/CertificateGet.json
      */
     /**
      * Sample code: Get Certificate.

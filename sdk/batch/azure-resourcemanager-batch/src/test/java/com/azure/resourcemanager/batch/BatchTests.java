@@ -20,12 +20,13 @@ import com.azure.resourcemanager.batch.models.AutoStorageBaseProperties;
 import com.azure.resourcemanager.batch.models.BatchAccount;
 import com.azure.resourcemanager.batch.models.BatchAccountKeys;
 import com.azure.resourcemanager.batch.models.BatchAccountRegenerateKeyParameters;
-import com.azure.resourcemanager.batch.models.CloudServiceConfiguration;
 import com.azure.resourcemanager.batch.models.ComputeNodeDeallocationOption;
 import com.azure.resourcemanager.batch.models.DeploymentConfiguration;
 import com.azure.resourcemanager.batch.models.FixedScaleSettings;
+import com.azure.resourcemanager.batch.models.ImageReference;
 import com.azure.resourcemanager.batch.models.Pool;
 import com.azure.resourcemanager.batch.models.ScaleSettings;
+import com.azure.resourcemanager.batch.models.VirtualMachineConfiguration;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
@@ -276,8 +277,11 @@ public class BatchTests extends TestBase {
                 .withDisplayName(poolDisplayName)
                 .withDeploymentConfiguration(
                     new DeploymentConfiguration()
-                        .withCloudServiceConfiguration(
-                            new CloudServiceConfiguration().withOsFamily("4")))
+                        .withVirtualMachineConfiguration(
+                            new VirtualMachineConfiguration()
+                                .withImageReference(new ImageReference().withPublisher("Canonical")
+                                    .withOffer("UbuntuServer").withSku("18.04-LTS").withVersion("latest"))
+                                .withNodeAgentSkuId("batch.node.ubuntu 18.04")))
                 .withScaleSettings(
                     new ScaleSettings()
                         .withFixedScale(

@@ -53,7 +53,7 @@ public abstract class KafkaCosmosWriterBase implements IWriter {
             writeCore(container, sinkOperations);
         } catch (Exception e) {
             LOGGER.error("Write failed. ", e);
-            throw new CosmosDBWriteException(e.getMessage());
+            throw new CosmosWriteException(e.getMessage());
         }
     }
 

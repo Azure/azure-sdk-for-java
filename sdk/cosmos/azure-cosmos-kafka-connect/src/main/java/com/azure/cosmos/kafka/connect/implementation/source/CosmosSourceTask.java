@@ -6,8 +6,6 @@ package com.azure.cosmos.kafka.connect.implementation.source;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.guava25.base.Stopwatch;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
@@ -18,7 +16,6 @@ import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaAndValue;
@@ -238,7 +235,8 @@ public class CosmosSourceTask extends SourceTask {
         }
 
         // Important: track the continuationToken
-        feedRangeTaskUnit.setContinuationState(feedResponse.getContinuationToken());
+        feedRangeTaskUnit.setContinuationState(
+            new KafkaCosmosChangeFeedState(feedResponse.getContinuationToken(), feedRangeTaskUnit.getFeedRange()));
         return sourceRecords;
     }
 
@@ -309,7 +307,7 @@ public class CosmosSourceTask extends SourceTask {
     private CosmosChangeFeedRequestOptions getChangeFeedRequestOptions(FeedRangeTaskUnit feedRangeTaskUnit) {
         CosmosChangeFeedRequestOptions changeFeedRequestOptions = null;
         FeedRange changeFeedRange = feedRangeTaskUnit.getFeedRange();
-        if (StringUtils.isEmpty(feedRangeTaskUnit.getContinuationState())) {
+        if (feedRangeTaskUnit.getContinuationState() == null) {
             switch (this.taskConfig.getChangeFeedConfig().getChangeFeedStartFromModes()) {
                 case BEGINNING:
                     changeFeedRequestOptions =
@@ -334,23 +332,15 @@ public class CosmosSourceTask extends SourceTask {
                 changeFeedRequestOptions.allVersionsAndDeletes();
             }
         } else {
-            try {
-                KafkaCosmosChangeFeedState kafkaCosmosChangeFeedState =
-                    Utils
-                        .getSimpleObjectMapper()
-                        .readValue(feedRangeTaskUnit.getContinuationState(), KafkaCosmosChangeFeedState.class);
+            KafkaCosmosChangeFeedState kafkaCosmosChangeFeedState = feedRangeTaskUnit.getContinuationState();
 
-                changeFeedRequestOptions =
-                    ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
-                        .getCosmosChangeFeedRequestOptionsAccessor()
-                        .createForProcessingFromContinuation(
-                            kafkaCosmosChangeFeedState.getResponseContinuation(),
-                            kafkaCosmosChangeFeedState.getTargetRange(),
-                            kafkaCosmosChangeFeedState.getItemLsn());
-
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
+            changeFeedRequestOptions =
+                ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
+                    .getCosmosChangeFeedRequestOptionsAccessor()
+                    .createForProcessingFromContinuation(
+                        kafkaCosmosChangeFeedState.getResponseContinuation(),
+                        kafkaCosmosChangeFeedState.getTargetRange(),
+                        kafkaCosmosChangeFeedState.getItemLsn());
         }
 
         return changeFeedRequestOptions;
