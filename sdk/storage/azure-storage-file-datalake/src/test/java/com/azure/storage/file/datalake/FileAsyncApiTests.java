@@ -2640,8 +2640,9 @@ public class FileAsyncApiTests extends DataLakeTestBase {
                 DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions()
                     .setLeaseAction(LeaseAction.AUTO_RENEW)
                     .setLeaseId(r.getT3());
-                return Mono.zip(r.getT2().appendWithResponse(DATA.getDefaultBinaryData(), 0, appendOptions), r.getT2().getProperties());
-            });
+                return Mono.zip(r.getT2().appendWithResponse(DATA.getDefaultBinaryData(), 0, appendOptions),
+                    Mono.just(r.getT2()));
+            }).flatMap(tuple -> Mono.zip(Mono.just(tuple.getT1()), tuple.getT2().getProperties()));
 
         StepVerifier.create(response)
             .assertNext(r -> {
@@ -2668,9 +2669,11 @@ public class FileAsyncApiTests extends DataLakeTestBase {
                 Mono<Response<Void>> response1 = leaseClient.acquireLease(15)
                     .then(r.appendWithResponse(DATA.getDefaultBinaryData(), 0, appendOptions));
 
-                Mono<PathProperties> response2 = r.getProperties();
-
-                return Mono.zip(response1, response2);
+                return Mono.zip(response1, Mono.just(r));
+            })
+            .flatMap(tuple -> {
+                Mono<PathProperties> response2 = tuple.getT2().getProperties();
+                return Mono.zip(Mono.just(tuple.getT1()), response2);
             });
 
         StepVerifier.create(response)

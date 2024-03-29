@@ -4,17 +4,16 @@
 package com.azure.cosmos.kafka.connect.implementation;
 
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.HttpConstants;
 import org.apache.kafka.connect.errors.ConnectException;
 import org.apache.kafka.connect.errors.RetriableException;
 
 public class KafkaCosmosExceptionsHelper {
     public static boolean isTransientFailure(int statusCode, int substatusCode) {
-        return statusCode == HttpConstants.StatusCodes.GONE
-            || statusCode == HttpConstants.StatusCodes.SERVICE_UNAVAILABLE
-            || statusCode == HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR
-            || statusCode == HttpConstants.StatusCodes.REQUEST_TIMEOUT
-            || (statusCode == HttpConstants.StatusCodes.NOTFOUND && substatusCode == HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE);
+        return statusCode == KafkaCosmosConstants.StatusCodes.GONE
+            || statusCode == KafkaCosmosConstants.StatusCodes.SERVICE_UNAVAILABLE
+            || statusCode == KafkaCosmosConstants.StatusCodes.INTERNAL_SERVER_ERROR
+            || statusCode == KafkaCosmosConstants.StatusCodes.REQUEST_TIMEOUT
+            || (statusCode == KafkaCosmosConstants.StatusCodes.NOTFOUND && substatusCode == KafkaCosmosConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE);
 
     }
 
@@ -37,9 +36,9 @@ public class KafkaCosmosExceptionsHelper {
     }
 
     public static boolean isFeedRangeGoneException(int statusCode, int substatusCode) {
-        return statusCode == HttpConstants.StatusCodes.GONE
-            && (substatusCode == HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE
-            || substatusCode == HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE);
+        return statusCode == KafkaCosmosConstants.StatusCodes.GONE
+            && (substatusCode == KafkaCosmosConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE
+            || substatusCode == KafkaCosmosConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE);
     }
 
     public static ConnectException convertToConnectException(Throwable throwable, String message) {
@@ -52,7 +51,7 @@ public class KafkaCosmosExceptionsHelper {
 
     public static boolean isResourceExistsException(Throwable throwable) {
         if (throwable instanceof CosmosException) {
-            return ((CosmosException) throwable).getStatusCode() == HttpConstants.StatusCodes.CONFLICT;
+            return ((CosmosException) throwable).getStatusCode() == KafkaCosmosConstants.StatusCodes.CONFLICT;
         }
 
         return false;
@@ -60,7 +59,7 @@ public class KafkaCosmosExceptionsHelper {
 
     public static boolean isNotFoundException(Throwable throwable) {
         if (throwable instanceof CosmosException) {
-            return ((CosmosException) throwable).getStatusCode() == HttpConstants.StatusCodes.NOTFOUND;
+            return ((CosmosException) throwable).getStatusCode() == KafkaCosmosConstants.StatusCodes.NOTFOUND;
         }
 
         return false;
@@ -68,7 +67,7 @@ public class KafkaCosmosExceptionsHelper {
 
     public static boolean isPreconditionFailedException(Throwable throwable) {
         if (throwable instanceof CosmosException) {
-            return ((CosmosException) throwable).getStatusCode() == HttpConstants.StatusCodes.PRECONDITION_FAILED;
+            return ((CosmosException) throwable).getStatusCode() == KafkaCosmosConstants.StatusCodes.PRECONDITION_FAILED;
         }
 
         return false;
@@ -76,7 +75,7 @@ public class KafkaCosmosExceptionsHelper {
 
     public static boolean isTimeoutException(Throwable throwable) {
         if (throwable instanceof CosmosException) {
-            return ((CosmosException) throwable).getStatusCode() == HttpConstants.StatusCodes.REQUEST_TIMEOUT;
+            return ((CosmosException) throwable).getStatusCode() == KafkaCosmosConstants.StatusCodes.REQUEST_TIMEOUT;
         }
 
         return false;

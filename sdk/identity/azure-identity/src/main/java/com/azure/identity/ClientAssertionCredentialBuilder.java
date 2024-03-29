@@ -18,7 +18,7 @@ import java.util.function.Supplier;
  * In this authentication method, the client application creates a JSON Web Token (JWT) that includes information about
  * the service principal (such as its client ID and tenant ID) and signs it using a client secret. The client then
  * sends this token to
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a> as proof of its
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a> as proof of its
  * identity. Microsoft Entra ID verifies the token signature and checks that the service principal has
  * the necessary permissions to access the requested Azure resource. If the token is valid and the service principal is
  * authorized, Microsoft Entra ID issues an access token that the client application can use to access the requested resource.

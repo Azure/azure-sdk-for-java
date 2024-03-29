@@ -31,7 +31,7 @@ public final class ApplicationPackagesActivateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"state\":\"Active\",\"format\":\"mtdh\",\"storageUrl\":\"dvypgikdgsz\",\"storageUrlExpiry\":\"2021-09-09T14:02:20Z\",\"lastActivationTime\":\"2021-01-23T14:08:39Z\"},\"etag\":\"ryuzh\",\"id\":\"hkjoqr\",\"name\":\"qqaatjinrvgou\",\"type\":\"mfiibfggj\"}";
+            = "{\"properties\":{\"state\":\"Pending\",\"format\":\"lazszrn\",\"storageUrl\":\"iin\",\"storageUrlExpiry\":\"2021-01-06T22:30:17Z\",\"lastActivationTime\":\"2021-03-15T09:11:44Z\"},\"etag\":\"ylwbtlhflsjcdhsz\",\"id\":\"jvfbgofelja\",\"name\":\"rqmq\",\"type\":\"ldvriiiojnalghfk\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,8 +49,8 @@ public final class ApplicationPackagesActivateWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ApplicationPackage response = manager.applicationPackages()
-            .activateWithResponse("erqwkyhkobopg", "edkowepbqpcrfk", "wccsnjvcdwxlpqek", "tn",
-                new ActivateApplicationPackageParameters().withFormat("htjsying"), com.azure.core.util.Context.NONE)
+            .activateWithResponse("owqkdwytisi", "ircgpikpz", "mejzanlfzxia", "rmbzo",
+                new ActivateApplicationPackageParameters().withFormat("okixrjqcir"), com.azure.core.util.Context.NONE)
             .getValue();
 
     }

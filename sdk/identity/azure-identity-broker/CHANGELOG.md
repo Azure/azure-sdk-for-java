@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added support for using the default broker account
+
 ### Breaking Changes
 
 ### Bugs Fixed

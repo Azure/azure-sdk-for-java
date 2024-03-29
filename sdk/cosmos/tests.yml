@@ -92,8 +92,9 @@ extends:
           TimeoutInMinutes: 120
           PreSteps:
             - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-          TestGoals: 'verify'
-          TestOptions: '$(ProfileFlag) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
+          TestGoals: 'clean verify'
+          TestOptions: '$(ProfileFlag)'
           AdditionalVariables:
             - name: AdditionalArgs
               value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account)'
+

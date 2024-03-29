@@ -135,8 +135,10 @@ public class KafkaCosmosBulkWriter extends KafkaCosmosWriterBase {
     private Mono<CosmosItemOperation> getBulkOperation(
         CosmosAsyncContainer container,
         SinkOperation sinkOperation) {
-
-        return this.getPartitionKeyDefinition(container)
+        return ImplementationBridgeHelpers
+            .CosmosAsyncContainerHelper
+            .getCosmosAsyncContainerAccessor()
+            .getPartitionKeyDefinition(container)
             .flatMap(partitionKeyDefinition -> {
                 CosmosItemOperation cosmosItemOperation;
 
