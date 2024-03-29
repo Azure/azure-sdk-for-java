@@ -39,9 +39,8 @@ public class OpenSeekableByteChannelWrite extends BlobScenarioBase<StorageStress
     @Override
     protected void runInternal(Context span) throws IOException {
         BlockBlobClient blockBlobClient = syncClient.getBlockBlobClient();
-        Flux<ByteBuffer> byteBufferFlux = Utility.convertStreamToByteBuffer(
-            new CrcInputStream(originalContent.getBlobContentHead(), options.getSize()), options.getSize(),
-            BlockBlobClient.MAX_BLOCKS);
+        Flux<ByteBuffer> byteBufferFlux = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())
+            .convertStreamToByteBuffer();
 
         try (StorageSeekableByteChannel channel = (StorageSeekableByteChannel) blockBlobClient.openSeekableByteChannelWrite(
             new BlockBlobSeekableByteChannelWriteOptions(OVERWRITE))) {

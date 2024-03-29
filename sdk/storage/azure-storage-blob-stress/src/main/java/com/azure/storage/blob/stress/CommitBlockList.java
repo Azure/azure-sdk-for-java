@@ -62,9 +62,8 @@ public class CommitBlockList extends BlobScenarioBase<StorageStressOptions> {
         BlockBlobAsyncClient blockBlobAsyncClientNoFault = asyncNoFaultClient.getBlockBlobAsyncClient();
         String blockId = Base64.getEncoder().encodeToString(CoreUtils.randomUuid().toString()
             .getBytes(StandardCharsets.UTF_8));
-        Flux<ByteBuffer> byteBufferFlux = Utility.convertStreamToByteBuffer(
-            new CrcInputStream(originalContent.getBlobContentHead(), options.getSize()), options.getSize(),
-            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
+        Flux<ByteBuffer> byteBufferFlux = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())
+            .convertStreamToByteBuffer();
         // First perform non-faulted stage block to send data to the service
         return blockBlobAsyncClientNoFault.stageBlockWithResponse(blockId, byteBufferFlux, options.getSize(), null, null)
             // Then perform faulted commit block list to commit the block

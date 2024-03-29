@@ -32,8 +32,9 @@ public class FileOutputStream extends ShareScenarioBase<StorageStressOptions> {
 
     @Override
     protected void runInternal(Context span) throws IOException {
-        OutputStream outputStream = syncClient.getFileOutputStream();
-        try (CrcInputStream inputStream = new CrcInputStream(originalContent.getContentHead(), options.getSize())) {
+
+        try (CrcInputStream inputStream = new CrcInputStream(originalContent.getContentHead(), options.getSize());
+             OutputStream outputStream = syncClient.getFileOutputStream()) {
             byte[] buffer = new byte[4096]; // Define a buffer
             int bytesRead;
 
@@ -45,9 +46,6 @@ public class FileOutputStream extends ShareScenarioBase<StorageStressOptions> {
             // Ensure to close the blobOutputStream to flush any remaining data and finalize the blob.
             outputStream.close();
             originalContent.checkMatch(inputStream.getContentInfo(), span).block();
-        } catch (Exception e) {
-            // Ensure to close the blobOutputStream in case of an error.
-            outputStream.close();
         }
     }
 

@@ -48,9 +48,8 @@ public class AppendBlock extends BlobScenarioBase<StorageStressOptions> {
     @Override
     protected Mono<Void> runInternalAsync(Context span) {
         AppendBlobAsyncClient appendBlobAsyncClient = asyncClient.getAppendBlobAsyncClient();
-        Flux<ByteBuffer> byteBufferFlux = Utility.convertStreamToByteBuffer(
-            new CrcInputStream(originalContent.getBlobContentHead(), options.getSize()), options.getSize(),
-            appendBlobAsyncClient.getMaxAppendBlockBytes());
+        Flux<ByteBuffer> byteBufferFlux = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())
+            .convertStreamToByteBuffer();
         return appendBlobAsyncClient.appendBlock(byteBufferFlux, options.getSize())
             .then(originalContent.checkMatch(byteBufferFlux, span));
     }

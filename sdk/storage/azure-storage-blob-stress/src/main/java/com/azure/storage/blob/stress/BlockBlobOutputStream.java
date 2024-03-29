@@ -35,8 +35,8 @@ public class BlockBlobOutputStream extends BlobScenarioBase<StorageStressOptions
     protected void runInternal(Context span) throws IOException {
         BlockBlobClient blockBlobClient = syncClient.getBlockBlobClient();
 
-        BlobOutputStream outputStream = blockBlobClient.getBlobOutputStream(null, span);
-        try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())) {
+        try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize());
+             BlobOutputStream outputStream = blockBlobClient.getBlobOutputStream(null, span)) {
             byte[] buffer = new byte[4096]; // Define a buffer
             int bytesRead;
 
@@ -48,11 +48,6 @@ public class BlockBlobOutputStream extends BlobScenarioBase<StorageStressOptions
             // Ensure to close the blobOutputStream to flush any remaining data and finalize the blob.
             outputStream.close();
             originalContent.checkMatch(inputStream.getContentInfo(), span).block();
-        } catch (Exception e) {
-            // Ensure to close the blobOutputStream in case of an error.
-            if (outputStream != null) {
-                outputStream.close();
-            }
         }
     }
 

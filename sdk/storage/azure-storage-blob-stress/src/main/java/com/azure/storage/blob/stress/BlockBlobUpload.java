@@ -42,9 +42,8 @@ public class BlockBlobUpload extends BlobScenarioBase<StorageStressOptions> {
 
     @Override
     protected Mono<Void> runInternalAsync(Context span) {
-        Flux<ByteBuffer> byteBufferFlux = Utility.convertStreamToByteBuffer(
-            new CrcInputStream(originalContent.getBlobContentHead(), options.getSize()), options.getSize(),
-            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
+        Flux<ByteBuffer> byteBufferFlux = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())
+            .convertStreamToByteBuffer();
         BlockBlobAsyncClient blockBlobAsyncClient = asyncClient.getBlockBlobAsyncClient();
         return blockBlobAsyncClient.upload(byteBufferFlux, options.getSize(), true)
             .then(originalContent.checkMatch(byteBufferFlux, span));

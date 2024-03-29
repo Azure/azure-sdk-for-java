@@ -43,8 +43,8 @@ public class Upload extends ShareScenarioBase<StorageStressOptions> {
 
     @Override
     protected Mono<Void> runInternalAsync(Context span) {
-        Flux<ByteBuffer> byteBufferFlux = Utility.convertStreamToByteBuffer(new CrcInputStream(
-                originalContent.getContentHead(), options.getSize()), options.getSize(), 4 * 1024 * 1024);
+        Flux<ByteBuffer> byteBufferFlux = new CrcInputStream(originalContent.getContentHead(), options.getSize())
+            .convertStreamToByteBuffer();
         return asyncClient.uploadWithResponse(new ShareFileUploadOptions(byteBufferFlux)
                 .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * 1024 * 1024L)))
             .then(originalContent.checkMatch(byteBufferFlux, span));

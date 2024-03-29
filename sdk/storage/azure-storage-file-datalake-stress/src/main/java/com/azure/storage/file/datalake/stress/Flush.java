@@ -46,9 +46,8 @@ public class Flush extends DataLakeScenarioBase<StorageStressOptions> {
 
     @Override
     protected Mono<Void> runInternalAsync(Context span) {
-        Flux<ByteBuffer> byteBufferFlux = Utility.convertStreamToByteBuffer(new CrcInputStream(
-                originalContent.getContentHead(), options.getSize()), options.getSize(),
-            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
+        Flux<ByteBuffer> byteBufferFlux = new CrcInputStream(originalContent.getContentHead(), options.getSize())
+            .convertStreamToByteBuffer();
         // Perform non-faulted append
         return asyncNoFaultClient.append(byteBufferFlux, 0, options.getSize())
             // Perform faulted flush to write data to the service

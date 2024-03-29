@@ -4,7 +4,6 @@
 package com.azure.storage.file.share.stress;
 
 import com.azure.core.util.Context;
-import com.azure.storage.common.Utility;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
@@ -40,8 +39,8 @@ public class UploadRange extends ShareScenarioBase<StorageStressOptions> {
 
     @Override
     protected Mono<Void> runInternalAsync(Context span) {
-        Flux<ByteBuffer> byteBufferFlux = Utility.convertStreamToByteBuffer(new CrcInputStream(
-            originalContent.getContentHead(), options.getSize()), options.getSize(), 4 * 1024 * 1024);
+        Flux<ByteBuffer> byteBufferFlux = new CrcInputStream(originalContent.getContentHead(), options.getSize())
+            .convertStreamToByteBuffer();
         return asyncClient.uploadRange(byteBufferFlux, options.getSize())
             .then(originalContent.checkMatch(byteBufferFlux, span));
     }

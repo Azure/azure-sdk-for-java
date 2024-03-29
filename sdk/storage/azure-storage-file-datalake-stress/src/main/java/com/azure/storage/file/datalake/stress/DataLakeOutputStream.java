@@ -35,8 +35,9 @@ public class DataLakeOutputStream extends DataLakeScenarioBase<StorageStressOpti
 
     @Override
     protected void runInternal(Context span) throws IOException {
-        OutputStream outputStream = syncClient.getOutputStream(null, span);
-        try (CrcInputStream inputStream = new CrcInputStream(originalContent.getContentHead(), options.getSize())) {
+
+        try (CrcInputStream inputStream = new CrcInputStream(originalContent.getContentHead(), options.getSize());
+             OutputStream outputStream = syncClient.getOutputStream(null, span)) {
             byte[] buffer = new byte[4096]; // Define a buffer
             int bytesRead;
 
@@ -48,11 +49,6 @@ public class DataLakeOutputStream extends DataLakeScenarioBase<StorageStressOpti
             // Ensure to close the blobOutputStream to flush any remaining data and finalize the blob.
             outputStream.close();
             originalContent.checkMatch(inputStream.getContentInfo(), span).block();
-        } catch (Exception e) {
-            // Ensure to close the blobOutputStream in case of an error.
-            if (outputStream != null) {
-                outputStream.close();
-            }
         }
     }
 

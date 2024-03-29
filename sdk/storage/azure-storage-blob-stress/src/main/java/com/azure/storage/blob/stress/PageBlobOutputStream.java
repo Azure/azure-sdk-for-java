@@ -44,9 +44,9 @@ public class PageBlobOutputStream extends PageBlobScenarioBase<StorageStressOpti
     protected void runInternal(Context span) throws IOException {
         PageBlobClient pageBlobClient = syncClient.getPageBlobClient();
 
-        BlobOutputStream outputStream = pageBlobClient.getBlobOutputStream(new PageRange().setStart(0)
-            .setEnd(options.getSize() - 1));
-        try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())) {
+        try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize());
+             BlobOutputStream outputStream = pageBlobClient.getBlobOutputStream(new PageRange().setStart(0)
+            .setEnd(options.getSize() - 1))) {
             ByteArrayOutputStream bufferStream = new ByteArrayOutputStream();
             byte[] buffer = new byte[512]; // Use 512-byte blocks for Page Blob
             int bytesRead;
@@ -74,9 +74,6 @@ public class PageBlobOutputStream extends PageBlobScenarioBase<StorageStressOpti
             // Ensure to close the blobOutputStream to flush any remaining data and finalize the blob.
             outputStream.close();
             originalContent.checkMatch(inputStream.getContentInfo(), span).block();
-        } catch (Exception e) {
-            // Ensure to close the blobOutputStream in case of an error.
-            outputStream.close();
         }
     }
 

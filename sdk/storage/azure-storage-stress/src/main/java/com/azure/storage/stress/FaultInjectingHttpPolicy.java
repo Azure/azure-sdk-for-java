@@ -29,47 +29,17 @@ public class FaultInjectingHttpPolicy implements HttpPipelinePolicy {
     private static final HttpHeaderName HTTP_FAULT_INJECTOR_RESPONSE_HEADER = HttpHeaderName.fromString("x-ms-faultinjector-response-option");
     private static final HttpHeaderName SERVER_REQUEST_ID_HEADER = HttpHeaderName.fromString("x-ms-request-id");
     private final boolean https;
-    private final boolean isRequestFaulted;
 
 
     private final List<Tuple2<Double, String>> probabilities;
 
     public FaultInjectingHttpPolicy(boolean https, FaultInjectionProbabilities probabilities, boolean isRequestFaulted) {
         this.https = https;
-        // If this is true, requests will be faulted. Else responses will be faulted.
-        this.isRequestFaulted = isRequestFaulted;
-
         this.probabilities = new ArrayList<>();
-
-        if (this.isRequestFaulted) {
-            // pq: Partial Request (full headers, 50% of body), then wait indefinitely
-            // pqc: Partial Request (full headers, 50% of body), then close (TCP FIN)
-            // pqa: Partial Request (full headers, 50% of body), then abort (TCP RST)
-            // nq: No Request, then wait indefinitely
-            // nqc: No Request, then close (TCP FIN)
-            // nqa: No Request, then abort (TCP RST)
-            this.probabilities.add(Tuples.of(probabilities.getPartialRequestIndefinite(), "pq"));
-            this.probabilities.add(Tuples.of(probabilities.getPartialRequestClose(), "pqc"));
-            this.probabilities.add(Tuples.of(probabilities.getPartialRequestAbort(), "pqa"));
-            this.probabilities.add(Tuples.of(probabilities.getNoRequestIndefinite(), "nq"));
-            this.probabilities.add(Tuples.of(probabilities.getNoRequestClose(), "nqc"));
-            this.probabilities.add(Tuples.of(probabilities.getNoRequestAbort(), "nqa"));
+        if (isRequestFaulted) {
+            addRequestFaultedProbabilities(probabilities);
         } else {
-            // f: Full response
-            // p: Partial Response (full headers, 50% of body), then wait indefinitely
-            // pc: Partial Response (full headers, 50% of body), then close (TCP FIN)
-            // pa: Partial Response (full headers, 50% of body), then abort (TCP RST)
-            // pn: Partial Response (full headers, 50% of body), then finish normally
-            // n: No response, then wait indefinitely
-            // nc: No response, then close (TCP FIN)
-            // na: No response, then abort (TCP RST)
-            this.probabilities.add(Tuples.of(probabilities.getPartialResponseIndefinite(), "p"));
-            this.probabilities.add(Tuples.of(probabilities.getPartialResponseClose(), "pc"));
-            this.probabilities.add(Tuples.of(probabilities.getPartialResponseAbort(), "pa"));
-            this.probabilities.add(Tuples.of(probabilities.getPartialResponseFinishNormal(), "pn"));
-            this.probabilities.add(Tuples.of(probabilities.getNoResponseIndefinite(), "n"));
-            this.probabilities.add(Tuples.of(probabilities.getNoResponseClose(), "nc"));
-            this.probabilities.add(Tuples.of(probabilities.getNoResponseAbort(), "na"));
+            addResponseFaultedProbabilities(probabilities);
         }
     }
 
@@ -154,5 +124,38 @@ public class FaultInjectingHttpPolicy implements HttpPipelinePolicy {
         response.getRequest().setUrl(originalUrl);
         response.getRequest().getHeaders().remove(UPSTREAM_URI_HEADER);
         return response;
+    }
+
+    private void addRequestFaultedProbabilities(FaultInjectionProbabilities probabilities) {
+        // pq: Partial Request (full headers, 50% of body), then wait indefinitely
+        // pqc: Partial Request (full headers, 50% of body), then close (TCP FIN)
+        // pqa: Partial Request (full headers, 50% of body), then abort (TCP RST)
+        // nq: No Request, then wait indefinitely
+        // nqc: No Request, then close (TCP FIN)
+        // nqa: No Request, then abort (TCP RST)
+        this.probabilities.add(Tuples.of(probabilities.getPartialRequestIndefinite(), "pq"));
+        this.probabilities.add(Tuples.of(probabilities.getPartialRequestClose(), "pqc"));
+        this.probabilities.add(Tuples.of(probabilities.getPartialRequestAbort(), "pqa"));
+        this.probabilities.add(Tuples.of(probabilities.getNoRequestIndefinite(), "nq"));
+        this.probabilities.add(Tuples.of(probabilities.getNoRequestClose(), "nqc"));
+        this.probabilities.add(Tuples.of(probabilities.getNoRequestAbort(), "nqa"));
+    }
+
+    private void addResponseFaultedProbabilities(FaultInjectionProbabilities probabilities) {
+        // f: Full response
+        // p: Partial Response (full headers, 50% of body), then wait indefinitely
+        // pc: Partial Response (full headers, 50% of body), then close (TCP FIN)
+        // pa: Partial Response (full headers, 50% of body), then abort (TCP RST)
+        // pn: Partial Response (full headers, 50% of body), then finish normally
+        // n: No response, then wait indefinitely
+        // nc: No response, then close (TCP FIN)
+        // na: No response, then abort (TCP RST)
+        this.probabilities.add(Tuples.of(probabilities.getPartialResponseIndefinite(), "p"));
+        this.probabilities.add(Tuples.of(probabilities.getPartialResponseClose(), "pc"));
+        this.probabilities.add(Tuples.of(probabilities.getPartialResponseAbort(), "pa"));
+        this.probabilities.add(Tuples.of(probabilities.getPartialResponseFinishNormal(), "pn"));
+        this.probabilities.add(Tuples.of(probabilities.getNoResponseIndefinite(), "n"));
+        this.probabilities.add(Tuples.of(probabilities.getNoResponseClose(), "nc"));
+        this.probabilities.add(Tuples.of(probabilities.getNoResponseAbort(), "na"));
     }
 }

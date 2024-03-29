@@ -36,8 +36,8 @@ public class FileSeekableByteChannelWrite extends ShareScenarioBase<StorageStres
 
     @Override
     protected void runInternal(Context span) throws IOException {
-        Flux<ByteBuffer> byteBufferFlux = Utility.convertStreamToByteBuffer(
-            new CrcInputStream(originalContent.getContentHead(), options.getSize()), options.getSize(), 4 * 1024 * 1024);
+        Flux<ByteBuffer> byteBufferFlux = new CrcInputStream(originalContent.getContentHead(), options.getSize())
+            .convertStreamToByteBuffer();
 
         try (StorageSeekableByteChannel channel = (StorageSeekableByteChannel) syncClient.getFileSeekableByteChannelWrite(
             new ShareFileSeekableByteChannelWriteOptions(true).setFileSize(options.getSize())
