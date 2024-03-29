@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,7 +35,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
     private static final ClientLogger LOGGER = new ClientLogger(HttpLoggingPolicy.class);
     private final HttpLogOptions.HttpLogDetailLevel httpLogDetailLevel;
-    private final List<HttpHeaderName> allowedHeaderNames;
+    private final Set<HttpHeaderName> allowedHeaderNames;
     private final Set<String> allowedQueryParameterNames;
     private final HttpRequestLogger requestLogger;
     private final HttpResponseLogger responseLogger;
@@ -52,7 +51,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     public HttpLoggingPolicy(HttpLogOptions httpLogOptions) {
         if (httpLogOptions == null) {
             this.httpLogDetailLevel = HttpLogOptions.HttpLogDetailLevel.NONE;
-            this.allowedHeaderNames = Collections.emptyList();
+            this.allowedHeaderNames = Collections.emptySet();
             this.allowedQueryParameterNames = Collections.emptySet();
             this.requestLogger = new DefaultHttpRequestLogger();
             this.responseLogger = new DefaultHttpResponseLogger();
@@ -289,13 +288,13 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @param sb StringBuilder that is generating the log message.
      * @param logLevel Log level the environment is configured to use.
      */
-    private static void addHeadersToLogMessage(List<HttpHeaderName> allowedHeaderNames, HttpHeaders headers,
+    private static void addHeadersToLogMessage(Set<HttpHeaderName> allowedHeaderNames, HttpHeaders headers,
                                                ClientLogger.LoggingEventBuilder logBuilder) {
         for (HttpHeader header : headers) {
-            String headerName = header.getName().toString();
-            String headerValue = allowedHeaderNames.contains(HttpHeaderName.fromString(headerName))
+            HttpHeaderName headerName = header.getName();
+            String headerValue = allowedHeaderNames.contains(headerName)
                 ? header.getValue() : REDACTED_PLACEHOLDER;
-            logBuilder.addKeyValue(headerName, headerValue);
+            logBuilder.addKeyValue(headerName.toString(), headerValue);
         }
     }
 

@@ -78,7 +78,6 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final List<Substitution> formSubstitutions = new ArrayList<>();
     private final List<HeaderSubstitution> headerSubstitutions = new ArrayList<>();
     private final HttpHeaders requestHeaders = new HttpHeaders();
-    private final HttpHeaders responseHeaders = new HttpHeaders();
     private final Integer bodyContentMethodParameterIndex;
     private final String bodyContentType;
     private final Type bodyJavaType;
@@ -86,13 +85,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final Type returnType;
     private final Type returnValueWireType;
     private final UnexpectedResponseExceptionDetail[] unexpectedResponseExceptionDetails;
-    private final int contextPosition;
     private final int requestOptionsPosition;
     private final boolean returnTypeDecodable;
     private final boolean responseEagerlyRead;
     private final boolean ignoreResponseBody;
     private final boolean headersEagerlyConverted;
-    private final String spanName;
 
     private Map<Integer, UnexpectedExceptionInformation> exceptionMapping;
     private UnexpectedExceptionInformation defaultException;
@@ -244,14 +241,12 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             }
         }
 
-        this.contextPosition = contextPosition;
         this.requestOptionsPosition = requestOptionsPosition;
         this.headersEagerlyConverted = TypeUtil.isTypeOrSubTypeOf(Response.class, returnType);
         Type unwrappedReturnType = unwrapReturnType(returnType);
         this.returnTypeDecodable = isReturnTypeDecodable(unwrappedReturnType);
         this.responseEagerlyRead = isResponseEagerlyRead(unwrappedReturnType);
         this.ignoreResponseBody = isResponseBodyIgnored(unwrappedReturnType);
-        this.spanName = interfaceParser.getServiceName() + "." + swaggerMethod.getName();
     }
 
     /**
@@ -700,15 +695,6 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     @Override
     public boolean isHeadersEagerlyConverted() {
         return headersEagerlyConverted;
-    }
-
-    /**
-     * Gets the name of the span that will be used when this {@link SwaggerMethodParser} is called.
-     *
-     * @return The span name of this {@link SwaggerMethodParser}.
-     */
-    public String getSpanName() {
-        return spanName;
     }
 
     public static boolean isReturnTypeDecodable(Type unwrappedReturnType) {

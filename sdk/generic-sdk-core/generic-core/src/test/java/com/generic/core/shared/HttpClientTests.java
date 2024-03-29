@@ -677,8 +677,7 @@ public abstract class HttpClientTests {
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything", json.url());
         assertNotNull(json.headers());
-
-        final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
+        HttpHeaders headers = toHttpHeaders(json.headers());
 
         assertEquals("A", headers.getValue(HEADER_A));
         assertListEquals(Collections.singletonList("A"), headers.getValues(HEADER_A));
@@ -690,8 +689,7 @@ public abstract class HttpClientTests {
     @Test
     public void getRequestWithNullHeader() {
         final HttpBinJSON json = createService(Service7.class).getAnything(getRequestUri(), null, 15);
-
-        final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
+        HttpHeaders headers = toHttpHeaders(json.headers());
 
         assertNull(headers.getValue(HEADER_A));
         assertListEquals(null, headers.getValues(HEADER_A));
@@ -896,13 +894,23 @@ public abstract class HttpClientTests {
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything", json.url());
         assertNotNull(json.headers());
-
-        final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
+        HttpHeaders headers = toHttpHeaders(json.headers());
 
         assertEquals("MyHeaderValue", headers.getValue(MY_HEADER));
         assertListEquals(Collections.singletonList("MyHeaderValue"), headers.getValues(MY_HEADER));
         assertEquals("My,Header,Value", headers.getValue(MY_OTHER_HEADER));
         assertListEquals(Arrays.asList("My", "Header", "Value"), headers.getValues(MY_OTHER_HEADER));
+    }
+
+    private static HttpHeaders toHttpHeaders(Map<String, List<String>> jsonHeaders) {
+        HttpHeaders headers = new HttpHeaders();
+        for (Map.Entry<String, List<String>> entry : jsonHeaders.entrySet()) {
+            HttpHeaderName headerName = HttpHeaderName.fromString(entry.getKey());
+            for (String value : entry.getValue()) {
+                headers.add(headerName, value);
+            }
+        }
+        return headers;
     }
 
     @ServiceInterface(name = "Service14", host = "{url}")
@@ -1499,7 +1507,7 @@ public abstract class HttpClientTests {
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
             .policies(new HttpLoggingPolicy(new HttpLogOptions()
-                .setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODYANDHEADERS)))
+                .setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY_AND_HEADERS)))
             .build();
 
         Response<HttpBinJSON> response =
@@ -1554,7 +1562,7 @@ public abstract class HttpClientTests {
 
         assertNotNull(result.headers());
 
-        final HttpHeaders resultHeaders = new HttpHeaders().setAll(result.headers());
+        HttpHeaders resultHeaders = toHttpHeaders(result.headers());
 
         assertEquals("GHIJ", resultHeaders.getValue(HttpHeaderName.fromString("ABCDEF")));
         assertEquals("45", resultHeaders.getValue(HttpHeaderName.fromString("ABC123")));
