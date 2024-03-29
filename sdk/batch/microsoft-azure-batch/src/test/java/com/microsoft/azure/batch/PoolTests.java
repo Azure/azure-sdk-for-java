@@ -26,8 +26,36 @@ public class PoolTests extends BatchIntegrationTestBase {
     @Test
     public void testPoolOData() throws Exception {
         String poolId = getStringIdWithUserNamePrefix("-testPoolOData");
-        CloudPool testPool = createIfNotExistIaaSPool(poolId);
-        Assert.assertNotNull(testPool);
+
+        // Create a pool with 3 Small VMs
+        String POOL_VM_SIZE = "STANDARD_D1_V2";
+        int POOL_VM_COUNT = 2;
+        int POOL_LOW_PRI_VM_COUNT = 2;
+
+        // Create the pool if it doesn't exist
+        if (!batchClient.poolOperations().existsPool(poolId)) {
+            ImageReference imgRef = new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer")
+                    .withSku("18.04-LTS").withVersion("latest");
+            VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
+            configuration.withNodeAgentSKUId("batch.node.ubuntu 18.04").withImageReference(imgRef);
+
+            NetworkConfiguration netConfig = createNetworkConfiguration();
+            PoolEndpointConfiguration endpointConfig = new PoolEndpointConfiguration();
+            List<InboundNATPool> inbounds = new ArrayList<>();
+            inbounds.add(new InboundNATPool().withName("testinbound").withProtocol(InboundEndpointProtocol.TCP)
+                    .withBackendPort(5000).withFrontendPortRangeStart(60000).withFrontendPortRangeEnd(60040));
+            endpointConfig.withInboundNATPools(inbounds);
+            netConfig.withEndpointConfiguration(endpointConfig).withEnableAcceleratedNetworking(true);
+
+            PoolAddParameter addParameter = new PoolAddParameter().withId(poolId)
+                    .withTargetDedicatedNodes(POOL_VM_COUNT).withTargetLowPriorityNodes(POOL_LOW_PRI_VM_COUNT)
+                    .withVmSize(POOL_VM_SIZE).withVirtualMachineConfiguration(configuration)
+                    .withNetworkConfiguration(netConfig)
+                    .withTargetNodeCommunicationMode(NodeCommunicationMode.DEFAULT);
+            batchClient.poolOperations().createPool(addParameter);
+        }
+        Assert.assertTrue(batchClient.poolOperations().existsPool(poolId));
+
         try {
             List<CloudPool> pools = batchClient.poolOperations()
                 .listPools(new DetailLevel.Builder().withSelectClause("id, state").build());
