@@ -13,7 +13,6 @@ import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.models.Response;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
@@ -21,16 +20,9 @@ import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.util.Context;
 import com.generic.core.util.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -100,56 +92,5 @@ public class RestProxyImplTests {
                 }
             };
         }
-    }
-
-    @ParameterizedTest
-    @MethodSource("mergeRequestOptionsContextSupplier")
-    public void mergeRequestOptionsContext(Context context, RequestOptions options,
-                                           Map<Object, Object> expectedContextValues) {
-        Map<Object, Object> actualContextValues = new HashMap<>();
-
-        Context merged = RestProxyUtils.mergeRequestOptionsContext(context, options);
-        while (merged != null) {
-            if (merged == Context.NONE) {
-                break;
-            }
-
-            actualContextValues.putIfAbsent(merged.getKey(), merged.getValue());
-            merged = merged.getParent();
-        }
-
-        assertEquals(expectedContextValues.size(), actualContextValues.size());
-
-        for (Map.Entry<Object, Object> expectedKvp : expectedContextValues.entrySet()) {
-            assertTrue(actualContextValues.containsKey(expectedKvp.getKey()), () ->
-                "Missing expected key '" + expectedKvp.getKey() + "'.");
-            assertEquals(expectedKvp.getValue(), actualContextValues.get(expectedKvp.getKey()));
-        }
-    }
-
-    private static Stream<Arguments> mergeRequestOptionsContextSupplier() {
-        Map<Object, Object> twoValuesMap = new HashMap<>();
-
-        twoValuesMap.put("key", "value");
-        twoValuesMap.put("key2", "value2");
-
-        return Stream.of(
-            // Cases where the RequestOptions or its Context don't exist.
-            Arguments.of(Context.NONE, null, Collections.emptyMap()),
-            Arguments.of(Context.NONE, new RequestOptions(), Collections.emptyMap()),
-            Arguments.of(Context.NONE, new RequestOptions().setContext(Context.NONE), Collections.emptyMap()),
-
-            // Case where the RequestOptions Context is merged into an empty Context.
-            Arguments.of(Context.NONE, new RequestOptions().setContext(new Context("key", "value")),
-                Collections.singletonMap("key", "value")),
-
-            // Case where the RequestOptions Context is merged, without replacement, into an existing Context.
-            Arguments.of(new Context("key", "value"), new RequestOptions().setContext(new Context("key2", "value2")),
-                twoValuesMap),
-
-            // Case where the RequestOptions Context is merged and overrides an existing Context.
-            Arguments.of(new Context("key", "value"), new RequestOptions().setContext(new Context("key", "value2")),
-                Collections.singletonMap("key", "value2"))
-        );
     }
 }

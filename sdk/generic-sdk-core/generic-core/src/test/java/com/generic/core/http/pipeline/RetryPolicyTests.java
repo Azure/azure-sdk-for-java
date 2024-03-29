@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.policy;
+package com.generic.core.http.pipeline;
 
 import com.generic.core.http.MockHttpResponse;
 import com.generic.core.http.NoOpHttpClient;
@@ -13,6 +13,7 @@ import com.generic.core.http.models.HttpRetryOptions;
 import com.generic.core.http.models.Response;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
+import com.generic.core.http.pipeline.RetryPolicy;
 import com.generic.core.implementation.util.DateTimeRfc1123;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

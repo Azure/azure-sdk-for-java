@@ -8,7 +8,6 @@ import com.generic.core.http.NoOpHttpClient;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.Response;
-import com.generic.core.http.policy.RetryPolicy;
 import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;

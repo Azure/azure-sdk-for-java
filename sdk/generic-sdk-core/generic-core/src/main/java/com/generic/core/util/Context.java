@@ -21,8 +21,6 @@ import static com.generic.core.annotation.TypeConditions.IMMUTABLE;
 public class Context {
     private static final ClientLogger LOGGER = new ClientLogger(Context.class);
 
-    private static final Context[] EMPTY_CHAIN = new Context[0];
-
     // All fields must be immutable.
     /**
      * Signifies that no data needs to be passed to the pipeline.
@@ -35,11 +33,6 @@ public class Context {
             }
 
             return Optional.empty();
-        }
-
-        @Override
-        Context[] getContextChain() {
-            return EMPTY_CHAIN;
         }
     };
 
@@ -209,66 +202,5 @@ public class Context {
 
         // This should never be reached but is required by the compiler.
         return Optional.empty();
-    }
-
-    /**
-     * Gets the {@link Context Contexts} in the chain of Contexts that this Context is the tail.
-     *
-     * @return The Contexts, in oldest-to-newest order, in the chain of Contexts that this Context is the tail.
-     */
-    Context[] getContextChain() {
-        Context[] chain = new Context[contextCount];
-
-        int chainPosition = contextCount - 1;
-
-        for (Context pointer = this; pointer != null; pointer = pointer.parent) {
-            chain[chainPosition--] = pointer;
-
-            // If the contextCount is 1 that means the next parent Context is the NONE Context.
-            // Break out of the loop to prevent a meaningless check.
-            if (pointer.contextCount == 1) {
-                break;
-            }
-        }
-
-        return chain;
-    }
-
-    /**
-     * Merges two {@link Context Contexts} into a new {@link Context}.
-     *
-     * @param into Context being merged into.
-     * @param from Context being merged.
-     *
-     * @return A new Context that is the merged Contexts.
-     *
-     * @throws NullPointerException If either {@code into} or {@code from} is {@code null}.
-     */
-    public static Context mergeContexts(Context into, Context from) {
-        Objects.requireNonNull(into, "'into' cannot be null.");
-        Objects.requireNonNull(from, "'from' cannot be null.");
-
-        // If the 'into' Context is the NONE Context just return the 'from' Context.
-        // This is safe as Context is immutable and prevents needing to create any new Contexts and temporary arrays.
-        if (into == Context.NONE) {
-            return from;
-        }
-
-        // Same goes the other way, where if the 'from' Context is the NONE Context just return the 'into' Context.
-        if (from == Context.NONE) {
-            return into;
-        }
-
-        Context[] contextChain = from.getContextChain();
-
-        Context returnContext = into;
-
-        for (Context toAdd : contextChain) {
-            if (toAdd != null) {
-                returnContext = returnContext.addData(toAdd.getKey(), toAdd.getValue());
-            }
-        }
-
-        return returnContext;
     }
 }

@@ -71,9 +71,7 @@ public abstract class RestProxyBase {
                                Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, Object[] args) {
         try {
             HttpRequest request = createHttpRequest(methodParser, serializer, args);
-
-            Context context = methodParser.setContext(args);
-            context = RestProxyUtils.mergeRequestOptionsContext(context, options);
+            Context context = (options != null && options.getContext() != null) ? options.getContext() : Context.NONE;
 
             request.getMetadata().setContext(context);
             request.getMetadata().setRequestLogger(methodParser.getMethodLogger());
