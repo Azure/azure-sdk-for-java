@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.SecurityFamily;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SecuritySolutionsReferenceDataProperties model. */
+/**
+ * The SecuritySolutionsReferenceDataProperties model.
+ */
 @Fluent
 public final class SecuritySolutionsReferenceDataProperties {
     /*
@@ -54,13 +56,15 @@ public final class SecuritySolutionsReferenceDataProperties {
     @JsonProperty(value = "template", required = true)
     private String template;
 
-    /** Creates an instance of SecuritySolutionsReferenceDataProperties class. */
+    /**
+     * Creates an instance of SecuritySolutionsReferenceDataProperties class.
+     */
     public SecuritySolutionsReferenceDataProperties() {
     }
 
     /**
      * Get the securityFamily property: The security family of the security solution.
-     *
+     * 
      * @return the securityFamily value.
      */
     public SecurityFamily securityFamily() {
@@ -69,7 +73,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Set the securityFamily property: The security family of the security solution.
-     *
+     * 
      * @param securityFamily the securityFamily value to set.
      * @return the SecuritySolutionsReferenceDataProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Get the alertVendorName property: The security solutions' vendor name.
-     *
+     * 
      * @return the alertVendorName value.
      */
     public String alertVendorName() {
@@ -89,7 +93,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Set the alertVendorName property: The security solutions' vendor name.
-     *
+     * 
      * @param alertVendorName the alertVendorName value to set.
      * @return the SecuritySolutionsReferenceDataProperties object itself.
      */
@@ -100,7 +104,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Get the packageInfoUrl property: The security solutions' package info url.
-     *
+     * 
      * @return the packageInfoUrl value.
      */
     public String packageInfoUrl() {
@@ -109,7 +113,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Set the packageInfoUrl property: The security solutions' package info url.
-     *
+     * 
      * @param packageInfoUrl the packageInfoUrl value to set.
      * @return the SecuritySolutionsReferenceDataProperties object itself.
      */
@@ -120,7 +124,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Get the productName property: The security solutions' product name.
-     *
+     * 
      * @return the productName value.
      */
     public String productName() {
@@ -129,7 +133,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Set the productName property: The security solutions' product name.
-     *
+     * 
      * @param productName the productName value to set.
      * @return the SecuritySolutionsReferenceDataProperties object itself.
      */
@@ -140,7 +144,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Get the publisher property: The security solutions' publisher.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -149,7 +153,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Set the publisher property: The security solutions' publisher.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the SecuritySolutionsReferenceDataProperties object itself.
      */
@@ -160,7 +164,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Get the publisherDisplayName property: The security solutions' publisher display name.
-     *
+     * 
      * @return the publisherDisplayName value.
      */
     public String publisherDisplayName() {
@@ -169,7 +173,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Set the publisherDisplayName property: The security solutions' publisher display name.
-     *
+     * 
      * @param publisherDisplayName the publisherDisplayName value to set.
      * @return the SecuritySolutionsReferenceDataProperties object itself.
      */
@@ -180,7 +184,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Get the template property: The security solutions' template.
-     *
+     * 
      * @return the template value.
      */
     public String template() {
@@ -189,7 +193,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Set the template property: The security solutions' template.
-     *
+     * 
      * @param template the template value to set.
      * @return the SecuritySolutionsReferenceDataProperties object itself.
      */
@@ -200,52 +204,37 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (securityFamily() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property securityFamily in model SecuritySolutionsReferenceDataProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property securityFamily in model SecuritySolutionsReferenceDataProperties"));
         }
         if (alertVendorName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property alertVendorName in model SecuritySolutionsReferenceDataProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property alertVendorName in model SecuritySolutionsReferenceDataProperties"));
         }
         if (packageInfoUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property packageInfoUrl in model SecuritySolutionsReferenceDataProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property packageInfoUrl in model SecuritySolutionsReferenceDataProperties"));
         }
         if (productName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property productName in model SecuritySolutionsReferenceDataProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property productName in model SecuritySolutionsReferenceDataProperties"));
         }
         if (publisher() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property publisher in model SecuritySolutionsReferenceDataProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property publisher in model SecuritySolutionsReferenceDataProperties"));
         }
         if (publisherDisplayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property publisherDisplayName in model"
-                            + " SecuritySolutionsReferenceDataProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property publisherDisplayName in model SecuritySolutionsReferenceDataProperties"));
         }
         if (template() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property template in model SecuritySolutionsReferenceDataProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property template in model SecuritySolutionsReferenceDataProperties"));
         }
     }
 

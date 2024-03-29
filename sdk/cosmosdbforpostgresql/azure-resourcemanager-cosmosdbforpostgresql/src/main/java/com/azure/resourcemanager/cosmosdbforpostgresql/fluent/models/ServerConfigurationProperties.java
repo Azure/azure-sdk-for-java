@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmosdbforpostgresql.models.ConfigurationDataT
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a configuration. */
+/**
+ * The properties of a configuration.
+ */
 @Fluent
 public final class ServerConfigurationProperties {
     /*
@@ -61,13 +63,15 @@ public final class ServerConfigurationProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ServerConfigurationProperties class. */
+    /**
+     * Creates an instance of ServerConfigurationProperties class.
+     */
     public ServerConfigurationProperties() {
     }
 
     /**
      * Get the value property: Value of the configuration.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -76,7 +80,7 @@ public final class ServerConfigurationProperties {
 
     /**
      * Set the value property: Value of the configuration.
-     *
+     * 
      * @param value the value value to set.
      * @return the ServerConfigurationProperties object itself.
      */
@@ -87,7 +91,7 @@ public final class ServerConfigurationProperties {
 
     /**
      * Get the source property: Source of the configuration.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -96,7 +100,7 @@ public final class ServerConfigurationProperties {
 
     /**
      * Get the description property: Description of the configuration.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -105,7 +109,7 @@ public final class ServerConfigurationProperties {
 
     /**
      * Get the defaultValue property: Default value of the configuration.
-     *
+     * 
      * @return the defaultValue value.
      */
     public String defaultValue() {
@@ -114,7 +118,7 @@ public final class ServerConfigurationProperties {
 
     /**
      * Get the dataType property: Data type of the configuration.
-     *
+     * 
      * @return the dataType value.
      */
     public ConfigurationDataType dataType() {
@@ -123,7 +127,7 @@ public final class ServerConfigurationProperties {
 
     /**
      * Get the allowedValues property: Allowed values of the configuration.
-     *
+     * 
      * @return the allowedValues value.
      */
     public String allowedValues() {
@@ -132,7 +136,7 @@ public final class ServerConfigurationProperties {
 
     /**
      * Get the requiresRestart property: If configuration change requires restart.
-     *
+     * 
      * @return the requiresRestart value.
      */
     public Boolean requiresRestart() {
@@ -141,7 +145,7 @@ public final class ServerConfigurationProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the configuration.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -150,15 +154,13 @@ public final class ServerConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model ServerConfigurationProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model ServerConfigurationProperties"));
         }
     }
 

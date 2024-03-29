@@ -377,6 +377,7 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withEmptyAccessPolicy()
+            .disablePublicNetworkAccess()
             .create();
 
         validatePrivateLinkResource(vault, subResourceName.toString());

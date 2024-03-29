@@ -5,10 +5,14 @@
 package com.azure.resourcemanager.support.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
-/** Details about an Azure service available for support ticket creation. */
+/**
+ * Details about an Azure service available for support ticket creation.
+ */
 @Fluent
 public final class ServiceProperties {
     /*
@@ -23,13 +27,22 @@ public final class ServiceProperties {
     @JsonProperty(value = "resourceTypes")
     private List<String> resourceTypes;
 
-    /** Creates an instance of ServiceProperties class. */
+    /*
+     * Metadata about the service, only visible for 1P clients
+     */
+    @JsonProperty(value = "metadata", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> metadata;
+
+    /**
+     * Creates an instance of ServiceProperties class.
+     */
     public ServiceProperties() {
     }
 
     /**
      * Get the displayName property: Localized name of the Azure service.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -38,7 +51,7 @@ public final class ServiceProperties {
 
     /**
      * Set the displayName property: Localized name of the Azure service.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ServiceProperties object itself.
      */
@@ -49,7 +62,7 @@ public final class ServiceProperties {
 
     /**
      * Get the resourceTypes property: ARM Resource types.
-     *
+     * 
      * @return the resourceTypes value.
      */
     public List<String> resourceTypes() {
@@ -58,7 +71,7 @@ public final class ServiceProperties {
 
     /**
      * Set the resourceTypes property: ARM Resource types.
-     *
+     * 
      * @param resourceTypes the resourceTypes value to set.
      * @return the ServiceProperties object itself.
      */
@@ -68,8 +81,17 @@ public final class ServiceProperties {
     }
 
     /**
+     * Get the metadata property: Metadata about the service, only visible for 1P clients.
+     * 
+     * @return the metadata value.
+     */
+    public Map<String, String> metadata() {
+        return this.metadata;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

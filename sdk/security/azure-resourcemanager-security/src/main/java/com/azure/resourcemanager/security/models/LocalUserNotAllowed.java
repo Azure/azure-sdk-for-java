@@ -9,23 +9,31 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Login by a local user that isn't allowed. Allow list consists of login names to allow. */
+/**
+ * Login by a local user that isn't allowed. Allow list consists of login names to allow.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
 @JsonTypeName("LocalUserNotAllowed")
 @Fluent
 public final class LocalUserNotAllowed extends AllowlistCustomAlertRule {
-    /** Creates an instance of LocalUserNotAllowed class. */
+    /**
+     * Creates an instance of LocalUserNotAllowed class.
+     */
     public LocalUserNotAllowed() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LocalUserNotAllowed withAllowlistValues(List<String> allowlistValues) {
         super.withAllowlistValues(allowlistValues);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LocalUserNotAllowed withIsEnabled(boolean isEnabled) {
         super.withIsEnabled(isEnabled);
@@ -34,7 +42,7 @@ public final class LocalUserNotAllowed extends AllowlistCustomAlertRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

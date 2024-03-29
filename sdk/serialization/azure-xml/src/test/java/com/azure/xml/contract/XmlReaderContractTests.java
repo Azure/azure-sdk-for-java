@@ -126,9 +126,9 @@ public abstract class XmlReaderContractTests {
 
     @ParameterizedTest
     @MethodSource("basicAttributeOperationsSupplier")
-    public <T> void basicAttributeOperations(String json, T expectedValue, ReadValueCallback<XmlReader, T> function)
+    public <T> void basicAttributeOperations(String xml, T expectedValue, ReadValueCallback<XmlReader, T> function)
         throws XMLStreamException {
-        XmlReader reader = getXmlReader(json);
+        XmlReader reader = getXmlReader(xml);
         reader.nextElement(); // Initialize the XmlReader for reading.
 
         T actualValue = assertDoesNotThrow(() -> function.read(reader));

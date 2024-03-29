@@ -11,7 +11,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Model that represents a Target Type resource. */
+/**
+ * Model that represents a Target Type resource.
+ */
 @Fluent
 public final class TargetTypeInner extends ProxyResource {
     /*
@@ -32,13 +34,15 @@ public final class TargetTypeInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private TargetTypeProperties innerProperties = new TargetTypeProperties();
 
-    /** Creates an instance of TargetTypeInner class. */
+    /**
+     * Creates an instance of TargetTypeInner class.
+     */
     public TargetTypeInner() {
     }
 
     /**
      * Get the systemData property: The system metadata properties of the target type resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -47,7 +51,7 @@ public final class TargetTypeInner extends ProxyResource {
 
     /**
      * Get the location property: Location of the Target Type resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -56,7 +60,7 @@ public final class TargetTypeInner extends ProxyResource {
 
     /**
      * Set the location property: Location of the Target Type resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the TargetTypeInner object itself.
      */
@@ -67,7 +71,7 @@ public final class TargetTypeInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: The properties of the target type resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TargetTypeProperties innerProperties() {
@@ -76,7 +80,7 @@ public final class TargetTypeInner extends ProxyResource {
 
     /**
      * Get the displayName property: Localized string of the display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -85,7 +89,7 @@ public final class TargetTypeInner extends ProxyResource {
 
     /**
      * Get the description property: Localized string of the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -94,7 +98,7 @@ public final class TargetTypeInner extends ProxyResource {
 
     /**
      * Get the propertiesSchema property: URL to retrieve JSON schema of the Target Type properties.
-     *
+     * 
      * @return the propertiesSchema value.
      */
     public String propertiesSchema() {
@@ -103,7 +107,7 @@ public final class TargetTypeInner extends ProxyResource {
 
     /**
      * Get the resourceTypes property: List of resource types this Target Type can extend.
-     *
+     * 
      * @return the resourceTypes value.
      */
     public List<String> resourceTypes() {
@@ -112,14 +116,13 @@ public final class TargetTypeInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model TargetTypeInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model TargetTypeInner"));
         } else {
             innerProperties().validate();
         }

@@ -7,11 +7,13 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of AdaptiveApplicationControls. */
+/**
+ * Resource collection API of AdaptiveApplicationControls.
+ */
 public interface AdaptiveApplicationControls {
     /**
      * Gets a list of application control machine groups for the subscription.
-     *
+     * 
      * @param includePathRecommendations Include the policy rules.
      * @param summary Return output in a summarized form.
      * @param context The context to associate with this operation.
@@ -20,12 +22,12 @@ public interface AdaptiveApplicationControls {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of application control machine groups for the subscription along with {@link Response}.
      */
-    Response<AdaptiveApplicationControlGroups> listWithResponse(
-        Boolean includePathRecommendations, Boolean summary, Context context);
+    Response<AdaptiveApplicationControlGroups> listWithResponse(Boolean includePathRecommendations, Boolean summary,
+        Context context);
 
     /**
      * Gets a list of application control machine groups for the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of application control machine groups for the subscription.
@@ -34,9 +36,9 @@ public interface AdaptiveApplicationControls {
 
     /**
      * Gets an application control VM/server group.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param groupName Name of an application control machine group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -48,9 +50,9 @@ public interface AdaptiveApplicationControls {
 
     /**
      * Gets an application control VM/server group.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param groupName Name of an application control machine group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -61,9 +63,9 @@ public interface AdaptiveApplicationControls {
 
     /**
      * Delete an application control machine group.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param groupName Name of an application control machine group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -75,9 +77,9 @@ public interface AdaptiveApplicationControls {
 
     /**
      * Delete an application control machine group.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param groupName Name of an application control machine group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -87,7 +89,7 @@ public interface AdaptiveApplicationControls {
 
     /**
      * Gets an application control VM/server group.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -98,7 +100,7 @@ public interface AdaptiveApplicationControls {
 
     /**
      * Gets an application control VM/server group.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -110,7 +112,7 @@ public interface AdaptiveApplicationControls {
 
     /**
      * Delete an application control machine group.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,7 +122,7 @@ public interface AdaptiveApplicationControls {
 
     /**
      * Delete an application control machine group.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -132,7 +134,7 @@ public interface AdaptiveApplicationControls {
 
     /**
      * Begins definition for a new AdaptiveApplicationControlGroup resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new AdaptiveApplicationControlGroup definition.
      */

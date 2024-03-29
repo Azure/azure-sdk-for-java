@@ -11,15 +11,15 @@ public final class SapBwSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapBwSource model = BinaryData.fromString(
-            "{\"type\":\"SapBwSource\",\"query\":\"datarziryx\",\"queryTimeout\":\"datajrutmxqv\",\"additionalColumns\":\"datapoftsapfwusf\",\"sourceRetryCount\":\"datanjvzlynvje\",\"sourceRetryWait\":\"datavu\",\"maxConcurrentConnections\":\"datalwzn\",\"disableMetricsCollection\":\"dataie\",\"\":{\"wwutduch\":\"datagkfiftgbupuukp\"}}")
+            "{\"type\":\"SapBwSource\",\"query\":\"datanwhcmvdowlqcy\",\"queryTimeout\":\"dataubzixqxx\",\"additionalColumns\":\"dataawbftzn\",\"sourceRetryCount\":\"datarfhj\",\"sourceRetryWait\":\"dataiutbrnr\",\"maxConcurrentConnections\":\"dataljucodrbkdieismd\",\"disableMetricsCollection\":\"datafim\",\"\":{\"foexlcskelwzmji\":\"dataijrlmnkvp\"}}")
             .toObject(SapBwSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapBwSource model = new SapBwSource().withSourceRetryCount("datanjvzlynvje").withSourceRetryWait("datavu")
-            .withMaxConcurrentConnections("datalwzn").withDisableMetricsCollection("dataie")
-            .withQueryTimeout("datajrutmxqv").withAdditionalColumns("datapoftsapfwusf").withQuery("datarziryx");
+        SapBwSource model = new SapBwSource().withSourceRetryCount("datarfhj").withSourceRetryWait("dataiutbrnr")
+            .withMaxConcurrentConnections("dataljucodrbkdieismd").withDisableMetricsCollection("datafim")
+            .withQueryTimeout("dataubzixqxx").withAdditionalColumns("dataawbftzn").withQuery("datanwhcmvdowlqcy");
         model = BinaryData.fromObject(model).toObject(SapBwSource.class);
     }
 }

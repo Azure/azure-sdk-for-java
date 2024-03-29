@@ -5,109 +5,155 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.notificationhubs.models.NamespaceStatus;
 import com.azure.resourcemanager.notificationhubs.models.NamespaceType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.notificationhubs.models.NetworkAcls;
+import com.azure.resourcemanager.notificationhubs.models.OperationProvisioningState;
+import com.azure.resourcemanager.notificationhubs.models.PublicNetworkAccess;
+import com.azure.resourcemanager.notificationhubs.models.ReplicationRegion;
+import com.azure.resourcemanager.notificationhubs.models.ZoneRedundancyPreference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 
-/** Namespace properties. */
+/**
+ * Represents namespace properties.
+ */
 @Fluent
 public final class NamespaceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NamespaceProperties.class);
-
     /*
-     * The name of the namespace.
+     * Name of the Notification Hubs namespace. This is immutable property, set automatically
+     * by the service when the namespace is created.
      */
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * Provisioning state of the Namespace.
+     * Defines values for OperationProvisioningState.
      */
     @JsonProperty(value = "provisioningState")
-    private String provisioningState;
+    private OperationProvisioningState provisioningState;
 
     /*
-     * Specifies the targeted region in which the namespace should be created.
-     * It can be any of the following values: Australia East, Australia
-     * Southeast, Central US, East US, East US 2, West US, North Central US,
-     * South Central US, East Asia, Southeast Asia, Brazil South, Japan East,
-     * Japan West, North Europe, West Europe
+     * Namespace status.
      */
-    @JsonProperty(value = "region")
+    @JsonProperty(value = "status")
+    private NamespaceStatus status;
+
+    /*
+     * Gets or sets whether or not the namespace is currently enabled.
+     */
+    @JsonProperty(value = "enabled", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean enabled;
+
+    /*
+     * Gets or sets whether or not the namespace is set as Critical.
+     */
+    @JsonProperty(value = "critical", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean critical;
+
+    /*
+     * Namespace subscription id.
+     */
+    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
+    private String subscriptionId;
+
+    /*
+     * Region. The value is always set to the same value as Namespace.Location, so we are deprecating
+     * this property.
+     */
+    @JsonProperty(value = "region", access = JsonProperty.Access.WRITE_ONLY)
     private String region;
 
     /*
-     * Identifier for Azure Insights metrics
+     * Azure Insights Metrics id.
      */
     @JsonProperty(value = "metricId", access = JsonProperty.Access.WRITE_ONLY)
     private String metricId;
 
     /*
-     * Status of the namespace. It can be any of these values:1 =
-     * Created/Active2 = Creating3 = Suspended4 = Deleting
+     * Time when the namespace was created.
      */
-    @JsonProperty(value = "status")
-    private String status;
-
-    /*
-     * The time the namespace was created.
-     */
-    @JsonProperty(value = "createdAt")
+    @JsonProperty(value = "createdAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdAt;
 
     /*
-     * The time the namespace was updated.
+     * Time when the namespace was updated.
      */
-    @JsonProperty(value = "updatedAt")
+    @JsonProperty(value = "updatedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime updatedAt;
 
     /*
-     * Endpoint you can use to perform NotificationHub operations.
+     * Defines values for NamespaceType.
      */
-    @JsonProperty(value = "serviceBusEndpoint")
+    @JsonProperty(value = "namespaceType")
+    private NamespaceType namespaceType;
+
+    /*
+     * Allowed replication region
+     */
+    @JsonProperty(value = "replicationRegion")
+    private ReplicationRegion replicationRegion;
+
+    /*
+     * Namespace SKU name.
+     */
+    @JsonProperty(value = "zoneRedundancy")
+    private ZoneRedundancyPreference zoneRedundancy;
+
+    /*
+     * A collection of network authorization rules.
+     */
+    @JsonProperty(value = "networkAcls")
+    private NetworkAcls networkAcls;
+
+    /*
+     * Collection of Notification Hub or Notification Hub Namespace PNS credentials.
+     */
+    @JsonProperty(value = "pnsCredentials")
+    private PnsCredentials pnsCredentials;
+
+    /*
+     * Gets or sets endpoint you can use to perform NotificationHub
+     * operations.
+     */
+    @JsonProperty(value = "serviceBusEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceBusEndpoint;
 
     /*
-     * The Id of the Azure subscription associated with the namespace.
+     * Private Endpoint Connections for namespace
      */
-    @JsonProperty(value = "subscriptionId")
-    private String subscriptionId;
+    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionResourceInner> privateEndpointConnections;
 
     /*
-     * ScaleUnit where the namespace gets created
+     * Gets or sets scaleUnit where the namespace gets created
      */
     @JsonProperty(value = "scaleUnit")
     private String scaleUnit;
 
     /*
-     * Whether or not the namespace is currently enabled.
-     */
-    @JsonProperty(value = "enabled")
-    private Boolean enabled;
-
-    /*
-     * Whether or not the namespace is set as Critical.
-     */
-    @JsonProperty(value = "critical")
-    private Boolean critical;
-
-    /*
-     * Data center for the namespace
+     * Deprecated.
      */
     @JsonProperty(value = "dataCenter")
     private String dataCenter;
 
     /*
-     * The namespace type.
+     * Type of public network access.
      */
-    @JsonProperty(value = "namespaceType")
-    private NamespaceType namespaceType;
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
 
     /**
-     * Get the name property: The name of the namespace.
-     *
+     * Creates an instance of NamespaceProperties class.
+     */
+    public NamespaceProperties() {
+    }
+
+    /**
+     * Get the name property: Name of the Notification Hubs namespace. This is immutable property, set automatically
+     * by the service when the namespace is created.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -115,194 +161,48 @@ public final class NamespaceProperties {
     }
 
     /**
-     * Set the name property: The name of the namespace.
-     *
-     * @param name the name value to set.
-     * @return the NamespaceProperties object itself.
-     */
-    public NamespaceProperties withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the Namespace.
-     *
+     * Get the provisioningState property: Defines values for OperationProvisioningState.
+     * 
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public OperationProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
     /**
-     * Set the provisioningState property: Provisioning state of the Namespace.
-     *
+     * Set the provisioningState property: Defines values for OperationProvisioningState.
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the NamespaceProperties object itself.
      */
-    public NamespaceProperties withProvisioningState(String provisioningState) {
+    public NamespaceProperties withProvisioningState(OperationProvisioningState provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
 
     /**
-     * Get the region property: Specifies the targeted region in which the namespace should be created. It can be any of
-     * the following values: Australia East, Australia Southeast, Central US, East US, East US 2, West US, North Central
-     * US, South Central US, East Asia, Southeast Asia, Brazil South, Japan East, Japan West, North Europe, West Europe.
-     *
-     * @return the region value.
-     */
-    public String region() {
-        return this.region;
-    }
-
-    /**
-     * Set the region property: Specifies the targeted region in which the namespace should be created. It can be any of
-     * the following values: Australia East, Australia Southeast, Central US, East US, East US 2, West US, North Central
-     * US, South Central US, East Asia, Southeast Asia, Brazil South, Japan East, Japan West, North Europe, West Europe.
-     *
-     * @param region the region value to set.
-     * @return the NamespaceProperties object itself.
-     */
-    public NamespaceProperties withRegion(String region) {
-        this.region = region;
-        return this;
-    }
-
-    /**
-     * Get the metricId property: Identifier for Azure Insights metrics.
-     *
-     * @return the metricId value.
-     */
-    public String metricId() {
-        return this.metricId;
-    }
-
-    /**
-     * Get the status property: Status of the namespace. It can be any of these values:1 = Created/Active2 = Creating3 =
-     * Suspended4 = Deleting.
-     *
+     * Get the status property: Namespace status.
+     * 
      * @return the status value.
      */
-    public String status() {
+    public NamespaceStatus status() {
         return this.status;
     }
 
     /**
-     * Set the status property: Status of the namespace. It can be any of these values:1 = Created/Active2 = Creating3 =
-     * Suspended4 = Deleting.
-     *
+     * Set the status property: Namespace status.
+     * 
      * @param status the status value to set.
      * @return the NamespaceProperties object itself.
      */
-    public NamespaceProperties withStatus(String status) {
+    public NamespaceProperties withStatus(NamespaceStatus status) {
         this.status = status;
         return this;
     }
 
     /**
-     * Get the createdAt property: The time the namespace was created.
-     *
-     * @return the createdAt value.
-     */
-    public OffsetDateTime createdAt() {
-        return this.createdAt;
-    }
-
-    /**
-     * Set the createdAt property: The time the namespace was created.
-     *
-     * @param createdAt the createdAt value to set.
-     * @return the NamespaceProperties object itself.
-     */
-    public NamespaceProperties withCreatedAt(OffsetDateTime createdAt) {
-        this.createdAt = createdAt;
-        return this;
-    }
-
-    /**
-     * Get the updatedAt property: The time the namespace was updated.
-     *
-     * @return the updatedAt value.
-     */
-    public OffsetDateTime updatedAt() {
-        return this.updatedAt;
-    }
-
-    /**
-     * Set the updatedAt property: The time the namespace was updated.
-     *
-     * @param updatedAt the updatedAt value to set.
-     * @return the NamespaceProperties object itself.
-     */
-    public NamespaceProperties withUpdatedAt(OffsetDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-        return this;
-    }
-
-    /**
-     * Get the serviceBusEndpoint property: Endpoint you can use to perform NotificationHub operations.
-     *
-     * @return the serviceBusEndpoint value.
-     */
-    public String serviceBusEndpoint() {
-        return this.serviceBusEndpoint;
-    }
-
-    /**
-     * Set the serviceBusEndpoint property: Endpoint you can use to perform NotificationHub operations.
-     *
-     * @param serviceBusEndpoint the serviceBusEndpoint value to set.
-     * @return the NamespaceProperties object itself.
-     */
-    public NamespaceProperties withServiceBusEndpoint(String serviceBusEndpoint) {
-        this.serviceBusEndpoint = serviceBusEndpoint;
-        return this;
-    }
-
-    /**
-     * Get the subscriptionId property: The Id of the Azure subscription associated with the namespace.
-     *
-     * @return the subscriptionId value.
-     */
-    public String subscriptionId() {
-        return this.subscriptionId;
-    }
-
-    /**
-     * Set the subscriptionId property: The Id of the Azure subscription associated with the namespace.
-     *
-     * @param subscriptionId the subscriptionId value to set.
-     * @return the NamespaceProperties object itself.
-     */
-    public NamespaceProperties withSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-        return this;
-    }
-
-    /**
-     * Get the scaleUnit property: ScaleUnit where the namespace gets created.
-     *
-     * @return the scaleUnit value.
-     */
-    public String scaleUnit() {
-        return this.scaleUnit;
-    }
-
-    /**
-     * Set the scaleUnit property: ScaleUnit where the namespace gets created.
-     *
-     * @param scaleUnit the scaleUnit value to set.
-     * @return the NamespaceProperties object itself.
-     */
-    public NamespaceProperties withScaleUnit(String scaleUnit) {
-        this.scaleUnit = scaleUnit;
-        return this;
-    }
-
-    /**
-     * Get the enabled property: Whether or not the namespace is currently enabled.
-     *
+     * Get the enabled property: Gets or sets whether or not the namespace is currently enabled.
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -310,19 +210,8 @@ public final class NamespaceProperties {
     }
 
     /**
-     * Set the enabled property: Whether or not the namespace is currently enabled.
-     *
-     * @param enabled the enabled value to set.
-     * @return the NamespaceProperties object itself.
-     */
-    public NamespaceProperties withEnabled(Boolean enabled) {
-        this.enabled = enabled;
-        return this;
-    }
-
-    /**
-     * Get the critical property: Whether or not the namespace is set as Critical.
-     *
+     * Get the critical property: Gets or sets whether or not the namespace is set as Critical.
+     * 
      * @return the critical value.
      */
     public Boolean critical() {
@@ -330,39 +219,55 @@ public final class NamespaceProperties {
     }
 
     /**
-     * Set the critical property: Whether or not the namespace is set as Critical.
-     *
-     * @param critical the critical value to set.
-     * @return the NamespaceProperties object itself.
+     * Get the subscriptionId property: Namespace subscription id.
+     * 
+     * @return the subscriptionId value.
      */
-    public NamespaceProperties withCritical(Boolean critical) {
-        this.critical = critical;
-        return this;
+    public String subscriptionId() {
+        return this.subscriptionId;
     }
 
     /**
-     * Get the dataCenter property: Data center for the namespace.
-     *
-     * @return the dataCenter value.
+     * Get the region property: Region. The value is always set to the same value as Namespace.Location, so we are
+     * deprecating
+     * this property.
+     * 
+     * @return the region value.
      */
-    public String dataCenter() {
-        return this.dataCenter;
+    public String region() {
+        return this.region;
     }
 
     /**
-     * Set the dataCenter property: Data center for the namespace.
-     *
-     * @param dataCenter the dataCenter value to set.
-     * @return the NamespaceProperties object itself.
+     * Get the metricId property: Azure Insights Metrics id.
+     * 
+     * @return the metricId value.
      */
-    public NamespaceProperties withDataCenter(String dataCenter) {
-        this.dataCenter = dataCenter;
-        return this;
+    public String metricId() {
+        return this.metricId;
     }
 
     /**
-     * Get the namespaceType property: The namespace type.
-     *
+     * Get the createdAt property: Time when the namespace was created.
+     * 
+     * @return the createdAt value.
+     */
+    public OffsetDateTime createdAt() {
+        return this.createdAt;
+    }
+
+    /**
+     * Get the updatedAt property: Time when the namespace was updated.
+     * 
+     * @return the updatedAt value.
+     */
+    public OffsetDateTime updatedAt() {
+        return this.updatedAt;
+    }
+
+    /**
+     * Get the namespaceType property: Defines values for NamespaceType.
+     * 
      * @return the namespaceType value.
      */
     public NamespaceType namespaceType() {
@@ -370,8 +275,8 @@ public final class NamespaceProperties {
     }
 
     /**
-     * Set the namespaceType property: The namespace type.
-     *
+     * Set the namespaceType property: Defines values for NamespaceType.
+     * 
      * @param namespaceType the namespaceType value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -381,10 +286,178 @@ public final class NamespaceProperties {
     }
 
     /**
+     * Get the replicationRegion property: Allowed replication region.
+     * 
+     * @return the replicationRegion value.
+     */
+    public ReplicationRegion replicationRegion() {
+        return this.replicationRegion;
+    }
+
+    /**
+     * Set the replicationRegion property: Allowed replication region.
+     * 
+     * @param replicationRegion the replicationRegion value to set.
+     * @return the NamespaceProperties object itself.
+     */
+    public NamespaceProperties withReplicationRegion(ReplicationRegion replicationRegion) {
+        this.replicationRegion = replicationRegion;
+        return this;
+    }
+
+    /**
+     * Get the zoneRedundancy property: Namespace SKU name.
+     * 
+     * @return the zoneRedundancy value.
+     */
+    public ZoneRedundancyPreference zoneRedundancy() {
+        return this.zoneRedundancy;
+    }
+
+    /**
+     * Set the zoneRedundancy property: Namespace SKU name.
+     * 
+     * @param zoneRedundancy the zoneRedundancy value to set.
+     * @return the NamespaceProperties object itself.
+     */
+    public NamespaceProperties withZoneRedundancy(ZoneRedundancyPreference zoneRedundancy) {
+        this.zoneRedundancy = zoneRedundancy;
+        return this;
+    }
+
+    /**
+     * Get the networkAcls property: A collection of network authorization rules.
+     * 
+     * @return the networkAcls value.
+     */
+    public NetworkAcls networkAcls() {
+        return this.networkAcls;
+    }
+
+    /**
+     * Set the networkAcls property: A collection of network authorization rules.
+     * 
+     * @param networkAcls the networkAcls value to set.
+     * @return the NamespaceProperties object itself.
+     */
+    public NamespaceProperties withNetworkAcls(NetworkAcls networkAcls) {
+        this.networkAcls = networkAcls;
+        return this;
+    }
+
+    /**
+     * Get the pnsCredentials property: Collection of Notification Hub or Notification Hub Namespace PNS credentials.
+     * 
+     * @return the pnsCredentials value.
+     */
+    public PnsCredentials pnsCredentials() {
+        return this.pnsCredentials;
+    }
+
+    /**
+     * Set the pnsCredentials property: Collection of Notification Hub or Notification Hub Namespace PNS credentials.
+     * 
+     * @param pnsCredentials the pnsCredentials value to set.
+     * @return the NamespaceProperties object itself.
+     */
+    public NamespaceProperties withPnsCredentials(PnsCredentials pnsCredentials) {
+        this.pnsCredentials = pnsCredentials;
+        return this;
+    }
+
+    /**
+     * Get the serviceBusEndpoint property: Gets or sets endpoint you can use to perform NotificationHub
+     * operations.
+     * 
+     * @return the serviceBusEndpoint value.
+     */
+    public String serviceBusEndpoint() {
+        return this.serviceBusEndpoint;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: Private Endpoint Connections for namespace.
+     * 
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionResourceInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * Get the scaleUnit property: Gets or sets scaleUnit where the namespace gets created.
+     * 
+     * @return the scaleUnit value.
+     */
+    public String scaleUnit() {
+        return this.scaleUnit;
+    }
+
+    /**
+     * Set the scaleUnit property: Gets or sets scaleUnit where the namespace gets created.
+     * 
+     * @param scaleUnit the scaleUnit value to set.
+     * @return the NamespaceProperties object itself.
+     */
+    public NamespaceProperties withScaleUnit(String scaleUnit) {
+        this.scaleUnit = scaleUnit;
+        return this;
+    }
+
+    /**
+     * Get the dataCenter property: Deprecated.
+     * 
+     * @return the dataCenter value.
+     */
+    public String dataCenter() {
+        return this.dataCenter;
+    }
+
+    /**
+     * Set the dataCenter property: Deprecated.
+     * 
+     * @param dataCenter the dataCenter value to set.
+     * @return the NamespaceProperties object itself.
+     */
+    public NamespaceProperties withDataCenter(String dataCenter) {
+        this.dataCenter = dataCenter;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Type of public network access.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Type of public network access.
+     * 
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the NamespaceProperties object itself.
+     */
+    public NamespaceProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (networkAcls() != null) {
+            networkAcls().validate();
+        }
+        if (pnsCredentials() != null) {
+            pnsCredentials().validate();
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
+        }
     }
 }

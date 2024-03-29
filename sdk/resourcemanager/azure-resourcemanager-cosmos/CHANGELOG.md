@@ -1,14 +1,32 @@
 # Release History
 
-## 2.37.0-beta.1 (Unreleased)
+## 2.38.0-beta.1 (Unreleased)
 
 ### Features Added
+
+- Supported disabling public network access in `CosmosDBAccount` via `disablePublicNetworkAccess()`, for private link feature.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.37.0 (2024-03-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.37.0-beta.1 (2024-03-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Preview release for `api-version` `2024-02-15-preview`.
 
 ## 2.36.0 (2024-02-29)
 

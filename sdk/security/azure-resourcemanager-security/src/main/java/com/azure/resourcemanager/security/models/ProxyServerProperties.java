@@ -25,13 +25,15 @@ public final class ProxyServerProperties {
     @JsonProperty(value = "port")
     private String port;
 
-    /** Creates an instance of ProxyServerProperties class. */
+    /**
+     * Creates an instance of ProxyServerProperties class.
+     */
     public ProxyServerProperties() {
     }
 
     /**
      * Get the ip property: Proxy server IP.
-     *
+     * 
      * @return the ip value.
      */
     public String ip() {
@@ -40,7 +42,7 @@ public final class ProxyServerProperties {
 
     /**
      * Set the ip property: Proxy server IP.
-     *
+     * 
      * @param ip the ip value to set.
      * @return the ProxyServerProperties object itself.
      */
@@ -51,7 +53,7 @@ public final class ProxyServerProperties {
 
     /**
      * Get the port property: Proxy server port.
-     *
+     * 
      * @return the port value.
      */
     public String port() {
@@ -60,7 +62,7 @@ public final class ProxyServerProperties {
 
     /**
      * Set the port property: Proxy server port.
-     *
+     * 
      * @param port the port value to set.
      * @return the ProxyServerProperties object itself.
      */
@@ -71,7 +73,7 @@ public final class ProxyServerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.iotfirmwaredefense.models.OperationListResult;
 public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"faxkffeii\",\"isDataAction\":true,\"display\":{\"provider\":\"ez\",\"resource\":\"shxmzsbbzoggigrx\",\"operation\":\"ur\",\"description\":\"xxjnspydptk\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"knvudwtiukb\",\"isDataAction\":true,\"display\":{\"provider\":\"pocipazyxoegu\",\"resource\":\"jnpiucgyg\",\"operation\":\"qzntypm\",\"description\":\"p\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"j\",\"isDataAction\":false,\"display\":{\"provider\":\"nfyhx\",\"resource\":\"oejzi\",\"operation\":\"ifsjttgzfbishcb\",\"description\":\"ajdeyeamdphaga\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"gipwhonowkg\",\"isDataAction\":true,\"display\":{\"provider\":\"kix\",\"resource\":\"injep\",\"operation\":\"tmryw\",\"description\":\"zoqftiyqzrnkcqvy\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}],\"nextLink\":\"sicohoqqnwvlry\"}")
-                .toObject(OperationListResult.class);
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"drqjsdpy\",\"isDataAction\":false,\"display\":{\"provider\":\"xdeoejzic\",\"resource\":\"fsj\",\"operation\":\"gzfbishcbk\",\"description\":\"jdeyeamdpha\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"xw\",\"isDataAction\":true,\"display\":{\"provider\":\"onowk\",\"resource\":\"hwankixzbinjepu\",\"operation\":\"mryw\",\"description\":\"zoqftiyqzrnkcqvy\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"sicohoqqnwvlry\",\"isDataAction\":false,\"display\":{\"provider\":\"eun\",\"resource\":\"qhgyxzkonocukok\",\"operation\":\"axuconuq\",\"description\":\"fkbey\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"mwvvjektcxsenhw\",\"isDataAction\":false,\"display\":{\"provider\":\"rzpwvlqdqgbiq\",\"resource\":\"ihkaetcktvfc\",\"operation\":\"fsnkymuctq\",\"description\":\"fbebrjcxer\"},\"origin\":\"system\",\"actionType\":\"Internal\"}],\"nextLink\":\"txfvjrbirph\"}")
+            .toObject(OperationListResult.class);
     }
 
     @org.junit.jupiter.api.Test

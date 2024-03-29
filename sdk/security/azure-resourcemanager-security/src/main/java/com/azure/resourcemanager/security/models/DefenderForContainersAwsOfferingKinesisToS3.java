@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The kinesis to s3 connection configuration. */
+/**
+ * The kinesis to s3 connection configuration.
+ */
 @Fluent
 public final class DefenderForContainersAwsOfferingKinesisToS3 {
     /*
@@ -16,13 +18,15 @@ public final class DefenderForContainersAwsOfferingKinesisToS3 {
     @JsonProperty(value = "cloudRoleArn")
     private String cloudRoleArn;
 
-    /** Creates an instance of DefenderForContainersAwsOfferingKinesisToS3 class. */
+    /**
+     * Creates an instance of DefenderForContainersAwsOfferingKinesisToS3 class.
+     */
     public DefenderForContainersAwsOfferingKinesisToS3() {
     }
 
     /**
      * Get the cloudRoleArn property: The cloud role ARN in AWS used by Kinesis to transfer data into S3.
-     *
+     * 
      * @return the cloudRoleArn value.
      */
     public String cloudRoleArn() {
@@ -31,7 +35,7 @@ public final class DefenderForContainersAwsOfferingKinesisToS3 {
 
     /**
      * Set the cloudRoleArn property: The cloud role ARN in AWS used by Kinesis to transfer data into S3.
-     *
+     * 
      * @param cloudRoleArn the cloudRoleArn value to set.
      * @return the DefenderForContainersAwsOfferingKinesisToS3 object itself.
      */
@@ -42,7 +46,7 @@ public final class DefenderForContainersAwsOfferingKinesisToS3 {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

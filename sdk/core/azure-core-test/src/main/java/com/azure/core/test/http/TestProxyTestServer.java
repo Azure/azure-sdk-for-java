@@ -19,7 +19,7 @@ public class TestProxyTestServer implements Closeable {
 
     private static final String TEST_JSON_RESPONSE_BODY = "{\"modelId\":\"0cd2728b-210e-4c05-b706-f70554276bcc\","
         + "\"createdDateTime\":\"2022-08-31T00:00:00Z\",\"apiVersion\":\"2022-08-31\","
-        + "  \"accountKey\" : \"secret_account_key\"}";
+        + "  \"accountKey\" : \"secret_account_key\"," + "  \"client_secret\" : \"secret_client_secret\"}";
     private static final String TEST_XML_RESPONSE_BODY = "{\"Body\":\"<UserDelegationKey>"
         + "<SignedTid>sensitiveInformation=</SignedTid></UserDelegationKey>\",\"primaryKey\":"
         + "\"<PrimaryKey>fakePrimaryKey</PrimaryKey>\", \"TableName\":\"listtable09bf2a3d\"}";

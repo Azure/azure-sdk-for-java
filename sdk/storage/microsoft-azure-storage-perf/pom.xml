@@ -30,7 +30,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-storage</artifactId>
-      <version>8.6.5</version> <!-- {x-version-update;com.microsoft.azure:azure-storage;current} -->
+      <version>8.6.6</version> <!-- {x-version-update;storage_com.microsoft.azure:azure-storage;external_dependency} -->
     </dependency>
   </dependencies>
 
@@ -45,7 +45,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:azure-storage:[8.6.5]</include> <!-- {x-include-update;com.microsoft.azure:azure-storage;current} -->
+                <include>com.microsoft.azure:azure-storage:[8.6.6]</include> <!-- {x-include-update;storage_com.microsoft.azure:azure-storage;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

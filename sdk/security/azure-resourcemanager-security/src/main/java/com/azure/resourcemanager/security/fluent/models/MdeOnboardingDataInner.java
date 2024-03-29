@@ -8,23 +8,29 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The resource of the configuration or data needed to onboard the machine to MDE. */
+/**
+ * The resource of the configuration or data needed to onboard the machine to MDE.
+ */
 @Fluent
 public final class MdeOnboardingDataInner extends ProxyResource {
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+
     /*
      * Properties of the MDE configuration or data parameter needed to onboard the machine to MDE
      */
     @JsonProperty(value = "properties")
     private MdeOnboardingDataProperties innerProperties;
 
-    /** Creates an instance of MdeOnboardingDataInner class. */
+    /**
+     * Creates an instance of MdeOnboardingDataInner class.
+     */
     public MdeOnboardingDataInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the MDE configuration or data parameter needed to onboard the
      * machine to MDE.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MdeOnboardingDataProperties innerProperties() {
@@ -34,17 +40,17 @@ public final class MdeOnboardingDataInner extends ProxyResource {
     /**
      * Get the onboardingPackageWindows property: The onboarding package used to onboard Windows machines to MDE, coded
      * in base64. This can also be used for onboarding using the dedicated VM Extension.
-     *
+     * 
      * @return the onboardingPackageWindows value.
      */
     public byte[] onboardingPackageWindows() {
-        return this.innerProperties() == null ? new byte[0] : this.innerProperties().onboardingPackageWindows();
+        return this.innerProperties() == null ? EMPTY_BYTE_ARRAY : this.innerProperties().onboardingPackageWindows();
     }
 
     /**
      * Set the onboardingPackageWindows property: The onboarding package used to onboard Windows machines to MDE, coded
      * in base64. This can also be used for onboarding using the dedicated VM Extension.
-     *
+     * 
      * @param onboardingPackageWindows the onboardingPackageWindows value to set.
      * @return the MdeOnboardingDataInner object itself.
      */
@@ -59,17 +65,17 @@ public final class MdeOnboardingDataInner extends ProxyResource {
     /**
      * Get the onboardingPackageLinux property: The onboarding package used to onboard Linux machines to MDE, coded in
      * base64. This can also be used for onboarding using the dedicated VM Extension.
-     *
+     * 
      * @return the onboardingPackageLinux value.
      */
     public byte[] onboardingPackageLinux() {
-        return this.innerProperties() == null ? new byte[0] : this.innerProperties().onboardingPackageLinux();
+        return this.innerProperties() == null ? EMPTY_BYTE_ARRAY : this.innerProperties().onboardingPackageLinux();
     }
 
     /**
      * Set the onboardingPackageLinux property: The onboarding package used to onboard Linux machines to MDE, coded in
      * base64. This can also be used for onboarding using the dedicated VM Extension.
-     *
+     * 
      * @param onboardingPackageLinux the onboardingPackageLinux value to set.
      * @return the MdeOnboardingDataInner object itself.
      */
@@ -83,7 +89,7 @@ public final class MdeOnboardingDataInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

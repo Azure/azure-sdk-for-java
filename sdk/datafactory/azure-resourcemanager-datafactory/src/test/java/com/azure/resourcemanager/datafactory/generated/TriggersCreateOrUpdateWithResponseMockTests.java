@@ -35,7 +35,7 @@ public final class TriggersCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"twstqgc\",\"runtimeState\":\"Stopped\",\"annotations\":[\"datarzoafxoyddus\",\"datavyjh\",\"dataynlmxzdwpdw\"],\"\":{\"yznyeghm\":\"datau\",\"xdnckgdcszz\":\"datam\",\"ldeq\":\"dataedfdzleaz\",\"q\":\"datafzyhikhnwseftlj\"}},\"name\":\"fkdy\",\"type\":\"zaxithppjxtobe\",\"etag\":\"zcadoqijfll\",\"id\":\"uzeolcgqjtvp\"}";
+            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"pbln\",\"runtimeState\":\"Disabled\",\"annotations\":[\"datacij\",\"datan\",\"datavjskuw\",\"datarcxtyfbbomug\"],\"\":{\"ebpl\":\"datajvvdafbtozxvko\"}},\"name\":\"xmljnseaogqiybf\",\"type\":\"xuyo\",\"etag\":\"dryeucl\",\"id\":\"cwpgipttp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -52,14 +52,13 @@ public final class TriggersCreateOrUpdateWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        TriggerResource response = manager.triggers().define("a").withExistingFactory("rklxnbbk", "jnnzqz")
-            .withProperties(new Trigger().withDescription("fxvlac")
-                .withAnnotations(Arrays.asList("dataksguccotgqge", "dataielyhow"))
+        TriggerResource response = manager.triggers().define("mdjlxzttgvawy").withExistingFactory("xrm", "ljqhoiqvk")
+            .withProperties(new Trigger().withDescription("xoh").withAnnotations(Arrays.asList("datatheukclayqipwkx"))
                 .withAdditionalProperties(mapOf("type", "Trigger", "runtimeState", "Stopped")))
-            .withIfMatch("lpiccx").create();
+            .withIfMatch("mxlnt").create();
 
-        Assertions.assertEquals("uzeolcgqjtvp", response.id());
-        Assertions.assertEquals("twstqgc", response.properties().description());
+        Assertions.assertEquals("cwpgipttp", response.id());
+        Assertions.assertEquals("pbln", response.properties().description());
     }
 
     // Use "Map.of" if available

@@ -21,34 +21,28 @@ public final class CustomEntityStoreAssignmentsImpl implements CustomEntityStore
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public CustomEntityStoreAssignmentsImpl(
-        CustomEntityStoreAssignmentsClient innerClient,
+    public CustomEntityStoreAssignmentsImpl(CustomEntityStoreAssignmentsClient innerClient,
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<CustomEntityStoreAssignment> getByResourceGroupWithResponse(
-        String resourceGroupName, String customEntityStoreAssignmentName, Context context) {
-        Response<CustomEntityStoreAssignmentInner> inner =
-            this
-                .serviceClient()
-                .getByResourceGroupWithResponse(resourceGroupName, customEntityStoreAssignmentName, context);
+    public Response<CustomEntityStoreAssignment> getByResourceGroupWithResponse(String resourceGroupName,
+        String customEntityStoreAssignmentName, Context context) {
+        Response<CustomEntityStoreAssignmentInner> inner = this.serviceClient()
+            .getByResourceGroupWithResponse(resourceGroupName, customEntityStoreAssignmentName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CustomEntityStoreAssignmentImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CustomEntityStoreAssignment getByResourceGroup(
-        String resourceGroupName, String customEntityStoreAssignmentName) {
-        CustomEntityStoreAssignmentInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, customEntityStoreAssignmentName);
+    public CustomEntityStoreAssignment getByResourceGroup(String resourceGroupName,
+        String customEntityStoreAssignmentName) {
+        CustomEntityStoreAssignmentInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, customEntityStoreAssignmentName);
         if (inner != null) {
             return new CustomEntityStoreAssignmentImpl(inner, this.manager());
         } else {
@@ -56,8 +50,8 @@ public final class CustomEntityStoreAssignmentsImpl implements CustomEntityStore
         }
     }
 
-    public Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String customEntityStoreAssignmentName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName,
+        String customEntityStoreAssignmentName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, customEntityStoreAssignmentName, context);
     }
 
@@ -66,117 +60,88 @@ public final class CustomEntityStoreAssignmentsImpl implements CustomEntityStore
     }
 
     public PagedIterable<CustomEntityStoreAssignment> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<CustomEntityStoreAssignmentInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new CustomEntityStoreAssignmentImpl(inner1, this.manager()));
+        PagedIterable<CustomEntityStoreAssignmentInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CustomEntityStoreAssignmentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CustomEntityStoreAssignment> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<CustomEntityStoreAssignmentInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new CustomEntityStoreAssignmentImpl(inner1, this.manager()));
+        PagedIterable<CustomEntityStoreAssignmentInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CustomEntityStoreAssignmentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CustomEntityStoreAssignment> list() {
         PagedIterable<CustomEntityStoreAssignmentInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new CustomEntityStoreAssignmentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CustomEntityStoreAssignmentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CustomEntityStoreAssignment> list(Context context) {
         PagedIterable<CustomEntityStoreAssignmentInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new CustomEntityStoreAssignmentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CustomEntityStoreAssignmentImpl(inner1, this.manager()));
     }
 
     public CustomEntityStoreAssignment getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String customEntityStoreAssignmentName = Utils.getValueFromIdByName(id, "customEntityStoreAssignments");
+        String customEntityStoreAssignmentName
+            = ResourceManagerUtils.getValueFromIdByName(id, "customEntityStoreAssignments");
         if (customEntityStoreAssignmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'customEntityStoreAssignments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'customEntityStoreAssignments'.", id)));
         }
-        return this
-            .getByResourceGroupWithResponse(resourceGroupName, customEntityStoreAssignmentName, Context.NONE)
+        return this.getByResourceGroupWithResponse(resourceGroupName, customEntityStoreAssignmentName, Context.NONE)
             .getValue();
     }
 
     public Response<CustomEntityStoreAssignment> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String customEntityStoreAssignmentName = Utils.getValueFromIdByName(id, "customEntityStoreAssignments");
+        String customEntityStoreAssignmentName
+            = ResourceManagerUtils.getValueFromIdByName(id, "customEntityStoreAssignments");
         if (customEntityStoreAssignmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'customEntityStoreAssignments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'customEntityStoreAssignments'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, customEntityStoreAssignmentName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String customEntityStoreAssignmentName = Utils.getValueFromIdByName(id, "customEntityStoreAssignments");
+        String customEntityStoreAssignmentName
+            = ResourceManagerUtils.getValueFromIdByName(id, "customEntityStoreAssignments");
         if (customEntityStoreAssignmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'customEntityStoreAssignments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'customEntityStoreAssignments'.", id)));
         }
         this.deleteByResourceGroupWithResponse(resourceGroupName, customEntityStoreAssignmentName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String customEntityStoreAssignmentName = Utils.getValueFromIdByName(id, "customEntityStoreAssignments");
+        String customEntityStoreAssignmentName
+            = ResourceManagerUtils.getValueFromIdByName(id, "customEntityStoreAssignments");
         if (customEntityStoreAssignmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'customEntityStoreAssignments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'customEntityStoreAssignments'.", id)));
         }
         return this.deleteByResourceGroupWithResponse(resourceGroupName, customEntityStoreAssignmentName, context);
     }

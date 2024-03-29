@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmosdbforpostgresql.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The name object for a server. */
+/**
+ * The name object for a server.
+ */
 @Fluent
 public final class ServerNameItem {
     /*
@@ -22,13 +24,15 @@ public final class ServerNameItem {
     @JsonProperty(value = "fullyQualifiedDomainName", access = JsonProperty.Access.WRITE_ONLY)
     private String fullyQualifiedDomainName;
 
-    /** Creates an instance of ServerNameItem class. */
+    /**
+     * Creates an instance of ServerNameItem class.
+     */
     public ServerNameItem() {
     }
 
     /**
      * Get the name property: The name of a server.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class ServerNameItem {
 
     /**
      * Set the name property: The name of a server.
-     *
+     * 
      * @param name the name value to set.
      * @return the ServerNameItem object itself.
      */
@@ -48,7 +52,7 @@ public final class ServerNameItem {
 
     /**
      * Get the fullyQualifiedDomainName property: The fully qualified domain name of a server.
-     *
+     * 
      * @return the fullyQualifiedDomainName value.
      */
     public String fullyQualifiedDomainName() {
@@ -57,7 +61,7 @@ public final class ServerNameItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

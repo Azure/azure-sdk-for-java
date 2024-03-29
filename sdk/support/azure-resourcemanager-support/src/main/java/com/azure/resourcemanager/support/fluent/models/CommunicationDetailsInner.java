@@ -11,7 +11,9 @@ import com.azure.resourcemanager.support.models.CommunicationType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Object that represents a Communication resource. */
+/**
+ * Object that represents a Communication resource.
+ */
 @Fluent
 public final class CommunicationDetailsInner extends ProxyResource {
     /*
@@ -20,13 +22,15 @@ public final class CommunicationDetailsInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private CommunicationDetailsProperties innerProperties;
 
-    /** Creates an instance of CommunicationDetailsInner class. */
+    /**
+     * Creates an instance of CommunicationDetailsInner class.
+     */
     public CommunicationDetailsInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CommunicationDetailsProperties innerProperties() {
@@ -35,7 +39,7 @@ public final class CommunicationDetailsInner extends ProxyResource {
 
     /**
      * Get the communicationType property: Communication type.
-     *
+     * 
      * @return the communicationType value.
      */
     public CommunicationType communicationType() {
@@ -44,7 +48,7 @@ public final class CommunicationDetailsInner extends ProxyResource {
 
     /**
      * Get the communicationDirection property: Direction of communication.
-     *
+     * 
      * @return the communicationDirection value.
      */
     public CommunicationDirection communicationDirection() {
@@ -52,8 +56,9 @@ public final class CommunicationDetailsInner extends ProxyResource {
     }
 
     /**
-     * Get the sender property: Email address of the sender. This property is required if called by a service principal.
-     *
+     * Get the sender property: Email address of the sender. This property is required if called by a service
+     * principal.
+     * 
      * @return the sender value.
      */
     public String sender() {
@@ -61,8 +66,9 @@ public final class CommunicationDetailsInner extends ProxyResource {
     }
 
     /**
-     * Set the sender property: Email address of the sender. This property is required if called by a service principal.
-     *
+     * Set the sender property: Email address of the sender. This property is required if called by a service
+     * principal.
+     * 
      * @param sender the sender value to set.
      * @return the CommunicationDetailsInner object itself.
      */
@@ -76,7 +82,7 @@ public final class CommunicationDetailsInner extends ProxyResource {
 
     /**
      * Get the subject property: Subject of the communication.
-     *
+     * 
      * @return the subject value.
      */
     public String subject() {
@@ -85,7 +91,7 @@ public final class CommunicationDetailsInner extends ProxyResource {
 
     /**
      * Set the subject property: Subject of the communication.
-     *
+     * 
      * @param subject the subject value to set.
      * @return the CommunicationDetailsInner object itself.
      */
@@ -99,7 +105,7 @@ public final class CommunicationDetailsInner extends ProxyResource {
 
     /**
      * Get the body property: Body of the communication.
-     *
+     * 
      * @return the body value.
      */
     public String body() {
@@ -108,7 +114,7 @@ public final class CommunicationDetailsInner extends ProxyResource {
 
     /**
      * Set the body property: Body of the communication.
-     *
+     * 
      * @param body the body value to set.
      * @return the CommunicationDetailsInner object itself.
      */
@@ -122,7 +128,7 @@ public final class CommunicationDetailsInner extends ProxyResource {
 
     /**
      * Get the createdDate property: Time in UTC (ISO 8601 format) when the communication was created.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -131,7 +137,7 @@ public final class CommunicationDetailsInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

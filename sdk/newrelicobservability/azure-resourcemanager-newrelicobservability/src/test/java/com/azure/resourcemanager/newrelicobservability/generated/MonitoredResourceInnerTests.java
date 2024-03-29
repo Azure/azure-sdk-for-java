@@ -13,32 +13,26 @@ import org.junit.jupiter.api.Assertions;
 public final class MonitoredResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MonitoredResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"uqkhrsajiwku\",\"sendingMetrics\":\"Enabled\",\"reasonForMetricsStatus\":\"kg\",\"sendingLogs\":\"Enabled\",\"reasonForLogsStatus\":\"uimjmvx\"}")
-                .toObject(MonitoredResourceInner.class);
-        Assertions.assertEquals("uqkhrsajiwku", model.id());
-        Assertions.assertEquals(SendingMetricsStatus.ENABLED, model.sendingMetrics());
-        Assertions.assertEquals("kg", model.reasonForMetricsStatus());
+        MonitoredResourceInner model = BinaryData.fromString(
+            "{\"id\":\"scxaq\",\"sendingMetrics\":\"Disabled\",\"reasonForMetricsStatus\":\"hcbonqvpkvlr\",\"sendingLogs\":\"Enabled\",\"reasonForLogsStatus\":\"ase\"}")
+            .toObject(MonitoredResourceInner.class);
+        Assertions.assertEquals("scxaq", model.id());
+        Assertions.assertEquals(SendingMetricsStatus.DISABLED, model.sendingMetrics());
+        Assertions.assertEquals("hcbonqvpkvlr", model.reasonForMetricsStatus());
         Assertions.assertEquals(SendingLogsStatus.ENABLED, model.sendingLogs());
-        Assertions.assertEquals("uimjmvx", model.reasonForLogsStatus());
+        Assertions.assertEquals("ase", model.reasonForLogsStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonitoredResourceInner model =
-            new MonitoredResourceInner()
-                .withId("uqkhrsajiwku")
-                .withSendingMetrics(SendingMetricsStatus.ENABLED)
-                .withReasonForMetricsStatus("kg")
-                .withSendingLogs(SendingLogsStatus.ENABLED)
-                .withReasonForLogsStatus("uimjmvx");
+        MonitoredResourceInner model = new MonitoredResourceInner().withId("scxaq")
+            .withSendingMetrics(SendingMetricsStatus.DISABLED).withReasonForMetricsStatus("hcbonqvpkvlr")
+            .withSendingLogs(SendingLogsStatus.ENABLED).withReasonForLogsStatus("ase");
         model = BinaryData.fromObject(model).toObject(MonitoredResourceInner.class);
-        Assertions.assertEquals("uqkhrsajiwku", model.id());
-        Assertions.assertEquals(SendingMetricsStatus.ENABLED, model.sendingMetrics());
-        Assertions.assertEquals("kg", model.reasonForMetricsStatus());
+        Assertions.assertEquals("scxaq", model.id());
+        Assertions.assertEquals(SendingMetricsStatus.DISABLED, model.sendingMetrics());
+        Assertions.assertEquals("hcbonqvpkvlr", model.reasonForMetricsStatus());
         Assertions.assertEquals(SendingLogsStatus.ENABLED, model.sendingLogs());
-        Assertions.assertEquals("uimjmvx", model.reasonForLogsStatus());
+        Assertions.assertEquals("ase", model.reasonForLogsStatus());
     }
 }

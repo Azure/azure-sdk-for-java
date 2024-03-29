@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class EventHubConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventHubConfiguration model =
-            BinaryData
-                .fromString("{\"id\":\"kphywpnvjto\",\"reportingInterval\":1979421186}")
+        EventHubConfiguration model
+            = BinaryData.fromString("{\"id\":\"euecivyhzceuoj\",\"reportingInterval\":347281810}")
                 .toObject(EventHubConfiguration.class);
-        Assertions.assertEquals("kphywpnvjto", model.id());
-        Assertions.assertEquals(1979421186, model.reportingInterval());
+        Assertions.assertEquals("euecivyhzceuoj", model.id());
+        Assertions.assertEquals(347281810, model.reportingInterval());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventHubConfiguration model =
-            new EventHubConfiguration().withId("kphywpnvjto").withReportingInterval(1979421186);
+        EventHubConfiguration model
+            = new EventHubConfiguration().withId("euecivyhzceuoj").withReportingInterval(347281810);
         model = BinaryData.fromObject(model).toObject(EventHubConfiguration.class);
-        Assertions.assertEquals("kphywpnvjto", model.id());
-        Assertions.assertEquals(1979421186, model.reportingInterval());
+        Assertions.assertEquals("euecivyhzceuoj", model.id());
+        Assertions.assertEquals(347281810, model.reportingInterval());
     }
 }

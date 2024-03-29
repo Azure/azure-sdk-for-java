@@ -1,5 +1,18 @@
 # Release History
 
+## 1.2.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Introduced `LogsIngestionAudience` to allow specification of the audience of logs ingestion clients.
+- Support for the scopes of non-public clouds. 
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.1.5 (2024-03-11)
 
 ### Other Changes

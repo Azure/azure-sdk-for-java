@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** HTTPHeader describes a custom header to be used in HTTP probes. */
+/**
+ * HTTPHeader describes a custom header to be used in HTTP probes.
+ */
 @Fluent
 public final class ContainerAppProbeHttpGetHttpHeadersItem {
     /*
@@ -23,13 +25,15 @@ public final class ContainerAppProbeHttpGetHttpHeadersItem {
     @JsonProperty(value = "value", required = true)
     private String value;
 
-    /** Creates an instance of ContainerAppProbeHttpGetHttpHeadersItem class. */
+    /**
+     * Creates an instance of ContainerAppProbeHttpGetHttpHeadersItem class.
+     */
     public ContainerAppProbeHttpGetHttpHeadersItem() {
     }
 
     /**
      * Get the name property: The header field name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +42,7 @@ public final class ContainerAppProbeHttpGetHttpHeadersItem {
 
     /**
      * Set the name property: The header field name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ContainerAppProbeHttpGetHttpHeadersItem object itself.
      */
@@ -49,7 +53,7 @@ public final class ContainerAppProbeHttpGetHttpHeadersItem {
 
     /**
      * Get the value property: The header field value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -58,7 +62,7 @@ public final class ContainerAppProbeHttpGetHttpHeadersItem {
 
     /**
      * Set the value property: The header field value.
-     *
+     * 
      * @param value the value value to set.
      * @return the ContainerAppProbeHttpGetHttpHeadersItem object itself.
      */
@@ -69,21 +73,17 @@ public final class ContainerAppProbeHttpGetHttpHeadersItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model ContainerAppProbeHttpGetHttpHeadersItem"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property name in model ContainerAppProbeHttpGetHttpHeadersItem"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model ContainerAppProbeHttpGetHttpHeadersItem"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model ContainerAppProbeHttpGetHttpHeadersItem"));
         }
     }
 
