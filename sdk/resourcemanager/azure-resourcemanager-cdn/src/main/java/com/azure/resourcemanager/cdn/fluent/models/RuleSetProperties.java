@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.cdn.models.AfdStateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The JSON object that contains the properties of the Rule Set to create. */
+/**
+ * The JSON object that contains the properties of the Rule Set to create.
+ */
 @Immutable
 public final class RuleSetProperties extends AfdStateProperties {
     /*
@@ -17,13 +19,15 @@ public final class RuleSetProperties extends AfdStateProperties {
     @JsonProperty(value = "profileName", access = JsonProperty.Access.WRITE_ONLY)
     private String profileName;
 
-    /** Creates an instance of RuleSetProperties class. */
+    /**
+     * Creates an instance of RuleSetProperties class.
+     */
     public RuleSetProperties() {
     }
 
     /**
      * Get the profileName property: The name of the profile which holds the rule set.
-     *
+     * 
      * @return the profileName value.
      */
     public String profileName() {
@@ -32,7 +36,7 @@ public final class RuleSetProperties extends AfdStateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
