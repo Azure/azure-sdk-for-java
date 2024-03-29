@@ -296,6 +296,7 @@ public class TestProxyTests extends TestProxyTestBase {
 
         HttpClient client = interceptorManager.getPlaybackClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
+        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Accept")));
 
         //        HttpClient client = new HttpURLConnectionHttpClient();
         //        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy()).build();
