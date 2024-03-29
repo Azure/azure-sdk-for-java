@@ -138,19 +138,17 @@ public class Batcher implements Iterator<LogsIngestionRequest> {
     }
 
     private LogsIngestionRequest createRequest(boolean last) throws IOException {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        JsonWriter writer = JsonProviders.createWriter(byteArrayOutputStream);
-        try {
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+             JsonWriter writer = JsonProviders.createWriter(byteArrayOutputStream)) {
             writer.writeStartArray();
             for (String log : serializedLogs) {
                 writer.writeRawValue(log);
             }
             writer.writeEndArray();
-            writer.close();
+            writer.flush();
             byte[] zippedRequestBody = gzipRequest(byteArrayOutputStream.toByteArray());
             return new LogsIngestionRequest(originalLogsRequest, zippedRequestBody);
         } finally {
-
             if (!last) {
                 originalLogsRequest = new ArrayList<>();
                 serializedLogs.clear();
