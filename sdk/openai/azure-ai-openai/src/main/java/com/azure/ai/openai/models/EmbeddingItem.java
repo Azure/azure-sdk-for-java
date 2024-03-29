@@ -28,6 +28,8 @@ public final class EmbeddingItem {
     @JsonProperty(value = "embedding")
     private BinaryData embedding;
 
+    private final List<Float> embeddingFloatList;
+
     /**
      * Get the embedding property: List of embeddings value for the input prompt. These represent a measurement of the
      * vector-based relatedness of the provided input.
@@ -35,7 +37,7 @@ public final class EmbeddingItem {
      * @return the embedding value.
      */
     public List<Float> getEmbedding() {
-        return convertToFloatList(embedding.toString());
+        return embeddingFloatList;
     }
 
     /**
@@ -75,9 +77,10 @@ public final class EmbeddingItem {
         @JsonProperty(value = "index") int promptIndex) {
         this.embedding = embedding;
         this.promptIndex = promptIndex;
+        embeddingFloatList = convertBase64ToFloatList(embedding.toString());
     }
 
-    private List<Float> convertToFloatList(String embedding) {
+    private List<Float> convertBase64ToFloatList(String embedding) {
         byte[] bytes = Base64.getDecoder().decode(embedding);
         // View the raw binary data as floats (IEEE 754 binary32).
         ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
