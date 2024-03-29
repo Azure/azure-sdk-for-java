@@ -8,9 +8,11 @@ import com.generic.core.http.exception.HttpResponseException;
 import com.generic.core.http.models.ContentType;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpHeaders;
+import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.models.Response;
+import com.generic.core.http.models.ResponseBodyHandling;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.implementation.ReflectionSerializable;
 import com.generic.core.implementation.ReflectiveInvoker;
@@ -25,6 +27,7 @@ import com.generic.core.util.serializer.ObjectSerializer;
 import com.generic.json.JsonSerializable;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -32,6 +35,10 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.function.Consumer;
+
+import static com.generic.core.http.models.ResponseBodyHandling.BUFFER;
+import static com.generic.core.http.models.ResponseBodyHandling.IGNORE;
+import static com.generic.core.http.models.ResponseBodyHandling.STREAM;
 
 public abstract class RestProxyBase {
     static final ResponseConstructorsCache RESPONSE_CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
@@ -71,11 +78,31 @@ public abstract class RestProxyBase {
             request.getMetadata().setContext(context);
             request.getMetadata().setRequestLogger(methodParser.getMethodLogger());
 
-            if (options != null && options.getResponseBodyHandling() != null) {
-                request.getMetadata().setResponseBodyHandling(options.getResponseBodyHandling());
-            } else {
-                request.getMetadata().setResponseBodyHandling(methodParser.getResponseBodyHandling());
+            ResponseBodyHandling responseBodyHandling = options == null ? null : options.getResponseBodyHandling();
+
+            if (responseBodyHandling == null) {
+                if (methodParser.getHttpMethod() == HttpMethod.HEAD) {
+                    responseBodyHandling = IGNORE;
+                } else {
+                    Type returnType = methodParser.getReturnType();
+
+                    if (TypeUtil.isTypeOrSubTypeOf(returnType, Response.class)) {
+                        returnType = TypeUtil.getRestResponseBodyType(returnType);
+                    }
+
+                    if (TypeUtil.isTypeOrSubTypeOf(returnType, InputStream.class)) {
+                        responseBodyHandling = STREAM;
+                    } else if (TypeUtil.isTypeOrSubTypeOf(returnType, Void.TYPE)
+                        || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
+
+                        responseBodyHandling = BUFFER;
+                    }
+                }
             }
+
+            // If responseBodyHandling is still null, we'll use the response's Content-Type to determine how to read its
+            // body: 'application/octet-stream' will use STREAM and everything else will use BUFFER.
+            request.getMetadata().setResponseBodyHandling(responseBodyHandling);
 
             return invoke(proxy, method, options, requestCallback, methodParser, request);
         } catch (IOException e) {

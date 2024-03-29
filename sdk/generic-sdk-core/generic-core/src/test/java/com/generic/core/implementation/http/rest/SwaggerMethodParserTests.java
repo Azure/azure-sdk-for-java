@@ -20,7 +20,6 @@ import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.models.Response;
-import com.generic.core.http.models.ResponseBodyHandling;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.util.Base64Url;
@@ -53,9 +52,6 @@ import java.util.stream.Stream;
 
 import static com.generic.core.http.models.ContentType.APPLICATION_JSON;
 import static com.generic.core.http.models.ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
-import static com.generic.core.http.models.ResponseBodyHandling.BUFFER;
-import static com.generic.core.http.models.ResponseBodyHandling.IGNORE;
-import static com.generic.core.http.models.ResponseBodyHandling.STREAM;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -725,83 +721,6 @@ public class SwaggerMethodParserTests {
             // Custom implementations of Response.
             Arguments.of(VoidResponse.class, voidTypeStatus),
             Arguments.of(StringResponse.class, nonBinaryTypeStatus)
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("getResponseBodyHandlingSupplier")
-    public void getResponseBodyHandling(HttpMethod httpMethod, Type returnType, ResponseBodyHandling expected) {
-        Type unwrappedReturnType = SwaggerMethodParser.unwrapReturnType(returnType);
-
-        assertEquals(expected, SwaggerMethodParser.getResponseBodyHandling(httpMethod, unwrappedReturnType));
-    }
-
-    private static Stream<Arguments> getResponseBodyHandlingSupplier() {
-        return Stream.of(
-            // Unknown response type can't be determined to be decodable.
-            Arguments.of(HttpMethod.HEAD, null, IGNORE),
-            Arguments.of(HttpMethod.GET, null, BUFFER),
-
-            // BinaryData, Byte arrays, ByteBuffers, InputStream, and voids aren't decodable.
-            Arguments.of(HttpMethod.HEAD, BinaryData.class, IGNORE),
-            Arguments.of(HttpMethod.GET, BinaryData.class, BUFFER),
-
-            Arguments.of(HttpMethod.HEAD, byte[].class, IGNORE),
-            Arguments.of(HttpMethod.GET, byte[].class, BUFFER),
-
-            // Both ByteBuffer and subtypes shouldn't be decodable.
-            Arguments.of(HttpMethod.HEAD, ByteBuffer.class, IGNORE),
-            Arguments.of(HttpMethod.GET, ByteBuffer.class, BUFFER),
-            Arguments.of(HttpMethod.HEAD, MappedByteBuffer.class, IGNORE),
-            Arguments.of(HttpMethod.GET, MappedByteBuffer.class, BUFFER),
-
-            // Both InputSteam and subtypes shouldn't be decodable.
-            Arguments.of(HttpMethod.HEAD, InputStream.class, IGNORE),
-            Arguments.of(HttpMethod.GET, InputStream.class, STREAM),
-            Arguments.of(HttpMethod.HEAD, FileInputStream.class, IGNORE),
-            Arguments.of(HttpMethod.GET, FileInputStream.class, STREAM),
-
-            Arguments.of(HttpMethod.HEAD, void.class, IGNORE),
-            Arguments.of(HttpMethod.GET, void.class, BUFFER),
-            Arguments.of(HttpMethod.HEAD, Void.class, IGNORE),
-            Arguments.of(HttpMethod.GET, Void.class, BUFFER),
-            Arguments.of(HttpMethod.HEAD, Void.TYPE, IGNORE),
-            Arguments.of(HttpMethod.GET, Void.TYPE, BUFFER),
-
-            // Other POJO types are decodable.
-            Arguments.of(HttpMethod.HEAD, SimpleClass.class, IGNORE),
-            Arguments.of(HttpMethod.GET, SimpleClass.class, BUFFER),
-
-            // In addition to the direct types, reactive and Response generic types should be handled.
-
-            // Response generics.
-            // If the raw type is Response it should check the first, and only, generic type.
-            Arguments.of(HttpMethod.HEAD, createParameterizedResponse(BinaryData.class), IGNORE),
-            Arguments.of(HttpMethod.GET, createParameterizedResponse(BinaryData.class), BUFFER),
-            Arguments.of(HttpMethod.HEAD, createParameterizedResponse(byte[].class), IGNORE),
-            Arguments.of(HttpMethod.GET, createParameterizedResponse(byte[].class), BUFFER),
-            Arguments.of(HttpMethod.HEAD, createParameterizedResponse(ByteBuffer.class), IGNORE),
-            Arguments.of(HttpMethod.GET, createParameterizedResponse(ByteBuffer.class), BUFFER),
-            Arguments.of(HttpMethod.HEAD, createParameterizedResponse(MappedByteBuffer.class), IGNORE),
-            Arguments.of(HttpMethod.GET, createParameterizedResponse(MappedByteBuffer.class), BUFFER),
-            Arguments.of(HttpMethod.HEAD, createParameterizedResponse(InputStream.class), IGNORE),
-            Arguments.of(HttpMethod.GET, createParameterizedResponse(InputStream.class), STREAM),
-            Arguments.of(HttpMethod.HEAD, createParameterizedResponse(FileInputStream.class), IGNORE),
-            Arguments.of(HttpMethod.GET, createParameterizedResponse(FileInputStream.class), STREAM),
-            Arguments.of(HttpMethod.HEAD, createParameterizedResponse(void.class), IGNORE),
-            Arguments.of(HttpMethod.GET, createParameterizedResponse(void.class), BUFFER),
-            Arguments.of(HttpMethod.HEAD, createParameterizedResponse(Void.class), IGNORE),
-            Arguments.of(HttpMethod.GET, createParameterizedResponse(Void.class), BUFFER),
-            Arguments.of(HttpMethod.HEAD, createParameterizedResponse(Void.TYPE), IGNORE),
-            Arguments.of(HttpMethod.GET, createParameterizedResponse(Void.TYPE), BUFFER),
-            Arguments.of(HttpMethod.HEAD, createParameterizedResponse(SimpleClass.class), IGNORE),
-            Arguments.of(HttpMethod.GET, createParameterizedResponse(SimpleClass.class), BUFFER),
-
-            // Custom implementations of Response.
-            Arguments.of(HttpMethod.HEAD, VoidResponse.class, IGNORE),
-            Arguments.of(HttpMethod.GET, VoidResponse.class, BUFFER),
-            Arguments.of(HttpMethod.HEAD, StringResponse.class, IGNORE),
-            Arguments.of(HttpMethod.GET, StringResponse.class, BUFFER)
         );
     }
 

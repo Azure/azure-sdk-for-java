@@ -5,9 +5,11 @@ package com.generic.core.implementation.http.rest;
 
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.HttpRequestMetadata;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.models.Response;
+import com.generic.core.http.models.ResponseBodyHandling;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.HttpResponseAccessHelper;
@@ -121,7 +123,11 @@ public class RestProxyImpl extends RestProxyBase {
 
                 return createResponseIfNecessary(response, entityType, null);
             } else {
-                if (methodParser.getResponseBodyHandling() == DESERIALIZE) {
+                HttpRequestMetadata metadata = response.getRequest().getMetadata();
+                ResponseBodyHandling responseBodyHandling =
+                    metadata == null ? null : metadata.getResponseBodyHandling();
+
+                if (responseBodyHandling == DESERIALIZE) {
                     HttpResponseAccessHelper.setValue((HttpResponse<?>) response,
                         handleResponseBody(response, methodParser, bodyType, response.getBody()));
                 } else {

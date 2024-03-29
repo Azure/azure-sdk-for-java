@@ -29,6 +29,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.generic.core.http.models.ContentType.APPLICATION_OCTET_STREAM;
 import static com.generic.core.http.models.HttpHeaderName.CLIENT_REQUEST_ID;
 import static com.generic.core.http.models.HttpHeaderName.TRACEPARENT;
 
@@ -38,7 +39,6 @@ import static com.generic.core.http.models.HttpHeaderName.TRACEPARENT;
 public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
-    private static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
     private static final ClientLogger LOGGER = new ClientLogger(HttpLoggingPolicy.class);
     private final HttpLogOptions.HttpLogDetailLevel httpLogDetailLevel;
     private final List<HttpHeaderName> allowedHeaderNames;

@@ -8,10 +8,10 @@ import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpRequestMetadata;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.ProxyOptions;
 import com.generic.core.http.models.Response;
+import com.generic.core.http.models.ResponseBodyHandling;
 import com.generic.core.http.models.ServerSentEventListener;
 import com.generic.core.implementation.AccessibleByteArrayOutputStream;
 import com.generic.core.implementation.http.HttpResponseAccessHelper;
@@ -42,6 +42,10 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
+import static com.generic.core.http.models.ContentType.APPLICATION_OCTET_STREAM;
+import static com.generic.core.http.models.HttpHeaderName.CONTENT_TYPE;
+import static com.generic.core.http.models.ResponseBodyHandling.BUFFER;
+import static com.generic.core.http.models.ResponseBodyHandling.STREAM;
 import static com.generic.core.implementation.util.ServerSentEventUtil.NO_LISTENER_ERROR_MESSAGE;
 import static com.generic.core.implementation.util.ServerSentEventUtil.processTextEventStream;
 
@@ -222,34 +226,36 @@ class DefaultHttpClient implements HttpClient {
                 }
             }
         } else {
-            HttpRequestMetadata metadata = httpRequest.getMetadata();
+            ResponseBodyHandling responseBodyHandling = httpRequest.getMetadata().getResponseBodyHandling();
 
-            if (metadata != null && metadata.getResponseBodyHandling() != null) {
-                switch (httpRequest.getMetadata().getResponseBodyHandling()) {
-                    case IGNORE:
-                        HttpResponseAccessHelper.setBody(httpResponse, EMPTY_BODY);
+            if (responseBodyHandling == null) {
+                HttpHeader contentType = httpResponse.getHeaders().get(CONTENT_TYPE);
+                String contentTypeString = contentType == null ? null : contentType.getValue();
 
-                        connection.disconnect();
-
-                        break;
-                    case STREAM:
-                        try {
-                            HttpResponseAccessHelper.setBody(httpResponse,
-                                BinaryData.fromStream(connection.getInputStream()));
-                        } catch (IOException e) {
-                            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-                        }
-
-                        break;
-                    case BUFFER:
-                    case DESERIALIZE:
-                    default:
-                        eagerlyBufferResponseBody(httpResponse, connection);
+                if (APPLICATION_OCTET_STREAM.equalsIgnoreCase(contentTypeString)) {
+                    responseBodyHandling = STREAM;
+                } else {
+                    responseBodyHandling = BUFFER;
                 }
-            } else {
-                // The metadata can only be null if intentionally set through HttpRequest.setMetadata()
-                // TODO (vcolin7): Should we ensure the metadata is not null when users call HttpRequest.setMetadata()?
-                eagerlyBufferResponseBody(httpResponse, connection);
+
+                httpRequest.getMetadata().setResponseBodyHandling(responseBodyHandling);
+            }
+
+            switch (responseBodyHandling) {
+                case IGNORE:
+                    HttpResponseAccessHelper.setBody(httpResponse, EMPTY_BODY);
+
+                    connection.disconnect();
+
+                    break;
+                case STREAM:
+                    streamResponseBody(httpResponse, connection);
+
+                    break;
+                case BUFFER:
+                case DESERIALIZE:
+                default:
+                    eagerlyBufferResponseBody(httpResponse, connection);
             }
         }
 
@@ -268,9 +274,17 @@ class DefaultHttpClient implements HttpClient {
 
     private static boolean isTextEventStream(HttpHeaders responseHeaders) {
         if (responseHeaders != null) {
-            return ServerSentEventUtil.isTextEventStreamContentType(responseHeaders.getValue(HttpHeaderName.CONTENT_TYPE));
+            return ServerSentEventUtil.isTextEventStreamContentType(responseHeaders.getValue(CONTENT_TYPE));
         }
         return false;
+    }
+
+    private void streamResponseBody(HttpResponse<?> httpResponse, HttpURLConnection connection) {
+        try {
+            HttpResponseAccessHelper.setBody(httpResponse, BinaryData.fromStream(connection.getInputStream()));
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        }
     }
 
     private void eagerlyBufferResponseBody(HttpResponse<?> httpResponse, HttpURLConnection connection) {

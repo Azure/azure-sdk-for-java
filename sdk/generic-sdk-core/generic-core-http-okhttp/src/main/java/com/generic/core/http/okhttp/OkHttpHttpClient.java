@@ -9,6 +9,7 @@ import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.Response;
 import com.generic.core.http.models.ResponseBodyHandling;
 import com.generic.core.http.models.ServerSentEventListener;
@@ -29,9 +30,10 @@ import okhttp3.ResponseBody;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
+import static com.generic.core.http.models.ContentType.APPLICATION_OCTET_STREAM;
+import static com.generic.core.http.models.HttpHeaderName.CONTENT_TYPE;
 import static com.generic.core.http.models.ResponseBodyHandling.BUFFER;
-import static com.generic.core.http.models.ResponseBodyHandling.DESERIALIZE;
-import static com.generic.core.http.models.ResponseBodyHandling.IGNORE;
+import static com.generic.core.http.models.ResponseBodyHandling.STREAM;
 import static com.generic.core.implementation.util.ServerSentEventUtil.processTextEventStream;
 /**
  * HttpClient implementation for OkHttp.
@@ -50,8 +52,8 @@ class OkHttpHttpClient implements HttpClient {
     public Response<?> send(HttpRequest request) {
         boolean eagerlyConvertHeaders = request.getMetadata().isEagerlyConvertHeaders();
         ResponseBodyHandling responseBodyHandling = request.getMetadata().getResponseBodyHandling();
-
         Request okHttpRequest = toOkHttpRequest(request);
+
         try {
             okhttp3.Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
 
@@ -161,25 +163,48 @@ class OkHttpHttpClient implements HttpClient {
 
     private Response<?> processResponse(HttpRequest request, okhttp3.Response response,
                                         ResponseBodyHandling responseBodyHandling, boolean eagerlyConvertHeaders) throws IOException {
-        if (responseBodyHandling == IGNORE) {
-            if (response.body() != null) {
-                response.body().close();
+        if (responseBodyHandling == null) {
+            String contentType = response.headers().get(CONTENT_TYPE.getCaseInsensitiveName());
+
+            if (APPLICATION_OCTET_STREAM.equalsIgnoreCase(contentType)) {
+                responseBodyHandling = STREAM;
+            } else {
+                responseBodyHandling = BUFFER;
             }
 
-            return new OkHttpResponse(response, request, eagerlyConvertHeaders, EMPTY_BODY);
-        } else if (responseBodyHandling == BUFFER || responseBodyHandling == DESERIALIZE) {
-            try (ResponseBody body = response.body()) {
-                byte[] bytes = null;
+            request.getMetadata().setResponseBodyHandling(responseBodyHandling);
+        }
 
-                if (body != null && body.contentLength() != 0) {
-                    bytes = body.bytes();
+        final HttpResponse<?> httpResponse;
+
+        switch (responseBodyHandling) {
+            case IGNORE:
+                if (response.body() != null) {
+                    response.body().close();
                 }
 
-                return new OkHttpResponse(response, request, eagerlyConvertHeaders, bytes);
-            }
-        } else {
-            return new OkHttpResponse(response, request, eagerlyConvertHeaders, null);
+                httpResponse = new OkHttpResponse(response, request, eagerlyConvertHeaders, EMPTY_BODY);
+
+                break;
+            case STREAM:
+                httpResponse = new OkHttpResponse(response, request, eagerlyConvertHeaders, null);
+
+                break;
+            case BUFFER:
+            case DESERIALIZE:
+            default:
+                try (ResponseBody body = response.body()) {
+                    byte[] bytes = null;
+
+                    if (body != null && body.contentLength() != 0) {
+                        bytes = body.bytes();
+                    }
+
+                    httpResponse = new OkHttpResponse(response, request, eagerlyConvertHeaders, bytes);
+                }
         }
+
+        return httpResponse;
     }
 
     private static boolean isTextEventStream(okhttp3.Headers responseHeaders) {
