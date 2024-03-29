@@ -2,9 +2,7 @@
 // Licensed under the MIT License.
 package com.generic.core.implementation.util;
 
-import java.util.LinkedHashMap;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * An {@link InternalContext} implementation that holds two key-value pairs.
@@ -38,39 +36,18 @@ final class InternalContext2 implements InternalContext {
     }
 
     @Override
-    public InternalContext addData(Object key, Object value) {
+    public InternalContext put(Object key, Object value) {
         return new InternalContext3(key1, value1, key2, value2, key, value);
     }
 
     @Override
-    public Optional<Object> getData(Object key) {
+    public Object get(Object key) {
         if (Objects.equals(key, key2)) {
-            return Optional.ofNullable(value2);
+            return value2;
         } else if (Objects.equals(key, key1)) {
-            return Optional.ofNullable(value1);
+            return value1;
         }
 
         return null;
-    }
-
-    @Override
-    public void getValues(LinkedHashMap<Object, Object> map) {
-        map.put(key1, value1);
-        map.put(key2, value2);
-    }
-
-    @Override
-    public InternalContext merge(InternalContext other) {
-        if (other == null || other.count() == 0) {
-            return this;
-        } else if (other.count() == 1) {
-            return new InternalContext3(key1, value1, key2, value2, other.getKey(), other.getValue());
-        } else if (other.count() == 2) {
-            InternalContext2 other2 = (InternalContext2) other;
-            return new InternalContext4(key1, value1, key2, value2, other2.key1, other2.value1, other2.key2,
-                other2.value2);
-        } else {
-            return new InternalContextN(this, other);
-        }
     }
 }

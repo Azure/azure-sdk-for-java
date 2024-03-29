@@ -2,9 +2,6 @@
 // Licensed under the MIT License.
 package com.generic.core.implementation.util;
 
-import java.util.LinkedHashMap;
-import java.util.Optional;
-
 /**
  * An {@link InternalContext} implementation that holds no data.
  */
@@ -30,21 +27,12 @@ final class InternalContext0 implements InternalContext {
     }
 
     @Override
-    public InternalContext addData(Object key, Object value) {
+    public InternalContext put(Object key, Object value) {
         return new InternalContext1(key, value);
     }
 
     @Override
-    public Optional<Object> getData(Object key) {
+    public Object get(Object key) {
         return null;
-    }
-
-    @Override
-    public void getValues(LinkedHashMap<Object, Object> map) {
-    }
-
-    @Override
-    public InternalContext merge(InternalContext other) {
-        return (other == null) ? this : other;
     }
 }
