@@ -419,7 +419,7 @@ public interface AnnotationJavadocCodesnippets {
         // BEGIN: com.generic.core.http.annotation.UnexpectedResponseExceptionType.class
         // Set it so that all response exceptions use a custom exception type.
 
-        @UnexpectedResponseExceptionInformation(exceptionBodyClass = MyCustomExceptionBody.class)
+        @UnexpectedResponseExceptionDetail(exceptionBodyClass = MyCustomExceptionBody.class)
         @HttpRequestInformation(method = HttpMethod.POST, path = "subscriptions/{subscriptionId}/resourceGroups/"
             + "{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/images/"
             + "getEntityTypeImageUploadUrl",
@@ -431,7 +431,7 @@ public interface AnnotationJavadocCodesnippets {
 
         // Set it so 404 uses a specific exception type while others use a generic exception type.
 
-        @UnexpectedResponseExceptionInformation(statusCode = {404}, exceptionBodyClass = MyCustomExceptionBody.class)
+        @UnexpectedResponseExceptionDetail(statusCode = {404}, exceptionBodyClass = MyCustomExceptionBody.class)
         @HttpRequestInformation(method = HttpMethod.POST, path = "subscriptions/{subscriptionId}/resourceGroups/"
             + "{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/images/"
             + "getEntityTypeImageUploadUrl",

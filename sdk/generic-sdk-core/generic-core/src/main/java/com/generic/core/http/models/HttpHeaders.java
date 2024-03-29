@@ -22,7 +22,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * This map is a case-insensitive key (i.e. lower-cased), but the returned {@link HttpHeader} key will be as-provided to
      * us.
      */
-    private final Map<String, HttpHeader> headers;
+    private final Map<HttpHeaderName, HttpHeader> headers;
 
     /**
      * Create an empty {@link HttpHeaders} instance.
@@ -36,9 +36,9 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      *
      * @param headers The map of initial {@link HttpHeaders}.
      */
-    public HttpHeaders(Map<String, String> headers) {
+    public HttpHeaders(Map<HttpHeaderName, HttpHeader> headers) {
         this.headers = new HashMap<>(headers.size());
-        headers.forEach((name, value) -> this.set(HttpHeaderName.fromString(name), value));
+        headers.forEach((name, value) -> this.set(name, value.getValue()));
     }
 
     /**
@@ -74,6 +74,17 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     }
 
     /**
+     * Adds a {@link HttpHeader} with the given name and value if a {@link HttpHeader} with
+     * that name doesn't already exist,
+     * @param header The {@link HttpHeader} to add.
+     * @return The updated {@link HttpHeaders} object.
+     */
+    public HttpHeaders add(HttpHeader header) {
+        return addInternal(header.getName().getCaseInsensitiveName(),
+            header.getName().getCaseSensitiveName(), header.getValues());
+    }
+
+    /**
      * Adds a {@link HttpHeader} with the given name and value if a {@link HttpHeader} with that name doesn't already exist,
      * otherwise adds the {@code value} to the existing header.
      *
@@ -84,23 +95,6 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      */
     public HttpHeaders add(HttpHeaderName name, String value) {
         return addInternal(name.getCaseInsensitiveName(), name.getCaseSensitiveName(), value);
-    }
-
-    private HttpHeaders addInternal(String formattedName, String name, String value) {
-        if (name == null || value == null) {
-            return this;
-        }
-
-        headers.compute(formattedName, (key, header) -> {
-            if (header == null) {
-                return new HttpHeader(name, value);
-            } else {
-                header.addValue(value);
-                return header;
-            }
-        });
-
-        return this;
     }
 
     /**
@@ -115,14 +109,77 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         return addInternal(name.getCaseInsensitiveName(), name.getCaseSensitiveName(), values);
     }
 
+    /**
+     * Adds all provided {@link HttpHeader} key/values pairs into this {@link HttpHeaders} instance. This is equivalent to
+     * calling {@code headers.forEach(this::add)}. This will create a {@link HttpHeader} for each key with the given
+     * name and value if a {@link HttpHeader} with that name doesn't already exist,otherwise adds the {@code values}
+     * to the existing header. If the given values list is
+     * {@code null}, the header with the given name will be removed.
+     *
+     * <p>Use {@link #addAllHeaders(HttpHeaders)} if you already have an instance of {@link HttpHeaders} as it provides better
+     * performance.</p>
+     *
+     * @param headers A map containing keys representing {@link HttpHeader} names, and keys representing the associated
+     * values.
+     *
+     * @return The updated {@link HttpHeaders} object.
+     *
+     * @throws NullPointerException If {@code headers} is {@code null}.
+     */
+    public HttpHeaders addAll(Map<String, List<String>> headers) {
+        headers.forEach((name, value) -> addInternal(formatKey(name), name, value));
+
+        return this;
+    }
+
+    private HttpHeaders addInternal(String formattedName, String name, String value) {
+        if (name == null || value == null) {
+            return this;
+        }
+
+        headers.compute(HttpHeaderName.fromString(formattedName), (key, header) -> {
+            if (header == null) {
+                return new HttpHeader(HttpHeaderName.fromString(name), value);
+            } else {
+                header.addValue(value);
+                return header;
+            }
+        });
+
+        return this;
+    }
+
+    /**
+     * Adds all the provided {@link HttpHeaders} into this {@link HttpHeaders} instance.
+     *
+     * <p>This is the equivalent to calling
+     * {@code headers.forEach(header -> add(header.getName(), header.getValuesList())} and therefore the behavior is as
+     * specified in {@link #add(HttpHeaderName, List)}.</p>
+     *
+     * <p>If {@code headers} is {@code null} this is a no-op.</p>
+     *
+     * @param headers The headers to add into this {@link HttpHeaders}.
+     *
+     * @return The updated {@link HttpHeaders} object.
+     */
+    public HttpHeaders addAllHeaders(HttpHeaders headers) {
+        if (headers != null) {
+            headers.headers.forEach((headerName, header) ->
+                addInternal(headerName.getCaseInsensitiveName(), header.getName().getCaseSensitiveName(),
+                    header.getValues()));
+        }
+
+        return this;
+    }
+
     private HttpHeaders addInternal(String formattedName, String name, List<String> values) {
         if (name == null || CoreUtils.isNullOrEmpty(values)) {
             return this;
         }
 
-        headers.compute(formattedName, (key, header) -> {
+        headers.compute(HttpHeaderName.fromString(formattedName), (key, header) -> {
             if (header == null) {
-                return new HttpHeader(name, values);
+                return new HttpHeader(HttpHeaderName.fromString(name), values);
             } else {
                 header.addValues(values);
                 return header;
@@ -154,7 +211,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         if (value == null) {
             removeInternal(name);
         } else {
-            headers.put(formattedName, new HttpHeader(name, value));
+            headers.put(HttpHeaderName.fromString(formattedName), new HttpHeader(HttpHeaderName.fromString(name), value));
         }
 
         return this;
@@ -182,7 +239,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         if (CoreUtils.isNullOrEmpty(values)) {
             removeInternal(formattedName);
         } else {
-            headers.put(formattedName, new HttpHeader(name, values));
+            headers.put(HttpHeaderName.fromString(formattedName), new HttpHeader(HttpHeaderName.fromString(name), values));
         }
 
         return this;
@@ -228,7 +285,8 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     public HttpHeaders setAllHeaders(HttpHeaders headers) {
         if (headers != null) {
             headers.headers.forEach((headerName, header) ->
-                setInternal(headerName, header.getName(), header.getValues()));
+                setInternal(headerName.getCaseInsensitiveName(), header.getName().getCaseSensitiveName(),
+                    header.getValues()));
         }
 
         return this;
@@ -246,7 +304,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     }
 
     private HttpHeader getInternal(String formattedName) {
-        return headers.get(formattedName);
+        return headers.get(HttpHeaderName.fromString(formattedName));
     }
 
     /**
@@ -262,7 +320,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     }
 
     private HttpHeader removeInternal(String formattedName) {
-        return headers.remove(formattedName);
+        return headers.remove(HttpHeaderName.fromString(formattedName));
     }
 
     /**
@@ -320,34 +378,12 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         final Map<String, String> result = new HashMap<>();
 
         for (final HttpHeader header : headers.values()) {
-            result.put(header.getName(), header.getValue());
+            result.put(header.getName().getCaseInsensitiveName(), header.getValue());
         }
 
         return Collections.unmodifiableMap(result);
     }
 
-    /**
-     * Returns a copy of the {@link HttpHeaders} as an unmodifiable {@link Map} representation of the state of the
-     * {@link HttpHeaders} at the time of the {@code toMultiMap} call. This {@link Map} will not change as the underlying
-     * {@link HttpHeaders} change, and nor will modifying the key or values contained in the {@link Map} have any effect on
-     * the state of the {@link HttpHeaders}.
-     *
-     * <p>Note that there may be performance implications of using {@link Map} APIs on the returned {@link Map}. It is
-     * highly recommended that users prefer to use alternate APIs present on the {@link HttpHeaders} class, over using APIs
-     * present on the returned {@link Map} class. For example, use the {@link #get(HttpHeaderName)} API, rather than
-     * {@code headers.toMap().get(name)}.</p>
-     *
-     * @return The {@link HttpHeaders} in a copied and unmodifiable form.
-     */
-    Map<String, String[]> toMultiMap() {
-        final Map<String, String[]> result = new HashMap<>();
-
-        for (final HttpHeader header : headers.values()) {
-            result.put(header.getName(), header.getValuesArray());
-        }
-
-        return Collections.unmodifiableMap(result);
-    }
 
     /**
      * {@inheritDoc}

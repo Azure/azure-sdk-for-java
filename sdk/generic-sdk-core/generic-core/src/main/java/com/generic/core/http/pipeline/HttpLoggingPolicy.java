@@ -10,8 +10,6 @@ import com.generic.core.http.models.HttpLogOptions;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.Response;
-import com.generic.core.implementation.http.policy.HttpRequestLogger;
-import com.generic.core.implementation.http.policy.HttpResponseLogger;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.LoggingKeys;
 import com.generic.core.util.ClientLogger;
@@ -294,7 +292,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static void addHeadersToLogMessage(List<HttpHeaderName> allowedHeaderNames, HttpHeaders headers,
                                                ClientLogger.LoggingEventBuilder logBuilder) {
         for (HttpHeader header : headers) {
-            String headerName = header.getName();
+            String headerName = header.getName().toString();
             String headerValue = allowedHeaderNames.contains(HttpHeaderName.fromString(headerName))
                 ? header.getValue() : REDACTED_PLACEHOLDER;
             logBuilder.addKeyValue(headerName, headerValue);

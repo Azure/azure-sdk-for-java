@@ -147,12 +147,10 @@ public final class RequestOptions {
      * otherwise a new header is created.
      *
      * @param header the header key
-     * @param value the header value
-     *
      * @return the modified RequestOptions object
      */
-    public RequestOptions addHeader(HttpHeaderName header, String value) {
-        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header, value));
+    public RequestOptions addHeader(HttpHeader header) {
+        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header));
 
         return this;
     }

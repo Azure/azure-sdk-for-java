@@ -54,8 +54,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Retention(RUNTIME)
 @Target(METHOD)
-@Repeatable(UnexpectedResponseExceptionInformationArray.class)
-public @interface UnexpectedResponseExceptionInformation {
+@Repeatable(UnexpectedResponseExceptionDetails.class)
+public @interface UnexpectedResponseExceptionDetail {
     /**
      * The name of the {@link HttpExceptionType} of an {@link HttpResponseException} that should be thrown/returned when
      * the API returns an unrecognized status code.

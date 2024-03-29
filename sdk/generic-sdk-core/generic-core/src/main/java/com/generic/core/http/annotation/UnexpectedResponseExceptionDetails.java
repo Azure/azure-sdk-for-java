@@ -11,16 +11,16 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * The {@link Repeatable} container annotation for {@link UnexpectedResponseExceptionInformation}. This allows methods to have
+ * The {@link Repeatable} container annotation for {@link UnexpectedResponseExceptionDetail}. This allows methods to have
  * different exceptions to be thrown or returned based on the response status codes returned from a REST API.
  */
 @Retention(RUNTIME)
 @Target(METHOD)
-public @interface UnexpectedResponseExceptionInformationArray {
+public @interface UnexpectedResponseExceptionDetails {
     /**
-     * Gets an array of {@link UnexpectedResponseExceptionInformation} that annotate a method.
+     * Gets an array of {@link UnexpectedResponseExceptionDetail} that annotate a method.
      *
-     * @return array of {@link UnexpectedResponseExceptionInformation} that annotate a method.
+     * @return array of {@link UnexpectedResponseExceptionDetail} that annotate a method.
      */
-    UnexpectedResponseExceptionInformation[] value();
+    UnexpectedResponseExceptionDetail[] value();
 }

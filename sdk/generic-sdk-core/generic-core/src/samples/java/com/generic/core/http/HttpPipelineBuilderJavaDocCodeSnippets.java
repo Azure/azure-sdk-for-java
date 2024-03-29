@@ -6,7 +6,7 @@ package com.generic.core.http;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
-import com.generic.core.http.pipeline.RetryPolicy;
+import com.generic.core.http.pipeline.HttpRetryPolicy;
 
 /**
  * Codesnippets for {@link HttpPipelineBuilder}.
@@ -22,7 +22,7 @@ public class HttpPipelineBuilderJavaDocCodeSnippets {
         // BEGIN: com.generic.core.http.HttpPipelineBuilder.defaultHttpClientWithRetryPolicy
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(HttpClient.createDefault())
-            .policies(new RetryPolicy())
+            .policies(new HttpRetryPolicy())
             .build();
         // END: com.generic.core.http.HttpPipelineBuilder.defaultHttpClientWithRetryPolicy
     }
