@@ -112,8 +112,7 @@ public final class HttpRequestMetadata {
     /**
      * Gets the configuration indicating how the body of the resulting HTTP response should be handled.
      *
-     * <p>For more information about the options for handling an HTTP response body see
-     * {@link ResponseBodyHandling}.</p>
+     * <p>For more information about the options for handling an HTTP response body, see {@link ResponseBodyMode}.</p>
      *
      * @return The configuration indicating how the body of the resulting HTTP response should be handled.
      */
@@ -122,11 +121,12 @@ public final class HttpRequestMetadata {
     }
 
     /**
-     * Sets a {@link ResponseBodyHandling value} indicating how the body of the resulting HTTP response should be
-     * handled.
+     * Sets the configuration indicating how the body of the resulting HTTP response should be handled.
      *
-     * @param responseBodyHandling A {@link ResponseBodyHandling value} indicating how the body of the resulting HTTP
-     * response should be handled.
+     * <p>For more information about the options for handling an HTTP response body, see {@link ResponseBodyMode}.</p>
+     *
+     * @param responseBodyMode The configuration indicating how the body of the resulting HTTP response should be
+     * handled.
      *
      * @return The updated {@link HttpRequestMetadata} object.
      */

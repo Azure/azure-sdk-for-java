@@ -22,7 +22,8 @@ public enum ResponseBodyHandling {
      * Indicates that the body of an HTTP response shall not be buffered into memory. The connection to the service will
      * be kept alive to read the body at a future point in time when needed by the created {@link Response} instance.
      *
-     * <p>This is the default behavior for operations that return an {@link InputStream}</p>
+     * <p>This is the default behavior for responses with {@code Content-Type: application/octet-stream}, as well as
+     * operations defined to return an {@link InputStream}.</p>
      */
     STREAM,
 
@@ -30,7 +31,7 @@ public enum ResponseBodyHandling {
      * Indicates that the body of an HTTP response shall be buffered into memory. The connection to the service will be
      * closed after a {@link Response} instance containing the body is created.
      *
-     * <p><b>This is the default behavior</b></p>.
+     * <p><b>This is the default behavior.</b></p>
      */
     BUFFER,
 
