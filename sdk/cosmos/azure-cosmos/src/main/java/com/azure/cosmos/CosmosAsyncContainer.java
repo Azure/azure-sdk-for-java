@@ -2641,6 +2641,20 @@ public class CosmosAsyncContainer {
             });
     }
 
+    Mono<PartitionKeyDefinition> getPartitionKeyDefinition() {
+        final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
+        return Mono.just(clientWrapper.getCollectionCache())
+            .flatMap(collectionCache -> {
+                return collectionCache
+                    .resolveByNameAsync(
+                        null,
+                        this.getLinkWithoutTrailingSlash(),
+                        null,
+                        null)
+                    .map(documentCollection -> documentCollection.getPartitionKey());
+            });
+    }
+
      /**
      * Enable the throughput control group with local control mode.
      * <br/>
@@ -2841,6 +2855,16 @@ public class CosmosAsyncContainer {
                 @Override
                 public Mono<List<FeedRange>> getOverlappingFeedRanges(CosmosAsyncContainer container, FeedRange feedRange) {
                     return container.getOverlappingFeedRanges(feedRange);
+                }
+
+                @Override
+                public Mono<PartitionKeyDefinition> getPartitionKeyDefinition(CosmosAsyncContainer container) {
+                    return container.getPartitionKeyDefinition();
+                }
+
+                @Override
+                public String getLinkWithoutTrailingSlash(CosmosAsyncContainer cosmosAsyncContainer) {
+                    return cosmosAsyncContainer.getLinkWithoutTrailingSlash();
                 }
             });
     }

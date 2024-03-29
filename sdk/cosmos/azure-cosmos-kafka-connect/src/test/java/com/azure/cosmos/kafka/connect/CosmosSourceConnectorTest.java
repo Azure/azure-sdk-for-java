@@ -49,21 +49,21 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.kafka.connect.CosmosDBSourceConnectorTest.SourceConfigs.ALL_VALID_CONFIGS;
+import static com.azure.cosmos.kafka.connect.CosmosSourceConnectorTest.SourceConfigs.ALL_VALID_CONFIGS;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.testng.Assert.assertEquals;
 
 @Test
-public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
+public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
     @Test(groups = "unit")
     public void taskClass() {
-        CosmosDBSourceConnector sourceConnector = new CosmosDBSourceConnector();
+        CosmosSourceConnector sourceConnector = new CosmosSourceConnector();
         assertEquals(sourceConnector.taskClass(), CosmosSourceTask.class);
     }
 
     @Test(groups = "unit")
     public void config() {
-        CosmosDBSourceConnector sourceConnector = new CosmosDBSourceConnector();
+        CosmosSourceConnector sourceConnector = new CosmosSourceConnector();
         ConfigDef configDef = sourceConnector.config();
         Map<String, ConfigDef.ConfigKey> configs = configDef.configKeys();
         List<SourceConfigEntry<?>> allValidConfigs = ALL_VALID_CONFIGS;
@@ -82,7 +82,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
 
     @Test(groups = "{ kafka }", timeOut = TIMEOUT)
     public void getTaskConfigsWithoutPersistedOffset() throws JsonProcessingException {
-        CosmosDBSourceConnector sourceConnector = new CosmosDBSourceConnector();
+        CosmosSourceConnector sourceConnector = new CosmosSourceConnector();
         try {
             Map<String, Object> sourceConfigMap = new HashMap<>();
             sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
@@ -154,7 +154,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
     @Test(groups = "{ kafka }", timeOut = TIMEOUT)
     public void getTaskConfigsAfterSplit() throws JsonProcessingException {
         // This test is to simulate after a split happen, the task resume with persisted offset
-        CosmosDBSourceConnector sourceConnector = new CosmosDBSourceConnector();
+        CosmosSourceConnector sourceConnector = new CosmosSourceConnector();
 
         try {
             Map<String, Object> sourceConfigMap = new HashMap<>();
@@ -249,7 +249,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
     @Test(groups = "{ kafka }", timeOut = TIMEOUT)
     public void getTaskConfigsAfterMerge() throws JsonProcessingException {
         // This test is to simulate after a merge happen, the task resume with previous feedRanges
-        CosmosDBSourceConnector sourceConnector = new CosmosDBSourceConnector();
+        CosmosSourceConnector sourceConnector = new CosmosSourceConnector();
 
         try {
             Map<String, Object> sourceConfigMap = new HashMap<>();
@@ -381,7 +381,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                 .collect(Collectors.toList());
 
         assertThat(requiredConfigs.size()).isGreaterThan(1);
-        CosmosDBSourceConnector sourceConnector = new CosmosDBSourceConnector();
+        CosmosSourceConnector sourceConnector = new CosmosSourceConnector();
         for (SourceConfigEntry<?> configEntry : requiredConfigs) {
 
             Map<String, String> sourceConfigMap = this.getValidSourceConfig();
@@ -402,7 +402,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
 
     @Test(groups = "unit")
     public void misFormattedConfig() {
-        CosmosDBSourceConnector sourceConnector = new CosmosDBSourceConnector();
+        CosmosSourceConnector sourceConnector = new CosmosSourceConnector();
         Map<String, String> sourceConfigMap = this.getValidSourceConfig();
 
         String topicMapConfigName = "kafka.connect.cosmos.source.containers.topicMap";
@@ -442,7 +442,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         return sourceConfigMap;
     }
 
-    private void setupDefaultConnectorInternalStates(CosmosDBSourceConnector sourceConnector, Map<String, Object> sourceConfigMap) {
+    private void setupDefaultConnectorInternalStates(CosmosSourceConnector sourceConnector, Map<String, Object> sourceConfigMap) {
         CosmosSourceConfig cosmosSourceConfig = new CosmosSourceConfig(sourceConfigMap);
         KafkaCosmosReflectionUtils.setCosmosSourceConfig(sourceConnector, cosmosSourceConfig);
 

@@ -27,14 +27,14 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class CosmosDbSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteBase {
-    private static final Logger logger = LoggerFactory.getLogger(CosmosDbSourceConnectorITest.class);
+public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteBase {
+    private static final Logger logger = LoggerFactory.getLogger(CosmosSourceConnectorITest.class);
 
     // TODO[public preview]: add more integration tests
     @Test(groups = { "kafka-integration"}, timeOut = TIMEOUT)
     public void readFromSingleContainer() {
         Map<String, String> sourceConnectorConfig = new HashMap<>();
-        sourceConnectorConfig.put("connector.class", "com.azure.cosmos.kafka.connect.CosmosDBSourceConnector");
+        sourceConnectorConfig.put("connector.class", "com.azure.cosmos.kafka.connect.CosmosSourceConnector");
         sourceConnectorConfig.put("kafka.connect.cosmos.accountEndpoint", KafkaCosmosTestConfigurations.HOST);
         sourceConnectorConfig.put("kafka.connect.cosmos.accountKey", KafkaCosmosTestConfigurations.MASTER_KEY);
         sourceConnectorConfig.put("kafka.connect.cosmos.applicationName", "Test");
