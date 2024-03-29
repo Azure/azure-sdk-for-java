@@ -26,6 +26,12 @@ public final class ContentType {
     public static final String APPLICATION_X_WWW_FORM_URLENCODED = "application/x-www-form-urlencoded";
 
     /**
+     * The default multipart form data Content-Type header.
+    
+     */
+    public static final String MULTIPART_FORM_DATA = "multipart/form-data";
+
+    /**
      * Private ctr.
      */
     private ContentType() {

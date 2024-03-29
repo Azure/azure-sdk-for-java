@@ -322,6 +322,11 @@ public abstract class RestProxyBase {
             }
 
             request.setHeader(HttpHeaderName.CONTENT_TYPE, contentType);
+
+            if (contentType.startsWith(ContentType.MULTIPART_FORM_DATA)) {
+
+            }
+
             if (bodyContentObject instanceof BinaryData) {
                 BinaryData binaryData = (BinaryData) bodyContentObject;
                 if (binaryData.getLength() != null) {
