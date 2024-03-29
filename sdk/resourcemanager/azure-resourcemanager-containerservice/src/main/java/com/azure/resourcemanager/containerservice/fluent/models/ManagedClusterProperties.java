@@ -17,6 +17,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgra
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMonitorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIngressProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterMetricsProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterOidcIssuerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdentityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
@@ -318,6 +319,12 @@ public final class ManagedClusterProperties {
      */
     @JsonProperty(value = "resourceUID", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceUid;
+
+    /*
+     * Optional cluster metrics configuration.
+     */
+    @JsonProperty(value = "metricsProfile")
+    private ManagedClusterMetricsProfile metricsProfile;
 
     /**
      * Creates an instance of ManagedClusterProperties class.
@@ -1115,6 +1122,26 @@ public final class ManagedClusterProperties {
     }
 
     /**
+     * Get the metricsProfile property: Optional cluster metrics configuration.
+     * 
+     * @return the metricsProfile value.
+     */
+    public ManagedClusterMetricsProfile metricsProfile() {
+        return this.metricsProfile;
+    }
+
+    /**
+     * Set the metricsProfile property: Optional cluster metrics configuration.
+     * 
+     * @param metricsProfile the metricsProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withMetricsProfile(ManagedClusterMetricsProfile metricsProfile) {
+        this.metricsProfile = metricsProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1196,6 +1223,9 @@ public final class ManagedClusterProperties {
         }
         if (serviceMeshProfile() != null) {
             serviceMeshProfile().validate();
+        }
+        if (metricsProfile() != null) {
+            metricsProfile().validate();
         }
     }
 }
