@@ -17,7 +17,7 @@ public final class HttpRequestMetadata {
     private int retryCount;
     private ClientLogger requestLogger;
     private boolean eagerlyConvertHeaders;
-    private ResponseBodyHandling responseBodyHandling;
+    private ResponseBodyMode responseBodyMode;
 
     /**
      * Creates an instance of {@link HttpRequestMetadata}.
@@ -116,8 +116,8 @@ public final class HttpRequestMetadata {
      *
      * @return The configuration indicating how the body of the resulting HTTP response should be handled.
      */
-    public ResponseBodyHandling getResponseBodyHandling() {
-        return responseBodyHandling;
+    public ResponseBodyMode getResponseBodyMode() {
+        return responseBodyMode;
     }
 
     /**
@@ -130,8 +130,9 @@ public final class HttpRequestMetadata {
      *
      * @return The updated {@link HttpRequestMetadata} object.
      */
-    public HttpRequestMetadata setResponseBodyHandling(ResponseBodyHandling responseBodyHandling) {
-        this.responseBodyHandling = responseBodyHandling;
+    public HttpRequestMetadata setResponseBodyMode(ResponseBodyMode responseBodyMode) {
+        this.responseBodyMode = responseBodyMode;
+
         return this;
     }
 
@@ -146,7 +147,7 @@ public final class HttpRequestMetadata {
         copy.retryCount = retryCount;
         copy.requestLogger = requestLogger;
         copy.eagerlyConvertHeaders = eagerlyConvertHeaders;
-        copy.responseBodyHandling = responseBodyHandling;
+        copy.responseBodyMode = responseBodyMode;
 
         return copy;
     }

@@ -8,7 +8,7 @@ import java.io.InputStream;
 /**
  * Enum that defines how to handle the body of an HTTP response.
  */
-public enum ResponseBodyHandling {
+public enum ResponseBodyMode {
     /**
      * Indicates that the body of an HTTP response shall be entirely ignored. No attempt to read the body will be made
      * and the connection to the service will be closed as soon as a body-less {@link Response} instance is created.

@@ -11,7 +11,7 @@ import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.Response;
-import com.generic.core.http.models.ResponseBodyHandling;
+import com.generic.core.http.models.ResponseBodyMode;
 import com.generic.core.http.models.ServerSentEventListener;
 import com.generic.core.http.okhttp.implementation.OkHttpFileRequestBody;
 import com.generic.core.http.okhttp.implementation.OkHttpInputStreamRequestBody;
@@ -32,8 +32,8 @@ import java.io.UncheckedIOException;
 
 import static com.generic.core.http.models.ContentType.APPLICATION_OCTET_STREAM;
 import static com.generic.core.http.models.HttpHeaderName.CONTENT_TYPE;
-import static com.generic.core.http.models.ResponseBodyHandling.BUFFER;
-import static com.generic.core.http.models.ResponseBodyHandling.STREAM;
+import static com.generic.core.http.models.ResponseBodyMode.BUFFER;
+import static com.generic.core.http.models.ResponseBodyMode.STREAM;
 import static com.generic.core.implementation.util.ServerSentEventUtil.processTextEventStream;
 /**
  * HttpClient implementation for OkHttp.
@@ -51,13 +51,13 @@ class OkHttpHttpClient implements HttpClient {
     @Override
     public Response<?> send(HttpRequest request) {
         boolean eagerlyConvertHeaders = request.getMetadata().isEagerlyConvertHeaders();
-        ResponseBodyHandling responseBodyHandling = request.getMetadata().getResponseBodyHandling();
+        ResponseBodyMode responseBodyMode = request.getMetadata().getResponseBodyMode();
         Request okHttpRequest = toOkHttpRequest(request);
 
         try {
             okhttp3.Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
 
-            return toResponse(request, okHttpResponse, responseBodyHandling, eagerlyConvertHeaders);
+            return toResponse(request, okHttpResponse, responseBodyMode, eagerlyConvertHeaders);
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
@@ -143,7 +143,7 @@ class OkHttpHttpClient implements HttpClient {
     }
 
     private Response<?> toResponse(HttpRequest request, okhttp3.Response response,
-                                   ResponseBodyHandling responseBodyHandling, boolean eagerlyConvertHeaders) throws IOException {
+                                   ResponseBodyMode responseBodyMode, boolean eagerlyConvertHeaders) throws IOException {
         okhttp3.Headers responseHeaders = response.headers();
 
         if (isTextEventStream(responseHeaders) && response.body() != null) {
@@ -158,26 +158,26 @@ class OkHttpHttpClient implements HttpClient {
             return new OkHttpResponse(response, request, eagerlyConvertHeaders, EMPTY_BODY);
         }
 
-        return processResponse(request, response, responseBodyHandling, eagerlyConvertHeaders);
+        return processResponse(request, response, responseBodyMode, eagerlyConvertHeaders);
     }
 
     private Response<?> processResponse(HttpRequest request, okhttp3.Response response,
-                                        ResponseBodyHandling responseBodyHandling, boolean eagerlyConvertHeaders) throws IOException {
-        if (responseBodyHandling == null) {
+                                        ResponseBodyMode responseBodyMode, boolean eagerlyConvertHeaders) throws IOException {
+        if (responseBodyMode == null) {
             String contentType = response.headers().get(CONTENT_TYPE.getCaseInsensitiveName());
 
             if (APPLICATION_OCTET_STREAM.equalsIgnoreCase(contentType)) {
-                responseBodyHandling = STREAM;
+                responseBodyMode = STREAM;
             } else {
-                responseBodyHandling = BUFFER;
+                responseBodyMode = BUFFER;
             }
 
-            request.getMetadata().setResponseBodyHandling(responseBodyHandling);
+            request.getMetadata().setResponseBodyMode(responseBodyMode);
         }
 
         final HttpResponse<?> httpResponse;
 
-        switch (responseBodyHandling) {
+        switch (responseBodyMode) {
             case IGNORE:
                 if (response.body() != null) {
                     response.body().close();

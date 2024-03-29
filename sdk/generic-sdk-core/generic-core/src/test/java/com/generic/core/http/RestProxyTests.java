@@ -38,8 +38,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static com.generic.core.http.models.ResponseBodyHandling.BUFFER;
-import static com.generic.core.http.models.ResponseBodyHandling.STREAM;
+import static com.generic.core.http.models.ResponseBodyMode.BUFFER;
+import static com.generic.core.http.models.ResponseBodyMode.STREAM;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -189,7 +189,7 @@ public class RestProxyTests {
 
         testInterface.testVoidMethod();
 
-        assertEquals(BUFFER, client.getLastHttpRequest().getMetadata().getResponseBodyHandling());
+        assertEquals(BUFFER, client.getLastHttpRequest().getMetadata().getResponseBodyMode());
     }
 
     @Test
@@ -203,7 +203,7 @@ public class RestProxyTests {
 
         testInterface.testMethodReturnsResponseVoid();
 
-        assertEquals(BUFFER, client.getLastHttpRequest().getMetadata().getResponseBodyHandling());
+        assertEquals(BUFFER, client.getLastHttpRequest().getMetadata().getResponseBodyMode());
     }
 
     @Test
@@ -217,7 +217,7 @@ public class RestProxyTests {
 
         testInterface.testDownload();
 
-        assertEquals(STREAM, client.getLastHttpRequest().getMetadata().getResponseBodyHandling());
+        assertEquals(STREAM, client.getLastHttpRequest().getMetadata().getResponseBodyMode());
     }
 
     private static Stream<Arguments> doesNotChangeBinaryDataContentTypeDataProvider() throws Exception {
