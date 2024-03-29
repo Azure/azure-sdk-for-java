@@ -1,17 +1,18 @@
 # Release History
 
-## 5.11.0-beta.1 (Unreleased)
+## 5.12.0-beta.1 (Unreleased)
 
 ### Features Added
-
-* Added Auto fail over support. Will automatically find Azure App Configuration replica stores for provided store. The found replica stores will be used as fail over stores after all provided replicas have failed.
-* Added property to disable auto fail over support `spring.cloud.azure.appconfiguration.stores[0].replica-discovery-enabled`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 5.11.0 (2024-03-29)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#5110-2024-03-29) for more details.
 
 ## 5.10.0 (2024-03-01)
 
