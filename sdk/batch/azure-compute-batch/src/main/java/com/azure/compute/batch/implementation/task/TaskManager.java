@@ -189,7 +189,7 @@ public class TaskManager {
             int threadNumber = 1;
             // Get user defined thread number
             if (batchClientParallelOptions != null) {
-                threadNumber = batchClientParallelOptions.maxDegreeOfParallelism();
+                threadNumber = batchClientParallelOptions.getMaxDegreeOfParallelism();
             }
             final Object lock = new Object();
             ConcurrentLinkedQueue<BatchTaskCreateContent> pendingList = new ConcurrentLinkedQueue<>(taskList);

@@ -19,7 +19,7 @@ public class BatchClientParallelOptions {
      * If not set, it returns null, indicating no specific limit is set.
      * @return The maximum number of concurrent tasks or null if not set.
      */
-    public Integer maxDegreeOfParallelism() {
+    public Integer getMaxDegreeOfParallelism() {
         return this.maxDegreeOfParallelism;
     }
 
