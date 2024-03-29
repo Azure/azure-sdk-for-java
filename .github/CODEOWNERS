@@ -454,8 +454,11 @@
 # ServiceLabel: %Functions
 # ServiceOwners:                                     @ahmedelnably @fabiocav
 
+# PRLabel: %generic-core
+/sdk/generic-core/                                   @samvaity @vcolin7 @jonathangiles @srnagar @alzimmermsft
+
 # ServiceLabel: %generic-core
-# ServiceOwners:                                     @samvaity @vcolin7 @jonathangiles @srnagar @alzimmermsft
+# AzureSdkOwners:                                    @samvaity @vcolin7 @jonathangiles @srnagar @alzimmermsft
 
 # ServiceLabel: %Graph.Microsoft
 # ServiceOwners:                                     @dkershaw10 @baywet
