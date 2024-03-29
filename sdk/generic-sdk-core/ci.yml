@@ -62,7 +62,7 @@ extends:
       - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
 
     LiveTestStages:
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           ServiceDirectory: generic-sdk-core
           Artifacts:
