@@ -31,9 +31,11 @@
       <Class name="com.azure.storage.file.datalake.options.DataLakePathDeleteOptions" />
       <Class name="com.azure.storage.file.datalake.options.FileParallelUploadOptions" />
       <Class name="com.azure.storage.file.datalake.options.FileQueryOptions" />
+      <Class name="com.azure.storage.file.datalake.options.PathGetPropertiesOptions" />
       <Class name="com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions" />
       <Class name="com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions" />
       <Class name="com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions" />
+      <Class name="com.azure.storage.file.datalake.options.ReadToFileOptions" />
     </Or>
   </Match>
   <Match>
@@ -64,9 +66,11 @@
       <Class name="com.azure.storage.file.datalake.options.DataLakePathDeleteOptions" />
       <Class name="com.azure.storage.file.datalake.options.FileParallelUploadOptions" />
       <Class name="com.azure.storage.file.datalake.options.FileQueryOptions" />
+      <Class name="com.azure.storage.file.datalake.options.PathGetPropertiesOptions" />
       <Class name="com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions" />
       <Class name="com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions" />
       <Class name="com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions" />
+      <Class name="com.azure.storage.file.datalake.options.ReadToFileOptions" />
     </Or>
   </Match>
   <Match>
