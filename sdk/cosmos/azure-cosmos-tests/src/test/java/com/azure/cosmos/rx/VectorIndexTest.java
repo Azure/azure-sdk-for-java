@@ -1,10 +1,29 @@
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.*;
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosDatabaseForTest;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
-import com.azure.cosmos.models.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.DistanceFunction;
+import com.azure.cosmos.models.Embedding;
+import com.azure.cosmos.models.ExcludedPath;
+import com.azure.cosmos.models.IncludedPath;
+import com.azure.cosmos.models.IndexingMode;
+import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.VectorDataType;
+import com.azure.cosmos.models.VectorEmbeddingPolicy;
+import com.azure.cosmos.models.VectorIndexSpec;
+import com.azure.cosmos.models.VectorIndexType;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
@@ -17,11 +36,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
-
 @Ignore("TODO: Ignore these test cases until the public emulator with vector indexes is released.")
-public class VectorIndexTest extends TestSuiteBase{
+public class VectorIndexTest extends TestSuiteBase {
     protected static final int TIMEOUT = 30000;
     protected static final int SETUP_TIMEOUT = 20000;
     protected static final int SHUTDOWN_TIMEOUT = 20000;
@@ -31,7 +47,7 @@ public class VectorIndexTest extends TestSuiteBase{
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase database;
 
-    @BeforeClass(groups = { "long" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"long"}, timeOut = SETUP_TIMEOUT)
     public void before_UniqueIndexTest() {
         // set up the client
         client = new CosmosClientBuilder()
@@ -45,13 +61,13 @@ public class VectorIndexTest extends TestSuiteBase{
         database = createDatabase(client, databaseId);
     }
 
-    @AfterClass(groups = { "long" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"long"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(database);
         safeClose(client);
     }
 
-    @Test(groups = { "long" }, timeOut = TIMEOUT)
+    @Test(groups = {"long"}, timeOut = TIMEOUT)
     public void shouldCreateVectorEmbeddingPolicy() {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
@@ -82,7 +98,7 @@ public class VectorIndexTest extends TestSuiteBase{
         validateCollectionProperties(collectionDefinition, collectionProperties);
     }
 
-    @Test(groups = { "long" }, timeOut = TIMEOUT)
+    @Test(groups = {"long"}, timeOut = TIMEOUT)
     public void shouldFailOnEmptyVectorEmbeddingPolicy() {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
@@ -109,13 +125,13 @@ public class VectorIndexTest extends TestSuiteBase{
         try {
             database.createContainer(collectionDefinition).block();
             fail("Container creation will fail as no vector embedding policy is being passed");
-        } catch(CosmosException ex) {
+        } catch (CosmosException ex) {
             assertThat(ex.getStatusCode()).isEqualTo(400);
             assertThat(ex.getMessage()).contains("vector1 not matching in Embedding's path");
         }
     }
 
-    @Test(groups = { "long" }, timeOut = TIMEOUT)
+    @Test(groups = {"long"}, timeOut = TIMEOUT)
     public void shouldFailOnWrongVectorEmbeddingPolicy() {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
@@ -148,7 +164,7 @@ public class VectorIndexTest extends TestSuiteBase{
             VectorEmbeddingPolicy vectorEmbeddingPolicy = new VectorEmbeddingPolicy(ImmutableList.of(embedding));
             collectionDefinition.setVectorEmbeddingPolicy(vectorEmbeddingPolicy);
             fail("Vector Embedding policy creation will fail for wrong vector date type being passed");
-        } catch(IllegalArgumentException ex) {
+        } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).isEqualTo("Invalid vector data type for the vector embedding policy.");
         }
 
@@ -157,7 +173,7 @@ public class VectorIndexTest extends TestSuiteBase{
             VectorEmbeddingPolicy vectorEmbeddingPolicy = new VectorEmbeddingPolicy(ImmutableList.of(embedding));
             collectionDefinition.setVectorEmbeddingPolicy(vectorEmbeddingPolicy);
             fail("Vector Embedding policy creation will fail for empty vector date type being passed");
-        } catch(IllegalArgumentException ex) {
+        } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).isEqualTo("Vector data type cannot be empty for the vector embedding policy.");
         }
 
@@ -167,7 +183,7 @@ public class VectorIndexTest extends TestSuiteBase{
             VectorEmbeddingPolicy vectorEmbeddingPolicy = new VectorEmbeddingPolicy(ImmutableList.of(embedding));
             collectionDefinition.setVectorEmbeddingPolicy(vectorEmbeddingPolicy);
             fail("Vector Embedding policy creation will fail for wrong distance function being passed");
-        } catch(IllegalArgumentException ex) {
+        } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).isEqualTo("Invalid distance function for the vector embedding policy.");
         }
 
@@ -176,12 +192,22 @@ public class VectorIndexTest extends TestSuiteBase{
             VectorEmbeddingPolicy vectorEmbeddingPolicy = new VectorEmbeddingPolicy(ImmutableList.of(embedding));
             collectionDefinition.setVectorEmbeddingPolicy(vectorEmbeddingPolicy);
             fail("Vector Embedding policy creation will fail for empty distance function being passed");
-        } catch(IllegalArgumentException ex) {
+        } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).isEqualTo("Distance function cannot be empty for the vector embedding policy.");
+        }
+
+        embedding.setDistanceFunction(DistanceFunction.COSINE.getValue());
+        embedding.setDimensions(-1L);
+        try {
+            VectorEmbeddingPolicy vectorEmbeddingPolicy = new VectorEmbeddingPolicy(ImmutableList.of(embedding));
+            collectionDefinition.setVectorEmbeddingPolicy(vectorEmbeddingPolicy);
+            fail("Vector Embedding policy creation will fail for negative dimensions being passed");
+        } catch (IllegalArgumentException ex) {
+            assertThat(ex.getMessage()).isEqualTo("Dimensions for the embedding has to be a long value greater than 1 for the vector embedding policy");
         }
     }
 
-    @Test(groups = { "long" }, timeOut = TIMEOUT)
+    @Test(groups = {"long"}, timeOut = TIMEOUT)
     public void shouldFailOnWrongVectorIndex() {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
@@ -221,7 +247,7 @@ public class VectorIndexTest extends TestSuiteBase{
         }
     }
 
-    @Test(groups = { "long" }, timeOut = TIMEOUT)
+    @Test(groups = {"long"}, timeOut = TIMEOUT)
     public void shouldCreateVectorIndexSimilarPathDifferentVectorType() {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
@@ -256,90 +282,12 @@ public class VectorIndexTest extends TestSuiteBase{
         validateCollectionProperties(collectionDefinition, collectionProperties);
     }
 
-    @Test(groups = { "long" }, timeOut = TIMEOUT)
-    // TODO: This test case should fail, but is passing, confirm the implementation with Bala
-    public void shouldFailVectorIndexSimilarPathSimilarVectorType() {
-        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<String>();
-        paths.add("/mypk");
-        partitionKeyDef.setPaths(paths);
-
-        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
-
-        IndexingPolicy indexingPolicy = new IndexingPolicy();
-        indexingPolicy.setIndexingMode(IndexingMode.CONSISTENT);
-        ExcludedPath excludedPath = new ExcludedPath("/*");
-        indexingPolicy.setExcludedPaths(Collections.singletonList(excludedPath));
-
-        IncludedPath includedPath1 = new IncludedPath("/name/?");
-        IncludedPath includedPath2 = new IncludedPath("/description/?");
-        indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
-
-        List<VectorIndexSpec> vectorIndexes = populateVectorIndexes();
-        vectorIndexes.get(2).setPath("/vector2");
-        vectorIndexes.get(2).setType(VectorIndexType.QUANTIZED_FLAT.getValue());
-        indexingPolicy.setVectorIndexes(vectorIndexes);
-
-        List<Embedding> embeddings = populateEmbeddings();
-        embeddings.get(2).setPath("/vector2");
-        VectorEmbeddingPolicy vectorEmbeddingPolicy = new VectorEmbeddingPolicy(embeddings);
-
-        collectionDefinition.setIndexingPolicy(indexingPolicy);
-        collectionDefinition.setVectorEmbeddingPolicy(vectorEmbeddingPolicy);
-
-        try {
-            database.createContainer(collectionDefinition).block();
-//            fail("Container creation will fail as vector index is being created with same path, " +
-//                "and same index type");
-        } catch(Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-
-    @Test(groups = { "long" }, timeOut = TIMEOUT)
-    public void shouldFailVectorEmbeddingOnReplaceContainer() {
-        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<String>();
-        paths.add("/mypk");
-        partitionKeyDef.setPaths(paths);
-
-        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
-
-        IndexingPolicy indexingPolicy = new IndexingPolicy();
-        indexingPolicy.setIndexingMode(IndexingMode.CONSISTENT);
-        ExcludedPath excludedPath = new ExcludedPath("/*");
-        indexingPolicy.setExcludedPaths(Collections.singletonList(excludedPath));
-
-        IncludedPath includedPath1 = new IncludedPath("/name/?");
-        IncludedPath includedPath2 = new IncludedPath("/description/?");
-        indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
-        indexingPolicy.setVectorIndexes(populateVectorIndexes());
-
-        VectorEmbeddingPolicy vectorEmbeddingPolicy = new VectorEmbeddingPolicy(populateEmbeddings());
-
-        collectionDefinition.setIndexingPolicy(indexingPolicy);
-        collectionDefinition.setVectorEmbeddingPolicy(vectorEmbeddingPolicy);
-
-        database.createContainer(collectionDefinition).block();
-        CosmosAsyncContainer createdCollection = database.getContainer(collectionDefinition.getId());
-
-        CosmosContainerProperties containerProperties = createdCollection.read().block().getProperties();
-        containerProperties.getIndexingPolicy().getVectorIndexes().get(0).setType(
-            VectorIndexType.QUANTIZED_FLAT.getValue());
-        try{
-            collectionDefinition.setIndexingPolicy(indexingPolicy);
-            createdCollection.replace(containerProperties).block();
-        } catch(CosmosException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-
     private void validateCollectionProperties(CosmosContainerProperties collectionDefinition, CosmosContainerProperties collectionProperties) {
         assertThat(collectionProperties.getVectorEmbeddingPolicy()).isNotNull();
         assertThat(collectionProperties.getVectorEmbeddingPolicy().getEmbeddings()).isNotNull();
         List<Embedding> embeddings = collectionProperties.getVectorEmbeddingPolicy().getEmbeddings();
         assertThat(embeddings).hasSameSizeAs(collectionDefinition.getVectorEmbeddingPolicy().getEmbeddings());
-        for (int i=0; i<embeddings.size(); i++) {
+        for (int i = 0; i < embeddings.size(); i++) {
             assertThat(embeddings.get(0).getPath()).isEqualTo(
                 collectionDefinition.getVectorEmbeddingPolicy().getEmbeddings().get(0).getPath());
         }
@@ -347,7 +295,7 @@ public class VectorIndexTest extends TestSuiteBase{
         assertThat(collectionProperties.getIndexingPolicy().getVectorIndexes()).isNotNull();
         List<VectorIndexSpec> vectorIndexes = collectionProperties.getIndexingPolicy().getVectorIndexes();
         assertThat(vectorIndexes).hasSameSizeAs(collectionDefinition.getIndexingPolicy().getVectorIndexes());
-        for (int i=0; i<vectorIndexes.size(); i++) {
+        for (int i = 0; i < vectorIndexes.size(); i++) {
             assertThat(vectorIndexes.get(0).getPath()).isEqualTo(
                 collectionDefinition.getIndexingPolicy().getVectorIndexes().get(0).getPath());
         }

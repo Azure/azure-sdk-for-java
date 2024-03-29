@@ -66,7 +66,7 @@ public final class VectorEmbeddingPolicy {
 
     private static void validateEmbeddingDimensions(Long dimensions) {
         if (dimensions < 1) {
-            throw new IllegalArgumentException("dimensions for the embedding has to be a long value greater than 1");
+            throw new IllegalArgumentException("Dimensions for the embedding has to be a long value greater than 1 for the vector embedding policy");
         }
     }
 
