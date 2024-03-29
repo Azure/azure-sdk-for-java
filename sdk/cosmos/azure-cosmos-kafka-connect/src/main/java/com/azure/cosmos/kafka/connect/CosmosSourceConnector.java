@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 /***
  * The CosmosDb source connector.
  */
-public class CosmosSourceConnector extends SourceConnector {
+public class CosmosSourceConnector extends SourceConnector implements AutoCloseable {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSourceConnector.class);
     private CosmosSourceConfig config;
     private CosmosAsyncClient cosmosClient;
@@ -346,5 +346,10 @@ public class CosmosSourceConnector extends SourceConnector {
         });
         
         return effectiveContainersTopicMap;
+    }
+
+    @Override
+    public void close() {
+        this.stop();
     }
 }

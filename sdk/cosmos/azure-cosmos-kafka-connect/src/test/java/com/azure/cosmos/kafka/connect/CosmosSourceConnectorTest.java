@@ -49,12 +49,12 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.kafka.connect.CosmosDBSourceConnectorTest.SourceConfigs.ALL_VALID_CONFIGS;
+import static com.azure.cosmos.kafka.connect.CosmosSourceConnectorTest.SourceConfigs.ALL_VALID_CONFIGS;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.testng.Assert.assertEquals;
 
 @Test
-public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
+public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
     @Test(groups = "unit")
     public void taskClass() {
         CosmosSourceConnector sourceConnector = new CosmosSourceConnector();

@@ -20,11 +20,11 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.kafka.connect.CosmosDBSinkConnectorTest.SinkConfigs.ALL_VALID_CONFIGS;
+import static com.azure.cosmos.kafka.connect.CosmosSinkConnectorTest.SinkConfigs.ALL_VALID_CONFIGS;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.testng.Assert.assertEquals;
 
-public class CosmosDBSinkConnectorTest extends KafkaCosmosTestSuiteBase {
+public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
     @Test(groups = "unit")
     public void taskClass() {
         CosmosSinkConnector sinkConnector = new CosmosSinkConnector();

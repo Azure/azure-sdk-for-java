@@ -8,13 +8,13 @@ import org.apache.kafka.connect.errors.ConnectException;
 /**
  * Generic CosmosDb sink write exceptions.
  */
-public class CosmosDBWriteException extends ConnectException {
+public class CosmosWriteException extends ConnectException {
     /**
      *
      */
     private static final long serialVersionUID = 1L;
 
-    public CosmosDBWriteException(String message) {
+    public CosmosWriteException(String message) {
         super(message);
     }
 }

@@ -25,8 +25,8 @@ import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class CosmosDbSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBase {
-    private static final Logger logger = LoggerFactory.getLogger(CosmosDbSinkConnectorITest.class);
+public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBase {
+    private static final Logger logger = LoggerFactory.getLogger(CosmosSinkConnectorITest.class);
 
     // TODO[public preview]: add more integration tests
     @Test(groups = { "kafka-integration"}, timeOut = TIMEOUT)
@@ -38,7 +38,7 @@ public class CosmosDbSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteB
         // TODO[Public Preview]: add tests for with schema
         sinkConnectorConfig.put("value.converter.schemas.enable", "false");
         sinkConnectorConfig.put("key.converter", StringConverter.class.getName());
-        sinkConnectorConfig.put("connector.class", "com.azure.cosmos.kafka.connect.CosmosDBSinkConnector");
+        sinkConnectorConfig.put("connector.class", "com.azure.cosmos.kafka.connect.CosmosSinkConnector");
         sinkConnectorConfig.put("kafka.connect.cosmos.accountEndpoint", KafkaCosmosTestConfigurations.HOST);
         sinkConnectorConfig.put("kafka.connect.cosmos.accountKey", KafkaCosmosTestConfigurations.MASTER_KEY);
         sinkConnectorConfig.put("kafka.connect.cosmos.applicationName", "Test");
