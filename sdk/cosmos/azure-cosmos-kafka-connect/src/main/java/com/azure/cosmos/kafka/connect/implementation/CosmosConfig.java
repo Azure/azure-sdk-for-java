@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 /**
  * Common Configuration for Cosmos DB Kafka source connector and sink connector.
  */
-public class KafkaCosmosConfig extends AbstractConfig {
+public class CosmosConfig extends AbstractConfig {
     protected static final ConfigDef.Validator NON_EMPTY_STRING = new ConfigDef.NonEmptyString();
     private static final String CONFIG_PREFIX = "kafka.connect.cosmos.";
 
@@ -34,6 +34,29 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private static final String ACCOUNT_KEY = CONFIG_PREFIX + "accountKey";
     private static final String ACCOUNT_KEY_DOC = "Cosmos DB Account Key.";
     private static final String ACCOUNT_KEY_DISPLAY = "Cosmos DB Account Key.";
+    private static final String DEFAULT_ACCOUNT_KEY = Strings.Emtpy;
+
+    // AAD config
+    private static final String ACCOUNT_TENANT_ID = CONFIG_PREFIX + "account.tenantId";
+    private static final String ACCOUNT_TENANT_ID_DOC = "The tenantId of the CosmosDB account. Required for `ServicePrincipal` authentication.";
+    private static final String ACCOUNT_TENANT_ID_DISPLAY = "The tenantId of the CosmosDB account.";
+    private static final String DEFAULT_ACCOUNT_TENANT_ID = Strings.Emtpy;
+
+    private static final String AUTH_TYPE = CONFIG_PREFIX + "auth.type";
+    private static final String AUTH_TYPE_DOC = "There are two auth types are supported currently: "
+        + "`MasterKey`(PrimaryReadWriteKeys, SecondReadWriteKeys, PrimaryReadOnlyKeys, SecondReadWriteKeys), `ServicePrincipal`";
+    private static final String AUTH_TYPE_DISPLAY = "Cosmos Auth type.";
+    private static final String DEFAULT_AUTH_TYPE = CosmosAuthTypes.MASTER_KEY.getName();
+
+    private static final String AAD_CLIENT_ID = CONFIG_PREFIX + "auth.aad.clientId";
+    private static final String AAD_CLIENT_ID_DOC = "The clientId/ApplicationId of the service principal. Required for `ServicePrincipal` authentication.";
+    private static final String AAD_CLIENT_ID_DISPLAY = "The clientId/ApplicationId of the service principal.";
+    private static final String DEFAULT_AAD_CLIENT_ID = Strings.Emtpy;
+
+    private static final String AAD_CLIENT_SECRET = CONFIG_PREFIX + "auth.aad.clientSecret";
+    private static final String AAD_CLIENT_SECRET_DOC = "The client secret/password of the service principal. Required for `ServicePrincipal` authentication.";
+    private static final String AAD_CLIENT_SECRET_DISPLAY = "The client secret/password of the service principal.";
+    private static final String DEFAULT_AAD_CLIENT_SECRET = Strings.Emtpy;
 
     private static final String USE_GATEWAY_MODE = CONFIG_PREFIX + "useGatewayMode";
     private static final String USE_GATEWAY_MODE_DOC = "Flag to indicate whether to use gateway mode. By default it is false.";
@@ -66,6 +89,28 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private static final String THROUGHPUT_CONTROL_ACCOUNT_KEY_DOC = "Cosmos DB Throughput Control Account Key.";
     private static final String THROUGHPUT_CONTROL_ACCOUNT_KEY_DISPLAY = "Cosmos DB Throughput Control Account Key.";
     private static final String DEFAULT_THROUGHPUT_CONTROL_ACCOUNT_KEY = Strings.Emtpy;
+
+    // Throughput control AAD config
+    private static final String THROUGHPUT_CONTROL_ACCOUNT_TENANT_ID = CONFIG_PREFIX + "throughputControl.account.tenantId";
+    private static final String THROUGHPUT_CONTROL_ACCOUNT_TENANT_ID_DOC = "The tenantId of the CosmosDB account. Required for `ServicePrincipal` authentication.";
+    private static final String THROUGHPUT_CONTROL_ACCOUNT_TENANT_ID_DISPLAY = "The tenantId of the CosmosDB account.";
+    private static final String DEFAULT_THROUGHPUT_CONTROL_ACCOUNT_TENANT_ID = Strings.Emtpy;
+
+    private static final String THROUGHPUT_CONTROL_AUTH_TYPE = CONFIG_PREFIX + "throughputControl.auth.type";
+    private static final String THROUGHPUT_CONTROL_AUTH_TYPE_DOC = "There are two auth types are supported currently: "
+        + "`MasterKey`(PrimaryReadWriteKeys, SecondReadWriteKeys, PrimaryReadOnlyKeys, SecondReadWriteKeys), `ServicePrincipal`";
+    private static final String THROUGHPUT_CONTROL_AUTH_TYPE_DISPLAY = "Cosmos Auth type.";
+    private static final String DEFAULT_THROUGHPUT_CONTROL_AUTH_TYPE = CosmosAuthTypes.MASTER_KEY.getName();
+
+    private static final String THROUGHPUT_CONTROL_AAD_CLIENT_ID = CONFIG_PREFIX + "throughputControl.auth.aad.clientId";
+    private static final String THROUGHPUT_CONTROL_AAD_CLIENT_ID_DOC = "The clientId/ApplicationId of the service principal. Required for `ServicePrincipal` authentication.";
+    private static final String THROUGHPUT_CONTROL_AAD_CLIENT_ID_DISPLAY = "The clientId/ApplicationId of the service principal.";
+    private static final String DEFAULT_THROUGHPUT_CONTROL_AAD_CLIENT_ID = Strings.Emtpy;
+
+    private static final String THROUGHPUT_CONTROL_AAD_CLIENT_SECRET = CONFIG_PREFIX + "throughputControl.auth.aad.clientSecret";
+    private static final String THROUGHPUT_CONTROL_AAD_CLIENT_SECRET_DOC = "The client secret/password of the service principal. Required for `ServicePrincipal` authentication.";
+    private static final String THROUGHPUT_CONTROL_AAD_CLIENT_SECRET_DISPLAY = "The client secret/password of the service principal.";
+    private static final String DEFAULT_THROUGHPUT_CONTROL_AAD_CLIENT_SECRET = Strings.Emtpy;
 
     private static final String THROUGHPUT_CONTROL_PREFERRED_REGIONS_LIST = CONFIG_PREFIX + "throughputControl.preferredRegionsList";
     private static final String THROUGHPUT_CONTROL_PREFERRED_REGIONS_LIST_DOC = "Preferred regions list to be used for a multi region Cosmos DB account. "
@@ -132,33 +177,97 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private final CosmosAccountConfig accountConfig;
     private final CosmosThroughputControlConfig throughputControlConfig;
 
-    public KafkaCosmosConfig(ConfigDef config, Map<String, ?> parsedConfig) {
+    public CosmosConfig(ConfigDef config, Map<String, ?> parsedConfig) {
         super(config, parsedConfig);
         this.accountConfig = this.parseAccountConfig();
         this.throughputControlConfig = this.parseThroughputControlConfig();
     }
 
     private CosmosAccountConfig parseAccountConfig() {
-        String endpoint = this.getString(ACCOUNT_ENDPOINT);
-        String accountKey = this.getPassword(ACCOUNT_KEY).value();
-        String applicationName = this.getString(APPLICATION_NAME);
-        boolean useGatewayMode = this.getBoolean(USE_GATEWAY_MODE);
-        List<String> preferredRegionList = this.getPreferredRegionList();
+        return parseAccountConfigCore(
+            ACCOUNT_ENDPOINT,
+            ACCOUNT_TENANT_ID,
+            AUTH_TYPE,
+            ACCOUNT_KEY,
+            AAD_CLIENT_ID,
+            AAD_CLIENT_SECRET,
+            APPLICATION_NAME,
+            USE_GATEWAY_MODE,
+            PREFERRED_REGIONS_LIST);
+    }
+
+    private CosmosAccountConfig parseAccountConfigCore(
+        String accountEndpointConfig,
+        String accountTenantIdConfig,
+        String authTypeConfig,
+        String accountKeyConfig,
+        String clientIdConfig,
+        String clientSecretConfig,
+        String applicationNameConfig,
+        String useGatewayModeConfig,
+        String preferredRegionListConfig) {
+
+        String endpoint = this.getString(accountEndpointConfig);
+        String tenantId = this.getString(accountTenantIdConfig);
+        CosmosAuthTypes authType = this.parseCosmosAuthType(authTypeConfig);
+        String masterKey = this.getString(accountKeyConfig);
+        String clientId = this.getString(clientIdConfig);
+        String clientSecret = this.getString(clientSecretConfig);
+        CosmosAuthConfig authConfig = getAuthConfig(tenantId, authType, masterKey, clientId, clientSecret);
+
+        String applicationName = this.getString(applicationNameConfig);
+        boolean useGatewayMode = this.getBoolean(useGatewayModeConfig);
+        List<String> preferredRegionList = this.getPreferredRegionList(preferredRegionListConfig);
 
         return new CosmosAccountConfig(
             endpoint,
-            accountKey,
+            tenantId,
+            authConfig,
             applicationName,
             useGatewayMode,
             preferredRegionList);
     }
 
+    private CosmosAuthConfig getAuthConfig(
+        String tenantId,
+        CosmosAuthTypes authType,
+        String masterKey,
+        String clientId,
+        String clientSecret) {
+
+        switch (authType) {
+            case MASTER_KEY:
+                return new CosmosMasterKeyAuthConfig(masterKey);
+            case SERVICE_PRINCIPAL:
+                return new CosmosAadAuthConfig(clientId, clientSecret, tenantId);
+            default:
+                throw new IllegalArgumentException("AuthType " + authType + " is not supported");
+        }
+    }
+
+    private CosmosAuthTypes parseCosmosAuthType(String configName) {
+        String authType = this.getString(configName);
+        return CosmosAuthTypes.fromName(authType);
+    }
+
     private CosmosThroughputControlConfig parseThroughputControlConfig() {
         boolean enabled = this.getBoolean(THROUGHPUT_CONTROL_ENABLED);
-        String throughputControlEndpoint = this.getString(THROUGHPUT_CONTROL_ACCOUNT_ENDPOINT);
-        String throughputControlAccountKey = this.getPassword(THROUGHPUT_CONTROL_ACCOUNT_KEY).value();
-        List<String> throughputControlPreferredRegionList = this.getThroughputControlPreferredRegionList();
-        boolean throughputControlUseGatewayMode = this.getBoolean(THROUGHPUT_CONTROL_USE_GATEWAY_MODE);
+        String accountEndpoint = this.getString(THROUGHPUT_CONTROL_ACCOUNT_ENDPOINT);
+
+        CosmosAccountConfig throughputControlAccountConfig = null;
+        if (enabled && StringUtils.isNotEmpty(accountEndpoint)) {
+            throughputControlAccountConfig = parseAccountConfigCore(
+                THROUGHPUT_CONTROL_ACCOUNT_ENDPOINT,
+                THROUGHPUT_CONTROL_ACCOUNT_TENANT_ID,
+                THROUGHPUT_CONTROL_AUTH_TYPE,
+                THROUGHPUT_CONTROL_ACCOUNT_KEY,
+                THROUGHPUT_CONTROL_AAD_CLIENT_ID,
+                THROUGHPUT_CONTROL_AAD_CLIENT_SECRET,
+                APPLICATION_NAME,
+                THROUGHPUT_CONTROL_USE_GATEWAY_MODE,
+                THROUGHPUT_CONTROL_PREFERRED_REGIONS_LIST);
+        }
+
         String throughputControlGroupName = this.getString(THROUGHPUT_CONTROL_GROUP_NAME);
         int targetThroughput = this.getInt(THROUGHPUT_CONTROL_TARGET_THROUGHPUT);
         double targetThroughputThreshold = this.getDouble(THROUGHPUT_CONTROL_TARGET_THROUGHPUT_THRESHOLD);
@@ -167,15 +276,10 @@ public class KafkaCosmosConfig extends AbstractConfig {
         String globalControlContainerName = this.getString(THROUGHPUT_CONTROL_GLOBAL_CONTROL_CONTAINER);
         int globalThroughputControlRenewInterval = this.getInt(THROUGHPUT_CONTROL_GLOBAL_CONTROL_RENEW_INTERVAL_IN_MS);
         int globalThroughputControlExpireInterval = this.getInt(THROUGHPUT_CONTROL_GLOBAL_CONTROL_EXPIRE_INTERVAL_IN_MS);
-        String applicationName = this.getString(APPLICATION_NAME);
 
         return new CosmosThroughputControlConfig(
             enabled,
-            throughputControlEndpoint,
-            throughputControlAccountKey,
-            throughputControlPreferredRegionList,
-            throughputControlUseGatewayMode,
-            applicationName,
+            throughputControlAccountConfig,
             throughputControlGroupName,
             targetThroughput,
             targetThroughputThreshold,
@@ -186,8 +290,8 @@ public class KafkaCosmosConfig extends AbstractConfig {
             globalThroughputControlExpireInterval);
     }
 
-    private List<String> getPreferredRegionList() {
-        return convertToList(this.getString(PREFERRED_REGIONS_LIST));
+    private List<String> getPreferredRegionList(String preferredRegionListConfig) {
+        return convertToList(this.getString(preferredRegionListConfig));
     }
 
     private List<String> getThroughputControlPreferredRegionList() {
@@ -229,13 +333,58 @@ public class KafkaCosmosConfig extends AbstractConfig {
             .define(
                 ACCOUNT_KEY,
                 ConfigDef.Type.PASSWORD,
-                ConfigDef.NO_DEFAULT_VALUE,
+                DEFAULT_ACCOUNT_KEY,
                 ConfigDef.Importance.HIGH,
                 ACCOUNT_KEY_DOC,
                 accountGroupName,
                 accountGroupOrder++,
                 ConfigDef.Width.LONG,
                 ACCOUNT_KEY_DISPLAY
+            )
+            .define(
+                ACCOUNT_TENANT_ID,
+                ConfigDef.Type.STRING,
+                DEFAULT_ACCOUNT_TENANT_ID,
+                ConfigDef.Importance.MEDIUM,
+                ACCOUNT_TENANT_ID_DOC,
+                accountGroupName,
+                accountGroupOrder++,
+                ConfigDef.Width.LONG,
+                ACCOUNT_TENANT_ID_DISPLAY
+            )
+            .define(
+                AUTH_TYPE,
+                ConfigDef.Type.STRING,
+                DEFAULT_AUTH_TYPE,
+                new AuthTypeValidator(),
+                ConfigDef.Importance.MEDIUM,
+                AUTH_TYPE_DOC,
+                accountGroupName,
+                accountGroupOrder++,
+                ConfigDef.Width.MEDIUM,
+                AUTH_TYPE_DISPLAY
+            )
+            .define(
+                AAD_CLIENT_ID,
+                ConfigDef.Type.STRING,
+                DEFAULT_AAD_CLIENT_ID,
+                ConfigDef.Importance.MEDIUM,
+                AAD_CLIENT_ID_DOC,
+                accountGroupName,
+                accountGroupOrder++,
+                ConfigDef.Width.MEDIUM,
+                AAD_CLIENT_ID_DISPLAY
+            )
+            .define(
+                AAD_CLIENT_SECRET,
+                ConfigDef.Type.PASSWORD,
+                DEFAULT_AAD_CLIENT_SECRET,
+                ConfigDef.Importance.MEDIUM,
+                AAD_CLIENT_SECRET_DOC,
+                accountGroupName,
+                accountGroupOrder++,
+                ConfigDef.Width.MEDIUM,
+                AAD_CLIENT_SECRET_DISPLAY
             )
             .define(
                 APPLICATION_NAME,
@@ -310,6 +459,51 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 throughputControlGroupOrder++,
                 ConfigDef.Width.LONG,
                 THROUGHPUT_CONTROL_ACCOUNT_KEY_DISPLAY
+            )
+            .define(
+                THROUGHPUT_CONTROL_ACCOUNT_TENANT_ID,
+                ConfigDef.Type.STRING,
+                DEFAULT_THROUGHPUT_CONTROL_ACCOUNT_TENANT_ID,
+                ConfigDef.Importance.LOW,
+                THROUGHPUT_CONTROL_ACCOUNT_TENANT_ID_DOC,
+                throughputControlGroupName,
+                throughputControlGroupOrder++,
+                ConfigDef.Width.LONG,
+                THROUGHPUT_CONTROL_ACCOUNT_TENANT_ID_DISPLAY
+            )
+            .define(
+                THROUGHPUT_CONTROL_AUTH_TYPE,
+                ConfigDef.Type.STRING,
+                DEFAULT_THROUGHPUT_CONTROL_AUTH_TYPE,
+                new AuthTypeValidator(),
+                ConfigDef.Importance.LOW,
+                THROUGHPUT_CONTROL_AUTH_TYPE_DOC,
+                throughputControlGroupName,
+                throughputControlGroupOrder++,
+                ConfigDef.Width.MEDIUM,
+                THROUGHPUT_CONTROL_AUTH_TYPE_DISPLAY
+            )
+            .define(
+                THROUGHPUT_CONTROL_AAD_CLIENT_ID,
+                ConfigDef.Type.STRING,
+                DEFAULT_THROUGHPUT_CONTROL_AAD_CLIENT_ID,
+                ConfigDef.Importance.LOW,
+                THROUGHPUT_CONTROL_AAD_CLIENT_ID_DOC,
+                throughputControlGroupName,
+                throughputControlGroupOrder++,
+                ConfigDef.Width.MEDIUM,
+                THROUGHPUT_CONTROL_AAD_CLIENT_ID_DISPLAY
+            )
+            .define(
+                THROUGHPUT_CONTROL_AAD_CLIENT_SECRET,
+                ConfigDef.Type.PASSWORD,
+                DEFAULT_THROUGHPUT_CONTROL_AAD_CLIENT_SECRET,
+                ConfigDef.Importance.LOW,
+                THROUGHPUT_CONTROL_AAD_CLIENT_SECRET_DOC,
+                throughputControlGroupName,
+                throughputControlGroupOrder++,
+                ConfigDef.Width.MEDIUM,
+                THROUGHPUT_CONTROL_AAD_CLIENT_SECRET_DISPLAY
             )
             .define(
                 THROUGHPUT_CONTROL_PREFERRED_REGIONS_LIST,
@@ -494,6 +688,79 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 .get(THROUGHPUT_CONTROL_GLOBAL_CONTROL_CONTAINER)
                 .addErrorMessage("ThroughputControl is enabled, throughput control container name can not be null or empty");
         }
+
+        String throughputControlAccountEndpoint = connectorConfigs.get(THROUGHPUT_CONTROL_ACCOUNT_ENDPOINT);
+        if (StringUtils.isNotEmpty(throughputControlAccountEndpoint)) {
+            validateAccountAuthConfigCore(
+                connectorConfigs,
+                configValueMap,
+                THROUGHPUT_CONTROL_ACCOUNT_TENANT_ID,
+                THROUGHPUT_CONTROL_AUTH_TYPE,
+                THROUGHPUT_CONTROL_ACCOUNT_KEY,
+                THROUGHPUT_CONTROL_AAD_CLIENT_ID,
+                THROUGHPUT_CONTROL_AAD_CLIENT_SECRET);
+        }
+    }
+
+    public static void validateCosmosAccountAuthConfig(
+        Map<String, String> connectorConfigs,
+        Map<String, ConfigValue> configValueMap) {
+
+        validateAccountAuthConfigCore(
+            connectorConfigs,
+            configValueMap,
+            ACCOUNT_TENANT_ID,
+            AUTH_TYPE,
+            ACCOUNT_KEY,
+            AAD_CLIENT_ID,
+            AAD_CLIENT_SECRET);
+    }
+
+    public static void validateAccountAuthConfigCore(
+        Map<String, String> connectorConfigs,
+        Map<String, ConfigValue> configValueMap,
+        String accountTenantIdConfig,
+        String authTypeConfig,
+        String accountKeyConfig,
+        String clientIdConfig,
+        String clientSecretConfig) {
+
+        // separate throughput account endpoint has been defined, verify all required configs exists
+        CosmosAuthTypes authType = CosmosAuthTypes.fromName(authTypeConfig);
+        switch (authType) {
+            case MASTER_KEY:
+                String masterKey = connectorConfigs.get(accountKeyConfig);
+                if (StringUtils.isEmpty(masterKey)) {
+                    configValueMap
+                        .get(accountKeyConfig)
+                        .addErrorMessage("ThroughputControl is enabled and use different account config, masterKey is required for masterKey auth type");
+                }
+                break;
+            case SERVICE_PRINCIPAL:
+                String tenantId = connectorConfigs.get(accountTenantIdConfig);
+                if (StringUtils.isEmpty(tenantId)) {
+                    configValueMap
+                        .get(accountTenantIdConfig)
+                        .addErrorMessage("ThroughputControl is enabled and use different account config, tenantId is required for Service Principal auth type");
+                }
+
+                String clientId = connectorConfigs.get(clientIdConfig);
+                if (StringUtils.isEmpty(clientId)) {
+                    configValueMap
+                        .get(clientIdConfig)
+                        .addErrorMessage("ThroughputControl is enabled and use different account config, clientId is required for Service Principal auth type");
+                }
+
+                String clientSecret = connectorConfigs.get(clientSecretConfig);
+                if (StringUtils.isEmpty(clientSecret)) {
+                    configValueMap
+                        .get(clientSecretConfig)
+                        .addErrorMessage("ThroughputControl is enabled and use different account config, clientSecret is required for Service Principal auth type");
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("AuthType " + authType + " is not supported");
+        }
     }
 
     public static class AccountEndpointValidator implements ConfigDef.Validator {
@@ -551,6 +818,27 @@ public class KafkaCosmosConfig extends AbstractConfig {
         @Override
         public String toString() {
             return "Containers topic map";
+        }
+    }
+
+    public static class AuthTypeValidator implements ConfigDef.Validator {
+        @Override
+        @SuppressWarnings("unchecked")
+        public void ensureValid(String name, Object o) {
+            String authTypeString = (String) o;
+            if (StringUtils.isEmpty(authTypeString)) {
+                throw new ConfigException(name, o, "AuthType can not be empty or null");
+            }
+
+            CosmosAuthTypes authType = CosmosAuthTypes.fromName(authTypeString);
+            if (authType == null) {
+                throw new ConfigException(name, o, "Invalid AuthType, only allow MasterKey or ServicePrincipal");
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "AuthType. Only allow " + CosmosAuthTypes.values();
         }
     }
 }

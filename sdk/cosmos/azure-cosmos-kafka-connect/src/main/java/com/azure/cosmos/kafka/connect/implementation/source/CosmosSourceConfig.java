@@ -5,7 +5,7 @@ package com.azure.cosmos.kafka.connect.implementation.source;
 
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig;
+import com.azure.cosmos.kafka.connect.implementation.CosmosConfig;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigException;
 
@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * Common Configuration for Cosmos DB Kafka source connector.
  */
-public class CosmosSourceConfig extends KafkaCosmosConfig {
+public class CosmosSourceConfig extends CosmosConfig {
 
     // configuration only targets to source connector
     private static final String SOURCE_CONFIG_PREFIX = "kafka.connect.cosmos.source.";
@@ -109,7 +109,7 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
     }
 
     public static ConfigDef getConfigDef() {
-        ConfigDef configDef = KafkaCosmosConfig.getConfigDef();
+        ConfigDef configDef = CosmosConfig.getConfigDef();
 
         defineContainersConfig(configDef);
         defineMetadataConfig(configDef);

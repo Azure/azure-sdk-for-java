@@ -8,8 +8,8 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlConfig;
-import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
-import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosSchedulers;
+import com.azure.cosmos.kafka.connect.implementation.CosmosExceptionsHelper;
+import com.azure.cosmos.kafka.connect.implementation.CosmosSchedulers;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import org.apache.kafka.connect.sink.ErrantRecordReporter;
@@ -84,7 +84,7 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
                 CosmosItemRequestOptions cosmosItemRequestOptions = this.getCosmosItemRequestOptions();
                 return container.createItem(operation.getSinkRecord().value(), cosmosItemRequestOptions).then();
             },
-            (throwable) -> KafkaCosmosExceptionsHelper.isResourceExistsException(throwable),
+            (throwable) -> CosmosExceptionsHelper.isResourceExistsException(throwable),
             sinkOperation
         );
     }
@@ -108,8 +108,8 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
                     });
             },
             (throwable) -> {
-                return KafkaCosmosExceptionsHelper.isNotFoundException(throwable)
-                    || KafkaCosmosExceptionsHelper.isPreconditionFailedException(throwable);
+                return CosmosExceptionsHelper.isNotFoundException(throwable)
+                    || CosmosExceptionsHelper.isPreconditionFailedException(throwable);
             },
             sinkOperation
         );
@@ -139,8 +139,8 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
                     }).then();
             },
             (throwable) -> {
-                return KafkaCosmosExceptionsHelper.isNotFoundException(throwable)
-                    || KafkaCosmosExceptionsHelper.isPreconditionFailedException(throwable);
+                return CosmosExceptionsHelper.isNotFoundException(throwable)
+                    || CosmosExceptionsHelper.isPreconditionFailedException(throwable);
             },
             sinkOperation
         );
@@ -190,7 +190,7 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
             })
             .repeat(() -> !sinkOperation.isCompleted())
             .then()
-            .subscribeOn(KafkaCosmosSchedulers.SINK_BOUNDED_ELASTIC)
+            .subscribeOn(CosmosSchedulers.SINK_BOUNDED_ELASTIC)
             .block();
     }
 

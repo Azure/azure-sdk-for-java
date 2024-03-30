@@ -9,7 +9,9 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.kafka.connect.InMemoryStorageReader;
 import com.azure.cosmos.kafka.connect.KafkaCosmosTestSuiteBase;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAccountConfig;
+import com.azure.cosmos.kafka.connect.implementation.CosmosAuthTypes;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
+import com.azure.cosmos.kafka.connect.implementation.CosmosMasterKeyAuthConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.FeedRange;
 import org.apache.kafka.connect.source.SourceConnectorContext;
@@ -33,7 +35,8 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
     public void before_MetadataMonitorThreadTest() {
         CosmosAccountConfig accountConfig = new CosmosAccountConfig(
             TestConfigurations.HOST,
-            TestConfigurations.MASTER_KEY,
+            null,
+            new CosmosMasterKeyAuthConfig(TestConfigurations.MASTER_KEY),
             "requestTaskReconfigurationTest",
             false,
             new ArrayList<String>());

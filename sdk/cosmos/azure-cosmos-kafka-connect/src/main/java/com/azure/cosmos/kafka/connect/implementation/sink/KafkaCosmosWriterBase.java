@@ -7,7 +7,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
+import com.azure.cosmos.kafka.connect.implementation.CosmosExceptionsHelper;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import org.apache.kafka.connect.sink.ErrantRecordReporter;
@@ -89,7 +89,7 @@ public abstract class KafkaCosmosWriterBase implements IWriter {
             return false;
         }
 
-        return KafkaCosmosExceptionsHelper.isTransientFailure(exception);
+        return CosmosExceptionsHelper.isTransientFailure(exception);
     }
 
     protected void sendToDlqIfConfigured(SinkOperation sinkOperationContext) {

@@ -10,8 +10,8 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlConfig;
-import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
-import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosSchedulers;
+import com.azure.cosmos.kafka.connect.implementation.CosmosExceptionsHelper;
+import com.azure.cosmos.kafka.connect.implementation.CosmosSchedulers;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkItemRequestOptions;
@@ -78,7 +78,7 @@ public class KafkaCosmosBulkWriter extends KafkaCosmosWriterBase {
                         .executeBulkOperations(
                             Flux.fromIterable(itemOperations)
                                 .mergeWith(bulkRetryEmitter.asFlux())
-                                .publishOn(KafkaCosmosSchedulers.SINK_BOUNDED_ELASTIC),
+                                .publishOn(CosmosSchedulers.SINK_BOUNDED_ELASTIC),
                             bulkExecutionOptions);
                 return cosmosBulkOperationResponseFlux;
             })
@@ -120,7 +120,7 @@ public class KafkaCosmosBulkWriter extends KafkaCosmosWriterBase {
 
                 return Mono.empty();
             })
-            .subscribeOn(KafkaCosmosSchedulers.SINK_BOUNDED_ELASTIC)
+            .subscribeOn(CosmosSchedulers.SINK_BOUNDED_ELASTIC)
             .blockLast();
     }
 
@@ -247,7 +247,7 @@ public class KafkaCosmosBulkWriter extends KafkaCosmosWriterBase {
                     return Mono.empty();
                 });
 
-        if (KafkaCosmosExceptionsHelper.isTimeoutException(exception)) {
+        if (CosmosExceptionsHelper.isTimeoutException(exception)) {
             Duration delayDuration = Duration.ofMillis(
                 MIN_DELAY_ON_408_REQUEST_TIMEOUT_IN_MS
                     + RANDOM.nextInt(MAX_DELAY_ON_408_REQUEST_TIMEOUT_IN_MS - MIN_DELAY_ON_408_REQUEST_TIMEOUT_IN_MS));
@@ -288,16 +288,16 @@ public class KafkaCosmosBulkWriter extends KafkaCosmosWriterBase {
     private boolean shouldIgnore(BulkOperationFailedException failedException) {
         switch (this.writeConfig.getItemWriteStrategy()) {
             case ITEM_APPEND:
-                return KafkaCosmosExceptionsHelper.isResourceExistsException(failedException);
+                return CosmosExceptionsHelper.isResourceExistsException(failedException);
             case ITEM_DELETE:
-                return KafkaCosmosExceptionsHelper.isNotFoundException(failedException);
+                return CosmosExceptionsHelper.isNotFoundException(failedException);
             case ITEM_DELETE_IF_NOT_MODIFIED:
-                return KafkaCosmosExceptionsHelper.isNotFoundException(failedException)
-                    || KafkaCosmosExceptionsHelper.isPreconditionFailedException(failedException);
+                return CosmosExceptionsHelper.isNotFoundException(failedException)
+                    || CosmosExceptionsHelper.isPreconditionFailedException(failedException);
             case ITEM_OVERWRITE_IF_NOT_MODIFIED:
-                return KafkaCosmosExceptionsHelper.isResourceExistsException(failedException)
-                    || KafkaCosmosExceptionsHelper.isNotFoundException(failedException)
-                    || KafkaCosmosExceptionsHelper.isPreconditionFailedException(failedException);
+                return CosmosExceptionsHelper.isResourceExistsException(failedException)
+                    || CosmosExceptionsHelper.isNotFoundException(failedException)
+                    || CosmosExceptionsHelper.isPreconditionFailedException(failedException);
             default:
                 return false;
         }

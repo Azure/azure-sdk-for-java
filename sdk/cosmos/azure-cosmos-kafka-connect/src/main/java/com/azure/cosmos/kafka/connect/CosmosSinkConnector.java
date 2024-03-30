@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.kafka.connect;
 
-import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
+import com.azure.cosmos.kafka.connect.implementation.CosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
 import org.apache.kafka.common.config.Config;
@@ -20,7 +20,8 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateThroughputControlConfig;
+import static com.azure.cosmos.kafka.connect.implementation.CosmosConfig.validateCosmosAccountAuthConfig;
+import static com.azure.cosmos.kafka.connect.implementation.CosmosConfig.validateThroughputControlConfig;
 
 /**
  * A Sink connector that publishes topic messages to CosmosDB.
@@ -64,7 +65,7 @@ public class CosmosSinkConnector extends SinkConnector {
 
     @Override
     public String version() {
-        return KafkaCosmosConstants.CURRENT_VERSION;
+        return CosmosConstants.CURRENT_VERSION;
     }
 
     @Override
@@ -81,6 +82,7 @@ public class CosmosSinkConnector extends SinkConnector {
                 .stream()
                 .collect(Collectors.toMap(ConfigValue::name, Function.identity()));
 
+        validateCosmosAccountAuthConfig(connectorConfigs, configValues);
         validateThroughputControlConfig(connectorConfigs, configValues);
         return config;
     }
