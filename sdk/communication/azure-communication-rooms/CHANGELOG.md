@@ -2,7 +2,7 @@
 
 ## 1.1.0 (2024-04-15)
 
-- General Availability version of PSTN dial-out capability feature
+- General Availability version of PSTN dial-out capability feature. 
 
 ## 1.0.9 (2024-03-20)
 
