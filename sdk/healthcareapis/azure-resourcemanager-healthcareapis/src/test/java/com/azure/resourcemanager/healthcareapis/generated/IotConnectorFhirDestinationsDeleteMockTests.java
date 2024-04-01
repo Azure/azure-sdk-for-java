@@ -45,7 +45,7 @@ public final class IotConnectorFhirDestinationsDeleteMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.iotConnectorFhirDestinations().delete("nsmjbnkppxynen", "svxeizzgwklnsr", "ffeycx", "ktp",
+        manager.iotConnectorFhirDestinations().delete("lkb", "wpfaj", "jwltlwtjjgu", "talhsnvkcdmxzr",
             com.azure.core.util.Context.NONE);
 
     }

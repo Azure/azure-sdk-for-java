@@ -32,7 +32,7 @@ public final class WorkspacePrivateLinkResourcesListByWorkspaceMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"foudor\",\"requiredMembers\":[\"yyprotwyp\",\"ndm\",\"xhugcm\"],\"requiredZoneNames\":[\"vlgo\"]},\"id\":\"bmftpmdt\",\"name\":\"fjltfvnzcyjtotp\",\"type\":\"opv\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"fzzhmkdasv\",\"requiredMembers\":[\"hbxcu\",\"chxgs\",\"boldforobwj\"],\"requiredZoneNames\":[\"zbfhfovvac\",\"pbt\",\"odxeszabbela\"]},\"id\":\"umuaslzkwrrwoycq\",\"name\":\"cwyhahno\",\"type\":\"drkywuhps\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,8 +50,8 @@ public final class WorkspacePrivateLinkResourcesListByWorkspaceMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PrivateLinkResourceDescription> response = manager.workspacePrivateLinkResources()
-            .listByWorkspace("stgnl", "hnmgixhcm", com.azure.core.util.Context.NONE);
+            .listByWorkspace("n", "ypuuwwltvuqjctze", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vlgo", response.iterator().next().requiredZoneNames().get(0));
+        Assertions.assertEquals("zbfhfovvac", response.iterator().next().requiredZoneNames().get(0));
     }
 }

@@ -33,7 +33,7 @@ public final class WorkspacesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"vewzcj\",\"name\":\"nmwcpmgu\",\"type\":\"adraufactkahzo\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"iuxxpshneekulfg\",\"name\":\"lqubkwdlen\",\"type\":\"d\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"bazpjuohmi\",\"name\":\"yfln\",\"type\":\"rwm\"}],\"publicNetworkAccess\":\"Disabled\"},\"tags\":{\"xpgpq\":\"lvxwmyg\",\"daxconfozauorsuk\":\"hiszepnnbjcrxgib\"},\"location\":\"wbqpl\",\"etag\":\"vnuuepzl\",\"id\":\"phwzsoldweyuqdu\",\"name\":\"vmnnrw\",\"type\":\"biorktal\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"gcyztsfmznbae\",\"name\":\"ph\",\"type\":\"hqnrn\"}],\"publicNetworkAccess\":\"Enabled\"},\"tags\":{\"mvikl\":\"wrykqgai\",\"hbejdznxcvdsrhnj\":\"ydv\",\"v\":\"volvtn\",\"mjdftu\":\"fzg\"},\"location\":\"ltducea\",\"etag\":\"mczuo\",\"id\":\"ejwcwwqiok\",\"name\":\"ssxmojms\",\"type\":\"p\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -52,10 +52,10 @@ public final class WorkspacesListMockTests {
 
         PagedIterable<Workspace> response = manager.workspaces().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vnuuepzl", response.iterator().next().etag());
-        Assertions.assertEquals("wbqpl", response.iterator().next().location());
-        Assertions.assertEquals("lvxwmyg", response.iterator().next().tags().get("xpgpq"));
-        Assertions.assertEquals(PublicNetworkAccess.DISABLED,
+        Assertions.assertEquals("mczuo", response.iterator().next().etag());
+        Assertions.assertEquals("ltducea", response.iterator().next().location());
+        Assertions.assertEquals("wrykqgai", response.iterator().next().tags().get("mvikl"));
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED,
             response.iterator().next().properties().publicNetworkAccess());
     }
 }

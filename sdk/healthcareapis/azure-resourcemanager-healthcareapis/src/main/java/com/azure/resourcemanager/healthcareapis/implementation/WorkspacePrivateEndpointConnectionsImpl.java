@@ -31,14 +31,16 @@ public final class WorkspacePrivateEndpointConnectionsImpl implements WorkspaceP
         String workspaceName) {
         PagedIterable<PrivateEndpointConnectionDescriptionInner> inner
             = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionDescriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new PrivateEndpointConnectionDescriptionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PrivateEndpointConnectionDescription> listByWorkspace(String resourceGroupName,
         String workspaceName, Context context) {
         PagedIterable<PrivateEndpointConnectionDescriptionInner> inner
             = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionDescriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new PrivateEndpointConnectionDescriptionImpl(inner1, this.manager()));
     }
 
     public Response<PrivateEndpointConnectionDescription> getWithResponse(String resourceGroupName,

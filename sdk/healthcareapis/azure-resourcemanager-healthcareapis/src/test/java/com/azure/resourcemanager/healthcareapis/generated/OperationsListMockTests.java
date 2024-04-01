@@ -32,7 +32,7 @@ public final class OperationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"name\":\"kwv\",\"isDataAction\":true,\"display\":{\"provider\":\"dfbzdixzmq\",\"resource\":\"odawopqhewjptmcg\",\"operation\":\"ostzelndlatu\",\"description\":\"zlbiojlvfhrbbpn\"},\"origin\":\"vcwwyyurmochppr\",\"actionType\":\"Internal\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"yzejnhlbk\",\"displayName\":\"z\",\"blobDuration\":\"piljhahzvech\"}],\"metricSpecifications\":[{\"name\":\"wieholewjwiu\",\"displayName\":\"wefqsfapaqtferr\",\"displayDescription\":\"ex\",\"unit\":\"mfxapjwogqqno\",\"category\":\"udcdabtqwpwyawb\",\"aggregationType\":\"sqbuc\",\"supportedAggregationTypes\":[\"kyexaoguyaipi\",\"sdaultxij\",\"um\"],\"supportedTimeGrainTypes\":[\"azlnqnmcjngzqdqx\"],\"fillGapWithZero\":false,\"metricFilterPattern\":\"gny\",\"dimensions\":[{}],\"isInternal\":true,\"sourceMdmAccount\":\"vtuikzhajq\",\"sourceMdmNamespace\":\"cfhmlrqryxyn\",\"enableRegionalMdmAccount\":true,\"resourceIdDimensionNameOverride\":\"dpsovwxznptgo\"},{\"name\":\"ybbabpfhvfsl\",\"displayName\":\"ntjlr\",\"displayDescription\":\"jkskyr\",\"unit\":\"ovzidsx\",\"category\":\"abzmifrygznmmaxr\",\"aggregationType\":\"kzobgopxlhsln\",\"supportedAggregationTypes\":[\"ieixynllxe\",\"wcrojphslhcaw\",\"u\"],\"supportedTimeGrainTypes\":[\"dwfmvigorqjb\",\"tzh\",\"aglkafhon\"],\"fillGapWithZero\":false,\"metricFilterPattern\":\"eickpz\",\"dimensions\":[{}],\"isInternal\":true,\"sourceMdmAccount\":\"xelnwc\",\"sourceMdmNamespace\":\"yjede\",\"enableRegionalMdmAccount\":false,\"resourceIdDimensionNameOverride\":\"f\"},{\"name\":\"qscazuawxtz\",\"displayName\":\"uamwabzxrvxc\",\"displayDescription\":\"hsphaivmxyas\",\"unit\":\"vgsgzwywakoihkn\",\"category\":\"jblmljhlnymz\",\"aggregationType\":\"qyryuzcbmqqvxm\",\"supportedAggregationTypes\":[\"gtayxonsupeujlz\",\"nh\",\"vsqltnzoibgsxg\"],\"supportedTimeGrainTypes\":[\"yqo\"],\"fillGapWithZero\":false,\"metricFilterPattern\":\"ox\",\"dimensions\":[{}],\"isInternal\":false,\"sourceMdmAccount\":\"xiqxeiiqbimh\",\"sourceMdmNamespace\":\"wwinhehf\",\"enableRegionalMdmAccount\":false,\"resourceIdDimensionNameOverride\":\"vwbcblembnkbwv\"}]}}}]}";
+            = "{\"value\":[{\"name\":\"nqndyfpchrqbn\",\"isDataAction\":true,\"display\":{\"provider\":\"egy\",\"resource\":\"wboxjumvqqo\",\"operation\":\"hrraiouaubrj\",\"description\":\"oq\"},\"origin\":\"uojrngiflr\",\"actionType\":\"Internal\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"uimzdlyjd\",\"displayName\":\"wmkyoqufdvruzsl\",\"blobDuration\":\"j\"},{\"name\":\"ctfnmdxotng\",\"displayName\":\"gugey\",\"blobDuration\":\"hgrky\"},{\"name\":\"zabs\",\"displayName\":\"fpphoj\",\"blobDuration\":\"vyhyhsgzfc\"},{\"name\":\"gomfgbeglq\",\"displayName\":\"eohibet\",\"blobDuration\":\"uankrrfxeeeb\"}],\"metricSpecifications\":[{\"name\":\"acvbmqz\",\"displayName\":\"q\",\"displayDescription\":\"aj\",\"unit\":\"wxacevehj\",\"category\":\"yxoaf\",\"aggregationType\":\"oqltfae\",\"supportedAggregationTypes\":[\"nm\",\"gv\",\"irpghriypoqeyh\"],\"supportedTimeGrainTypes\":[\"ykprlpyznu\"],\"fillGapWithZero\":true,\"metricFilterPattern\":\"smexiitdf\",\"dimensions\":[{},{},{},{}],\"isInternal\":true,\"sourceMdmAccount\":\"iibmi\",\"sourceMdmNamespace\":\"nnust\",\"enableRegionalMdmAccount\":true,\"resourceIdDimensionNameOverride\":\"hnmgixhcm\"}]}}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -51,41 +51,41 @@ public final class OperationsListMockTests {
 
         PagedIterable<OperationDetail> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yzejnhlbk",
+        Assertions.assertEquals("uimzdlyjd",
             response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).name());
-        Assertions.assertEquals("z",
+        Assertions.assertEquals("wmkyoqufdvruzsl",
             response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).displayName());
-        Assertions.assertEquals("piljhahzvech",
+        Assertions.assertEquals("j",
             response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).blobDuration());
-        Assertions.assertEquals("wieholewjwiu",
+        Assertions.assertEquals("acvbmqz",
             response.iterator().next().properties().serviceSpecification().metricSpecifications().get(0).name());
-        Assertions.assertEquals("wefqsfapaqtferr",
+        Assertions.assertEquals("q",
             response.iterator().next().properties().serviceSpecification().metricSpecifications().get(0).displayName());
-        Assertions.assertEquals("ex", response.iterator().next().properties().serviceSpecification()
+        Assertions.assertEquals("aj", response.iterator().next().properties().serviceSpecification()
             .metricSpecifications().get(0).displayDescription());
-        Assertions.assertEquals("mfxapjwogqqno",
+        Assertions.assertEquals("wxacevehj",
             response.iterator().next().properties().serviceSpecification().metricSpecifications().get(0).unit());
-        Assertions.assertEquals("udcdabtqwpwyawb",
+        Assertions.assertEquals("yxoaf",
             response.iterator().next().properties().serviceSpecification().metricSpecifications().get(0).category());
-        Assertions.assertEquals("sqbuc", response.iterator().next().properties().serviceSpecification()
+        Assertions.assertEquals("oqltfae", response.iterator().next().properties().serviceSpecification()
             .metricSpecifications().get(0).aggregationType());
-        Assertions.assertEquals("kyexaoguyaipi", response.iterator().next().properties().serviceSpecification()
+        Assertions.assertEquals("nm", response.iterator().next().properties().serviceSpecification()
             .metricSpecifications().get(0).supportedAggregationTypes().get(0));
-        Assertions.assertEquals("azlnqnmcjngzqdqx", response.iterator().next().properties().serviceSpecification()
+        Assertions.assertEquals("ykprlpyznu", response.iterator().next().properties().serviceSpecification()
             .metricSpecifications().get(0).supportedTimeGrainTypes().get(0));
-        Assertions.assertEquals(false, response.iterator().next().properties().serviceSpecification()
+        Assertions.assertEquals(true, response.iterator().next().properties().serviceSpecification()
             .metricSpecifications().get(0).fillGapWithZero());
-        Assertions.assertEquals("gny", response.iterator().next().properties().serviceSpecification()
+        Assertions.assertEquals("smexiitdf", response.iterator().next().properties().serviceSpecification()
             .metricSpecifications().get(0).metricFilterPattern());
         Assertions.assertEquals(true,
             response.iterator().next().properties().serviceSpecification().metricSpecifications().get(0).isInternal());
-        Assertions.assertEquals("vtuikzhajq", response.iterator().next().properties().serviceSpecification()
+        Assertions.assertEquals("iibmi", response.iterator().next().properties().serviceSpecification()
             .metricSpecifications().get(0).sourceMdmAccount());
-        Assertions.assertEquals("cfhmlrqryxyn", response.iterator().next().properties().serviceSpecification()
+        Assertions.assertEquals("nnust", response.iterator().next().properties().serviceSpecification()
             .metricSpecifications().get(0).sourceMdmNamespace());
         Assertions.assertEquals(true, response.iterator().next().properties().serviceSpecification()
             .metricSpecifications().get(0).enableRegionalMdmAccount());
-        Assertions.assertEquals("dpsovwxznptgo", response.iterator().next().properties().serviceSpecification()
+        Assertions.assertEquals("hnmgixhcm", response.iterator().next().properties().serviceSpecification()
             .metricSpecifications().get(0).resourceIdDimensionNameOverride());
     }
 }

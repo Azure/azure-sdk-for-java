@@ -32,7 +32,7 @@ public final class IotConnectorFhirDestinationsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"resourceIdentityResolutionType\":\"Lookup\",\"fhirServiceResourceId\":\"dyvvjskgfmocwahp\",\"fhirMapping\":{\"content\":\"dataatjeaahh\"},\"provisioningState\":\"Moving\"},\"location\":\"akz\",\"etag\":\"bjjidjksyxky\",\"id\":\"vxevblb\",\"name\":\"ednljl\",\"type\":\"geuaulx\"}";
+            = "{\"properties\":{\"resourceIdentityResolutionType\":\"Lookup\",\"fhirServiceResourceId\":\"ehvvib\",\"fhirMapping\":{\"content\":\"datajj\"},\"provisioningState\":\"Failed\"},\"location\":\"eitpkxztmo\",\"etag\":\"klf\",\"id\":\"idgfc\",\"name\":\"qmpimaqxzhem\",\"type\":\"yhohujswtwkozzwc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,12 +50,12 @@ public final class IotConnectorFhirDestinationsGetWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IotFhirDestination response = manager.iotConnectorFhirDestinations()
-            .getWithResponse("wasqvdaeyyg", "xakjsqzhzb", "zkgimsid", "asi", com.azure.core.util.Context.NONE)
+            .getWithResponse("pxiutc", "apzhyrpetoge", "joxslhvnhla", "rqnkkzjcjbtr", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("bjjidjksyxky", response.etag());
-        Assertions.assertEquals("akz", response.location());
+        Assertions.assertEquals("klf", response.etag());
+        Assertions.assertEquals("eitpkxztmo", response.location());
         Assertions.assertEquals(IotIdentityResolutionType.LOOKUP, response.resourceIdentityResolutionType());
-        Assertions.assertEquals("dyvvjskgfmocwahp", response.fhirServiceResourceId());
+        Assertions.assertEquals("ehvvib", response.fhirServiceResourceId());
     }
 }

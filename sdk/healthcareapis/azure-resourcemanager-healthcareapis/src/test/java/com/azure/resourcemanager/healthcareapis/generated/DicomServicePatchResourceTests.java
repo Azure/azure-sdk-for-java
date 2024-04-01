@@ -17,22 +17,23 @@ public final class DicomServicePatchResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DicomServicePatchResource model = BinaryData.fromString(
-            "{\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"09317483-38b0-42b4-aa00-440ca6c94e0d\",\"tenantId\":\"0837a303-d55f-4c91-94af-e69b653c351c\",\"userAssignedIdentities\":{\"vtq\":{\"principalId\":\"1b7246ed-edf5-4d4f-8330-830c0d7167e3\",\"clientId\":\"03fb7d78-590b-412d-88c7-ec82fda165f7\"},\"buynhijggm\":{\"principalId\":\"fc92f197-1c23-4c0f-9940-89243ccaa960\",\"clientId\":\"bcd92d7f-8e1a-493d-8b2d-6d2903507345\"},\"siarbutrcvpn\":{\"principalId\":\"29edb6b5-4912-4ed1-a9f4-c0eef38cd5a2\",\"clientId\":\"bfb50d1a-d934-4035-9ad4-c93cd8b0c1ec\"}}},\"tags\":{\"nlankxmyskpb\":\"mhjrunmpxttdbhr\",\"nrs\":\"enbtkcxywny\",\"lhaaxdbabp\":\"nlqidybyxczf\"}}")
+            "{\"identity\":{\"type\":\"None\",\"principalId\":\"d3eb8d1d-b6a2-4ea4-b0d7-a0f398a5a7e9\",\"tenantId\":\"68e12557-dd41-4e8d-9161-5e486215ac1a\",\"userAssignedIdentities\":{\"vpnazzm\":{\"principalId\":\"0892590a-e466-4f14-af36-6969b47f0ca8\",\"clientId\":\"f4d0614b-c6a9-491a-abd4-cc762d8e6bb0\"},\"unmpxttd\":{\"principalId\":\"23c6b8c1-83a9-48e9-8e53-4498be71cf81\",\"clientId\":\"634875f1-99d2-42a5-be1f-5429ea6588e1\"},\"bnlankxmyskpb\":{\"principalId\":\"aae96edc-fb0b-4bd1-9b34-63ec4cd46969\",\"clientId\":\"b4452a91-7e0f-49fb-a2cc-ba0aca4ae962\"}}},\"tags\":{\"qidybyx\":\"btkcxywnytnrsyn\",\"aaxdbabphlwrq\":\"zfcl\",\"hsucoc\":\"fkts\",\"ckzywbiexzfeyue\":\"nyyazttbtwwrqpue\"}}")
             .toObject(DicomServicePatchResource.class);
-        Assertions.assertEquals("mhjrunmpxttdbhr", model.tags().get("nlankxmyskpb"));
-        Assertions.assertEquals(ServiceManagedIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("btkcxywnytnrsyn", model.tags().get("qidybyx"));
+        Assertions.assertEquals(ServiceManagedIdentityType.NONE, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DicomServicePatchResource model = new DicomServicePatchResource()
-            .withTags(mapOf("nlankxmyskpb", "mhjrunmpxttdbhr", "nrs", "enbtkcxywny", "lhaaxdbabp", "nlqidybyxczf"))
-            .withIdentity(new ServiceManagedIdentityIdentity().withType(ServiceManagedIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("vtq", new UserAssignedIdentity(), "buynhijggm",
-                    new UserAssignedIdentity(), "siarbutrcvpn", new UserAssignedIdentity())));
+            .withTags(mapOf("qidybyx", "btkcxywnytnrsyn", "aaxdbabphlwrq", "zfcl", "hsucoc", "fkts", "ckzywbiexzfeyue",
+                "nyyazttbtwwrqpue"))
+            .withIdentity(new ServiceManagedIdentityIdentity().withType(ServiceManagedIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("vpnazzm", new UserAssignedIdentity(), "unmpxttd",
+                    new UserAssignedIdentity(), "bnlankxmyskpb", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(DicomServicePatchResource.class);
-        Assertions.assertEquals("mhjrunmpxttdbhr", model.tags().get("nlankxmyskpb"));
-        Assertions.assertEquals(ServiceManagedIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("btkcxywnytnrsyn", model.tags().get("qidybyx"));
+        Assertions.assertEquals(ServiceManagedIdentityType.NONE, model.identity().type());
     }
 
     // Use "Map.of" if available

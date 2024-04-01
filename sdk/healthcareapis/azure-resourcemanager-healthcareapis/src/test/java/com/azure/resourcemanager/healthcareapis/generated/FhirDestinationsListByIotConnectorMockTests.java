@@ -33,7 +33,7 @@ public final class FhirDestinationsListByIotConnectorMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"resourceIdentityResolutionType\":\"Lookup\",\"fhirServiceResourceId\":\"qfr\",\"fhirMapping\":{\"content\":\"datalkzmegnitgvkxl\"},\"provisioningState\":\"Warned\"},\"location\":\"fegcea\",\"etag\":\"xwh\",\"id\":\"ansym\",\"name\":\"yqhlwigdivbkbx\",\"type\":\"omfaj\"}]}";
+            = "{\"value\":[{\"properties\":{\"resourceIdentityResolutionType\":\"Lookup\",\"fhirServiceResourceId\":\"agr\",\"fhirMapping\":{\"content\":\"dataikteusqczkvyk\"},\"provisioningState\":\"Suspended\"},\"location\":\"jaffmmfblcqcuu\",\"etag\":\"qibrtalme\",\"id\":\"ttwgdsl\",\"name\":\"xih\",\"type\":\"rmooizqse\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,13 +50,13 @@ public final class FhirDestinationsListByIotConnectorMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<IotFhirDestination> response = manager.fhirDestinations().listByIotConnector("lrcivtsoxfrke",
-            "xpmyyefrpmpdnq", "skawaoqvmmb", com.azure.core.util.Context.NONE);
+        PagedIterable<IotFhirDestination> response = manager.fhirDestinations().listByIotConnector("wifzmp", "wyivqikf",
+            "cvhrfsp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xwh", response.iterator().next().etag());
-        Assertions.assertEquals("fegcea", response.iterator().next().location());
+        Assertions.assertEquals("qibrtalme", response.iterator().next().etag());
+        Assertions.assertEquals("jaffmmfblcqcuu", response.iterator().next().location());
         Assertions.assertEquals(IotIdentityResolutionType.LOOKUP,
             response.iterator().next().resourceIdentityResolutionType());
-        Assertions.assertEquals("qfr", response.iterator().next().fhirServiceResourceId());
+        Assertions.assertEquals("agr", response.iterator().next().fhirServiceResourceId());
     }
 }

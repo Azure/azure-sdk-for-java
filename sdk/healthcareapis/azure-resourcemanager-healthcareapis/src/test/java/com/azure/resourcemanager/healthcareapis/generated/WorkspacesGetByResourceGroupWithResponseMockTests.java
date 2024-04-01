@@ -32,7 +32,7 @@ public final class WorkspacesGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Suspended\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"ffgcvizqz\",\"name\":\"wlvwlyoupf\",\"type\":\"fbkjubdyhgkfmi\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"zfttsttktlahb\",\"name\":\"actxtgzukxitm\",\"type\":\"qtgqqqxhrnxr\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"isavok\",\"name\":\"dzf\",\"type\":\"azivjlfrqttbajl\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"xyiopidkqqfku\",\"name\":\"s\",\"type\":\"xkdmligo\"}],\"publicNetworkAccess\":\"Enabled\"},\"tags\":{\"goorbteo\":\"pmloazuruoc\",\"r\":\"bfhjxakvvjgsl\"},\"location\":\"lmywwtkgkxnyed\",\"etag\":\"gyvudtjuewbc\",\"id\":\"hxuuwhcjyxccybvp\",\"name\":\"yakk\",\"type\":\"dzpxgwjpl\"}";
+            = "{\"properties\":{\"provisioningState\":\"Warned\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"yjkqabqgzslesjcb\",\"name\":\"ernntiewdjcvbquw\",\"type\":\"behwagohb\"}],\"publicNetworkAccess\":\"Enabled\"},\"tags\":{\"vhmxtdrjfu\":\"qem\",\"ewzcjznmwcp\":\"acoebj\",\"v\":\"guaadraufactkahz\"},\"location\":\"j\",\"etag\":\"uxxpshne\",\"id\":\"kulfg\",\"name\":\"lqubkwdlen\",\"type\":\"d\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,11 +50,11 @@ public final class WorkspacesGetByResourceGroupWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Workspace response = manager.workspaces()
-            .getByResourceGroupWithResponse("pi", "lqol", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("fqjbvleo", "fmluiqtqzfavyvn", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("gyvudtjuewbc", response.etag());
-        Assertions.assertEquals("lmywwtkgkxnyed", response.location());
-        Assertions.assertEquals("pmloazuruoc", response.tags().get("goorbteo"));
+        Assertions.assertEquals("uxxpshne", response.etag());
+        Assertions.assertEquals("j", response.location());
+        Assertions.assertEquals("qem", response.tags().get("vhmxtdrjfu"));
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.properties().publicNetworkAccess());
     }
 }

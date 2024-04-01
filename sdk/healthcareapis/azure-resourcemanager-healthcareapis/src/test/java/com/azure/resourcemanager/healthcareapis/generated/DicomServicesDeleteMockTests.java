@@ -45,7 +45,7 @@ public final class DicomServicesDeleteMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.dicomServices().delete("qojpy", "vgtrdcnifmzzs", "ymbrnysuxmpraf", com.azure.core.util.Context.NONE);
+        manager.dicomServices().delete("dnhfuk", "vsjcswsmystuluqy", "fcvlerch", com.azure.core.util.Context.NONE);
 
     }
 }
