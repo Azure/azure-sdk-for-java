@@ -6,7 +6,7 @@ package com.generic.core.util;
 import com.generic.core.implementation.AccessibleByteArrayOutputStream;
 import com.generic.core.implementation.util.DefaultLogger;
 import com.generic.core.util.ClientLogger.LogLevel;
-import com.generic.json.implementation.jackson.core.io.JsonStringEncoder;
+import io.clientcore.json.implementation.jackson.core.io.JsonStringEncoder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

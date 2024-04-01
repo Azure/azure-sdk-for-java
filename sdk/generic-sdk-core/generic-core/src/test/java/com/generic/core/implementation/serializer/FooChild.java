@@ -3,7 +3,7 @@
 
 package com.generic.core.implementation.serializer;
 
-import com.generic.json.JsonReader;
+import io.clientcore.json.JsonReader;
 
 import java.io.IOException;
 

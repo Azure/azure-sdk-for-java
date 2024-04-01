@@ -3,10 +3,10 @@
 
 package com.generic.core.models;
 
-import com.generic.json.JsonReader;
-import com.generic.json.JsonSerializable;
-import com.generic.json.JsonToken;
-import com.generic.json.JsonWriter;
+import io.clientcore.json.JsonReader;
+import io.clientcore.json.JsonSerializable;
+import io.clientcore.json.JsonToken;
+import io.clientcore.json.JsonWriter;
 
 import java.io.IOException;
 

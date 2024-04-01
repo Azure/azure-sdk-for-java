@@ -24,7 +24,7 @@ import com.generic.core.util.ClientLogger;
 import com.generic.core.util.Context;
 import com.generic.core.util.binarydata.BinaryData;
 import com.generic.core.util.serializer.ObjectSerializer;
-import com.generic.json.JsonSerializable;
+import io.clientcore.json.JsonSerializable;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

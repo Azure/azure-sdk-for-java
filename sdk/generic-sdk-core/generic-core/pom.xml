@@ -84,9 +84,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.generic</groupId>
-      <artifactId>generic-json</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.generic:generic-json;dependency} -->
+      <groupId>io.clientcore</groupId>
+      <artifactId>core-json</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core-json;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -96,9 +96,9 @@
 
     <!-- Test dependencies -->
     <dependency>
-      <groupId>com.generic</groupId>
-      <artifactId>generic-json</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.generic:generic-json;dependency} -->
+      <groupId>io.clientcore</groupId>
+      <artifactId>core-json</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core-json;dependency} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>

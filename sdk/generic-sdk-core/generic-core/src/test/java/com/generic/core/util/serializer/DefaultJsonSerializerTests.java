@@ -8,11 +8,11 @@ import com.generic.core.http.models.HttpMethod;
 import com.generic.core.implementation.AccessibleByteArrayOutputStream;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.models.SimpleClass;
-import com.generic.json.JsonReader;
-import com.generic.json.JsonSerializable;
-import com.generic.json.JsonToken;
-import com.generic.json.JsonWriter;
-import com.generic.json.implementation.jackson.core.JsonParseException;
+import io.clientcore.json.JsonReader;
+import io.clientcore.json.JsonSerializable;
+import io.clientcore.json.JsonToken;
+import io.clientcore.json.JsonWriter;
+import io.clientcore.json.implementation.jackson.core.JsonParseException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -277,12 +277,12 @@ public class DefaultJsonSerializerTests {
     private static Stream<Arguments> unsupportedDeserializationSupplier() {
         return Stream.of(
             Arguments.of(InputStream.class, JsonParseException.class),
-            // Thrown when the String cannot be parsed by generic-json
+            // Thrown when the String cannot be parsed by core-json
             Arguments.of(SimpleClass.class, InvocationTargetException.class),
             // Thrown when the class doesn't have a fromJson method
             Arguments.of(URL.class, JsonParseException.class),
-            // Thrown when the String cannot be parsed by generic-json
-            Arguments.of(URI.class, JsonParseException.class) // Thrown when the String cannot be parsed by generic-json
+            // Thrown when the String cannot be parsed by core-json
+            Arguments.of(URI.class, JsonParseException.class) // Thrown when the String cannot be parsed by core-json
         );
     }
 }

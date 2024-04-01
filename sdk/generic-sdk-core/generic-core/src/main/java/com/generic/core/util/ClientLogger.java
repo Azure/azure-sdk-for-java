@@ -7,7 +7,7 @@ import com.generic.core.annotation.Metadata;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.DefaultLogger;
 import com.generic.core.util.configuration.Configuration;
-import com.generic.json.implementation.jackson.core.io.JsonStringEncoder;
+import io.clientcore.json.implementation.jackson.core.io.JsonStringEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.NOPLogger;
