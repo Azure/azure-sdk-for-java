@@ -206,7 +206,7 @@ public class DefaultHttpClientTest {
     public void testBufferedResponse() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
-        try (Response<?> response = getResponse(client, "/short", Context.NONE)) {
+        try (Response<?> response = getResponse(client, "/short", Context.EMPTY)) {
             assertArrayEquals(SHORT_BODY, response.getBody().toBytes());
         }
     }
@@ -215,7 +215,7 @@ public class DefaultHttpClientTest {
     public void testEmptyBufferResponse() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
-        try (Response<?> response = getResponse(client, "/empty", Context.NONE)) {
+        try (Response<?> response = getResponse(client, "/empty", Context.EMPTY)) {
             assertEquals(0L, response.getBody().getLength());
         }
     }

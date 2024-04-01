@@ -4,7 +4,6 @@
 package com.generic.core.http.pipeline;
 
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.pipeline.HttpLoggingPolicy;
 import com.generic.core.util.ClientLogger;
 
 /**

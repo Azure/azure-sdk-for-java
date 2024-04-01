@@ -32,7 +32,7 @@ import java.util.function.Consumer;
  * <pre>
  * RequestOptions options = new RequestOptions&#40;&#41;
  *     .setBody&#40;BinaryData.fromString&#40;&quot;&#123;&#92;&quot;name&#92;&quot;:&#92;&quot;Fluffy&#92;&quot;&#125;&quot;&#41;&#41;
- *     .addHeader&#40;HttpHeaderName.fromString&#40;&quot;x-ms-pet-version&quot;&#41;, &quot;2021-06-01&quot;&#41;;
+ *     .addHeader&#40;new HttpHeader&#40;HttpHeaderName.fromString&#40;&quot;x-ms-pet-version&quot;&#41;, &quot;2021-06-01&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.generic.core.http.rest.requestoptions.instantiation -->
  *
