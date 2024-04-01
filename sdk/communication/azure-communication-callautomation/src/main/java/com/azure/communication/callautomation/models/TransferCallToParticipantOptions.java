@@ -38,7 +38,7 @@ public final class TransferCallToParticipantOptions {
     /**
      * The SourceCallerIdNumber context
      */
-    private PhoneNumberIdentifier sourceCallerIdNumber ;
+    private PhoneNumberIdentifier sourceCallerIdNumber;
 
     /**
      * Constructor
