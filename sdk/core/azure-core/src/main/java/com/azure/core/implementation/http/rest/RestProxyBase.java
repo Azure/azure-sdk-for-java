@@ -30,6 +30,8 @@ import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.implementation.serializer.MalformedValueException;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.MultipartFormData;
+import com.azure.core.util.MultipartFormDataBuilder;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -304,7 +306,7 @@ public abstract class RestProxyBase {
 
     private HttpRequest configRequest(final HttpRequest request, final SwaggerMethodParser methodParser,
         SerializerAdapter serializerAdapter, boolean isAsync, final Object[] args) throws IOException {
-        final Object bodyContentObject = methodParser.setBody(args, serializer);
+        Object bodyContentObject = methodParser.setBody(args, serializer);
         if (bodyContentObject == null) {
             request.setHeader(HttpHeaderName.CONTENT_LENGTH, "0");
         } else {
@@ -321,11 +323,13 @@ public abstract class RestProxyBase {
                 }
             }
 
+            //            if (contentType.startsWith(ContentType.MULTIPART_FORM_DATA)) {
+            //                MultipartFormData formData = BinaryData.fromObject(bodyContentObject).toObject(MultipartFormData.class);
+            //                contentType = formData.getContentType();
+            //                bodyContentObject = formData.getRequestBody();
+            //            }
+
             request.setHeader(HttpHeaderName.CONTENT_TYPE, contentType);
-
-            if (contentType.startsWith(ContentType.MULTIPART_FORM_DATA)) {
-
-            }
 
             if (bodyContentObject instanceof BinaryData) {
                 BinaryData binaryData = (BinaryData) bodyContentObject;

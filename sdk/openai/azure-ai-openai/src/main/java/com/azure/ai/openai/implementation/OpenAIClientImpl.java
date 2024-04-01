@@ -21,6 +21,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.RetryPolicy;
@@ -579,10 +580,13 @@ public final class OpenAIClientImpl {
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioTranslationAsPlainTextWithResponse(String deploymentOrModelName,
+    public Response<BinaryData> getAudioTranslationAsPlainTextWithResponse(String deploymentOrModelName, String contentType,
         BinaryData audioTranslationOptions, RequestOptions requestOptions) {
-        final String contentType = "multipart/form-data";
         final String accept = "text/plain, application/json";
+        long length = audioTranslationOptions.toBytes().length;
+        String contentLength = String.valueOf(length);
+//        requestOptions.setHeader("content-type", contentType);
+        requestOptions.setHeader(HttpHeaderName.CONTENT_LENGTH, contentLength);
         return service.getAudioTranslationAsPlainTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             deploymentOrModelName, contentType, accept, audioTranslationOptions, requestOptions, Context.NONE);
     }

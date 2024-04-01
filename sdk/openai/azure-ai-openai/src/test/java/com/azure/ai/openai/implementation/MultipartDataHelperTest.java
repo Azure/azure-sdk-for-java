@@ -7,17 +7,18 @@ import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
 import com.azure.ai.openai.models.AudioTranslationFormat;
 import com.azure.ai.openai.models.AudioTranslationOptions;
-import com.azure.ai.openai.models.EmbeddingsOptions;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.MultipartFormDataContentBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * Unit tests for {@link MultipartDataHelper}
+ * Unit tests for {@link MultipartFormDataContentBuilder}
  */
 public class MultipartDataHelperTest {
 
@@ -25,46 +26,63 @@ public class MultipartDataHelperTest {
 
     @Test
     public void serializeAudioTranslationOptionsAllFields() {
-        MultipartDataHelper helper = new MultipartDataHelper(TEST_BOUNDARY);
+        MultipartFormDataContentBuilder helper = new MultipartFormDataContentBuilder(new RequestOptions(), TEST_BOUNDARY);
+
         byte[] file = new byte[] {73, 32, 115, 104, 111, 117, 108, 100, 32, 104, 97, 118, 101, 32, 116, 104, 111, 117,
             103, 104, 116, 32, 111, 102, 32, 97, 32, 103, 111, 111, 100, 32, 101, 97, 115, 116, 101, 114, 32, 101,
             103, 103};
         String fileName = "file_name.wav";
-        AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
-        translationOptions.setModel("model_name")
+        AudioTranslationOptions translationOptions = new AudioTranslationOptions(file)
+                .setModel("model_name")
                 .setPrompt("prompt text")
                 .setFilename(fileName)
                 .setResponseFormat(AudioTranslationFormat.TEXT)
                 .setTemperature(0.1);
-        MultipartDataSerializationResult actual = helper.serializeRequest(translationOptions);
 
+        helper
+                .appendFile("file", BinaryData.fromBytes(file), null, fileName)
+                .appendText("response_format", translationOptions.getResponseFormat().toString())
+                .appendText("model", translationOptions.getModel())
+                .appendText("prompt", translationOptions.getPrompt())
+                .appendText("temperature", String.valueOf(translationOptions.getTemperature()))
+                .build();
+
+        BinaryData actual = helper.getContent();
         String expected = multipartFileSegment(fileName, file)
                 + fieldFormData("response_format", "text")
                 + fieldFormData("model", "model_name")
                 + fieldFormData("prompt", "prompt text")
                 + fieldFormData("temperature", "0.1")
                 + closingMarker();
-
-        assertEquals(expected, actual.getData().toString());
-        assertEquals(expected.getBytes(StandardCharsets.US_ASCII).length, actual.getDataLength());
+        assertEquals(expected, actual.toString());
+        assertEquals(expected.getBytes(StandardCharsets.US_ASCII).length, actual.getLength());
     }
 
     @Test
     public void serializeAudioTranscriptionOptionsAllFields() {
-        MultipartDataHelper helper = new MultipartDataHelper(TEST_BOUNDARY);
+        MultipartFormDataContentBuilder helper = new MultipartFormDataContentBuilder(new RequestOptions(), TEST_BOUNDARY);
         byte[] file = new byte[] {73, 32, 115, 104, 111, 117, 108, 100, 32, 104, 97, 118, 101, 32, 116, 104, 111, 117,
             103, 104, 116, 32, 111, 102, 32, 97, 32, 103, 111, 111, 100, 32, 101, 97, 115, 116, 101, 114, 32, 101,
             103, 103};
         String fileName = "file_name.wav";
-        AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
-        transcriptionOptions.setModel("model_name")
+        AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file)
+                .setModel("model_name")
                 .setPrompt("prompt text")
                 .setFilename(fileName)
                 .setResponseFormat(AudioTranscriptionFormat.TEXT)
                 .setLanguage("en")
                 .setTemperature(0.1);
-        MultipartDataSerializationResult actual = helper.serializeRequest(transcriptionOptions);
 
+        helper
+                .appendFile("file", BinaryData.fromBytes(file), null, fileName)
+                .appendText("response_format", transcriptionOptions.getResponseFormat().toString())
+                .appendText("model", transcriptionOptions.getModel())
+                .appendText("prompt", transcriptionOptions.getPrompt())
+                .appendText("temperature", String.valueOf(transcriptionOptions.getTemperature()))
+                .appendText("language", transcriptionOptions.getLanguage())
+                .build();
+
+        BinaryData actual = helper.getContent();
         String expected = multipartFileSegment(fileName, file)
                 + fieldFormData("response_format", "text")
                 + fieldFormData("model", "model_name")
@@ -73,50 +91,27 @@ public class MultipartDataHelperTest {
                 + fieldFormData("language", "en")
                 + closingMarker();
 
-        assertEquals(expected, actual.getData().toString());
-        assertEquals(expected.getBytes(StandardCharsets.US_ASCII).length, actual.getDataLength());
+        assertEquals(expected, actual.toString());
+        assertEquals(expected.getBytes(StandardCharsets.US_ASCII).length, actual.getLength());
     }
 
     @Test
-    public void serializeAudioTranslationOptionsNoFields() {
-        MultipartDataHelper helper = new MultipartDataHelper(TEST_BOUNDARY);
+    public void emptyPartsInBetweenFirstAndLastBoundaries() {
+        MultipartFormDataContentBuilder helper = new MultipartFormDataContentBuilder(new RequestOptions(), TEST_BOUNDARY);
         byte[] file = new byte[] {};
         String fileName = "file_name.wav";
-        AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
-        translationOptions.setFilename(fileName);
-        MultipartDataSerializationResult actual = helper.serializeRequest(translationOptions);
+
+        helper.appendFile("file", BinaryData.fromBytes(file), null, fileName)
+                .build();
+        BinaryData actual = helper.getContent();
 
         String expected = multipartFileSegment(fileName, file)
                 + closingMarker();
 
-        assertEquals(expected, actual.getData().toString());
-        assertEquals(expected.getBytes(StandardCharsets.US_ASCII).length, actual.getDataLength());
+        assertEquals(expected, actual.toString());
+        assertEquals(expected.getBytes(StandardCharsets.US_ASCII).length, actual.getLength());
     }
 
-    @Test
-    public void serializeAudioTranscriptionOptionsNoFields() {
-        MultipartDataHelper helper = new MultipartDataHelper(TEST_BOUNDARY);
-        byte[] file = new byte[] {};
-        String fileName = "file_name.wav";
-        AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
-        transcriptionOptions.setFilename(fileName);
-        MultipartDataSerializationResult actual = helper.serializeRequest(transcriptionOptions);
-
-        String expected = multipartFileSegment(fileName, file)
-                + closingMarker();
-
-        assertEquals(expected, actual.getData().toString());
-        assertEquals(expected.getBytes(StandardCharsets.US_ASCII).length, actual.getDataLength());
-    }
-
-    @Test
-    public void serializeUnsupportedType() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            MultipartDataHelper helper = new MultipartDataHelper(TEST_BOUNDARY);
-            EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(new ArrayList<>());
-            helper.serializeRequest(embeddingsOptions);
-        });
-    }
 
     private static String fieldFormData(String fieldName, String fieldValue) {
         return "\r\n--test-boundary"

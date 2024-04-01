@@ -5,8 +5,6 @@
 package com.azure.core.util;
 
 import com.azure.core.http.ContentType;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.rest.RequestOptions;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -16,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 
-public final class MultipartFormDataContentBuilder {
+public final class MultipartFormDataBuilder {
     /**
      * Line separator for the multipart HTTP request.
      */
@@ -44,48 +42,24 @@ public final class MultipartFormDataContentBuilder {
     private final Charset encoderCharset = StandardCharsets.UTF_8;
 
     private InputStream requestDataStream = new ByteArrayInputStream(new byte[0]);
-    private long requestLength = 0;
-
-    private RequestOptions requestOptions;
-    private BinaryData requestBody;
 
     /**
      * Default constructor used in the code. The boundary is a random value.
      *
-     * @param requestOptions the RequestOptions to update
      */
-    public MultipartFormDataContentBuilder(RequestOptions requestOptions) {
-        this(requestOptions, UUID.randomUUID().toString().substring(0, 16));
+    public MultipartFormDataBuilder() {
+        this(UUID.randomUUID().toString().substring(0, 16));
     }
 
     /**
      * Create an instance of MultipartFormData.
      *
-     * @param requestOptions the RequestOptions to update
      * @param boundary the boundary value
      */
-    public MultipartFormDataContentBuilder(RequestOptions requestOptions, String boundary) {
-        this.requestOptions = requestOptions;
+    public MultipartFormDataBuilder(String boundary) {
         this.boundary = boundary;
-        this.boundaryDelimiter = "--" + boundary;
-        this.boundaryCloseDelimiter = this.boundaryDelimiter + "--";
-    }
-
-    /**
-     * Gets the multipart HTTP request body.
-     *
-     * @return the BinaryData of the multipart HTTP request body
-     */
-    public BinaryData getContent() {
-        return requestBody;
-    }
-
-    public long getContentLength() {
-        return requestBody.getLength();
-    }
-
-    public String getBoundary() {
-        return boundary;
+        boundaryDelimiter = "--" + boundary;
+        boundaryCloseDelimiter = this.boundaryDelimiter + "--";
     }
 
     /**
@@ -95,11 +69,10 @@ public final class MultipartFormDataContentBuilder {
      * @param value the value of the text/plain field
      * @return the MultipartFormDataHelper instance
      */
-    public MultipartFormDataContentBuilder appendText(String fieldName, String value) {
+    public MultipartFormDataBuilder appendText(String fieldName, String value) {
         if (value != null) {
             String serialized = boundaryDelimiter + CR_LF + "Content-Disposition: form-data; name=\""
-                    + escapeName(fieldName) + "\"" + CR_LF + CR_LF
-                    + value + CR_LF;
+                + escapeName(fieldName) + "\"" + CR_LF + CR_LF + value + CR_LF;
 
             byte[] data = serialized.getBytes(encoderCharset);
             appendBytes(data);
@@ -114,7 +87,7 @@ public final class MultipartFormDataContentBuilder {
      * @param jsonObject the object of the application/json field
      * @return the MultipartFormDataHelper instance
      */
-    public MultipartFormDataContentBuilder appendJson(String fieldName, Object jsonObject) {
+    public MultipartFormDataBuilder appendJson(String fieldName, Object jsonObject) {
         if (jsonObject != null) {
             String serialized = boundaryDelimiter + CR_LF + "Content-Disposition: form-data; name=\""
                 + escapeName(fieldName) + "\"" + CR_LF + "Content-Type: application/json" + CR_LF + CR_LF
@@ -135,8 +108,7 @@ public final class MultipartFormDataContentBuilder {
      * @param filename Optional. The filename
      * @return the MultipartFormDataHelper instance
      */
-    public MultipartFormDataContentBuilder appendFile(String fieldName, BinaryData file,
-                                                      String contentType, String filename) {
+    public MultipartFormDataBuilder appendFile(String fieldName, BinaryData file, String contentType, String filename) {
         if (file != null) {
             if (CoreUtils.isNullOrEmpty(contentType)) {
                 contentType = ContentType.APPLICATION_OCTET_STREAM;
@@ -155,8 +127,8 @@ public final class MultipartFormDataContentBuilder {
      * @param filenames the List of filenames
      * @return the MultipartFormDataHelper instance
      */
-    public MultipartFormDataContentBuilder appendFiles(String fieldName, List<BinaryData> files,
-                                                       List<String> contentTypes, List<String> filenames) {
+    public MultipartFormDataBuilder appendFiles(String fieldName, List<BinaryData> files, List<String> contentTypes,
+        List<String> filenames) {
         if (!CoreUtils.isNullOrEmpty(files)) {
             for (int i = 0; i < files.size(); ++i) {
                 BinaryData file = files.get(i);
@@ -174,16 +146,13 @@ public final class MultipartFormDataContentBuilder {
      *
      * @return the MultipartFormDataHelper instance
      */
-    public MultipartFormDataContentBuilder build() {
+    public MultipartFormData build() {
         byte[] data = boundaryCloseDelimiter.getBytes(encoderCharset);
         appendBytes(data);
 
-        requestBody = BinaryData.fromStream(requestDataStream);
-//
-//        requestOptions.setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data; boundary=" + this.boundary)
-//            .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestLength));
+        BinaryData binaryData = BinaryData.fromStream(requestDataStream);
 
-        return this;
+        return new MultipartFormData("multipart/form-data; boundary=" + this.boundary, binaryData);
     }
 
     private void writeFileField(String fieldName, BinaryData file, String contentType, String filename) {
@@ -200,7 +169,6 @@ public final class MultipartFormDataContentBuilder {
         appendBytes(data);
 
         // Writing the file into the request as a byte stream
-        requestLength += file.getLength();
         requestDataStream = new SequenceInputStream(requestDataStream, file.toStream());
 
         // CRLF
@@ -209,7 +177,6 @@ public final class MultipartFormDataContentBuilder {
     }
 
     private void appendBytes(byte[] bytes) {
-        requestLength += bytes.length;
         requestDataStream = new SequenceInputStream(requestDataStream, new ByteArrayInputStream(bytes));
     }
 
