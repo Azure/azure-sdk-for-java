@@ -31,7 +31,7 @@ final class InternalContext2 implements InternalContext {
     }
 
     @Override
-    public int count() {
+    public int size() {
         return 2;
     }
 

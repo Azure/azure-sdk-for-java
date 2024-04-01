@@ -19,7 +19,7 @@ final class InternalContextN implements InternalContext {
 
         int count = 0;
         for (InternalContext context : contexts) {
-            count += context.count();
+            count += context.size();
         }
         this.count = count;
 
@@ -45,7 +45,7 @@ final class InternalContextN implements InternalContext {
     }
 
     @Override
-    public int count() {
+    public int size() {
         return count;
     }
 
@@ -53,7 +53,7 @@ final class InternalContextN implements InternalContext {
     public InternalContext put(Object key, Object value) {
         InternalContext last = contexts[contexts.length - 1];
 
-        if (last.count() < 4) {
+        if (last.size() < 4) {
             // The last context can hold more data. Add the data to the last context.
             InternalContext[] newContexts = Arrays.copyOf(contexts, contexts.length);
             newContexts[contexts.length - 1] = last.put(key, value);

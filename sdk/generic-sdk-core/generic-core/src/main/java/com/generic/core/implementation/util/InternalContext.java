@@ -33,7 +33,7 @@ public interface InternalContext {
      *
      * @return The number of key-value pairs in the internal context.
      */
-    int count();
+    int size();
 
     /**
      * Adds a new key-value pair to the internal context.

@@ -40,7 +40,7 @@ final class InternalContext4 implements InternalContext {
     }
 
     @Override
-    public int count() {
+    public int size() {
         return 4;
     }
 

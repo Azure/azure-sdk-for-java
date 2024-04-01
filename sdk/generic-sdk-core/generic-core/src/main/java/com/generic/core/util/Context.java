@@ -25,7 +25,7 @@ public final class Context {
     /**
      * Signifies that no data needs to be passed to the pipeline.
      */
-    public static final Context NONE = new Context(InternalContext.empty());
+    public static final Context EMPTY = new Context(InternalContext.empty());
 
     private final InternalContext internal;
 
@@ -84,7 +84,7 @@ public final class Context {
      * @return The singleton instance of an empty context.
      */
     public static Context empty() {
-        return NONE;
+        return EMPTY;
     }
 
     /**
