@@ -365,7 +365,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @param serializer {@link ObjectSerializer} that is used to serialize the header values.
      */
     public void setHeaders(Object[] swaggerMethodArguments, HttpHeaders headers, ObjectSerializer serializer) {
-        headers.setAllHeaders(requestHeaders);
+        headers.setAll(requestHeaders);
 
         if (swaggerMethodArguments == null) {
             return;

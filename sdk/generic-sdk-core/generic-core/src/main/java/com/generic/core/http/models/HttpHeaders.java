@@ -140,7 +140,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      *
      * @return The updated {@link HttpHeaders} object.
      */
-    public HttpHeaders addAllHeaders(HttpHeaders headers) {
+    public HttpHeaders addAll(HttpHeaders headers) {
         if (headers != null) {
             headers.headers.forEach((headerName, header) ->
                 addInternal(HttpHeaderName.fromString(headerName.getCaseInsensitiveName()),
@@ -237,7 +237,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      *
      * @return The updated {@link HttpHeaders} object.
      */
-    public HttpHeaders setAllHeaders(HttpHeaders headers) {
+    public HttpHeaders setAll(HttpHeaders headers) {
         if (headers != null) {
             headers.headers.forEach((headerName, header) ->
                 setInternal(headerName.getCaseInsensitiveName(), header.getName().getCaseSensitiveName(),

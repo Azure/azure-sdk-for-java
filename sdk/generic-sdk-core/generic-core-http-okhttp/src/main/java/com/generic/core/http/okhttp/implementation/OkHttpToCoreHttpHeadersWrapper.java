@@ -78,10 +78,10 @@ public final class OkHttpToCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
-    public HttpHeaders setAllHeaders(HttpHeaders headers) {
+    public HttpHeaders setAll(HttpHeaders headers) {
         convertIfNeeded();
 
-        coreHeaders.setAllHeaders(headers);
+        coreHeaders.setAll(headers);
 
         return this;
     }
