@@ -149,7 +149,7 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 
     @Value("${azure.cosmos.queryMetricsEnabled}")
     private boolean queryMetricsEnabled;
-    
+
     @Value("${azure.cosmos.indexMetricsEnabled}")
     private boolean indexMetricsEnabled;
 
