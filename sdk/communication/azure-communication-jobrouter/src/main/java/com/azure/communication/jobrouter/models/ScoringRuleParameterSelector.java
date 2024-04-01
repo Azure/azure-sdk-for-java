@@ -16,13 +16,11 @@ public final class ScoringRuleParameterSelector extends ExpandableStringEnum<Sco
     /**
      * Parameter to add job labels to scoring payload. Property is sent as `job`.
      */
-    @Generated
     public static final ScoringRuleParameterSelector JOB_LABELS = fromString("jobLabels");
 
     /**
      * Parameter to add worker selectors from a job to scoring payload. Property is sent as `selectors`.
      */
-    @Generated
     public static final ScoringRuleParameterSelector WORKER_SELECTORS = fromString("workerSelectors");
 
     /**
@@ -30,7 +28,6 @@ public final class ScoringRuleParameterSelector extends ExpandableStringEnum<Sco
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public ScoringRuleParameterSelector() {
     }
@@ -41,7 +38,6 @@ public final class ScoringRuleParameterSelector extends ExpandableStringEnum<Sco
      * @param name a name to look for.
      * @return the corresponding ScoringRuleParameterSelector.
      */
-    @Generated
     @JsonCreator
     public static ScoringRuleParameterSelector fromString(String name) {
         return fromString(name, ScoringRuleParameterSelector.class);
@@ -52,7 +48,6 @@ public final class ScoringRuleParameterSelector extends ExpandableStringEnum<Sco
      *
      * @return known ScoringRuleParameterSelector values.
      */
-    @Generated
     public static Collection<ScoringRuleParameterSelector> values() {
         return values(ScoringRuleParameterSelector.class);
     }

@@ -17,21 +17,18 @@ public final class AcceptJobOfferResult {
     /*
      * Id of job assignment that assigns a worker that has accepted an offer to a job.
      */
-    @Generated
     @JsonProperty(value = "assignmentId")
     private String assignmentId;
 
     /*
      * Id of the job assigned.
      */
-    @Generated
     @JsonProperty(value = "jobId")
     private String jobId;
 
     /*
      * Id of the worker that has been assigned this job.
      */
-    @Generated
     @JsonProperty(value = "workerId")
     private String workerId;
 
@@ -42,7 +39,6 @@ public final class AcceptJobOfferResult {
      * @param jobId the jobId value to set.
      * @param workerId the workerId value to set.
      */
-    @Generated
     @JsonCreator
     private AcceptJobOfferResult(@JsonProperty(value = "assignmentId") String assignmentId,
         @JsonProperty(value = "jobId") String jobId, @JsonProperty(value = "workerId") String workerId) {
@@ -56,7 +52,6 @@ public final class AcceptJobOfferResult {
      *
      * @return the assignmentId value.
      */
-    @Generated
     public String getAssignmentId() {
         return this.assignmentId;
     }
@@ -66,7 +61,6 @@ public final class AcceptJobOfferResult {
      *
      * @return the jobId value.
      */
-    @Generated
     public String getJobId() {
         return this.jobId;
     }
@@ -76,7 +70,6 @@ public final class AcceptJobOfferResult {
      *
      * @return the workerId value.
      */
-    @Generated
     public String getWorkerId() {
         return this.workerId;
     }

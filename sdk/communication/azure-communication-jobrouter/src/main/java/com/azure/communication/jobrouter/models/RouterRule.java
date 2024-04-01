@@ -39,7 +39,6 @@ public abstract class RouterRule {
     private String kind;
 
     /** Creates an instance of RouterRule class. */
-    @Generated
     public RouterRule() {}
 
     /**

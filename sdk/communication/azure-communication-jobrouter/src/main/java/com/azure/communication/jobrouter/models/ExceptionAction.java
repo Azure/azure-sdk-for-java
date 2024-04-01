@@ -31,14 +31,12 @@ public abstract class ExceptionAction {
     private String kind;
 
     /** Creates an instance of ExceptionAction class. */
-    @Generated
     public ExceptionAction() {}
 
     /*
      * Unique Id of the exception action
      */
-    @Generated
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id")
     private String id;
 
     /**
@@ -46,7 +44,6 @@ public abstract class ExceptionAction {
      *
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }

@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RouterWorkerAsyncLiveTests extends JobRouterTestBase {
     private JobRouterAsyncClient routerAsyncClient;
@@ -106,6 +106,12 @@ public class RouterWorkerAsyncLiveTests extends JobRouterTestBase {
 
         // Verify
         assertEquals(workerId, result.getId());
+        assertEquals(result.isAvailableForOffers(), false);
+        assertEquals(labels.size() + 1, result.getLabels().size());
+        assertEquals(tags.size(), result.getTags().size());
+        assertArrayEquals(queues.toArray(), result.getQueues().toArray());
+        assertEquals(channels.size(), result.getChannels().size());
+        assertNotNull(result.getEtag());
 
         // Cleanup
         routerAsyncClient.deleteWorker(workerId).block();

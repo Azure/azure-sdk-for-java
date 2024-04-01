@@ -18,14 +18,12 @@ public final class RouterQueueStatistics {
     /*
      * Id of the queue these details are about.
      */
-    @Generated
     @JsonProperty(value = "queueId")
     private String queueId;
 
     /*
      * Length of the queue: total number of enqueued jobs.
      */
-    @Generated
     @JsonProperty(value = "length")
     private int length;
 
@@ -39,7 +37,6 @@ public final class RouterQueueStatistics {
     /*
      * The wait time of the job that has been enqueued in this queue for the longest.
      */
-    @Generated
     @JsonProperty(value = "longestJobWaitTimeMinutes")
     private Double longestJobWaitTimeMinutes;
 
@@ -49,7 +46,6 @@ public final class RouterQueueStatistics {
      * @param queueId the queueId value to set.
      * @param length the length value to set.
      */
-    @Generated
     @JsonCreator
     private RouterQueueStatistics(
             @JsonProperty(value = "queueId") String queueId, @JsonProperty(value = "length") int length) {
@@ -62,7 +58,6 @@ public final class RouterQueueStatistics {
      *
      * @return the queueId value.
      */
-    @Generated
     public String getQueueId() {
         return this.queueId;
     }
@@ -72,7 +67,6 @@ public final class RouterQueueStatistics {
      *
      * @return the length value.
      */
-    @Generated
     public int getLength() {
         return this.length;
     }
@@ -93,7 +87,6 @@ public final class RouterQueueStatistics {
      *
      * @return the longestJobWaitTimeMinutes value.
      */
-    @Generated
     public Double getLongestJobWaitTimeMinutes() {
         return this.longestJobWaitTimeMinutes;
     }

@@ -19,26 +19,22 @@ public final class ExceptionPolicy {
     /*
      * The Id of the exception policy
      */
-    @Generated
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The name of the exception policy.
      */
-    @Generated
     @JsonProperty(value = "name")
     private String name;
 
     /*
      * A collection of exception rules on the exception policy.
      */
-    @Generated
     @JsonProperty(value = "exceptionRules")
     private List<ExceptionRule> exceptionRules;
 
     /** Creates an instance of ExceptionPolicy class. */
-    @Generated
     public ExceptionPolicy() {}
 
     /**
@@ -46,7 +42,6 @@ public final class ExceptionPolicy {
      *
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }
@@ -56,7 +51,6 @@ public final class ExceptionPolicy {
      *
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -67,7 +61,6 @@ public final class ExceptionPolicy {
      * @param name the name value to set.
      * @return the ExceptionPolicy object itself.
      */
-    @Generated
     public ExceptionPolicy setName(String name) {
         this.name = name;
         return this;
@@ -78,7 +71,6 @@ public final class ExceptionPolicy {
      *
      * @return the exceptionRules value.
      */
-    @Generated
     public List<ExceptionRule> getExceptionRules() {
         return this.exceptionRules;
     }
@@ -86,8 +78,7 @@ public final class ExceptionPolicy {
     /*
      * The entity tag for this resource.
      */
-    @Generated
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /**
@@ -95,7 +86,6 @@ public final class ExceptionPolicy {
      *
      * @return the etag value.
      */
-    @Generated
     public String getEtag() {
         return this.etag;
     }
@@ -106,7 +96,6 @@ public final class ExceptionPolicy {
      * @param exceptionRules the exceptionRules value to set.
      * @return the ExceptionPolicy object itself.
      */
-    @Generated
     public ExceptionPolicy setExceptionRules(List<ExceptionRule> exceptionRules) {
         this.exceptionRules = exceptionRules;
         return this;
@@ -119,6 +108,7 @@ public final class ExceptionPolicy {
      */
     ExceptionPolicy(ExceptionPolicyInternal internal) {
         id = internal.getId();
+        etag = internal.getEtag();
 
         setName(internal.getName());
         setExceptionRules(ExceptionPolicyAdapter.convertExceptionRulesToPublic(internal.getExceptionRules()));

@@ -16,7 +16,6 @@ public final class WorkerWeightedAllocation {
     /*
      * The percentage of this weight, expressed as a fraction of 1.
      */
-    @Generated
     @JsonProperty(value = "weight")
     private double weight;
 
@@ -24,7 +23,6 @@ public final class WorkerWeightedAllocation {
      * A collection of worker selectors that will be applied if this allocation is
      * selected.
      */
-    @Generated
     @JsonProperty(value = "workerSelectors")
     private List<RouterWorkerSelector> workerSelectors;
 
@@ -34,7 +32,6 @@ public final class WorkerWeightedAllocation {
      * @param weight the weight value to set.
      * @param workerSelectors the workerSelectors value to set.
      */
-    @Generated
     @JsonCreator
     public WorkerWeightedAllocation(
             @JsonProperty(value = "weight") double weight,
@@ -48,7 +45,6 @@ public final class WorkerWeightedAllocation {
      *
      * @return the weight value.
      */
-    @Generated
     public double getWeight() {
         return this.weight;
     }
@@ -59,7 +55,6 @@ public final class WorkerWeightedAllocation {
      *
      * @return the workerSelectors value.
      */
-    @Generated
     public List<RouterWorkerSelector> getWorkerSelectors() {
         return this.workerSelectors;
     }

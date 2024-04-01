@@ -43,6 +43,7 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
 
         // Verify
         assertEquals(queueId, jobQueue.getId());
+        assertEquals(distributionPolicyId, jobQueue.getDistributionPolicyId());
 
         // Cleanup
         routerAdminClient.deleteQueue(queueId);

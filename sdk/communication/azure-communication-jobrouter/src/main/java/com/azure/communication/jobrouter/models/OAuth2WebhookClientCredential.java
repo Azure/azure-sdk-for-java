@@ -17,21 +17,18 @@ public final class OAuth2WebhookClientCredential {
     /*
      * ClientId for Contoso Authorization server.
      */
-    @Generated
     @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
      * Client secret for Contoso Authorization server.
      */
-    @Generated
     @JsonProperty(value = "clientSecret")
     private String clientSecret;
 
     /**
      * Creates an instance of OAuth2WebhookClientCredential class.
      */
-    @Generated
     public OAuth2WebhookClientCredential() {
     }
 
@@ -40,7 +37,6 @@ public final class OAuth2WebhookClientCredential {
      *
      * @return the clientId value.
      */
-    @Generated
     public String getClientId() {
         return this.clientId;
     }
@@ -51,7 +47,6 @@ public final class OAuth2WebhookClientCredential {
      * @param clientId the clientId value to set.
      * @return the OAuth2WebhookClientCredential object itself.
      */
-    @Generated
     public OAuth2WebhookClientCredential setClientId(String clientId) {
         this.clientId = clientId;
         return this;
@@ -62,7 +57,6 @@ public final class OAuth2WebhookClientCredential {
      *
      * @return the clientSecret value.
      */
-    @Generated
     public String getClientSecret() {
         return this.clientSecret;
     }
@@ -73,7 +67,6 @@ public final class OAuth2WebhookClientCredential {
      * @param clientSecret the clientSecret value to set.
      * @return the OAuth2WebhookClientCredential object itself.
      */
-    @Generated
     public OAuth2WebhookClientCredential setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
         return this;

@@ -19,7 +19,6 @@ public final class CancelExceptionAction extends ExceptionAction {
      * (Optional) A note that will be appended to the jobs' Notes collection with the
      * current timestamp.
      */
-    @Generated
     @JsonProperty(value = "note")
     private String note;
 
@@ -27,12 +26,10 @@ public final class CancelExceptionAction extends ExceptionAction {
      * (Optional) Indicates the outcome of the job, populate this field with your own
      * custom values.
      */
-    @Generated
     @JsonProperty(value = "dispositionCode")
     private String dispositionCode;
 
     /** Creates an instance of CancelExceptionAction class. */
-    @Generated
     public CancelExceptionAction() {}
 
     /**
@@ -41,7 +38,6 @@ public final class CancelExceptionAction extends ExceptionAction {
      *
      * @return the note value.
      */
-    @Generated
     public String getNote() {
         return this.note;
     }
@@ -53,7 +49,6 @@ public final class CancelExceptionAction extends ExceptionAction {
      * @param note the note value to set.
      * @return the CancelExceptionAction object itself.
      */
-    @Generated
     public CancelExceptionAction setNote(String note) {
         this.note = note;
         return this;
@@ -65,7 +60,6 @@ public final class CancelExceptionAction extends ExceptionAction {
      *
      * @return the dispositionCode value.
      */
-    @Generated
     public String getDispositionCode() {
         return this.dispositionCode;
     }
@@ -77,7 +71,6 @@ public final class CancelExceptionAction extends ExceptionAction {
      * @param dispositionCode the dispositionCode value to set.
      * @return the CancelExceptionAction object itself.
      */
-    @Generated
     public CancelExceptionAction setDispositionCode(String dispositionCode) {
         this.dispositionCode = dispositionCode;
         return this;

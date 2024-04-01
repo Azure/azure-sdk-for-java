@@ -35,7 +35,6 @@ public abstract class WorkerSelectorAttachment {
     private String kind;
 
     /** Creates an instance of WorkerSelectorAttachment class. */
-    @Generated
     public WorkerSelectorAttachment() {}
 
     /**

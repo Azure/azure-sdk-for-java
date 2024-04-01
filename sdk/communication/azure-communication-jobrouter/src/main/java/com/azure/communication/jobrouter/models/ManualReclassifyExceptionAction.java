@@ -19,26 +19,22 @@ public final class ManualReclassifyExceptionAction extends ExceptionAction {
     /*
      * Updated QueueId.
      */
-    @Generated
     @JsonProperty(value = "queueId")
     private String queueId;
 
     /*
      * Updated Priority.
      */
-    @Generated
     @JsonProperty(value = "priority")
     private Integer priority;
 
     /*
      * Updated WorkerSelectors.
      */
-    @Generated
     @JsonProperty(value = "workerSelectors")
     private List<RouterWorkerSelector> workerSelectors;
 
     /** Creates an instance of ManualReclassifyExceptionAction class. */
-    @Generated
     public ManualReclassifyExceptionAction() {}
 
     /**
@@ -46,7 +42,6 @@ public final class ManualReclassifyExceptionAction extends ExceptionAction {
      *
      * @return the queueId value.
      */
-    @Generated
     public String getQueueId() {
         return this.queueId;
     }
@@ -57,7 +52,6 @@ public final class ManualReclassifyExceptionAction extends ExceptionAction {
      * @param queueId the queueId value to set.
      * @return the ManualReclassifyExceptionAction object itself.
      */
-    @Generated
     public ManualReclassifyExceptionAction setQueueId(String queueId) {
         this.queueId = queueId;
         return this;
@@ -68,7 +62,6 @@ public final class ManualReclassifyExceptionAction extends ExceptionAction {
      *
      * @return the priority value.
      */
-    @Generated
     public Integer getPriority() {
         return this.priority;
     }
@@ -79,7 +72,6 @@ public final class ManualReclassifyExceptionAction extends ExceptionAction {
      * @param priority the priority value to set.
      * @return the ManualReclassifyExceptionAction object itself.
      */
-    @Generated
     public ManualReclassifyExceptionAction setPriority(Integer priority) {
         this.priority = priority;
         return this;
@@ -90,7 +82,6 @@ public final class ManualReclassifyExceptionAction extends ExceptionAction {
      *
      * @return the workerSelectors value.
      */
-    @Generated
     public List<RouterWorkerSelector> getWorkerSelectors() {
         return this.workerSelectors;
     }
@@ -101,7 +92,6 @@ public final class ManualReclassifyExceptionAction extends ExceptionAction {
      * @param workerSelectors the workerSelectors value to set.
      * @return the ManualReclassifyExceptionAction object itself.
      */
-    @Generated
     public ManualReclassifyExceptionAction setWorkerSelectors(List<RouterWorkerSelector> workerSelectors) {
         this.workerSelectors = workerSelectors;
         return this;

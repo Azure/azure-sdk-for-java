@@ -22,7 +22,6 @@ public final class StaticRouterRule extends RouterRule {
     private RouterValue value;
 
     /** Creates an instance of StaticRouterRule class. */
-    @Generated
     public StaticRouterRule() {}
 
     /**

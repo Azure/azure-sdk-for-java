@@ -21,7 +21,6 @@ public final class BestWorkerMode extends DistributionMode {
      * of label selectors the worker labels match and/or exceed using a logistic function
      * (https://en.wikipedia.org/wiki/Logistic_function).
      */
-    @Generated
     @JsonProperty(value = "scoringRule")
     private RouterRule scoringRule;
 
@@ -81,7 +80,6 @@ public final class BestWorkerMode extends DistributionMode {
     }
 
     /** {@inheritDoc} */
-    @Generated
     @Override
     public BestWorkerMode setMinConcurrentOffers(Integer minConcurrentOffers) {
         super.setMinConcurrentOffers(minConcurrentOffers);
@@ -89,7 +87,6 @@ public final class BestWorkerMode extends DistributionMode {
     }
 
     /** {@inheritDoc} */
-    @Generated
     @Override
     public BestWorkerMode setMaxConcurrentOffers(Integer maxConcurrentOffers) {
         super.setMaxConcurrentOffers(maxConcurrentOffers);
@@ -97,7 +94,6 @@ public final class BestWorkerMode extends DistributionMode {
     }
 
     /** {@inheritDoc} */
-    @Generated
     @Override
     public BestWorkerMode setBypassSelectors(Boolean bypassSelectors) {
         super.setBypassSelectors(bypassSelectors);

@@ -32,14 +32,12 @@ public final class ConditionalQueueSelectorAttachment extends QueueSelectorAttac
      * WebhookRule: A rule providing a binding to a webserver following
      * OAuth2.0 authentication protocol.
      */
-    @Generated
     @JsonProperty(value = "condition")
     private RouterRule condition;
 
     /*
      * The queue selectors to attach
      */
-    @Generated
     @JsonProperty(value = "queueSelectors")
     private List<RouterQueueSelector> queueSelectors;
 
@@ -49,7 +47,6 @@ public final class ConditionalQueueSelectorAttachment extends QueueSelectorAttac
      * @param condition the condition value to set.
      * @param queueSelectors the queueSelectors value to set.
      */
-    @Generated
     @JsonCreator
     public ConditionalQueueSelectorAttachment(
             @JsonProperty(value = "condition") RouterRule condition,
@@ -68,7 +65,6 @@ public final class ConditionalQueueSelectorAttachment extends QueueSelectorAttac
      *
      * @return the condition value.
      */
-    @Generated
     public RouterRule getCondition() {
         return this.condition;
     }
@@ -78,7 +74,6 @@ public final class ConditionalQueueSelectorAttachment extends QueueSelectorAttac
      *
      * @return the queueSelectors value.
      */
-    @Generated
     public List<RouterQueueSelector> getQueueSelectors() {
         return this.queueSelectors;
     }

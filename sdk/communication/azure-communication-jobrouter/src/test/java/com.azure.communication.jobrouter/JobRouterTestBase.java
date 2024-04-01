@@ -151,7 +151,7 @@ class JobRouterTestBase extends TestProxyTestBase {
 
         CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
             id,
-            Duration.ofSeconds(10),
+            Duration.ofSeconds(100),
             new LongestIdleMode()
                 .setMinConcurrentOffers(1)
                 .setMaxConcurrentOffers(10)

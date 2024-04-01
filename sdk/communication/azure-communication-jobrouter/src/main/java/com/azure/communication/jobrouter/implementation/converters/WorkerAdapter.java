@@ -33,6 +33,7 @@ public class WorkerAdapter {
                 entry -> RouterValueAdapter.getValue(entry.getValue()))) : null;
 
         return new RouterWorkerInternal()
+            .setQueues(createWorkerOptions.getQueues())
             .setLabels(labels)
             .setTags(tags)
             .setAvailableForOffers(createWorkerOptions.isAvailableForOffers())

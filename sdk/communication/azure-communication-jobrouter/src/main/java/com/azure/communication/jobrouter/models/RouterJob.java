@@ -24,63 +24,54 @@ public final class RouterJob {
     /*
      * The id of the job.
      */
-    @Generated
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Reference to an external parent context, eg. call ID.
      */
-    @Generated
     @JsonProperty(value = "channelReference")
     private String channelReference;
 
     /*
      * The status of the Job.
      */
-    @Generated
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "status")
     private RouterJobStatus status;
 
     /*
      * The time a job was queued in UTC.
      */
-    @Generated
-    @JsonProperty(value = "enqueuedAt", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "enqueuedAt")
     private OffsetDateTime enqueuedAt;
 
     /*
      * The channel identifier. eg. voice, chat, etc.
      */
-    @Generated
     @JsonProperty(value = "channelId")
     private String channelId;
 
     /*
      * The Id of the Classification policy used for classifying a job.
      */
-    @Generated
     @JsonProperty(value = "classificationPolicyId")
     private String classificationPolicyId;
 
     /*
      * The Id of the Queue that this job is queued to.
      */
-    @Generated
     @JsonProperty(value = "queueId")
     private String queueId;
 
     /*
      * The priority of this job.
      */
-    @Generated
     @JsonProperty(value = "priority")
     private Integer priority;
 
     /*
      * Reason code for cancelled or closed jobs.
      */
-    @Generated
     @JsonProperty(value = "dispositionCode")
     private String dispositionCode;
 
@@ -88,7 +79,6 @@ public final class RouterJob {
      * A collection of manually specified label selectors, which a worker must satisfy
      * in order to process this job.
      */
-    @Generated
     @JsonProperty(value = "requestedWorkerSelectors")
     private List<RouterWorkerSelector> requestedWorkerSelectors;
 
@@ -96,8 +86,7 @@ public final class RouterJob {
      * A collection of label selectors attached by a classification policy, which a
      * worker must satisfy in order to process this job.
      */
-    @Generated
-    @JsonProperty(value = "attachedWorkerSelectors", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "attachedWorkerSelectors")
     private List<RouterWorkerSelector> attachedWorkerSelectors;
 
     /*
@@ -111,8 +100,7 @@ public final class RouterJob {
      * A collection of the assignments of the job.
      * Key is AssignmentId.
      */
-    @Generated
-    @JsonProperty(value = "assignments", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "assignments")
     private Map<String, RouterJobAssignment> assignments;
 
     /*
@@ -124,15 +112,13 @@ public final class RouterJob {
     /*
      * Notes attached to a job, sorted by timestamp
      */
-    @Generated
     @JsonProperty(value = "notes")
     private List<RouterJobNote> notes;
 
     /*
      * If set, job will be scheduled to be enqueued at a given time
      */
-    @Generated
-    @JsonProperty(value = "scheduledAt", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "scheduledAt")
     private OffsetDateTime scheduledAt;
 
     /*
@@ -149,12 +135,10 @@ public final class RouterJob {
      * SuspendMode: Used when matching workers
      * to a job needs to be suspended.
      */
-    @Generated
     @JsonProperty(value = "matchingMode")
     private JobMatchingMode matchingMode;
 
     /** Creates an instance of RouterJob class. */
-    @Generated
     public RouterJob() {}
 
     /**
@@ -175,6 +159,7 @@ public final class RouterJob {
         status = RouterJobStatus.fromString(internal.getStatus().toString());
         enqueuedAt = internal.getEnqueuedAt();
         scheduledAt = internal.getScheduledAt();
+        etag = internal.getEtag();
 
         setChannelId(internal.getChannelId());
         setChannelReference(internal.getChannelReference());
@@ -201,7 +186,6 @@ public final class RouterJob {
      *
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }
@@ -211,7 +195,6 @@ public final class RouterJob {
      *
      * @return the channelReference value.
      */
-    @Generated
     public String getChannelReference() {
         return this.channelReference;
     }
@@ -222,7 +205,6 @@ public final class RouterJob {
      * @param channelReference the channelReference value to set.
      * @return the RouterJob object itself.
      */
-    @Generated
     public RouterJob setChannelReference(String channelReference) {
         this.channelReference = channelReference;
         return this;
@@ -233,7 +215,6 @@ public final class RouterJob {
      *
      * @return the status value.
      */
-    @Generated
     public RouterJobStatus getStatus() {
         return this.status;
     }
@@ -243,7 +224,6 @@ public final class RouterJob {
      *
      * @return the enqueuedAt value.
      */
-    @Generated
     public OffsetDateTime getEnqueuedAt() {
         return this.enqueuedAt;
     }
@@ -253,7 +233,6 @@ public final class RouterJob {
      *
      * @return the channelId value.
      */
-    @Generated
     public String getChannelId() {
         return this.channelId;
     }
@@ -264,7 +243,6 @@ public final class RouterJob {
      * @param channelId the channelId value to set.
      * @return the RouterJob object itself.
      */
-    @Generated
     public RouterJob setChannelId(String channelId) {
         this.channelId = channelId;
         return this;
@@ -275,7 +253,6 @@ public final class RouterJob {
      *
      * @return the classificationPolicyId value.
      */
-    @Generated
     public String getClassificationPolicyId() {
         return this.classificationPolicyId;
     }
@@ -286,7 +263,6 @@ public final class RouterJob {
      * @param classificationPolicyId the classificationPolicyId value to set.
      * @return the RouterJob object itself.
      */
-    @Generated
     public RouterJob setClassificationPolicyId(String classificationPolicyId) {
         this.classificationPolicyId = classificationPolicyId;
         return this;
@@ -297,7 +273,6 @@ public final class RouterJob {
      *
      * @return the queueId value.
      */
-    @Generated
     public String getQueueId() {
         return this.queueId;
     }
@@ -308,7 +283,6 @@ public final class RouterJob {
      * @param queueId the queueId value to set.
      * @return the RouterJob object itself.
      */
-    @Generated
     public RouterJob setQueueId(String queueId) {
         this.queueId = queueId;
         return this;
@@ -319,7 +293,6 @@ public final class RouterJob {
      *
      * @return the priority value.
      */
-    @Generated
     public Integer getPriority() {
         return this.priority;
     }
@@ -330,7 +303,6 @@ public final class RouterJob {
      * @param priority the priority value to set.
      * @return the RouterJob object itself.
      */
-    @Generated
     public RouterJob setPriority(Integer priority) {
         this.priority = priority;
         return this;
@@ -341,7 +313,6 @@ public final class RouterJob {
      *
      * @return the dispositionCode value.
      */
-    @Generated
     public String getDispositionCode() {
         return this.dispositionCode;
     }
@@ -352,7 +323,6 @@ public final class RouterJob {
      * @param dispositionCode the dispositionCode value to set.
      * @return the RouterJob object itself.
      */
-    @Generated
     public RouterJob setDispositionCode(String dispositionCode) {
         this.dispositionCode = dispositionCode;
         return this;
@@ -364,7 +334,6 @@ public final class RouterJob {
      *
      * @return the requestedWorkerSelectors value.
      */
-    @Generated
     public List<RouterWorkerSelector> getRequestedWorkerSelectors() {
         return this.requestedWorkerSelectors;
     }
@@ -376,7 +345,6 @@ public final class RouterJob {
      * @param requestedWorkerSelectors the requestedWorkerSelectors value to set.
      * @return the RouterJob object itself.
      */
-    @Generated
     public RouterJob setRequestedWorkerSelectors(List<RouterWorkerSelector> requestedWorkerSelectors) {
         this.requestedWorkerSelectors = requestedWorkerSelectors;
         return this;
@@ -388,7 +356,6 @@ public final class RouterJob {
      *
      * @return the attachedWorkerSelectors value.
      */
-    @Generated
     public List<RouterWorkerSelector> getAttachedWorkerSelectors() {
         return this.attachedWorkerSelectors;
     }
@@ -420,7 +387,6 @@ public final class RouterJob {
      *
      * @return the assignments value.
      */
-    @Generated
     public Map<String, RouterJobAssignment> getAssignments() {
         return this.assignments;
     }
@@ -450,7 +416,6 @@ public final class RouterJob {
      *
      * @return the notes value.
      */
-    @Generated
     public List<RouterJobNote> getNotes() {
         return this.notes;
     }
@@ -460,7 +425,6 @@ public final class RouterJob {
      *
      * @return the scheduledAt value.
      */
-    @Generated
     public OffsetDateTime getScheduledAt() {
         return this.scheduledAt;
     }
@@ -477,7 +441,6 @@ public final class RouterJob {
      *
      * @return the matchingMode value.
      */
-    @Generated
     public JobMatchingMode getMatchingMode() {
         return this.matchingMode;
     }
@@ -495,7 +458,6 @@ public final class RouterJob {
      * @param matchingMode the matchingMode value to set.
      * @return the RouterJob object itself.
      */
-    @Generated
     public RouterJob setMatchingMode(JobMatchingMode matchingMode) {
         this.matchingMode = matchingMode;
         return this;
@@ -504,8 +466,7 @@ public final class RouterJob {
     /*
      * Concurrency Token.
      */
-    @Generated
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /**
@@ -513,7 +474,6 @@ public final class RouterJob {
      *
      * @return the etag value.
      */
-    @Generated
     public String getEtag() {
         return this.etag;
     }
@@ -524,7 +484,6 @@ public final class RouterJob {
      * @param notes the notes value to set.
      * @return the RouterJob object itself.
      */
-    @Generated
     public RouterJob setNotes(List<RouterJobNote> notes) {
         this.notes = notes;
         return this;

@@ -21,14 +21,12 @@ public final class DeclineJobOfferOptions {
      * re-matched to eligible workers at the retry time in UTC. The worker that declined the job will also be eligible
      * for the job at that time.
      */
-    @Generated
     @JsonProperty(value = "retryOfferAt")
     private OffsetDateTime retryOfferAt;
 
     /**
      * Creates an instance of DeclineJobOfferOptionsInternal class.
      */
-    @Generated
     public DeclineJobOfferOptions() {
     }
 
@@ -40,7 +38,6 @@ public final class DeclineJobOfferOptions {
      *
      * @return the retryOfferAt value.
      */
-    @Generated
     public OffsetDateTime getRetryOfferAt() {
         return this.retryOfferAt;
     }
@@ -54,7 +51,6 @@ public final class DeclineJobOfferOptions {
      * @param retryOfferAt the retryOfferAt value to set.
      * @return the DeclineJobOfferOptionsInternal object itself.
      */
-    @Generated
     public DeclineJobOfferOptions setRetryOfferAt(OffsetDateTime retryOfferAt) {
         this.retryOfferAt = retryOfferAt;
         return this;

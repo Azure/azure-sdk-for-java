@@ -20,7 +20,6 @@ public final class StaticQueueSelectorAttachment extends QueueSelectorAttachment
      * Describes a condition that must be met against a set of labels for queue
      * selection
      */
-    @Generated
     @JsonProperty(value = "queueSelector")
     private RouterQueueSelector queueSelector;
 
@@ -29,7 +28,6 @@ public final class StaticQueueSelectorAttachment extends QueueSelectorAttachment
      *
      * @param queueSelector the queueSelector value to set.
      */
-    @Generated
     @JsonCreator
     public StaticQueueSelectorAttachment(@JsonProperty(value = "queueSelector") RouterQueueSelector queueSelector) {
         this.queueSelector = queueSelector;
@@ -41,7 +39,6 @@ public final class StaticQueueSelectorAttachment extends QueueSelectorAttachment
      *
      * @return the queueSelector value.
      */
-    @Generated
     public RouterQueueSelector getQueueSelector() {
         return this.queueSelector;
     }

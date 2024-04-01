@@ -16,7 +16,6 @@ public final class ExpressionRouterRuleLanguage extends ExpandableStringEnum<Exp
     /**
      * PowerFx.
      */
-    @Generated
     public static final ExpressionRouterRuleLanguage POWER_FX = fromString("powerFx");
 
     /**
@@ -24,7 +23,6 @@ public final class ExpressionRouterRuleLanguage extends ExpandableStringEnum<Exp
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public ExpressionRouterRuleLanguage() {
     }
@@ -35,7 +33,6 @@ public final class ExpressionRouterRuleLanguage extends ExpandableStringEnum<Exp
      * @param name a name to look for.
      * @return the corresponding ExpressionRouterRuleLanguage.
      */
-    @Generated
     @JsonCreator
     public static ExpressionRouterRuleLanguage fromString(String name) {
         return fromString(name, ExpressionRouterRuleLanguage.class);
@@ -46,7 +43,6 @@ public final class ExpressionRouterRuleLanguage extends ExpandableStringEnum<Exp
      *
      * @return known ExpressionRouterRuleLanguage values.
      */
-    @Generated
     public static Collection<ExpressionRouterRuleLanguage> values() {
         return values(ExpressionRouterRuleLanguage.class);
     }

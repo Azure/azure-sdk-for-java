@@ -30,7 +30,6 @@ public abstract class ExceptionTrigger {
     private String kind;
 
     /** Creates an instance of ExceptionTrigger class. */
-    @Generated
     public ExceptionTrigger() {}
 
     /**

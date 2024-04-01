@@ -18,7 +18,6 @@ public final class CloseJobOptions {
     /*
      * Indicates the outcome of a job, populate this field with your own custom values.
      */
-    @Generated
     @JsonProperty(value = "dispositionCode")
     private String dispositionCode;
 
@@ -26,21 +25,18 @@ public final class CloseJobOptions {
      * If not provided, worker capacity is released immediately along with a JobClosedEvent notification. If provided,
      * worker capacity is released along with a JobClosedEvent notification at a future time in UTC.
      */
-    @Generated
     @JsonProperty(value = "closeAt")
     private OffsetDateTime closeAt;
 
     /*
      * A note that will be appended to a job's Notes collection with the current timestamp.
      */
-    @Generated
     @JsonProperty(value = "note")
     private String note;
 
     /**
      * Creates an instance of CloseJobOptionsInternal class.
      */
-    @Generated
     public CloseJobOptions() {
     }
 
@@ -50,7 +46,6 @@ public final class CloseJobOptions {
      *
      * @return the dispositionCode value.
      */
-    @Generated
     public String getDispositionCode() {
         return this.dispositionCode;
     }
@@ -62,7 +57,6 @@ public final class CloseJobOptions {
      * @param dispositionCode the dispositionCode value to set.
      * @return the CloseJobOptionsInternal object itself.
      */
-    @Generated
     public CloseJobOptions setDispositionCode(String dispositionCode) {
         this.dispositionCode = dispositionCode;
         return this;
@@ -75,7 +69,6 @@ public final class CloseJobOptions {
      *
      * @return the closeAt value.
      */
-    @Generated
     public OffsetDateTime getCloseAt() {
         return this.closeAt;
     }
@@ -88,7 +81,6 @@ public final class CloseJobOptions {
      * @param closeAt the closeAt value to set.
      * @return the CloseJobOptionsInternal object itself.
      */
-    @Generated
     public CloseJobOptions setCloseAt(OffsetDateTime closeAt) {
         this.closeAt = closeAt;
         return this;
@@ -99,7 +91,6 @@ public final class CloseJobOptions {
      *
      * @return the note value.
      */
-    @Generated
     public String getNote() {
         return this.note;
     }
@@ -110,7 +101,6 @@ public final class CloseJobOptions {
      * @param note the note value to set.
      * @return the CloseJobOptionsInternal object itself.
      */
-    @Generated
     public CloseJobOptions setNote(String note) {
         this.note = note;
         return this;

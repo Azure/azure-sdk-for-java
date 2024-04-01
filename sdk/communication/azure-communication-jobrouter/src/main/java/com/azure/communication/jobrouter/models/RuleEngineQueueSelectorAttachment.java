@@ -31,7 +31,6 @@ public final class RuleEngineQueueSelectorAttachment extends QueueSelectorAttach
      * WebhookRule: A rule providing a binding to a webserver following
      * OAuth2.0 authentication protocol.
      */
-    @Generated
     @JsonProperty(value = "rule")
     private RouterRule rule;
 
@@ -40,7 +39,6 @@ public final class RuleEngineQueueSelectorAttachment extends QueueSelectorAttach
      *
      * @param rule the rule value to set.
      */
-    @Generated
     @JsonCreator
     public RuleEngineQueueSelectorAttachment(@JsonProperty(value = "rule") RouterRule rule) {
         this.rule = rule;
@@ -56,7 +54,6 @@ public final class RuleEngineQueueSelectorAttachment extends QueueSelectorAttach
      *
      * @return the rule value.
      */
-    @Generated
     public RouterRule getRule() {
         return this.rule;
     }

@@ -18,35 +18,30 @@ public final class RouterJobOffer {
     /*
      * Id of an offer.
      */
-    @Generated
-    @JsonProperty(value = "offerId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "offerId")
     private String offerId;
 
     /*
      * Id of the job.
      */
-    @Generated
     @JsonProperty(value = "jobId")
     private String jobId;
 
     /*
      * The capacity cost consumed by the job offer.
      */
-    @Generated
     @JsonProperty(value = "capacityCost")
     private int capacityCost;
 
     /*
      * Timestamp when the offer was created in UTC.
      */
-    @Generated
     @JsonProperty(value = "offeredAt")
     private OffsetDateTime offeredAt;
 
     /*
      * Timestamp when the offer will expire in UTC.
      */
-    @Generated
     @JsonProperty(value = "expiresAt")
     private OffsetDateTime expiresAt;
 
@@ -55,7 +50,6 @@ public final class RouterJobOffer {
      *
      * @return the offerId value.
      */
-    @Generated
     public String getOfferId() {
         return this.offerId;
     }
@@ -65,7 +59,6 @@ public final class RouterJobOffer {
      *
      * @return the jobId value.
      */
-    @Generated
     public String getJobId() {
         return this.jobId;
     }
@@ -75,7 +68,6 @@ public final class RouterJobOffer {
      *
      * @return the capacityCost value.
      */
-    @Generated
     public int getCapacityCost() {
         return this.capacityCost;
     }
@@ -85,7 +77,6 @@ public final class RouterJobOffer {
      *
      * @return the offeredAt value.
      */
-    @Generated
     public OffsetDateTime getOfferedAt() {
         return this.offeredAt;
     }
@@ -95,7 +86,6 @@ public final class RouterJobOffer {
      *
      * @return the expiresAt value.
      */
-    @Generated
     public OffsetDateTime getExpiresAt() {
         return this.expiresAt;
     }
@@ -106,7 +96,6 @@ public final class RouterJobOffer {
      * @param jobId the jobId value to set.
      * @param capacityCost the capacityCost value to set.
      */
-    @Generated
     @JsonCreator
     private RouterJobOffer(@JsonProperty(value = "jobId") String jobId,
         @JsonProperty(value = "capacityCost") int capacityCost) {

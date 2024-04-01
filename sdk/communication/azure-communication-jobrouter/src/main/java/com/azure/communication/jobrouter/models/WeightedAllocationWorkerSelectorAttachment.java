@@ -20,7 +20,6 @@ public final class WeightedAllocationWorkerSelectorAttachment extends WorkerSele
     /*
      * A collection of percentage based weighted allocations.
      */
-    @Generated
     @JsonProperty(value = "allocations")
     private List<WorkerWeightedAllocation> allocations;
 
@@ -29,7 +28,6 @@ public final class WeightedAllocationWorkerSelectorAttachment extends WorkerSele
      *
      * @param allocations the allocations value to set.
      */
-    @Generated
     @JsonCreator
     public WeightedAllocationWorkerSelectorAttachment(
             @JsonProperty(value = "allocations") List<WorkerWeightedAllocation> allocations) {
@@ -41,7 +39,6 @@ public final class WeightedAllocationWorkerSelectorAttachment extends WorkerSele
      *
      * @return the allocations value.
      */
-    @Generated
     public List<WorkerWeightedAllocation> getAllocations() {
         return this.allocations;
     }

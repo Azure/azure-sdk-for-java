@@ -142,7 +142,7 @@ public class LabelSelectorAdapter {
     public static RouterWorkerSelector convertWorkerSelectorToPublic(RouterWorkerSelectorInternal ws) {
         RouterWorkerSelector workerSelector = new RouterWorkerSelector(ws.getKey(),
             LabelOperator.fromString(ws.getLabelOperator().toString()))
-            .setValue(RouterValueConstructorProxy.create(ws))
+            .setValue(RouterValueConstructorProxy.create(ws.getValue()))
             .setExpedite(ws.isExpedite())
             .setExpiresAfter(ws.getExpiresAfterSeconds() != null
                 ? Duration.ofSeconds(ws.getExpiresAfterSeconds().longValue()) : null);

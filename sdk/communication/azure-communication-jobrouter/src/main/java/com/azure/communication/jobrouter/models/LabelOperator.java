@@ -16,25 +16,21 @@ public final class LabelOperator extends ExpandableStringEnum<LabelOperator> {
     /**
      * Equal.
      */
-    @Generated
     public static final LabelOperator EQUAL = fromString("equal");
 
     /**
      * Not Equal.
      */
-    @Generated
     public static final LabelOperator NOT_EQUAL = fromString("notEqual");
 
     /**
      * Less than.
      */
-    @Generated
     public static final LabelOperator LESS_THAN = fromString("lessThan");
 
     /**
      * Greater than.
      */
-    @Generated
     public static final LabelOperator GREATER_THAN = fromString("greaterThan");
 
     /**
@@ -42,7 +38,6 @@ public final class LabelOperator extends ExpandableStringEnum<LabelOperator> {
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public LabelOperator() {
     }
@@ -53,7 +48,6 @@ public final class LabelOperator extends ExpandableStringEnum<LabelOperator> {
      * @param name a name to look for.
      * @return the corresponding LabelOperator.
      */
-    @Generated
     @JsonCreator
     public static LabelOperator fromString(String name) {
         return fromString(name, LabelOperator.class);
@@ -64,7 +58,6 @@ public final class LabelOperator extends ExpandableStringEnum<LabelOperator> {
      *
      * @return known LabelOperator values.
      */
-    @Generated
     public static Collection<LabelOperator> values() {
         return values(LabelOperator.class);
     }
@@ -72,12 +65,10 @@ public final class LabelOperator extends ExpandableStringEnum<LabelOperator> {
     /**
      * Less than or equal.
      */
-    @Generated
     public static final LabelOperator LESS_THAN_OR_EQUAL = fromString("lessThanOrEqual");
 
     /**
      * Greater than or equal.
      */
-    @Generated
     public static final LabelOperator GREATER_THAN_OR_EQUAL = fromString("greaterThanOrEqual");
 }

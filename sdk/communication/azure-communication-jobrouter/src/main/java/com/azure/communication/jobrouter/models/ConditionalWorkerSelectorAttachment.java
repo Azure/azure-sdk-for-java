@@ -32,14 +32,12 @@ public final class ConditionalWorkerSelectorAttachment extends WorkerSelectorAtt
      * WebhookRule: A rule providing a binding to a webserver following
      * OAuth2.0 authentication protocol.
      */
-    @Generated
     @JsonProperty(value = "condition")
     private RouterRule condition;
 
     /*
      * The worker selectors to attach
      */
-    @Generated
     @JsonProperty(value = "workerSelectors")
     private List<RouterWorkerSelector> workerSelectors;
 
@@ -49,7 +47,6 @@ public final class ConditionalWorkerSelectorAttachment extends WorkerSelectorAtt
      * @param condition the condition value to set.
      * @param workerSelectors the workerSelectors value to set.
      */
-    @Generated
     @JsonCreator
     public ConditionalWorkerSelectorAttachment(
             @JsonProperty(value = "condition") RouterRule condition,
@@ -68,7 +65,6 @@ public final class ConditionalWorkerSelectorAttachment extends WorkerSelectorAtt
      *
      * @return the condition value.
      */
-    @Generated
     public RouterRule getCondition() {
         return this.condition;
     }
@@ -78,7 +74,6 @@ public final class ConditionalWorkerSelectorAttachment extends WorkerSelectorAtt
      *
      * @return the workerSelectors value.
      */
-    @Generated
     public List<RouterWorkerSelector> getWorkerSelectors() {
         return this.workerSelectors;
     }

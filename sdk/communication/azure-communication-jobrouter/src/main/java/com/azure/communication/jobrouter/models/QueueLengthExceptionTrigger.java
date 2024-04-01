@@ -19,7 +19,6 @@ public final class QueueLengthExceptionTrigger extends ExceptionTrigger {
     /*
      * Threshold of number of jobs ahead in the queue to for this trigger to fire.
      */
-    @Generated
     @JsonProperty(value = "threshold")
     private int threshold;
 
@@ -28,7 +27,6 @@ public final class QueueLengthExceptionTrigger extends ExceptionTrigger {
      *
      * @param threshold the threshold value to set.
      */
-    @Generated
     @JsonCreator
     public QueueLengthExceptionTrigger(@JsonProperty(value = "threshold") int threshold) {
         this.threshold = threshold;
@@ -39,7 +37,6 @@ public final class QueueLengthExceptionTrigger extends ExceptionTrigger {
      *
      * @return the threshold value.
      */
-    @Generated
     public int getThreshold() {
         return this.threshold;
     }

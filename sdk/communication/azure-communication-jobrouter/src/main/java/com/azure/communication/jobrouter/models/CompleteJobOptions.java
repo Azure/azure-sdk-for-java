@@ -16,14 +16,12 @@ public final class CompleteJobOptions {
     /*
      * A note that will be appended to a job's Notes collection with the current timestamp.
      */
-    @Generated
     @JsonProperty(value = "note")
     private String note;
 
     /**
      * Creates an instance of CompleteJobOptionsInternal class.
      */
-    @Generated
     public CompleteJobOptions() {
     }
 
@@ -32,7 +30,6 @@ public final class CompleteJobOptions {
      *
      * @return the note value.
      */
-    @Generated
     public String getNote() {
         return this.note;
     }
@@ -43,7 +40,6 @@ public final class CompleteJobOptions {
      * @param note the note value to set.
      * @return the CompleteJobOptionsInternal object itself.
      */
-    @Generated
     public CompleteJobOptions setNote(String note) {
         this.note = note;
         return this;

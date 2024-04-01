@@ -35,7 +35,6 @@ public abstract class QueueSelectorAttachment {
     private String kind;
 
     /** Creates an instance of QueueSelectorAttachment class. */
-    @Generated
     public QueueSelectorAttachment() {}
 
     /**

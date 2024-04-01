@@ -20,7 +20,6 @@ public final class WeightedAllocationQueueSelectorAttachment extends QueueSelect
     /*
      * A collection of percentage based weighted allocations.
      */
-    @Generated
     @JsonProperty(value = "allocations")
     private List<QueueWeightedAllocation> allocations;
 
@@ -29,7 +28,6 @@ public final class WeightedAllocationQueueSelectorAttachment extends QueueSelect
      *
      * @param allocations the allocations value to set.
      */
-    @Generated
     @JsonCreator
     public WeightedAllocationQueueSelectorAttachment(
             @JsonProperty(value = "allocations") List<QueueWeightedAllocation> allocations) {
@@ -41,7 +39,6 @@ public final class WeightedAllocationQueueSelectorAttachment extends QueueSelect
      *
      * @return the allocations value.
      */
-    @Generated
     public List<QueueWeightedAllocation> getAllocations() {
         return this.allocations;
     }

@@ -15,7 +15,6 @@ public final class RouterQueueSelector {
     /*
      * The label key to query against
      */
-    @Generated
     @JsonProperty(value = "key")
     private String key;
 
@@ -23,7 +22,6 @@ public final class RouterQueueSelector {
      * Describes how the value of the label is compared to the value defined on the
      * label selector
      */
-    @Generated
     @JsonProperty(value = "labelOperator")
     private LabelOperator labelOperator;
 
@@ -39,7 +37,6 @@ public final class RouterQueueSelector {
      * @param key the key value to set.
      * @param labelOperator the labelOperator value to set.
      */
-    @Generated
     @JsonCreator
     public RouterQueueSelector(
             @JsonProperty(value = "key") String key,
@@ -53,7 +50,6 @@ public final class RouterQueueSelector {
      *
      * @return the key value.
      */
-    @Generated
     public String getKey() {
         return this.key;
     }
@@ -64,7 +60,6 @@ public final class RouterQueueSelector {
      *
      * @return the labelOperator value.
      */
-    @Generated
     public LabelOperator getLabelOperator() {
         return this.labelOperator;
     }

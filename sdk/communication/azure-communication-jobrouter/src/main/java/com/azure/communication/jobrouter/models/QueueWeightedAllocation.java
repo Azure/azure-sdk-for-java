@@ -16,7 +16,6 @@ public final class QueueWeightedAllocation {
     /*
      * The percentage of this weight, expressed as a fraction of 1.
      */
-    @Generated
     @JsonProperty(value = "weight")
     private double weight;
 
@@ -24,7 +23,6 @@ public final class QueueWeightedAllocation {
      * A collection of queue selectors that will be applied if this allocation is
      * selected.
      */
-    @Generated
     @JsonProperty(value = "queueSelectors")
     private List<RouterQueueSelector> queueSelectors;
 
@@ -34,7 +32,6 @@ public final class QueueWeightedAllocation {
      * @param weight the weight value to set.
      * @param queueSelectors the queueSelectors value to set.
      */
-    @Generated
     @JsonCreator
     public QueueWeightedAllocation(
             @JsonProperty(value = "weight") double weight,
@@ -48,7 +45,6 @@ public final class QueueWeightedAllocation {
      *
      * @return the weight value.
      */
-    @Generated
     public double getWeight() {
         return this.weight;
     }
@@ -59,7 +55,6 @@ public final class QueueWeightedAllocation {
      *
      * @return the queueSelectors value.
      */
-    @Generated
     public List<RouterQueueSelector> getQueueSelectors() {
         return this.queueSelectors;
     }

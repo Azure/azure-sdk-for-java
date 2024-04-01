@@ -16,19 +16,16 @@ public final class RouterWorkerState extends ExpandableStringEnum<RouterWorkerSt
     /**
      * Worker is active and available to take offers.
      */
-    @Generated
     public static final RouterWorkerState ACTIVE = fromString("active");
 
     /**
      * Worker is not active, if there are existing offers they are being revoked. No new offers are sent.
      */
-    @Generated
     public static final RouterWorkerState DRAINING = fromString("draining");
 
     /**
      * Worker is not active. No new offers are sent.
      */
-    @Generated
     public static final RouterWorkerState INACTIVE = fromString("inactive");
 
     /**
@@ -36,7 +33,6 @@ public final class RouterWorkerState extends ExpandableStringEnum<RouterWorkerSt
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public RouterWorkerState() {
     }
@@ -47,7 +43,6 @@ public final class RouterWorkerState extends ExpandableStringEnum<RouterWorkerSt
      * @param name a name to look for.
      * @return the corresponding RouterWorkerState.
      */
-    @Generated
     @JsonCreator
     public static RouterWorkerState fromString(String name) {
         return fromString(name, RouterWorkerState.class);
@@ -58,7 +53,6 @@ public final class RouterWorkerState extends ExpandableStringEnum<RouterWorkerSt
      *
      * @return known RouterWorkerState values.
      */
-    @Generated
     public static Collection<RouterWorkerState> values() {
         return values(RouterWorkerState.class);
     }

@@ -16,13 +16,11 @@ public final class RouterWorkerSelectorStatus extends ExpandableStringEnum<Route
     /**
      * Worker selector is valid.
      */
-    @Generated
     public static final RouterWorkerSelectorStatus ACTIVE = fromString("active");
 
     /**
      * Worker selector is not valid.
      */
-    @Generated
     public static final RouterWorkerSelectorStatus EXPIRED = fromString("expired");
 
     /**
@@ -30,7 +28,6 @@ public final class RouterWorkerSelectorStatus extends ExpandableStringEnum<Route
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public RouterWorkerSelectorStatus() {
     }
@@ -41,7 +38,6 @@ public final class RouterWorkerSelectorStatus extends ExpandableStringEnum<Route
      * @param name a name to look for.
      * @return the corresponding RouterWorkerSelectorStatus.
      */
-    @Generated
     @JsonCreator
     public static RouterWorkerSelectorStatus fromString(String name) {
         return fromString(name, RouterWorkerSelectorStatus.class);
@@ -52,7 +48,6 @@ public final class RouterWorkerSelectorStatus extends ExpandableStringEnum<Route
      *
      * @return known RouterWorkerSelectorStatus values.
      */
-    @Generated
     public static Collection<RouterWorkerSelectorStatus> values() {
         return values(RouterWorkerSelectorStatus.class);
     }

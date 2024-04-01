@@ -17,14 +17,12 @@ public final class UnassignJobResult {
     /*
      * Id of an unassigned job.
      */
-    @Generated
     @JsonProperty(value = "jobId")
     private String jobId;
 
     /*
      * The number of times a job is unassigned. At a maximum 3.
      */
-    @Generated
     @JsonProperty(value = "unassignmentCount")
     private int unassignmentCount;
 
@@ -34,7 +32,6 @@ public final class UnassignJobResult {
      * @param jobId the jobId value to set.
      * @param unassignmentCount the unassignmentCount value to set.
      */
-    @Generated
     @JsonCreator
     private UnassignJobResult(@JsonProperty(value = "jobId") String jobId,
         @JsonProperty(value = "unassignmentCount") int unassignmentCount) {
@@ -47,7 +44,6 @@ public final class UnassignJobResult {
      *
      * @return the jobId value.
      */
-    @Generated
     public String getJobId() {
         return this.jobId;
     }
@@ -57,7 +53,6 @@ public final class UnassignJobResult {
      *
      * @return the unassignmentCount value.
      */
-    @Generated
     public int getUnassignmentCount() {
         return this.unassignmentCount;
     }

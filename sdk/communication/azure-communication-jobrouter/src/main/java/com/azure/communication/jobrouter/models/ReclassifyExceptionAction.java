@@ -20,7 +20,6 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
      * (optional) The new classification policy that will determine queue, priority
      * and worker selectors.
      */
-    @Generated
     @JsonProperty(value = "classificationPolicyId")
     private String classificationPolicyId;
 
@@ -32,7 +31,6 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
     private Map<String, RouterValue> labelsToUpsert;
 
     /** Creates an instance of ReclassifyExceptionAction class. */
-    @Generated
     public ReclassifyExceptionAction() {}
 
     /**
@@ -41,7 +39,6 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
      *
      * @return the classificationPolicyId value.
      */
-    @Generated
     public String getClassificationPolicyId() {
         return this.classificationPolicyId;
     }
@@ -53,7 +50,6 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
      * @param classificationPolicyId the classificationPolicyId value to set.
      * @return the ReclassifyExceptionAction object itself.
      */
-    @Generated
     public ReclassifyExceptionAction setClassificationPolicyId(String classificationPolicyId) {
         this.classificationPolicyId = classificationPolicyId;
         return this;

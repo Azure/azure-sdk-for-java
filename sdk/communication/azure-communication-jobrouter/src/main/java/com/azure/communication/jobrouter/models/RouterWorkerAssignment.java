@@ -18,28 +18,24 @@ public final class RouterWorkerAssignment {
     /*
      * Id of the assignment.
      */
-    @Generated
     @JsonProperty(value = "assignmentId")
     private String assignmentId;
 
     /*
      * Id of the job assigned.
      */
-    @Generated
     @JsonProperty(value = "jobId")
     private String jobId;
 
     /*
      * The amount of capacity this assignment has consumed on the worker.
      */
-    @Generated
     @JsonProperty(value = "capacityCost")
     private int capacityCost;
 
     /*
      * The assignment time of the job in UTC.
      */
-    @Generated
     @JsonProperty(value = "assignedAt")
     private OffsetDateTime assignedAt;
 
@@ -51,7 +47,6 @@ public final class RouterWorkerAssignment {
      * @param capacityCost the capacityCost value to set.
      * @param assignedAt the assignedAt value to set.
      */
-    @Generated
     @JsonCreator
     private RouterWorkerAssignment(@JsonProperty(value = "assignmentId") String assignmentId,
         @JsonProperty(value = "jobId") String jobId, @JsonProperty(value = "capacityCost") int capacityCost,
@@ -67,7 +62,6 @@ public final class RouterWorkerAssignment {
      *
      * @return the assignmentId value.
      */
-    @Generated
     public String getAssignmentId() {
         return this.assignmentId;
     }
@@ -77,7 +71,6 @@ public final class RouterWorkerAssignment {
      *
      * @return the jobId value.
      */
-    @Generated
     public String getJobId() {
         return this.jobId;
     }
@@ -87,7 +80,6 @@ public final class RouterWorkerAssignment {
      *
      * @return the capacityCost value.
      */
-    @Generated
     public int getCapacityCost() {
         return this.capacityCost;
     }
@@ -97,7 +89,6 @@ public final class RouterWorkerAssignment {
      *
      * @return the assignedAt value.
      */
-    @Generated
     public OffsetDateTime getAssignedAt() {
         return this.assignedAt;
     }

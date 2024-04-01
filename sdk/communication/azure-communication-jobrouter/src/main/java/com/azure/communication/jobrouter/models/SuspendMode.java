@@ -19,7 +19,7 @@ public final class SuspendMode extends JobMatchingMode {
     /**
      * Creates an instance of SuspendMode class.
      */
-    @Generated
     public SuspendMode() {
+        this.kind = "suspend";
     }
 }

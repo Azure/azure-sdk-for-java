@@ -15,6 +15,5 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class DirectMapRouterRule extends RouterRule {
 
     /** Creates an instance of DirectMapRouterRule class. */
-    @Generated
     public DirectMapRouterRule() {}
 }

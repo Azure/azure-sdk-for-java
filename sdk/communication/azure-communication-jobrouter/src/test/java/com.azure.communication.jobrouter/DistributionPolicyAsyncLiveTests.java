@@ -32,14 +32,16 @@ public class DistributionPolicyAsyncLiveTests extends JobRouterTestBase {
             new BestWorkerMode()
                 .setMinConcurrentOffers(1)
                 .setMaxConcurrentOffers(10)
-        )
-            .setName(bestWorkerModeDistributionPolicyName);
+        ).setName(bestWorkerModeDistributionPolicyName);
 
         // Action
         DistributionPolicy result = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
 
         // Verify
         assertEquals(bestWorkerModeDistributionPolicyId, result.getId());
+        assertEquals(Duration.ofSeconds(10), result.getOfferExpiresAfter());
+        assertEquals(BestWorkerMode.class, result.getMode().getClass());
+        assertEquals(bestWorkerModeDistributionPolicyName, result.getName());
 
         // Cleanup
         administrationAsyncClient.deleteDistributionPolicy(bestWorkerModeDistributionPolicyId).block();

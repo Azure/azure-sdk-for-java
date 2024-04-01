@@ -17,35 +17,30 @@ public final class RouterJobPositionDetails {
     /*
      * Id of the job these details are about.
      */
-    @Generated
     @JsonProperty(value = "jobId")
     private String jobId;
 
     /*
      * Position of the job in question within that queue.
      */
-    @Generated
     @JsonProperty(value = "position")
     private int position;
 
     /*
      * Id of the queue this job is enqueued in.
      */
-    @Generated
     @JsonProperty(value = "queueId")
     private String queueId;
 
     /*
      * Length of the queue: total number of enqueued jobs.
      */
-    @Generated
     @JsonProperty(value = "queueLength")
     private int queueLength;
 
     /*
      * Estimated wait time of the job rounded up to the nearest minute.
      */
-    @Generated
     @JsonProperty(value = "estimatedWaitTimeMinutes")
     private double estimatedWaitTimeMinutes;
 
@@ -58,7 +53,6 @@ public final class RouterJobPositionDetails {
      * @param queueLength the queueLength value to set.
      * @param estimatedWaitTimeMinutes the estimatedWaitTimeMinutes value to set.
      */
-    @Generated
     @JsonCreator
     private RouterJobPositionDetails(@JsonProperty(value = "jobId") String jobId,
         @JsonProperty(value = "position") int position, @JsonProperty(value = "queueId") String queueId,
@@ -76,7 +70,6 @@ public final class RouterJobPositionDetails {
      *
      * @return the jobId value.
      */
-    @Generated
     public String getJobId() {
         return this.jobId;
     }
@@ -86,7 +79,6 @@ public final class RouterJobPositionDetails {
      *
      * @return the position value.
      */
-    @Generated
     public int getPosition() {
         return this.position;
     }
@@ -96,7 +88,6 @@ public final class RouterJobPositionDetails {
      *
      * @return the queueId value.
      */
-    @Generated
     public String getQueueId() {
         return this.queueId;
     }
@@ -106,7 +97,6 @@ public final class RouterJobPositionDetails {
      *
      * @return the queueLength value.
      */
-    @Generated
     public int getQueueLength() {
         return this.queueLength;
     }
@@ -116,7 +106,6 @@ public final class RouterJobPositionDetails {
      *
      * @return the estimatedWaitTimeMinutes value.
      */
-    @Generated
     public double getEstimatedWaitTimeMinutes() {
         return this.estimatedWaitTimeMinutes;
     }
