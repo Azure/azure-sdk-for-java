@@ -281,7 +281,8 @@ public final class CallConnectionAsync {
             TransferToParticipantRequestInternal request = new TransferToParticipantRequestInternal()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(transferCallToParticipantOptions.getTargetParticipant()))
                 .setOperationContext(transferCallToParticipantOptions.getOperationContext())
-                .setOperationCallbackUri(transferCallToParticipantOptions.getOperationCallbackUrl());
+                .setOperationCallbackUri(transferCallToParticipantOptions.getOperationCallbackUrl())
+                .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(transferCallToParticipantOptions.getSourceCallerIdNumber()));
 
             if (transferCallToParticipantOptions.getCustomCallingContext().getSipHeaders() != null || transferCallToParticipantOptions.getCustomCallingContext().getVoipHeaders() != null) {
                 request.setCustomCallingContext(new CustomCallingContext()

@@ -36,6 +36,11 @@ public final class TransferCallToParticipantOptions {
     private String operationContext;
 
     /**
+     * The SourceCallerIdNumber context
+     */
+    private PhoneNumberIdentifier sourceCallerIdNumber ;
+
+    /**
      * Constructor
      *
      * @param targetParticipant {@link CommunicationIdentifier} contains information for TransferTarget(to whom the call is transferred).
@@ -149,6 +154,26 @@ public final class TransferCallToParticipantOptions {
      */
     public TransferCallToParticipantOptions setOperationCallbackUrl(String operationCallbackUrl) {
         this.operationCallbackUrl = operationCallbackUrl;
+        return this;
+    }
+
+    /**
+     * Get the SourceCallerIdNumber .
+     *
+     * @return the SourceCallerIdNumber 
+     */
+    public PhoneNumberIdentifier getSourceCallerIdNumber() {
+        return sourceCallerIdNumber;
+    }
+
+    /**
+     * The phone number that will be used as the transferor(Contoso) caller id when transfering a call a pstn target.
+     *
+     * @param sourceCallerIdNumber the sourceCallerIdNumber  to set
+     * @return the TransferCallToParticipantOptions object itself.
+     */
+    public TransferCallToParticipantOptions setSourceCallerIdNumber(PhoneNumberIdentifier sourceCallerIdNumber) {
+        this.sourceCallerIdNumber = sourceCallerIdNumber;
         return this;
     }
 }
