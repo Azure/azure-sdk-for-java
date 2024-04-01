@@ -4,11 +4,14 @@
 package com.azure.ai.openai.unit;
 
 import com.azure.ai.openai.implementation.EmbeddingsUtils;
+import com.azure.core.util.BinaryData;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static com.azure.ai.openai.implementation.EmbeddingsUtils.addEncodingFormat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -34,5 +37,26 @@ public class EmbeddingItemUnitTests {
         for (int i = 0; i < expectedFloatList.size(); i++) {
             assertEquals(expectedFloatList.get(i).floatValue(), floats.get(i).floatValue());
         }
+    }
+
+    @Test
+    public void testBinaryDataHasNoEncodingFormat() throws JsonProcessingException {
+        // Arrange
+        String jsonWithoutEncodingFormat = "{\"input\":[\"Your text string goes here\"]}";
+        String expectedJson = "{\"input\":[\"Your text string goes here\"],\"encoding_format\":\"base64\"}";
+        // Act
+        BinaryData binaryData = addEncodingFormat(BinaryData.fromString(jsonWithoutEncodingFormat));
+        // Assert
+        assertEquals(expectedJson, binaryData.toString());
+    }
+
+    @Test
+    public void testBinaryDataHasEncodingFormat() throws JsonProcessingException {
+        // Arrange
+        String jsonWithEncodingFormat = "{\"input\":[\"Your text string goes here\"],\"encoding_format\":\"float\"}";
+        // Act
+        BinaryData binaryData = addEncodingFormat(BinaryData.fromString(jsonWithEncodingFormat));
+        // Assert
+        assertEquals(jsonWithEncodingFormat, binaryData.toString());
     }
 }

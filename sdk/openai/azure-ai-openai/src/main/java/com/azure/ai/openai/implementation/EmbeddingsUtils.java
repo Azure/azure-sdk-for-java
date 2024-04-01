@@ -23,9 +23,14 @@ public final class EmbeddingsUtils {
 
     // This method applies to both AOAI and OAI clients
     public static BinaryData addEncodingFormat(BinaryData inputJson) throws JsonProcessingException {
+
         JsonNode jsonNode = JSON_MAPPER.readTree(inputJson.toString());
         if (jsonNode instanceof ObjectNode) {
             ObjectNode objectNode = (ObjectNode) jsonNode;
+            if (objectNode.has("encoding_format")) {
+                return inputJson;
+            }
+
             objectNode.put("encoding_format", "base64");
             inputJson = BinaryData.fromBytes(objectNode.toString().getBytes(StandardCharsets.UTF_8));
         }
