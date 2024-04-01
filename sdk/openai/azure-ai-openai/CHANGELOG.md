@@ -5,7 +5,7 @@
 ### Features Added
 
 - Added support for service API version, `2024-03-01-preview`.
-- Added two new properties to `EmbeddingOptions`:
+- Added a new property to `EmbeddingOptions`:
   - `dimensions`, which is only supported in models `text-embedding-3-*` and above.
 - Added a new method to get base64 encoded string in `EmbeddingItem` class:
   - `getEmbeddingAsString` method returns the embedding as a base64 encoded string.
