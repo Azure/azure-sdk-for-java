@@ -144,9 +144,15 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
             if (shouldRetryException(err, tryCount, suppressed)) {
                 logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
 
+                boolean interrupted = false;
                 try {
                     Thread.sleep(calculateRetryDelay(tryCount).toMillis());
                 } catch (InterruptedException ie) {
+                    interrupted = true;
+                    err.addSuppressed(ie);
+                }
+
+                if (interrupted) {
                     throw LOGGER.logThrowableAsError(err);
                 }
 

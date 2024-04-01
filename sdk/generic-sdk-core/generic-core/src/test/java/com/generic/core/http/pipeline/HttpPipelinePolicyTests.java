@@ -8,10 +8,6 @@ import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.Response;
-import com.generic.core.http.pipeline.HttpPipeline;
-import com.generic.core.http.pipeline.HttpPipelineBuilder;
-import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
-import com.generic.core.http.pipeline.HttpPipelinePolicy;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
