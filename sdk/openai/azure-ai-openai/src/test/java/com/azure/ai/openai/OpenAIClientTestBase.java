@@ -551,8 +551,10 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
             assertNotNull(embedding);
             assertFalse(embedding.isEmpty());
 
-            String base64Embedding = item.getEmbeddingString();
+            String base64Embedding = item.getEmbeddingAsString();
             assertNotNull(base64Embedding);
+            String firstFloatValue = String.valueOf(embedding.get(0).floatValue());
+            assertTrue(!base64Embedding.contains(firstFloatValue));
         }
         assertNotNull(actual.getUsage());
     }

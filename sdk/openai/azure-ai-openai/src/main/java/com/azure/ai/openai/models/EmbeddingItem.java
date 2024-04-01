@@ -8,12 +8,10 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-import java.util.ArrayList;
-import java.util.Base64;
+
 import java.util.List;
+
+import static com.azure.ai.openai.implementation.EmbeddingsUtils.convertBase64ToFloatList;
 
 /**
  * Representation of a single embeddings relatedness comparison.
@@ -28,7 +26,7 @@ public final class EmbeddingItem {
     @JsonProperty(value = "embedding")
     private BinaryData embedding;
 
-    private final List<Float> embeddingFloatList;
+    private final String embeddingBase64;
 
     /**
      * Get the embedding property: List of embeddings value for the input prompt. These represent a measurement of the
@@ -37,7 +35,7 @@ public final class EmbeddingItem {
      * @return the embedding value.
      */
     public List<Float> getEmbedding() {
-        return embeddingFloatList;
+        return convertBase64ToFloatList(embeddingBase64);
     }
 
     /**
@@ -45,8 +43,8 @@ public final class EmbeddingItem {
      *
      * @return the embedding base64 encoded string.
      */
-    public String getEmbeddingString() {
-        return embedding.toString();
+    public String getEmbeddingAsString() {
+        return embeddingBase64;
     }
 
     /*
@@ -77,20 +75,6 @@ public final class EmbeddingItem {
         @JsonProperty(value = "index") int promptIndex) {
         this.embedding = embedding;
         this.promptIndex = promptIndex;
-        embeddingFloatList = convertBase64ToFloatList(embedding.toString());
-    }
-
-    private List<Float> convertBase64ToFloatList(String embedding) {
-        byte[] bytes = Base64.getDecoder().decode(embedding);
-        // View the raw binary data as floats (IEEE 754 binary32).
-        ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
-        byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
-        FloatBuffer floatBuffer = byteBuffer.asFloatBuffer();
-        // Copy the floats in the buffer to a List representing an embedding.
-        List<Float> floatList = new ArrayList<>(floatBuffer.remaining());
-        while (floatBuffer.hasRemaining()) {
-            floatList.add(floatBuffer.get());
-        }
-        return floatList;
+        embeddingBase64 = embedding.toString();
     }
 }

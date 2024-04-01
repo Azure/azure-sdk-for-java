@@ -33,6 +33,8 @@ import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 
+import static com.azure.ai.openai.implementation.EmbeddingsUtils.addEncodingFormat;
+
 /**
  * Implementation for calling Non-Azure OpenAI Service
  */
@@ -477,18 +479,20 @@ public final class NonAzureOpenAIClientImpl {
 
         // modelId is part of the request body in nonAzure OpenAI
         try {
-            BinaryData embeddingsOptionsUpdated = addModelIdJson(embeddingsOptions, modelId);
-            return FluxUtil.withContext(
-                context ->
-                    service.getEmbeddings(
-                        OPEN_AI_ENDPOINT,
-                        accept,
-                        embeddingsOptionsUpdated,
-                        requestOptions,
-                        context));
+            embeddingsOptions = addEncodingFormat(embeddingsOptions);
+            embeddingsOptions = addModelIdJson(embeddingsOptions, modelId);
         } catch (JsonProcessingException e) {
             return Mono.error(e);
         }
+        final BinaryData embeddingsOptionsUpdated = embeddingsOptions;
+        return FluxUtil.withContext(
+                context ->
+                        service.getEmbeddings(
+                                OPEN_AI_ENDPOINT,
+                                accept,
+                                embeddingsOptionsUpdated,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -545,16 +549,18 @@ public final class NonAzureOpenAIClientImpl {
 
         // modelId is part of the request body in nonAzure OpenAI
         try {
-            BinaryData embeddingsOptionsUpdated = addModelIdJson(embeddingsOptions, modelId);
-            return service.getEmbeddingsSync(
+            embeddingsOptions = addEncodingFormat(embeddingsOptions);
+            embeddingsOptions = addModelIdJson(embeddingsOptions, modelId);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        BinaryData embeddingsOptionsUpdated = embeddingsOptions;
+        return service.getEmbeddingsSync(
                 OPEN_AI_ENDPOINT,
                 accept,
                 embeddingsOptionsUpdated,
                 requestOptions,
                 Context.NONE);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     /**

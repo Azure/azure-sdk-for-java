@@ -8,7 +8,7 @@
 - Added two new properties to `EmbeddingOptions`:
   - `dimensions`, which is only supported in models `text-embedding-3-*` and above.
 - Added a new method to get base64 encoded string in `EmbeddingItem` class:
-  - `getEmbeddingString` method returns the embedding as a base64 encoded string.
+  - `getEmbeddingAsString` method returns the embedding as a base64 encoded string.
 - Added a new overload `getChatCompletionsStreamWithResponse` that takes `RequestOptions` to provide the flexibility to
   modify the HTTP request.
 
