@@ -30,6 +30,8 @@ public final class XmlReader implements AutoCloseable {
     private final XMLStreamReader reader;
 
     private XmlToken currentToken;
+    private boolean needToReadElementString = true;
+    private String currentElementString;
 
     /**
      * Creates an {@link XMLStreamReader}-based {@link XmlReader} that parses the passed {@code xml}.
@@ -152,6 +154,8 @@ public final class XmlReader implements AutoCloseable {
         }
 
         currentToken = convertEventToToken(next);
+        needToReadElementString = true;
+        currentElementString = null;
         return currentToken;
     }
 
@@ -301,6 +305,9 @@ public final class XmlReader implements AutoCloseable {
         //
         // This logic continues to work even if the underlying XMLStreamReader implementation, such as the one
         // used in Jackson XML through Woodstox, handles this already.
+        if (!needToReadElementString) {
+            return currentElementString;
+        }
 
         int readCount = 0;
         String firstRead = null;
@@ -344,17 +351,20 @@ public final class XmlReader implements AutoCloseable {
         }
 
         if (readCount == 0) {
-            return null;
+            currentElementString = null;
         } else if (readCount == 1) {
-            return firstRead;
+            currentElementString = firstRead;
         } else {
             StringBuilder finalText = new StringBuilder(stringBufferSize);
             for (int i = 0; i < readCount; i++) {
                 finalText.append(buffer[i]);
             }
 
-            return finalText.toString();
+            currentElementString = finalText.toString();
         }
+
+        needToReadElementString = false;
+        return currentElementString;
     }
 
     /**
