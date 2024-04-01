@@ -31,9 +31,9 @@ import static com.generic.core.util.configuration.Configuration.PROPERTY_REQUEST
 /**
  * A pipeline policy that retries when a recoverable HTTP error or exception occurs.
  */
-public class RetryPolicy implements HttpPipelinePolicy {
+public class HttpRetryPolicy implements HttpPipelinePolicy {
     // RetryPolicy is a commonly used policy, use a static logger.
-    private static final ClientLogger LOGGER = new ClientLogger(RetryPolicy.class);
+    private static final ClientLogger LOGGER = new ClientLogger(HttpRetryPolicy.class);
     private final int maxRetries;
     private final Function<HttpHeaders, Duration> delayFromHeaders;
     private final Duration baseDelay;
@@ -66,26 +66,26 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Creates {@link RetryPolicy} using exponential backoff delay, defaulting to
+     * Creates {@link HttpRetryPolicy} using exponential backoff delay, defaulting to
      * three retries, a base delay of 800 milliseconds, and a maximum delay of 8 seconds.
      */
-    public RetryPolicy() {
+    public HttpRetryPolicy() {
         this(DEFAULT_BASE_DELAY, DEFAULT_MAX_DELAY, null, DEFAULT_MAX_RETRIES, null, null);
     }
 
     /**
-     * Creates a {@link RetryPolicy} with the provided {@link HttpRetryOptions}.
+     * Creates a {@link HttpRetryPolicy} with the provided {@link HttpRetryOptions}.
      *
-     * @param retryOptions The {@link HttpRetryOptions} used to configure this {@link RetryPolicy}.
+     * @param retryOptions The {@link HttpRetryOptions} used to configure this {@link HttpRetryPolicy}.
      * @throws NullPointerException If {@code retryOptions} is null.
      */
-    public RetryPolicy(HttpRetryOptions retryOptions) {
+    public HttpRetryPolicy(HttpRetryOptions retryOptions) {
         this(retryOptions.getBaseDelay(), retryOptions.getMaxDelay(), retryOptions.getFixedDelay(),
             retryOptions.getMaxRetries(), retryOptions.getDelayFromHeaders(), retryOptions.getShouldRetryCondition());
     }
 
     /**
-     * Creates {@link RetryPolicy} with the provided {@link HttpRetryOptions}.
+     * Creates {@link HttpRetryPolicy} with the provided {@link HttpRetryOptions}.
      * <p>
      * By default, the retry policy uses an exponential backoff delay. If both 'fixedDelay' and 'baseDelay' are null,
      * the 'baseDelay' is set to 800 milliseconds and the 'maxDelay' if not provided is set to 8 seconds.
@@ -99,8 +99,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * @throws NullPointerException If {@code retryStrategy} is null or when {@code retryAfterTimeUnit} is null and
      * {@code retryAfterHeader} is not null.
      */
-    RetryPolicy(Duration baseDelay, Duration maxDelay, Duration fixedDelay, int maxRetries,
-                Function<HttpHeaders, Duration> delayFromHeaders, Predicate<HttpRequestRetryCondition> shouldRetryCondition) {
+    HttpRetryPolicy(Duration baseDelay, Duration maxDelay, Duration fixedDelay, int maxRetries,
+                    Function<HttpHeaders, Duration> delayFromHeaders, Predicate<HttpRequestRetryCondition> shouldRetryCondition) {
         if (fixedDelay == null && baseDelay == null) {
             this.baseDelay = DEFAULT_BASE_DELAY;
             this.maxDelay = DEFAULT_MAX_DELAY;

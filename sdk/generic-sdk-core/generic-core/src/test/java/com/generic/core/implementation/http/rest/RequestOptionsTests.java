@@ -3,6 +3,7 @@
 
 package com.generic.core.implementation.http.rest;
 
+import com.generic.core.http.models.HttpHeader;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpMethod;
@@ -39,8 +40,8 @@ public class RequestOptionsTests {
         final HttpRequest request = new HttpRequest(HttpMethod.POST, createUrl("http://request.url"));
 
         RequestOptions options = new RequestOptions()
-            .addHeader(X_MS_FOO, "bar")
-            .addHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
+            .addHeader(new HttpHeader(X_MS_FOO, "bar"))
+            .addHeader(new HttpHeader(HttpHeaderName.CONTENT_TYPE, "application/json"));
         options.getRequestCallback().accept(request);
 
         HttpHeaders headers = request.getHeaders();
@@ -69,7 +70,7 @@ public class RequestOptionsTests {
         final HttpRequest request = new HttpRequest(HttpMethod.POST, createUrl("http://request.url"));
 
         RequestOptions options = new RequestOptions()
-            .addHeader(X_MS_FOO, "bar")
+            .addHeader(new HttpHeader(X_MS_FOO, "bar"))
             .addRequestCallback(r -> r.setHttpMethod(HttpMethod.GET))
             .addRequestCallback(r -> r.setUrl("https://request.url"))
             .addQueryParam("$skipToken", "1")
