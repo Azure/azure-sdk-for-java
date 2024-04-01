@@ -98,7 +98,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         } catch (RuntimeException e) {
             createBasicLoggingContext(logger, ClientLogger.LogLevel.WARNING, httpRequest)
                 .log("HTTP FAILED", e);
-            throw e;
+            throw LOGGER.logThrowableAsError(e);
         }
     }
 
