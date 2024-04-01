@@ -22,13 +22,13 @@ import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
-public abstract class KafkaCosmosWriterBase implements IWriter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaCosmosWriterBase.class);
+public abstract class CosmosWriterBase implements IWriter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosWriterBase.class);
     private static final String ID = "id";
     private static final String ETAG = "_etag";
     private final ErrantRecordReporter errantRecordReporter;
 
-    public KafkaCosmosWriterBase(ErrantRecordReporter errantRecordReporter) {
+    public CosmosWriterBase(ErrantRecordReporter errantRecordReporter) {
         this.errantRecordReporter = errantRecordReporter;
     }
 

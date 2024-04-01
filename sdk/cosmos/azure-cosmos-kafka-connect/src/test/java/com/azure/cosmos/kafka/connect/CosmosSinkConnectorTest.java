@@ -4,6 +4,8 @@
 package com.azure.cosmos.kafka.connect;
 
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.kafka.connect.implementation.CosmosAuthTypes;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
 import com.azure.cosmos.kafka.connect.implementation.sink.IdStrategies;
@@ -153,13 +155,15 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
 
     @Test(groups = { "unit" })
     public void invalidThroughputControlConfig() {
+        CosmosSinkConnector sinkConnector = new CosmosSinkConnector();
+        // invalid targetThroughput, targetThroughputThreshold, priorityLevel config and missing required config for throughput control container info
         Map<String, String> sinkConfigMap = this.getValidSinkConfig();
         sinkConfigMap.put("kafka.connect.cosmos.throughputControl.enabled", "true");
         sinkConfigMap.put("kafka.connect.cosmos.throughputControl.targetThroughput", "-1");
         sinkConfigMap.put("kafka.connect.cosmos.throughputControl.targetThroughputThreshold", "-1");
         sinkConfigMap.put("kafka.connect.cosmos.throughputControl.priorityLevel", "None");
 
-        Config config = new CosmosSinkConnector().validate(sinkConfigMap);
+        Config config = sinkConnector.validate(sinkConfigMap);
         Map<String, List<String>> errorMessages = config.configValues().stream()
             .collect(Collectors.toMap(ConfigValue::name, ConfigValue::errorMessages));
         assertThat(errorMessages.get("kafka.connect.cosmos.throughputControl.name").size()).isGreaterThan(0);
@@ -168,6 +172,37 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         assertThat(errorMessages.get("kafka.connect.cosmos.throughputControl.priorityLevel").size()).isGreaterThan(0);
         assertThat(errorMessages.get("kafka.connect.cosmos.throughputControl.globalControl.database").size()).isGreaterThan(0);
         assertThat(errorMessages.get("kafka.connect.cosmos.throughputControl.globalControl.container").size()).isGreaterThan(0);
+
+        // invalid throughput control account config with masterKey auth
+        sinkConfigMap = this.getValidSinkConfig();
+        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.enabled", "true");
+        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.targetThroughput", "1");
+        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.globalControl.database", "ThroughputControlDatabase");
+        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.globalControl.container", "ThroughputControlContainer");
+        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.name", "groupName");
+        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.accountEndpoint", TestConfigurations.HOST);
+
+        config = sinkConnector.validate(sinkConfigMap);
+        errorMessages = config.configValues().stream()
+            .collect(Collectors.toMap(ConfigValue::name, ConfigValue::errorMessages));
+        assertThat(errorMessages.get("kafka.connect.cosmos.throughputControl.accountKey").size()).isGreaterThan(0);
+
+        // targetThroughputThreshold is not supported when using add auth for throughput control
+        sinkConfigMap = this.getValidSinkConfig();
+        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.enabled", "true");
+        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.targetThroughputThreshold", "0.9");
+        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.globalControl.database", "ThroughputControlDatabase");
+        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.globalControl.container", "ThroughputControlContainer");
+        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.name", "groupName");
+        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.accountEndpoint", TestConfigurations.HOST);
+        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.auth.type", CosmosAuthTypes.SERVICE_PRINCIPAL.getName());
+
+        config = sinkConnector.validate(sinkConfigMap);
+        errorMessages = config.configValues().stream()
+            .collect(Collectors.toMap(ConfigValue::name, ConfigValue::errorMessages));
+        assertThat(errorMessages.get("kafka.connect.cosmos.throughputControl.auth.aad.clientId").size()).isGreaterThan(0);
+        assertThat(errorMessages.get("kafka.connect.cosmos.throughputControl.auth.aad.clientSecret").size()).isGreaterThan(0);
+        assertThat(errorMessages.get("kafka.connect.cosmos.throughputControl.account.tenantId").size()).isGreaterThan(0);
     }
 
     private Map<String, String> getValidSinkConfig() {
@@ -183,13 +218,21 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
     public static class SinkConfigs {
         public static final List<KafkaCosmosConfigEntry<?>> ALL_VALID_CONFIGS = Arrays.asList(
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.accountEndpoint", null, false),
-            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.accountKey", null, false),
+            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.account.tenantId", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.auth.type", CosmosAuthTypes.MASTER_KEY.getName(), true),
+            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.accountKey", Strings.Emtpy, true, true),
+            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.auth.aad.clientId", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.auth.aad.clientSecret", Strings.Emtpy, true, true),
             new KafkaCosmosConfigEntry<Boolean>("kafka.connect.cosmos.useGatewayMode", false, true),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.preferredRegionsList", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.applicationName", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.enabled", false, true),
             new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.accountEndpoint", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.throughputControl.account.tenantId", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.throughputControl.auth.type", CosmosAuthTypes.MASTER_KEY.getName(), true),
             new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.accountKey", Strings.Emtpy, true, true),
+            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.throughputControl.auth.aad.clientId", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.throughputControl.auth.aad.clientSecret", Strings.Emtpy, true, true),
             new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.preferredRegionsList", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.useGatewayMode", false, true),
             new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.name", Strings.Emtpy, true),

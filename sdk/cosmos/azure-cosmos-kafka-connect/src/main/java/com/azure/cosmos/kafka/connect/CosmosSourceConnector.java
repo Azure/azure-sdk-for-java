@@ -368,8 +368,8 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
                 .stream()
                 .collect(Collectors.toMap(ConfigValue::name, Function.identity()));
 
-        validateCosmosAccountAuthConfig(connectorConfigs, configValues);
-        validateThroughputControlConfig(connectorConfigs, configValues);
+        validateCosmosAccountAuthConfig(configValues);
+        validateThroughputControlConfig(configValues);
         return config;
     }
 

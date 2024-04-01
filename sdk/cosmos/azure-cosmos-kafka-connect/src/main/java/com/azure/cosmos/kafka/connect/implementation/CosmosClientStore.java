@@ -12,8 +12,16 @@ import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
 import java.time.Duration;
+import java.util.Map;
 
 public class CosmosClientStore {
+    // TODO[Public Preview]: revalidate how to get the active directory endpoint map. It suppose to come from management SDK.
+    private final static Map<CosmosAzureEnvironments, String> activeDirectoryEndpointMap = Map.ofEntries(
+        Map.entry(CosmosAzureEnvironments.AZURE, "https://login.microsoftonline.com/"),
+        Map.entry(CosmosAzureEnvironments.AZURE_CHINA, "https://login.chinacloudapi.cn/"),
+        Map.entry(CosmosAzureEnvironments.AZURE_US_GOVERNMENT, "https://login.microsoftonline.us/"),
+        Map.entry(CosmosAzureEnvironments.AZURE_GERMANY, "https://login.microsoftonline.de/"));
+
     public static CosmosAsyncClient getCosmosClient(CosmosAccountConfig accountConfig) {
         if (accountConfig == null) {
             return null;
@@ -38,11 +46,14 @@ public class CosmosClientStore {
 
             CosmosAadAuthConfig aadAuthConfig = (CosmosAadAuthConfig) accountConfig.getCosmosAuthConfig();
             ClientSecretCredential tokenCredential = new ClientSecretCredentialBuilder()
+                .authorityHost(activeDirectoryEndpointMap.get(aadAuthConfig.getAzureEnvironment()).replaceAll("/$", "") +"/")
                 .tenantId(aadAuthConfig.getTenantId())
                 .clientId(aadAuthConfig.getClientId())
                 .clientSecret(aadAuthConfig.getClientSecret())
                 .build();
             cosmosClientBuilder.credential(tokenCredential);
+        } else {
+            throw new IllegalArgumentException("Authorization type " + accountConfig.getCosmosAuthConfig().getClass() + "is not supported");
         }
 
         return cosmosClientBuilder.buildAsyncClient();

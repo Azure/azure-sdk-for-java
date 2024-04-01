@@ -25,5 +25,4 @@ public enum CosmosAuthTypes {
         }
         return null;
     }
-
 }

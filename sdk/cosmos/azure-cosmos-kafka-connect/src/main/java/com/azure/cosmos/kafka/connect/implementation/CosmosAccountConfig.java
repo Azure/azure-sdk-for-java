@@ -12,7 +12,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 public class CosmosAccountConfig {
     private final String endpoint;
-    private final String tenantId;
     private final CosmosAuthConfig cosmosAuthConfig;
     private final String applicationName;
     private final boolean useGatewayMode;
@@ -20,7 +19,6 @@ public class CosmosAccountConfig {
 
     public CosmosAccountConfig(
         String endpoint,
-        String tenantId,
         CosmosAuthConfig cosmosAuthConfig,
         String applicationName,
         boolean useGatewayMode,
@@ -30,7 +28,6 @@ public class CosmosAccountConfig {
         checkNotNull(cosmosAuthConfig, "Argument 'cosmosAuthConfig' should not be null");
 
         this.endpoint = endpoint;
-        this.tenantId = tenantId;
         this.cosmosAuthConfig = cosmosAuthConfig;
         this.applicationName = applicationName;
         this.useGatewayMode = useGatewayMode;
@@ -39,10 +36,6 @@ public class CosmosAccountConfig {
 
     public String getEndpoint() {
         return endpoint;
-    }
-
-    public String getTenantId() {
-        return tenantId;
     }
 
     public CosmosAuthConfig getCosmosAuthConfig() {

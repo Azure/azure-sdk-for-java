@@ -82,8 +82,8 @@ public class CosmosSinkConnector extends SinkConnector {
                 .stream()
                 .collect(Collectors.toMap(ConfigValue::name, Function.identity()));
 
-        validateCosmosAccountAuthConfig(connectorConfigs, configValues);
-        validateThroughputControlConfig(connectorConfigs, configValues);
+        validateCosmosAccountAuthConfig(configValues);
+        validateThroughputControlConfig(configValues);
         return config;
     }
 }
