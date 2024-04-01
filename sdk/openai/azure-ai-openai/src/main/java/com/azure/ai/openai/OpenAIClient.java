@@ -876,7 +876,7 @@ public final class OpenAIClient {
         Response<BinaryData> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, data,
                 requestOptions)
-            : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, data,
+            : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, data, "",
                 requestOptions);
         return new SimpleResponse<>(response, response.getValue().toObject(AudioTranscription.class));
     }
@@ -964,12 +964,14 @@ public final class OpenAIClient {
 
         MultipartFormData formData = formDataContentBuilder.build();
         BinaryData data = formData.getRequestBody();
+        String contentType = formData.getContentType();
+
 
 
         Response<BinaryData> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, data,
                 requestOptions)
-            : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, data,
+            : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, data, "",
                 requestOptions);
         return new SimpleResponse<>(response, response.getValue().toString());
     }
@@ -1234,7 +1236,7 @@ public final class OpenAIClient {
         // Protocol API requires serialization of parts with content-disposition and data, as operation
         // 'getAudioTranscriptionAsPlainText' is 'multipart/form-data'
         return this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName,
-            audioTranscriptionOptions, requestOptions);
+            audioTranscriptionOptions, "", requestOptions);
     }
 
     /**

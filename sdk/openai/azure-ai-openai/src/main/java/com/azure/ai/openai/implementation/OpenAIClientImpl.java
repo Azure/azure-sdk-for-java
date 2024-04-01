@@ -419,8 +419,7 @@ public final class OpenAIClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAudioTranscriptionAsPlainTextWithResponse(String deploymentOrModelName,
-        BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
-        final String contentType = "multipart/form-data";
+        BinaryData audioTranscriptionOptions, String contentType, RequestOptions requestOptions) {
         final String accept = "text/plain, application/json";
         return service.getAudioTranscriptionAsPlainTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             deploymentOrModelName, contentType, accept, audioTranscriptionOptions, requestOptions, Context.NONE);

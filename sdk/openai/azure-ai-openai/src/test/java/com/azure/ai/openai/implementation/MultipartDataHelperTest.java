@@ -7,18 +7,16 @@ import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
 import com.azure.ai.openai.models.AudioTranslationFormat;
 import com.azure.ai.openai.models.AudioTranslationOptions;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.MultipartFormDataContentBuilder;
+import com.azure.core.util.MultipartFormDataBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Unit tests for {@link MultipartFormDataContentBuilder}
+ * Unit tests for {@link MultipartFormDataBuilder}
  */
 public class MultipartDataHelperTest {
 
@@ -26,7 +24,7 @@ public class MultipartDataHelperTest {
 
     @Test
     public void serializeAudioTranslationOptionsAllFields() {
-        MultipartFormDataContentBuilder helper = new MultipartFormDataContentBuilder(new RequestOptions(), TEST_BOUNDARY);
+        MultipartFormDataBuilder helper = new MultipartFormDataBuilder(TEST_BOUNDARY);
 
         byte[] file = new byte[] {73, 32, 115, 104, 111, 117, 108, 100, 32, 104, 97, 118, 101, 32, 116, 104, 111, 117,
             103, 104, 116, 32, 111, 102, 32, 97, 32, 103, 111, 111, 100, 32, 101, 97, 115, 116, 101, 114, 32, 101,
@@ -47,7 +45,7 @@ public class MultipartDataHelperTest {
                 .appendText("temperature", String.valueOf(translationOptions.getTemperature()))
                 .build();
 
-        BinaryData actual = helper.getContent();
+        BinaryData actual = helper.build().getRequestBody();
         String expected = multipartFileSegment(fileName, file)
                 + fieldFormData("response_format", "text")
                 + fieldFormData("model", "model_name")
@@ -60,7 +58,7 @@ public class MultipartDataHelperTest {
 
     @Test
     public void serializeAudioTranscriptionOptionsAllFields() {
-        MultipartFormDataContentBuilder helper = new MultipartFormDataContentBuilder(new RequestOptions(), TEST_BOUNDARY);
+        MultipartFormDataBuilder helper = new MultipartFormDataBuilder(TEST_BOUNDARY);
         byte[] file = new byte[] {73, 32, 115, 104, 111, 117, 108, 100, 32, 104, 97, 118, 101, 32, 116, 104, 111, 117,
             103, 104, 116, 32, 111, 102, 32, 97, 32, 103, 111, 111, 100, 32, 101, 97, 115, 116, 101, 114, 32, 101,
             103, 103};
@@ -82,7 +80,7 @@ public class MultipartDataHelperTest {
                 .appendText("language", transcriptionOptions.getLanguage())
                 .build();
 
-        BinaryData actual = helper.getContent();
+        BinaryData actual = helper.build().getRequestBody();
         String expected = multipartFileSegment(fileName, file)
                 + fieldFormData("response_format", "text")
                 + fieldFormData("model", "model_name")
@@ -97,13 +95,13 @@ public class MultipartDataHelperTest {
 
     @Test
     public void emptyPartsInBetweenFirstAndLastBoundaries() {
-        MultipartFormDataContentBuilder helper = new MultipartFormDataContentBuilder(new RequestOptions(), TEST_BOUNDARY);
+        MultipartFormDataBuilder helper = new MultipartFormDataBuilder(TEST_BOUNDARY);
         byte[] file = new byte[] {};
         String fileName = "file_name.wav";
 
         helper.appendFile("file", BinaryData.fromBytes(file), null, fileName)
                 .build();
-        BinaryData actual = helper.getContent();
+        BinaryData actual = helper.build().getRequestBody();
 
         String expected = multipartFileSegment(fileName, file)
                 + closingMarker();
