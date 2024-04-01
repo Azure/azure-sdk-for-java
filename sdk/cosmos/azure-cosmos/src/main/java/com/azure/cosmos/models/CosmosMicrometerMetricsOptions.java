@@ -325,7 +325,8 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
                 this.defaultPercentiles,
                 this.defaultShouldPublishHistograms,
                 EnumSet.noneOf(TagName.class),
-                this.defaultApplyDiagnosticThresholdsForTransportLevelMeters
+                this.defaultApplyDiagnosticThresholdsForTransportLevelMeters,
+                null
             ));
     }
 
