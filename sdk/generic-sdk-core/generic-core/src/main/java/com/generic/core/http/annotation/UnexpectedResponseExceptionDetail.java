@@ -25,7 +25,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <pre>
  * &#47;&#47; Set it so that all response exceptions use a custom exception type.
  *
- * &#64;UnexpectedResponseExceptionInformation&#40;exceptionBodyClass = MyCustomExceptionBody.class&#41;
+ * &#64;UnexpectedResponseExceptionDetail&#40;exceptionBodyClass = MyCustomExceptionBody.class&#41;
  * &#64;HttpRequestInformation&#40;method = HttpMethod.POST, path = &quot;subscriptions&#47;&#123;subscriptionId&#125;&#47;resourceGroups&#47;&quot;
  *     + &quot;&#123;resourceGroupName&#125;&#47;providers&#47;Microsoft.CustomerInsights&#47;hubs&#47;&#123;hubName&#125;&#47;images&#47;&quot;
  *     + &quot;getEntityTypeImageUploadUrl&quot;,
@@ -37,7 +37,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * &#47;&#47; Set it so 404 uses a specific exception type while others use a generic exception type.
  *
- * &#64;UnexpectedResponseExceptionInformation&#40;statusCode = &#123;404&#125;, exceptionBodyClass = MyCustomExceptionBody.class&#41;
+ * &#64;UnexpectedResponseExceptionDetail&#40;statusCode = &#123;404&#125;, exceptionBodyClass = MyCustomExceptionBody.class&#41;
  * &#64;HttpRequestInformation&#40;method = HttpMethod.POST, path = &quot;subscriptions&#47;&#123;subscriptionId&#125;&#47;resourceGroups&#47;&quot;
  *     + &quot;&#123;resourceGroupName&#125;&#47;providers&#47;Microsoft.CustomerInsights&#47;hubs&#47;&#123;hubName&#125;&#47;images&#47;&quot;
  *     + &quot;getEntityTypeImageUploadUrl&quot;,
@@ -54,8 +54,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Retention(RUNTIME)
 @Target(METHOD)
-@Repeatable(UnexpectedResponseExceptionInformationArray.class)
-public @interface UnexpectedResponseExceptionInformation {
+@Repeatable(UnexpectedResponseExceptionDetails.class)
+public @interface UnexpectedResponseExceptionDetail {
     /**
      * The name of the {@link HttpExceptionType} of an {@link HttpResponseException} that should be thrown/returned when
      * the API returns an unrecognized status code.

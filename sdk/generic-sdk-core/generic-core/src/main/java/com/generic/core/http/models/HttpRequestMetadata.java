@@ -13,7 +13,7 @@ import com.generic.core.util.Context;
  * and HTTP method.
  */
 public final class HttpRequestMetadata {
-    private Context context = Context.NONE;
+    private Context context = Context.EMPTY;
     private int retryCount;
     private ClientLogger requestLogger;
     private boolean eagerlyConvertHeaders;

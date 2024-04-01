@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 module com.generic.core {
-    requires io.clientcore.json;
+    requires transitive io.clientcore.json;
     requires transitive org.slf4j;
 
     // public API surface area

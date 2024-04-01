@@ -191,12 +191,12 @@ public class DefaultHttpClientTest {
             HttpHeaders responseHeaders = response.getHeaders();
             HttpHeader singleValueHeader = responseHeaders.get(singleValueHeaderName);
 
-            assertEquals(singleValueHeaderName.getCaseSensitiveName(), singleValueHeader.getName());
+            assertEquals(singleValueHeaderName.getCaseSensitiveName(), singleValueHeader.getName().toString());
             assertEquals(singleValueHeaderValue, singleValueHeader.getValue());
 
             HttpHeader multiValueHeader = responseHeaders.get(multiValueHeaderName);
 
-            assertEquals(multiValueHeaderName.getCaseSensitiveName(), multiValueHeader.getName());
+            assertEquals(multiValueHeaderName.getCaseSensitiveName(), multiValueHeader.getName().toString());
             assertEquals(multiValueHeaderValue.size(), multiValueHeader.getValues().size());
             assertTrue(multiValueHeaderValue.containsAll(multiValueHeader.getValues()));
         }
@@ -206,7 +206,7 @@ public class DefaultHttpClientTest {
     public void testBufferedResponse() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
-        try (Response<?> response = getResponse(client, "/short", Context.NONE)) {
+        try (Response<?> response = getResponse(client, "/short", Context.EMPTY)) {
             assertArrayEquals(SHORT_BODY, response.getBody().toBytes());
         }
     }
@@ -215,7 +215,7 @@ public class DefaultHttpClientTest {
     public void testEmptyBufferResponse() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
-        try (Response<?> response = getResponse(client, "/empty", Context.NONE)) {
+        try (Response<?> response = getResponse(client, "/empty", Context.EMPTY)) {
             assertEquals(0L, response.getBody().getLength());
         }
     }

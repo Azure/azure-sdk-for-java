@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 public class HttpHeader {
     private static final String[] EMPTY_HEADER_ARRAY = new String[0];
 
-    private final String name;
+    private final HttpHeaderName name;
 
     // This is the internal representation of a single value.
     private String value;
@@ -36,11 +36,11 @@ public class HttpHeader {
     /**
      * Create a Header instance using the provided name and value.
      *
-     * @param name the name of the header.
+     * @param name the {@link HttpHeaderName name} of the header.
      * @param value the value of the header.
      * @throws NullPointerException if {@code name} is null.
      */
-    public HttpHeader(String name, String value) {
+    public HttpHeader(HttpHeaderName name, String value) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
         this.value = value;
@@ -53,7 +53,7 @@ public class HttpHeader {
      * @param values the values of the header.
      * @throws NullPointerException if {@code name} is null.
      */
-    public HttpHeader(String name, String... values) {
+    public HttpHeader(HttpHeaderName name, String... values) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
         int length = values.length;
@@ -72,7 +72,7 @@ public class HttpHeader {
      * @param values the values of the header.
      * @throws NullPointerException if {@code name} is null.
      */
-    public HttpHeader(String name, List<String> values) {
+    public HttpHeader(HttpHeaderName name, List<String> values) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
         int size = values.size();
@@ -87,9 +87,9 @@ public class HttpHeader {
     /**
      * Gets the header name.
      *
-     * @return the name of this {@link HttpHeader}
+     * @return the {@link HttpHeaderName name} of this {@link HttpHeader}
      */
-    public String getName() {
+    public HttpHeaderName getName() {
         return name;
     }
 

@@ -156,12 +156,12 @@ public class OkHttpHttpClientTests {
         HttpHeaders responseHeaders = response.getHeaders();
         HttpHeader singleValueHeader = responseHeaders.get(singleValueHeaderName);
 
-        assertEquals(singleValueHeaderName.getCaseSensitiveName(), singleValueHeader.getName());
+        assertEquals(singleValueHeaderName.getCaseSensitiveName(), singleValueHeader.getName().toString());
         assertEquals(singleValueHeaderValue, singleValueHeader.getValue());
 
         HttpHeader multiValueHeader = responseHeaders.get(multiValueHeaderName);
 
-        assertEquals(multiValueHeaderName.getCaseSensitiveName(), multiValueHeader.getName());
+        assertEquals(multiValueHeaderName.getCaseSensitiveName(), multiValueHeader.getName().toString());
         assertLinesMatch(multiValueHeaderValue, multiValueHeader.getValues());
     }
 
