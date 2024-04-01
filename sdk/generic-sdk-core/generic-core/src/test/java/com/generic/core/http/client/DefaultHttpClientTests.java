@@ -27,7 +27,7 @@ public class DefaultHttpClientTests extends HttpClientTests {
         }
     }
     @Override
-    protected HttpClient createHttpClient() {
+    protected HttpClient getHttpClient() {
         return new DefaultHttpClientProvider().getInstance();
     }
 

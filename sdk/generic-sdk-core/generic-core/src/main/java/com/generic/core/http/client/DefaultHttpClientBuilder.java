@@ -22,7 +22,6 @@ public class DefaultHttpClientBuilder {
     private static final Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
 
-    private HttpClientProvider httpClientProvider;
     private Configuration configuration;
     private Duration connectionTimeout;
     private Duration readTimeout;
@@ -138,18 +137,12 @@ public class DefaultHttpClientBuilder {
     }
 
     /**
-     * Build an {@link HttpClient} with the current configuration. If an {@link HttpClientProvider} was set using
-     * {@link DefaultHttpClientBuilder#httpClientProvider} it will be used to create the {@link HttpClient}. Otherwise,
-     * a new {@link HttpClient} will be created using the configuration set in this
-     * {@link DefaultHttpClientBuilder builder}.
+     * Creates a new {@link HttpClient} instance on every call, using the configuration set in this builder at the time
+     * of the {@code build()} method call.
      *
-     * @return An {@link HttpClient}.
+     * @return A new {@link HttpClient} instance.
      */
     public HttpClient build() {
-        if (httpClientProvider != null) {
-            return httpClientProvider.getInstance();
-        }
-
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 

@@ -4,7 +4,6 @@
 package com.generic.core.http.okhttp;
 
 import com.generic.core.http.client.HttpClient;
-import com.generic.core.http.client.HttpClientProvider;
 import com.generic.core.http.models.ProxyOptions;
 import com.generic.core.http.okhttp.implementation.OkHttpProxySelector;
 import com.generic.core.http.okhttp.implementation.ProxyAuthenticator;
@@ -33,7 +32,6 @@ public class OkHttpHttpClientBuilder {
     private final okhttp3.OkHttpClient okHttpClient;
 
     private boolean followRedirects;
-    private HttpClientProvider httpClientProvider;
     private Configuration configuration;
     private ConnectionPool connectionPool;
     private Dispatcher dispatcher;
@@ -272,39 +270,12 @@ public class OkHttpHttpClientBuilder {
     }
 
     /**
-     * Sets the type of the {@link HttpClientProvider} implementation that should be used to construct an instance of
-     * {@link HttpClient}.
-     *
-     * <p>If the value isn't set or is an empty string the first {@link HttpClientProvider} resolved by
-     * {@link java.util.ServiceLoader} will be used to create an instance of {@link HttpClient}. If the value is set and
-     * doesn't match any {@link HttpClientProvider} resolved by {@link java.util.ServiceLoader} an
-     * {@link IllegalStateException} will be thrown when attempting to create an instance of {@link HttpClient}.</p>
-     *
-     * @param httpClientProvider The {@link HttpClientProvider} implementation used to create an instance of
-     * {@link HttpClient}.
-     *
-     * @return The updated {@link OkHttpHttpClientBuilder} object.
-     */
-    public OkHttpHttpClientBuilder setHttpClientProvider(HttpClientProvider httpClientProvider) {
-        this.httpClientProvider = httpClientProvider;
-
-        return this;
-    }
-
-    /**
-     * Creates a new OkHttp-backed {@link HttpClient} instance on every call, using the configuration set in the builder
-     * at the time of the build method call. If an {@link HttpClientProvider} was set using
-     * {@link OkHttpHttpClientBuilder#httpClientProvider} it will be used to create the {@link HttpClient}. Otherwise, a
-     * new {@link HttpClient} will be created using the configuration set in this
-     * {@link OkHttpHttpClientBuilder builder}.
+     * Creates a new OkHttp-backed {@link HttpClient} instance on every call, using the configuration set in this
+     * builder at the time of the {@code build()} method call.
      *
      * @return A new OkHttp-backed {@link HttpClient} instance.
      */
     public HttpClient build() {
-        if (this.httpClientProvider != null) {
-            return this.httpClientProvider.getInstance();
-        }
-
         OkHttpClient.Builder httpClientBuilder = this.okHttpClient == null
             ? new OkHttpClient.Builder()
             : this.okHttpClient.newBuilder();
