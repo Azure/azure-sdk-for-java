@@ -9,6 +9,7 @@ import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.common.TestUtils;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
@@ -49,6 +50,9 @@ public class AddressRepositoryIT {
 
     @Autowired
     AddressRepository repository;
+
+    @Autowired
+    CosmosConfig cosmosConfig;
 
     @Autowired
     private CosmosTemplate template;
@@ -301,5 +305,45 @@ public class AddressRepositoryIT {
         } catch (CosmosAccessException ex) {
             assertThat(ex.getCosmosException().getStatusCode()).isEqualTo(TestConstants.PRECONDITION_FAILED_STATUS_CODE);
         }
+    }
+
+    /*
+
+    @Test
+    public void queryDatabaseWithIndexMerticsEnabled() throws ClassNotFoundException {
+        final CosmosConfig config = CosmosConfig.builder()
+            .enableIndexMetrics(true)
+            .build();
+        final CosmosTemplate indexMetricsEnabledCosmosTemplate = createCosmosTemplate(config, TestConstants.DB_NAME);
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+
+        final long count = indexMetricsEnabledCosmosTemplate.count(query, containerName);
+
+        assertEquals((boolean) ReflectionTestUtils.getField(indexMetricsEnabledCosmosTemplate, "indexMetricsEnabled"), true);
+    }
+
+     */
+
+    @Test
+    public void queryDatabaseWithQueryMetricsEnabled() {
+        // Test flag is true
+        assertThat(cosmosConfig.isQueryMetricsEnabled()).isTrue();
+
+        // Make sure a query runs
+        final List<Address> result = TestUtils.toList(repository.findAll());
+        assertThat(result.size()).isEqualTo(4);
+    }
+
+    @Test
+    public void queryDatabaseWithIndexMetricsEnabled() {
+        // Test flag is true
+        assertThat(cosmosConfig.isIndexMetricsEnabled()).isTrue();
+
+        // Make sure a query runs
+        final List<Address> result = TestUtils.toList(repository.findAll());
+        assertThat(result.size()).isEqualTo(4);
     }
 }

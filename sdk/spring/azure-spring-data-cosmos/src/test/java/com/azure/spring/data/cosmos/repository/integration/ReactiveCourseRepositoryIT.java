@@ -7,6 +7,7 @@ import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestConstants;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Course;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
@@ -34,6 +35,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -70,6 +73,10 @@ public class ReactiveCourseRepositoryIT {
 
     @Autowired
     private ReactiveCourseRepository repository;
+
+    @Autowired
+    private CosmosConfig cosmosConfig;
+
     private CosmosEntityInformation<Course, ?> entityInformation;
 
     CosmosPatchOperations patchSetOperation = CosmosPatchOperations
@@ -377,5 +384,25 @@ public class ReactiveCourseRepositoryIT {
         Mono<Course> patchedCourse = repository.save(COURSE_ID_1, new PartitionKey(DEPARTMENT_NAME_3), Course.class, patchSetOperation, options);
         StepVerifier.create(patchedCourse).expectErrorMatches(ex -> ex instanceof CosmosAccessException &&
             ((CosmosAccessException) ex).getCosmosException().getStatusCode() == TestConstants.PRECONDITION_FAILED_STATUS_CODE).verify();
+    }
+
+    @Test
+    public void queryDatabaseWithQueryMetricsEnabled() {
+        // Test flag is true
+        assertThat(cosmosConfig.isQueryMetricsEnabled()).isTrue();
+
+        // Make sure a query runs
+        final Flux<Course> allFlux = repository.findAll();
+        StepVerifier.create(allFlux).expectNextCount(4).verifyComplete();
+    }
+
+    @Test
+    public void queryDatabaseWithIndexMetricsEnabled() {
+        // Test flag is true
+        assertThat(cosmosConfig.isIndexMetricsEnabled()).isTrue();
+
+        // Make sure a query runs
+        final Flux<Course> allFlux = repository.findAll();
+        StepVerifier.create(allFlux).expectNextCount(4).verifyComplete();
     }
 }
