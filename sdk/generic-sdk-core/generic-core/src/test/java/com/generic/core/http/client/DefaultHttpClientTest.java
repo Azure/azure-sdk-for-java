@@ -191,12 +191,12 @@ public class DefaultHttpClientTest {
             HttpHeaders responseHeaders = response.getHeaders();
             HttpHeader singleValueHeader = responseHeaders.get(singleValueHeaderName);
 
-            assertEquals(singleValueHeaderName.getCaseSensitiveName(), singleValueHeader.getName());
+            assertEquals(singleValueHeaderName.getCaseSensitiveName(), singleValueHeader.getName().toString());
             assertEquals(singleValueHeaderValue, singleValueHeader.getValue());
 
             HttpHeader multiValueHeader = responseHeaders.get(multiValueHeaderName);
 
-            assertEquals(multiValueHeaderName.getCaseSensitiveName(), multiValueHeader.getName());
+            assertEquals(multiValueHeaderName.getCaseSensitiveName(), multiValueHeader.getName().toString());
             assertEquals(multiValueHeaderValue.size(), multiValueHeader.getValues().size());
             assertTrue(multiValueHeaderValue.containsAll(multiValueHeader.getValues()));
         }

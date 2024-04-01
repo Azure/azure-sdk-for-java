@@ -11,10 +11,11 @@ import com.generic.core.http.annotation.HostParam;
 import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.annotation.QueryParam;
-import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
+import com.generic.core.http.annotation.UnexpectedResponseExceptionDetail;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.exception.HttpResponseException;
 import com.generic.core.http.models.ContentType;
+import com.generic.core.http.models.HttpHeader;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpLogOptions;
@@ -676,8 +677,7 @@ public abstract class HttpClientTests {
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything", json.url());
         assertNotNull(json.headers());
-
-        final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
+        HttpHeaders headers = toHttpHeaders(json.headers());
 
         assertEquals("A", headers.getValue(HEADER_A));
         assertListEquals(Collections.singletonList("A"), headers.getValues(HEADER_A));
@@ -689,8 +689,7 @@ public abstract class HttpClientTests {
     @Test
     public void getRequestWithNullHeader() {
         final HttpBinJSON json = createService(Service7.class).getAnything(getRequestUri(), null, 15);
-
-        final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
+        HttpHeaders headers = toHttpHeaders(json.headers());
 
         assertNull(headers.getValue(HEADER_A));
         assertListEquals(null, headers.getValues(HEADER_A));
@@ -729,7 +728,7 @@ public abstract class HttpClientTests {
         HttpBinJSON put(@HostParam("url") String url, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {200})
-        @UnexpectedResponseExceptionInformation(exceptionBodyClass = HttpBinJSON.class)
+        @UnexpectedResponseExceptionDetail(exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putBodyAndContentLength(@HostParam("url") String url,
                                             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) ByteBuffer body,
                                             @HeaderParam("Content-Length") long contentLength);
@@ -739,23 +738,23 @@ public abstract class HttpClientTests {
                                               @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {201})
-        @UnexpectedResponseExceptionInformation(exceptionBodyClass = HttpBinJSON.class)
+        @UnexpectedResponseExceptionDetail(exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putWithUnexpectedResponseAndExceptionType(@HostParam("url") String url,
                                                               @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {201})
-        @UnexpectedResponseExceptionInformation(statusCode = {200}, exceptionBodyClass = HttpBinJSON.class)
+        @UnexpectedResponseExceptionDetail(statusCode = {200}, exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putWithUnexpectedResponseAndDeterminedExceptionType(@HostParam("url") String url,
                                                                         @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {201})
-        @UnexpectedResponseExceptionInformation(statusCode = {400})
-        @UnexpectedResponseExceptionInformation(exceptionBodyClass = HttpBinJSON.class)
+        @UnexpectedResponseExceptionDetail(statusCode = {400})
+        @UnexpectedResponseExceptionDetail(exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putWithUnexpectedResponseAndFallthroughExceptionType(@HostParam("url") String url,
                                                                          @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {201})
-        @UnexpectedResponseExceptionInformation(statusCode = {400}, exceptionBodyClass = HttpBinJSON.class)
+        @UnexpectedResponseExceptionDetail(statusCode = {400}, exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putWithUnexpectedResponseAndNoFallthroughExceptionType(@HostParam("url") String url,
                                                                            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
@@ -895,13 +894,23 @@ public abstract class HttpClientTests {
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything", json.url());
         assertNotNull(json.headers());
-
-        final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
+        HttpHeaders headers = toHttpHeaders(json.headers());
 
         assertEquals("MyHeaderValue", headers.getValue(MY_HEADER));
         assertListEquals(Collections.singletonList("MyHeaderValue"), headers.getValues(MY_HEADER));
         assertEquals("My,Header,Value", headers.getValue(MY_OTHER_HEADER));
         assertListEquals(Arrays.asList("My", "Header", "Value"), headers.getValues(MY_OTHER_HEADER));
+    }
+
+    private static HttpHeaders toHttpHeaders(Map<String, List<String>> jsonHeaders) {
+        HttpHeaders headers = new HttpHeaders();
+        for (Map.Entry<String, List<String>> entry : jsonHeaders.entrySet()) {
+            HttpHeaderName headerName = HttpHeaderName.fromString(entry.getKey());
+            for (String value : entry.getValue()) {
+                headers.add(headerName, value);
+            }
+        }
+        return headers;
     }
 
     @ServiceInterface(name = "Service14", host = "{url}")
@@ -1498,7 +1507,7 @@ public abstract class HttpClientTests {
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
             .policies(new HttpLoggingPolicy(new HttpLogOptions()
-                .setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODYANDHEADERS)))
+                .setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY_AND_HEADERS)))
             .build();
 
         Response<HttpBinJSON> response =
@@ -1553,7 +1562,7 @@ public abstract class HttpClientTests {
 
         assertNotNull(result.headers());
 
-        final HttpHeaders resultHeaders = new HttpHeaders().setAll(result.headers());
+        HttpHeaders resultHeaders = toHttpHeaders(result.headers());
 
         assertEquals("GHIJ", resultHeaders.getValue(HttpHeaderName.fromString("ABCDEF")));
         assertEquals("45", resultHeaders.getValue(HttpHeaderName.fromString("ABC123")));
@@ -1614,7 +1623,7 @@ public abstract class HttpClientTests {
                         RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {200})
-        @UnexpectedResponseExceptionInformation(exceptionBodyClass = HttpBinJSON.class)
+        @UnexpectedResponseExceptionDetail(exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putBodyAndContentLength(@HostParam("url") String url,
                                             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) ByteBuffer body,
                                             @HeaderParam("Content-Length") long contentLength,
@@ -1652,7 +1661,7 @@ public abstract class HttpClientTests {
     public void requestOptionsAddAHeader() {
         Service27 service = createService(Service27.class);
         HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
-            new RequestOptions().addHeader(RANDOM_HEADER, "randomValue"));
+            new RequestOptions().addHeader(new HttpHeader(RANDOM_HEADER, "randomValue")));
 
         assertNotNull(response);
         assertNotNull(response.data());
@@ -1665,7 +1674,7 @@ public abstract class HttpClientTests {
     public void requestOptionsSetsAHeader() {
         Service27 service = createService(Service27.class);
         HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
-            new RequestOptions().addHeader(RANDOM_HEADER, "randomValue").setHeader(RANDOM_HEADER, "randomValue2"));
+            new RequestOptions().addHeader(new HttpHeader(RANDOM_HEADER, "randomValue")).setHeader(RANDOM_HEADER, "randomValue2"));
 
         assertNotNull(response);
         assertNotNull(response.data());

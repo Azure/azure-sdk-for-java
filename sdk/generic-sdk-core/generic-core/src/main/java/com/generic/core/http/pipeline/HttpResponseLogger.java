@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.implementation.http.policy;
+package com.generic.core.http.pipeline;
 
 import com.generic.core.http.models.Response;
-import com.generic.core.http.pipeline.HttpLoggingPolicy;
 import com.generic.core.util.ClientLogger;
 
 import java.time.Duration;

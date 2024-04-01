@@ -24,8 +24,8 @@ import java.util.function.Predicate;
  * A {@link HttpPipelinePolicy} that redirects a {@link HttpRequest} when an HTTP Redirect is received as a
  * {@link Response response}.
  */
-public final class RedirectPolicy implements HttpPipelinePolicy {
-    private static final ClientLogger LOGGER = new ClientLogger(RedirectPolicy.class);
+public final class HttpRedirectPolicy implements HttpPipelinePolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(HttpRedirectPolicy.class);
     private final int maxAttempts;
     private final Predicate<HttpRequestRedirectCondition> shouldRedirectCondition;
     private static final int DEFAULT_MAX_REDIRECT_ATTEMPTS = 3;
@@ -39,26 +39,26 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
     private final HttpHeaderName locationHeader;
 
     /**
-     * Creates {@link RedirectPolicy} with default with a maximum number of redirect attempts 3,
+     * Creates {@link HttpRedirectPolicy} with default with a maximum number of redirect attempts 3,
      * header name "Location" to locate the redirect url in the response headers and {@link HttpMethod#GET}
      * and {@link HttpMethod#HEAD} as allowed methods for performing the redirect.
      * This redirect policy uses the redirect status response code (301, 302, 307, 308) to determine if this request
      * should be redirected.
      */
-    public RedirectPolicy() {
+    public HttpRedirectPolicy() {
         this(new HttpRedirectOptions(DEFAULT_MAX_REDIRECT_ATTEMPTS, HttpHeaderName.LOCATION,
             DEFAULT_REDIRECT_ALLOWED_METHODS));
     }
 
     /**
-     * Creates {@link RedirectPolicy} with the provided {@code redirectOptions} to
+     * Creates {@link HttpRedirectPolicy} with the provided {@code redirectOptions} to
      * determine if this request should be redirected.
      *
      * @param redirectOptions The configured {@link HttpRedirectOptions} to modify redirect policy behavior.
      *
      * @throws NullPointerException When {@code redirectOptions} is {@code null}.
      */
-    public RedirectPolicy(HttpRedirectOptions redirectOptions) {
+    public HttpRedirectPolicy(HttpRedirectOptions redirectOptions) {
         Objects.requireNonNull(redirectOptions, "'redirectOptions' cannot be null.");
         this.maxAttempts = redirectOptions.getMaxAttempts();
         this.shouldRedirectCondition = redirectOptions.getShouldRedirectCondition();

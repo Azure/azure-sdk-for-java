@@ -3,11 +3,10 @@
 
 package com.generic.core.http.models;
 
-import com.generic.core.implementation.http.policy.HttpRequestLogger;
-import com.generic.core.implementation.http.policy.HttpResponseLogger;
+import com.generic.core.http.pipeline.HttpRequestLogger;
+import com.generic.core.http.pipeline.HttpResponseLogger;
 import com.generic.core.util.configuration.Configuration;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -22,7 +21,7 @@ import static com.generic.core.util.configuration.Configuration.getGlobalConfigu
  */
 public final class HttpLogOptions {
     private HttpLogDetailLevel logLevel;
-    private List<HttpHeaderName> allowedHeaderNames;
+    private Set<HttpHeaderName> allowedHeaderNames;
     private Set<String> allowedQueryParamNames;
     private HttpRequestLogger requestLogger;
     private HttpResponseLogger responseLogger;
@@ -59,7 +58,7 @@ public final class HttpLogOptions {
      */
     public HttpLogOptions() {
         logLevel = HttpLogDetailLevel.ENVIRONMENT_HTTP_LOG_DETAIL_LEVEL;
-        allowedHeaderNames = new ArrayList<>(DEFAULT_HEADERS_ALLOWLIST);
+        allowedHeaderNames = new HashSet<>(DEFAULT_HEADERS_ALLOWLIST);
         allowedQueryParamNames = new HashSet<>(DEFAULT_QUERY_PARAMS_ALLOWLIST);
     }
 
@@ -92,8 +91,8 @@ public final class HttpLogOptions {
      *
      * @return The list of allowed headers.
      */
-    public List<HttpHeaderName> getAllowedHeaderNames() {
-        return Collections.unmodifiableList(allowedHeaderNames);
+    public Set<HttpHeaderName> getAllowedHeaderNames() {
+        return Collections.unmodifiableSet(allowedHeaderNames);
     }
 
     /**
@@ -110,8 +109,8 @@ public final class HttpLogOptions {
      *
      * @return The updated HttpLogOptions object.
      */
-    public HttpLogOptions setAllowedHeaderNames(final List<HttpHeaderName> allowedHeaderNames) {
-        this.allowedHeaderNames = allowedHeaderNames == null ? new ArrayList<>() : allowedHeaderNames;
+    public HttpLogOptions setAllowedHeaderNames(final Set<HttpHeaderName> allowedHeaderNames) {
+        this.allowedHeaderNames = allowedHeaderNames == null ? new HashSet<>() : allowedHeaderNames;
 
         return this;
     }
@@ -248,7 +247,7 @@ public final class HttpLogOptions {
         /**
          * Logs everything in HEADERS and BODY.
          */
-        BODYANDHEADERS;
+        BODY_AND_HEADERS;
 
         static final String BASIC_VALUE = "basic";
         static final String HEADERS_VALUE = "headers";
@@ -271,7 +270,7 @@ public final class HttpLogOptions {
             } else if (BODY_AND_HEADERS_VALUE.equalsIgnoreCase(detailLevel)
                 || BODYANDHEADERS_VALUE.equalsIgnoreCase(detailLevel)) {
 
-                logDetailLevel = BODYANDHEADERS;
+                logDetailLevel = BODY_AND_HEADERS;
             } else {
                 logDetailLevel = NONE;
             }
@@ -294,7 +293,7 @@ public final class HttpLogOptions {
          * @return Whether headers should be logged.
          */
         public boolean shouldLogHeaders() {
-            return this == HEADERS || this == BODYANDHEADERS;
+            return this == HEADERS || this == BODY_AND_HEADERS;
         }
 
         /**
@@ -303,7 +302,7 @@ public final class HttpLogOptions {
          * @return Whether a body should be logged.
          */
         public boolean shouldLogBody() {
-            return this == BODY || this == BODYANDHEADERS;
+            return this == BODY || this == BODY_AND_HEADERS;
         }
     }
 }

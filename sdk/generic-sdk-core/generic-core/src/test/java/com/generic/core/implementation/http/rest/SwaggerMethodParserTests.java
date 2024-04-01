@@ -11,7 +11,7 @@ import com.generic.core.http.annotation.HostParam;
 import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.annotation.QueryParam;
-import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
+import com.generic.core.http.annotation.UnexpectedResponseExceptionDetail;
 import com.generic.core.http.exception.HttpExceptionType;
 import com.generic.core.http.models.HttpHeader;
 import com.generic.core.http.models.HttpHeaderName;
@@ -190,7 +190,7 @@ public class SwaggerMethodParserTests {
         swaggerMethodParser.setHeaders(null, actual, DEFAULT_SERIALIZER);
 
         for (HttpHeader header : actual) {
-            assertEquals(expectedHeaders.getValue(HttpHeaderName.fromString(header.getName())), header.getValue());
+            assertEquals(expectedHeaders.getValue(header.getName()), header.getValue());
         }
     }
 
@@ -404,7 +404,7 @@ public class SwaggerMethodParserTests {
 
     @ParameterizedTest
     @MethodSource("headerSubstitutionSupplier")
-    public void headerSubstitution(Method method, Object[] arguments, Map<String, String> expectedHeaders) {
+    public void headerSubstitution(Method method, Object[] arguments, Map<HttpHeaderName, String> expectedHeaders) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         HttpHeaders actual = new HttpHeaders();
@@ -421,14 +421,14 @@ public class SwaggerMethodParserTests {
         Method overrideHeaders = clazz.getDeclaredMethod("overrideHeaders", String.class, boolean.class);
         Method headerMap = clazz.getDeclaredMethod("headerMap", Map.class);
 
-        Map<String, String> simpleHeaderMap = Collections.singletonMap("key", "value");
-        Map<String, String> expectedSimpleHeadersMap = Collections.singletonMap("x-ms-meta-key", "value");
+        Map<HttpHeaderName, String> simpleHeaderMap = Collections.singletonMap(HttpHeaderName.fromString("key"), "value");
+        Map<HttpHeaderName, String> expectedSimpleHeadersMap = Collections.singletonMap(HttpHeaderName.fromString("x-ms-meta-key"), "value");
 
         Map<String, String> complexHeaderMap = new HttpHeaders()
             .set(HttpHeaderName.fromString("key1"), (String) null)
             .set(HttpHeaderName.fromString("key2"), "value2")
             .toMap();
-        Map<String, String> expectedComplexHeaderMap = Collections.singletonMap("x-ms-meta-key2", "value2");
+        Map<HttpHeaderName, String> expectedComplexHeaderMap = Collections.singletonMap(HttpHeaderName.fromString("x-ms-meta-key2"), "value2");
 
         return Stream.of(
             Arguments.of(addHeaders, null, null),
@@ -542,7 +542,7 @@ public class SwaggerMethodParserTests {
             .setBody(BinaryData.fromString("{\"id\":\"123\"}"));
 
         RequestOptions headerQueryOptions = new RequestOptions()
-            .addHeader(HttpHeaderName.fromString("x-ms-foo"), "bar")
+            .addHeader(new HttpHeader(HttpHeaderName.fromString("x-ms-foo"), "bar"))
             .addQueryParam("foo", "bar");
 
         RequestOptions urlOptions = new RequestOptions()
@@ -611,12 +611,12 @@ public class SwaggerMethodParserTests {
         void noUnexpectedStatusCodes();
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
-        @UnexpectedResponseExceptionInformation(exceptionTypeName = "RESOURCE_NOT_FOUND", statusCode = {400, 404})
+        @UnexpectedResponseExceptionDetail(exceptionTypeName = "RESOURCE_NOT_FOUND", statusCode = {400, 404})
         void notFoundStatusCode();
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
-        @UnexpectedResponseExceptionInformation(exceptionTypeName = "RESOURCE_NOT_FOUND", statusCode = {400, 404})
-        @UnexpectedResponseExceptionInformation(exceptionTypeName = "RESOURCE_MODIFIED")
+        @UnexpectedResponseExceptionDetail(exceptionTypeName = "RESOURCE_NOT_FOUND", statusCode = {400, 404})
+        @UnexpectedResponseExceptionDetail(exceptionTypeName = "RESOURCE_MODIFIED")
         void customDefault();
     }
 
@@ -751,13 +751,13 @@ public class SwaggerMethodParserTests {
         return objects;
     }
 
-    private static Map<String, String> createExpectedParameters(String sub1Value, boolean sub2Value) {
-        Map<String, String> expectedParameters = new HashMap<>();
+    private static Map<HttpHeaderName, String> createExpectedParameters(String sub1Value, boolean sub2Value) {
+        Map<HttpHeaderName, String> expectedParameters = new HashMap<>();
         if (sub1Value != null) {
-            expectedParameters.put("sub1", sub1Value);
+            expectedParameters.put(HttpHeaderName.fromString("sub1"), sub1Value);
         }
 
-        expectedParameters.put("sub2", String.valueOf(sub2Value));
+        expectedParameters.put(HttpHeaderName.fromString("sub2"), String.valueOf(sub2Value));
 
         return expectedParameters;
     }
