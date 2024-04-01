@@ -69,6 +69,11 @@ import java.util.stream.Collectors;
 
 /**
  * Test base for resource manager SDK.
+ * <p>
+ * For LIVE/RECORD test, dev should
+ * 1. Sign-in Azure with CLI ("az login").
+ * 2. AZURE_TENANT_ID environment variable is set.
+ * 3. AZURE_SUBSCRIPTION_ID environment variable is set.
  */
 public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase {
     private static final String ZERO_UUID = "00000000-0000-0000-0000-000000000000";
