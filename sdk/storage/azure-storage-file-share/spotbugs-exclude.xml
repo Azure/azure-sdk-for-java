@@ -15,9 +15,14 @@
       <Class name="com.azure.storage.file.share.implementation.models.FilesAndDirectoriesListSegment" />
       <Class name="com.azure.storage.file.share.implementation.models.FilesDownloadHeaders" />
       <Class name="com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders" />
+      <Class name="com.azure.storage.file.share.implementation.models.HandleItem" />
+      <Class name="com.azure.storage.file.share.implementation.models.ListHandlesResponse" />
+      <Class name="com.azure.storage.file.share.implementation.models.ListSharesResponse" />
       <Class name="com.azure.storage.file.share.implementation.models.ShareItemInternal" />
       <Class name="com.azure.storage.file.share.implementation.models.SharePropertiesInternal" />
+      <Class name="com.azure.storage.file.share.implementation.models.ShareSignedIdentifierWrapper" />
       <Class name="com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders" />
+      <Class name="com.azure.storage.file.share.models.HandleItem" />
       <Class name="com.azure.storage.file.share.models.ShareDirectoryInfo" />
       <Class name="com.azure.storage.file.share.models.ShareDirectoryProperties" />
       <Class name="com.azure.storage.file.share.models.ShareFileInfo" />
@@ -26,6 +31,7 @@
       <Class name="com.azure.storage.file.share.models.ShareFileRangeList" />
       <Class name="com.azure.storage.file.share.models.ShareItem" />
       <Class name="com.azure.storage.file.share.models.ShareProperties" />
+      <Class name="com.azure.storage.file.share.models.ShareServiceProperties" />
       <Class name="com.azure.storage.file.share.options.ShareCreateOptions" />
       <Class name="com.azure.storage.file.share.options.ShareDirectoryCreateOptions" />
       <Class name="com.azure.storage.file.share.options.ShareFileCopyOptions" />
@@ -44,9 +50,14 @@
       <Class name="com.azure.storage.file.share.implementation.models.FilesAndDirectoriesListSegment" />
       <Class name="com.azure.storage.file.share.implementation.models.FilesDownloadHeaders" />
       <Class name="com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders" />
+      <Class name="com.azure.storage.file.share.implementation.models.HandleItem" />
+      <Class name="com.azure.storage.file.share.implementation.models.ListHandlesResponse" />
+      <Class name="com.azure.storage.file.share.implementation.models.ListSharesResponse" />
       <Class name="com.azure.storage.file.share.implementation.models.ShareItemInternal" />
       <Class name="com.azure.storage.file.share.implementation.models.SharePropertiesInternal" />
+      <Class name="com.azure.storage.file.share.implementation.models.ShareSignedIdentifierWrapper" />
       <Class name="com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders" />
+      <Class name="com.azure.storage.file.share.models.HandleItem" />
       <Class name="com.azure.storage.file.share.models.ShareDirectoryInfo" />
       <Class name="com.azure.storage.file.share.models.ShareDirectoryProperties" />
       <Class name="com.azure.storage.file.share.models.ShareFileInfo" />
@@ -55,6 +66,7 @@
       <Class name="com.azure.storage.file.share.models.ShareFileRangeList" />
       <Class name="com.azure.storage.file.share.models.ShareItem" />
       <Class name="com.azure.storage.file.share.models.ShareProperties" />
+      <Class name="com.azure.storage.file.share.models.ShareServiceProperties" />
       <Class name="com.azure.storage.file.share.options.ShareCreateOptions" />
       <Class name="com.azure.storage.file.share.options.ShareDirectoryCreateOptions" />
       <Class name="com.azure.storage.file.share.options.ShareFileCopyOptions" />
@@ -79,9 +91,6 @@
   </Match>
   <Match>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD" />
-    <Or>
-      <Class name="com.azure.storage.file.share.implementation.models.HandleItem" />
-      <Class name="com.azure.storage.file.share.models.HandleItem" />
-    </Or>
+    <Class name="com.azure.storage.file.share.models.HandleItem" />
   </Match>
 </FindBugsFilter>

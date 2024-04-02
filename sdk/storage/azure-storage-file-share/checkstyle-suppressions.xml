@@ -8,12 +8,14 @@
   <suppress files="com.azure.storage.file.share.implementation.FilesImpl.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.storage.file.share.implementation.ServicesImpl.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.storage.file.share.implementation.SharesImpl.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.storage.file.share.implementation.models.ShareSignedIdentifierWrapper.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.storage.file.share.implementation.util.ModelHelper.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.storage.file.share.implementation.models.InternalShareFileItemProperties.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.storage.file.share.implementation.util.ModelHelper.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.storage.file.share.implementation.FilesImpl.java" checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" />
   <suppress files="com.azure.storage.file.share.implementation.models.FilesUploadRangeFromURLHeaders.java" checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" />
   <suppress files="com.azure.storage.file.share.implementation.util.ShareSasImplUtil.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
+  <suppress files="com.azure.storage.file.share.implementation.models.ShareSignedIdentifierWrapper.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
   <suppress files="com.azure.storage.file.share.implementation.util.ModelHelper.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
   <suppress files="com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.java" checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" />
 </suppressions>
