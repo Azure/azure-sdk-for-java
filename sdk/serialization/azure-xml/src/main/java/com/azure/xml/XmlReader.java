@@ -587,7 +587,8 @@ public final class XmlReader implements AutoCloseable {
         return readObject(new QName(namespaceUri, localName), converter);
     }
 
-    private <T> T readObject(QName startTagName, XmlReadValueCallback<XmlReader, T> converter) throws XMLStreamException {
+    private <T> T readObject(QName startTagName, XmlReadValueCallback<XmlReader, T> converter)
+        throws XMLStreamException {
         if (currentToken() != XmlToken.START_ELEMENT) {
             nextElement();
         }

@@ -104,8 +104,8 @@ public abstract class XmlReaderContractTests {
     // Byte arrays can't use Object.equals as they'll be compared by memory location instead of value equality.
     @ParameterizedTest
     @MethodSource("binaryElementOperationsSupplier")
-    public void binaryElementOperations(String xml, byte[] expectedValue, XmlReadValueCallback<XmlReader, byte[]> function)
-        throws XMLStreamException {
+    public void binaryElementOperations(String xml, byte[] expectedValue,
+        XmlReadValueCallback<XmlReader, byte[]> function) throws XMLStreamException {
         XmlReader reader = getXmlReader(xml);
         reader.nextElement(); // Initialize the XmlReader for reading.
 
