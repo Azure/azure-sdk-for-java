@@ -209,21 +209,21 @@ class DefaultHttpClient implements HttpClient {
         HttpResponse<?> httpResponse = createHttpResponse(httpRequest, connection);
 
         if (isTextEventStream(responseHeaders)) {
-            ServerSentEventListener listener = httpRequest.getServerSentEventListener();
+            try {
+                ServerSentEventListener listener = httpRequest.getServerSentEventListener();
 
-            if (listener == null) {
-                throw LOGGER.logThrowableAsError(new RuntimeException(NO_LISTENER_ERROR_MESSAGE));
-            }
+                if (listener == null) {
+                    throw LOGGER.logThrowableAsError(new RuntimeException(NO_LISTENER_ERROR_MESSAGE));
+                }
 
-            if (connection.getErrorStream() == null) {
-                try {
+                if (connection.getErrorStream() == null) {
                     processTextEventStream(httpRequest, httpRequestConsumer ->
                         this.send(httpRequest), connection.getInputStream(), listener, LOGGER);
-                } catch (IOException e) {
-                    throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-                } finally {
-                    connection.disconnect();
                 }
+            } catch (IOException e) {
+                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+            } finally {
+                connection.disconnect();
             }
         } else {
             ResponseHandlingMode responseHandlingMode = httpRequest.getMetadata().getResponseHandlingMode();
