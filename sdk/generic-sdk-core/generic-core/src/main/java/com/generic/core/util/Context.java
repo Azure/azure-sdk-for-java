@@ -11,11 +11,12 @@ import java.util.Map;
 import static com.generic.core.annotation.TypeConditions.IMMUTABLE;
 
 /**
- * {@code Context} offers a means of passing arbitrary data (key-value pairs) to pipeline policies. Most applications do
- * not need to pass arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}.
- *
- * <p>Each context object is immutable. The {@link #put(Object, Object)} method creates a new {@code Context}
- * object.</p>
+ * {@code Context} offers a means of passing arbitrary data (key-value pairs).
+ * <p>
+ * Context is an immutable construct, meaning that any time {@link #put(Object, Object)} is called a new instance of
+ * Context is created. If new data is put with the same key as an existing key, the new value will hide the old value.
+ * The old value will still exist within the Context but if you don't have a reference to a previous state it won't be
+ * accessible.
  */
 @Metadata(conditions = IMMUTABLE)
 public final class Context {
@@ -41,28 +42,10 @@ public final class Context {
      * @param key The key to add.
      * @param value The value to add.
      * @return A new instance of the context with the new key-value pair added.
-     * @throws NullPointerException If {@code key} or {@code value} is null.
+     * @throws NullPointerException If {@code key}  is null.
      */
     public Context put(Object key, Object value) {
-        return new Context(internal.put(validateKey(key, "key"), validateValue(value, "value")));
-    }
-
-    /**
-     * Puts a new key-value pair into the context if the value is not null and returns the new instance.
-     * <p>
-     * Context is immutable, so this returns the new instance with the key-value pair added.
-     *
-     * @param key The key to add.
-     * @param value The value to add.
-     * @return A new instance of the context with the new key-value pair added.
-     * @throws NullPointerException If {@code key} is null.
-     */
-    public Context putNotNull(Object key, Object value) {
-        if (value != null) {
-            return new Context(internal.put(validateKey(key, "key"), value));
-        }
-
-        return this;
+        return new Context(internal.put(validateKey(key, "key"), value));
     }
 
     /**
@@ -93,10 +76,10 @@ public final class Context {
      * @param key The key to add.
      * @param value The value to add.
      * @return A new context with the given key and value.
-     * @throws NullPointerException If {@code key} or {@code value} is null.
+     * @throws NullPointerException If {@code key} is null.
      */
     public static Context of(Object key, Object value) {
-        return new Context(InternalContext.of(validateKey(key, "key"), validateValue(value, "value")));
+        return new Context(InternalContext.of(validateKey(key, "key"), value));
     }
 
     /**
@@ -107,11 +90,10 @@ public final class Context {
      * @param key2 The second key to add.
      * @param value2 The second value to add.
      * @return A new context with the given keys and values.
-     * @throws NullPointerException If {@code key1}, {@code value1}, {@code key2}, or {@code value2} is null.
+     * @throws NullPointerException If {@code key1} or {@code key2} is null.
      */
     public static Context of(Object key1, Object value1, Object key2, Object value2) {
-        return new Context(InternalContext.of(validateKey(key1, "key1"), validateValue(value1, "value1"),
-            validateKey(key2, "key2"), validateValue(value2, "value2")));
+        return new Context(InternalContext.of(validateKey(key1, "key1"), value1, validateKey(key2, "key2"), value2));
     }
 
     /**
@@ -124,13 +106,11 @@ public final class Context {
      * @param key3 The third key to add.
      * @param value3 The third value to add.
      * @return A new context with the given keys and values.
-     * @throws NullPointerException If {@code key1}, {@code value1}, {@code key2}, {@code value2}, {@code key3}, or
-     * {@code value3} is null.
+     * @throws NullPointerException If {@code key1}, {@code key2}, or {@code key3} is null.
      */
     public static Context of(Object key1, Object value1, Object key2, Object value2, Object key3, Object value3) {
-        return new Context(InternalContext.of(validateKey(key1, "key1"), validateValue(value1, "value1"),
-            validateKey(key2, "key2"), validateValue(value2, "value2"),
-            validateKey(key3, "key3"), validateValue(value3, "value3")));
+        return new Context(InternalContext.of(validateKey(key1, "key1"), value1, validateKey(key2, "key2"), value2,
+            validateKey(key3, "key3"), value3));
     }
 
     /**
@@ -145,15 +125,12 @@ public final class Context {
      * @param key4 The fourth key to add.
      * @param value4 The fourth value to add.
      * @return A new context with the given keys and values.
-     * @throws NullPointerException If {@code key1}, {@code value1}, {@code key2}, {@code value2}, {@code key3},
-     * {@code value3}, {@code key4}, or {@code value4} is null.
+     * @throws NullPointerException If {@code key1}, {@code key2}, {@code key3}, or {@code key4} is null.
      */
     public static Context of(Object key1, Object value1, Object key2, Object value2, Object key3, Object value3,
         Object key4, Object value4) {
-        return new Context(InternalContext.of(validateKey(key1, "key1"), validateValue(value1, "value1"),
-            validateKey(key2, "key2"), validateValue(value2, "value2"),
-            validateKey(key3, "key3"), validateValue(value3, "value3"),
-            validateKey(key4, "key4"), validateValue(value4, "value4")));
+        return new Context(InternalContext.of(validateKey(key1, "key1"), value1, validateKey(key2, "key2"), value2,
+            validateKey(key3, "key3"), value3, validateKey(key4, "key4"), value4));
     }
 
     /**
@@ -161,7 +138,7 @@ public final class Context {
      *
      * @param map The map to create the context from.
      * @return A new context with the given map.
-     * @throws NullPointerException If {@code map} is null or if any key or value in the map is null.
+     * @throws NullPointerException If {@code map} is null or if any key in the map is null.
      */
     public static Context of(Map<Object, Object> map) {
         if (map == null) {
@@ -176,8 +153,7 @@ public final class Context {
         InternalContext context = InternalContext.empty();
         int entryCount = 0;
         for (Map.Entry<Object, Object> entry : map.entrySet()) {
-            context = context.put(validateKey(entry.getKey(), "key" + entryCount),
-                validateValue(entry.getValue(), "value" + entryCount));
+            context = context.put(validateKey(entry.getKey(), "key" + entryCount), entry.getValue());
             entryCount++;
         }
 
@@ -190,13 +166,5 @@ public final class Context {
         }
 
         return key;
-    }
-
-    private static Object validateValue(Object value, String valueName) {
-        if (value == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException(valueName + " cannot be null"));
-        }
-
-        return value;
     }
 }

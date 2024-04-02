@@ -3,11 +3,15 @@
 package com.generic.core.implementation.util;
 
 import java.util.Arrays;
+import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * An {@link InternalContext} implementation that holds N key-value pairs.
  */
 final class InternalContextN implements InternalContext {
+    private static final long SENTINEL = ThreadLocalRandom.current().nextLong();
+
     private final InternalContext[] contexts;
     private final int count;
 
@@ -71,12 +75,12 @@ final class InternalContextN implements InternalContext {
 
     @Override
     public Object get(Object key) {
-        Object data = null;
+        Object data = SENTINEL;
 
         // Iterate in reverse order to get the most recent data first.
         for (int i = contexts.length - 1; i >= 0; i--) {
             data = contexts[i].get(key);
-            if (data != null) {
+            if (!Objects.equals(SENTINEL, data)) {
                 return data;
             }
         }
