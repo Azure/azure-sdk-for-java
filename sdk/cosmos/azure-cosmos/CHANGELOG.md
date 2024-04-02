@@ -7,9 +7,9 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed an issue where initial `targetBatchSize` is larger than `maxBatchSize` configured in `CosmosBulkExecutionOptions` - See[39500](https://github.com/Azure/azure-sdk-for-java/pull/39500)
 
 #### Other Changes
+* Changed initial `targetBatchSize` to be capped by both `initialBatchSize` and `maxBatchSize` configured in `CosmosBulkExecutionOptions` - See[39500](https://github.com/Azure/azure-sdk-for-java/pull/39500)
 
 ### 4.57.0 (2024-03-25)
 
