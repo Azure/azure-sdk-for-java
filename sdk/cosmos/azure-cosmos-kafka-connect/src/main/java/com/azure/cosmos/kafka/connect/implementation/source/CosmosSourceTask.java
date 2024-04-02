@@ -9,8 +9,9 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.guava25.base.Stopwatch;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
-import com.azure.cosmos.kafka.connect.implementation.CosmosConstants;
-import com.azure.cosmos.kafka.connect.implementation.CosmosExceptionsHelper;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
+import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -37,11 +38,12 @@ public class CosmosSourceTask extends SourceTask {
 
     private CosmosSourceTaskConfig taskConfig;
     private CosmosAsyncClient cosmosClient;
+    private CosmosAsyncClient throughputControlCosmosClient;
     private Queue<ITaskUnit> taskUnitsQueue = new LinkedList<>();
 
     @Override
     public String version() {
-        return CosmosConstants.CURRENT_VERSION;
+        return KafkaCosmosConstants.CURRENT_VERSION;
     }
 
     @Override
@@ -59,6 +61,17 @@ public class CosmosSourceTask extends SourceTask {
 
         // TODO[GA]: optimize the client creation, client metadata cache?
         this.cosmosClient = CosmosClientStore.getCosmosClient(this.taskConfig.getAccountConfig());
+        this.throughputControlCosmosClient = this.getThroughputControlCosmosClient();
+    }
+
+    private CosmosAsyncClient getThroughputControlCosmosClient() {
+        if (this.taskConfig.getThroughputControlConfig().isThroughputControlEnabled()
+            && this.taskConfig.getThroughputControlConfig().getThroughputControlAccountConfig() != null) {
+            // throughput control is using a different database account config
+            return CosmosClientStore.getCosmosClient(this.taskConfig.getThroughputControlConfig().getThroughputControlAccountConfig());
+        } else {
+            return this.cosmosClient;
+        }
     }
 
     @Override
@@ -108,7 +121,7 @@ public class CosmosSourceTask extends SourceTask {
             this.taskUnitsQueue.add(taskUnit);
 
             // TODO[Public Preview]: add checking for max retries checking
-            throw CosmosExceptionsHelper.convertToConnectException(e, "PollTask failed");
+            throw KafkaCosmosExceptionsHelper.convertToConnectException(e, "PollTask failed");
         }
     }
 
@@ -150,17 +163,25 @@ public class CosmosSourceTask extends SourceTask {
     }
 
     private Pair<List<SourceRecord>, Boolean> executeFeedRangeTask(FeedRangeTaskUnit feedRangeTaskUnit) {
+        CosmosAsyncContainer container =
+            this.cosmosClient
+                .getDatabase(feedRangeTaskUnit.getDatabaseName())
+                .getContainer(feedRangeTaskUnit.getContainerName());
+        CosmosThroughputControlHelper.tryEnableThroughputControl(
+            container,
+            this.throughputControlCosmosClient,
+            this.taskConfig.getThroughputControlConfig());
+
         // each time we will only pull one page
         CosmosChangeFeedRequestOptions changeFeedRequestOptions =
             this.getChangeFeedRequestOptions(feedRangeTaskUnit);
 
         // split/merge will be handled in source task
         ModelBridgeInternal.getChangeFeedIsSplitHandlingDisabled(changeFeedRequestOptions);
-
-        CosmosAsyncContainer container =
-            this.cosmosClient
-                .getDatabase(feedRangeTaskUnit.getDatabaseName())
-                .getContainer(feedRangeTaskUnit.getContainerName());
+        CosmosThroughputControlHelper
+            .tryPopulateThroughputControlGroupName(
+                changeFeedRequestOptions,
+                this.taskConfig.getThroughputControlConfig());
 
         return container.queryChangeFeed(changeFeedRequestOptions, JsonNode.class)
             .byPage(this.taskConfig.getChangeFeedConfig().getMaxItemCountHint())
@@ -170,7 +191,7 @@ public class CosmosSourceTask extends SourceTask {
                 return Pair.of(records, false);
             })
             .onErrorResume(throwable -> {
-                if (CosmosExceptionsHelper.isFeedRangeGoneException(throwable)) {
+                if (KafkaCosmosExceptionsHelper.isFeedRangeGoneException(throwable)) {
                     return this.handleFeedRangeGone(feedRangeTaskUnit)
                         .map(shouldRemoveOriginalTaskUnit -> Pair.of(new ArrayList<>(), shouldRemoveOriginalTaskUnit));
                 }

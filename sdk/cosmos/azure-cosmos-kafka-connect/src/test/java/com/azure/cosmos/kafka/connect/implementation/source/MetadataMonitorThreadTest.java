@@ -56,6 +56,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                 true,
                 new ArrayList<String>(),
                 new ArrayList<String>());
+
         CosmosMetadataConfig metadataConfig =
             new CosmosMetadataConfig(500, "_cosmos.metadata.topic");
         SourceConnectorContext sourceConnectorContext = Mockito.mock(SourceConnectorContext.class);

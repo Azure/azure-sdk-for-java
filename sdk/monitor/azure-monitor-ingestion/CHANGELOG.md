@@ -6,12 +6,15 @@
 
 - Introduced `LogsIngestionAudience` to allow specification of the audience of logs ingestion clients.
 - Support for the scopes of non-public clouds. 
+- Migration to stream-style serialization using `azure-json`
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+- Added `azure-json` version `1.1.0` as a dependency.
 
 ## 1.1.5 (2024-03-11)
 

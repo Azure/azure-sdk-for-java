@@ -8,8 +8,8 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
-import com.azure.cosmos.kafka.connect.implementation.CosmosConstants;
-import com.azure.cosmos.kafka.connect.implementation.CosmosExceptionsHelper;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceOffsetStorageReader;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTask;
@@ -22,7 +22,9 @@ import com.azure.cosmos.kafka.connect.implementation.source.MetadataMonitorThrea
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataTaskUnit;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.FeedRange;
+import org.apache.kafka.common.config.Config;
 import org.apache.kafka.common.config.ConfigDef;
+import org.apache.kafka.common.config.ConfigValue;
 import org.apache.kafka.connect.connector.Task;
 import org.apache.kafka.connect.source.SourceConnector;
 import org.slf4j.Logger;
@@ -38,7 +40,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateThroughputControlConfig;
 
 /***
  * The CosmosDb source connector.
@@ -100,8 +105,8 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
 
     @Override
     public String version() {
-        return CosmosConstants.CURRENT_VERSION;
-    } // TODO[public preview]: how this is being used
+        return KafkaCosmosConstants.CURRENT_VERSION;
+    }
 
     private List<Map<String, String>> getTaskConfigs(int maxTasks) {
         Pair<MetadataTaskUnit, List<FeedRangeTaskUnit>> taskUnits = this.getAllTaskUnits();
@@ -315,7 +320,7 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
             .getContainer(containerProperties.getId())
             .getFeedRanges()
             .onErrorMap(throwable ->
-                CosmosExceptionsHelper.convertToConnectException(
+                KafkaCosmosExceptionsHelper.convertToConnectException(
                     throwable,
                     "GetFeedRanges failed for container " + containerProperties.getId()))
             .block();
@@ -346,6 +351,24 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
         });
         
         return effectiveContainersTopicMap;
+    }
+
+    @Override
+    public Config validate(Map<String, String> connectorConfigs) {
+        Config config = super.validate(connectorConfigs);
+        //there are errors based on the config def
+        if (config.configValues().stream().anyMatch(cv -> !cv.errorMessages().isEmpty())) {
+            return config;
+        }
+
+        Map<String, ConfigValue> configValues =
+            config
+                .configValues()
+                .stream()
+                .collect(Collectors.toMap(ConfigValue::name, Function.identity()));
+
+        validateThroughputControlConfig(connectorConfigs, configValues);
+        return config;
     }
 
     @Override

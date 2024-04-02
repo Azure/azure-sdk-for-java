@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Changed log level of an informational message in token acquisition. [#39063](https://github.com/Azure/azure-sdk-for-java/issues/39063)
 
 ### Other Changes
 
