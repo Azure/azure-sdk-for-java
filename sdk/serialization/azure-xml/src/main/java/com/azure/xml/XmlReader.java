@@ -298,7 +298,7 @@ public final class XmlReader implements AutoCloseable {
      * @return The converted text value, or null if the attribute didn't have a value.
      * @throws XMLStreamException If the nullable attribute cannot be read.
      */
-    public <T> T getNullableAttribute(String namespaceUri, String localName, ReadValueCallback<String, T> converter)
+    public <T> T getNullableAttribute(String namespaceUri, String localName, XmlReadValueCallback<String, T> converter)
         throws XMLStreamException {
         String textValue = getStringAttribute(namespaceUri, localName);
 
@@ -483,7 +483,7 @@ public final class XmlReader implements AutoCloseable {
      * @return The converted text value, or null if the element didn't have a value.
      * @throws XMLStreamException If the nullable element cannot be read.
      */
-    public <T> T getNullableElement(ReadValueCallback<String, T> converter) throws XMLStreamException {
+    public <T> T getNullableElement(XmlReadValueCallback<String, T> converter) throws XMLStreamException {
         String textValue = getStringElement();
 
         if (textValue == null) {
@@ -521,7 +521,7 @@ public final class XmlReader implements AutoCloseable {
      * the expected {@code startTagName}
      * @throws XMLStreamException If the object cannot be read.
      */
-    public <T> T readObject(String localName, ReadValueCallback<XmlReader, T> converter) throws XMLStreamException {
+    public <T> T readObject(String localName, XmlReadValueCallback<XmlReader, T> converter) throws XMLStreamException {
         return readObject(null, localName, converter);
     }
 
@@ -582,12 +582,12 @@ public final class XmlReader implements AutoCloseable {
      * the expected {@code startTagName}
      * @throws XMLStreamException If the object cannot be read.
      */
-    public <T> T readObject(String namespaceUri, String localName, ReadValueCallback<XmlReader, T> converter)
+    public <T> T readObject(String namespaceUri, String localName, XmlReadValueCallback<XmlReader, T> converter)
         throws XMLStreamException {
         return readObject(new QName(namespaceUri, localName), converter);
     }
 
-    private <T> T readObject(QName startTagName, ReadValueCallback<XmlReader, T> converter) throws XMLStreamException {
+    private <T> T readObject(QName startTagName, XmlReadValueCallback<XmlReader, T> converter) throws XMLStreamException {
         if (currentToken() != XmlToken.START_ELEMENT) {
             nextElement();
         }
