@@ -34,7 +34,7 @@ public final class DataFlowDebugSessionsExecuteCommandMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"status\":\"rlxnlruxjqqo\",\"data\":\"tnowvpdfy\"}";
+        String responseStr = "{\"status\":\"lnjhoemlwea\",\"data\":\"xmshaugenpi\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -51,14 +51,15 @@ public final class DataFlowDebugSessionsExecuteCommandMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DataFlowDebugCommandResponse response = manager.dataFlowDebugSessions().executeCommand("utonp", "tazpupkebwses",
-            new DataFlowDebugCommandRequest().withSessionId("sbrwdfoprdyt")
-                .withCommand(DataFlowDebugCommandType.EXECUTE_EXPRESSION_QUERY)
-                .withCommandPayload(new DataFlowDebugCommandPayload().withStreamName("vidzoo").withRowLimits(291421910)
-                    .withColumns(Arrays.asList("tnpkjpcgtgnhzuf", "wf", "j", "vrptqxksidnj")).withExpression("ajgi")),
+        DataFlowDebugCommandResponse response = manager.dataFlowDebugSessions().executeCommand("rphdakwwiezeut", "r",
+            new DataFlowDebugCommandRequest().withSessionId("wmo")
+                .withCommand(DataFlowDebugCommandType.EXECUTE_PREVIEW_QUERY).withCommandPayload(
+                    new DataFlowDebugCommandPayload().withStreamName("wzatvne").withRowLimits(1961533079)
+                        .withColumns(Arrays.asList("qladlpqlwtxshvo", "hhzlmwvc", "hkvafcjektkg", "xrifyr"))
+                        .withExpression("rgiaeqc")),
             com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rlxnlruxjqqo", response.status());
-        Assertions.assertEquals("tnowvpdfy", response.data());
+        Assertions.assertEquals("lnjhoemlwea", response.status());
+        Assertions.assertEquals("xmshaugenpi", response.data());
     }
 }

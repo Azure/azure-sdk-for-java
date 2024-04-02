@@ -30,22 +30,28 @@ import com.azure.resourcemanager.chaos.fluent.models.TargetTypeInner;
 import com.azure.resourcemanager.chaos.models.TargetTypeListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TargetTypesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TargetTypesClient.
+ */
 public final class TargetTypesClientImpl implements TargetTypesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TargetTypesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ChaosManagementClientImpl client;
 
     /**
      * Initializes an instance of TargetTypesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TargetTypesClientImpl(ChaosManagementClientImpl client) {
-        this.service =
-            RestProxy.create(TargetTypesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(TargetTypesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,100 +62,68 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
     @Host("{$host}")
     @ServiceInterface(name = "ChaosManagementClien")
     public interface TargetTypesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{locationName}/targetTypes")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TargetTypeListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("locationName") String locationName,
-            @QueryParam("continuationToken") String continuationToken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TargetTypeListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("locationName") String locationName, @QueryParam("continuationToken") String continuationToken,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{locationName}/targetTypes/{targetTypeName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{locationName}/targetTypes/{targetTypeName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TargetTypeInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("locationName") String locationName,
-            @PathParam("targetTypeName") String targetTypeName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TargetTypeInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("locationName") String locationName, @PathParam("targetTypeName") String targetTypeName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TargetTypeListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TargetTypeListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get a list of Target Type resources for given location.
-     *
+     * 
      * @param locationName String that represents a Location resource name.
      * @param continuationToken String that sets the continuation token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Target Type resources for given location along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TargetTypeInner>> listSinglePageAsync(String locationName, String continuationToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            locationName,
-                            continuationToken,
-                            accept,
-                            context))
-            .<PagedResponse<TargetTypeInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), locationName, continuationToken, accept, context))
+            .<PagedResponse<TargetTypeInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a list of Target Type resources for given location.
-     *
+     * 
      * @param locationName String that represents a Location resource name.
      * @param continuationToken String that sets the continuation token.
      * @param context The context to associate with this operation.
@@ -157,22 +131,18 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Target Type resources for given location along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TargetTypeInner>> listSinglePageAsync(
-        String locationName, String continuationToken, Context context) {
+    private Mono<PagedResponse<TargetTypeInner>> listSinglePageAsync(String locationName, String continuationToken,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -180,28 +150,15 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                locationName,
-                continuationToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), locationName,
+                continuationToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get a list of Target Type resources for given location.
-     *
+     * 
      * @param locationName String that represents a Location resource name.
      * @param continuationToken String that sets the continuation token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -211,13 +168,13 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TargetTypeInner> listAsync(String locationName, String continuationToken) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(locationName, continuationToken), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(locationName, continuationToken),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get a list of Target Type resources for given location.
-     *
+     * 
      * @param locationName String that represents a Location resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -227,13 +184,13 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TargetTypeInner> listAsync(String locationName) {
         final String continuationToken = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(locationName, continuationToken), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(locationName, continuationToken),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get a list of Target Type resources for given location.
-     *
+     * 
      * @param locationName String that represents a Location resource name.
      * @param continuationToken String that sets the continuation token.
      * @param context The context to associate with this operation.
@@ -244,14 +201,13 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TargetTypeInner> listAsync(String locationName, String continuationToken, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(locationName, continuationToken, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(locationName, continuationToken, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get a list of Target Type resources for given location.
-     *
+     * 
      * @param locationName String that represents a Location resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -266,7 +222,7 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
 
     /**
      * Get a list of Target Type resources for given location.
-     *
+     * 
      * @param locationName String that represents a Location resource name.
      * @param continuationToken String that sets the continuation token.
      * @param context The context to associate with this operation.
@@ -282,28 +238,24 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
 
     /**
      * Get a Target Type resources for given location.
-     *
+     * 
      * @param locationName String that represents a Location resource name.
      * @param targetTypeName String that represents a Target Type resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Target Type resources for given location along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a Target Type resources for given location along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TargetTypeInner>> getWithResponseAsync(String locationName, String targetTypeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -313,46 +265,33 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            locationName,
-                            targetTypeName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), locationName, targetTypeName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a Target Type resources for given location.
-     *
+     * 
      * @param locationName String that represents a Location resource name.
      * @param targetTypeName String that represents a Target Type resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Target Type resources for given location along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a Target Type resources for given location along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TargetTypeInner>> getWithResponseAsync(
-        String locationName, String targetTypeName, Context context) {
+    private Mono<Response<TargetTypeInner>> getWithResponseAsync(String locationName, String targetTypeName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
@@ -362,20 +301,13 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                locationName,
-                targetTypeName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            locationName, targetTypeName, accept, context);
     }
 
     /**
      * Get a Target Type resources for given location.
-     *
+     * 
      * @param locationName String that represents a Location resource name.
      * @param targetTypeName String that represents a Target Type resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -390,7 +322,7 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
 
     /**
      * Get a Target Type resources for given location.
-     *
+     * 
      * @param locationName String that represents a Location resource name.
      * @param targetTypeName String that represents a Target Type resource name.
      * @param context The context to associate with this operation.
@@ -406,7 +338,7 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
 
     /**
      * Get a Target Type resources for given location.
-     *
+     * 
      * @param locationName String that represents a Location resource name.
      * @param targetTypeName String that represents a Target Type resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -421,14 +353,15 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Target Type resources and a link for pagination along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return model that represents a list of Target Type resources and a link for pagination along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TargetTypeInner>> listNextSinglePageAsync(String nextLink) {
@@ -436,37 +369,28 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<TargetTypeInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<TargetTypeInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Target Type resources and a link for pagination along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return model that represents a list of Target Type resources and a link for pagination along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TargetTypeInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -474,23 +398,13 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

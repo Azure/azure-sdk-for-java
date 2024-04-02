@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a cluster firewall rule. */
+/**
+ * The properties of a cluster firewall rule.
+ */
 @Fluent
 public final class FirewallRuleProperties {
     /*
@@ -30,13 +32,15 @@ public final class FirewallRuleProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of FirewallRuleProperties class. */
+    /**
+     * Creates an instance of FirewallRuleProperties class.
+     */
     public FirewallRuleProperties() {
     }
 
     /**
      * Get the startIpAddress property: The start IP address of the cluster firewall rule. Must be IPv4 format.
-     *
+     * 
      * @return the startIpAddress value.
      */
     public String startIpAddress() {
@@ -45,7 +49,7 @@ public final class FirewallRuleProperties {
 
     /**
      * Set the startIpAddress property: The start IP address of the cluster firewall rule. Must be IPv4 format.
-     *
+     * 
      * @param startIpAddress the startIpAddress value to set.
      * @return the FirewallRuleProperties object itself.
      */
@@ -56,7 +60,7 @@ public final class FirewallRuleProperties {
 
     /**
      * Get the endIpAddress property: The end IP address of the cluster firewall rule. Must be IPv4 format.
-     *
+     * 
      * @return the endIpAddress value.
      */
     public String endIpAddress() {
@@ -65,7 +69,7 @@ public final class FirewallRuleProperties {
 
     /**
      * Set the endIpAddress property: The end IP address of the cluster firewall rule. Must be IPv4 format.
-     *
+     * 
      * @param endIpAddress the endIpAddress value to set.
      * @return the FirewallRuleProperties object itself.
      */
@@ -76,7 +80,7 @@ public final class FirewallRuleProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the firewall rule.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -85,21 +89,17 @@ public final class FirewallRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (startIpAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property startIpAddress in model FirewallRuleProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property startIpAddress in model FirewallRuleProperties"));
         }
         if (endIpAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endIpAddress in model FirewallRuleProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property endIpAddress in model FirewallRuleProperties"));
         }
     }
 

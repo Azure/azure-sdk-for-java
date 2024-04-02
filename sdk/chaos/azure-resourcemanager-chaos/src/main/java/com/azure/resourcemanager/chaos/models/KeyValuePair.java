@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A map to describe the settings of an action. */
+/**
+ * A map to describe the settings of an action.
+ */
 @Fluent
 public final class KeyValuePair {
     /*
@@ -23,13 +25,15 @@ public final class KeyValuePair {
     @JsonProperty(value = "value", required = true)
     private String value;
 
-    /** Creates an instance of KeyValuePair class. */
+    /**
+     * Creates an instance of KeyValuePair class.
+     */
     public KeyValuePair() {
     }
 
     /**
      * Get the key property: The name of the setting for the action.
-     *
+     * 
      * @return the key value.
      */
     public String key() {
@@ -38,7 +42,7 @@ public final class KeyValuePair {
 
     /**
      * Set the key property: The name of the setting for the action.
-     *
+     * 
      * @param key the key value to set.
      * @return the KeyValuePair object itself.
      */
@@ -49,7 +53,7 @@ public final class KeyValuePair {
 
     /**
      * Get the value property: The value of the setting for the action.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -58,7 +62,7 @@ public final class KeyValuePair {
 
     /**
      * Set the value property: The value of the setting for the action.
-     *
+     * 
      * @param value the value value to set.
      * @return the KeyValuePair object itself.
      */
@@ -69,19 +73,17 @@ public final class KeyValuePair {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (key() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property key in model KeyValuePair"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property key in model KeyValuePair"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model KeyValuePair"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model KeyValuePair"));
         }
     }
 

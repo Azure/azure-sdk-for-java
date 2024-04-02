@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The scan trigger type. */
+/**
+ * The scan trigger type.
+ */
 public final class ScanTriggerType extends ExpandableStringEnum<ScanTriggerType> {
-    /** Static value OnDemand for ScanTriggerType. */
+    /**
+     * Static value OnDemand for ScanTriggerType.
+     */
     public static final ScanTriggerType ON_DEMAND = fromString("OnDemand");
 
-    /** Static value Recurring for ScanTriggerType. */
+    /**
+     * Static value Recurring for ScanTriggerType.
+     */
     public static final ScanTriggerType RECURRING = fromString("Recurring");
 
     /**
      * Creates a new instance of ScanTriggerType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ScanTriggerType extends ExpandableStringEnum<ScanTriggerType>
 
     /**
      * Creates or finds a ScanTriggerType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScanTriggerType.
      */
@@ -38,7 +44,7 @@ public final class ScanTriggerType extends ExpandableStringEnum<ScanTriggerType>
 
     /**
      * Gets known ScanTriggerType values.
-     *
+     * 
      * @return known ScanTriggerType values.
      */
     public static Collection<ScanTriggerType> values() {

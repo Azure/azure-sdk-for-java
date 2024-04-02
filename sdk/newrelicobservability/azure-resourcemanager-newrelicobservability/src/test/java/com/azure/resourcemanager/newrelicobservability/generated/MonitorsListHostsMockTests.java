@@ -33,46 +33,30 @@ public final class MonitorsListHostsMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"vmId\":\"otftpvjzbexilz\",\"agentVersion\":\"fqqnvwpmqtaruo\",\"agentStatus\":\"mkcjhwqytjrybn\"}]}";
+        String responseStr
+            = "{\"value\":[{\"vmId\":\"koievseo\",\"agentVersion\":\"q\",\"agentStatus\":\"ltmuwlauwzizx\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NewRelicObservabilityManager manager =
-            NewRelicObservabilityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<VMInfo> response =
-            manager
-                .monitors()
-                .listHosts(
-                    "bfovasrruvwbhsq",
-                    "sub",
-                    new HostsGetRequest().withVmIds(Arrays.asList("birx")).withUserEmail("pybsrfbjfdtw"),
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<VMInfo> response = manager.monitors().listHosts("ur", "odkwobd", new HostsGetRequest()
+            .withVmIds(Arrays.asList("tibqdxbxwakb", "gqxndlkzgxhuripl", "podxunkb", "bxmubyynt")).withUserEmail("lrb"),
+            com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("otftpvjzbexilz", response.iterator().next().vmId());
-        Assertions.assertEquals("fqqnvwpmqtaruo", response.iterator().next().agentVersion());
-        Assertions.assertEquals("mkcjhwqytjrybn", response.iterator().next().agentStatus());
+        Assertions.assertEquals("koievseo", response.iterator().next().vmId());
+        Assertions.assertEquals("q", response.iterator().next().agentVersion());
+        Assertions.assertEquals("ltmuwlauwzizx", response.iterator().next().agentStatus());
     }
 }

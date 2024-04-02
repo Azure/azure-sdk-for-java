@@ -10,7 +10,9 @@ import com.azure.resourcemanager.newrelicobservability.fluent.models.TagRuleInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of a TagRule list operation. */
+/**
+ * The response of a TagRule list operation.
+ */
 @Fluent
 public final class TagRuleListResult {
     /*
@@ -25,13 +27,15 @@ public final class TagRuleListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of TagRuleListResult class. */
+    /**
+     * Creates an instance of TagRuleListResult class.
+     */
     public TagRuleListResult() {
     }
 
     /**
      * Get the value property: The TagRule items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<TagRuleInner> value() {
@@ -40,7 +44,7 @@ public final class TagRuleListResult {
 
     /**
      * Set the value property: The TagRule items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the TagRuleListResult object itself.
      */
@@ -51,7 +55,7 @@ public final class TagRuleListResult {
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class TagRuleListResult {
 
     /**
      * Set the nextLink property: The link to the next page of items.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the TagRuleListResult object itself.
      */
@@ -71,14 +75,13 @@ public final class TagRuleListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model TagRuleListResult"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model TagRuleListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

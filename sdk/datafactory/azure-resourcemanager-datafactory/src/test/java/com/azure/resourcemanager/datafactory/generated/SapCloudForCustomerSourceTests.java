@@ -11,16 +11,16 @@ public final class SapCloudForCustomerSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapCloudForCustomerSource model = BinaryData.fromString(
-            "{\"type\":\"SapCloudForCustomerSource\",\"query\":\"datarabbyfhz\",\"httpRequestTimeout\":\"datajrxenpkxanlbrcy\",\"queryTimeout\":\"datarc\",\"additionalColumns\":\"dataanbw\",\"sourceRetryCount\":\"datalqioq\",\"sourceRetryWait\":\"dataxcg\",\"maxConcurrentConnections\":\"datazluilzgpghjakzmn\",\"disableMetricsCollection\":\"datanqmajs\",\"\":{\"yupgojrwpoxu\":\"datajlpbxvp\"}}")
+            "{\"type\":\"SapCloudForCustomerSource\",\"query\":\"datadgem\",\"httpRequestTimeout\":\"datayddzjtxlvgsl\",\"queryTimeout\":\"datalys\",\"additionalColumns\":\"datav\",\"sourceRetryCount\":\"dataak\",\"sourceRetryWait\":\"datapaexllt\",\"maxConcurrentConnections\":\"datakkaei\",\"disableMetricsCollection\":\"datahr\",\"\":{\"lta\":\"datagvsrt\",\"lnwiwrubxey\":\"datajkraleglpyns\",\"w\":\"dataalhbrwaltvky\"}}")
             .toObject(SapCloudForCustomerSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapCloudForCustomerSource model = new SapCloudForCustomerSource().withSourceRetryCount("datalqioq")
-            .withSourceRetryWait("dataxcg").withMaxConcurrentConnections("datazluilzgpghjakzmn")
-            .withDisableMetricsCollection("datanqmajs").withQueryTimeout("datarc").withAdditionalColumns("dataanbw")
-            .withQuery("datarabbyfhz").withHttpRequestTimeout("datajrxenpkxanlbrcy");
+        SapCloudForCustomerSource model = new SapCloudForCustomerSource().withSourceRetryCount("dataak")
+            .withSourceRetryWait("datapaexllt").withMaxConcurrentConnections("datakkaei")
+            .withDisableMetricsCollection("datahr").withQueryTimeout("datalys").withAdditionalColumns("datav")
+            .withQuery("datadgem").withHttpRequestTimeout("datayddzjtxlvgsl");
         model = BinaryData.fromObject(model).toObject(SapCloudForCustomerSource.class);
     }
 }

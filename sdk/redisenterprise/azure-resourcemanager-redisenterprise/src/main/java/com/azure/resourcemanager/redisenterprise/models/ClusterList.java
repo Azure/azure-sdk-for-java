@@ -9,7 +9,9 @@ import com.azure.resourcemanager.redisenterprise.fluent.models.ClusterInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of a list-all operation. */
+/**
+ * The response of a list-all operation.
+ */
 @Fluent
 public final class ClusterList {
     /*
@@ -24,13 +26,15 @@ public final class ClusterList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ClusterList class. */
+    /**
+     * Creates an instance of ClusterList class.
+     */
     public ClusterList() {
     }
 
     /**
      * Get the value property: List of clusters.
-     *
+     * 
      * @return the value value.
      */
     public List<ClusterInner> value() {
@@ -39,7 +43,7 @@ public final class ClusterList {
 
     /**
      * Set the value property: List of clusters.
-     *
+     * 
      * @param value the value value to set.
      * @return the ClusterList object itself.
      */
@@ -50,7 +54,7 @@ public final class ClusterList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ClusterList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

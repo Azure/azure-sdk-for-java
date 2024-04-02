@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class AzPowerShellSetupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzPowerShellSetup model = BinaryData
-            .fromString("{\"type\":\"AzPowerShellSetup\",\"typeProperties\":{\"version\":\"zbbhxncszdwpave\"}}")
-            .toObject(AzPowerShellSetup.class);
-        Assertions.assertEquals("zbbhxncszdwpave", model.version());
+        AzPowerShellSetup model
+            = BinaryData.fromString("{\"type\":\"AzPowerShellSetup\",\"typeProperties\":{\"version\":\"pjfkr\"}}")
+                .toObject(AzPowerShellSetup.class);
+        Assertions.assertEquals("pjfkr", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzPowerShellSetup model = new AzPowerShellSetup().withVersion("zbbhxncszdwpave");
+        AzPowerShellSetup model = new AzPowerShellSetup().withVersion("pjfkr");
         model = BinaryData.fromObject(model).toObject(AzPowerShellSetup.class);
-        Assertions.assertEquals("zbbhxncszdwpave", model.version());
+        Assertions.assertEquals("pjfkr", model.version());
     }
 }

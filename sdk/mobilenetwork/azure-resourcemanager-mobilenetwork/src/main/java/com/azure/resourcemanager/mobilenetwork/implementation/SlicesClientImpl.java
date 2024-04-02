@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SlicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SlicesClient.
+ */
 public final class SlicesClientImpl implements SlicesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SlicesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MobileNetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of SlicesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SlicesClientImpl(MobileNetworkManagementClientImpl client) {
@@ -65,96 +71,70 @@ public final class SlicesClientImpl implements SlicesClient {
     @Host("{$host}")
     @ServiceInterface(name = "MobileNetworkManagem")
     public interface SlicesService {
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/slices/{sliceName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/slices/{sliceName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("mobileNetworkName") String mobileNetworkName,
-            @PathParam("sliceName") String sliceName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("mobileNetworkName") String mobileNetworkName, @PathParam("sliceName") String sliceName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/slices/{sliceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SliceInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("mobileNetworkName") String mobileNetworkName, @PathParam("sliceName") String sliceName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/slices/{sliceName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("mobileNetworkName") String mobileNetworkName, @PathParam("sliceName") String sliceName,
+            @BodyParam("application/json") SliceInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/slices/{sliceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/slices/{sliceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SliceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SliceInner>> updateTags(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("mobileNetworkName") String mobileNetworkName,
-            @PathParam("sliceName") String sliceName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("mobileNetworkName") String mobileNetworkName, @PathParam("sliceName") String sliceName,
+            @BodyParam("application/json") TagsObject parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/slices/{sliceName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/slices")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<SliceListResult>> listByMobileNetwork(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("mobileNetworkName") String mobileNetworkName,
-            @PathParam("sliceName") String sliceName,
-            @BodyParam("application/json") SliceInner parameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("mobileNetworkName") String mobileNetworkName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/slices/{sliceName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SliceInner>> updateTags(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("mobileNetworkName") String mobileNetworkName,
-            @PathParam("sliceName") String sliceName,
-            @BodyParam("application/json") TagsObject parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/slices")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SliceListResult>> listByMobileNetwork(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("mobileNetworkName") String mobileNetworkName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SliceListResult>> listByMobileNetworkNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Deletes the specified network slice.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -164,19 +144,15 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String sliceName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String mobileNetworkName,
+        String sliceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -191,24 +167,14 @@ public final class SlicesClientImpl implements SlicesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            mobileNetworkName,
-                            sliceName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), mobileNetworkName, sliceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified network slice.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -219,19 +185,15 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String sliceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String mobileNetworkName,
+        String sliceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -246,21 +208,13 @@ public final class SlicesClientImpl implements SlicesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                mobileNetworkName,
-                sliceName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), mobileNetworkName, sliceName, accept, context);
     }
 
     /**
      * Deletes the specified network slice.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -270,19 +224,17 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String mobileNetworkName, String sliceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, mobileNetworkName, sliceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String mobileNetworkName,
+        String sliceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, mobileNetworkName, sliceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the specified network slice.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -293,19 +245,18 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String mobileNetworkName, String sliceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String mobileNetworkName,
+        String sliceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, mobileNetworkName, sliceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, mobileNetworkName, sliceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the specified network slice.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -315,14 +266,14 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String mobileNetworkName, String sliceName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mobileNetworkName,
+        String sliceName) {
         return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, sliceName).getSyncPoller();
     }
 
     /**
      * Deletes the specified network slice.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -333,14 +284,14 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String mobileNetworkName, String sliceName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mobileNetworkName,
+        String sliceName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, sliceName, context).getSyncPoller();
     }
 
     /**
      * Deletes the specified network slice.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -351,14 +302,13 @@ public final class SlicesClientImpl implements SlicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String mobileNetworkName, String sliceName) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, sliceName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, mobileNetworkName, sliceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified network slice.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -369,16 +319,15 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String mobileNetworkName, String sliceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, sliceName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String mobileNetworkName, String sliceName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, mobileNetworkName, sliceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified network slice.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -393,7 +342,7 @@ public final class SlicesClientImpl implements SlicesClient {
 
     /**
      * Deletes the specified network slice.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -409,7 +358,7 @@ public final class SlicesClientImpl implements SlicesClient {
 
     /**
      * Gets information about the specified network slice.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -417,22 +366,18 @@ public final class SlicesClientImpl implements SlicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified network slice along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SliceInner>> getWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String sliceName) {
+    private Mono<Response<SliceInner>> getWithResponseAsync(String resourceGroupName, String mobileNetworkName,
+        String sliceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -447,24 +392,14 @@ public final class SlicesClientImpl implements SlicesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            mobileNetworkName,
-                            sliceName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), mobileNetworkName, sliceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets information about the specified network slice.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -473,22 +408,18 @@ public final class SlicesClientImpl implements SlicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified network slice along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SliceInner>> getWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String sliceName, Context context) {
+    private Mono<Response<SliceInner>> getWithResponseAsync(String resourceGroupName, String mobileNetworkName,
+        String sliceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -503,21 +434,13 @@ public final class SlicesClientImpl implements SlicesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                mobileNetworkName,
-                sliceName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), mobileNetworkName, sliceName, accept, context);
     }
 
     /**
      * Gets information about the specified network slice.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -534,7 +457,7 @@ public final class SlicesClientImpl implements SlicesClient {
 
     /**
      * Gets information about the specified network slice.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -545,14 +468,14 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return information about the specified network slice along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SliceInner> getWithResponse(
-        String resourceGroupName, String mobileNetworkName, String sliceName, Context context) {
+    public Response<SliceInner> getWithResponse(String resourceGroupName, String mobileNetworkName, String sliceName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, mobileNetworkName, sliceName, context).block();
     }
 
     /**
      * Gets information about the specified network slice.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -568,7 +491,7 @@ public final class SlicesClientImpl implements SlicesClient {
 
     /**
      * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -579,19 +502,15 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return network slice resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String sliceName, SliceInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String mobileNetworkName, String sliceName, SliceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -611,25 +530,15 @@ public final class SlicesClientImpl implements SlicesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            mobileNetworkName,
-                            sliceName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), mobileNetworkName, sliceName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -641,19 +550,15 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return network slice resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String sliceName, SliceInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String mobileNetworkName, String sliceName, SliceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -673,22 +578,13 @@ public final class SlicesClientImpl implements SlicesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                mobileNetworkName,
-                sliceName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), mobileNetworkName, sliceName, parameters, accept, context);
     }
 
     /**
      * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -699,19 +595,17 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return the {@link PollerFlux} for polling of network slice resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SliceInner>, SliceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String mobileNetworkName, String sliceName, SliceInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, mobileNetworkName, sliceName, parameters);
-        return this
-            .client
-            .<SliceInner, SliceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SliceInner.class, SliceInner.class, this.client.getContext());
+    private PollerFlux<PollResult<SliceInner>, SliceInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String mobileNetworkName, String sliceName, SliceInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, mobileNetworkName, sliceName, parameters);
+        return this.client.<SliceInner, SliceInner>getLroResult(mono, this.client.getHttpPipeline(), SliceInner.class,
+            SliceInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -723,20 +617,18 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return the {@link PollerFlux} for polling of network slice resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SliceInner>, SliceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String mobileNetworkName, String sliceName, SliceInner parameters, Context context) {
+    private PollerFlux<PollResult<SliceInner>, SliceInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String mobileNetworkName, String sliceName, SliceInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, mobileNetworkName, sliceName, parameters, context);
-        return this
-            .client
-            .<SliceInner, SliceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SliceInner.class, SliceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, mobileNetworkName, sliceName, parameters, context);
+        return this.client.<SliceInner, SliceInner>getLroResult(mono, this.client.getHttpPipeline(), SliceInner.class,
+            SliceInner.class, context);
     }
 
     /**
      * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -747,16 +639,15 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return the {@link SyncPoller} for polling of network slice resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SliceInner>, SliceInner> beginCreateOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String sliceName, SliceInner parameters) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, sliceName, parameters)
+    public SyncPoller<PollResult<SliceInner>, SliceInner> beginCreateOrUpdate(String resourceGroupName,
+        String mobileNetworkName, String sliceName, SliceInner parameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, sliceName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -768,16 +659,15 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return the {@link SyncPoller} for polling of network slice resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SliceInner>, SliceInner> beginCreateOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String sliceName, SliceInner parameters, Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, sliceName, parameters, context)
+    public SyncPoller<PollResult<SliceInner>, SliceInner> beginCreateOrUpdate(String resourceGroupName,
+        String mobileNetworkName, String sliceName, SliceInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, sliceName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -788,16 +678,15 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return network slice resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SliceInner> createOrUpdateAsync(
-        String resourceGroupName, String mobileNetworkName, String sliceName, SliceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, sliceName, parameters)
-            .last()
+    private Mono<SliceInner> createOrUpdateAsync(String resourceGroupName, String mobileNetworkName, String sliceName,
+        SliceInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, sliceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -809,16 +698,15 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return network slice resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SliceInner> createOrUpdateAsync(
-        String resourceGroupName, String mobileNetworkName, String sliceName, SliceInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, sliceName, parameters, context)
-            .last()
+    private Mono<SliceInner> createOrUpdateAsync(String resourceGroupName, String mobileNetworkName, String sliceName,
+        SliceInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, sliceName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -829,14 +717,14 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return network slice resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SliceInner createOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String sliceName, SliceInner parameters) {
+    public SliceInner createOrUpdate(String resourceGroupName, String mobileNetworkName, String sliceName,
+        SliceInner parameters) {
         return createOrUpdateAsync(resourceGroupName, mobileNetworkName, sliceName, parameters).block();
     }
 
     /**
      * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -848,14 +736,14 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return network slice resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SliceInner createOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String sliceName, SliceInner parameters, Context context) {
+    public SliceInner createOrUpdate(String resourceGroupName, String mobileNetworkName, String sliceName,
+        SliceInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, mobileNetworkName, sliceName, parameters, context).block();
     }
 
     /**
      * Updates slice tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -866,19 +754,15 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return network slice resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SliceInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String sliceName, TagsObject parameters) {
+    private Mono<Response<SliceInner>> updateTagsWithResponseAsync(String resourceGroupName, String mobileNetworkName,
+        String sliceName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -898,25 +782,15 @@ public final class SlicesClientImpl implements SlicesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateTags(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            mobileNetworkName,
-                            sliceName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), mobileNetworkName, sliceName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates slice tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -928,19 +802,15 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return network slice resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SliceInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String sliceName, TagsObject parameters, Context context) {
+    private Mono<Response<SliceInner>> updateTagsWithResponseAsync(String resourceGroupName, String mobileNetworkName,
+        String sliceName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -960,22 +830,13 @@ public final class SlicesClientImpl implements SlicesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateTags(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                mobileNetworkName,
-                sliceName,
-                parameters,
-                accept,
-                context);
+        return service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), mobileNetworkName, sliceName, parameters, accept, context);
     }
 
     /**
      * Updates slice tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -986,15 +847,15 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return network slice resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SliceInner> updateTagsAsync(
-        String resourceGroupName, String mobileNetworkName, String sliceName, TagsObject parameters) {
+    private Mono<SliceInner> updateTagsAsync(String resourceGroupName, String mobileNetworkName, String sliceName,
+        TagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, sliceName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates slice tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -1006,15 +867,15 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return network slice resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SliceInner> updateTagsWithResponse(
-        String resourceGroupName, String mobileNetworkName, String sliceName, TagsObject parameters, Context context) {
+    public Response<SliceInner> updateTagsWithResponse(String resourceGroupName, String mobileNetworkName,
+        String sliceName, TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, sliceName, parameters, context)
             .block();
     }
 
     /**
      * Updates slice tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -1025,37 +886,33 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return network slice resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SliceInner updateTags(
-        String resourceGroupName, String mobileNetworkName, String sliceName, TagsObject parameters) {
+    public SliceInner updateTags(String resourceGroupName, String mobileNetworkName, String sliceName,
+        TagsObject parameters) {
         return updateTagsWithResponse(resourceGroupName, mobileNetworkName, sliceName, parameters, Context.NONE)
             .getValue();
     }
 
     /**
      * Lists all slices in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for network slice API service call along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SliceInner>> listByMobileNetworkSinglePageAsync(
-        String resourceGroupName, String mobileNetworkName) {
+    private Mono<PagedResponse<SliceInner>> listByMobileNetworkSinglePageAsync(String resourceGroupName,
+        String mobileNetworkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1067,32 +924,16 @@ public final class SlicesClientImpl implements SlicesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByMobileNetwork(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            mobileNetworkName,
-                            accept,
-                            context))
-            .<PagedResponse<SliceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByMobileNetwork(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, mobileNetworkName, accept, context))
+            .<PagedResponse<SliceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all slices in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param context The context to associate with this operation.
@@ -1100,22 +941,18 @@ public final class SlicesClientImpl implements SlicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for network slice API service call along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SliceInner>> listByMobileNetworkSinglePageAsync(
-        String resourceGroupName, String mobileNetworkName, Context context) {
+    private Mono<PagedResponse<SliceInner>> listByMobileNetworkSinglePageAsync(String resourceGroupName,
+        String mobileNetworkName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1128,28 +965,15 @@ public final class SlicesClientImpl implements SlicesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByMobileNetwork(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                mobileNetworkName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByMobileNetwork(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, mobileNetworkName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all slices in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1159,14 +983,13 @@ public final class SlicesClientImpl implements SlicesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SliceInner> listByMobileNetworkAsync(String resourceGroupName, String mobileNetworkName) {
-        return new PagedFlux<>(
-            () -> listByMobileNetworkSinglePageAsync(resourceGroupName, mobileNetworkName),
+        return new PagedFlux<>(() -> listByMobileNetworkSinglePageAsync(resourceGroupName, mobileNetworkName),
             nextLink -> listByMobileNetworkNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all slices in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param context The context to associate with this operation.
@@ -1176,16 +999,15 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return response for network slice API service call as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SliceInner> listByMobileNetworkAsync(
-        String resourceGroupName, String mobileNetworkName, Context context) {
-        return new PagedFlux<>(
-            () -> listByMobileNetworkSinglePageAsync(resourceGroupName, mobileNetworkName, context),
+    private PagedFlux<SliceInner> listByMobileNetworkAsync(String resourceGroupName, String mobileNetworkName,
+        Context context) {
+        return new PagedFlux<>(() -> listByMobileNetworkSinglePageAsync(resourceGroupName, mobileNetworkName, context),
             nextLink -> listByMobileNetworkNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all slices in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1200,7 +1022,7 @@ public final class SlicesClientImpl implements SlicesClient {
 
     /**
      * Lists all slices in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param context The context to associate with this operation.
@@ -1210,21 +1032,22 @@ public final class SlicesClientImpl implements SlicesClient {
      * @return response for network slice API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SliceInner> listByMobileNetwork(
-        String resourceGroupName, String mobileNetworkName, Context context) {
+    public PagedIterable<SliceInner> listByMobileNetwork(String resourceGroupName, String mobileNetworkName,
+        Context context) {
         return new PagedIterable<>(listByMobileNetworkAsync(resourceGroupName, mobileNetworkName, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for network slice API service call along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SliceInner>> listByMobileNetworkNextSinglePageAsync(String nextLink) {
@@ -1232,38 +1055,30 @@ public final class SlicesClientImpl implements SlicesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByMobileNetworkNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SliceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<SliceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for network slice API service call along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SliceInner>> listByMobileNetworkNextSinglePageAsync(String nextLink, Context context) {
@@ -1271,23 +1086,13 @@ public final class SlicesClientImpl implements SlicesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByMobileNetworkNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByMobileNetworkNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appcontainers.models.OperationDisplay;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Operation detail payload. */
+/**
+ * Operation detail payload.
+ */
 @Fluent
 public final class OperationDetailInner {
     /*
@@ -35,13 +37,15 @@ public final class OperationDetailInner {
     @JsonProperty(value = "origin")
     private String origin;
 
-    /** Creates an instance of OperationDetailInner class. */
+    /**
+     * Creates an instance of OperationDetailInner class.
+     */
     public OperationDetailInner() {
     }
 
     /**
      * Get the name property: Name of the operation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,7 +54,7 @@ public final class OperationDetailInner {
 
     /**
      * Set the name property: Name of the operation.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationDetailInner object itself.
      */
@@ -61,7 +65,7 @@ public final class OperationDetailInner {
 
     /**
      * Get the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -70,7 +74,7 @@ public final class OperationDetailInner {
 
     /**
      * Set the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @param isDataAction the isDataAction value to set.
      * @return the OperationDetailInner object itself.
      */
@@ -81,7 +85,7 @@ public final class OperationDetailInner {
 
     /**
      * Get the display property: Display of the operation.
-     *
+     * 
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -90,7 +94,7 @@ public final class OperationDetailInner {
 
     /**
      * Set the display property: Display of the operation.
-     *
+     * 
      * @param display the display value to set.
      * @return the OperationDetailInner object itself.
      */
@@ -101,7 +105,7 @@ public final class OperationDetailInner {
 
     /**
      * Get the origin property: Origin of the operation.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -110,7 +114,7 @@ public final class OperationDetailInner {
 
     /**
      * Set the origin property: Origin of the operation.
-     *
+     * 
      * @param origin the origin value to set.
      * @return the OperationDetailInner object itself.
      */
@@ -121,7 +125,7 @@ public final class OperationDetailInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The configuration settings of the platform of ContainerApp Service Authentication/Authorization. */
+/**
+ * The configuration settings of the platform of ContainerApp Service Authentication/Authorization.
+ */
 @Fluent
 public final class AuthPlatform {
     /*
@@ -25,14 +27,16 @@ public final class AuthPlatform {
     @JsonProperty(value = "runtimeVersion")
     private String runtimeVersion;
 
-    /** Creates an instance of AuthPlatform class. */
+    /**
+     * Creates an instance of AuthPlatform class.
+     */
     public AuthPlatform() {
     }
 
     /**
      * Get the enabled property: &lt;code&gt;true&lt;/code&gt; if the Authentication / Authorization feature is enabled
      * for the current app; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -42,7 +46,7 @@ public final class AuthPlatform {
     /**
      * Set the enabled property: &lt;code&gt;true&lt;/code&gt; if the Authentication / Authorization feature is enabled
      * for the current app; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the AuthPlatform object itself.
      */
@@ -53,9 +57,10 @@ public final class AuthPlatform {
 
     /**
      * Get the runtimeVersion property: The RuntimeVersion of the Authentication / Authorization feature in use for the
-     * current app. The setting in this value can control the behavior of certain features in the Authentication /
-     * Authorization module.
-     *
+     * current app.
+     * The setting in this value can control the behavior of certain features in the Authentication / Authorization
+     * module.
+     * 
      * @return the runtimeVersion value.
      */
     public String runtimeVersion() {
@@ -64,9 +69,10 @@ public final class AuthPlatform {
 
     /**
      * Set the runtimeVersion property: The RuntimeVersion of the Authentication / Authorization feature in use for the
-     * current app. The setting in this value can control the behavior of certain features in the Authentication /
-     * Authorization module.
-     *
+     * current app.
+     * The setting in this value can control the behavior of certain features in the Authentication / Authorization
+     * module.
+     * 
      * @param runtimeVersion the runtimeVersion value to set.
      * @return the AuthPlatform object itself.
      */
@@ -77,7 +83,7 @@ public final class AuthPlatform {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

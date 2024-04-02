@@ -6,18 +6,20 @@ package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.resourcemanager.newrelicobservability.fluent.models.VMExtensionPayloadInner;
 
-/** An immutable client-side representation of VMExtensionPayload. */
+/**
+ * An immutable client-side representation of VMExtensionPayload.
+ */
 public interface VMExtensionPayload {
     /**
      * Gets the ingestionKey property: Ingestion key of the account.
-     *
+     * 
      * @return the ingestionKey value.
      */
     String ingestionKey();
 
     /**
      * Gets the inner com.azure.resourcemanager.newrelicobservability.fluent.models.VMExtensionPayloadInner object.
-     *
+     * 
      * @return the inner object.
      */
     VMExtensionPayloadInner innerModel();

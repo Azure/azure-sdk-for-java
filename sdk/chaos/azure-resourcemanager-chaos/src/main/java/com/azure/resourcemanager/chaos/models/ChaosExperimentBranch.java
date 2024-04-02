@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Model that represents a branch in the step. 9 total per experiment. */
+/**
+ * Model that represents a branch in the step. 9 total per experiment.
+ */
 @Fluent
 public final class ChaosExperimentBranch {
     /*
@@ -24,13 +26,15 @@ public final class ChaosExperimentBranch {
     @JsonProperty(value = "actions", required = true)
     private List<ChaosExperimentAction> actions;
 
-    /** Creates an instance of ChaosExperimentBranch class. */
+    /**
+     * Creates an instance of ChaosExperimentBranch class.
+     */
     public ChaosExperimentBranch() {
     }
 
     /**
      * Get the name property: String of the branch name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -39,7 +43,7 @@ public final class ChaosExperimentBranch {
 
     /**
      * Set the name property: String of the branch name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ChaosExperimentBranch object itself.
      */
@@ -50,7 +54,7 @@ public final class ChaosExperimentBranch {
 
     /**
      * Get the actions property: List of actions.
-     *
+     * 
      * @return the actions value.
      */
     public List<ChaosExperimentAction> actions() {
@@ -59,7 +63,7 @@ public final class ChaosExperimentBranch {
 
     /**
      * Set the actions property: List of actions.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the ChaosExperimentBranch object itself.
      */
@@ -70,19 +74,17 @@ public final class ChaosExperimentBranch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ChaosExperimentBranch"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model ChaosExperimentBranch"));
         }
         if (actions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property actions in model ChaosExperimentBranch"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property actions in model ChaosExperimentBranch"));
         } else {
             actions().forEach(e -> e.validate());
         }

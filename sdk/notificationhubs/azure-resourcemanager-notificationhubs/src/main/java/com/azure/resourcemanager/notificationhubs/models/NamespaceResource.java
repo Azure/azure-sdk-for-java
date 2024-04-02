@@ -4,458 +4,565 @@
 
 package com.azure.resourcemanager.notificationhubs.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.notificationhubs.fluent.models.NamespaceProperties;
 import com.azure.resourcemanager.notificationhubs.fluent.models.NamespaceResourceInner;
+import com.azure.resourcemanager.notificationhubs.fluent.models.PnsCredentials;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of NamespaceResource. */
+/**
+ * An immutable client-side representation of NamespaceResource.
+ */
 public interface NamespaceResource {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
-     * Gets the sku property: The sku of the created namespace.
-     *
+     * Gets the sku property: The Sku description for a namespace.
+     * 
      * @return the sku value.
      */
     Sku sku();
 
     /**
-     * Gets the namePropertiesName property: The name of the namespace.
-     *
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the namePropertiesName property: Name of the Notification Hubs namespace. This is immutable property, set
+     * automatically
+     * by the service when the namespace is created.
+     * 
      * @return the namePropertiesName value.
      */
     String namePropertiesName();
 
     /**
-     * Gets the provisioningState property: Provisioning state of the Namespace.
-     *
+     * Gets the provisioningState property: Defines values for OperationProvisioningState.
+     * 
      * @return the provisioningState value.
      */
-    String provisioningState();
+    OperationProvisioningState provisioningState();
 
     /**
-     * Gets the region property: Specifies the targeted region in which the namespace should be created. It can be any
-     * of the following values: Australia East, Australia Southeast, Central US, East US, East US 2, West US, North
-     * Central US, South Central US, East Asia, Southeast Asia, Brazil South, Japan East, Japan West, North Europe, West
-     * Europe.
-     *
-     * @return the region value.
-     */
-    String region();
-
-    /**
-     * Gets the metricId property: Identifier for Azure Insights metrics.
-     *
-     * @return the metricId value.
-     */
-    String metricId();
-
-    /**
-     * Gets the status property: Status of the namespace. It can be any of these values:1 = Created/Active2 = Creating3
-     * = Suspended4 = Deleting.
-     *
+     * Gets the status property: Namespace status.
+     * 
      * @return the status value.
      */
-    String status();
+    NamespaceStatus status();
 
     /**
-     * Gets the createdAt property: The time the namespace was created.
-     *
-     * @return the createdAt value.
-     */
-    OffsetDateTime createdAt();
-
-    /**
-     * Gets the updatedAt property: The time the namespace was updated.
-     *
-     * @return the updatedAt value.
-     */
-    OffsetDateTime updatedAt();
-
-    /**
-     * Gets the serviceBusEndpoint property: Endpoint you can use to perform NotificationHub operations.
-     *
-     * @return the serviceBusEndpoint value.
-     */
-    String serviceBusEndpoint();
-
-    /**
-     * Gets the subscriptionId property: The Id of the Azure subscription associated with the namespace.
-     *
-     * @return the subscriptionId value.
-     */
-    String subscriptionId();
-
-    /**
-     * Gets the scaleUnit property: ScaleUnit where the namespace gets created.
-     *
-     * @return the scaleUnit value.
-     */
-    String scaleUnit();
-
-    /**
-     * Gets the enabled property: Whether or not the namespace is currently enabled.
-     *
+     * Gets the enabled property: Gets or sets whether or not the namespace is currently enabled.
+     * 
      * @return the enabled value.
      */
     Boolean enabled();
 
     /**
-     * Gets the critical property: Whether or not the namespace is set as Critical.
-     *
+     * Gets the critical property: Gets or sets whether or not the namespace is set as Critical.
+     * 
      * @return the critical value.
      */
     Boolean critical();
 
     /**
-     * Gets the dataCenter property: Data center for the namespace.
-     *
-     * @return the dataCenter value.
+     * Gets the subscriptionId property: Namespace subscription id.
+     * 
+     * @return the subscriptionId value.
      */
-    String dataCenter();
+    String subscriptionId();
 
     /**
-     * Gets the namespaceType property: The namespace type.
-     *
+     * Gets the region property: Region. The value is always set to the same value as Namespace.Location, so we are
+     * deprecating
+     * this property.
+     * 
+     * @return the region value.
+     */
+    String region();
+
+    /**
+     * Gets the metricId property: Azure Insights Metrics id.
+     * 
+     * @return the metricId value.
+     */
+    String metricId();
+
+    /**
+     * Gets the createdAt property: Time when the namespace was created.
+     * 
+     * @return the createdAt value.
+     */
+    OffsetDateTime createdAt();
+
+    /**
+     * Gets the updatedAt property: Time when the namespace was updated.
+     * 
+     * @return the updatedAt value.
+     */
+    OffsetDateTime updatedAt();
+
+    /**
+     * Gets the namespaceType property: Defines values for NamespaceType.
+     * 
      * @return the namespaceType value.
      */
     NamespaceType namespaceType();
 
     /**
+     * Gets the replicationRegion property: Allowed replication region.
+     * 
+     * @return the replicationRegion value.
+     */
+    ReplicationRegion replicationRegion();
+
+    /**
+     * Gets the zoneRedundancy property: Namespace SKU name.
+     * 
+     * @return the zoneRedundancy value.
+     */
+    ZoneRedundancyPreference zoneRedundancy();
+
+    /**
+     * Gets the networkAcls property: A collection of network authorization rules.
+     * 
+     * @return the networkAcls value.
+     */
+    NetworkAcls networkAcls();
+
+    /**
+     * Gets the pnsCredentials property: Collection of Notification Hub or Notification Hub Namespace PNS credentials.
+     * 
+     * @return the pnsCredentials value.
+     */
+    PnsCredentials pnsCredentials();
+
+    /**
+     * Gets the serviceBusEndpoint property: Gets or sets endpoint you can use to perform NotificationHub
+     * operations.
+     * 
+     * @return the serviceBusEndpoint value.
+     */
+    String serviceBusEndpoint();
+
+    /**
+     * Gets the privateEndpointConnections property: Private Endpoint Connections for namespace.
+     * 
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnectionResource> privateEndpointConnections();
+
+    /**
+     * Gets the scaleUnit property: Gets or sets scaleUnit where the namespace gets created.
+     * 
+     * @return the scaleUnit value.
+     */
+    String scaleUnit();
+
+    /**
+     * Gets the dataCenter property: Deprecated.
+     * 
+     * @return the dataCenter value.
+     */
+    String dataCenter();
+
+    /**
+     * Gets the publicNetworkAccess property: Type of public network access.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
+    /**
+     * Gets the name of the resource group.
+     * 
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.notificationhubs.fluent.models.NamespaceResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     NamespaceResourceInner innerModel();
 
-    /** The entirety of the NamespaceResource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the NamespaceResource definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithSku, DefinitionStages.WithCreate {
     }
-    /** The NamespaceResource definition stages. */
+
+    /**
+     * The NamespaceResource definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the NamespaceResource definition. */
+        /**
+         * The first stage of the NamespaceResource definition.
+         */
         interface Blank extends WithLocation {
         }
-        /** The stage of the NamespaceResource definition allowing to specify location. */
+
+        /**
+         * The stage of the NamespaceResource definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
-            WithResourceGroup withLocation(Region location);
+            WithResourceGroup withRegion(Region location);
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
-            WithResourceGroup withLocation(String location);
+            WithResourceGroup withRegion(String location);
         }
-        /** The stage of the NamespaceResource definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the NamespaceResource definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
-             * @param resourceGroupName The name of the resource group.
+             * 
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
-            WithCreate withExistingResourceGroup(String resourceGroupName);
+            WithSku withExistingResourceGroup(String resourceGroupName);
         }
+
+        /**
+         * The stage of the NamespaceResource definition allowing to specify sku.
+         */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The Sku description for a namespace.
+             * 
+             * @param sku The Sku description for a namespace.
+             * @return the next definition stage.
+             */
+            WithCreate withSku(Sku sku);
+        }
+
         /**
          * The stage of the NamespaceResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithNamePropertiesName,
-                DefinitionStages.WithProvisioningState,
-                DefinitionStages.WithRegion,
-                DefinitionStages.WithStatus,
-                DefinitionStages.WithCreatedAt,
-                DefinitionStages.WithUpdatedAt,
-                DefinitionStages.WithServiceBusEndpoint,
-                DefinitionStages.WithSubscriptionId,
-                DefinitionStages.WithScaleUnit,
-                DefinitionStages.WithEnabled,
-                DefinitionStages.WithCritical,
-                DefinitionStages.WithDataCenter,
-                DefinitionStages.WithNamespaceType {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProvisioningState,
+            DefinitionStages.WithStatus, DefinitionStages.WithNamespaceType, DefinitionStages.WithReplicationRegion,
+            DefinitionStages.WithZoneRedundancy, DefinitionStages.WithNetworkAcls, DefinitionStages.WithPnsCredentials,
+            DefinitionStages.WithScaleUnit, DefinitionStages.WithDataCenter, DefinitionStages.WithPublicNetworkAccess {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             NamespaceResource create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             NamespaceResource create(Context context);
         }
-        /** The stage of the NamespaceResource definition allowing to specify tags. */
+
+        /**
+         * The stage of the NamespaceResource definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the NamespaceResource definition allowing to specify sku. */
-        interface WithSku {
-            /**
-             * Specifies the sku property: The sku of the created namespace.
-             *
-             * @param sku The sku of the created namespace.
-             * @return the next definition stage.
-             */
-            WithCreate withSku(Sku sku);
-        }
-        /** The stage of the NamespaceResource definition allowing to specify namePropertiesName. */
-        interface WithNamePropertiesName {
-            /**
-             * Specifies the namePropertiesName property: The name of the namespace..
-             *
-             * @param namePropertiesName The name of the namespace.
-             * @return the next definition stage.
-             */
-            WithCreate withNamePropertiesName(String namePropertiesName);
-        }
-        /** The stage of the NamespaceResource definition allowing to specify provisioningState. */
+
+        /**
+         * The stage of the NamespaceResource definition allowing to specify provisioningState.
+         */
         interface WithProvisioningState {
             /**
-             * Specifies the provisioningState property: Provisioning state of the Namespace..
-             *
-             * @param provisioningState Provisioning state of the Namespace.
+             * Specifies the provisioningState property: Defines values for OperationProvisioningState..
+             * 
+             * @param provisioningState Defines values for OperationProvisioningState.
              * @return the next definition stage.
              */
-            WithCreate withProvisioningState(String provisioningState);
+            WithCreate withProvisioningState(OperationProvisioningState provisioningState);
         }
-        /** The stage of the NamespaceResource definition allowing to specify region. */
-        interface WithRegion {
-            /**
-             * Specifies the region property: Specifies the targeted region in which the namespace should be created. It
-             * can be any of the following values: Australia East, Australia Southeast, Central US, East US, East US 2,
-             * West US, North Central US, South Central US, East Asia, Southeast Asia, Brazil South, Japan East, Japan
-             * West, North Europe, West Europe.
-             *
-             * @param region Specifies the targeted region in which the namespace should be created. It can be any of
-             *     the following values: Australia East, Australia Southeast, Central US, East US, East US 2, West US,
-             *     North Central US, South Central US, East Asia, Southeast Asia, Brazil South, Japan East, Japan West,
-             *     North Europe, West Europe.
-             * @return the next definition stage.
-             */
-            WithCreate withRegion(String region);
-        }
-        /** The stage of the NamespaceResource definition allowing to specify status. */
+
+        /**
+         * The stage of the NamespaceResource definition allowing to specify status.
+         */
         interface WithStatus {
             /**
-             * Specifies the status property: Status of the namespace. It can be any of these values:1 = Created/Active2
-             * = Creating3 = Suspended4 = Deleting.
-             *
-             * @param status Status of the namespace. It can be any of these values:1 = Created/Active2 = Creating3 =
-             *     Suspended4 = Deleting.
+             * Specifies the status property: Namespace status..
+             * 
+             * @param status Namespace status.
              * @return the next definition stage.
              */
-            WithCreate withStatus(String status);
+            WithCreate withStatus(NamespaceStatus status);
         }
-        /** The stage of the NamespaceResource definition allowing to specify createdAt. */
-        interface WithCreatedAt {
-            /**
-             * Specifies the createdAt property: The time the namespace was created..
-             *
-             * @param createdAt The time the namespace was created.
-             * @return the next definition stage.
-             */
-            WithCreate withCreatedAt(OffsetDateTime createdAt);
-        }
-        /** The stage of the NamespaceResource definition allowing to specify updatedAt. */
-        interface WithUpdatedAt {
-            /**
-             * Specifies the updatedAt property: The time the namespace was updated..
-             *
-             * @param updatedAt The time the namespace was updated.
-             * @return the next definition stage.
-             */
-            WithCreate withUpdatedAt(OffsetDateTime updatedAt);
-        }
-        /** The stage of the NamespaceResource definition allowing to specify serviceBusEndpoint. */
-        interface WithServiceBusEndpoint {
-            /**
-             * Specifies the serviceBusEndpoint property: Endpoint you can use to perform NotificationHub operations..
-             *
-             * @param serviceBusEndpoint Endpoint you can use to perform NotificationHub operations.
-             * @return the next definition stage.
-             */
-            WithCreate withServiceBusEndpoint(String serviceBusEndpoint);
-        }
-        /** The stage of the NamespaceResource definition allowing to specify subscriptionId. */
-        interface WithSubscriptionId {
-            /**
-             * Specifies the subscriptionId property: The Id of the Azure subscription associated with the namespace..
-             *
-             * @param subscriptionId The Id of the Azure subscription associated with the namespace.
-             * @return the next definition stage.
-             */
-            WithCreate withSubscriptionId(String subscriptionId);
-        }
-        /** The stage of the NamespaceResource definition allowing to specify scaleUnit. */
-        interface WithScaleUnit {
-            /**
-             * Specifies the scaleUnit property: ScaleUnit where the namespace gets created.
-             *
-             * @param scaleUnit ScaleUnit where the namespace gets created.
-             * @return the next definition stage.
-             */
-            WithCreate withScaleUnit(String scaleUnit);
-        }
-        /** The stage of the NamespaceResource definition allowing to specify enabled. */
-        interface WithEnabled {
-            /**
-             * Specifies the enabled property: Whether or not the namespace is currently enabled..
-             *
-             * @param enabled Whether or not the namespace is currently enabled.
-             * @return the next definition stage.
-             */
-            WithCreate withEnabled(Boolean enabled);
-        }
-        /** The stage of the NamespaceResource definition allowing to specify critical. */
-        interface WithCritical {
-            /**
-             * Specifies the critical property: Whether or not the namespace is set as Critical..
-             *
-             * @param critical Whether or not the namespace is set as Critical.
-             * @return the next definition stage.
-             */
-            WithCreate withCritical(Boolean critical);
-        }
-        /** The stage of the NamespaceResource definition allowing to specify dataCenter. */
-        interface WithDataCenter {
-            /**
-             * Specifies the dataCenter property: Data center for the namespace.
-             *
-             * @param dataCenter Data center for the namespace.
-             * @return the next definition stage.
-             */
-            WithCreate withDataCenter(String dataCenter);
-        }
-        /** The stage of the NamespaceResource definition allowing to specify namespaceType. */
+
+        /**
+         * The stage of the NamespaceResource definition allowing to specify namespaceType.
+         */
         interface WithNamespaceType {
             /**
-             * Specifies the namespaceType property: The namespace type..
-             *
-             * @param namespaceType The namespace type.
+             * Specifies the namespaceType property: Defines values for NamespaceType..
+             * 
+             * @param namespaceType Defines values for NamespaceType.
              * @return the next definition stage.
              */
             WithCreate withNamespaceType(NamespaceType namespaceType);
         }
+
+        /**
+         * The stage of the NamespaceResource definition allowing to specify replicationRegion.
+         */
+        interface WithReplicationRegion {
+            /**
+             * Specifies the replicationRegion property: Allowed replication region.
+             * 
+             * @param replicationRegion Allowed replication region.
+             * @return the next definition stage.
+             */
+            WithCreate withReplicationRegion(ReplicationRegion replicationRegion);
+        }
+
+        /**
+         * The stage of the NamespaceResource definition allowing to specify zoneRedundancy.
+         */
+        interface WithZoneRedundancy {
+            /**
+             * Specifies the zoneRedundancy property: Namespace SKU name..
+             * 
+             * @param zoneRedundancy Namespace SKU name.
+             * @return the next definition stage.
+             */
+            WithCreate withZoneRedundancy(ZoneRedundancyPreference zoneRedundancy);
+        }
+
+        /**
+         * The stage of the NamespaceResource definition allowing to specify networkAcls.
+         */
+        interface WithNetworkAcls {
+            /**
+             * Specifies the networkAcls property: A collection of network authorization rules..
+             * 
+             * @param networkAcls A collection of network authorization rules.
+             * @return the next definition stage.
+             */
+            WithCreate withNetworkAcls(NetworkAcls networkAcls);
+        }
+
+        /**
+         * The stage of the NamespaceResource definition allowing to specify pnsCredentials.
+         */
+        interface WithPnsCredentials {
+            /**
+             * Specifies the pnsCredentials property: Collection of Notification Hub or Notification Hub Namespace PNS
+             * credentials..
+             * 
+             * @param pnsCredentials Collection of Notification Hub or Notification Hub Namespace PNS credentials.
+             * @return the next definition stage.
+             */
+            WithCreate withPnsCredentials(PnsCredentials pnsCredentials);
+        }
+
+        /**
+         * The stage of the NamespaceResource definition allowing to specify scaleUnit.
+         */
+        interface WithScaleUnit {
+            /**
+             * Specifies the scaleUnit property: Gets or sets scaleUnit where the namespace gets created.
+             * 
+             * @param scaleUnit Gets or sets scaleUnit where the namespace gets created.
+             * @return the next definition stage.
+             */
+            WithCreate withScaleUnit(String scaleUnit);
+        }
+
+        /**
+         * The stage of the NamespaceResource definition allowing to specify dataCenter.
+         */
+        interface WithDataCenter {
+            /**
+             * Specifies the dataCenter property: Deprecated..
+             * 
+             * @param dataCenter Deprecated.
+             * @return the next definition stage.
+             */
+            WithCreate withDataCenter(String dataCenter);
+        }
+
+        /**
+         * The stage of the NamespaceResource definition allowing to specify publicNetworkAccess.
+         */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Type of public network access..
+             * 
+             * @param publicNetworkAccess Type of public network access.
+             * @return the next definition stage.
+             */
+            WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
     }
+
     /**
      * Begins update for the NamespaceResource resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     NamespaceResource.Update update();
 
-    /** The template for NamespaceResource update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithSku {
+    /**
+     * The template for NamespaceResource update.
+     */
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithProperties {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         NamespaceResource apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         NamespaceResource apply(Context context);
     }
-    /** The NamespaceResource update stages. */
+
+    /**
+     * The NamespaceResource update stages.
+     */
     interface UpdateStages {
-        /** The stage of the NamespaceResource update allowing to specify tags. */
+        /**
+         * The stage of the NamespaceResource update allowing to specify tags.
+         */
         interface WithTags {
             /**
-             * Specifies the tags property: Resource tags.
-             *
-             * @param tags Resource tags.
+             * Specifies the tags property: Dictionary of &lt;string&gt;.
+             * 
+             * @param tags Dictionary of &lt;string&gt;.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
-        /** The stage of the NamespaceResource update allowing to specify sku. */
+
+        /**
+         * The stage of the NamespaceResource update allowing to specify sku.
+         */
         interface WithSku {
             /**
-             * Specifies the sku property: The sku of the created namespace.
-             *
-             * @param sku The sku of the created namespace.
+             * Specifies the sku property: The Sku description for a namespace.
+             * 
+             * @param sku The Sku description for a namespace.
              * @return the next definition stage.
              */
             Update withSku(Sku sku);
         }
+
+        /**
+         * The stage of the NamespaceResource update allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: Represents namespace properties..
+             * 
+             * @param properties Represents namespace properties.
+             * @return the next definition stage.
+             */
+            Update withProperties(NamespaceProperties properties);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     NamespaceResource refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
     NamespaceResource refresh(Context context);
+
+    /**
+     * Lists the PNS credentials associated with a namespace.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a NotificationHub PNS Credentials along with {@link Response}.
+     */
+    Response<PnsCredentialsResource> getPnsCredentialsWithResponse(Context context);
+
+    /**
+     * Lists the PNS credentials associated with a namespace.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a NotificationHub PNS Credentials.
+     */
+    PnsCredentialsResource getPnsCredentials();
 }

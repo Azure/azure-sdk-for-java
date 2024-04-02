@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The configuration settings of the login flow of the custom Open ID Connect provider. */
+/**
+ * The configuration settings of the login flow of the custom Open ID Connect provider.
+ */
 @Fluent
 public final class OpenIdConnectLogin {
     /*
@@ -23,13 +25,15 @@ public final class OpenIdConnectLogin {
     @JsonProperty(value = "scopes")
     private List<String> scopes;
 
-    /** Creates an instance of OpenIdConnectLogin class. */
+    /**
+     * Creates an instance of OpenIdConnectLogin class.
+     */
     public OpenIdConnectLogin() {
     }
 
     /**
      * Get the nameClaimType property: The name of the claim that contains the users name.
-     *
+     * 
      * @return the nameClaimType value.
      */
     public String nameClaimType() {
@@ -38,7 +42,7 @@ public final class OpenIdConnectLogin {
 
     /**
      * Set the nameClaimType property: The name of the claim that contains the users name.
-     *
+     * 
      * @param nameClaimType the nameClaimType value to set.
      * @return the OpenIdConnectLogin object itself.
      */
@@ -49,7 +53,7 @@ public final class OpenIdConnectLogin {
 
     /**
      * Get the scopes property: A list of the scopes that should be requested while authenticating.
-     *
+     * 
      * @return the scopes value.
      */
     public List<String> scopes() {
@@ -58,7 +62,7 @@ public final class OpenIdConnectLogin {
 
     /**
      * Set the scopes property: A list of the scopes that should be requested while authenticating.
-     *
+     * 
      * @param scopes the scopes value to set.
      * @return the OpenIdConnectLogin object itself.
      */
@@ -69,7 +73,7 @@ public final class OpenIdConnectLogin {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes an Azure resource with location. */
+/**
+ * Describes an Azure resource with location.
+ */
 @Fluent
 public class AzureTrackedResourceLocation {
     /*
@@ -16,13 +18,15 @@ public class AzureTrackedResourceLocation {
     @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of AzureTrackedResourceLocation class. */
+    /**
+     * Creates an instance of AzureTrackedResourceLocation class.
+     */
     public AzureTrackedResourceLocation() {
     }
 
     /**
      * Get the location property: Location where the resource is stored.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -31,7 +35,7 @@ public class AzureTrackedResourceLocation {
 
     /**
      * Set the location property: Location where the resource is stored.
-     *
+     * 
      * @param location the location value to set.
      * @return the AzureTrackedResourceLocation object itself.
      */
@@ -42,7 +46,7 @@ public class AzureTrackedResourceLocation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

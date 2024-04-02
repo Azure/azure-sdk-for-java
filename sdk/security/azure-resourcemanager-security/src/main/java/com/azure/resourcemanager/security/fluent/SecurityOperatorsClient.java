@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.SecurityOperatorInner;
 import com.azure.resourcemanager.security.fluent.models.SecurityOperatorListInner;
 
-/** An instance of this class provides access to all the operations defined in SecurityOperatorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SecurityOperatorsClient.
+ */
 public interface SecurityOperatorsClient {
     /**
      * Lists Microsoft Defender for Cloud securityOperators in the subscription.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface SecurityOperatorsClient {
 
     /**
      * Lists Microsoft Defender for Cloud securityOperators in the subscription.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,7 +42,7 @@ public interface SecurityOperatorsClient {
 
     /**
      * Get a specific security operator for the requested scope.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param securityOperatorName name of the securityOperator.
      * @param context The context to associate with this operation.
@@ -54,7 +56,7 @@ public interface SecurityOperatorsClient {
 
     /**
      * Get a specific security operator for the requested scope.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param securityOperatorName name of the securityOperator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -67,7 +69,7 @@ public interface SecurityOperatorsClient {
 
     /**
      * Creates Microsoft Defender for Cloud security operator on the given scope.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param securityOperatorName name of the securityOperator.
      * @param context The context to associate with this operation.
@@ -77,12 +79,12 @@ public interface SecurityOperatorsClient {
      * @return security operator under a given subscription and pricing along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SecurityOperatorInner> createOrUpdateWithResponse(
-        String pricingName, String securityOperatorName, Context context);
+    Response<SecurityOperatorInner> createOrUpdateWithResponse(String pricingName, String securityOperatorName,
+        Context context);
 
     /**
      * Creates Microsoft Defender for Cloud security operator on the given scope.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param securityOperatorName name of the securityOperator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -95,7 +97,7 @@ public interface SecurityOperatorsClient {
 
     /**
      * Delete Microsoft Defender for Cloud securityOperator in the subscription.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param securityOperatorName name of the securityOperator.
      * @param context The context to associate with this operation.
@@ -109,7 +111,7 @@ public interface SecurityOperatorsClient {
 
     /**
      * Delete Microsoft Defender for Cloud securityOperator in the subscription.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param securityOperatorName name of the securityOperator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

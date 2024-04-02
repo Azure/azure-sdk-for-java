@@ -6,7 +6,6 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.netapp.models.EndpointType;
-import com.azure.resourcemanager.netapp.models.RemotePath;
 import com.azure.resourcemanager.netapp.models.ReplicationObject;
 import com.azure.resourcemanager.netapp.models.ReplicationSchedule;
 import org.junit.jupiter.api.Assertions;
@@ -15,31 +14,23 @@ public final class ReplicationObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationObject model = BinaryData.fromString(
-            "{\"replicationId\":\"rsc\",\"endpointType\":\"src\",\"replicationSchedule\":\"hourly\",\"remoteVolumeResourceId\":\"vfiwjmygtdss\",\"remotePath\":{\"externalHostName\":\"wtmwerio\",\"serverName\":\"zpyqsemwab\",\"volumeName\":\"ets\"},\"remoteVolumeRegion\":\"szhedplvw\"}")
+            "{\"replicationId\":\"xdult\",\"endpointType\":\"dst\",\"replicationSchedule\":\"daily\",\"remoteVolumeResourceId\":\"tdzumveekgpw\",\"remoteVolumeRegion\":\"uh\"}")
             .toObject(ReplicationObject.class);
-        Assertions.assertEquals(EndpointType.SRC, model.endpointType());
-        Assertions.assertEquals(ReplicationSchedule.HOURLY, model.replicationSchedule());
-        Assertions.assertEquals("vfiwjmygtdss", model.remoteVolumeResourceId());
-        Assertions.assertEquals("wtmwerio", model.remotePath().externalHostname());
-        Assertions.assertEquals("zpyqsemwab", model.remotePath().serverName());
-        Assertions.assertEquals("ets", model.remotePath().volumeName());
-        Assertions.assertEquals("szhedplvw", model.remoteVolumeRegion());
+        Assertions.assertEquals(EndpointType.DST, model.endpointType());
+        Assertions.assertEquals(ReplicationSchedule.DAILY, model.replicationSchedule());
+        Assertions.assertEquals("tdzumveekgpw", model.remoteVolumeResourceId());
+        Assertions.assertEquals("uh", model.remoteVolumeRegion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicationObject model = new ReplicationObject().withEndpointType(EndpointType.SRC)
-            .withReplicationSchedule(ReplicationSchedule.HOURLY).withRemoteVolumeResourceId("vfiwjmygtdss")
-            .withRemotePath(
-                new RemotePath().withExternalHostname("wtmwerio").withServerName("zpyqsemwab").withVolumeName("ets"))
-            .withRemoteVolumeRegion("szhedplvw");
+        ReplicationObject model = new ReplicationObject().withEndpointType(EndpointType.DST)
+            .withReplicationSchedule(ReplicationSchedule.DAILY).withRemoteVolumeResourceId("tdzumveekgpw")
+            .withRemoteVolumeRegion("uh");
         model = BinaryData.fromObject(model).toObject(ReplicationObject.class);
-        Assertions.assertEquals(EndpointType.SRC, model.endpointType());
-        Assertions.assertEquals(ReplicationSchedule.HOURLY, model.replicationSchedule());
-        Assertions.assertEquals("vfiwjmygtdss", model.remoteVolumeResourceId());
-        Assertions.assertEquals("wtmwerio", model.remotePath().externalHostname());
-        Assertions.assertEquals("zpyqsemwab", model.remotePath().serverName());
-        Assertions.assertEquals("ets", model.remotePath().volumeName());
-        Assertions.assertEquals("szhedplvw", model.remoteVolumeRegion());
+        Assertions.assertEquals(EndpointType.DST, model.endpointType());
+        Assertions.assertEquals(ReplicationSchedule.DAILY, model.replicationSchedule());
+        Assertions.assertEquals("tdzumveekgpw", model.remoteVolumeResourceId());
+        Assertions.assertEquals("uh", model.remoteVolumeRegion());
     }
 }

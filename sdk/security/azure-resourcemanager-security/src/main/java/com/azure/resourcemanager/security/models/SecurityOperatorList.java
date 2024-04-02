@@ -7,18 +7,20 @@ package com.azure.resourcemanager.security.models;
 import com.azure.resourcemanager.security.fluent.models.SecurityOperatorListInner;
 import java.util.List;
 
-/** An immutable client-side representation of SecurityOperatorList. */
+/**
+ * An immutable client-side representation of SecurityOperatorList.
+ */
 public interface SecurityOperatorList {
     /**
      * Gets the value property: List of SecurityOperator configurations.
-     *
+     * 
      * @return the value value.
      */
     List<SecurityOperator> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.SecurityOperatorListInner object.
-     *
+     * 
      * @return the inner object.
      */
     SecurityOperatorListInner innerModel();

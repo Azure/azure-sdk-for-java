@@ -13,33 +13,34 @@ import org.junit.jupiter.api.Assertions;
 public final class PacketCaptureListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PacketCaptureListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"status\":\"Stopped\",\"reason\":\"ovm\",\"captureStartTime\":\"2020-12-31T07:20:30Z\",\"networkInterfaces\":[\"spkwlhzdobpxjm\",\"lb\",\"vnchrkcci\",\"wzjuqk\"],\"bytesToCapturePerPacket\":1420869925986942860,\"totalBytesPerSession\":9083271895139408409,\"timeLimitInSeconds\":481973669,\"outputFiles\":[\"oskg\",\"sauuimj\",\"vxieduugidyj\",\"rfbyaosvexcso\"]},\"id\":\"clhocohsl\",\"name\":\"ev\",\"type\":\"eggzfb\"}],\"nextLink\":\"fmvfaxkffeiit\"}")
-                .toObject(PacketCaptureListResult.class);
-        Assertions.assertEquals("spkwlhzdobpxjm", model.value().get(0).networkInterfaces().get(0));
-        Assertions.assertEquals(1420869925986942860L, model.value().get(0).bytesToCapturePerPacket());
-        Assertions.assertEquals(9083271895139408409L, model.value().get(0).totalBytesPerSession());
-        Assertions.assertEquals(481973669, model.value().get(0).timeLimitInSeconds());
+        PacketCaptureListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"status\":\"NotStarted\",\"reason\":\"agalpbuxwgipwhon\",\"captureStartTime\":\"2021-08-18T16:08:42Z\",\"networkInterfaces\":[\"hwankixzbinjepu\",\"tmryw\",\"uzoqft\",\"yqzrnkcqvyxlw\"],\"bytesToCapturePerPacket\":4276936142044234939,\"totalBytesPerSession\":5175708823620809129,\"timeLimitInSeconds\":601015315,\"outputFiles\":[\"nwvlryavwhheunmm\",\"hgyxzkonoc\"]},\"id\":\"oklyaxuconuq\",\"name\":\"zf\",\"type\":\"beypewrmjmw\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"NotStarted\",\"reason\":\"cxsenhwlrsff\",\"captureStartTime\":\"2021-03-02T08:14:37Z\",\"networkInterfaces\":[\"lqdqgbiqylihka\"],\"bytesToCapturePerPacket\":9095359841321899444,\"totalBytesPerSession\":4997259722046744559,\"timeLimitInSeconds\":1351604805,\"outputFiles\":[\"snkymuctq\",\"jf\",\"ebrjcxe\"]},\"id\":\"uwutttxfvjrbi\",\"name\":\"phxepcyvahf\",\"type\":\"ljkyqxjvuuj\"}],\"nextLink\":\"idokgjlj\"}")
+            .toObject(PacketCaptureListResult.class);
+        Assertions.assertEquals("hwankixzbinjepu", model.value().get(0).networkInterfaces().get(0));
+        Assertions.assertEquals(4276936142044234939L, model.value().get(0).bytesToCapturePerPacket());
+        Assertions.assertEquals(5175708823620809129L, model.value().get(0).totalBytesPerSession());
+        Assertions.assertEquals(601015315, model.value().get(0).timeLimitInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PacketCaptureListResult model =
-            new PacketCaptureListResult()
+        PacketCaptureListResult model
+            = new PacketCaptureListResult()
                 .withValue(
                     Arrays
                         .asList(
                             new PacketCaptureInner()
-                                .withNetworkInterfaces(Arrays.asList("spkwlhzdobpxjm", "lb", "vnchrkcci", "wzjuqk"))
-                                .withBytesToCapturePerPacket(1420869925986942860L)
-                                .withTotalBytesPerSession(9083271895139408409L)
-                                .withTimeLimitInSeconds(481973669)));
+                                .withNetworkInterfaces(
+                                    Arrays.asList("hwankixzbinjepu", "tmryw", "uzoqft", "yqzrnkcqvyxlw"))
+                                .withBytesToCapturePerPacket(4276936142044234939L)
+                                .withTotalBytesPerSession(5175708823620809129L).withTimeLimitInSeconds(601015315),
+                            new PacketCaptureInner().withNetworkInterfaces(Arrays.asList("lqdqgbiqylihka"))
+                                .withBytesToCapturePerPacket(9095359841321899444L)
+                                .withTotalBytesPerSession(4997259722046744559L).withTimeLimitInSeconds(1351604805)));
         model = BinaryData.fromObject(model).toObject(PacketCaptureListResult.class);
-        Assertions.assertEquals("spkwlhzdobpxjm", model.value().get(0).networkInterfaces().get(0));
-        Assertions.assertEquals(1420869925986942860L, model.value().get(0).bytesToCapturePerPacket());
-        Assertions.assertEquals(9083271895139408409L, model.value().get(0).totalBytesPerSession());
-        Assertions.assertEquals(481973669, model.value().get(0).timeLimitInSeconds());
+        Assertions.assertEquals("hwankixzbinjepu", model.value().get(0).networkInterfaces().get(0));
+        Assertions.assertEquals(4276936142044234939L, model.value().get(0).bytesToCapturePerPacket());
+        Assertions.assertEquals(5175708823620809129L, model.value().get(0).totalBytesPerSession());
+        Assertions.assertEquals(601015315, model.value().get(0).timeLimitInSeconds());
     }
 }

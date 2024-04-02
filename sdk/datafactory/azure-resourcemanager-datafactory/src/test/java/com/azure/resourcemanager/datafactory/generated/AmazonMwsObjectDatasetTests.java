@@ -19,33 +19,34 @@ public final class AmazonMwsObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmazonMwsObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"AmazonMWSObject\",\"typeProperties\":{\"tableName\":\"datan\"},\"description\":\"lxcltjhbcycg\",\"structure\":\"datakcsihxvta\",\"schema\":\"datawf\",\"linkedServiceName\":{\"referenceName\":\"pxpry\",\"parameters\":{\"gugwlux\":\"databubwhzq\",\"mkdhwqcqweba\":\"datahtq\",\"phujeucosvk\":\"datamfpk\",\"llgnueezfpffb\":\"dataeergvypaxpjpy\"}},\"parameters\":{\"gzyojfchicpare\":{\"type\":\"Array\",\"defaultValue\":\"datavmcgm\"},\"ojuxil\":{\"type\":\"Bool\",\"defaultValue\":\"dataksgqhb\"},\"fldfljwt\":{\"type\":\"Object\",\"defaultValue\":\"datalkc\"}},\"annotations\":[\"datatsflotumbm\",\"datagftshfgmuxuqiags\",\"dataoikuqirhsk\",\"datapaowkgvnlfueyxfz\"],\"folder\":{\"name\":\"lrjugcfebpiucenb\"},\"\":{\"lsxr\":\"datalldfknbdzw\"}}")
+            "{\"type\":\"AmazonMWSObject\",\"typeProperties\":{\"tableName\":\"datagirrpwnqtvuxeuj\"},\"description\":\"ssijuaxxfd\",\"structure\":\"datapkcpws\",\"schema\":\"datannmjun\",\"linkedServiceName\":{\"referenceName\":\"tl\",\"parameters\":{\"kcsihxvta\":\"datatjhbcycgq\",\"zqqgug\":\"datawwfopxpryxnsbubw\"}},\"parameters\":{\"mkdhwqcqweba\":{\"type\":\"SecureString\",\"defaultValue\":\"datahtq\"},\"rgvypa\":{\"type\":\"String\",\"defaultValue\":\"datapkephujeucosvkke\"},\"ueez\":{\"type\":\"String\",\"defaultValue\":\"datapyillg\"},\"zyojfch\":{\"type\":\"Float\",\"defaultValue\":\"datafbuqxknvmcgmb\"}},\"annotations\":[\"dataarex\",\"datao\"],\"folder\":{\"name\":\"qhboojuxilozbl\"},\"\":{\"b\":\"datafldfljwt\",\"gftshfgmuxuqiags\":\"datatsflotumbm\",\"paowkgvnlfueyxfz\":\"dataoikuqirhsk\",\"ce\":\"databrlrjugcfebpi\"}}")
             .toObject(AmazonMwsObjectDataset.class);
-        Assertions.assertEquals("lxcltjhbcycg", model.description());
-        Assertions.assertEquals("pxpry", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("gzyojfchicpare").type());
-        Assertions.assertEquals("lrjugcfebpiucenb", model.folder().name());
+        Assertions.assertEquals("ssijuaxxfd", model.description());
+        Assertions.assertEquals("tl", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("mkdhwqcqweba").type());
+        Assertions.assertEquals("qhboojuxilozbl", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmazonMwsObjectDataset model = new AmazonMwsObjectDataset().withDescription("lxcltjhbcycg")
-            .withStructure("datakcsihxvta").withSchema("datawf")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("pxpry")
-                .withParameters(mapOf("gugwlux", "databubwhzq", "mkdhwqcqweba", "datahtq", "phujeucosvk", "datamfpk",
-                    "llgnueezfpffb", "dataeergvypaxpjpy")))
-            .withParameters(mapOf("gzyojfchicpare",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datavmcgm"), "ojuxil",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataksgqhb"), "fldfljwt",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datalkc")))
-            .withAnnotations(
-                Arrays.asList("datatsflotumbm", "datagftshfgmuxuqiags", "dataoikuqirhsk", "datapaowkgvnlfueyxfz"))
-            .withFolder(new DatasetFolder().withName("lrjugcfebpiucenb")).withTableName("datan");
+        AmazonMwsObjectDataset model = new AmazonMwsObjectDataset().withDescription("ssijuaxxfd")
+            .withStructure("datapkcpws").withSchema("datannmjun")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("tl")
+                .withParameters(mapOf("kcsihxvta", "datatjhbcycgq", "zqqgug", "datawwfopxpryxnsbubw")))
+            .withParameters(mapOf("mkdhwqcqweba",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datahtq"),
+                "rgvypa",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datapkephujeucosvkke"),
+                "ueez", new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datapyillg"),
+                "zyojfch",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datafbuqxknvmcgmb")))
+            .withAnnotations(Arrays.asList("dataarex", "datao"))
+            .withFolder(new DatasetFolder().withName("qhboojuxilozbl")).withTableName("datagirrpwnqtvuxeuj");
         model = BinaryData.fromObject(model).toObject(AmazonMwsObjectDataset.class);
-        Assertions.assertEquals("lxcltjhbcycg", model.description());
-        Assertions.assertEquals("pxpry", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("gzyojfchicpare").type());
-        Assertions.assertEquals("lrjugcfebpiucenb", model.folder().name());
+        Assertions.assertEquals("ssijuaxxfd", model.description());
+        Assertions.assertEquals("tl", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("mkdhwqcqweba").type());
+        Assertions.assertEquals("qhboojuxilozbl", model.folder().name());
     }
 
     // Use "Map.of" if available

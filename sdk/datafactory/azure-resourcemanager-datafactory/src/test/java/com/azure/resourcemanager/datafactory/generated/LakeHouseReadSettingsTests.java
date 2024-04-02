@@ -11,18 +11,18 @@ public final class LakeHouseReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LakeHouseReadSettings model = BinaryData.fromString(
-            "{\"type\":\"LakeHouseReadSettings\",\"recursive\":\"dataorjbyyxkcvah\",\"wildcardFolderPath\":\"datays\",\"wildcardFileName\":\"datajivw\",\"fileListPath\":\"datang\",\"enablePartitionDiscovery\":\"datayct\",\"partitionRootPath\":\"datahgjyholsmahbjc\",\"deleteFilesAfterCompletion\":\"dataskqxgbigozrvlkla\",\"modifiedDatetimeStart\":\"datalysse\",\"modifiedDatetimeEnd\":\"datappgsfj\",\"maxConcurrentConnections\":\"datagmogmcjn\",\"disableMetricsCollection\":\"dataukbwypcvqfz\",\"\":{\"erizf\":\"datax\",\"cdpyoqmwpmrlgj\":\"datawlkovopqp\",\"fptvam\":\"dataqs\"}}")
+            "{\"type\":\"LakeHouseReadSettings\",\"recursive\":\"datagrosxfdxrc\",\"wildcardFolderPath\":\"datambbhluvdce\",\"wildcardFileName\":\"dataevnom\",\"fileListPath\":\"datareiwdskie\",\"enablePartitionDiscovery\":\"dataaenalepta\",\"partitionRootPath\":\"dataqo\",\"deleteFilesAfterCompletion\":\"dataaodbhgxbadbo\",\"modifiedDatetimeStart\":\"datakmihggv\",\"modifiedDatetimeEnd\":\"dataqwyxbatr\",\"maxConcurrentConnections\":\"dataynlslgxif\",\"disableMetricsCollection\":\"datasclqwk\",\"\":{\"gshaqfu\":\"dataepuvambzf\"}}")
             .toObject(LakeHouseReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LakeHouseReadSettings model = new LakeHouseReadSettings().withMaxConcurrentConnections("datagmogmcjn")
-            .withDisableMetricsCollection("dataukbwypcvqfz").withRecursive("dataorjbyyxkcvah")
-            .withWildcardFolderPath("datays").withWildcardFileName("datajivw").withFileListPath("datang")
-            .withEnablePartitionDiscovery("datayct").withPartitionRootPath("datahgjyholsmahbjc")
-            .withDeleteFilesAfterCompletion("dataskqxgbigozrvlkla").withModifiedDatetimeStart("datalysse")
-            .withModifiedDatetimeEnd("datappgsfj");
+        LakeHouseReadSettings model = new LakeHouseReadSettings().withMaxConcurrentConnections("dataynlslgxif")
+            .withDisableMetricsCollection("datasclqwk").withRecursive("datagrosxfdxrc")
+            .withWildcardFolderPath("datambbhluvdce").withWildcardFileName("dataevnom")
+            .withFileListPath("datareiwdskie").withEnablePartitionDiscovery("dataaenalepta")
+            .withPartitionRootPath("dataqo").withDeleteFilesAfterCompletion("dataaodbhgxbadbo")
+            .withModifiedDatetimeStart("datakmihggv").withModifiedDatetimeEnd("dataqwyxbatr");
         model = BinaryData.fromObject(model).toObject(LakeHouseReadSettings.class);
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes an Azure resource with kind. */
+/**
+ * Describes an Azure resource with kind.
+ */
 @Immutable
 public final class AzureResourceLink {
     /*
@@ -16,13 +18,15 @@ public final class AzureResourceLink {
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
-    /** Creates an instance of AzureResourceLink class. */
+    /**
+     * Creates an instance of AzureResourceLink class.
+     */
     public AzureResourceLink() {
     }
 
     /**
      * Get the id property: Azure resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +35,7 @@ public final class AzureResourceLink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
