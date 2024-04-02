@@ -21,13 +21,14 @@ public interface HttpClient {
     Response<?> send(HttpRequest request);
 
     /**
-     * Get a new instance of the {@link HttpClient} that the default {@link HttpClientProvider} is configured to
-     * create.
+     * Get a new instance of the {@link HttpClient} that the {@link HttpClientProvider} loaded from the classpath is
+     * configured to create.
      *
      * <p>If no {@link HttpClientProvider} can be found on the classpath, a new instance of the default
      * {@link HttpClient} implementation will be returned instead.
      *
-     * @return A new instance of {@link HttpClient} that the default {@link HttpClientProvider} is configured to create.
+     * @return A new instance of {@link HttpClient} that the {@link HttpClientProvider} loaded from the classpath is
+     * configured to create.
      */
     static HttpClient getNewInstance() {
         return HttpClientProvider.getProviders().create(HttpClientProvider::getNewInstance,
@@ -35,14 +36,14 @@ public interface HttpClient {
     }
 
     /**
-     * Get a shared instance of the {@link HttpClient} that the default {@link HttpClientProvider} is configured to
-     * create.
+     * Get a shared instance of the {@link HttpClient} that the {@link HttpClientProvider} loaded from the classpath is
+     * configured to create.
      *
      * <p>If no {@link HttpClientProvider} can be found on the classpath, a shared instance of the default
      * {@link HttpClient} implementation will be returned instead.
      *
-     * @return A shared instance of {@link HttpClient} that the default {@link HttpClientProvider} is configured to
-     * create.
+     * @return A shared instance of {@link HttpClient} that the {@link HttpClientProvider} loaded from the classpath is
+     * configured to create.
      */
     static HttpClient getSharedInstance() {
         return HttpClientProvider.getProviders().create(HttpClientProvider::getSharedInstance,
