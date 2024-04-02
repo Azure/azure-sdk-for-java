@@ -144,7 +144,7 @@ public final class OpenAIAsyncClient {
         try {
             embeddingsOptions = addEncodingFormat(embeddingsOptions);
         } catch (JsonProcessingException e) {
-            return Mono.error(e);
+            return Mono.error(new RuntimeException(e));
         }
         return openAIServiceClient != null
             ? openAIServiceClient.getEmbeddingsWithResponseAsync(deploymentOrModelName, embeddingsOptions,

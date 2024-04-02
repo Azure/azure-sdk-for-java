@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.openai.unit;
+package com.azure.ai.openai.implementation;
 
-import com.azure.ai.openai.implementation.EmbeddingsUtils;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Unit tests for EmbeddingItem.
  */
-public class EmbeddingItemUnitTests {
+public class EmbeddingUtilsTests {
 
     @Test
     public void testEmbeddingItemConvertBase64ToFloatList() {
