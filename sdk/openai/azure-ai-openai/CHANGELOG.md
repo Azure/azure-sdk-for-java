@@ -4,11 +4,22 @@
 
 ### Features Added
 
+- Added support for service API version, `2024-03-01-preview`.
+- Added a new property to `EmbeddingOptions`:
+  - `dimensions`, which is only supported in models `text-embedding-3-*` and above.
+- Added a new method to get base64 encoded string in `EmbeddingItem` class:
+  - `getEmbeddingAsString` method returns the embedding as a base64 encoded string.
+- Added a new overload `getChatCompletionsStreamWithResponse` that takes `RequestOptions` to provide the flexibility to
+  modify the HTTP request.
+
 ### Breaking Changes
+
+- Replace return type `List<Double>` with `List<Float>` of `getEmbedding` method in `EmbeddingItem` class.
 
 ### Bugs Fixed
 
 ### Other Changes
+
 
 ## 1.0.0-beta.7 (2024-03-04)
 

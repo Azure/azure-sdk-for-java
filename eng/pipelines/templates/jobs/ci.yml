@@ -55,6 +55,9 @@ parameters:
   - name: IgnoreVerifyTypeSpecCodeGenerationError
     type: boolean
     default: false
+  - name: TimeoutInMinutes
+    type: number
+    default: 60
 
 jobs:
   - job: 'Build'
@@ -221,6 +224,10 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
+
+      - template: /eng/common/pipelines/templates/steps/validate-all-packages.yml
+        parameters:
+          Artifacts: ${{ parameters.Artifacts }} 
 
       - template: /eng/pipelines/templates/steps/clean-maven-local-cache.yml
 
@@ -400,3 +407,4 @@ jobs:
         TestParallelization: ${{ parameters.TestParallelization }}
         BuildParallelization: ${{ parameters.BuildParallelization }}
         AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
+        TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}

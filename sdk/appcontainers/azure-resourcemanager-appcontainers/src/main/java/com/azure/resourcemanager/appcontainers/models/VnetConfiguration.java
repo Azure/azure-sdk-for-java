@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configuration properties for apps environment to join a Virtual Network. */
+/**
+ * Configuration properties for apps environment to join a Virtual Network.
+ */
 @Fluent
 public final class VnetConfiguration {
     /*
@@ -44,7 +46,9 @@ public final class VnetConfiguration {
     @JsonProperty(value = "platformReservedDnsIP")
     private String platformReservedDnsIp;
 
-    /** Creates an instance of VnetConfiguration class. */
+    /**
+     * Creates an instance of VnetConfiguration class.
+     */
     public VnetConfiguration() {
     }
 
@@ -52,7 +56,7 @@ public final class VnetConfiguration {
      * Get the internal property: Boolean indicating the environment only has an internal load balancer. These
      * environments do not have a public static IP resource. They must provide infrastructureSubnetId if enabling this
      * property.
-     *
+     * 
      * @return the internal value.
      */
     public Boolean internal() {
@@ -63,7 +67,7 @@ public final class VnetConfiguration {
      * Set the internal property: Boolean indicating the environment only has an internal load balancer. These
      * environments do not have a public static IP resource. They must provide infrastructureSubnetId if enabling this
      * property.
-     *
+     * 
      * @param internal the internal value to set.
      * @return the VnetConfiguration object itself.
      */
@@ -75,7 +79,7 @@ public final class VnetConfiguration {
     /**
      * Get the infrastructureSubnetId property: Resource ID of a subnet for infrastructure components. Must not overlap
      * with any other provided IP ranges.
-     *
+     * 
      * @return the infrastructureSubnetId value.
      */
     public String infrastructureSubnetId() {
@@ -85,7 +89,7 @@ public final class VnetConfiguration {
     /**
      * Set the infrastructureSubnetId property: Resource ID of a subnet for infrastructure components. Must not overlap
      * with any other provided IP ranges.
-     *
+     * 
      * @param infrastructureSubnetId the infrastructureSubnetId value to set.
      * @return the VnetConfiguration object itself.
      */
@@ -97,7 +101,7 @@ public final class VnetConfiguration {
     /**
      * Get the dockerBridgeCidr property: CIDR notation IP range assigned to the Docker bridge, network. Must not
      * overlap with any other provided IP ranges.
-     *
+     * 
      * @return the dockerBridgeCidr value.
      */
     public String dockerBridgeCidr() {
@@ -107,7 +111,7 @@ public final class VnetConfiguration {
     /**
      * Set the dockerBridgeCidr property: CIDR notation IP range assigned to the Docker bridge, network. Must not
      * overlap with any other provided IP ranges.
-     *
+     * 
      * @param dockerBridgeCidr the dockerBridgeCidr value to set.
      * @return the VnetConfiguration object itself.
      */
@@ -119,7 +123,7 @@ public final class VnetConfiguration {
     /**
      * Get the platformReservedCidr property: IP range in CIDR notation that can be reserved for environment
      * infrastructure IP addresses. Must not overlap with any other provided IP ranges.
-     *
+     * 
      * @return the platformReservedCidr value.
      */
     public String platformReservedCidr() {
@@ -129,7 +133,7 @@ public final class VnetConfiguration {
     /**
      * Set the platformReservedCidr property: IP range in CIDR notation that can be reserved for environment
      * infrastructure IP addresses. Must not overlap with any other provided IP ranges.
-     *
+     * 
      * @param platformReservedCidr the platformReservedCidr value to set.
      * @return the VnetConfiguration object itself.
      */
@@ -139,9 +143,9 @@ public final class VnetConfiguration {
     }
 
     /**
-     * Get the platformReservedDnsIp property: An IP address from the IP range defined by platformReservedCidr that will
-     * be reserved for the internal DNS server.
-     *
+     * Get the platformReservedDnsIp property: An IP address from the IP range defined by platformReservedCidr that
+     * will be reserved for the internal DNS server.
+     * 
      * @return the platformReservedDnsIp value.
      */
     public String platformReservedDnsIp() {
@@ -149,9 +153,9 @@ public final class VnetConfiguration {
     }
 
     /**
-     * Set the platformReservedDnsIp property: An IP address from the IP range defined by platformReservedCidr that will
-     * be reserved for the internal DNS server.
-     *
+     * Set the platformReservedDnsIp property: An IP address from the IP range defined by platformReservedCidr that
+     * will be reserved for the internal DNS server.
+     * 
      * @param platformReservedDnsIp the platformReservedDnsIp value to set.
      * @return the VnetConfiguration object itself.
      */
@@ -162,7 +166,7 @@ public final class VnetConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

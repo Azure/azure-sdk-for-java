@@ -9,7 +9,9 @@ import com.azure.resourcemanager.mobilenetwork.fluent.models.SimInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for list SIMs API service call. */
+/**
+ * Response for list SIMs API service call.
+ */
 @Fluent
 public final class SimListResult {
     /*
@@ -24,13 +26,15 @@ public final class SimListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SimListResult class. */
+    /**
+     * Creates an instance of SimListResult class.
+     */
     public SimListResult() {
     }
 
     /**
      * Get the value property: A list of SIMs in a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<SimInner> value() {
@@ -39,7 +43,7 @@ public final class SimListResult {
 
     /**
      * Set the value property: A list of SIMs in a resource group.
-     *
+     * 
      * @param value the value value to set.
      * @return the SimListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class SimListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class SimListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

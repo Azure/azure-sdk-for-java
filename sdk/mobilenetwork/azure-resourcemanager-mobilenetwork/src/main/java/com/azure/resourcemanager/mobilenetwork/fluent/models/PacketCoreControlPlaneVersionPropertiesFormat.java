@@ -10,7 +10,9 @@ import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Packet core control plane version properties. */
+/**
+ * Packet core control plane version properties.
+ */
 @Fluent
 public final class PacketCoreControlPlaneVersionPropertiesFormat {
     /*
@@ -25,13 +27,15 @@ public final class PacketCoreControlPlaneVersionPropertiesFormat {
     @JsonProperty(value = "platforms")
     private List<Platform> platforms;
 
-    /** Creates an instance of PacketCoreControlPlaneVersionPropertiesFormat class. */
+    /**
+     * Creates an instance of PacketCoreControlPlaneVersionPropertiesFormat class.
+     */
     public PacketCoreControlPlaneVersionPropertiesFormat() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the packet core control plane version resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -40,7 +44,7 @@ public final class PacketCoreControlPlaneVersionPropertiesFormat {
 
     /**
      * Get the platforms property: Platform specific packet core control plane version properties.
-     *
+     * 
      * @return the platforms value.
      */
     public List<Platform> platforms() {
@@ -49,7 +53,7 @@ public final class PacketCoreControlPlaneVersionPropertiesFormat {
 
     /**
      * Set the platforms property: Platform specific packet core control plane version properties.
-     *
+     * 
      * @param platforms the platforms value to set.
      * @return the PacketCoreControlPlaneVersionPropertiesFormat object itself.
      */
@@ -60,7 +64,7 @@ public final class PacketCoreControlPlaneVersionPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

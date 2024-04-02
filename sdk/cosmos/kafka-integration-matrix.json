@@ -4,8 +4,8 @@
       "Session_Integration": {
         "ArmTemplateParameters": "@{ defaultConsistencyLevel = 'Session'; enableMultipleWriteLocations = $false }",
         "ProfileFlag": "-P kafka-integration",
-        "Pool": "env:LINUXPOOL",
-        "OSVmImage": "env:LINUXVMIMAGE"
+        "Pool": "azsdk-pool-mms-ubuntu-2004-general",
+        "OSVmImage": "MMSUbuntu2004"
       }
     },
     "TestFromSource": true,

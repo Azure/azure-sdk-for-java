@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** TCPSocket specifies an action involving a TCP port. TCP hooks not yet supported. */
+/**
+ * TCPSocket specifies an action involving a TCP port. TCP hooks not yet supported.
+ */
 @Fluent
 public final class ContainerAppProbeTcpSocket {
     /*
@@ -23,13 +25,15 @@ public final class ContainerAppProbeTcpSocket {
     @JsonProperty(value = "port", required = true)
     private int port;
 
-    /** Creates an instance of ContainerAppProbeTcpSocket class. */
+    /**
+     * Creates an instance of ContainerAppProbeTcpSocket class.
+     */
     public ContainerAppProbeTcpSocket() {
     }
 
     /**
      * Get the host property: Optional: Host name to connect to, defaults to the pod IP.
-     *
+     * 
      * @return the host value.
      */
     public String host() {
@@ -38,7 +42,7 @@ public final class ContainerAppProbeTcpSocket {
 
     /**
      * Set the host property: Optional: Host name to connect to, defaults to the pod IP.
-     *
+     * 
      * @param host the host value to set.
      * @return the ContainerAppProbeTcpSocket object itself.
      */
@@ -50,7 +54,7 @@ public final class ContainerAppProbeTcpSocket {
     /**
      * Get the port property: Number or name of the port to access on the container. Number must be in the range 1 to
      * 65535. Name must be an IANA_SVC_NAME.
-     *
+     * 
      * @return the port value.
      */
     public int port() {
@@ -60,7 +64,7 @@ public final class ContainerAppProbeTcpSocket {
     /**
      * Set the port property: Number or name of the port to access on the container. Number must be in the range 1 to
      * 65535. Name must be an IANA_SVC_NAME.
-     *
+     * 
      * @param port the port value to set.
      * @return the ContainerAppProbeTcpSocket object itself.
      */
@@ -71,7 +75,7 @@ public final class ContainerAppProbeTcpSocket {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

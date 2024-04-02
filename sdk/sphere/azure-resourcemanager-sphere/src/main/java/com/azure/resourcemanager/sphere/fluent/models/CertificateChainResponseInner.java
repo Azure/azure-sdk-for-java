@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sphere.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The certificate chain response. */
+/**
+ * The certificate chain response.
+ */
 @Immutable
 public final class CertificateChainResponseInner {
     /*
@@ -16,13 +18,15 @@ public final class CertificateChainResponseInner {
     @JsonProperty(value = "certificateChain", access = JsonProperty.Access.WRITE_ONLY)
     private String certificateChain;
 
-    /** Creates an instance of CertificateChainResponseInner class. */
+    /**
+     * Creates an instance of CertificateChainResponseInner class.
+     */
     public CertificateChainResponseInner() {
     }
 
     /**
      * Get the certificateChain property: The certificate chain.
-     *
+     * 
      * @return the certificateChain value.
      */
     public String certificateChain() {
@@ -31,7 +35,7 @@ public final class CertificateChainResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
