@@ -1,14 +1,25 @@
 # Release History
 
-## 11.1.0-beta.1 (Unreleased)
+## 11.1.0 (2024-02-01)
 
 ### Features Added
 
-### Breaking Changes
+- Implemented UpgradePolicy in CloudPool to facilitate OS upgrade strategies during pool creation. This includes:
+  - AutomaticOSUpgradePolicy for automatic OS updates.
+  - RollingUpgradePolicy for gradual OS upgrades across pools.
 
-### Bugs Fixed
+- Pool Specification and Cloud Pool Enhancements:
+  - New upgradePolicy attribute in PoolSpecification and CloudPool to configure OS upgrade strategies, enriching pool management with UpgradeMode options (automatic, manual, rolling).
+  - Added resourceTags functionality to PoolSpecification and CloudPool, facilitating the assignment of tags during pool creation for enhanced resource management.
+  - Integrated securityProfile into VirtualMachineConfiguration, incorporating Trusted Launch support for improved OS security against unauthorized changes.
 
-### Other Changes
+- Virtual Machine and Disk Configuration Improvements:
+  - Enhanced OSDisk with new properties (caching, managedDisk, diskSizeGB, writeAcceleratorEnabled) for comprehensive disk configuration.
+  - Introduced serviceArtifactReference in VirtualMachineConfiguration for consistent image versioning across virtual machine instances.
+
+- Additional Enhancements:
+  - Expanded the StorageAccountType enum with StandardSSD_LRS option for diverse storage solutions.
+  - Added scaleSetVmResourceID to VirtualMachineInfo to aid in managing VM scale sets effectively.
 
 ## 11.0.0 (2023-05-23)
 
