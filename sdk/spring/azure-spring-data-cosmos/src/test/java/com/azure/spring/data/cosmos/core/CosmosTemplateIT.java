@@ -1057,35 +1057,56 @@ public class CosmosTemplateIT {
     }
 
     @Test
-    public void queryDatabaseWithQueryMerticsEnabled() throws ClassNotFoundException {
+    public void queryDatabaseWithQueryMetricsEnabledFlag() throws ClassNotFoundException {
         final CosmosConfig config = CosmosConfig.builder()
             .enableQueryMetrics(true)
             .build();
         final CosmosTemplate queryMetricsEnabledCosmosTemplate = createCosmosTemplate(config, TestConstants.DB_NAME);
 
-        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
-            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
-        final CosmosQuery query = new CosmosQuery(criteria);
-
-        final long count = queryMetricsEnabledCosmosTemplate.count(query, containerName);
-
         assertEquals((boolean) ReflectionTestUtils.getField(queryMetricsEnabledCosmosTemplate, "queryMetricsEnabled"), true);
     }
 
     @Test
-    public void queryDatabaseWithIndexMerticsEnabled() throws ClassNotFoundException {
+    public void queryDatabaseWithIndexMetricsEnabledFlag() throws ClassNotFoundException {
         final CosmosConfig config = CosmosConfig.builder()
-            .enableIndexMetrics(true)
-            .build();
+                                                .enableIndexMetrics(true)
+                                                .build();
         final CosmosTemplate indexMetricsEnabledCosmosTemplate = createCosmosTemplate(config, TestConstants.DB_NAME);
+
+        assertEquals((boolean) ReflectionTestUtils.getField(indexMetricsEnabledCosmosTemplate, "indexMetricsEnabled"), true);
+    }
+
+    @Test
+    public void queryDatabaseWithIndexMetricsEnabled() {
 
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
             Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
         final CosmosQuery query = new CosmosQuery(criteria);
+        cosmosTemplate.count(query, containerName);
 
-        final long count = indexMetricsEnabledCosmosTemplate.count(query, containerName);
+        String queryDiagnostics = responseDiagnosticsTestUtils.getCosmosDiagnostics().toString();
 
-        assertEquals((boolean) ReflectionTestUtils.getField(indexMetricsEnabledCosmosTemplate, "indexMetricsEnabled"), true);
+        assertThat(queryDiagnostics).contains("\"indexUtilizationInfo\"");
+        assertThat(queryDiagnostics).contains("\"UtilizedSingleIndexes\"");
+        assertThat(queryDiagnostics).contains("\"PotentialSingleIndexes\"");
+        assertThat(queryDiagnostics).contains("\"UtilizedCompositeIndexes\"");
+        assertThat(queryDiagnostics).contains("\"PotentialCompositeIndexes\"");
+    }
+
+    @Test
+    public void queryDatabaseWithQueryMetricsEnabled() {
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+        cosmosTemplate.count(query, containerName);
+
+        String queryDiagnostics = responseDiagnosticsTestUtils.getCosmosDiagnostics().toString();
+
+        assertThat(queryDiagnostics).contains("retrievedDocumentCount");
+        assertThat(queryDiagnostics).contains("queryPreparationTimes");
+        assertThat(queryDiagnostics).contains("runtimeExecutionTimes");
+        assertThat(queryDiagnostics).contains("fetchExecutionRanges");
     }
 
     @Test

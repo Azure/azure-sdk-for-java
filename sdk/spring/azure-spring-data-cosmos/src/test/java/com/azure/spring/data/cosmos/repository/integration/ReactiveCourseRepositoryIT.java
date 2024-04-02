@@ -6,6 +6,7 @@ import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
+import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
@@ -76,6 +77,9 @@ public class ReactiveCourseRepositoryIT {
 
     @Autowired
     private CosmosConfig cosmosConfig;
+
+    @Autowired
+    private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
 
     private CosmosEntityInformation<Course, ?> entityInformation;
 
@@ -394,6 +398,12 @@ public class ReactiveCourseRepositoryIT {
         // Make sure a query runs
         final Flux<Course> allFlux = repository.findAll();
         StepVerifier.create(allFlux).expectNextCount(4).verifyComplete();
+
+        String queryDiagnostics = responseDiagnosticsTestUtils.getCosmosDiagnostics().toString();
+        assertThat(queryDiagnostics).contains("retrievedDocumentCount");
+        assertThat(queryDiagnostics).contains("queryPreparationTimes");
+        assertThat(queryDiagnostics).contains("runtimeExecutionTimes");
+        assertThat(queryDiagnostics).contains("fetchExecutionRanges");
     }
 
     @Test
@@ -404,5 +414,13 @@ public class ReactiveCourseRepositoryIT {
         // Make sure a query runs
         final Flux<Course> allFlux = repository.findAll();
         StepVerifier.create(allFlux).expectNextCount(4).verifyComplete();
+
+        String queryDiagnostics = responseDiagnosticsTestUtils.getCosmosDiagnostics().toString();
+
+        assertThat(queryDiagnostics).contains("\"indexUtilizationInfo\"");
+        assertThat(queryDiagnostics).contains("\"UtilizedSingleIndexes\"");
+        assertThat(queryDiagnostics).contains("\"PotentialSingleIndexes\"");
+        assertThat(queryDiagnostics).contains("\"UtilizedCompositeIndexes\"");
+        assertThat(queryDiagnostics).contains("\"PotentialCompositeIndexes\"");
     }
 }
