@@ -294,7 +294,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     }
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
-    public void gatewayDiagnosticsOnNonCosmosException() {
+    public void gatewayDiagnostgiticsOnNonCosmosException() {
         CosmosAsyncClient testClient = null;
         try {
             GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
