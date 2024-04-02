@@ -195,7 +195,7 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 ### Download
 
 You can use the maven coordinate of the jar to auto install the Spark Connector to your Databricks Runtime 14 from Maven:
-`com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12:4.21.0-beta.1`
+`com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12:4.29.0-beta.1`
 
 You can also integrate against Cosmos DB Spark Connector in your SBT project:
 ```scala
