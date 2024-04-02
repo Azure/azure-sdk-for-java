@@ -9,7 +9,7 @@ import com.generic.core.http.models.HttpRequestMetadata;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.models.Response;
-import com.generic.core.http.models.ResponseBodyMode;
+import com.generic.core.http.models.ResponseHandlingMode;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.HttpResponseAccessHelper;
@@ -25,7 +25,7 @@ import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.util.function.Consumer;
 
-import static com.generic.core.http.models.ResponseBodyMode.DESERIALIZE;
+import static com.generic.core.http.models.ResponseHandlingMode.DESERIALIZE;
 import static com.generic.core.implementation.http.serializer.HttpResponseBodyDecoder.decodeByteArray;
 
 public class RestProxyImpl extends RestProxyBase {
@@ -124,10 +124,10 @@ public class RestProxyImpl extends RestProxyBase {
                 return createResponseIfNecessary(response, entityType, null);
             } else {
                 HttpRequestMetadata metadata = response.getRequest().getMetadata();
-                ResponseBodyMode responseBodyMode =
-                    metadata == null ? null : metadata.getResponseBodyMode();
+                ResponseHandlingMode responseHandlingMode =
+                    metadata == null ? null : metadata.getResponseHandlingMode();
 
-                if (responseBodyMode == DESERIALIZE) {
+                if (responseHandlingMode == DESERIALIZE) {
                     HttpResponseAccessHelper.setValue((HttpResponse<?>) response,
                         handleResponseBody(response, methodParser, bodyType, response.getBody()));
                 } else {

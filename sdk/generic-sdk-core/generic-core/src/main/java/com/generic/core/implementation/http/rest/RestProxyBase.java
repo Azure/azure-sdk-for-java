@@ -12,7 +12,7 @@ import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.models.Response;
-import com.generic.core.http.models.ResponseBodyMode;
+import com.generic.core.http.models.ResponseHandlingMode;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.implementation.ReflectionSerializable;
 import com.generic.core.implementation.ReflectiveInvoker;
@@ -36,9 +36,9 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.function.Consumer;
 
-import static com.generic.core.http.models.ResponseBodyMode.BUFFER;
-import static com.generic.core.http.models.ResponseBodyMode.IGNORE;
-import static com.generic.core.http.models.ResponseBodyMode.STREAM;
+import static com.generic.core.http.models.ResponseHandlingMode.BUFFER;
+import static com.generic.core.http.models.ResponseHandlingMode.IGNORE;
+import static com.generic.core.http.models.ResponseHandlingMode.STREAM;
 
 public abstract class RestProxyBase {
     static final ResponseConstructorsCache RESPONSE_CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
@@ -76,11 +76,11 @@ public abstract class RestProxyBase {
             request.getMetadata().setContext(context);
             request.getMetadata().setRequestLogger(methodParser.getMethodLogger());
 
-            ResponseBodyMode responseBodyMode = options == null ? null : options.getResponseBodyMode();
+            ResponseHandlingMode responseHandlingMode = options == null ? null : options.getResponseHandlingMode();
 
-            if (responseBodyMode == null) {
+            if (responseHandlingMode == null) {
                 if (methodParser.getHttpMethod() == HttpMethod.HEAD) {
-                    responseBodyMode = IGNORE;
+                    responseHandlingMode = IGNORE;
                 } else {
                     Type returnType = methodParser.getReturnType();
 
@@ -89,18 +89,18 @@ public abstract class RestProxyBase {
                     }
 
                     if (TypeUtil.isTypeOrSubTypeOf(returnType, InputStream.class)) {
-                        responseBodyMode = STREAM;
+                        responseHandlingMode = STREAM;
                     } else if (TypeUtil.isTypeOrSubTypeOf(returnType, Void.TYPE)
                         || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
 
-                        responseBodyMode = BUFFER;
+                        responseHandlingMode = BUFFER;
                     }
                 }
             }
 
             // If responseBodyHandling is still null, we'll use the response's Content-Type to determine how to read its
             // body: 'application/octet-stream' will use STREAM and everything else will use BUFFER.
-            request.getMetadata().setResponseBodyMode(responseBodyMode);
+            request.getMetadata().setResponseHandlingMode(responseHandlingMode);
 
             return invoke(proxy, method, options, requestCallback, methodParser, request);
         } catch (IOException e) {

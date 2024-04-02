@@ -116,7 +116,7 @@ public final class RequestOptions {
     };
     private Context context;
 
-    private ResponseBodyMode responseBodyMode;
+    private ResponseHandlingMode responseHandlingMode;
 
     /**
      * Creates a new instance of {@link RequestOptions}.
@@ -145,12 +145,13 @@ public final class RequestOptions {
     /**
      * Gets the configuration indicating how the body of the resulting HTTP response should be handled.
      *
-     * <p>For more information about the options for handling an HTTP response body, see {@link ResponseBodyMode}.</p>
+     * <p>For more information about the options for handling an HTTP response body, see {@link ResponseHandlingMode}.
+     * </p>
      *
      * @return The configuration indicating how the body of the resulting HTTP response should be handled.
      */
-    public ResponseBodyMode getResponseBodyMode() {
-        return responseBodyMode;
+    public ResponseHandlingMode getResponseHandlingMode() {
+        return responseHandlingMode;
     }
 
     /**
@@ -273,15 +274,16 @@ public final class RequestOptions {
     /**
      * Sets the configuration indicating how the body of the resulting HTTP response should be handled.
      *
-     * <p>For more information about the options for handling an HTTP response body, see {@link ResponseBodyMode}.</p>
+     * <p>For more information about the options for handling an HTTP response body, see {@link ResponseHandlingMode}.
+     * </p>
      *
-     * @param responseBodyMode The configuration indicating how the body of the resulting HTTP response should be
+     * @param responseHandlingMode The configuration indicating how the body of the resulting HTTP response should be
      * handled.
      *
      * @return The updated {@link RequestOptions} object.
      */
-    public RequestOptions setResponseBodyMode(ResponseBodyMode responseBodyMode) {
-        this.responseBodyMode = responseBodyMode;
+    public RequestOptions setResponseHandlingMode(ResponseHandlingMode responseHandlingMode) {
+        this.responseHandlingMode = responseHandlingMode;
 
         return this;
     }

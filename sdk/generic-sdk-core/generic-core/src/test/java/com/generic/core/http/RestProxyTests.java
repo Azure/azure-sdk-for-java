@@ -16,7 +16,6 @@ import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.Response;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
-import com.generic.core.implementation.http.rest.RestProxyUtils;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.util.binarydata.BinaryData;
 import org.junit.jupiter.api.Named;
@@ -33,8 +32,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
-import static com.generic.core.http.models.ResponseBodyMode.BUFFER;
-import static com.generic.core.http.models.ResponseBodyMode.STREAM;
+import static com.generic.core.http.models.ResponseHandlingMode.BUFFER;
+import static com.generic.core.http.models.ResponseHandlingMode.STREAM;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -184,7 +183,7 @@ public class RestProxyTests {
 
         testInterface.testVoidMethod();
 
-        assertEquals(BUFFER, client.getLastHttpRequest().getMetadata().getResponseBodyMode());
+        assertEquals(BUFFER, client.getLastHttpRequest().getMetadata().getResponseHandlingMode());
     }
 
     @Test
@@ -198,7 +197,7 @@ public class RestProxyTests {
 
         testInterface.testMethodReturnsResponseVoid();
 
-        assertEquals(BUFFER, client.getLastHttpRequest().getMetadata().getResponseBodyMode());
+        assertEquals(BUFFER, client.getLastHttpRequest().getMetadata().getResponseHandlingMode());
     }
 
     @Test
@@ -212,7 +211,7 @@ public class RestProxyTests {
 
         testInterface.testDownload();
 
-        assertEquals(STREAM, client.getLastHttpRequest().getMetadata().getResponseBodyMode());
+        assertEquals(STREAM, client.getLastHttpRequest().getMetadata().getResponseHandlingMode());
     }
 
     private static Stream<Arguments> doesNotChangeBinaryDataContentTypeDataProvider() throws Exception {

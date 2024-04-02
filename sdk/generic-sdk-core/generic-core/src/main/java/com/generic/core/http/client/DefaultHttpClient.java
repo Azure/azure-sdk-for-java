@@ -11,7 +11,7 @@ import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.ProxyOptions;
 import com.generic.core.http.models.Response;
-import com.generic.core.http.models.ResponseBodyMode;
+import com.generic.core.http.models.ResponseHandlingMode;
 import com.generic.core.http.models.ServerSentEventListener;
 import com.generic.core.implementation.AccessibleByteArrayOutputStream;
 import com.generic.core.implementation.http.HttpResponseAccessHelper;
@@ -44,8 +44,8 @@ import java.util.Map;
 
 import static com.generic.core.http.models.ContentType.APPLICATION_OCTET_STREAM;
 import static com.generic.core.http.models.HttpHeaderName.CONTENT_TYPE;
-import static com.generic.core.http.models.ResponseBodyMode.BUFFER;
-import static com.generic.core.http.models.ResponseBodyMode.STREAM;
+import static com.generic.core.http.models.ResponseHandlingMode.BUFFER;
+import static com.generic.core.http.models.ResponseHandlingMode.STREAM;
 import static com.generic.core.implementation.util.ServerSentEventUtil.NO_LISTENER_ERROR_MESSAGE;
 import static com.generic.core.implementation.util.ServerSentEventUtil.processTextEventStream;
 
@@ -226,22 +226,22 @@ class DefaultHttpClient implements HttpClient {
                 }
             }
         } else {
-            ResponseBodyMode responseBodyMode = httpRequest.getMetadata().getResponseBodyMode();
+            ResponseHandlingMode responseHandlingMode = httpRequest.getMetadata().getResponseHandlingMode();
 
-            if (responseBodyMode == null) {
+            if (responseHandlingMode == null) {
                 HttpHeader contentType = httpResponse.getHeaders().get(CONTENT_TYPE);
                 String contentTypeString = contentType == null ? null : contentType.getValue();
 
                 if (APPLICATION_OCTET_STREAM.equalsIgnoreCase(contentTypeString)) {
-                    responseBodyMode = STREAM;
+                    responseHandlingMode = STREAM;
                 } else {
-                    responseBodyMode = BUFFER;
+                    responseHandlingMode = BUFFER;
                 }
 
-                httpRequest.getMetadata().setResponseBodyMode(responseBodyMode);
+                httpRequest.getMetadata().setResponseHandlingMode(responseHandlingMode);
             }
 
-            switch (responseBodyMode) {
+            switch (responseHandlingMode) {
                 case IGNORE:
                     HttpResponseAccessHelper.setBody(httpResponse, EMPTY_BODY);
 
