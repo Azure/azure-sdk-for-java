@@ -110,11 +110,13 @@ public final class Providers<TProvider, TInstance> {
             provider = defaultProvider;
 
             if (provider == null) {
-                if (fallbackSupplier == null || fallbackSupplier.get() == null) {
+                TInstance instance = fallbackSupplier == null ? null : fallbackSupplier.get();
+
+                if (instance == null) {
                     throw LOGGER.logThrowableAsError(new IllegalStateException(noProviderMessage));
                 }
 
-                return fallbackSupplier.get();
+                return instance;
             }
         } else {
             implementationName = selectedImplementation == null ? defaultImplementation
