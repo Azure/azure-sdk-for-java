@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import org.apache.kafka.connect.errors.ConnectException;
 import org.apache.kafka.connect.errors.RetriableException;
 
-public class CosmosExceptionsHelper {
+public class KafkaCosmosExceptionsHelper {
     public static boolean isTransientFailure(int statusCode, int substatusCode) {
         return statusCode == HttpConstants.StatusCodes.GONE
             || statusCode == HttpConstants.StatusCodes.SERVICE_UNAVAILABLE
@@ -43,7 +43,7 @@ public class CosmosExceptionsHelper {
     }
 
     public static ConnectException convertToConnectException(Throwable throwable, String message) {
-        if (CosmosExceptionsHelper.isTransientFailure(throwable)) {
+        if (KafkaCosmosExceptionsHelper.isTransientFailure(throwable)) {
             return new RetriableException(message, throwable);
         }
 

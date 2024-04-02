@@ -4,7 +4,7 @@
 package com.azure.cosmos.kafka.connect.implementation.sink;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.kafka.connect.implementation.CosmosConfig;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigException;
 
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * Common Configuration for Cosmos DB Kafka sink connector.
  */
-public class CosmosSinkConfig extends CosmosConfig {
+public class CosmosSinkConfig extends KafkaCosmosConfig {
     private static final String SINK_CONFIG_PREFIX = "kafka.connect.cosmos.sink.";
 
     // error tolerance
@@ -115,7 +115,7 @@ public class CosmosSinkConfig extends CosmosConfig {
     }
 
     public static ConfigDef getConfigDef() {
-        ConfigDef configDef = CosmosConfig.getConfigDef();
+        ConfigDef configDef = KafkaCosmosConfig.getConfigDef();
 
         defineWriteConfig(configDef);
         defineContainersConfig(configDef);

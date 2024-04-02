@@ -12,15 +12,19 @@ import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.Map;
 
 public class CosmosClientStore {
     // TODO[Public Preview]: revalidate how to get the active directory endpoint map. It suppose to come from management SDK.
-    private final static Map<CosmosAzureEnvironments, String> activeDirectoryEndpointMap = Map.ofEntries(
-        Map.entry(CosmosAzureEnvironments.AZURE, "https://login.microsoftonline.com/"),
-        Map.entry(CosmosAzureEnvironments.AZURE_CHINA, "https://login.chinacloudapi.cn/"),
-        Map.entry(CosmosAzureEnvironments.AZURE_US_GOVERNMENT, "https://login.microsoftonline.us/"),
-        Map.entry(CosmosAzureEnvironments.AZURE_GERMANY, "https://login.microsoftonline.de/"));
+    private final static Map<CosmosAzureEnvironments, String> activeDirectoryEndpointMap;
+    static {
+        activeDirectoryEndpointMap = new HashMap<>();
+        activeDirectoryEndpointMap.put(CosmosAzureEnvironments.AZURE, "https://login.microsoftonline.com/");
+        activeDirectoryEndpointMap.put(CosmosAzureEnvironments.AZURE_CHINA, "https://login.chinacloudapi.cn/");
+        activeDirectoryEndpointMap.put(CosmosAzureEnvironments.AZURE_US_GOVERNMENT, "https://login.microsoftonline.us/");
+        activeDirectoryEndpointMap.put(CosmosAzureEnvironments.AZURE_GERMANY, "https://login.microsoftonline.de/");
+    }
 
     public static CosmosAsyncClient getCosmosClient(CosmosAccountConfig accountConfig) {
         if (accountConfig == null) {
@@ -61,9 +65,9 @@ public class CosmosClientStore {
 
     private static String getUserAgentSuffix(CosmosAccountConfig accountConfig) {
         if (StringUtils.isNotEmpty(accountConfig.getApplicationName())) {
-            return CosmosConstants.USER_AGENT_SUFFIX + "|" + accountConfig.getApplicationName();
+            return KafkaCosmosConstants.USER_AGENT_SUFFIX + "|" + accountConfig.getApplicationName();
         }
 
-        return CosmosConstants.USER_AGENT_SUFFIX;
+        return KafkaCosmosConstants.USER_AGENT_SUFFIX;
     }
 }

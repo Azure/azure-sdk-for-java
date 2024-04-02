@@ -8,8 +8,8 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
-import com.azure.cosmos.kafka.connect.implementation.CosmosConstants;
-import com.azure.cosmos.kafka.connect.implementation.CosmosExceptionsHelper;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceOffsetStorageReader;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTask;
@@ -43,8 +43,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.kafka.connect.implementation.CosmosConfig.validateCosmosAccountAuthConfig;
-import static com.azure.cosmos.kafka.connect.implementation.CosmosConfig.validateThroughputControlConfig;
+import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateCosmosAccountAuthConfig;
+import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateThroughputControlConfig;
 
 /***
  * The CosmosDb source connector.
@@ -106,7 +106,7 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
 
     @Override
     public String version() {
-        return CosmosConstants.CURRENT_VERSION;
+        return KafkaCosmosConstants.CURRENT_VERSION;
     }
 
     private List<Map<String, String>> getTaskConfigs(int maxTasks) {
@@ -321,7 +321,7 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
             .getContainer(containerProperties.getId())
             .getFeedRanges()
             .onErrorMap(throwable ->
-                CosmosExceptionsHelper.convertToConnectException(
+                KafkaCosmosExceptionsHelper.convertToConnectException(
                     throwable,
                     "GetFeedRanges failed for container " + containerProperties.getId()))
             .block();

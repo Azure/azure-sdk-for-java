@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 /**
  * Common Configuration for Cosmos DB Kafka source connector and sink connector.
  */
-public class CosmosConfig extends AbstractConfig {
+public class KafkaCosmosConfig extends AbstractConfig {
     protected static final ConfigDef.Validator NON_EMPTY_STRING = new ConfigDef.NonEmptyString();
     private static final String CONFIG_PREFIX = "kafka.connect.cosmos.";
 
@@ -49,7 +49,7 @@ public class CosmosConfig extends AbstractConfig {
     private static final String DEFAULT_AUTH_TYPE = CosmosAuthTypes.MASTER_KEY.getName();
 
     private static final String ACCOUNT_KEY = CONFIG_PREFIX + "accountKey";
-    private static final String ACCOUNT_KEY_DOC = "Cosmos DB Account Key.";
+    private static final String ACCOUNT_KEY_DOC = "Cosmos DB Account Key (only required in case of `auth.type` as `MasterKey`)";
     private static final String ACCOUNT_KEY_DISPLAY = "Cosmos DB Account Key.";
     private static final String DEFAULT_ACCOUNT_KEY = Strings.Emtpy;
 
@@ -107,7 +107,7 @@ public class CosmosConfig extends AbstractConfig {
     private static final String DEFAULT_THROUGHPUT_CONTROL_AUTH_TYPE = CosmosAuthTypes.MASTER_KEY.getName();
 
     private static final String THROUGHPUT_CONTROL_ACCOUNT_KEY = CONFIG_PREFIX + "throughputControl.accountKey";
-    private static final String THROUGHPUT_CONTROL_ACCOUNT_KEY_DOC = "Cosmos DB Throughput Control Account Key.";
+    private static final String THROUGHPUT_CONTROL_ACCOUNT_KEY_DOC = "Cosmos DB Throughput Control Account Key (only required in case of `throughputControl.auth.type` as `MasterKey`)";
     private static final String THROUGHPUT_CONTROL_ACCOUNT_KEY_DISPLAY = "Cosmos DB Throughput Control Account Key.";
     private static final String DEFAULT_THROUGHPUT_CONTROL_ACCOUNT_KEY = Strings.Emtpy;
 
@@ -186,7 +186,7 @@ public class CosmosConfig extends AbstractConfig {
     private final CosmosAccountConfig accountConfig;
     private final CosmosThroughputControlConfig throughputControlConfig;
 
-    public CosmosConfig(ConfigDef config, Map<String, ?> parsedConfig) {
+    public KafkaCosmosConfig(ConfigDef config, Map<String, ?> parsedConfig) {
         super(config, parsedConfig);
         this.accountConfig = this.parseAccountConfig();
         this.throughputControlConfig = this.parseThroughputControlConfig();

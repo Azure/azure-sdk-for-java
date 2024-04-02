@@ -5,7 +5,7 @@ package com.azure.cosmos.kafka.connect.implementation;
 
 import com.azure.core.util.CoreUtils;
 
-public class CosmosConstants {
+public class KafkaCosmosConstants {
     public static final String PROPERTIES_FILE_NAME = "azure-cosmos-kafka-connect.properties";
     public static final String CURRENT_VERSION = CoreUtils.getProperties(PROPERTIES_FILE_NAME).get("version");
     public static final String CURRENT_NAME = CoreUtils.getProperties(PROPERTIES_FILE_NAME).get("name");
