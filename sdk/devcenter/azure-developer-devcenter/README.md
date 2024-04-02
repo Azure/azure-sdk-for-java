@@ -55,30 +55,35 @@ DevBoxesClient devBoxClient =
                         .buildClient();
 
 // Find available Projects and Pools
-PagedIterable<BinaryData> projectListResponse = devCenterClient.listProjects(null);
-for (BinaryData p: projectListResponse) {
-    System.out.println(p);
+PagedIterable<DevCenterProject> projectListResponse = devCenterClient.listProjects();
+for (DevCenterProject project: projectListResponse) {
+    System.out.println(project.getName());
 }
+DevCenterProject project = projectListResponse.iterator().next();
+String projectName = project.getName();
 
-PagedIterable<BinaryData> poolListResponse = devBoxClient.listPools("myProject", null);
-for (BinaryData p: poolListResponse) {
-    System.out.println(p);
+PagedIterable<DevBoxPool> poolListResponse = devBoxClient.listPools(projectName);
+for (DevBoxPool pool: poolListResponse) {
+    System.out.println(pool.getName());
 }
+DevBoxPool pool = poolListResponse.iterator().next();
+String poolName = pool.getName();
 
 // Provision a Dev Box
-BinaryData devBoxBody = BinaryData.fromString("{\"poolName\":\"MyPool\"}");
-SyncPoller<BinaryData, BinaryData> devBoxCreateResponse =
-        devBoxClient.beginCreateDevBox("myProject", "me", "MyDevBox", devBoxBody, null);
+SyncPoller<DevCenterOperationDetails, DevBox> devBoxCreateResponse =
+                devBoxClient.beginCreateDevBox(projectName, "me", new DevBox("MyDevBox", poolName));
 devBoxCreateResponse.waitForCompletion();
+DevBox devBox = devBoxCreateResponse.getFinalResult();
+String devBoxName = devBox.getName();
+System.out.println("DevBox " + devBoxName + "finished provisioning with status " + devBox.getProvisioningState());
 
-
-Response<BinaryData> remoteConnectionResponse =
-                devBoxClient.getRemoteConnectionWithResponse("myProject", "me", "MyDevBox", null);
-System.out.println(remoteConnectionResponse.getValue());
+RemoteConnection remoteConnection =
+                devBoxClient.getRemoteConnection(projectName, "me", devBoxName);
+System.out.println(remoteConnection.getWebUrl());
 
 // Tear down the Dev Box when we're finished:
-SyncPoller<BinaryData, Void> devBoxDeleteResponse =
-                devBoxClient.beginDeleteDevBox("myProject", "me", "MyDevBox", null);
+SyncPoller<DevCenterOperationDetails, Void> devBoxDeleteResponse =
+                devBoxClient.beginDeleteDevBox(projectName, "me", devBoxName);
 devBoxDeleteResponse.waitForCompletion();
 ```
 
@@ -91,30 +96,35 @@ DeploymentEnvironmentsClient environmentsClient =
                             .buildClient();
 
 // Fetch available environment definitions and environment types
-PagedIterable<BinaryData> listCatalogsResponse = environmentsClient.listCatalogs("myProject", null);
-for (BinaryData p: listCatalogsResponse) {
-    System.out.println(p);
+PagedIterable<DevCenterCatalog> catalogs = environmentsClient.listCatalogs(projectName);
+for (DevCenterCatalog catalog: catalogs) {
+    System.out.println(catalog.getName());
 }
+String catalogName = catalogs.iterator().next().getName();
 
-PagedIterable<BinaryData> environmentDefinitionsListResponse = environmentsClient.listEnvironmentDefinitionsByCatalog("myProject", "myCatalog", null);
-for (BinaryData p: environmentDefinitionsListResponse) {
-    System.out.println(p);
+PagedIterable<EnvironmentDefinition> environmentDefinitions = environmentsClient.listEnvironmentDefinitionsByCatalog(projectName, catalogName);
+for (EnvironmentDefinition environmentDefinition: environmentDefinitions) {
+    System.out.println(environmentDefinition.getName());
 }
+String envDefinitionName = environmentDefinitions.iterator().next().getName();
 
-PagedIterable<BinaryData> environmentTypesListResponse = environmentsClient.listEnvironmentTypes("myProject", null);
-for (BinaryData p: environmentTypesListResponse) {
-    System.out.println(p);
+PagedIterable<DevCenterEnvironmentType> environmentTypes = environmentsClient.listEnvironmentTypes(projectName);
+for (DevCenterEnvironmentType envType: environmentTypes) {
+    System.out.println(envType.getName());
 }
+String envTypeName = environmentTypes.iterator().next().getName();
 
 // Create an environment
-BinaryData environmentBody = BinaryData.fromString("{\"environmentDefinitionName\":\"myEnvironmentDefinition\", \"environmentType\":\"myEnvironmentType\", \"catalogName\":\"myCatalog\"}");
-SyncPoller<BinaryData, BinaryData> environmentCreateResponse =
-                environmentsClient.beginCreateOrUpdateEnvironment("myProject", "me", "TestEnvironment", environmentBody, null);
+SyncPoller<DevCenterOperationDetails, DevCenterEnvironment> environmentCreateResponse 
+            = environmentsClient.beginCreateOrUpdateEnvironment(projectName, "me",
+                new DevCenterEnvironment("myEnvironmentName", envTypeName, catalogName, envDefinitionName));
 environmentCreateResponse.waitForCompletion();
+DevCenterEnvironment environment = environmentCreateResponse.getFinalResult();
+String environmentName = environment.getName();
 
 // Delete the environment when we're finished:
-SyncPoller<BinaryData, Void> environmentDeleteResponse =
-                environmentsClient.beginDeleteEnvironment("myProject", "me", "TestEnvironment", null);
+SyncPoller<DevCenterOperationDetails, Void> environmentDeleteResponse =
+                environmentsClient.beginDeleteEnvironment(projectName, "me", environmentName);
 environmentDeleteResponse.waitForCompletion();
 ```
 
