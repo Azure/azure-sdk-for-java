@@ -43,6 +43,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateCosmosAccountAuthConfig;
 import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateThroughputControlConfig;
 
 /***
@@ -367,7 +368,8 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
                 .stream()
                 .collect(Collectors.toMap(ConfigValue::name, Function.identity()));
 
-        validateThroughputControlConfig(connectorConfigs, configValues);
+        validateCosmosAccountAuthConfig(configValues);
+        validateThroughputControlConfig(configValues);
         return config;
     }
 
