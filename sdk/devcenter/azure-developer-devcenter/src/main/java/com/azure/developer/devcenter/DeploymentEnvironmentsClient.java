@@ -393,7 +393,7 @@ public final class DeploymentEnvironmentsClient {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: Object (Optional)
+     *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>
@@ -437,7 +437,7 @@ public final class DeploymentEnvironmentsClient {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: Object (Optional)
+     *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>
@@ -483,7 +483,7 @@ public final class DeploymentEnvironmentsClient {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: Object (Optional)
+     *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>

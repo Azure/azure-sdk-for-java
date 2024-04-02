@@ -399,7 +399,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: Object (Optional)
+     *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>
@@ -443,7 +443,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: Object (Optional)
+     *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>
@@ -489,7 +489,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: Object (Optional)
+     *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>

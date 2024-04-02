@@ -23,13 +23,6 @@ public final class DevBoxActionDelayResult {
     private String actionName;
 
     /*
-     * The result of the delay operation on this action.
-     */
-    @Generated
-    @JsonProperty(value = "result")
-    private DevBoxActionDelayStatus result;
-
-    /*
      * The delayed action
      */
     @Generated
@@ -47,14 +40,14 @@ public final class DevBoxActionDelayResult {
      * Creates an instance of DevBoxActionDelayResult class.
      *
      * @param actionName the actionName value to set.
-     * @param result the result value to set.
+     * @param delayStatus the delayStatus value to set.
      */
     @Generated
     @JsonCreator
     private DevBoxActionDelayResult(@JsonProperty(value = "name") String actionName,
-        @JsonProperty(value = "result") DevBoxActionDelayStatus result) {
+        @JsonProperty(value = "result") DevBoxActionDelayStatus delayStatus) {
         this.actionName = actionName;
-        this.result = result;
+        this.delayStatus = delayStatus;
     }
 
     /**
@@ -65,16 +58,6 @@ public final class DevBoxActionDelayResult {
     @Generated
     public String getActionName() {
         return this.actionName;
-    }
-
-    /**
-     * Get the result property: The result of the delay operation on this action.
-     *
-     * @return the result value.
-     */
-    @Generated
-    public DevBoxActionDelayStatus getResult() {
-        return this.result;
     }
 
     /**
@@ -95,5 +78,22 @@ public final class DevBoxActionDelayResult {
     @Generated
     public ResponseError getError() {
         return this.error;
+    }
+
+    /*
+     * The result of the delay operation on this action.
+     */
+    @Generated
+    @JsonProperty(value = "result")
+    private DevBoxActionDelayStatus delayStatus;
+
+    /**
+     * Get the delayStatus property: The result of the delay operation on this action.
+     *
+     * @return the delayStatus value.
+     */
+    @Generated
+    public DevBoxActionDelayStatus getDelayStatus() {
+        return this.delayStatus;
     }
 }

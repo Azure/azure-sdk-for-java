@@ -2061,7 +2061,7 @@ public final class DeploymentEnvironmentsClientImpl {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: Object (Optional)
+     *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>
@@ -2111,7 +2111,7 @@ public final class DeploymentEnvironmentsClientImpl {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: Object (Optional)
+     *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>
@@ -2158,7 +2158,7 @@ public final class DeploymentEnvironmentsClientImpl {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: Object (Optional)
+     *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>
@@ -2206,7 +2206,7 @@ public final class DeploymentEnvironmentsClientImpl {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: Object (Optional)
+     *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>
@@ -2253,7 +2253,7 @@ public final class DeploymentEnvironmentsClientImpl {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: Object (Optional)
+     *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>
@@ -2304,7 +2304,7 @@ public final class DeploymentEnvironmentsClientImpl {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: Object (Optional)
+     *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>
@@ -2354,7 +2354,7 @@ public final class DeploymentEnvironmentsClientImpl {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: Object (Optional)
+     *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>
@@ -2403,7 +2403,7 @@ public final class DeploymentEnvironmentsClientImpl {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: Object (Optional)
+     *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>
@@ -2453,7 +2453,7 @@ public final class DeploymentEnvironmentsClientImpl {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: Object (Optional)
+     *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>
@@ -2503,7 +2503,7 @@ public final class DeploymentEnvironmentsClientImpl {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: Object (Optional)
+     *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>
@@ -2948,7 +2948,7 @@ public final class DeploymentEnvironmentsClientImpl {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: Object (Optional)
+     *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>
@@ -3000,7 +3000,7 @@ public final class DeploymentEnvironmentsClientImpl {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: Object (Optional)
+     *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>
@@ -3050,7 +3050,7 @@ public final class DeploymentEnvironmentsClientImpl {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: Object (Optional)
+     *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>
@@ -3102,7 +3102,7 @@ public final class DeploymentEnvironmentsClientImpl {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: Object (Optional)
+     *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>

@@ -55,7 +55,7 @@ public final class EnvironmentDefinition {
      */
     @Generated
     @JsonProperty(value = "parametersSchema")
-    private Object parametersSchema;
+    private String parametersSchema;
 
     /*
      * Path to the Environment Definition entrypoint file.
@@ -134,7 +134,7 @@ public final class EnvironmentDefinition {
      * @return the parametersSchema value.
      */
     @Generated
-    public Object getParametersSchema() {
+    public String getParametersSchema() {
         return this.parametersSchema;
     }
 
