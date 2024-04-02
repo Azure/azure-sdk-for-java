@@ -6,7 +6,6 @@ package com.azure.cosmos.kafka.connect;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
@@ -91,8 +90,8 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         CosmosSourceConnector sourceConnector = new CosmosSourceConnector();
         try {
             Map<String, Object> sourceConfigMap = new HashMap<>();
-            sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
-            sourceConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
+            sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", KafkaCosmosTestConfigurations.HOST);
+            sourceConfigMap.put("kafka.connect.cosmos.accountKey", KafkaCosmosTestConfigurations.MASTER_KEY);
             sourceConfigMap.put("kafka.connect.cosmos.source.database.name", databaseName);
             List<String> containersIncludedList = Arrays.asList(
                 singlePartitionContainerName,
@@ -164,8 +163,8 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
 
         try {
             Map<String, Object> sourceConfigMap = new HashMap<>();
-            sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
-            sourceConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
+            sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", KafkaCosmosTestConfigurations.HOST);
+            sourceConfigMap.put("kafka.connect.cosmos.accountKey", KafkaCosmosTestConfigurations.MASTER_KEY);
             sourceConfigMap.put("kafka.connect.cosmos.source.database.name", databaseName);
             List<String> containersIncludedList = Arrays.asList(multiPartitionContainerName);
             sourceConfigMap.put("kafka.connect.cosmos.source.containers.includedList", containersIncludedList.toString());
@@ -259,8 +258,8 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
 
         try {
             Map<String, Object> sourceConfigMap = new HashMap<>();
-            sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
-            sourceConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
+            sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", KafkaCosmosTestConfigurations.HOST);
+            sourceConfigMap.put("kafka.connect.cosmos.accountKey", KafkaCosmosTestConfigurations.MASTER_KEY);
             sourceConfigMap.put("kafka.connect.cosmos.source.database.name", databaseName);
             List<String> containersIncludedList = Arrays.asList(singlePartitionContainerName);
             sourceConfigMap.put("kafka.connect.cosmos.source.containers.includedList", containersIncludedList.toString());
@@ -494,7 +493,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         sourceConfigMap.put("kafka.connect.cosmos.throughputControl.globalControl.database", "ThroughputControlDatabase");
         sourceConfigMap.put("kafka.connect.cosmos.throughputControl.globalControl.container", "ThroughputControlContainer");
         sourceConfigMap.put("kafka.connect.cosmos.throughputControl.name", "groupName");
-        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.accountEndpoint", TestConfigurations.HOST);
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.accountEndpoint", KafkaCosmosTestConfigurations.HOST);
 
         config = sourceConnector.validate(sourceConfigMap);
         errorMessages = config.configValues().stream()
@@ -508,7 +507,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         sourceConfigMap.put("kafka.connect.cosmos.throughputControl.globalControl.database", "ThroughputControlDatabase");
         sourceConfigMap.put("kafka.connect.cosmos.throughputControl.globalControl.container", "ThroughputControlContainer");
         sourceConfigMap.put("kafka.connect.cosmos.throughputControl.name", "groupName");
-        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.accountEndpoint", TestConfigurations.HOST);
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.accountEndpoint", KafkaCosmosTestConfigurations.HOST);
         sourceConfigMap.put("kafka.connect.cosmos.throughputControl.auth.type", CosmosAuthTypes.SERVICE_PRINCIPAL.getName());
 
         config = sourceConnector.validate(sourceConfigMap);
@@ -521,8 +520,8 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
 
     private Map<String, String> getValidSourceConfig() {
         Map<String, String> sourceConfigMap = new HashMap<>();
-        sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
-        sourceConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
+        sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", KafkaCosmosTestConfigurations.HOST);
+        sourceConfigMap.put("kafka.connect.cosmos.accountKey", KafkaCosmosTestConfigurations.MASTER_KEY);
         sourceConfigMap.put("kafka.connect.cosmos.source.database.name", databaseName);
         List<String> containersIncludedList = Arrays.asList(singlePartitionContainerName);
         sourceConfigMap.put("kafka.connect.cosmos.source.containers.includedList", containersIncludedList.toString());

@@ -64,7 +64,6 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         Map<String, List<String>> errorMessages = config.configValues().stream()
             .collect(Collectors.toMap(ConfigValue::name, ConfigValue::errorMessages));
         assertThat(errorMessages.get("kafka.connect.cosmos.accountEndpoint").size()).isGreaterThan(0);
-        assertThat(errorMessages.get("kafka.connect.cosmos.accountKey").size()).isGreaterThan(0);
         assertThat(errorMessages.get("kafka.connect.cosmos.sink.database.name").size()).isGreaterThan(0);
         assertThat(errorMessages.get("kafka.connect.cosmos.sink.containers.topicMap").size()).isGreaterThan(0);
     }
