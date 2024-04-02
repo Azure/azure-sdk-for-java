@@ -1814,7 +1814,7 @@
       <id>standalone-revapi-differences</id>
       <activation>
         <file>
-          <exists>${revapi.differences.file}</exists>
+          <exists>${project.basedir}/revapi-differences.json</exists>
         </file>
       </activation>
 
@@ -1827,7 +1827,7 @@
             <configuration>
               <analysisConfigurationFiles combine.self="append" combine.children="append">
                 <configurationFile>
-                  <path>${revapi.differences.file}</path>
+                  <path>${project.basedir}/revapi-differences.json</path>
                 </configurationFile>
               </analysisConfigurationFiles>
             </configuration>
