@@ -55,8 +55,6 @@ abstract class RowSerializerPoolBase[A <: RowSerializerQueueBase] extends BasicL
       case NonFatal(e) => logError("Callback onCleanup invocation failed.", e)
     }
   }
-
-
 }
 
 /**
@@ -68,6 +66,7 @@ abstract class RowSerializerPoolBase[A <: RowSerializerQueueBase] extends BasicL
  *   to purge serializers for schemas not used anymore.
  */
 protected abstract class RowSerializerQueueBase() {
+<<<<<<< HEAD
   private val MaxPooledSerializerCount = 256
   protected[this] val objectPool = new ConcurrentLinkedQueue[ExpressionEncoder.Serializer[Row]]()
   protected[this] val estimatedSize = new AtomicLong(0)
