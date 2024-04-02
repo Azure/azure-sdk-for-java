@@ -8,7 +8,7 @@ import com.azure.communication.common.CommunicationIdentifier;
 /**
  * Options for the Hold operation.
  */
-public class HoldOptions {
+public final class HoldOptions {
 
     /**
      * Participant to put on hold.
