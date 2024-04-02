@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.quantum.generated;
 
-/** Samples for Workspaces Delete. */
+/**
+ * Samples for Workspaces Delete.
+ */
 public final class WorkspacesDeleteSamples {
     /*
-     * x-ms-original-file: specification/quantum/resource-manager/Microsoft.Quantum/preview/2022-01-10-preview/examples/quantumWorkspacesDelete.json
+     * x-ms-original-file: specification/quantum/resource-manager/Microsoft.Quantum/preview/2023-11-13-preview/examples/
+     * quantumWorkspacesDelete.json
      */
     /**
      * Sample code: QuantumWorkspacesDelete.
-     *
+     * 
      * @param manager Entry point to AzureQuantumManager.
      */
     public static void quantumWorkspacesDelete(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {

@@ -32,7 +32,7 @@ import java.util.function.Consumer;
  * <pre>
  * RequestOptions options = new RequestOptions&#40;&#41;
  *     .setBody&#40;BinaryData.fromString&#40;&quot;&#123;&#92;&quot;name&#92;&quot;:&#92;&quot;Fluffy&#92;&quot;&#125;&quot;&#41;&#41;
- *     .addHeader&#40;HeaderName.fromString&#40;&quot;x-ms-pet-version&quot;&#41;, &quot;2021-06-01&quot;&#41;;
+ *     .addHeader&#40;new HttpHeader&#40;HttpHeaderName.fromString&#40;&quot;x-ms-pet-version&quot;&#41;, &quot;2021-06-01&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.generic.core.http.rest.requestoptions.instantiation -->
  *
@@ -107,7 +107,7 @@ import java.util.function.Consumer;
  *         .setUrl&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41;
  *         .setHttpMethod&#40;HttpMethod.POST&#41;
  *         .setBody&#40;BinaryData.fromString&#40;requestBodyStr&#41;&#41;
- *         .getHeaders&#40;&#41;.set&#40;HeaderName.CONTENT_TYPE, &quot;application&#47;json&quot;&#41;&#41;;
+ *         .getHeaders&#40;&#41;.set&#40;HttpHeaderName.CONTENT_TYPE, &quot;application&#47;json&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.generic.core.http.rest.requestoptions.postrequest -->
  */
@@ -147,12 +147,10 @@ public final class RequestOptions {
      * otherwise a new header is created.
      *
      * @param header the header key
-     * @param value the header value
-     *
      * @return the modified RequestOptions object
      */
-    public RequestOptions addHeader(HttpHeaderName header, String value) {
-        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header, value));
+    public RequestOptions addHeader(HttpHeader header) {
+        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header));
 
         return this;
     }

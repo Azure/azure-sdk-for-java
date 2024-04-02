@@ -3,7 +3,7 @@
 
 package com.generic.core.http.models;
 
-import com.generic.core.http.policy.HttpRequestRedirectCondition;
+import com.generic.core.http.pipeline.HttpRequestRedirectCondition;
 import com.generic.core.util.ClientLogger;
 
 import java.util.EnumSet;

@@ -11,9 +11,11 @@ import com.generic.core.http.annotation.HostParam;
 import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.annotation.QueryParam;
-import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
+import com.generic.core.http.annotation.UnexpectedResponseExceptionDetail;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.exception.HttpResponseException;
+import com.generic.core.http.models.ContentType;
+import com.generic.core.http.models.HttpHeader;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpLogOptions;
@@ -21,10 +23,11 @@ import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.models.Response;
+import com.generic.core.http.models.ServerSentEvent;
+import com.generic.core.http.models.ServerSentEventListener;
+import com.generic.core.http.pipeline.HttpLoggingPolicy;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
-import com.generic.core.http.policy.HttpLoggingPolicy;
-import com.generic.core.implementation.http.ContentType;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.UrlBuilder;
@@ -32,6 +35,7 @@ import com.generic.core.util.ClientLogger;
 import com.generic.core.util.Context;
 import com.generic.core.util.binarydata.BinaryData;
 import com.generic.core.util.serializer.ObjectSerializer;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -55,6 +59,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -73,6 +78,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -92,6 +98,7 @@ public abstract class HttpClientTests {
     private static final String UTF_32BE_BOM_RESPONSE = "utf32BeBomBytes";
     private static final String UTF_32LE_BOM_RESPONSE = "utf32LeBomBytes";
     private static final String BOM_WITH_DIFFERENT_HEADER = "bomBytesWithDifferentHeader";
+    private static final String SSE_RESPONSE = "serversentevent";
 
     protected static final String ECHO_RESPONSE = "echo";
 
@@ -670,8 +677,7 @@ public abstract class HttpClientTests {
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything", json.url());
         assertNotNull(json.headers());
-
-        final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
+        HttpHeaders headers = toHttpHeaders(json.headers());
 
         assertEquals("A", headers.getValue(HEADER_A));
         assertListEquals(Collections.singletonList("A"), headers.getValues(HEADER_A));
@@ -683,8 +689,7 @@ public abstract class HttpClientTests {
     @Test
     public void getRequestWithNullHeader() {
         final HttpBinJSON json = createService(Service7.class).getAnything(getRequestUri(), null, 15);
-
-        final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
+        HttpHeaders headers = toHttpHeaders(json.headers());
 
         assertNull(headers.getValue(HEADER_A));
         assertListEquals(null, headers.getValues(HEADER_A));
@@ -723,7 +728,7 @@ public abstract class HttpClientTests {
         HttpBinJSON put(@HostParam("url") String url, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {200})
-        @UnexpectedResponseExceptionInformation(exceptionBodyClass = HttpBinJSON.class)
+        @UnexpectedResponseExceptionDetail(exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putBodyAndContentLength(@HostParam("url") String url,
                                             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) ByteBuffer body,
                                             @HeaderParam("Content-Length") long contentLength);
@@ -733,23 +738,23 @@ public abstract class HttpClientTests {
                                               @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {201})
-        @UnexpectedResponseExceptionInformation(exceptionBodyClass = HttpBinJSON.class)
+        @UnexpectedResponseExceptionDetail(exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putWithUnexpectedResponseAndExceptionType(@HostParam("url") String url,
                                                               @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {201})
-        @UnexpectedResponseExceptionInformation(statusCode = {200}, exceptionBodyClass = HttpBinJSON.class)
+        @UnexpectedResponseExceptionDetail(statusCode = {200}, exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putWithUnexpectedResponseAndDeterminedExceptionType(@HostParam("url") String url,
                                                                         @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {201})
-        @UnexpectedResponseExceptionInformation(statusCode = {400})
-        @UnexpectedResponseExceptionInformation(exceptionBodyClass = HttpBinJSON.class)
+        @UnexpectedResponseExceptionDetail(statusCode = {400})
+        @UnexpectedResponseExceptionDetail(exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putWithUnexpectedResponseAndFallthroughExceptionType(@HostParam("url") String url,
                                                                          @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {201})
-        @UnexpectedResponseExceptionInformation(statusCode = {400}, exceptionBodyClass = HttpBinJSON.class)
+        @UnexpectedResponseExceptionDetail(statusCode = {400}, exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putWithUnexpectedResponseAndNoFallthroughExceptionType(@HostParam("url") String url,
                                                                            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
@@ -889,13 +894,23 @@ public abstract class HttpClientTests {
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything", json.url());
         assertNotNull(json.headers());
-
-        final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
+        HttpHeaders headers = toHttpHeaders(json.headers());
 
         assertEquals("MyHeaderValue", headers.getValue(MY_HEADER));
         assertListEquals(Collections.singletonList("MyHeaderValue"), headers.getValues(MY_HEADER));
         assertEquals("My,Header,Value", headers.getValue(MY_OTHER_HEADER));
         assertListEquals(Arrays.asList("My", "Header", "Value"), headers.getValues(MY_OTHER_HEADER));
+    }
+
+    private static HttpHeaders toHttpHeaders(Map<String, List<String>> jsonHeaders) {
+        HttpHeaders headers = new HttpHeaders();
+        for (Map.Entry<String, List<String>> entry : jsonHeaders.entrySet()) {
+            HttpHeaderName headerName = HttpHeaderName.fromString(entry.getKey());
+            for (String value : entry.getValue()) {
+                headers.add(headerName, value);
+            }
+        }
+        return headers;
     }
 
     @ServiceInterface(name = "Service14", host = "{url}")
@@ -1470,7 +1485,7 @@ public abstract class HttpClientTests {
 
     private static Stream<Arguments> downloadTestArgumentProvider() {
         return Stream.of(
-            Arguments.of(Named.named("default", Context.NONE)));
+            Arguments.of(Named.named("default", Context.EMPTY)));
     }
 
     @ServiceInterface(name = "BinaryDataUploadServ", host = "{url}")
@@ -1492,7 +1507,7 @@ public abstract class HttpClientTests {
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
             .policies(new HttpLoggingPolicy(new HttpLogOptions()
-                .setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODYANDHEADERS)))
+                .setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY_AND_HEADERS)))
             .build();
 
         Response<HttpBinJSON> response =
@@ -1547,7 +1562,7 @@ public abstract class HttpClientTests {
 
         assertNotNull(result.headers());
 
-        final HttpHeaders resultHeaders = new HttpHeaders().setAll(result.headers());
+        HttpHeaders resultHeaders = toHttpHeaders(result.headers());
 
         assertEquals("GHIJ", resultHeaders.getValue(HttpHeaderName.fromString("ABCDEF")));
         assertEquals("45", resultHeaders.getValue(HttpHeaderName.fromString("ABC123")));
@@ -1608,7 +1623,7 @@ public abstract class HttpClientTests {
                         RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {200})
-        @UnexpectedResponseExceptionInformation(exceptionBodyClass = HttpBinJSON.class)
+        @UnexpectedResponseExceptionDetail(exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putBodyAndContentLength(@HostParam("url") String url,
                                             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) ByteBuffer body,
                                             @HeaderParam("Content-Length") long contentLength,
@@ -1646,7 +1661,7 @@ public abstract class HttpClientTests {
     public void requestOptionsAddAHeader() {
         Service27 service = createService(Service27.class);
         HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
-            new RequestOptions().addHeader(RANDOM_HEADER, "randomValue"));
+            new RequestOptions().addHeader(new HttpHeader(RANDOM_HEADER, "randomValue")));
 
         assertNotNull(response);
         assertNotNull(response.data());
@@ -1659,7 +1674,7 @@ public abstract class HttpClientTests {
     public void requestOptionsSetsAHeader() {
         Service27 service = createService(Service27.class);
         HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
-            new RequestOptions().addHeader(RANDOM_HEADER, "randomValue").setHeader(RANDOM_HEADER, "randomValue2"));
+            new RequestOptions().addHeader(new HttpHeader(RANDOM_HEADER, "randomValue")).setHeader(RANDOM_HEADER, "randomValue2"));
 
         assertNotNull(response);
         assertNotNull(response.data());
@@ -1713,6 +1728,114 @@ public abstract class HttpClientTests {
             () -> executable.accept(getServerUri(isSecure()), createService(Service29.class)));
 
         assertTrue(exception.getMessage().contains("void exception body thrown"));
+    }
+
+    @Test
+    public void canReceiveServerSentEvents() {
+        final int[] i = { 0 };
+        HttpRequest request = new HttpRequest(HttpMethod.GET, getRequestUrl(SSE_RESPONSE)).setServerSentEventListener(
+            sse -> {
+                String expected;
+                Long id;
+                if (i[0] == 0) {
+                    expected = "first event";
+                    id = 1L;
+                    Assertions.assertEquals("test stream", sse.getComment());
+                } else {
+                    expected = "This is the second message, it";
+                    String line2 = "has two lines.";
+
+                    id = 2L;
+                    Assertions.assertEquals(line2, sse.getData().get(1));
+                }
+                Assertions.assertEquals(expected, sse.getData().get(0));
+                Assertions.assertEquals(id, sse.getId());
+                if (++i[0] > 2) {
+                    fail("Should not have received more than two messages.");
+                }
+            });
+
+         getHttpClient().send(request);
+        assertEquals(2, i[0]);
+    }
+
+    /**
+     * Tests that eagerly converting implementation HTTP headers to azure-core Headers is done.
+     */
+    @Test
+    public void canRecognizeServerSentEvent() {
+        BinaryData requestBody = BinaryData.fromString("test body");
+        HttpRequest request = new HttpRequest(HttpMethod.POST, getRequestUrl(SSE_RESPONSE)).setBody(requestBody);
+        request.getMetadata().setEagerlyConvertHeaders(false);
+        List<String> expected = Arrays.asList("YHOO", "+2", "10");
+        getHttpClient().send(request.setServerSentEventListener(sse -> assertEquals(expected, sse.getData())));
+    }
+
+    @Test
+    public void onErrorServerSentEvents() {
+        final int[] i = { 0 };
+        HttpRequest request = new HttpRequest(HttpMethod.GET, getRequestUrl(SSE_RESPONSE)).setServerSentEventListener(
+            new ServerSentEventListener() {
+                @Override
+                public void onEvent(ServerSentEvent sse) throws IOException {
+                    throw new IOException("test exception");
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    assertEquals("test exception", throwable.getMessage());
+                    i[0]++;
+                }
+            });
+
+        getHttpClient().send(request);
+        assertEquals(1, i[0]);
+    }
+
+    @Test
+    public void onRetryWithLastEventIdReceiveServerSentEvents() {
+        final int[] i = { 0 };
+        HttpRequest request = new HttpRequest(HttpMethod.GET, getRequestUrl(SSE_RESPONSE)).setServerSentEventListener(
+            new ServerSentEventListener() {
+                @Override
+                public void onEvent(ServerSentEvent sse) throws IOException {
+                    if (++i[0] == 1) {
+                        assertEquals("test stream", sse.getComment());
+                        assertEquals("first event", sse.getData().get(0));
+                        assertEquals(1, sse.getId());
+                        throw new IOException("test exception");
+                    } else {
+                        assertTimeout(Duration.ofMillis(100L), () -> assertEquals(2, sse.getId()));
+                        assertEquals("This is the second message, it", sse.getData().get(0));
+                        assertEquals("has two lines.", sse.getData().get(1));
+                    }
+                    if (++i[0] > 3) {
+                        fail("Should not have received more than two messages.");
+                    }
+                }
+
+                @Override
+                public boolean shouldRetry(Throwable throwable, Duration retryAfter, long lastEventId) {
+                    assertEquals("test exception", throwable.getMessage());
+                    assertEquals(100, retryAfter.toMillis());
+                    assertEquals(1, lastEventId);
+                    return true;
+                }
+            });
+
+        getHttpClient().send(request);
+        assertEquals(3, i[0]);
+    }
+
+    /**
+     * Test throws Runtime exception for no listener attached.
+     */
+    @Test
+    public void throwsExceptionForNoListener() {
+        BinaryData requestBody = BinaryData.fromString("test body");
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(SSE_RESPONSE)).setBody(requestBody);
+
+        assertThrows(RuntimeException.class, () -> getHttpClient().send(request));
     }
 
     private static Stream<BiConsumer<String, Service29>> voidErrorReturnsErrorBodySupplier() {

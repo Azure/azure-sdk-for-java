@@ -3,7 +3,6 @@
 
 package com.generic.core.util;
 
-import com.generic.core.models.ExpandableStringEnum;
 import com.generic.core.util.configuration.Configuration;
 import com.generic.core.util.configuration.ConfigurationBuilder;
 import com.generic.core.util.configuration.ConfigurationProperty;
@@ -158,13 +157,18 @@ public class ConfigurationJavaDocCodeSnippet {
         // END: com.generic.core.util.ConfigurationPropertyBuilder.ofInteger
     }
 
-    public static final class SampleEnumProperty implements ExpandableStringEnum<SampleEnumProperty> {
+    public static final class SampleEnumProperty implements ExpandableEnum<String> {
         private static final Map<String, SampleEnumProperty> VALUES = new ConcurrentHashMap<>();
 
         private final String value;
 
         private SampleEnumProperty(String value) {
             this.value = value;
+        }
+
+        @Override
+        public String getValue() {
+            return value;
         }
 
         public static final SampleEnumProperty MODE_1 = fromString("mode1");

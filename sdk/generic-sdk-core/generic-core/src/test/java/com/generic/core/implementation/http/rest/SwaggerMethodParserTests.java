@@ -11,7 +11,7 @@ import com.generic.core.http.annotation.HostParam;
 import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.annotation.QueryParam;
-import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
+import com.generic.core.http.annotation.UnexpectedResponseExceptionDetail;
 import com.generic.core.http.exception.HttpExceptionType;
 import com.generic.core.http.models.HttpHeader;
 import com.generic.core.http.models.HttpHeaderName;
@@ -50,8 +50,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static com.generic.core.implementation.http.ContentType.APPLICATION_JSON;
-import static com.generic.core.implementation.http.ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
+import static com.generic.core.http.models.ContentType.APPLICATION_JSON;
+import static com.generic.core.http.models.ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -190,7 +190,7 @@ public class SwaggerMethodParserTests {
         swaggerMethodParser.setHeaders(null, actual, DEFAULT_SERIALIZER);
 
         for (HttpHeader header : actual) {
-            assertEquals(expectedHeaders.getValue(HttpHeaderName.fromString(header.getName())), header.getValue());
+            assertEquals(expectedHeaders.getValue(header.getName()), header.getValue());
         }
     }
 
@@ -404,7 +404,7 @@ public class SwaggerMethodParserTests {
 
     @ParameterizedTest
     @MethodSource("headerSubstitutionSupplier")
-    public void headerSubstitution(Method method, Object[] arguments, Map<String, String> expectedHeaders) {
+    public void headerSubstitution(Method method, Object[] arguments, Map<HttpHeaderName, String> expectedHeaders) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         HttpHeaders actual = new HttpHeaders();
@@ -421,14 +421,14 @@ public class SwaggerMethodParserTests {
         Method overrideHeaders = clazz.getDeclaredMethod("overrideHeaders", String.class, boolean.class);
         Method headerMap = clazz.getDeclaredMethod("headerMap", Map.class);
 
-        Map<String, String> simpleHeaderMap = Collections.singletonMap("key", "value");
-        Map<String, String> expectedSimpleHeadersMap = Collections.singletonMap("x-ms-meta-key", "value");
+        Map<HttpHeaderName, String> simpleHeaderMap = Collections.singletonMap(HttpHeaderName.fromString("key"), "value");
+        Map<HttpHeaderName, String> expectedSimpleHeadersMap = Collections.singletonMap(HttpHeaderName.fromString("x-ms-meta-key"), "value");
 
         Map<String, String> complexHeaderMap = new HttpHeaders()
             .set(HttpHeaderName.fromString("key1"), (String) null)
             .set(HttpHeaderName.fromString("key2"), "value2")
             .toMap();
-        Map<String, String> expectedComplexHeaderMap = Collections.singletonMap("x-ms-meta-key2", "value2");
+        Map<HttpHeaderName, String> expectedComplexHeaderMap = Collections.singletonMap(HttpHeaderName.fromString("x-ms-meta-key2"), "value2");
 
         return Stream.of(
             Arguments.of(addHeaders, null, null),
@@ -464,6 +464,11 @@ public class SwaggerMethodParserTests {
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void encodedFormKey2(@FormParam(value = "x:ms:value", encoded = true) String value);
+
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
+        void formBodyEnum(@FormParam("enum1") HttpMethod enum1, @FormParam("enum2") HttpMethod enum2,
+                          @FormParam("expandableEnum1") HttpHeaderName expandableEnum1,
+                          @FormParam("expandableEnum2") HttpHeaderName expandableEnum2);
     }
 
     @ParameterizedTest
@@ -483,6 +488,8 @@ public class SwaggerMethodParserTests {
         Method jsonBody = clazz.getDeclaredMethod("applicationJsonBody", String.class);
         Method formBody =
             clazz.getDeclaredMethod("formBody", String.class, Integer.class, OffsetDateTime.class, List.class);
+        Method formBodyEnum =
+            clazz.getDeclaredMethod("formBodyEnum", HttpMethod.class, HttpMethod.class, HttpHeaderName.class, HttpHeaderName.class);
         Method encodedFormBody =
             clazz.getDeclaredMethod("encodedFormBody", String.class, Integer.class, OffsetDateTime.class, List.class);
         Method encodedFormKey = clazz.getDeclaredMethod("encodedFormKey", String.class);
@@ -502,6 +509,10 @@ public class SwaggerMethodParserTests {
                 APPLICATION_X_WWW_FORM_URLENCODED, "name=John+Doe&age=40&favoriteColors=blue&favoriteColors=green"),
             Arguments.of(formBody, toObjectArray("John Doe", 40, null, badFavoriteColors),
                 APPLICATION_X_WWW_FORM_URLENCODED, "name=John+Doe&age=40&favoriteColors=green"),
+            Arguments.of(formBodyEnum, toObjectArray(HttpMethod.GET, null, HttpHeaderName.ACCEPT, HttpHeaderName.fromString("MyHeader")),
+                APPLICATION_X_WWW_FORM_URLENCODED, "enum1=GET&expandableEnum1=Accept&expandableEnum2=MyHeader"),
+            Arguments.of(formBodyEnum, toObjectArray(HttpMethod.GET, null, HttpHeaderName.ACCEPT, HttpHeaderName.fromString(null)),
+                APPLICATION_X_WWW_FORM_URLENCODED, "enum1=GET&expandableEnum1=Accept"),
             Arguments.of(encodedFormBody, null, APPLICATION_X_WWW_FORM_URLENCODED, null),
             Arguments.of(encodedFormBody, toObjectArray("John Doe", null, dob, null), APPLICATION_X_WWW_FORM_URLENCODED,
                 "name=John Doe&dob=1980-01-01T00%3A00%3A00Z"),
@@ -513,24 +524,6 @@ public class SwaggerMethodParserTests {
                 "x%3Ams%3Avalue=value"),
             Arguments.of(encodedFormKey2, toObjectArray("value"), APPLICATION_X_WWW_FORM_URLENCODED,
                 "x%3Ams%3Avalue=value")
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("setContextSupplier")
-    public void setContext(SwaggerMethodParser swaggerMethodParser, Object[] arguments, Context expectedContext) {
-        assertEquals(expectedContext, swaggerMethodParser.setContext(arguments));
-    }
-
-    private static Stream<Arguments> setContextSupplier() throws NoSuchMethodException {
-        Method method = OperationMethods.class.getDeclaredMethod("getMethodWithContext", Context.class);
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
-        Context context = new Context("key", "value");
-
-        return Stream.of(
-            Arguments.of(swaggerMethodParser, toObjectArray(Context.NONE), Context.NONE),
-            Arguments.of(swaggerMethodParser, toObjectArray((Object) null), Context.NONE),
-            Arguments.of(swaggerMethodParser, toObjectArray(context), context)
         );
     }
 
@@ -549,7 +542,7 @@ public class SwaggerMethodParserTests {
             .setBody(BinaryData.fromString("{\"id\":\"123\"}"));
 
         RequestOptions headerQueryOptions = new RequestOptions()
-            .addHeader(HttpHeaderName.fromString("x-ms-foo"), "bar")
+            .addHeader(new HttpHeader(HttpHeaderName.fromString("x-ms-foo"), "bar"))
             .addQueryParam("foo", "bar");
 
         RequestOptions urlOptions = new RequestOptions()
@@ -618,12 +611,12 @@ public class SwaggerMethodParserTests {
         void noUnexpectedStatusCodes();
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
-        @UnexpectedResponseExceptionInformation(exceptionTypeName = "RESOURCE_NOT_FOUND", statusCode = {400, 404})
+        @UnexpectedResponseExceptionDetail(exceptionTypeName = "RESOURCE_NOT_FOUND", statusCode = {400, 404})
         void notFoundStatusCode();
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
-        @UnexpectedResponseExceptionInformation(exceptionTypeName = "RESOURCE_NOT_FOUND", statusCode = {400, 404})
-        @UnexpectedResponseExceptionInformation(exceptionTypeName = "RESOURCE_MODIFIED")
+        @UnexpectedResponseExceptionDetail(exceptionTypeName = "RESOURCE_NOT_FOUND", statusCode = {400, 404})
+        @UnexpectedResponseExceptionDetail(exceptionTypeName = "RESOURCE_MODIFIED")
         void customDefault();
     }
 
@@ -758,13 +751,13 @@ public class SwaggerMethodParserTests {
         return objects;
     }
 
-    private static Map<String, String> createExpectedParameters(String sub1Value, boolean sub2Value) {
-        Map<String, String> expectedParameters = new HashMap<>();
+    private static Map<HttpHeaderName, String> createExpectedParameters(String sub1Value, boolean sub2Value) {
+        Map<HttpHeaderName, String> expectedParameters = new HashMap<>();
         if (sub1Value != null) {
-            expectedParameters.put("sub1", sub1Value);
+            expectedParameters.put(HttpHeaderName.fromString("sub1"), sub1Value);
         }
 
-        expectedParameters.put("sub2", String.valueOf(sub2Value));
+        expectedParameters.put(HttpHeaderName.fromString("sub2"), String.valueOf(sub2Value));
 
         return expectedParameters;
     }

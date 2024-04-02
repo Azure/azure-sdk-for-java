@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The application source, what it affects, e.g. Assessments. */
+/**
+ * The application source, what it affects, e.g. Assessments.
+ */
 public final class ApplicationSourceResourceType extends ExpandableStringEnum<ApplicationSourceResourceType> {
-    /** Static value Assessments for ApplicationSourceResourceType. */
+    /**
+     * Static value Assessments for ApplicationSourceResourceType.
+     */
     public static final ApplicationSourceResourceType ASSESSMENTS = fromString("Assessments");
 
     /**
      * Creates a new instance of ApplicationSourceResourceType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class ApplicationSourceResourceType extends ExpandableStringEnum<Ap
 
     /**
      * Creates or finds a ApplicationSourceResourceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ApplicationSourceResourceType.
      */
@@ -35,7 +39,7 @@ public final class ApplicationSourceResourceType extends ExpandableStringEnum<Ap
 
     /**
      * Gets known ApplicationSourceResourceType values.
-     *
+     * 
      * @return known ApplicationSourceResourceType values.
      */
     public static Collection<ApplicationSourceResourceType> values() {

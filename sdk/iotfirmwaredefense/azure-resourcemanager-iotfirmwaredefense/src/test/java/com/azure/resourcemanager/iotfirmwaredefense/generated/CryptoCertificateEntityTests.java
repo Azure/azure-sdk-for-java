@@ -11,32 +11,26 @@ import org.junit.jupiter.api.Assertions;
 public final class CryptoCertificateEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CryptoCertificateEntity model =
-            BinaryData
-                .fromString(
-                    "{\"commonName\":\"daj\",\"organization\":\"ysou\",\"organizationalUnit\":\"e\",\"state\":\"noae\",\"country\":\"fhyhltrpmopjmcma\"}")
-                .toObject(CryptoCertificateEntity.class);
-        Assertions.assertEquals("daj", model.commonName());
-        Assertions.assertEquals("ysou", model.organization());
-        Assertions.assertEquals("e", model.organizationalUnit());
-        Assertions.assertEquals("noae", model.state());
-        Assertions.assertEquals("fhyhltrpmopjmcma", model.country());
+        CryptoCertificateEntity model = BinaryData.fromString(
+            "{\"commonName\":\"xklrypl\",\"organization\":\"kbasyypn\",\"organizationalUnit\":\"hsgcbacphejkot\",\"state\":\"qgoulznd\",\"country\":\"kwy\"}")
+            .toObject(CryptoCertificateEntity.class);
+        Assertions.assertEquals("xklrypl", model.commonName());
+        Assertions.assertEquals("kbasyypn", model.organization());
+        Assertions.assertEquals("hsgcbacphejkot", model.organizationalUnit());
+        Assertions.assertEquals("qgoulznd", model.state());
+        Assertions.assertEquals("kwy", model.country());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CryptoCertificateEntity model =
-            new CryptoCertificateEntity()
-                .withCommonName("daj")
-                .withOrganization("ysou")
-                .withOrganizationalUnit("e")
-                .withState("noae")
-                .withCountry("fhyhltrpmopjmcma");
+        CryptoCertificateEntity model
+            = new CryptoCertificateEntity().withCommonName("xklrypl").withOrganization("kbasyypn")
+                .withOrganizationalUnit("hsgcbacphejkot").withState("qgoulznd").withCountry("kwy");
         model = BinaryData.fromObject(model).toObject(CryptoCertificateEntity.class);
-        Assertions.assertEquals("daj", model.commonName());
-        Assertions.assertEquals("ysou", model.organization());
-        Assertions.assertEquals("e", model.organizationalUnit());
-        Assertions.assertEquals("noae", model.state());
-        Assertions.assertEquals("fhyhltrpmopjmcma", model.country());
+        Assertions.assertEquals("xklrypl", model.commonName());
+        Assertions.assertEquals("kbasyypn", model.organization());
+        Assertions.assertEquals("hsgcbacphejkot", model.organizationalUnit());
+        Assertions.assertEquals("qgoulznd", model.state());
+        Assertions.assertEquals("kwy", model.country());
     }
 }

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreControlPl
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for packet core control plane version API service call. */
+/**
+ * Response for packet core control plane version API service call.
+ */
 @Fluent
 public final class PacketCoreControlPlaneVersionListResult {
     /*
@@ -24,13 +26,15 @@ public final class PacketCoreControlPlaneVersionListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of PacketCoreControlPlaneVersionListResult class. */
+    /**
+     * Creates an instance of PacketCoreControlPlaneVersionListResult class.
+     */
     public PacketCoreControlPlaneVersionListResult() {
     }
 
     /**
      * Get the value property: A list of supported packet core control plane versions.
-     *
+     * 
      * @return the value value.
      */
     public List<PacketCoreControlPlaneVersionInner> value() {
@@ -39,7 +43,7 @@ public final class PacketCoreControlPlaneVersionListResult {
 
     /**
      * Set the value property: A list of supported packet core control plane versions.
-     *
+     * 
      * @param value the value value to set.
      * @return the PacketCoreControlPlaneVersionListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class PacketCoreControlPlaneVersionListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class PacketCoreControlPlaneVersionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

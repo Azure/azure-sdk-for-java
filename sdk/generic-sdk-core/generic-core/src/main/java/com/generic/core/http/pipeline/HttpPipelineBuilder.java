@@ -33,7 +33,7 @@ import java.util.List;
  * <pre>
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
  *     .httpClient&#40;HttpClient.createDefault&#40;&#41;&#41;
- *     .policies&#40;new RetryPolicy&#40;&#41;&#41;
+ *     .policies&#40;new HttpRetryPolicy&#40;&#41;&#41;
  *     .build&#40;&#41;;
  * </pre>
  * <!-- end com.generic.core.http.HttpPipelineBuilder.defaultHttpClientWithRetryPolicy -->

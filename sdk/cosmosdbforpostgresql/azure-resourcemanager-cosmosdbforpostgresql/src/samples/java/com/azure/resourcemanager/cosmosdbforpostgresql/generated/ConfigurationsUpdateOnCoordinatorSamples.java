@@ -6,25 +6,23 @@ package com.azure.resourcemanager.cosmosdbforpostgresql.generated;
 
 import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.ServerConfigurationInner;
 
-/** Samples for Configurations UpdateOnCoordinator. */
+/**
+ * Samples for Configurations UpdateOnCoordinator.
+ */
 public final class ConfigurationsUpdateOnCoordinatorSamples {
     /*
-     * x-ms-original-file: specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ConfigurationUpdateCoordinator.json
+     * x-ms-original-file:
+     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
+     * ConfigurationUpdateCoordinator.json
      */
     /**
      * Sample code: Update single configuration of coordinator.
-     *
+     * 
      * @param manager Entry point to CosmosDBForPostgreSqlManager.
      */
     public static void updateSingleConfigurationOfCoordinator(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager
-            .configurations()
-            .updateOnCoordinator(
-                "TestResourceGroup",
-                "testcluster",
-                "array_nulls",
-                new ServerConfigurationInner().withValue("on"),
-                com.azure.core.util.Context.NONE);
+        manager.configurations().updateOnCoordinator("TestResourceGroup", "testcluster", "array_nulls",
+            new ServerConfigurationInner().withValue("on"), com.azure.core.util.Context.NONE);
     }
 }

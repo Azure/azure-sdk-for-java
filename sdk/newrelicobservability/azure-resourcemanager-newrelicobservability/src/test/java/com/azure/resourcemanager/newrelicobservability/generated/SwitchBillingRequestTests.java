@@ -15,40 +15,32 @@ import org.junit.jupiter.api.Assertions;
 public final class SwitchBillingRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SwitchBillingRequest model =
-            BinaryData
-                .fromString(
-                    "{\"azureResourceId\":\"vdcsitynn\",\"organizationId\":\"mdectehfiqscjey\",\"planData\":{\"usageType\":\"COMMITTED\",\"billingCycle\":\"MONTHLY\",\"planDetails\":\"gqhcjrefovg\",\"effectiveDate\":\"2021-10-26T09:37:04Z\"},\"userEmail\":\"sle\"}")
-                .toObject(SwitchBillingRequest.class);
-        Assertions.assertEquals("vdcsitynn", model.azureResourceId());
-        Assertions.assertEquals("mdectehfiqscjey", model.organizationId());
+        SwitchBillingRequest model = BinaryData.fromString(
+            "{\"azureResourceId\":\"jqkwpyeicx\",\"organizationId\":\"ciwqvhk\",\"planData\":{\"usageType\":\"COMMITTED\",\"billingCycle\":\"WEEKLY\",\"planDetails\":\"topbobjogh\",\"effectiveDate\":\"2021-04-17T11:58:30Z\"},\"userEmail\":\"u\"}")
+            .toObject(SwitchBillingRequest.class);
+        Assertions.assertEquals("jqkwpyeicx", model.azureResourceId());
+        Assertions.assertEquals("ciwqvhk", model.organizationId());
         Assertions.assertEquals(UsageType.COMMITTED, model.planData().usageType());
-        Assertions.assertEquals(BillingCycle.MONTHLY, model.planData().billingCycle());
-        Assertions.assertEquals("gqhcjrefovg", model.planData().planDetails());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-26T09:37:04Z"), model.planData().effectiveDate());
-        Assertions.assertEquals("sle", model.userEmail());
+        Assertions.assertEquals(BillingCycle.WEEKLY, model.planData().billingCycle());
+        Assertions.assertEquals("topbobjogh", model.planData().planDetails());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-17T11:58:30Z"), model.planData().effectiveDate());
+        Assertions.assertEquals("u", model.userEmail());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SwitchBillingRequest model =
-            new SwitchBillingRequest()
-                .withAzureResourceId("vdcsitynn")
-                .withOrganizationId("mdectehfiqscjey")
-                .withPlanData(
-                    new PlanData()
-                        .withUsageType(UsageType.COMMITTED)
-                        .withBillingCycle(BillingCycle.MONTHLY)
-                        .withPlanDetails("gqhcjrefovg")
-                        .withEffectiveDate(OffsetDateTime.parse("2021-10-26T09:37:04Z")))
-                .withUserEmail("sle");
+        SwitchBillingRequest model
+            = new SwitchBillingRequest().withAzureResourceId("jqkwpyeicx").withOrganizationId("ciwqvhk")
+                .withPlanData(new PlanData().withUsageType(UsageType.COMMITTED).withBillingCycle(BillingCycle.WEEKLY)
+                    .withPlanDetails("topbobjogh").withEffectiveDate(OffsetDateTime.parse("2021-04-17T11:58:30Z")))
+                .withUserEmail("u");
         model = BinaryData.fromObject(model).toObject(SwitchBillingRequest.class);
-        Assertions.assertEquals("vdcsitynn", model.azureResourceId());
-        Assertions.assertEquals("mdectehfiqscjey", model.organizationId());
+        Assertions.assertEquals("jqkwpyeicx", model.azureResourceId());
+        Assertions.assertEquals("ciwqvhk", model.organizationId());
         Assertions.assertEquals(UsageType.COMMITTED, model.planData().usageType());
-        Assertions.assertEquals(BillingCycle.MONTHLY, model.planData().billingCycle());
-        Assertions.assertEquals("gqhcjrefovg", model.planData().planDetails());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-26T09:37:04Z"), model.planData().effectiveDate());
-        Assertions.assertEquals("sle", model.userEmail());
+        Assertions.assertEquals(BillingCycle.WEEKLY, model.planData().billingCycle());
+        Assertions.assertEquals("topbobjogh", model.planData().planDetails());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-17T11:58:30Z"), model.planData().effectiveDate());
+        Assertions.assertEquals("u", model.userEmail());
     }
 }

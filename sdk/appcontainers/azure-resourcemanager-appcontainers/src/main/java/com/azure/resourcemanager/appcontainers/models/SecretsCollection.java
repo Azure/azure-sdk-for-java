@@ -7,18 +7,20 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.resourcemanager.appcontainers.fluent.models.SecretsCollectionInner;
 import java.util.List;
 
-/** An immutable client-side representation of SecretsCollection. */
+/**
+ * An immutable client-side representation of SecretsCollection.
+ */
 public interface SecretsCollection {
     /**
      * Gets the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     List<ContainerAppSecret> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.appcontainers.fluent.models.SecretsCollectionInner object.
-     *
+     * 
      * @return the inner object.
      */
     SecretsCollectionInner innerModel();

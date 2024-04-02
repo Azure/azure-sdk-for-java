@@ -11,15 +11,15 @@ public final class HttpSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HttpSource model = BinaryData.fromString(
-            "{\"type\":\"HttpSource\",\"httpRequestTimeout\":\"datazhuhujkzjse\",\"sourceRetryCount\":\"dataphipte\",\"sourceRetryWait\":\"datal\",\"maxConcurrentConnections\":\"datahwdfxgeccck\",\"disableMetricsCollection\":\"databzbhs\",\"\":{\"pxdzmpjfbd\":\"datao\",\"iocqoydqyzhfny\":\"dataoawhbdxxnmyxz\",\"skt\":\"datagbwdsaqwywayjin\",\"ygyeyxmuwgn\":\"datarnknnql\"}}")
+            "{\"type\":\"HttpSource\",\"httpRequestTimeout\":\"datajnhxufocski\",\"sourceRetryCount\":\"dataj\",\"sourceRetryWait\":\"datap\",\"maxConcurrentConnections\":\"datavhfpfsesiywcre\",\"disableMetricsCollection\":\"dataphqqozhesbpq\",\"\":{\"upcdaoatzvaj\":\"datafjktdvdhlkztalu\",\"pqo\":\"datavxhefmotulhilmaz\"}}")
             .toObject(HttpSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpSource model = new HttpSource().withSourceRetryCount("dataphipte").withSourceRetryWait("datal")
-            .withMaxConcurrentConnections("datahwdfxgeccck").withDisableMetricsCollection("databzbhs")
-            .withHttpRequestTimeout("datazhuhujkzjse");
+        HttpSource model = new HttpSource().withSourceRetryCount("dataj").withSourceRetryWait("datap")
+            .withMaxConcurrentConnections("datavhfpfsesiywcre").withDisableMetricsCollection("dataphqqozhesbpq")
+            .withHttpRequestTimeout("datajnhxufocski");
         model = BinaryData.fromObject(model).toObject(HttpSource.class);
     }
 }

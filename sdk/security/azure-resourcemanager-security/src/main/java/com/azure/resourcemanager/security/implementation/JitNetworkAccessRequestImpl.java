@@ -16,8 +16,8 @@ public final class JitNetworkAccessRequestImpl implements JitNetworkAccessReques
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    JitNetworkAccessRequestImpl(
-        JitNetworkAccessRequestInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    JitNetworkAccessRequestImpl(JitNetworkAccessRequestInner innerObject,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

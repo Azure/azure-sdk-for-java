@@ -56,7 +56,5 @@ extends:
         releaseInBatch: ${{ parameters.release_azureaotgraalvmsupportnetty }}
         skipPublishDocMs: true
     AdditionalModules:
-      - name: azure-aot-graalvm-samples
-        groupId: com.azure
       - name: azure-aot-graalvm-perf
         groupId: com.azure

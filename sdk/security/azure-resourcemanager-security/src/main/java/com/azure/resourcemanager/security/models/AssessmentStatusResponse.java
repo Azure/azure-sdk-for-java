@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The result of the assessment. */
+/**
+ * The result of the assessment.
+ */
 @Fluent
 public final class AssessmentStatusResponse extends AssessmentStatus {
     /*
@@ -23,14 +25,16 @@ public final class AssessmentStatusResponse extends AssessmentStatus {
     @JsonProperty(value = "statusChangeDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime statusChangeDate;
 
-    /** Creates an instance of AssessmentStatusResponse class. */
+    /**
+     * Creates an instance of AssessmentStatusResponse class.
+     */
     public AssessmentStatusResponse() {
     }
 
     /**
      * Get the firstEvaluationDate property: The time that the assessment was created and first evaluated. Returned as
      * UTC time in ISO 8601 format.
-     *
+     * 
      * @return the firstEvaluationDate value.
      */
     public OffsetDateTime firstEvaluationDate() {
@@ -40,28 +44,34 @@ public final class AssessmentStatusResponse extends AssessmentStatus {
     /**
      * Get the statusChangeDate property: The time that the status of the assessment last changed. Returned as UTC time
      * in ISO 8601 format.
-     *
+     * 
      * @return the statusChangeDate value.
      */
     public OffsetDateTime statusChangeDate() {
         return this.statusChangeDate;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AssessmentStatusResponse withCode(AssessmentStatusCode code) {
         super.withCode(code);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AssessmentStatusResponse withCause(String cause) {
         super.withCause(cause);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AssessmentStatusResponse withDescription(String description) {
         super.withDescription(description);
@@ -70,7 +80,7 @@ public final class AssessmentStatusResponse extends AssessmentStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

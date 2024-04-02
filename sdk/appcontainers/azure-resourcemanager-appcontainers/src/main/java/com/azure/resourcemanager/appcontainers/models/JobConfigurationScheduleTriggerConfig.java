@@ -9,8 +9,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Cron formatted repeating trigger schedule ("* * * * *") for cronjobs. Properties completions and parallelism would be
- * set to 1 by default.
+ * Cron formatted repeating trigger schedule ("* * * * *") for cronjobs. Properties completions and parallelism would
+ * be set to 1 by default.
  */
 @Fluent
 public final class JobConfigurationScheduleTriggerConfig {
@@ -32,14 +32,16 @@ public final class JobConfigurationScheduleTriggerConfig {
     @JsonProperty(value = "parallelism")
     private Integer parallelism;
 
-    /** Creates an instance of JobConfigurationScheduleTriggerConfig class. */
+    /**
+     * Creates an instance of JobConfigurationScheduleTriggerConfig class.
+     */
     public JobConfigurationScheduleTriggerConfig() {
     }
 
     /**
      * Get the replicaCompletionCount property: Minimum number of successful replica completions before overall job
      * completion.
-     *
+     * 
      * @return the replicaCompletionCount value.
      */
     public Integer replicaCompletionCount() {
@@ -49,7 +51,7 @@ public final class JobConfigurationScheduleTriggerConfig {
     /**
      * Set the replicaCompletionCount property: Minimum number of successful replica completions before overall job
      * completion.
-     *
+     * 
      * @param replicaCompletionCount the replicaCompletionCount value to set.
      * @return the JobConfigurationScheduleTriggerConfig object itself.
      */
@@ -60,7 +62,7 @@ public final class JobConfigurationScheduleTriggerConfig {
 
     /**
      * Get the cronExpression property: Cron formatted repeating schedule ("* * * * *") of a Cron Job.
-     *
+     * 
      * @return the cronExpression value.
      */
     public String cronExpression() {
@@ -69,7 +71,7 @@ public final class JobConfigurationScheduleTriggerConfig {
 
     /**
      * Set the cronExpression property: Cron formatted repeating schedule ("* * * * *") of a Cron Job.
-     *
+     * 
      * @param cronExpression the cronExpression value to set.
      * @return the JobConfigurationScheduleTriggerConfig object itself.
      */
@@ -80,7 +82,7 @@ public final class JobConfigurationScheduleTriggerConfig {
 
     /**
      * Get the parallelism property: Number of parallel replicas of a job that can run at a given time.
-     *
+     * 
      * @return the parallelism value.
      */
     public Integer parallelism() {
@@ -89,7 +91,7 @@ public final class JobConfigurationScheduleTriggerConfig {
 
     /**
      * Set the parallelism property: Number of parallel replicas of a job that can run at a given time.
-     *
+     * 
      * @param parallelism the parallelism value to set.
      * @return the JobConfigurationScheduleTriggerConfig object itself.
      */
@@ -100,15 +102,13 @@ public final class JobConfigurationScheduleTriggerConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (cronExpression() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property cronExpression in model JobConfigurationScheduleTriggerConfig"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property cronExpression in model JobConfigurationScheduleTriggerConfig"));
         }
     }
 

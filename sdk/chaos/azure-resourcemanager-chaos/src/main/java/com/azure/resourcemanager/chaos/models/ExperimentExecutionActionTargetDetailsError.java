@@ -7,7 +7,9 @@ package com.azure.resourcemanager.chaos.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Model that represents the Experiment action target details error model. */
+/**
+ * Model that represents the Experiment action target details error model.
+ */
 @Immutable
 public final class ExperimentExecutionActionTargetDetailsError {
     /*
@@ -22,13 +24,15 @@ public final class ExperimentExecutionActionTargetDetailsError {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of ExperimentExecutionActionTargetDetailsError class. */
+    /**
+     * Creates an instance of ExperimentExecutionActionTargetDetailsError class.
+     */
     public ExperimentExecutionActionTargetDetailsError() {
     }
 
     /**
      * Get the code property: The error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -37,7 +41,7 @@ public final class ExperimentExecutionActionTargetDetailsError {
 
     /**
      * Get the message property: The error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -46,7 +50,7 @@ public final class ExperimentExecutionActionTargetDetailsError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

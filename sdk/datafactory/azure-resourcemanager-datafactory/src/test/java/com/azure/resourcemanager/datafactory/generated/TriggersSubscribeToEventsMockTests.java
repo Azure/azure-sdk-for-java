@@ -29,7 +29,7 @@ public final class TriggersSubscribeToEventsMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"triggerName\":\"bhkyas\",\"status\":\"Deprovisioning\"}";
+        String responseStr = "{\"triggerName\":\"wfytnvcjhjrwnb\",\"status\":\"Unknown\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -46,8 +46,8 @@ public final class TriggersSubscribeToEventsMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        TriggerSubscriptionOperationStatus response
-            = manager.triggers().subscribeToEvents("aulsmqohvcvv", "bxgxgr", "h", com.azure.core.util.Context.NONE);
+        TriggerSubscriptionOperationStatus response = manager.triggers().subscribeToEvents("nvhlpuobhaomaow",
+            "mwjsvuziog", "oaimw", com.azure.core.util.Context.NONE);
 
     }
 }

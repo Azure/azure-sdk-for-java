@@ -11,7 +11,6 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
-import io.vertx.core.http.HttpClosedException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -22,6 +21,7 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -129,7 +129,7 @@ public class VertxAsyncHttpClientTests {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url("/connectionClose"));
 
         StepVerifier.create(client.send(request).flatMap(HttpResponse::getBodyAsByteArray))
-            .verifyError(HttpClosedException.class);
+            .verifyError(IOException.class);
     }
 
     @Test

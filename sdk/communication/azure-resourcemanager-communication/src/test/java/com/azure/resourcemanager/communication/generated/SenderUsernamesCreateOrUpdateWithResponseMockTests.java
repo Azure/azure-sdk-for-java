@@ -31,7 +31,7 @@ public final class SenderUsernamesCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"dataLocation\":\"pxgy\",\"username\":\"agvrvmnpkuk\",\"displayName\":\"i\",\"provisioningState\":\"Updating\"},\"id\":\"xgwim\",\"name\":\"njhf\",\"type\":\"xw\"}";
+            = "{\"properties\":{\"dataLocation\":\"vqtmnub\",\"username\":\"xkp\",\"displayName\":\"smond\",\"provisioningState\":\"Creating\"},\"id\":\"xvy\",\"name\":\"omgkopkwho\",\"type\":\"v\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,10 +49,10 @@ public final class SenderUsernamesCreateOrUpdateWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SenderUsernameResource response
-            = manager.senderUsernames().define("v").withExistingDomain("lla", "melwuipiccjz", "z")
-                .withUsername("ayrhyrnx").withDisplayName("ueedndrdvs").create();
+            = manager.senderUsernames().define("opcjwvnhd").withExistingDomain("cvkcvqvpkeqdcv", "rhvoods", "tbobz")
+                .withUsername("twuoegrpkhjwni").withDisplayName("sluicpdggkzz").create();
 
-        Assertions.assertEquals("agvrvmnpkuk", response.username());
-        Assertions.assertEquals("i", response.displayName());
+        Assertions.assertEquals("xkp", response.username());
+        Assertions.assertEquals("smond", response.displayName());
     }
 }

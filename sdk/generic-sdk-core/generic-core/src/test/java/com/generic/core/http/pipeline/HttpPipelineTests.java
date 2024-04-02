@@ -8,7 +8,6 @@ import com.generic.core.http.NoOpHttpClient;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.Response;
-import com.generic.core.http.policy.RetryPolicy;
 import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
@@ -37,7 +36,7 @@ public class HttpPipelineTests {
     @Test
     public void withRequestPolicy() {
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new RetryPolicy())
+            .policies(new HttpRetryPolicy())
             .httpClient(new NoOpHttpClient() {
                 @Override
                 public Response<?> send(HttpRequest request) {
@@ -47,14 +46,14 @@ public class HttpPipelineTests {
             }).build();
 
         assertEquals(1, pipeline.getPolicies().size());
-        assertEquals(RetryPolicy.class, pipeline.getPolicies().get(0).getClass());
+        assertEquals(HttpRetryPolicy.class, pipeline.getPolicies().get(0).getClass());
         assertNotNull(pipeline.getHttpClient());
     }
 
     @Test
     public void withRequestOptions() {
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new RetryPolicy())
+            .policies(new HttpRetryPolicy())
             .httpClient(new NoOpHttpClient() {
                 @Override
                 public Response<?> send(HttpRequest request) {

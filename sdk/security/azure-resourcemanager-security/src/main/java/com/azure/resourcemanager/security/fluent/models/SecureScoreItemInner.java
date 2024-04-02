@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Secure score item data model. */
+/**
+ * Secure score item data model.
+ */
 @Immutable
 public final class SecureScoreItemInner extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class SecureScoreItemInner extends ProxyResource {
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private SecureScoreItemProperties innerProperties;
 
-    /** Creates an instance of SecureScoreItemInner class. */
+    /**
+     * Creates an instance of SecureScoreItemInner class.
+     */
     public SecureScoreItemInner() {
     }
 
     /**
      * Get the innerProperties property: Secure score item.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecureScoreItemProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class SecureScoreItemInner extends ProxyResource {
 
     /**
      * Get the displayName property: The initiative’s name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -42,7 +46,7 @@ public final class SecureScoreItemInner extends ProxyResource {
     /**
      * Get the weight property: The relative weight for each subscription. Used when calculating an aggregated secure
      * score for multiple subscriptions.
-     *
+     * 
      * @return the weight value.
      */
     public Long weight() {
@@ -51,7 +55,7 @@ public final class SecureScoreItemInner extends ProxyResource {
 
     /**
      * Get the max property: Maximum score available.
-     *
+     * 
      * @return the max value.
      */
     public Integer max() {
@@ -60,7 +64,7 @@ public final class SecureScoreItemInner extends ProxyResource {
 
     /**
      * Get the current property: Current score.
-     *
+     * 
      * @return the current value.
      */
     public Double current() {
@@ -70,7 +74,7 @@ public final class SecureScoreItemInner extends ProxyResource {
     /**
      * Get the percentage property: Ratio of the current score divided by the maximum. Rounded to 4 digits after the
      * decimal point.
-     *
+     * 
      * @return the percentage value.
      */
     public Double percentage() {
@@ -79,7 +83,7 @@ public final class SecureScoreItemInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

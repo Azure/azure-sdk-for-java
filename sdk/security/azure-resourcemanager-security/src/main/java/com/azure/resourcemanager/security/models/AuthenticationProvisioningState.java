@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** State of the multi-cloud connector. */
+/**
+ * State of the multi-cloud connector.
+ */
 public final class AuthenticationProvisioningState extends ExpandableStringEnum<AuthenticationProvisioningState> {
-    /** Static value Valid for AuthenticationProvisioningState. */
+    /**
+     * Static value Valid for AuthenticationProvisioningState.
+     */
     public static final AuthenticationProvisioningState VALID = fromString("Valid");
 
-    /** Static value Invalid for AuthenticationProvisioningState. */
+    /**
+     * Static value Invalid for AuthenticationProvisioningState.
+     */
     public static final AuthenticationProvisioningState INVALID = fromString("Invalid");
 
-    /** Static value Expired for AuthenticationProvisioningState. */
+    /**
+     * Static value Expired for AuthenticationProvisioningState.
+     */
     public static final AuthenticationProvisioningState EXPIRED = fromString("Expired");
 
-    /** Static value IncorrectPolicy for AuthenticationProvisioningState. */
+    /**
+     * Static value IncorrectPolicy for AuthenticationProvisioningState.
+     */
     public static final AuthenticationProvisioningState INCORRECT_POLICY = fromString("IncorrectPolicy");
 
     /**
      * Creates a new instance of AuthenticationProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class AuthenticationProvisioningState extends ExpandableStringEnum<
 
     /**
      * Creates or finds a AuthenticationProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AuthenticationProvisioningState.
      */
@@ -44,7 +54,7 @@ public final class AuthenticationProvisioningState extends ExpandableStringEnum<
 
     /**
      * Gets known AuthenticationProvisioningState values.
-     *
+     * 
      * @return known AuthenticationProvisioningState values.
      */
     public static Collection<AuthenticationProvisioningState> values() {

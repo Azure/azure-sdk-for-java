@@ -130,7 +130,7 @@ public class HttpRequestTests {
             }
 
             assertEquals(clonedHeader.getValue(),
-                request.getHeaders().getValue(HttpHeaderName.fromString(clonedHeader.getName())));
+                request.getHeaders().getValue(clonedHeader.getName()));
         }
 
         assertSame(request.getBody(), bufferedRequest.getBody());

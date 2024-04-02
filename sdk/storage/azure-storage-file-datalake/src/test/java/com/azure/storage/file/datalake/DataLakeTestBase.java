@@ -559,8 +559,8 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? createLeaseClient(fsc).acquireLease(-1) : leaseID;
     }
 
-    protected String setupFileSystemLeaseAsyncCondition(DataLakeFileSystemAsyncClient fsc, String leaseID) {
-        return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? createLeaseAsyncClient(fsc).acquireLease(-1).block() : leaseID;
+    protected Mono<String> setupFileSystemLeaseAsyncConditionAsync(DataLakeFileSystemAsyncClient fsc, String leaseID) {
+        return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? createLeaseAsyncClient(fsc).acquireLease(-1) : Mono.just(leaseID == null ? "null" : leaseID);
     }
 
     /**
@@ -576,8 +576,8 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return Objects.equals(RECEIVED_ETAG, match) ? pc.getProperties().getETag() : match;
     }
 
-    protected String setupPathMatchCondition(DataLakePathAsyncClient pac, String match) {
-        return Objects.equals(RECEIVED_ETAG, match) ? pac.getProperties().block().getETag() : match;
+    protected Mono<String> setupPathMatchConditionAsync(DataLakePathAsyncClient pac, String match) {
+        return Objects.equals(RECEIVED_ETAG, match) ? pac.getProperties().map(PathProperties::getETag) : Mono.just(match == null ? "null" : match);
     }
 
     /**
@@ -603,15 +603,20 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? responseLeaseId : leaseID;
     }
 
-    protected String setupPathLeaseCondition(DataLakePathAsyncClient pac, String leaseID) {
-        String responseLeaseId = null;
+    protected Mono<String> setupPathLeaseConditionAsync(DataLakePathAsyncClient pac, String leaseID) {
+        Mono<String> responseLeaseId = null;
 
         if (Objects.equals(RECEIVED_LEASE_ID, leaseID) || Objects.equals(GARBAGE_LEASE_ID, leaseID)) {
             responseLeaseId = (pac instanceof DataLakeFileAsyncClient)
-                ? createLeaseAsyncClient((DataLakeFileAsyncClient) pac).acquireLease(-1).block()
-                : createLeaseAsyncClient((DataLakeDirectoryAsyncClient) pac).acquireLease(-1).block();
+                    ? createLeaseAsyncClient((DataLakeFileAsyncClient) pac).acquireLease(-1)
+                    : createLeaseAsyncClient((DataLakeDirectoryAsyncClient) pac).acquireLease(-1);
         }
-        return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? responseLeaseId : leaseID;
+        if (responseLeaseId == null) {
+            return Mono.just(leaseID == null ? "null" : leaseID);
+        }
+
+        return responseLeaseId.map(returnedLeaseId -> Objects.equals(RECEIVED_LEASE_ID, leaseID)
+                ? returnedLeaseId : (leaseID == null ? "null" : leaseID));
     }
 
     protected static void compareACL(List<PathAccessControlEntry> expected, List<PathAccessControlEntry> actual) {

@@ -10,9 +10,11 @@ import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.Response;
+import com.generic.core.http.models.ServerSentEventListener;
 import com.generic.core.http.okhttp.implementation.OkHttpFileRequestBody;
 import com.generic.core.http.okhttp.implementation.OkHttpInputStreamRequestBody;
 import com.generic.core.http.okhttp.implementation.OkHttpResponse;
+import com.generic.core.implementation.util.ServerSentEventUtil;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.binarydata.BinaryData;
 import com.generic.core.util.binarydata.FileBinaryData;
@@ -26,17 +28,15 @@ import okhttp3.ResponseBody;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
+import static com.generic.core.implementation.util.ServerSentEventUtil.processTextEventStream;
+
 /**
  * HttpClient implementation for OkHttp.
  */
 class OkHttpHttpClient implements HttpClient {
-
     private static final ClientLogger LOGGER = new ClientLogger(OkHttpHttpClient.class);
     private static final byte[] EMPTY_BODY = new byte[0];
     private static final RequestBody EMPTY_REQUEST_BODY = RequestBody.create(EMPTY_BODY);
-
-    private static final String HTTP_REQUEST_PROGRESS_REPORTER = "com.generic.core.http.request.progress.reporter";
-
     final OkHttpClient httpClient;
 
     OkHttpHttpClient(OkHttpClient httpClient) {
@@ -74,7 +74,7 @@ class OkHttpHttpClient implements HttpClient {
             for (HttpHeader hdr : request.getHeaders()) {
                 // OkHttp allows for headers with multiple values, but it treats them as separate headers,
                 // therefore, we must call rb.addHeader for each value, using the same key for all of them
-                hdr.getValues().forEach(value -> requestBuilder.addHeader(hdr.getName(), value));
+                hdr.getValues().forEach(value -> requestBuilder.addHeader(hdr.getName().toString(), value));
             }
         }
 
@@ -138,33 +138,40 @@ class OkHttpHttpClient implements HttpClient {
         return contentLength;
     }
 
-    private static Response<?> toResponse(HttpRequest request, okhttp3.Response response, boolean eagerlyReadResponse,
-                                          boolean ignoreResponseBody, boolean eagerlyConvertHeaders) throws IOException {
-        /*// For now, eagerlyReadResponse and ignoreResponseBody works the same.
-        if (ignoreResponseBody) {
-            ResponseBody body = response.body();
+    private Response<?> toResponse(HttpRequest request, okhttp3.Response response, boolean eagerlyReadResponse,
+                                   boolean ignoreResponseBody, boolean eagerlyConvertHeaders) throws IOException {
+        okhttp3.Headers responseHeaders = response.headers();
 
-            if (body != null) {
-                if (body.contentLength() > 0) {
-                    LOGGER.log(LogLevel.WARNING, () -> "Received HTTP response body when one wasn't expected. "
-                        + "Response body will be ignored as directed.");
-                }
-
-                body.close();
+        if (isTextEventStream(responseHeaders) && response.body() != null) {
+            ServerSentEventListener listener = request.getServerSentEventListener();
+            if (listener != null) {
+                processTextEventStream(request,
+                    httpRequest -> this.send(httpRequest), response.body().byteStream(), listener, LOGGER);
+            } else {
+                throw LOGGER.logThrowableAsError(new RuntimeException(ServerSentEventUtil.NO_LISTENER_ERROR_MESSAGE));
             }
-
             return new OkHttpResponse(response, request, eagerlyConvertHeaders, EMPTY_BODY);
-        }*/
+        }
+        return processResponse(request, response, eagerlyReadResponse, ignoreResponseBody, eagerlyConvertHeaders);
+    }
 
-        // Use a buffered response when we are eagerly reading the response from the network and the body isn't empty.
+    private Response<?> processResponse(HttpRequest request, okhttp3.Response response, boolean eagerlyReadResponse,
+                                        boolean ignoreResponseBody, boolean eagerlyConvertHeaders) throws IOException {
         if (eagerlyReadResponse || ignoreResponseBody) {
             try (ResponseBody body = response.body()) {
                 byte[] bytes = (body != null) ? body.bytes() : EMPTY_BODY;
-
                 return new OkHttpResponse(response, request, eagerlyConvertHeaders, bytes);
             }
         } else {
             return new OkHttpResponse(response, request, eagerlyConvertHeaders, null);
         }
+    }
+
+    private static boolean isTextEventStream(okhttp3.Headers responseHeaders) {
+        if (responseHeaders != null) {
+            return ServerSentEventUtil
+                .isTextEventStreamContentType(responseHeaders.get(HttpHeaderName.CONTENT_TYPE.toString()));
+        }
+        return false;
     }
 }

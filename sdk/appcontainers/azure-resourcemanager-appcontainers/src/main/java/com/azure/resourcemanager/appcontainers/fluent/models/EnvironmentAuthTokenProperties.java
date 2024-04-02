@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Environment auth token resource specific properties. */
+/**
+ * Environment auth token resource specific properties.
+ */
 @Immutable
 public final class EnvironmentAuthTokenProperties {
     /*
@@ -23,13 +25,15 @@ public final class EnvironmentAuthTokenProperties {
     @JsonProperty(value = "expires", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expires;
 
-    /** Creates an instance of EnvironmentAuthTokenProperties class. */
+    /**
+     * Creates an instance of EnvironmentAuthTokenProperties class.
+     */
     public EnvironmentAuthTokenProperties() {
     }
 
     /**
      * Get the token property: Auth token value.
-     *
+     * 
      * @return the token value.
      */
     public String token() {
@@ -38,7 +42,7 @@ public final class EnvironmentAuthTokenProperties {
 
     /**
      * Get the expires property: Token expiration date.
-     *
+     * 
      * @return the expires value.
      */
     public OffsetDateTime expires() {
@@ -47,7 +51,7 @@ public final class EnvironmentAuthTokenProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -14,13 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.security.fluent.models.AdaptiveNetworkHardeningInner;
 import com.azure.resourcemanager.security.models.AdaptiveNetworkHardeningEnforceRequest;
 
-/** An instance of this class provides access to all the operations defined in AdaptiveNetworkHardeningsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AdaptiveNetworkHardeningsClient.
+ */
 public interface AdaptiveNetworkHardeningsClient {
     /**
      * Gets a list of Adaptive Network Hardenings resources in scope of an extended resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -28,17 +30,17 @@ public interface AdaptiveNetworkHardeningsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Adaptive Network Hardenings resources in scope of an extended resource as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AdaptiveNetworkHardeningInner> listByExtendedResource(
-        String resourceGroupName, String resourceNamespace, String resourceType, String resourceName);
+    PagedIterable<AdaptiveNetworkHardeningInner> listByExtendedResource(String resourceGroupName,
+        String resourceNamespace, String resourceType, String resourceName);
 
     /**
      * Gets a list of Adaptive Network Hardenings resources in scope of an extended resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -47,17 +49,17 @@ public interface AdaptiveNetworkHardeningsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Adaptive Network Hardenings resources in scope of an extended resource as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AdaptiveNetworkHardeningInner> listByExtendedResource(
-        String resourceGroupName, String resourceNamespace, String resourceType, String resourceName, Context context);
+    PagedIterable<AdaptiveNetworkHardeningInner> listByExtendedResource(String resourceGroupName,
+        String resourceNamespace, String resourceType, String resourceName, Context context);
 
     /**
      * Gets a single Adaptive Network Hardening resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -69,19 +71,14 @@ public interface AdaptiveNetworkHardeningsClient {
      * @return a single Adaptive Network Hardening resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AdaptiveNetworkHardeningInner> getWithResponse(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String adaptiveNetworkHardeningResourceName,
-        Context context);
+    Response<AdaptiveNetworkHardeningInner> getWithResponse(String resourceGroupName, String resourceNamespace,
+        String resourceType, String resourceName, String adaptiveNetworkHardeningResourceName, Context context);
 
     /**
      * Gets a single Adaptive Network Hardening resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -92,18 +89,14 @@ public interface AdaptiveNetworkHardeningsClient {
      * @return a single Adaptive Network Hardening resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AdaptiveNetworkHardeningInner get(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String adaptiveNetworkHardeningResourceName);
+    AdaptiveNetworkHardeningInner get(String resourceGroupName, String resourceNamespace, String resourceType,
+        String resourceName, String adaptiveNetworkHardeningResourceName);
 
     /**
      * Enforces the given rules on the NSG(s) listed in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -115,19 +108,15 @@ public interface AdaptiveNetworkHardeningsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginEnforce(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String adaptiveNetworkHardeningResourceName,
+    SyncPoller<PollResult<Void>, Void> beginEnforce(String resourceGroupName, String resourceNamespace,
+        String resourceType, String resourceName, String adaptiveNetworkHardeningResourceName,
         AdaptiveNetworkHardeningEnforceRequest body);
 
     /**
      * Enforces the given rules on the NSG(s) listed in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -140,20 +129,15 @@ public interface AdaptiveNetworkHardeningsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginEnforce(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String adaptiveNetworkHardeningResourceName,
-        AdaptiveNetworkHardeningEnforceRequest body,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginEnforce(String resourceGroupName, String resourceNamespace,
+        String resourceType, String resourceName, String adaptiveNetworkHardeningResourceName,
+        AdaptiveNetworkHardeningEnforceRequest body, Context context);
 
     /**
      * Enforces the given rules on the NSG(s) listed in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -164,19 +148,14 @@ public interface AdaptiveNetworkHardeningsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void enforce(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String adaptiveNetworkHardeningResourceName,
-        AdaptiveNetworkHardeningEnforceRequest body);
+    void enforce(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName,
+        String adaptiveNetworkHardeningResourceName, AdaptiveNetworkHardeningEnforceRequest body);
 
     /**
      * Enforces the given rules on the NSG(s) listed in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
@@ -188,12 +167,6 @@ public interface AdaptiveNetworkHardeningsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void enforce(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String adaptiveNetworkHardeningResourceName,
-        AdaptiveNetworkHardeningEnforceRequest body,
-        Context context);
+    void enforce(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName,
+        String adaptiveNetworkHardeningResourceName, AdaptiveNetworkHardeningEnforceRequest body, Context context);
 }
