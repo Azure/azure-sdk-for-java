@@ -270,6 +270,27 @@ public final class XmlReader implements AutoCloseable {
      * If the attribute doesn't have a value or doesn't exist null will be returned, otherwise the attribute
      * {@link #getStringAttribute(String, String)} is passed to the converter.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.xml.XmlReader.getNullableAttribute#String-String-ReadValueCallback -->
+     * <pre>
+     * try &#40;XmlReader reader = XmlReader.fromString&#40;&quot;&lt;root&gt;&lt;element attribute=&#92;&quot;1234&#92;&quot;&#47;&gt;&lt;&#47;root&gt;&quot;&#41;&#41; &#123;
+     *     reader.nextElement&#40;&#41;; &#47;&#47; Progress to &lt;root&gt;
+     *     reader.nextElement&#40;&#41;; &#47;&#47; Progress to &lt;element&gt;
+     *
+     *     &#47;&#47; Get the value of the attribute &quot;attribute&quot; as an Integer in a way that allows for the attribute to be
+     *     &#47;&#47; missing or have a null value.
+     *     assertEquals&#40;1234, &#40;int&#41; reader.getNullableAttribute&#40;null, &quot;attribute&quot;, Integer::parseInt&#41;&#41;;
+     *
+     *     &#47;&#47; This attribute doesn't exist, so null is returned without causing a NumberFormatException &#40;which is what
+     *     &#47;&#47; Integer.parseInt throws on a null string being passed&#41;.
+     *     assertNull&#40;reader.getNullableAttribute&#40;null, &quot;nonExistentAttribute&quot;, Integer::parseInt&#41;&#41;;
+     * &#125; catch &#40;XMLStreamException ex&#41; &#123;
+     *     &#47;&#47; Do something with the exception
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.xml.XmlReader.getNullableAttribute#String-String-ReadValueCallback -->
+     *
      * @param namespaceUri Attribute namespace, may be null.
      * @param localName Attribute local name.
      * @param converter Function that converts the attribute text value to the nullable type.
@@ -434,6 +455,29 @@ public final class XmlReader implements AutoCloseable {
      * If the current element doesn't have a value null will be returned, otherwise the element
      * {@link #getStringElement() text value} is passed to the converter.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.xml.XmlReader.getNullableElement#ReadValueCallback -->
+     * <pre>
+     * try &#40;XmlReader reader = XmlReader.fromString&#40;&quot;&lt;root&gt;&lt;element&gt;1234&lt;&#47;element&gt;&lt;emptyElement&#47;&gt;&lt;&#47;root&gt;&quot;&#41;&#41; &#123;
+     *     reader.nextElement&#40;&#41;; &#47;&#47; Progress to &lt;root&gt;
+     *     reader.nextElement&#40;&#41;; &#47;&#47; Progress to &lt;element&gt;
+     *
+     *     &#47;&#47; Get the value of the element &quot;element&quot; as an Integer in a way that allows for the element to be missing
+     *     &#47;&#47; or have a null value.
+     *     assertEquals&#40;1234, &#40;int&#41; reader.getNullableElement&#40;Integer::parseInt&#41;&#41;; &#47;&#47; 1234
+     *
+     *     reader.nextElement&#40;&#41;; &#47;&#47; Progress to &lt;emptyElement&gt;
+     *
+     *     &#47;&#47; This element doesn't exist, so null is returned without causing a NumberFormatException &#40;which is what
+     *     &#47;&#47; Integer.parseInt throws on a null string being passed&#41;.
+     *     assertNull&#40;reader.getNullableElement&#40;Integer::parseInt&#41;&#41;;
+     * &#125; catch &#40;XMLStreamException ex&#41; &#123;
+     *     &#47;&#47; Do something with the exception
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.xml.XmlReader.getNullableElement#ReadValueCallback -->
+     *
      * @param converter Function that converts the element text value to the nullable type.
      * @param <T> Type of the element.
      * @return The converted text value, or null if the element didn't have a value.
@@ -455,6 +499,20 @@ public final class XmlReader implements AutoCloseable {
      * Validates that the {@link XmlReader} is currently pointing to an {@link XmlToken#START_ELEMENT} which has the
      * qualifying name specified by the {@code startTagName}.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.xml.XmlReader.readObject#String-ReadValueCallback -->
+     * <pre>
+     * return xmlReader.readObject&#40;getRootElementName&#40;rootElementName, &quot;Name&quot;&#41;, reader -&gt; &#123;
+     *     BlobName result = new BlobName&#40;&#41;;
+     *     result.encoded = reader.getNullableAttribute&#40;null, &quot;Encoded&quot;, Boolean::parseBoolean&#41;;
+     *     result.content = reader.getStringElement&#40;&#41;;
+     *
+     *     return result;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.xml.XmlReader.readObject#String-ReadValueCallback -->
+     *
      * @param localName The expecting starting local name for the object.
      * @param converter The function that reads the object.
      * @param <T> Type of the object.
@@ -472,6 +530,48 @@ public final class XmlReader implements AutoCloseable {
      * <p>
      * Validates that the {@link XmlReader} is currently pointing to an {@link XmlToken#START_ELEMENT} which has the
      * qualifying name specified by the {@code startTagName}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.xml.XmlReader.readObject#String-String-ReadValueCallback -->
+     * <pre>
+     * return xmlReader.readObject&#40;&quot;http:&#47;&#47;schemas.microsoft.com&#47;netservices&#47;2010&#47;10&#47;servicebus&#47;connect&quot;,
+     *     getRootElementName&#40;rootElementName, &quot;NamespaceInfo&quot;&#41;, reader -&gt; &#123;
+     *         NamespaceProperties properties = new NamespaceProperties&#40;&#41;;
+     *
+     *         while &#40;xmlReader.nextElement&#40;&#41; != XmlToken.END_ELEMENT&#41; &#123;
+     *             QName qName = xmlReader.getElementName&#40;&#41;;
+     *             String localPart = qName.getLocalPart&#40;&#41;;
+     *             String namespaceUri = qName.getNamespaceURI&#40;&#41;;
+     *
+     *             if &#40;&quot;Alias&quot;.equals&#40;localPart&#41;
+     *                 &amp;&amp; &quot;http:&#47;&#47;schemas.microsoft.com&#47;netservices&#47;2010&#47;10&#47;servicebus&#47;connect&quot;.equals&#40;namespaceUri&#41;&#41; &#123;
+     *                 properties.alias = xmlReader.getStringElement&#40;&#41;;
+     *             &#125; else if &#40;&quot;CreatedTime&quot;.equals&#40;localPart&#41;
+     *                 &amp;&amp; &quot;http:&#47;&#47;schemas.microsoft.com&#47;netservices&#47;2010&#47;10&#47;servicebus&#47;connect&quot;.equals&#40;namespaceUri&#41;&#41; &#123;
+     *                 properties.createdTime = OffsetDateTime.parse&#40;xmlReader.getStringElement&#40;&#41;&#41;;
+     *             &#125; else if &#40;&quot;MessagingSKU&quot;.equals&#40;localPart&#41;
+     *                 &amp;&amp; &quot;http:&#47;&#47;schemas.microsoft.com&#47;netservices&#47;2010&#47;10&#47;servicebus&#47;connect&quot;.equals&#40;namespaceUri&#41;&#41; &#123;
+     *                 properties.messagingSku = MessagingSku.fromString&#40;xmlReader.getStringElement&#40;&#41;&#41;;
+     *             &#125; else if &#40;&quot;MessagingUnits&quot;.equals&#40;localPart&#41;
+     *                 &amp;&amp; &quot;http:&#47;&#47;schemas.microsoft.com&#47;netservices&#47;2010&#47;10&#47;servicebus&#47;connect&quot;.equals&#40;namespaceUri&#41;&#41; &#123;
+     *                 properties.messagingUnits = xmlReader.getIntElement&#40;&#41;;
+     *             &#125; else if &#40;&quot;ModifiedTime&quot;.equals&#40;localPart&#41;
+     *                 &amp;&amp; &quot;http:&#47;&#47;schemas.microsoft.com&#47;netservices&#47;2010&#47;10&#47;servicebus&#47;connect&quot;.equals&#40;namespaceUri&#41;&#41; &#123;
+     *                 properties.modifiedTime = OffsetDateTime.parse&#40;xmlReader.getStringElement&#40;&#41;&#41;;
+     *             &#125; else if &#40;&quot;Name&quot;.equals&#40;localPart&#41;
+     *                 &amp;&amp; &quot;http:&#47;&#47;schemas.microsoft.com&#47;netservices&#47;2010&#47;10&#47;servicebus&#47;connect&quot;.equals&#40;namespaceUri&#41;&#41; &#123;
+     *                 properties.name = xmlReader.getStringElement&#40;&#41;;
+     *             &#125; else if &#40;&quot;NamespaceType&quot;.equals&#40;localPart&#41;
+     *                 &amp;&amp; &quot;http:&#47;&#47;schemas.microsoft.com&#47;netservices&#47;2010&#47;10&#47;servicebus&#47;connect&quot;.equals&#40;namespaceUri&#41;&#41; &#123;
+     *                 properties.namespaceType = NamespaceType.fromString&#40;xmlReader.getStringElement&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         return properties;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.xml.XmlReader.readObject#String-String-ReadValueCallback -->
      *
      * @param namespaceUri The expecting namespace for the object.
      * @param localName The expecting starting local name for the object.
@@ -513,6 +613,7 @@ public final class XmlReader implements AutoCloseable {
      * <p>
      * This reads the XML stream until the matching {@link XmlToken#END_ELEMENT} is found for the current
      * {@link XmlToken#START_ELEMENT}.
+     *
      * @throws XMLStreamException If skipping the element fails.
      */
     public void skipElement() throws XMLStreamException {
