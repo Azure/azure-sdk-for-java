@@ -21,13 +21,13 @@ import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
-    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaCosmosPointWriter.class);
+public class CosmosPointWriter extends CosmosWriterBase {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosPointWriter.class);
 
     private final CosmosSinkWriteConfig writeConfig;
     private final CosmosThroughputControlConfig throughputControlConfig;
 
-    public KafkaCosmosPointWriter(
+    public CosmosPointWriter(
         CosmosSinkWriteConfig writeConfig,
         CosmosThroughputControlConfig throughputControlConfig,
         ErrantRecordReporter errantRecordReporter) {

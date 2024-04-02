@@ -1,8 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-module com.azure.xml {
-    requires transitive java.xml;
+package com.azure.cosmos.kafka.connect.implementation;
 
-    exports com.azure.xml;
+public interface CosmosAuthConfig {
 }

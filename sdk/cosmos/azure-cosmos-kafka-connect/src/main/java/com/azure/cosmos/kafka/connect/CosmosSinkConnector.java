@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateCosmosAccountAuthConfig;
 import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateThroughputControlConfig;
 
 /**
@@ -81,7 +82,8 @@ public class CosmosSinkConnector extends SinkConnector {
                 .stream()
                 .collect(Collectors.toMap(ConfigValue::name, Function.identity()));
 
-        validateThroughputControlConfig(connectorConfigs, configValues);
+        validateCosmosAccountAuthConfig(configValues);
+        validateThroughputControlConfig(configValues);
         return config;
     }
 }
