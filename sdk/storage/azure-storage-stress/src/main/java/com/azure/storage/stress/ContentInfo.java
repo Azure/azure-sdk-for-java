@@ -58,10 +58,9 @@ public class ContentInfo {
 
     public static ContentInfo fromBinaryData(BinaryData data) {
         // Convert BinaryData to ByteBuffer for consistency with the original method
-        ByteBuffer bb = ByteBuffer.wrap(data.toBytes());
+        ByteBuffer bb = data.toByteBuffer();
         long length = bb.remaining();
         ByteBuffer head = ByteBuffer.allocate(1024);
-
         // Prepare the CRC computation
         CRC32 crc = new CRC32();
         if (length > 0) {
@@ -70,17 +69,14 @@ public class ContentInfo {
                 int toRead = Math.min(head.remaining(), bb.remaining());
                 byte[] temp = new byte[toRead];
                 // Copy data from 'bb' to 'temp'
-                bb.get(temp, 0, toRead);
+                ByteBuffer dup = bb.duplicate();
+                dup.get(temp); // no need to pass 0 and toRead as that is implicit with the byte[] API
                 // Then put that data into 'head'
                 head.put(temp);
             }
-
             // Update the CRC with the entire buffer
             // Since we've already read from the buffer, rewind before updating CRC to cover all data
-            bb.rewind();
-            byte[] crcTemp = new byte[bb.remaining()];
-            bb.get(crcTemp);
-            crc.update(crcTemp, 0, crcTemp.length);
+            crc.update(bb);
         }
 
         // Directly return the ContentInfo object since we're working synchronously
