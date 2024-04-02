@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Vector Embedding Policy
@@ -23,14 +22,14 @@ public final class VectorEmbeddingPolicy {
      * Paths for embeddings along with path-specific settings for the item.
      */
     @JsonProperty(Constants.Properties.VECTOR_EMBEDDINGS)
-    private List<Embedding> embeddings;
+    private List<CosmosVectorEmbedding> embeddings;
 
     /**
      * Constructor
      *
      * @param embeddings list of path for embeddings along with path-specific settings for the item.
      */
-    public VectorEmbeddingPolicy(List<Embedding> embeddings) {
+    public VectorEmbeddingPolicy(List<CosmosVectorEmbedding> embeddings) {
         validateEmbeddings(embeddings);
         this.embeddings = embeddings;
     }
@@ -42,10 +41,10 @@ public final class VectorEmbeddingPolicy {
         this.jsonSerializable = new JsonSerializable();
     }
 
-    private static void validateEmbeddings(List<Embedding> embeddings) {
+    private static void validateEmbeddings(List<CosmosVectorEmbedding> embeddings) {
         embeddings.forEach(embedding -> {
             if (embedding == null) {
-                throw new IllegalArgumentException("Embedding cannot be empty.");
+                throw new IllegalArgumentException("Embedding cannot be null.");
             }
             validateEmbeddingPath(embedding.getPath());
             validateEmbeddingDimensions(embedding.getDimensions());
@@ -65,29 +64,28 @@ public final class VectorEmbeddingPolicy {
     }
 
     private static void validateEmbeddingDimensions(Long dimensions) {
+        if (dimensions == null) {
+            throw new IllegalArgumentException("Dimensions for the embedding cannot be null " +
+                "for the vector embedding policy");
+        }
         if (dimensions < 1) {
-            throw new IllegalArgumentException("Dimensions for the embedding has to be a long value greater than 1 for the vector embedding policy");
+            throw new IllegalArgumentException("Dimensions for the embedding has to be a long value greater than 1 " +
+                "for the vector embedding policy");
         }
     }
 
     private static void validateEmbeddingVectorDataType(String value) {
-        Optional.ofNullable(value)
-            .filter(vectorDataType -> !vectorDataType.isEmpty())
-            .map(vectorDataType -> Arrays.stream(VectorDataType.values())
-                .filter(dataType -> dataType.getValue().equals(vectorDataType))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Invalid vector data type for the vector embedding policy.")))
-            .orElseThrow(() -> new IllegalArgumentException("Vector data type cannot be empty for the vector embedding policy."));
+        if (Arrays.stream(CosmosVectorDataType.values()).noneMatch(vectorDataType ->
+            vectorDataType.toString().equals(value))) {
+            throw new IllegalArgumentException("Invalid vector data type for the vector embedding policy.");
+        }
     }
 
     private static void validateEmbeddingDistanceFunction(String value) {
-        Optional.ofNullable(value)
-            .filter(distanceFunction -> !distanceFunction.isEmpty())
-            .map(distanceFunction -> Arrays.stream(DistanceFunction.values())
-                .filter(distFunction -> distFunction.getValue().equals(distanceFunction))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Invalid distance function for the vector embedding policy.")))
-            .orElseThrow(() -> new IllegalArgumentException("Distance function cannot be empty for the vector embedding policy."));
+        if (Arrays.stream(CosmosVectorDistanceFunction.values()).noneMatch(distanceFunction ->
+            distanceFunction.toString().equals(value))) {
+            throw new IllegalArgumentException("Invalid distance function for the vector embedding policy.");
+        }
     }
 
     /**
@@ -95,7 +93,7 @@ public final class VectorEmbeddingPolicy {
      *
      * @return the paths for embeddings along with path-specific settings for the item.
      */
-    public List<Embedding> getEmbeddings() {
+    public List<CosmosVectorEmbedding> getEmbeddings() {
         return this.embeddings;
     }
 }

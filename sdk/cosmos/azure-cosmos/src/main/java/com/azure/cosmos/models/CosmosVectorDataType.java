@@ -6,7 +6,7 @@ package com.azure.cosmos.models;
 /**
  * Data types for the embeddings in Cosmos DB database service.
  */
-public enum VectorDataType {
+public enum CosmosVectorDataType {
     /**
      * Represents a int8 data type.
      */
@@ -29,28 +29,12 @@ public enum VectorDataType {
 
     private final String overWireValue;
 
-    VectorDataType(String overWireValue) {
+    CosmosVectorDataType(String overWireValue) {
         this.overWireValue = overWireValue;
     }
 
     @Override
     public String toString() {
         return this.overWireValue;
-    }
-
-    /**
-     *
-     * @return value for the enum
-     */
-    public String getValue() {
-        return this.overWireValue;
-    }
-
-    /**
-     *
-     * @return if the value for the enum is empty or not.
-     */
-    public boolean isEmpty() {
-        return this.overWireValue.isEmpty();
     }
 }

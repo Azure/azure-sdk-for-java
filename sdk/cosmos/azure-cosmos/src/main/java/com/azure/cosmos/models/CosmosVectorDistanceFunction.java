@@ -6,7 +6,7 @@ package com.azure.cosmos.models;
 /**
  * Distance Function for the embeddings in the Cosmos DB database service.
  */
-public enum DistanceFunction {
+public enum CosmosVectorDistanceFunction {
     /**
      * Represents the euclidean distance function.
      */
@@ -24,28 +24,12 @@ public enum DistanceFunction {
 
     private final String overWireValue;
 
-    DistanceFunction(String overWireValue) {
+    CosmosVectorDistanceFunction(String overWireValue) {
         this.overWireValue = overWireValue;
     }
 
     @Override
     public String toString() {
         return this.overWireValue;
-    }
-
-    /**
-     *
-     * @return value for the enum
-     */
-    public String getValue() {
-        return this.overWireValue;
-    }
-
-    /**
-     *
-     * @return if the value for the enum is empty or not.
-     */
-    public boolean isEmpty() {
-        return this.overWireValue.isEmpty();
     }
 }
