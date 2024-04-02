@@ -18,7 +18,7 @@ public enum CosmosChangeFeedModes {
 
     public static CosmosChangeFeedModes fromName(String name) {
         for (CosmosChangeFeedModes mode : CosmosChangeFeedModes.values()) {
-            if (mode.getName().equals(name)) {
+            if (mode.getName().equalsIgnoreCase(name)) {
                 return mode;
             }
         }

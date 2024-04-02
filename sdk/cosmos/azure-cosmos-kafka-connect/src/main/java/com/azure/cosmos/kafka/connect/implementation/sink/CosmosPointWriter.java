@@ -7,8 +7,10 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Function;
+import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlConfig;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosSchedulers;
+import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import org.apache.kafka.connect.sink.ErrantRecordReporter;
 import org.slf4j.Logger;
@@ -19,17 +21,20 @@ import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
-    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaCosmosPointWriter.class);
+public class CosmosPointWriter extends CosmosWriterBase {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosPointWriter.class);
 
     private final CosmosSinkWriteConfig writeConfig;
+    private final CosmosThroughputControlConfig throughputControlConfig;
 
-    public KafkaCosmosPointWriter(
+    public CosmosPointWriter(
         CosmosSinkWriteConfig writeConfig,
+        CosmosThroughputControlConfig throughputControlConfig,
         ErrantRecordReporter errantRecordReporter) {
         super(errantRecordReporter);
         checkNotNull(writeConfig, "Argument 'writeConfig' can not be null");
         this.writeConfig = writeConfig;
+        this.throughputControlConfig = throughputControlConfig;
     }
 
     @Override
@@ -64,7 +69,10 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
 
     private void upsertWithRetry(CosmosAsyncContainer container, SinkOperation sinkOperation) {
         executeWithRetry(
-            (operation) -> container.upsertItem(operation.getSinkRecord().value()).then(),
+            (operation) -> {
+                CosmosItemRequestOptions cosmosItemRequestOptions = this.getCosmosItemRequestOptions();
+                return container.upsertItem(operation.getSinkRecord().value(), cosmosItemRequestOptions).then();
+            },
             (throwable) -> false, // no exceptions should be ignored
             sinkOperation
         );
@@ -72,7 +80,10 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
 
     private void createWithRetry(CosmosAsyncContainer container, SinkOperation sinkOperation) {
         executeWithRetry(
-            (operation) -> container.createItem(operation.getSinkRecord().value()).then(),
+            (operation) -> {
+                CosmosItemRequestOptions cosmosItemRequestOptions = this.getCosmosItemRequestOptions();
+                return container.createItem(operation.getSinkRecord().value(), cosmosItemRequestOptions).then();
+            },
             (throwable) -> KafkaCosmosExceptionsHelper.isResourceExistsException(throwable),
             sinkOperation
         );
@@ -81,7 +92,7 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
     private void replaceIfNotModifiedWithRetry(CosmosAsyncContainer container, SinkOperation sinkOperation, String etag) {
         executeWithRetry(
             (operation) -> {
-                CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+                CosmosItemRequestOptions itemRequestOptions = this.getCosmosItemRequestOptions();
                 itemRequestOptions.setIfMatchETag(etag);
 
                 return ImplementationBridgeHelpers
@@ -107,7 +118,7 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
     private void deleteWithRetry(CosmosAsyncContainer container, SinkOperation sinkOperation, boolean onlyIfModified) {
         executeWithRetry(
             (operation) -> {
-                CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+                CosmosItemRequestOptions itemRequestOptions = this.getCosmosItemRequestOptions();
                 if (onlyIfModified) {
                     String etag = this.getEtag(operation.getSinkRecord().value());
                     if (StringUtils.isNotEmpty(etag)) {
@@ -181,6 +192,12 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
             .then()
             .subscribeOn(KafkaCosmosSchedulers.SINK_BOUNDED_ELASTIC)
             .block();
+    }
+
+    private CosmosItemRequestOptions getCosmosItemRequestOptions() {
+        CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+        CosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(itemRequestOptions, this.throughputControlConfig);
+        return itemRequestOptions;
     }
 }
 

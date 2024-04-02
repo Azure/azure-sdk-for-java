@@ -9,8 +9,10 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlConfig;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosSchedulers;
+import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkItemRequestOptions;
 import com.azure.cosmos.models.CosmosBulkItemResponse;
@@ -33,22 +35,25 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class KafkaCosmosBulkWriter extends KafkaCosmosWriterBase {
-    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaCosmosBulkWriter.class);
+public class CosmosBulkWriter extends CosmosWriterBase {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosBulkWriter.class);
     private static final int MAX_DELAY_ON_408_REQUEST_TIMEOUT_IN_MS = 10000;
     private static final int MIN_DELAY_ON_408_REQUEST_TIMEOUT_IN_MS = 1000;
     private static final Random RANDOM = new Random();
 
     private final CosmosSinkWriteConfig writeConfig;
+    private final CosmosThroughputControlConfig throughputControlConfig;
     private final Sinks.EmitFailureHandler emitFailureHandler;
 
-    public KafkaCosmosBulkWriter(
+    public CosmosBulkWriter(
         CosmosSinkWriteConfig writeConfig,
+        CosmosThroughputControlConfig throughputControlConfig,
         ErrantRecordReporter errantRecordReporter) {
         super(errantRecordReporter);
         checkNotNull(writeConfig, "Argument 'writeConfig' can not be null");
 
         this.writeConfig = writeConfig;
+        this.throughputControlConfig = throughputControlConfig;
         this.emitFailureHandler = new KafkaCosmosEmitFailureHandler();
     }
 
@@ -128,6 +133,8 @@ public class KafkaCosmosBulkWriter extends KafkaCosmosWriterBase {
                 .getCosmosBulkExecutionOptionsAccessor()
                 .setMaxConcurrentCosmosPartitions(bulkExecutionOptions, this.writeConfig.getBulkMaxConcurrentCosmosPartitions());
         }
+
+        CosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(bulkExecutionOptions, this.throughputControlConfig);
 
         return bulkExecutionOptions;
     }

@@ -112,7 +112,7 @@ public class FeedRangeTaskUnit implements ITaskUnit {
             + ", containerName='" + containerName + '\''
             + ", containerRid='" + containerRid + '\''
             + ", feedRange=" + feedRange
-            + ", continuationState=" + continuationState
+            + ", continuationState='" + continuationState + '\''
             + ", topic='" + topic + '\''
             + '}';
     }
@@ -152,6 +152,7 @@ public class FeedRangeTaskUnit implements ITaskUnit {
             String containerName = rootNode.get("containerName").asText();
             String containerRid = rootNode.get("containerRid").asText();
             FeedRange feedRange = FeedRange.fromString(rootNode.get("feedRange").asText());
+
             KafkaCosmosChangeFeedState continuationState = null;
             if (rootNode.has("continuationState")) {
                 continuationState =

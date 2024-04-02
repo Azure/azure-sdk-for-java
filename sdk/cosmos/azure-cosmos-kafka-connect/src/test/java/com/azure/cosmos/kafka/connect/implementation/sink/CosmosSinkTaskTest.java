@@ -13,6 +13,7 @@ import com.azure.cosmos.kafka.connect.TestItem;
 import com.azure.cosmos.kafka.connect.implementation.source.JsonToStruct;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
@@ -51,6 +52,15 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
             { false, Schema.Type.MAP },
             { true, Schema.Type.STRUCT },
             { false, Schema.Type.STRUCT }
+        };
+    }
+
+    @DataProvider(name = "sinkTaskWithThroughputControlParameterProvider")
+    public Object[][] sinkTaskWithThroughputControlParameterProvider() {
+        return new Object[][]{
+            // flag to indicate whether bulk enabled or not
+            { true},
+            { false}
         };
     }
 
@@ -493,6 +503,85 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
 
         } finally {
             if (cosmosClient != null) {
+                cleanUpContainer(cosmosClient, databaseName, singlePartitionContainerProperties.getId());
+                sinkTask.stop();
+            }
+        }
+    }
+
+    @Test(groups = { "kafka" }, dataProvider = "sinkTaskWithThroughputControlParameterProvider", timeOut = TIMEOUT)
+    public void sinkWithThroughputControl(boolean bulkEnabled) {
+        String topicName = singlePartitionContainerName;
+        String throughputControlContainerName = "throughputControlContainer-" + UUID.randomUUID();
+
+        Map<String, String> sinkConfigMap = new HashMap<>();
+        sinkConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
+        sinkConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
+        sinkConfigMap.put("kafka.connect.cosmos.sink.database.name", databaseName);
+        sinkConfigMap.put("kafka.connect.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
+        sinkConfigMap.put("kafka.connect.cosmos.sink.bulk.enabled", String.valueOf(bulkEnabled));
+        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.enabled", "true");
+        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.name", "pollWithThroughputControl-" + UUID.randomUUID());
+        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.targetThroughput", "100");
+        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.globalControl.database", databaseName);
+        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.globalControl.container", throughputControlContainerName);
+
+        CosmosSinkTask sinkTask = new CosmosSinkTask();
+        SinkTaskContext sinkTaskContext = Mockito.mock(SinkTaskContext.class);
+        Mockito.when(sinkTaskContext.errantRecordReporter()).thenReturn(null);
+        KafkaCosmosReflectionUtils.setSinkTaskContext(sinkTask, sinkTaskContext);
+        sinkTask.start(sinkConfigMap);
+
+        CosmosAsyncClient cosmosClient = KafkaCosmosReflectionUtils.getSinkTaskCosmosClient(sinkTask);
+        CosmosContainerProperties singlePartitionContainerProperties = getSinglePartitionContainer(cosmosClient);
+        CosmosAsyncContainer container = cosmosClient.getDatabase(databaseName).getContainer(singlePartitionContainerProperties.getId());
+        CosmosAsyncContainer throughputControlContainer = cosmosClient.getDatabase(databaseName).getContainer(throughputControlContainerName);
+
+        try {
+            // create throughput control container
+            cosmosClient
+                .getDatabase(databaseName)
+                .createContainerIfNotExists(throughputControlContainerName, "/groupId", ThroughputProperties.createManualThroughput(400))
+                .block();
+
+            List<SinkRecord> sinkRecordList = new ArrayList<>();
+            List<TestItem> toBeCreateItems = new ArrayList<>();
+            this.createSinkRecords(
+                10,
+                topicName,
+                Schema.Type.MAP,
+                toBeCreateItems,
+                sinkRecordList);
+
+            sinkTask.put(sinkRecordList);
+
+            // get all the items
+            List<String> writtenItemIds = new ArrayList<>();
+            String query = "select * from c";
+            container.queryItems(query, TestItem.class)
+                .byPage()
+                .flatMap(response -> {
+                    writtenItemIds.addAll(
+                        response.getResults().stream().map(TestItem::getId).collect(Collectors.toList()));
+                    return Mono.empty();
+                })
+                .blockLast();
+
+            assertThat(writtenItemIds.size()).isEqualTo(toBeCreateItems.size());
+            List<String> toBeCreateItemIds = toBeCreateItems.stream().map(TestItem::getId).collect(Collectors.toList());
+            assertThat(writtenItemIds.containsAll(toBeCreateItemIds)).isTrue();
+
+        } finally {
+            if (cosmosClient != null) {
+                // delete throughput control containers
+                throughputControlContainer
+                    .delete()
+                    .onErrorResume(throwable -> {
+                        logger.warn("Delete throughput control container {} failed", throughputControlContainer.getId(), throwable);
+                        return Mono.empty();
+                    })
+                    .block();
+
                 cleanUpContainer(cosmosClient, databaseName, singlePartitionContainerProperties.getId());
                 sinkTask.stop();
             }
