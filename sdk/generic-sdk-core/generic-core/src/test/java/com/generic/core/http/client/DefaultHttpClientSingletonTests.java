@@ -4,10 +4,6 @@
 package com.generic.core.http.client;
 
 import com.generic.core.implementation.http.client.DefaultHttpClientProvider;
-import com.generic.core.shared.TestConfigurationSource;
-import com.generic.core.util.configuration.Configuration;
-import com.generic.core.util.configuration.ConfigurationBuilder;
-import com.generic.core.util.configuration.ConfigurationSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -17,27 +13,19 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @Execution(ExecutionMode.SAME_THREAD) // Avoiding race conditions caused by singleton
 public class DefaultHttpClientSingletonTests {
-    private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
-
     @Test
     public void testSingletonClientInstanceCreation() {
-        Configuration configuration = getConfiguration(true);
-        HttpClient client1 = new DefaultHttpClientProvider(configuration).getInstance();
-        HttpClient client2 = new DefaultHttpClientProvider(configuration).getInstance();
+        HttpClient client1 = new DefaultHttpClientProvider().getSharedInstance();
+        HttpClient client2 = new DefaultHttpClientProvider().getSharedInstance();
+
         assertEquals(client1, client2);
     }
 
     @Test
     public void testNonDefaultClientInstanceCreation() {
-        Configuration configuration = getConfiguration(false);
-        HttpClient client1 = new DefaultHttpClientProvider(configuration).getInstance();
-        HttpClient client2 = new DefaultHttpClientProvider(configuration).getInstance();
-        assertNotEquals(client1, client2);
-    }
+        HttpClient client1 = new DefaultHttpClientProvider().getNewInstance();
+        HttpClient client2 = new DefaultHttpClientProvider().getNewInstance();
 
-    private static Configuration getConfiguration(boolean enableSharing) {
-        return new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
-            .put("ENABLE_HTTP_CLIENT_SHARING", Boolean.toString(enableSharing)))
-            .build();
+        assertNotEquals(client1, client2);
     }
 }

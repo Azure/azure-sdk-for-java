@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Helper class that unifies SPI instances creation.
@@ -89,8 +90,9 @@ public final class Providers<TProvider, TInstance> {
      * Creates instance of service.
      *
      * @param createInstance Callback that creates service instance with resolved provider.
-     * @param fallbackInstance Service instance to return if provider is not found. Usually a no-op implementation. If
-     * {@code null} and no provider (satisfying all conditions) is found, throws {@link IllegalStateException}.
+     * @param fallbackSupplier Supplier to get an HttpClient from if a service instance to return if provider is not
+     * found. If {@code null} and no provider (satisfying all conditions) is found, throws
+     * {@link IllegalStateException}.
      * @param selectedImplementation Explicit provider implementation class. It still must be registered in
      * META-INF/services.
      *
@@ -98,7 +100,7 @@ public final class Providers<TProvider, TInstance> {
      *
      * @throws IllegalStateException when requested provider cannot be found and fallback instance is {@code null}.
      */
-    public TInstance create(Function<TProvider, TInstance> createInstance, TInstance fallbackInstance,
+    public TInstance create(Function<TProvider, TInstance> createInstance, Supplier<TInstance> fallbackSupplier,
                             Class<? extends TProvider> selectedImplementation) {
         TProvider provider;
         String implementationName;
@@ -108,11 +110,11 @@ public final class Providers<TProvider, TInstance> {
             provider = defaultProvider;
 
             if (provider == null) {
-                if (fallbackInstance == null) {
+                if (fallbackSupplier == null) {
                     throw LOGGER.logThrowableAsError(new IllegalStateException(noProviderMessage));
                 }
 
-                return fallbackInstance;
+                return fallbackSupplier.get();
             }
         } else {
             implementationName = selectedImplementation == null ? defaultImplementation

@@ -24,7 +24,7 @@ public class OkHttpHttpClientProviderTests {
     @Test
     public void getBaseClient() {
         OkHttpHttpClient httpClient = (OkHttpHttpClient) new OkHttpHttpClientProvider()
-            .getInstance();
+            .getNewInstance();
 
         ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
 
@@ -64,9 +64,9 @@ public class OkHttpHttpClientProviderTests {
         assertEquals(expectedTimeout, httpClient.httpClient.readTimeoutMillis());
     }
 
-    static class AnotherOkHttpHttpClientProvider implements HttpClientProvider {
+    static class AnotherOkHttpHttpClientProvider extends HttpClientProvider {
         @Override
-        public HttpClient getInstance() {
+        public HttpClient getNewInstance() {
             return new OkHttpHttpClientBuilder().build();
         }
 

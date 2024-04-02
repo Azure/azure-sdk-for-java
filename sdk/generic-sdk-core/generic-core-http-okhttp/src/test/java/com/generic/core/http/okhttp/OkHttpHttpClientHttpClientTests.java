@@ -43,6 +43,6 @@ public class OkHttpHttpClientHttpClientTests extends HttpClientTests {
 
     @Override
     protected HttpClient getHttpClient() {
-        return new OkHttpHttpClientProvider().getInstance();
+        return new OkHttpHttpClientProvider().getNewInstance();
     }
 }

@@ -5,16 +5,11 @@ package com.generic.core.http.okhttp;
 
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.client.HttpClientProvider;
-import com.generic.core.util.configuration.Configuration;
 
 /**
  * An {@link HttpClientProvider} that provides an implementation of HttpClient based on OkHttp.
  */
-public final class OkHttpHttpClientProvider implements HttpClientProvider {
-    private static final boolean ENABLE_HTTP_CLIENT_SHARING =
-        Configuration.getGlobalConfiguration().get("ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
-    private final boolean enableHttpClientSharing;
-
+public final class OkHttpHttpClientProvider extends HttpClientProvider {
     // Enum Singleton Pattern
     private enum GlobalOkHttpClient {
         HTTP_CLIENT(new OkHttpHttpClientBuilder().build());
@@ -30,24 +25,12 @@ public final class OkHttpHttpClientProvider implements HttpClientProvider {
         }
     }
 
-    /**
-     * For testing purpose only, assigning 'ENABLE_HTTP_CLIENT_SHARING' to 'enableHttpClientSharing' for 'final'
-     * modifier.
-     */
-    public OkHttpHttpClientProvider() {
-        enableHttpClientSharing = ENABLE_HTTP_CLIENT_SHARING;
-    }
-
-    OkHttpHttpClientProvider(Configuration configuration) {
-        enableHttpClientSharing = configuration.get("ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
-    }
-
     @Override
-    public HttpClient getInstance() {
-        if (enableHttpClientSharing) {
-            return GlobalOkHttpClient.HTTP_CLIENT.getHttpClient();
-        }
-
+    public HttpClient getNewInstance() {
         return new OkHttpHttpClientBuilder().build();
+    }
+
+    public HttpClient getSharedInstance() {
+        return GlobalOkHttpClient.HTTP_CLIENT.getHttpClient();
     }
 }

@@ -6,16 +6,11 @@ package com.generic.core.implementation.http.client;
 import com.generic.core.http.client.DefaultHttpClientBuilder;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.client.HttpClientProvider;
-import com.generic.core.util.configuration.Configuration;
 
 /**
  * An {@link HttpClientProvider} that provides an implementation of HttpClient based on native JDK HttpURLConnection.
  */
-public class DefaultHttpClientProvider implements HttpClientProvider {
-    private static final boolean ENABLE_HTTP_CLIENT_SHARING =
-        Configuration.getGlobalConfiguration().get("ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
-    private final boolean enableHttpClientSharing;
-
+public class DefaultHttpClientProvider extends HttpClientProvider {
     // Enum Singleton Pattern
     public enum GlobalDefaultHttpClient {
         HTTP_CLIENT(new DefaultHttpClientBuilder().build());
@@ -31,24 +26,12 @@ public class DefaultHttpClientProvider implements HttpClientProvider {
         }
     }
 
-    /**
-     * For testing purpose only, assigning 'ENABLE_HTTP_CLIENT_SHARING' to 'enableHttpClientSharing' for 'final'
-     * modifier.
-     */
-    public DefaultHttpClientProvider() {
-        enableHttpClientSharing = ENABLE_HTTP_CLIENT_SHARING;
-    }
-
-    public DefaultHttpClientProvider(Configuration configuration) {
-        enableHttpClientSharing = configuration.get("ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
-    }
-
     @Override
-    public HttpClient getInstance() {
-        if (enableHttpClientSharing) {
-            return GlobalDefaultHttpClient.HTTP_CLIENT.getHttpClient();
-        }
-
+    public HttpClient getNewInstance() {
         return new DefaultHttpClientBuilder().build();
+    }
+
+    public HttpClient getSharedInstance() {
+        return GlobalDefaultHttpClient.HTTP_CLIENT.getHttpClient();
     }
 }
