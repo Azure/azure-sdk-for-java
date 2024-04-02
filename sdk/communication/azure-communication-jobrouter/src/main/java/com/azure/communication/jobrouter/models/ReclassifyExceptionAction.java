@@ -31,7 +31,9 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
     private Map<String, RouterValue> labelsToUpsert;
 
     /** Creates an instance of ReclassifyExceptionAction class. */
-    public ReclassifyExceptionAction() {}
+    public ReclassifyExceptionAction() {
+        this.kind = "reclassify";
+    }
 
     /**
      * Get the classificationPolicyId property: (optional) The new classification policy that will determine queue,

@@ -5,9 +5,12 @@ package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateQueueOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.LabelOperator;
 import com.azure.communication.jobrouter.models.QueueSelectorAttachment;
+import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.communication.jobrouter.models.RouterQueueSelector;
 import com.azure.communication.jobrouter.models.RouterValue;
@@ -17,6 +20,7 @@ import com.azure.communication.jobrouter.models.StaticRouterRule;
 import com.azure.communication.jobrouter.models.StaticWorkerSelectorAttachment;
 import com.azure.communication.jobrouter.models.WorkerSelectorAttachment;
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.TestMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -27,27 +31,29 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ClassificationPolicyLiveTests extends JobRouterTestBase {
     private JobRouterAdministrationClient routerAdminClient;
+    private JobRouterClient routerClient;
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createClassificationPolicy(HttpClient httpClient) {
+    public void createClassificationPolicy(HttpClient httpClient) throws InterruptedException {
         // Setup
+        routerClient = getRouterClient(httpClient);
         routerAdminClient = getRouterAdministrationClient(httpClient);
-        String distributionPolicyId = String.format("%s-DistributionPolicy", JAVA_LIVE_TESTS);
+        String testName = "classification-policy-test";
+        String distributionPolicyId = String.format("%s-%s-DistributionPolicy", JAVA_LIVE_TESTS, testName);
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
 
-        String queueId = String.format("%s-Queue", JAVA_LIVE_TESTS);
+        String queueId = String.format("%s-%s-Queue", JAVA_LIVE_TESTS, testName);
+        String fallbackQueueId = String.format("%s-%s-FallbackQueue", JAVA_LIVE_TESTS, testName);
         RouterQueue jobQueue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
+        RouterQueue fallbackQueue = routerAdminClient.createQueue(
+            new CreateQueueOptions(fallbackQueueId, distributionPolicyId));
 
         String classificationPolicyId = String.format("%s-ClassificationPolicy", JAVA_LIVE_TESTS);
         String classificationPolicyName = String.format("%s-Name", classificationPolicyId);
 
-        /**
-         * Create queue selectors.
-         */
         StaticQueueSelectorAttachment staticQueueSelector = new StaticQueueSelectorAttachment(
-            new RouterQueueSelector("queueId", LabelOperator.EQUAL)
-                .setValue(new RouterValue(queueId)));
+            new RouterQueueSelector("Id", LabelOperator.EQUAL, new RouterValue(queueId)));
 
         List<QueueSelectorAttachment> queueSelectors = new ArrayList<QueueSelectorAttachment>() {
             {
@@ -55,13 +61,8 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
             }
         };
 
-
-        /**
-         * Create worker selectors.
-         */
         StaticWorkerSelectorAttachment staticWorkerSelector = new StaticWorkerSelectorAttachment(
-            new RouterWorkerSelector("key", LabelOperator.EQUAL)
-                .setValue(new RouterValue("value")));
+            new RouterWorkerSelector("key", LabelOperator.EQUAL, new RouterValue("value")));
 
         List<WorkerSelectorAttachment> workerSelectors = new ArrayList<WorkerSelectorAttachment>() {
             {
@@ -69,31 +70,47 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
             }
         };
 
-        /**
-         * Create classification policy
-         */
         CreateClassificationPolicyOptions createClassificationPolicyOptions = new CreateClassificationPolicyOptions(
             classificationPolicyId)
             .setName(classificationPolicyName)
             .setPrioritizationRule(new StaticRouterRule().setValue(new RouterValue(1)))
             .setWorkerSelectors(workerSelectors)
             .setQueueSelectors(queueSelectors)
-            .setFallbackQueueId(jobQueue.getId());
+            .setFallbackQueueId(fallbackQueueId);
+
+        String jobId = String.format("%s-%s-Job", JAVA_LIVE_TESTS, testName);
+        String channelId = String.format("%s-%s-Channel", JAVA_LIVE_TESTS, testName);
 
         // Action
-        ClassificationPolicy result = routerAdminClient.createClassificationPolicy(createClassificationPolicyOptions);
+        ClassificationPolicy policy = routerAdminClient.createClassificationPolicy(createClassificationPolicyOptions);
+        RouterJob job = routerClient.createJobWithClassificationPolicy(
+            new CreateJobWithClassificationPolicyOptions(jobId, channelId, classificationPolicyId));
+
+        if (this.getTestMode() != TestMode.PLAYBACK) {
+            Thread.sleep(5000);
+        }
 
         // Verify
-        assertEquals(classificationPolicyId, result.getId());
-        assertEquals(classificationPolicyName, result.getName());
-        assertEquals(StaticRouterRule.class, result.getPrioritizationRule().getClass());
-        assertEquals(1, result.getWorkerSelectorAttachments().size());
-        assertEquals(1, result.getQueueSelectorAttachments().size());
-        assertEquals(jobQueue.getId(), result.getFallbackQueueId());
+        assertEquals(classificationPolicyId, policy.getId());
+        assertEquals(classificationPolicyName, policy.getName());
+        assertEquals(StaticRouterRule.class, policy.getPrioritizationRule().getClass());
+        assertEquals(1, policy.getWorkerSelectorAttachments().size());
+        assertEquals(1, policy.getQueueSelectorAttachments().size());
+        assertEquals(fallbackQueueId, policy.getFallbackQueueId());
+
+        assertEquals(jobId, job.getId());
+        assertEquals(classificationPolicyId, job.getClassificationPolicyId());
+        assertEquals(queueId, job.getQueueId());
+        assertEquals(channelId, job.getChannelId());
+        assertEquals(1, job.getPriority());
+        assertEquals(1, job.getAttachedWorkerSelectors().size());
 
         // Cleanup
+        routerClient.cancelJob(job.getId());
+        routerClient.deleteJob(job.getId());
         routerAdminClient.deleteClassificationPolicy(classificationPolicyId);
         routerAdminClient.deleteQueue(queueId);
+        routerAdminClient.deleteQueue(fallbackQueueId);
         routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
     }
 }

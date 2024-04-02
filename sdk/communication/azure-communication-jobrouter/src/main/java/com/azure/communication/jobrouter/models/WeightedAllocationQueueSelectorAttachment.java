@@ -13,7 +13,7 @@ import java.util.List;
 
 /** Describes multiple sets of queue selectors, of which one will be selected and attached according to a weighting. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("weighted-allocation-queue-selector")
+@JsonTypeName("weightedAllocation")
 @Immutable
 public final class WeightedAllocationQueueSelectorAttachment extends QueueSelectorAttachment {
 
@@ -32,6 +32,7 @@ public final class WeightedAllocationQueueSelectorAttachment extends QueueSelect
     public WeightedAllocationQueueSelectorAttachment(
             @JsonProperty(value = "allocations") List<QueueWeightedAllocation> allocations) {
         this.allocations = allocations;
+        this.kind = "weightedAllocation";
     }
 
     /**

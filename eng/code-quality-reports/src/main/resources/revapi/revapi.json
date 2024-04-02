@@ -397,9 +397,9 @@
         {
           "regex": true,
           "code": "java\\.annotation\\.added",
-          "old": ".*? void com\\.azure\\.communication\\.jobrouter\\.models.*",
-          "new": ".*? void com\\.azure\\.communication\\.jobrouter\\.models.*",
-          "justification": "Adding missing Jackson annotations to RouterJobNote."
+          "old": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "new": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "justification": "Adding missing Jackson annotations to Job Router models."
         },
         {
           "ignore": true,

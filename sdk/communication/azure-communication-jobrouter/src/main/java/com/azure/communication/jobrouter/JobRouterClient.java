@@ -22,6 +22,7 @@ import com.azure.communication.jobrouter.implementation.models.RouterJobInternal
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobPositionDetails;
@@ -528,15 +529,12 @@ public final class JobRouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createJobWithResponse(CreateJobOptions createJobOptions,
-        RequestOptions requestOptions) {
-        // Note: Update return type to Response<RouterJob> in version 2.
+    public Response<RouterJob> createJobWithResponse(CreateJobOptions createJobOptions, RequestOptions requestOptions) {
         RouterJobInternal routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
         Response<BinaryData> response = this.serviceClient.upsertJobWithResponse(createJobOptions.getJobId(),
             BinaryData.fromObject(routerJob), requestOptions);
-        return new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            BinaryData
-                .fromObject(RouterJobConstructorProxy.create(response.getValue().toObject(RouterJobInternal.class))));
+        return new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            RouterJobConstructorProxy.create(response.getValue().toObject(RouterJobInternal.class)));
     }
 
     /**
@@ -551,7 +549,48 @@ public final class JobRouterClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouterJob createJob(CreateJobOptions createJobOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return this.createJobWithResponse(createJobOptions, requestOptions).getValue().toObject(RouterJob.class);
+        return this.createJobWithResponse(createJobOptions, requestOptions).getValue();
+    }
+
+    /**
+     * Create a job using a classification policy.
+     *
+     * @param createJobWithClassificationPolicyOptions Options to create a RouterJob using a classification policy.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a unit of work to be routed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RouterJob> createJobWithClassificationPolicyWithResponse(
+        CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions,
+        RequestOptions requestOptions) {
+        // Note: Update return type to Response<RouterJob> in version 2.
+        RouterJobInternal routerJob
+            = JobAdapter.convertCreateJobOptionsToRouterJob(createJobWithClassificationPolicyOptions);
+        Response<BinaryData> response = this.serviceClient.upsertJobWithResponse(
+            createJobWithClassificationPolicyOptions.getJobId(), BinaryData.fromObject(routerJob), requestOptions);
+        return new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            RouterJobConstructorProxy.create(response.getValue().toObject(RouterJobInternal.class)));
+    }
+
+    /**
+     * Convenience method to create a job using a classification policy.
+     *
+     * @param createJobWithClassificationPolicyOptions Options to create a RouterJob using a classification policy.
+     * @return a unit of work to be routed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouterJob createJobWithClassificationPolicy(
+        CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        return this
+            .createJobWithClassificationPolicyWithResponse(createJobWithClassificationPolicyOptions, requestOptions)
+            .getValue();
     }
 
     /**

@@ -34,7 +34,9 @@ public final class WebhookRouterRule extends RouterRule {
     private String webhookUri;
 
     /** Creates an instance of WebhookRouterRule class. */
-    public WebhookRouterRule() {}
+    public WebhookRouterRule() {
+        this.kind = "webhook";
+    }
 
     /**
      * Get the authorizationServerUri property: Uri for Authorization Server.

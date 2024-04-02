@@ -62,13 +62,16 @@ public final class RouterWorkerSelector {
      *
      * @param key the key value to set.
      * @param labelOperator the labelOperator value to set.
+     * @param value the RouterValue value to set.
      */
     @JsonCreator
     public RouterWorkerSelector(
             @JsonProperty(value = "key") String key,
-            @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
+            @JsonProperty(value = "labelOperator") LabelOperator labelOperator,
+            @JsonProperty(value = "value") RouterValue value) {
         this.key = key;
         this.labelOperator = labelOperator;
+        this.value = value;
     }
 
     /**
@@ -97,17 +100,6 @@ public final class RouterWorkerSelector {
      */
     public RouterValue getValue() {
         return this.value;
-    }
-
-    /**
-     * Set the value property: The value to compare against the actual label value with the given operator.
-     *
-     * @param value the value value to set.
-     * @return the RouterWorkerSelector object itself.
-     */
-    public RouterWorkerSelector setValue(RouterValue value) {
-        this.value = value;
-        return this;
     }
 
     /**

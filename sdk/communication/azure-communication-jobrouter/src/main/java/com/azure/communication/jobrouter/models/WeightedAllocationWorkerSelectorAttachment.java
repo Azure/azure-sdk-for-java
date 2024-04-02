@@ -13,7 +13,7 @@ import java.util.List;
 
 /** Describes multiple sets of worker selectors, of which one will be selected and attached according to a weighting. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("weighted-allocation-worker-selector")
+@JsonTypeName("weightedAllocation")
 @Immutable
 public final class WeightedAllocationWorkerSelectorAttachment extends WorkerSelectorAttachment {
 
@@ -32,6 +32,7 @@ public final class WeightedAllocationWorkerSelectorAttachment extends WorkerSele
     public WeightedAllocationWorkerSelectorAttachment(
             @JsonProperty(value = "allocations") List<WorkerWeightedAllocation> allocations) {
         this.allocations = allocations;
+        this.kind = "weightedAllocation";
     }
 
     /**

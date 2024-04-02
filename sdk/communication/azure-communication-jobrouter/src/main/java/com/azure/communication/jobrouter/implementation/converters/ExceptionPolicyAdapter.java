@@ -42,9 +42,11 @@ public class ExceptionPolicyAdapter {
     public static ExceptionPolicyInternal convertCreateOptionsToExceptionPolicy(CreateExceptionPolicyOptions createExceptionPolicyOptions) {
         return new ExceptionPolicyInternal()
             .setName(createExceptionPolicyOptions.getName())
-            .setExceptionRules(createExceptionPolicyOptions.getExceptionRules()
+            .setExceptionRules(createExceptionPolicyOptions != null
+                ? createExceptionPolicyOptions.getExceptionRules()
                 .stream().map(rule -> convertExceptionRule(rule))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList())
+            : null);
     }
 
     private static ExceptionTriggerInternal convertExceptionTrigger(ExceptionTrigger exceptionTrigger) {
@@ -71,10 +73,12 @@ public class ExceptionPolicyAdapter {
             exceptionActionInternal = new ManualReclassifyExceptionActionInternal()
                 .setPriority(manualReclassifyExceptionAction.getPriority())
                 .setQueueId(manualReclassifyExceptionAction.getQueueId())
-                .setWorkerSelectors(manualReclassifyExceptionAction.getWorkerSelectors()
-                    .stream()
-                    .map(ws -> LabelSelectorAdapter.convertWorkerSelectorToInternal(ws))
-                    .collect(Collectors.toList()));
+                .setWorkerSelectors(manualReclassifyExceptionAction.getWorkerSelectors() != null
+                    ? manualReclassifyExceptionAction.getWorkerSelectors()
+                        .stream()
+                        .map(ws -> LabelSelectorAdapter.convertWorkerSelectorToInternal(ws))
+                        .collect(Collectors.toList())
+                    : null);
         }
         return exceptionActionInternal;
     }
@@ -82,10 +86,12 @@ public class ExceptionPolicyAdapter {
     private static ExceptionRuleInternal convertExceptionRule(ExceptionRule exceptionRule) {
         String id = exceptionRule.getId();
         ExceptionTriggerInternal exceptionTriggerInternal = convertExceptionTrigger(exceptionRule.getTrigger());
-        List<ExceptionActionInternal> exceptionActionInternalList = exceptionRule.getActions()
-            .stream()
-            .map(action -> convertExceptionAction(action))
-            .collect(Collectors.toList());
+        List<ExceptionActionInternal> exceptionActionInternalList = exceptionRule.getActions() != null
+            ? exceptionRule.getActions()
+                .stream()
+                .map(action -> convertExceptionAction(action))
+                .collect(Collectors.toList())
+            : null;
         return new ExceptionRuleInternal(id, exceptionTriggerInternal, exceptionActionInternalList);
     }
 
@@ -112,14 +118,18 @@ public class ExceptionPolicyAdapter {
             return new ManualReclassifyExceptionAction()
                 .setPriority(manualReclassify.getPriority())
                 .setQueueId(manualReclassify.getQueueId())
-                .setWorkerSelectors(manualReclassify.getWorkerSelectors().stream()
-                    .map(LabelSelectorAdapter::convertWorkerSelectorToPublic).collect(Collectors.toList()));
+                .setWorkerSelectors(manualReclassify.getWorkerSelectors() != null
+                    ? manualReclassify.getWorkerSelectors().stream()
+                        .map(LabelSelectorAdapter::convertWorkerSelectorToPublic).collect(Collectors.toList())
+                : null);
         } else if (action instanceof ReclassifyExceptionActionInternal) {
             ReclassifyExceptionActionInternal reclassify = (ReclassifyExceptionActionInternal) action;
             return new ReclassifyExceptionAction()
                 .setClassificationPolicyId(reclassify.getClassificationPolicyId())
-                .setLabelsToUpsert(reclassify.getLabelsToUpsert().entrySet().stream()
-                    .collect(Collectors.toMap(Map.Entry::getKey, entry -> RouterValueConstructorProxy.create(entry.getValue()))));
+                .setLabelsToUpsert(reclassify.getLabelsToUpsert() != null
+                    ? reclassify.getLabelsToUpsert().entrySet().stream()
+                        .collect(Collectors.toMap(Map.Entry::getKey, entry -> RouterValueConstructorProxy.create(entry.getValue())))
+                : null);
         }
 
         return null;
@@ -129,22 +139,13 @@ public class ExceptionPolicyAdapter {
         return rules != null ? rules.stream()
             .map(rule -> {
                 ExceptionTrigger trigger = convertExceptionTriggerToPublic(rule.getTrigger());
-                List<ExceptionAction> actions = rule.getActions().stream()
-                    .map(action -> convertExceptionActionToPublic(action))
-                    .collect(Collectors.toList());
+                List<ExceptionAction> actions = rule.getActions() != null
+                    ? rule.getActions().stream()
+                        .map(action -> convertExceptionActionToPublic(action))
+                        .collect(Collectors.toList())
+                    : null;
                 return new ExceptionRule(rule.getId(), trigger, actions);
             })
             .collect(Collectors.toList()) : new ArrayList<ExceptionRule>();
-    }
-
-    public static ExceptionPolicyInternal convertExceptionPolicyToInternal(ExceptionPolicy exceptionPolicy) {
-        return new ExceptionPolicyInternal()
-            .setEtag(exceptionPolicy.getEtag())
-            .setId(exceptionPolicy.getId())
-            .setName(exceptionPolicy.getName())
-            .setExceptionRules(exceptionPolicy.getExceptionRules().stream()
-                .map(exceptionRule -> convertExceptionRule(exceptionRule))
-                .collect(Collectors.toList())
-            );
     }
 }

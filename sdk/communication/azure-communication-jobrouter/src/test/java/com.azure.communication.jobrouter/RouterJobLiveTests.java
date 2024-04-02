@@ -102,10 +102,8 @@ public class RouterJobLiveTests extends JobRouterTestBase {
             })
             .setRequestedWorkerSelectors(new ArrayList<RouterWorkerSelector>() {
                 {
-                    add(new RouterWorkerSelector("IntKey", LabelOperator.GREATER_THAN)
-                        .setValue(new RouterValue(2)));
-                    add(new RouterWorkerSelector("BoolKey", LabelOperator.EQUAL)
-                        .setValue(new RouterValue(true)));
+                    add(new RouterWorkerSelector("IntKey", LabelOperator.GREATER_THAN, new RouterValue(2)));
+                    add(new RouterWorkerSelector("BoolKey", LabelOperator.EQUAL, new RouterValue(true)));
                 }
             })
             .setNotes(new ArrayList<RouterJobNote>() {

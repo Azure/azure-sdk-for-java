@@ -21,7 +21,9 @@ public final class StaticRouterRule extends RouterRule {
     private RouterValue value;
 
     /** Creates an instance of StaticRouterRule class. */
-    public StaticRouterRule() {}
+    public StaticRouterRule() {
+        this.kind = "static";
+    }
 
     /**
      * Get the value property: The static value this rule always returns.

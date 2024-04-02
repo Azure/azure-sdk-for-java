@@ -35,13 +35,16 @@ public final class RouterQueueSelector {
      *
      * @param key the key value to set.
      * @param labelOperator the labelOperator value to set.
+     * @param value the value value to set.
      */
     @JsonCreator
     public RouterQueueSelector(
             @JsonProperty(value = "key") String key,
-            @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
+            @JsonProperty(value = "labelOperator") LabelOperator labelOperator,
+            @JsonProperty(value = "value") RouterValue value) {
         this.key = key;
         this.labelOperator = labelOperator;
+        this.value = value;
     }
 
     /**
@@ -70,16 +73,5 @@ public final class RouterQueueSelector {
      */
     public RouterValue getValue() {
         return this.value;
-    }
-
-    /**
-     * Set the value property: The value to compare against the actual label value with the given operator.
-     *
-     * @param value the value value to set.
-     * @return the RouterQueueSelector object itself.
-     */
-    public RouterQueueSelector setValue(RouterValue value) {
-        this.value = value;
-        return this;
     }
 }
