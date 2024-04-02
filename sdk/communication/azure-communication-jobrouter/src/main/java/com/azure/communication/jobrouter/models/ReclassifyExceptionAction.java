@@ -4,10 +4,10 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.util.Map;
 
 /** An action that modifies labels on a job and then reclassifies it. */
@@ -20,7 +20,6 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
      * (optional) The new classification policy that will determine queue, priority
      * and worker selectors.
      */
-    @Generated
     @JsonProperty(value = "classificationPolicyId")
     private String classificationPolicyId;
 
@@ -32,7 +31,6 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
     private Map<String, RouterValue> labelsToUpsert;
 
     /** Creates an instance of ReclassifyExceptionAction class. */
-    @Generated
     public ReclassifyExceptionAction() {}
 
     /**
@@ -41,7 +39,6 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
      *
      * @return the classificationPolicyId value.
      */
-    @Generated
     public String getClassificationPolicyId() {
         return this.classificationPolicyId;
     }
@@ -53,7 +50,6 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
      * @param classificationPolicyId the classificationPolicyId value to set.
      * @return the ReclassifyExceptionAction object itself.
      */
-    @Generated
     public ReclassifyExceptionAction setClassificationPolicyId(String classificationPolicyId) {
         this.classificationPolicyId = classificationPolicyId;
         return this;

@@ -85,6 +85,11 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
 
         // Verify
         assertEquals(classificationPolicyId, result.getId());
+        assertEquals(classificationPolicyName, result.getName());
+        assertEquals(StaticRouterRule.class, result.getPrioritizationRule().getClass());
+        assertEquals(1, result.getWorkerSelectorAttachments().size());
+        assertEquals(1, result.getQueueSelectorAttachments().size());
+        assertEquals(jobQueue.getId(), result.getFallbackQueueId());
 
         // Cleanup
         routerAdminClient.deleteClassificationPolicy(classificationPolicyId);

@@ -4,7 +4,6 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -22,7 +21,6 @@ public final class StaticRouterRule extends RouterRule {
     private RouterValue value;
 
     /** Creates an instance of StaticRouterRule class. */
-    @Generated
     public StaticRouterRule() {}
 
     /**

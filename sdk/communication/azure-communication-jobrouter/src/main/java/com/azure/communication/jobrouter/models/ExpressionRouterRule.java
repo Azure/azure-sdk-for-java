@@ -4,7 +4,6 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -19,14 +18,12 @@ public final class ExpressionRouterRule extends RouterRule {
     /*
      * The expression language to compile to and execute
      */
-    @Generated
     @JsonProperty(value = "language")
     private ExpressionRouterRuleLanguage language;
 
     /*
      * The string containing the expression to evaluate. Should contain return statement with calculated values.
      */
-    @Generated
     @JsonProperty(value = "expression")
     private String expression;
 
@@ -35,7 +32,6 @@ public final class ExpressionRouterRule extends RouterRule {
      *
      * @param expression the expression value to set.
      */
-    @Generated
     @JsonCreator
     public ExpressionRouterRule(@JsonProperty(value = "expression") String expression) {
         this.expression = expression;
@@ -67,7 +63,6 @@ public final class ExpressionRouterRule extends RouterRule {
      *
      * @return the expression value.
      */
-    @Generated
     public String getExpression() {
         return this.expression;
     }

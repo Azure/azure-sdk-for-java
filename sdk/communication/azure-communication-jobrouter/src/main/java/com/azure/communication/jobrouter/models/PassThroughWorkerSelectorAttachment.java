@@ -4,7 +4,6 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -21,14 +20,12 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
     /*
      * The label key to query against
      */
-    @Generated
     @JsonProperty(value = "key")
     private String key;
 
     /*
      * Describes how the value of the label is compared to the value pass through
      */
-    @Generated
     @JsonProperty(value = "labelOperator")
     private LabelOperator labelOperator;
 
@@ -44,7 +41,6 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
      * @param key the key value to set.
      * @param labelOperator the labelOperator value to set.
      */
-    @Generated
     @JsonCreator
     public PassThroughWorkerSelectorAttachment(
             @JsonProperty(value = "key") String key,
@@ -58,7 +54,6 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
      *
      * @return the key value.
      */
-    @Generated
     public String getKey() {
         return this.key;
     }
@@ -68,7 +63,6 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
      *
      * @return the labelOperator value.
      */
-    @Generated
     public LabelOperator getLabelOperator() {
         return this.labelOperator;
     }

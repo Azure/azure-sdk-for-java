@@ -395,6 +395,13 @@
           "justification": "Modifies the type of changeFeedMetaData from ChangeFeedMetaData to JsonNode."
         },
         {
+          "regex": true,
+          "code": "java\\.annotation\\.added",
+          "old": ".*? void com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "new": ".*? void com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "justification": "Adding missing Jackson annotations to RouterJobNote."
+        },
+        {
           "ignore": true,
           "code": "java.field.addedStaticField",
           "new": "field com.azure.data.schemaregistry.SchemaRegistryVersion.V2022_10",

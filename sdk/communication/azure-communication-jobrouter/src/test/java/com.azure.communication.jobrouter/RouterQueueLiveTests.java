@@ -11,8 +11,8 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,6 +43,7 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
 
         // Verify
         assertEquals(queueId, jobQueue.getId());
+        assertEquals(distributionPolicyId, jobQueue.getDistributionPolicyId());
 
         // Cleanup
         routerAdminClient.deleteQueue(queueId);

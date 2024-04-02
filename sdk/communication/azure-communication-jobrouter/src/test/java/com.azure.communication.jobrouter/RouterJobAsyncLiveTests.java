@@ -14,6 +14,7 @@ import com.azure.communication.jobrouter.models.LabelOperator;
 import com.azure.communication.jobrouter.models.LongestIdleMode;
 import com.azure.communication.jobrouter.models.RouterChannel;
 import com.azure.communication.jobrouter.models.RouterJob;
+import com.azure.communication.jobrouter.models.RouterJobNote;
 import com.azure.communication.jobrouter.models.RouterJobOffer;
 import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.communication.jobrouter.models.RouterValue;
@@ -22,110 +23,113 @@ import com.azure.communication.jobrouter.models.RouterWorkerSelector;
 import com.azure.communication.jobrouter.models.UnassignJobResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class RouterJobAsyncLiveTests extends JobRouterTestBase {
     private JobRouterAsyncClient jobRouterAsyncClient;
 
     private JobRouterAdministrationAsyncClient administrationAsyncClient;
 
-//    @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void unassignJob(HttpClient httpClient) {
+    public void unassignJob(HttpClient httpClient) throws InterruptedException {
         // Setup
         jobRouterAsyncClient = getRouterAsyncClient(httpClient);
         administrationAsyncClient = getRouterAdministrationAsyncClient(httpClient);
-        String testName = "unassign-job-test";
-        /**
-         * Setup queue
-         */
-        String distributionPolicyId = String.format("%s-%s-DistributionPolicy", JAVA_LIVE_TESTS, testName);
-        String distributionPolicyName = String.format("%s-Name", distributionPolicyId);
+        String testName = "unassign-job-async-test";
 
-        CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
-            distributionPolicyId,
-            Duration.ofSeconds(10),
-            new LongestIdleMode()
-                .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10)
-        )
-            .setName(distributionPolicyName);
-        DistributionPolicy distributionPolicy = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
+        String distributionPolicyId = String.format("%s-%s-DistributionPolicy", JAVA_LIVE_TESTS, testName);
+        DistributionPolicy distributionPolicy = administrationAsyncClient.createDistributionPolicy(
+            new CreateDistributionPolicyOptions(distributionPolicyId, Duration.ofSeconds(100), new LongestIdleMode())).block();
 
         String queueId = String.format("%s-%s-Queue", JAVA_LIVE_TESTS, testName);
-        String queueName = String.format("%s-Name", queueId);
-        Map<String, RouterValue> queueLabels = new HashMap<String, RouterValue>() {
-            {
-                put("Label_1", new RouterValue("Value_1"));
-            }
-        };
-
-        CreateQueueOptions createQueueOptions = new CreateQueueOptions(queueId, distributionPolicyId)
-            .setLabels(queueLabels)
-            .setName(queueName);
-        RouterQueue jobQueue = administrationAsyncClient.createQueue(createQueueOptions).block();
-
-        /**
-         * Setup worker
-         */
-        Map<String, RouterValue> labels = new HashMap<String, RouterValue>() {
-            {
-                put("Label", new RouterValue("Value"));
-            }
-        };
-
-        Map<String, RouterValue> tags = new HashMap<String, RouterValue>() {
-            {
-                put("Tag", new RouterValue("Value"));
-            }
-        };
-
-        RouterChannel channel = new RouterChannel("router-channel", 1);
-        List<RouterChannel> channels = new ArrayList<RouterChannel>() {
-            {
-                add(channel);
-            }
-        };
-
-        List<String> queues = new ArrayList<String>() {
-            {
-                add(jobQueue.getId());
-            }
-        };
-
+        RouterQueue jobQueue = administrationAsyncClient.createQueue(new CreateQueueOptions(queueId, distributionPolicy.getId())).block();
         String workerId = String.format("%s-%s-Worker", JAVA_LIVE_TESTS, testName);
-        CreateWorkerOptions createWorkerOptions = new CreateWorkerOptions(workerId, 10)
-            .setLabels(labels)
-            .setTags(tags)
-            .setAvailableForOffers(true)
-            .setChannels(channels)
-            .setQueues(queues);
+        String channelId = String.format("%s-%s-Channel", JAVA_LIVE_TESTS, testName);
 
-        RouterWorker routerWorker = jobRouterAsyncClient.createWorker(createWorkerOptions).block();
+        RouterWorker createdWorker = jobRouterAsyncClient.createWorker(new CreateWorkerOptions(workerId, 10)
+            .setLabels(new HashMap<String, RouterValue>() {
+                {
+                    put("IntKey", new RouterValue(4));
+                    put("BoolKey", new RouterValue(true));
+                    put("StringLabel", new RouterValue("test"));
+                }
+            })
+            .setTags(new HashMap<String, RouterValue>() {
+                {
+                    put("IntTag", new RouterValue(5));
+                    put("BoolTag", new RouterValue(false));
+                    put("StringTag", new RouterValue("test2"));
+                }
+            })
+            .setAvailableForOffers(true)
+            .setChannels(new ArrayList<RouterChannel>() {
+                {
+                    add(new RouterChannel(channelId, 1));
+                }
+            })
+            .setQueues(new ArrayList<String>() {
+                {
+                    add(jobQueue.getId());
+                }
+            })).block();
 
         String jobId = String.format("%s-%s-Job", JAVA_LIVE_TESTS, testName);
-        List<RouterWorkerSelector> requestedWorkerSelectors = new ArrayList<RouterWorkerSelector>() {
-            {
-                add(new RouterWorkerSelector("Label", LabelOperator.EQUAL)
-                    .setValue(new RouterValue("Value")));
-            }
-        };
-        CreateJobOptions createJobOptions = new CreateJobOptions(jobId, channel.getChannelId(), queueId)
-            .setLabels(labels)
-            .setTags(tags)
-            .setRequestedWorkerSelectors(requestedWorkerSelectors);
+        CreateJobOptions createJobOptions = new CreateJobOptions(jobId, channelId, queueId)
+            .setLabels(new HashMap<String, RouterValue>() {
+                {
+                    put("IntLabel", new RouterValue(10));
+                    put("BoolLabel", new RouterValue(true));
+                    put("StringLabel", new RouterValue("test"));
+                }
+            })
+            .setTags(new HashMap<String, RouterValue>() {
+                {
+                    put("IntTag", new RouterValue(5));
+                    put("BoolTag", new RouterValue(false));
+                    put("StringTag", new RouterValue("test2"));
+                }
+            })
+            .setRequestedWorkerSelectors(new ArrayList<RouterWorkerSelector>() {
+                {
+                    add(new RouterWorkerSelector("IntKey", LabelOperator.GREATER_THAN)
+                        .setValue(new RouterValue(2)));
+                    add(new RouterWorkerSelector("BoolKey", LabelOperator.EQUAL)
+                        .setValue(new RouterValue(true)));
+                }
+            })
+            .setNotes(new ArrayList<RouterJobNote>() {
+                {
+                    add(new RouterJobNote("Note1"));
+                }
+            })
+            .setDispositionCode("code1")
+            .setChannelReference("ref")
+            .setPriority(5);
 
-        RouterJob routerJob = jobRouterAsyncClient.createJob(createJobOptions).block();
+        RouterJob job = jobRouterAsyncClient.createJob(createJobOptions).block();
+
+        // Verify
+        assertEquals(jobId, job.getId());
+        assertNotNull(job.getEtag());
+        assertEquals(3, job.getLabels().size());
+        assertEquals(3, job.getTags().size());
+        assertEquals(1, job.getNotes().size());
+        assertEquals("code1", job.getDispositionCode());
+        assertEquals("ref", job.getChannelReference());
+        assertEquals(5, job.getPriority());
+        assertEquals(2, job.getRequestedWorkerSelectors().size());
 
         List<RouterJobOffer> jobOffers = new ArrayList<RouterJobOffer>();
         long startTimeMillis = System.currentTimeMillis();
@@ -137,7 +141,7 @@ public class RouterJobAsyncLiveTests extends JobRouterTestBase {
             }
         }
 
-        assertTrue(jobOffers.size() == 1);
+        assertEquals(1, jobOffers.size());
 
         RouterJobOffer offer = jobOffers.get(0);
 
@@ -156,10 +160,14 @@ public class RouterJobAsyncLiveTests extends JobRouterTestBase {
             .setDispositionCode("dispositionCode")
             .setNote("note");
         requestOptions.setBody(BinaryData.fromObject(cancelJobOptions));
+
         // Cleanup
         jobRouterAsyncClient.cancelJob(jobId, requestOptions).block();
         jobRouterAsyncClient.deleteJob(jobId).block();
         jobRouterAsyncClient.deleteWorker(workerId).block();
+        if (this.getTestMode() != TestMode.PLAYBACK) {
+            Thread.sleep(10000);
+        }
         administrationAsyncClient.deleteQueue(queueId).block();
         administrationAsyncClient.deleteDistributionPolicy(distributionPolicyId).block();
     }

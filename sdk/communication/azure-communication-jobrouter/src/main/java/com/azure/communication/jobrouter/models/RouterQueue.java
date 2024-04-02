@@ -7,7 +7,6 @@ import com.azure.communication.jobrouter.implementation.accesshelpers.RouterQueu
 import com.azure.communication.jobrouter.implementation.accesshelpers.RouterValueConstructorProxy;
 import com.azure.communication.jobrouter.implementation.models.RouterQueueInternal;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
@@ -20,14 +19,12 @@ public final class RouterQueue {
     /*
      * The Id of this queue
      */
-    @Generated
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The name of this queue.
      */
-    @Generated
     @JsonProperty(value = "name")
     private String name;
 
@@ -35,7 +32,6 @@ public final class RouterQueue {
      * The ID of the distribution policy that will determine how a job is distributed
      * to workers.
      */
-    @Generated
     @JsonProperty(value = "distributionPolicyId")
     private String distributionPolicyId;
 
@@ -50,7 +46,6 @@ public final class RouterQueue {
      * (Optional) The ID of the exception policy that determines various job
      * escalation rules.
      */
-    @Generated
     @JsonProperty(value = "exceptionPolicyId")
     private String exceptionPolicyId;
 
@@ -65,6 +60,7 @@ public final class RouterQueue {
      */
     RouterQueue(RouterQueueInternal internal) {
         id = internal.getId();
+        etag = internal.getEtag();
 
         setName(internal.getName());
         setDistributionPolicyId(internal.getDistributionPolicyId());
@@ -75,7 +71,6 @@ public final class RouterQueue {
 
 
     /** Creates an instance of RouterQueue class. */
-    @Generated
     public RouterQueue() {}
 
     /**
@@ -83,7 +78,6 @@ public final class RouterQueue {
      *
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }
@@ -93,7 +87,6 @@ public final class RouterQueue {
      *
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -104,7 +97,6 @@ public final class RouterQueue {
      * @param name the name value to set.
      * @return the RouterQueue object itself.
      */
-    @Generated
     public RouterQueue setName(String name) {
         this.name = name;
         return this;
@@ -116,7 +108,6 @@ public final class RouterQueue {
      *
      * @return the distributionPolicyId value.
      */
-    @Generated
     public String getDistributionPolicyId() {
         return this.distributionPolicyId;
     }
@@ -128,7 +119,6 @@ public final class RouterQueue {
      * @param distributionPolicyId the distributionPolicyId value to set.
      * @return the RouterQueue object itself.
      */
-    @Generated
     public RouterQueue setDistributionPolicyId(String distributionPolicyId) {
         this.distributionPolicyId = distributionPolicyId;
         return this;
@@ -162,7 +152,6 @@ public final class RouterQueue {
      *
      * @return the exceptionPolicyId value.
      */
-    @Generated
     public String getExceptionPolicyId() {
         return this.exceptionPolicyId;
     }
@@ -174,7 +163,6 @@ public final class RouterQueue {
      * @param exceptionPolicyId the exceptionPolicyId value to set.
      * @return the RouterQueue object itself.
      */
-    @Generated
     public RouterQueue setExceptionPolicyId(String exceptionPolicyId) {
         this.exceptionPolicyId = exceptionPolicyId;
         return this;
@@ -183,8 +171,7 @@ public final class RouterQueue {
     /*
      * Concurrency Token.
      */
-    @Generated
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /**
@@ -192,7 +179,6 @@ public final class RouterQueue {
      *
      * @return the etag value.
      */
-    @Generated
     public String getEtag() {
         return this.etag;
     }

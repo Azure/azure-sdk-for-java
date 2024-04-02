@@ -40,6 +40,9 @@ public class DistributionPolicyLiveTests extends JobRouterTestBase {
 
         // Action
         DistributionPolicy result = routerAdminClient.createDistributionPolicy(createDistributionPolicyOptions);
+        assertEquals(Duration.ofSeconds(10), result.getOfferExpiresAfter());
+        assertEquals(BestWorkerMode.class, result.getMode().getClass());
+        assertEquals(bestWorkerModeDistributionPolicyName, result.getName());
 
         // Verify
         assertEquals(bestWorkerModeDistributionPolicyId, result.getId());

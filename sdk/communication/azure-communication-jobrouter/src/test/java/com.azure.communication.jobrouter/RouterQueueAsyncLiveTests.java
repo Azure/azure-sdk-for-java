@@ -60,6 +60,9 @@ public class RouterQueueAsyncLiveTests extends JobRouterTestBase {
 
         // Verify
         assertEquals(queueId, jobQueue.getId());
+        assertEquals(distributionPolicyId, jobQueue.getDistributionPolicyId());
+        assertEquals(queueName, jobQueue.getName());
+        assertEquals(queueLabels.size() + 1, jobQueue.getLabels().size());
 
         // Cleanup
         administrationAsyncClient.deleteQueue(queueId).block();

@@ -342,7 +342,7 @@ public final class JobRouterAdministrationClientBuilder implements HttpTrait<Job
 
     /**
      * Set a connection string for authorization.
-     * 
+     *
      * @param connectionString valid connectionString as a string.
      * @return the updated JobRouterAdministrationClientBuilder object.
      */

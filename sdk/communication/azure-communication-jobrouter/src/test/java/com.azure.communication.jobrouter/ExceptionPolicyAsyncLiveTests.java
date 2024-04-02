@@ -56,6 +56,8 @@ public class ExceptionPolicyAsyncLiveTests extends JobRouterTestBase {
 
         // Verify
         assertEquals(exceptionPolicyId, result.getId());
+        assertEquals(exceptionPolicyName, result.getName());
+        assertEquals(1, result.getExceptionRules().size());
 
         // Cleanup
         administrationAsyncClient.deleteExceptionPolicy(exceptionPolicyId).block();

@@ -22,7 +22,7 @@ public final class ClassificationPolicy {
     /*
      * Id of a classification policy.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id")
     private String id;
 
     /*
@@ -56,6 +56,8 @@ public final class ClassificationPolicy {
      */
     ClassificationPolicy(ClassificationPolicyInternal internal) {
         id = internal.getId();
+        etag = internal.getEtag();
+
         setName(internal.getName());
         setPrioritizationRule(RouterRuleAdapter.convertRouterRuleToPublic(internal.getPrioritizationRule()));
         setFallbackQueueId(internal.getFallbackQueueId());
@@ -132,7 +134,7 @@ public final class ClassificationPolicy {
     /*
      * The entity tag for this resource.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /*

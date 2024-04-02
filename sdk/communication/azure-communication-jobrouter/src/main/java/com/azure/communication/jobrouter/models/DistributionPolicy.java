@@ -7,7 +7,6 @@ import com.azure.communication.jobrouter.implementation.accesshelpers.Distributi
 import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Duration;
@@ -19,14 +18,12 @@ public final class DistributionPolicy {
     /*
      * The unique identifier of the policy.
      */
-    @Generated
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The human readable name of the policy.
      */
-    @Generated
     @JsonProperty(value = "name")
     private String name;
 
@@ -39,12 +36,10 @@ public final class DistributionPolicy {
     /*
      * Abstract base class for defining a distribution mode
      */
-    @Generated
     @JsonProperty(value = "mode")
     private DistributionMode mode;
 
     /** Creates an instance of DistributionPolicy class. */
-    @Generated
     public DistributionPolicy() {}
 
     /**
@@ -54,6 +49,7 @@ public final class DistributionPolicy {
      */
     DistributionPolicy(DistributionPolicyInternal internal) {
         id = internal.getId();
+        etag = internal.getEtag();
 
         setName(internal.getName());
         setMode(DistributionPolicyAdapter.convertDistributionModeToPublic(internal.getMode()));
@@ -69,7 +65,6 @@ public final class DistributionPolicy {
      *
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }
@@ -79,7 +74,6 @@ public final class DistributionPolicy {
      *
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -90,7 +84,6 @@ public final class DistributionPolicy {
      * @param name the name value to set.
      * @return the DistributionPolicy object itself.
      */
-    @Generated
     public DistributionPolicy setName(String name) {
         this.name = name;
         return this;
@@ -123,7 +116,6 @@ public final class DistributionPolicy {
      *
      * @return the mode value.
      */
-    @Generated
     public DistributionMode getMode() {
         return this.mode;
     }
@@ -134,7 +126,6 @@ public final class DistributionPolicy {
      * @param mode the mode value to set.
      * @return the DistributionPolicy object itself.
      */
-    @Generated
     public DistributionPolicy setMode(DistributionMode mode) {
         this.mode = mode;
         return this;
@@ -143,8 +134,7 @@ public final class DistributionPolicy {
     /*
      * Concurrency Token.
      */
-    @Generated
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /**
@@ -152,7 +142,6 @@ public final class DistributionPolicy {
      *
      * @return the etag value.
      */
-    @Generated
     public String getEtag() {
         return this.etag;
     }
