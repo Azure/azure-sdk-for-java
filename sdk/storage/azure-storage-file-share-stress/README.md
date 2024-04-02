@@ -217,7 +217,7 @@ Below is the current structure of project:
 [helm]: https://helm.sh/docs/intro/install/
 [azure_cli]: https://docs.microsoft.com/cli/azure/install-azure-cli
 [powershell]: https://docs.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-7
-[enable_application_insights]: https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-enable?tabs=java#enable-azure-monitor-application-insights
+[enable_application_insights]: https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-enable?tabs=java#enable-azure-monitor-application-insights#enable-azure-monitor-application-insights
 [logback_xml]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus-stress/src/main/resources/logback.xml
 [deploy_stress_test]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#deploying-a-stress-test
 [stress_test_layout]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#layout

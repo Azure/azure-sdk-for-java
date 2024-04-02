@@ -11,7 +11,6 @@ public class App {
         TelemetryHelper.init();
         PerfStressProgram.run(new Class<?>[]{
             AppendBlock.class,
-            AppendBlockFromUrl.class,
             AppendBlobOutputStream.class,
             BlockBlobOutputStream.class,
             BlockBlobUpload.class,
