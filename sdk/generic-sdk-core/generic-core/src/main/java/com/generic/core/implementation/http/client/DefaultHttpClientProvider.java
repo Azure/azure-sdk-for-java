@@ -12,7 +12,7 @@ import com.generic.core.http.client.HttpClientProvider;
  */
 public class DefaultHttpClientProvider extends HttpClientProvider {
     // Enum Singleton Pattern
-    public enum GlobalDefaultHttpClient {
+    /*public enum GlobalDefaultHttpClient {
         HTTP_CLIENT(new DefaultHttpClientBuilder().build());
 
         private final HttpClient httpClient;
@@ -24,14 +24,14 @@ public class DefaultHttpClientProvider extends HttpClientProvider {
         public HttpClient getHttpClient() {
             return httpClient;
         }
-    }
+    }*/
 
     @Override
     public HttpClient getNewInstance() {
         return new DefaultHttpClientBuilder().build();
     }
 
-    public HttpClient getSharedInstance() {
+    /*public HttpClient getSharedInstance() {
         return GlobalDefaultHttpClient.HTTP_CLIENT.getHttpClient();
-    }
+    }*/
 }

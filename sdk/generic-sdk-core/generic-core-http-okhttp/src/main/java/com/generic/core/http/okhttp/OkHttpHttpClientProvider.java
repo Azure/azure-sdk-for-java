@@ -11,7 +11,7 @@ import com.generic.core.http.client.HttpClientProvider;
  */
 public final class OkHttpHttpClientProvider extends HttpClientProvider {
     // Enum Singleton Pattern
-    private enum GlobalOkHttpClient {
+    /*private enum GlobalOkHttpClient {
         HTTP_CLIENT(new OkHttpHttpClientBuilder().build());
 
         private final HttpClient httpClient;
@@ -23,14 +23,14 @@ public final class OkHttpHttpClientProvider extends HttpClientProvider {
         private HttpClient getHttpClient() {
             return httpClient;
         }
-    }
+    }*/
 
     @Override
     public HttpClient getNewInstance() {
         return new OkHttpHttpClientBuilder().build();
     }
 
-    public HttpClient getSharedInstance() {
+    /*public HttpClient getSharedInstance() {
         return GlobalOkHttpClient.HTTP_CLIENT.getHttpClient();
-    }
+    }*/
 }

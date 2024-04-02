@@ -21,13 +21,18 @@ public abstract class HttpClientProvider {
 
     /**
      * Gets a new instance of the {@link HttpClient} that this {@link HttpClientProvider} is configured to create.
+     *
+     * @return A new instance of {@link HttpClient} that this {@link HttpClientProvider} is configured to create.
      */
     public abstract HttpClient getNewInstance();
 
     /**
      * Gets a shared instance of the {@link HttpClient} that this {@link HttpClientProvider} is configured to create.
+     *
+     * @return A shared instance of {@link HttpClient} that this {@link HttpClientProvider} is configured to
+     * create.
      */
-    public HttpClient getSharedInstance() {
+    public final HttpClient getSharedInstance() {
         if (httpClient == null) {
             httpClient = getNewInstance();
         }
