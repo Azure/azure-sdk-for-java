@@ -4,6 +4,7 @@
 module com.azure.storage.file.share {
     requires transitive com.azure.storage.common;
 
+    requires com.azure.json;
     requires com.azure.xml;
     requires java.xml;
 
