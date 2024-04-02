@@ -4,13 +4,12 @@ package com.generic.core.implementation.util;
 
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * An {@link InternalContext} implementation that holds N key-value pairs.
  */
 final class InternalContextN implements InternalContext {
-    private static final long SENTINEL = ThreadLocalRandom.current().nextLong();
+    private static final Object SENTINEL = new Object();
 
     private final InternalContext[] contexts;
     private final int count;
