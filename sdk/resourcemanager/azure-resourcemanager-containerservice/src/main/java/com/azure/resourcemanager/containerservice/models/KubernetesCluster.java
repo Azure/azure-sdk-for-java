@@ -448,6 +448,52 @@ public interface KubernetesCluster
             }
 
             /**
+             * The stage of a network plugin mode definition allowing to specify the network policy.
+             *
+             * @param <ParentT> the stage of the network plugin mode definition to return to after attaching this definition
+             */
+            interface WithNetworkPluginMode<ParentT> {
+                /**
+                 * Specifies the network plugin mode to be used for building the Kubernetes network.
+                 *
+                 * @param networkPluginMode the network plugin mode to be used for building the Kubernetes network
+                 * @return the next stage of the definition
+                 */
+                WithAttach<ParentT> withNetworkPluginMode(NetworkPluginMode networkPluginMode);
+            }
+
+            /**
+             * The stage of a network mode definition allowing to specify the network policy.
+             *
+             * @param <ParentT> the stage of the network mode definition to return to after attaching this definition
+             */
+            interface WithNetworkMode<ParentT> {
+                /**
+                 * Specifies the network plugin mode to be used for building the Kubernetes network.
+                 *
+                 * @param networkMode the network mode to be used for building the Kubernetes network
+                 * @return the next stage of the definition
+                 */
+                WithAttach<ParentT> withNetworkMode(NetworkMode networkMode);
+            }
+
+            /**
+             * The stage of a network mode definition allowing to specify the network policy.
+             *
+             * @param <ParentT> the stage of the network mode definition to return to after attaching this definition
+             */
+            interface WithNetworkDataPlan<ParentT> {
+                /**
+                 * Specifies the network data plan to be used for building the Kubernetes network.
+                 *
+                 * @param networkDataPlan the network data plan to be used for building the Kubernetes network
+                 * @return the next stage of the definition
+                 */
+                WithAttach<ParentT> withNetworkDataPlan(NetworkDataplane networkDataPlan);
+            }
+
+
+            /**
              * The final stage of a network profile definition. At this stage, any remaining optional settings can be
              * specified, or the container service agent pool can be attached to the parent container service
              * definition.
@@ -462,6 +508,9 @@ public interface KubernetesCluster
                     NetworkProfileDefinitionStages.WithDnsServiceIP<ParentT>,
                     NetworkProfileDefinitionStages.WithDockerBridgeCidr<ParentT>,
                     NetworkProfileDefinitionStages.WithLoadBalancerProfile<ParentT>,
+                    NetworkProfileDefinitionStages.WithNetworkMode<ParentT>,
+                    NetworkProfileDefinitionStages.WithNetworkDataPlan<ParentT>,
+                    NetworkProfileDefinitionStages.WithNetworkPluginMode<ParentT>,
                     Attachable.InDefinition<ParentT> {
             }
         }
@@ -479,6 +528,9 @@ public interface KubernetesCluster
                 NetworkProfileDefinitionStages.WithServiceCidr<ParentT>,
                 NetworkProfileDefinitionStages.WithDnsServiceIP<ParentT>,
                 NetworkProfileDefinitionStages.WithDockerBridgeCidr<ParentT>,
+                NetworkProfileDefinitionStages.WithNetworkMode<ParentT>,
+                NetworkProfileDefinitionStages.WithNetworkDataPlan<ParentT>,
+                NetworkProfileDefinitionStages.WithNetworkPluginMode<ParentT>,
                 NetworkProfileDefinitionStages.WithAttach<ParentT> {
         }
 
@@ -707,6 +759,22 @@ public interface KubernetesCluster
              * @return the next stage of the update
              */
             Update withNetworkProfile(ContainerServiceNetworkProfile networkProfile);
+
+            /**
+             * Updates the cluster's network policy.
+             *
+             * @param networkPolicy the cluster's networkPolicy
+             * @return the next stage of the update
+             */
+            Update withNetworkPolicy(NetworkPolicy networkPolicy);
+
+            /**
+             * Updates the cluster's network data plam.
+             *
+             * @param networkDataPlan the cluster's networkDataPlan
+             * @return the next stage of the update
+             */
+            Update withNetworkDataPlan(NetworkDataplane networkDataPlan);
         }
 
         /**
