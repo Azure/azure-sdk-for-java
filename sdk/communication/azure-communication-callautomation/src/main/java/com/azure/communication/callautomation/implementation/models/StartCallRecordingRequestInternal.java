@@ -70,7 +70,7 @@ public final class StartCallRecordingRequestInternal {
      * The externalStorage property.
      */
     @JsonProperty(value = "externalStorage")
-    private ExternalStorageInternal externalStorage;
+    private RecordingStorageInternal externalStorage;
 
     /** Creates an instance of StartCallRecordingRequestInternal class. */
     public StartCallRecordingRequestInternal() {}
@@ -253,7 +253,7 @@ public final class StartCallRecordingRequestInternal {
      *
      * @return the externalStorage value.
      */
-    public ExternalStorageInternal getExternalStorage() {
+    public RecordingStorageInternal getExternalStorage() {
         return this.externalStorage;
     }
 
@@ -263,7 +263,7 @@ public final class StartCallRecordingRequestInternal {
      * @param externalStorage the externalStorage value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
-    public StartCallRecordingRequestInternal setExternalStorage(ExternalStorageInternal externalStorage) {
+    public StartCallRecordingRequestInternal setExternalStorage(RecordingStorageInternal externalStorage) {
         this.externalStorage = externalStorage;
         return this;
     }

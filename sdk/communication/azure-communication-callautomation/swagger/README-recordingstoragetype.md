@@ -21,7 +21,7 @@ There is one swagger for Calling management APIs.
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.1.14 --use=@autorest/modelerfour@4.15.442
+autorest README-recordingstoragetype.md --java --v4 --use=@autorest/java@4.1.14 --use=@autorest/modelerfour@4.15.442
 ```
 
 ### Code generation settings
@@ -33,7 +33,6 @@ java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.callautomation
-custom-types: ToneValue,OperationStatus,CallRecordingState,CallConnectionState,EventSubscriptionType,MediaType,RecordingChannelType,RecordingContentType,RecordingFormatType
 custom-types-subpackage: models
 generate-client-as-impl: true
 service-interface-as-public: true
@@ -42,6 +41,7 @@ sync-methods: all
 add-context-parameter: true
 context-client-method-parameter: true
 title: Azure Communication Call Automation Service
+customization-class: src/main/java/CallautomationCustomizations.java
 directive:
 - rename-model:
     from: CallParticipant
