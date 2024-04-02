@@ -33,10 +33,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import reactor.core.publisher.Mono;
-
-import static com.azure.ai.openai.implementation.EmbeddingsUtils.addEncodingFormat;
 
 /**
  * Initializes a new instance of the OpenAIClient type.
@@ -1729,17 +1726,9 @@ public final class OpenAIClientImpl {
     public Mono<Response<BinaryData>> getEmbeddingsWithResponseAsync(String deploymentOrModelName,
         BinaryData embeddingsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
-
-        try {
-            embeddingsOptions = addEncodingFormat(embeddingsOptions);
-        } catch (JsonProcessingException e) {
-            return Mono.error(e);
-        }
-        final BinaryData embeddingsOptionsUpdated = embeddingsOptions;
-
         return FluxUtil
             .withContext(context -> service.getEmbeddings(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                deploymentOrModelName, accept, embeddingsOptionsUpdated, requestOptions, context));
+                deploymentOrModelName, accept, embeddingsOptions, requestOptions, context));
     }
 
     /**
@@ -1797,13 +1786,7 @@ public final class OpenAIClientImpl {
     public Response<BinaryData> getEmbeddingsWithResponse(String deploymentOrModelName, BinaryData embeddingsOptions,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        try {
-            embeddingsOptions = addEncodingFormat(embeddingsOptions);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        BinaryData embeddingsOptionsUpdated = embeddingsOptions;
         return service.getEmbeddingsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            deploymentOrModelName, accept, embeddingsOptionsUpdated, requestOptions, Context.NONE);
+            deploymentOrModelName, accept, embeddingsOptions, requestOptions, Context.NONE);
     }
 }

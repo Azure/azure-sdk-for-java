@@ -7,6 +7,7 @@ import static com.azure.ai.openai.implementation.AudioTranscriptionValidator.val
 import static com.azure.ai.openai.implementation.AudioTranscriptionValidator.validateAudioResponseFormatForTranscriptionText;
 import static com.azure.ai.openai.implementation.AudioTranslationValidator.validateAudioResponseFormatForTranslation;
 import static com.azure.ai.openai.implementation.AudioTranslationValidator.validateAudioResponseFormatForTranslationText;
+import static com.azure.ai.openai.implementation.EmbeddingsUtils.addEncodingFormat;
 import static com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.addModelIdJson;
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -140,6 +141,11 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEmbeddingsWithResponse(String deploymentOrModelName,
         BinaryData embeddingsOptions, RequestOptions requestOptions) {
+        try {
+            embeddingsOptions = addEncodingFormat(embeddingsOptions);
+        } catch (JsonProcessingException e) {
+            return Mono.error(e);
+        }
         return openAIServiceClient != null
             ? openAIServiceClient.getEmbeddingsWithResponseAsync(deploymentOrModelName, embeddingsOptions,
                 requestOptions)

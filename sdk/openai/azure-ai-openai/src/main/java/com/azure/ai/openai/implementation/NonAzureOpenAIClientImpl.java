@@ -33,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 
-import static com.azure.ai.openai.implementation.EmbeddingsUtils.addEncodingFormat;
-
 /**
  * Implementation for calling Non-Azure OpenAI Service
  */
@@ -479,7 +477,6 @@ public final class NonAzureOpenAIClientImpl {
 
         // modelId is part of the request body in nonAzure OpenAI
         try {
-            embeddingsOptions = addEncodingFormat(embeddingsOptions);
             embeddingsOptions = addModelIdJson(embeddingsOptions, modelId);
         } catch (JsonProcessingException e) {
             return Mono.error(e);
@@ -549,7 +546,6 @@ public final class NonAzureOpenAIClientImpl {
 
         // modelId is part of the request body in nonAzure OpenAI
         try {
-            embeddingsOptions = addEncodingFormat(embeddingsOptions);
             embeddingsOptions = addModelIdJson(embeddingsOptions, modelId);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
