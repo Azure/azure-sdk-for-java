@@ -22,16 +22,16 @@ public final class VectorEmbeddingPolicy {
      * Paths for embeddings along with path-specific settings for the item.
      */
     @JsonProperty(Constants.Properties.VECTOR_EMBEDDINGS)
-    private List<CosmosVectorEmbedding> embeddings;
+    private List<CosmosVectorEmbedding> cosmosVectorEmbeddings;
 
     /**
      * Constructor
      *
-     * @param embeddings list of path for embeddings along with path-specific settings for the item.
+     * @param cosmosVectorEmbeddings list of path for embeddings along with path-specific settings for the item.
      */
-    public VectorEmbeddingPolicy(List<CosmosVectorEmbedding> embeddings) {
-        validateEmbeddings(embeddings);
-        this.embeddings = embeddings;
+    public VectorEmbeddingPolicy(List<CosmosVectorEmbedding> cosmosVectorEmbeddings) {
+        validateEmbeddings(cosmosVectorEmbeddings);
+        this.cosmosVectorEmbeddings = cosmosVectorEmbeddings;
     }
 
     /**
@@ -41,15 +41,15 @@ public final class VectorEmbeddingPolicy {
         this.jsonSerializable = new JsonSerializable();
     }
 
-    private static void validateEmbeddings(List<CosmosVectorEmbedding> embeddings) {
-        embeddings.forEach(embedding -> {
+    private static void validateEmbeddings(List<CosmosVectorEmbedding> cosmosVectorEmbeddings) {
+        cosmosVectorEmbeddings.forEach(embedding -> {
             if (embedding == null) {
                 throw new IllegalArgumentException("Embedding cannot be null.");
             }
             validateEmbeddingPath(embedding.getPath());
             validateEmbeddingDimensions(embedding.getDimensions());
-            validateEmbeddingVectorDataType(embedding.getVectorDataType());
-            validateEmbeddingDistanceFunction(embedding.getDistanceFunction());
+            validateEmbeddingVectorDataType(embedding.getCosmosVectorDataType());
+            validateEmbeddingDistanceFunction(embedding.getCosmosVectorDistanceFunction());
         });
     }
 
@@ -93,7 +93,7 @@ public final class VectorEmbeddingPolicy {
      *
      * @return the paths for embeddings along with path-specific settings for the item.
      */
-    public List<CosmosVectorEmbedding> getEmbeddings() {
-        return this.embeddings;
+    public List<CosmosVectorEmbedding> getCosmosVectorEmbeddings() {
+        return this.cosmosVectorEmbeddings;
     }
 }

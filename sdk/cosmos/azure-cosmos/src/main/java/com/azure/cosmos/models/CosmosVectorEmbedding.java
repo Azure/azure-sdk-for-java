@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -13,11 +14,12 @@ public final class CosmosVectorEmbedding {
     @JsonProperty(Constants.Properties.PATH)
     private String path;
     @JsonProperty(Constants.Properties.VECTOR_DATA_TYPE)
-    private String vectorDataType;
+    private String cosmosVectorDataType;
     @JsonProperty(Constants.Properties.VECTOR_DIMENSIONS)
     private Long dimensions;
     @JsonProperty(Constants.Properties.DISTANCE_FUNCTION)
-    private String distanceFunction;
+    private String cosmosVectorDistanceFunction;
+    private JsonSerializable jsonSerializable;
 
     /**
      * Constructor
@@ -29,9 +31,16 @@ public final class CosmosVectorEmbedding {
      */
     public CosmosVectorEmbedding(String path, String vectorDataType, Long dimensions, String distanceFunction) {
         this.path = path;
-        this.vectorDataType = vectorDataType;
+        this.cosmosVectorDataType = vectorDataType;
         this.dimensions = dimensions;
-        this.distanceFunction = distanceFunction;
+        this.cosmosVectorDistanceFunction = distanceFunction;
+    }
+
+    /**
+     * Constructor
+     */
+    public CosmosVectorEmbedding() {
+        this.jsonSerializable = new JsonSerializable();
     }
 
     /**
@@ -57,20 +66,20 @@ public final class CosmosVectorEmbedding {
     /**
      * Gets the data type for the cosmosVectorEmbedding.
      *
-     * @return vectorDataType
+     * @return cosmosVectorDataType
      */
-    public String getVectorDataType() {
-        return vectorDataType;
+    public String getCosmosVectorDataType() {
+        return cosmosVectorDataType;
     }
 
     /**
      * Sets the data type for the cosmosVectorEmbedding.
      *
-     * @param vectorDataType the data type for the cosmosVectorEmbedding
+     * @param cosmosVectorDataType the data type for the cosmosVectorEmbedding
      * @return CosmosVectorEmbedding
      */
-    public CosmosVectorEmbedding setVectorDataType(String vectorDataType) {
-        this.vectorDataType = vectorDataType;
+    public CosmosVectorEmbedding setCosmosVectorDataType(String cosmosVectorDataType) {
+        this.cosmosVectorDataType = cosmosVectorDataType;
         return this;
     }
 
@@ -97,20 +106,20 @@ public final class CosmosVectorEmbedding {
     /**
      * Gets the distanceFunction for the cosmosVectorEmbedding.
      *
-     * @return distanceFunction
+     * @return cosmosVectorDistanceFunction
      */
-    public String getDistanceFunction() {
-        return distanceFunction;
+    public String getCosmosVectorDistanceFunction() {
+        return cosmosVectorDistanceFunction;
     }
 
     /**
      * Sets the distanceFunction for the cosmosVectorEmbedding.
      *
-     * @param distanceFunction the distanceFunction for the cosmosVectorEmbedding
+     * @param cosmosVectorDistanceFunction the distanceFunction for the cosmosVectorEmbedding
      * @return CosmosVectorEmbedding
      */
-    public CosmosVectorEmbedding setDistanceFunction(String distanceFunction) {
-        this.distanceFunction = distanceFunction;
+    public CosmosVectorEmbedding setCosmosVectorDistanceFunction(String cosmosVectorDistanceFunction) {
+        this.cosmosVectorDistanceFunction = cosmosVectorDistanceFunction;
         return this;
     }
 }
