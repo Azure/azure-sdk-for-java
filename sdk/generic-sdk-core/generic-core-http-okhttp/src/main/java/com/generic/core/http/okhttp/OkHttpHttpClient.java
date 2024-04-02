@@ -192,7 +192,7 @@ class OkHttpHttpClient implements HttpClient {
 
                 break;
             case BUFFER:
-            case DESERIALIZE:
+            case DESERIALIZE: // Deserialization will occur at a later point in HttpResponseBodyDecoder.
             default:
                 try (ResponseBody responseBody = response.body()) {
                     if (responseBody != null && responseBody.contentLength() != 0) {

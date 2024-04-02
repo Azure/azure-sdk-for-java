@@ -253,7 +253,7 @@ class DefaultHttpClient implements HttpClient {
 
                     break;
                 case BUFFER:
-                case DESERIALIZE:
+                case DESERIALIZE: // Deserialization will occur at a later point in HttpResponseBodyDecoder.
                 default:
                     eagerlyBufferResponseBody(httpResponse, connection);
             }
