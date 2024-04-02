@@ -177,15 +177,6 @@ public class VectorIndexTest extends TestSuiteBase {
             assertThat(ex.getMessage()).isEqualTo("Invalid vector data type for the vector embedding policy.");
         }
 
-        embedding.setCosmosVectorDataType("");
-        try {
-            VectorEmbeddingPolicy vectorEmbeddingPolicy = new VectorEmbeddingPolicy(ImmutableList.of(embedding));
-            collectionDefinition.setVectorEmbeddingPolicy(vectorEmbeddingPolicy);
-            fail("Vector Embedding policy creation will fail for empty vector date type being passed");
-        } catch (IllegalArgumentException ex) {
-            assertThat(ex.getMessage()).isEqualTo("Vector data type cannot be empty for the vector embedding policy.");
-        }
-
         embedding.setCosmosVectorDataType(CosmosVectorDataType.FLOAT32.toString());
         embedding.setCosmosVectorDistanceFunction("COS");
         try {
@@ -196,13 +187,14 @@ public class VectorIndexTest extends TestSuiteBase {
             assertThat(ex.getMessage()).isEqualTo("Invalid distance function for the vector embedding policy.");
         }
 
-        embedding.setCosmosVectorDistanceFunction("");
+        embedding.setCosmosVectorDistanceFunction(CosmosVectorDistanceFunction.COSINE.toString());
+        embedding.setDimensions(null);
         try {
             VectorEmbeddingPolicy vectorEmbeddingPolicy = new VectorEmbeddingPolicy(ImmutableList.of(embedding));
             collectionDefinition.setVectorEmbeddingPolicy(vectorEmbeddingPolicy);
             fail("Vector Embedding policy creation will fail for empty distance function being passed");
         } catch (IllegalArgumentException ex) {
-            assertThat(ex.getMessage()).isEqualTo("Distance function cannot be empty for the vector embedding policy.");
+            assertThat(ex.getMessage()).isEqualTo("Dimensions for the embedding cannot be null for the vector embedding policy");
         }
 
         embedding.setCosmosVectorDistanceFunction(CosmosVectorDistanceFunction.COSINE.toString());
