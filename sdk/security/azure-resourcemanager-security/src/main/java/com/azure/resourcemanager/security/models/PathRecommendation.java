@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents a path that is recommended to be allowed and its properties. */
+/**
+ * Represents a path that is recommended to be allowed and its properties.
+ */
 @Fluent
 public final class PathRecommendation {
     /*
@@ -65,13 +67,15 @@ public final class PathRecommendation {
     @JsonProperty(value = "configurationStatus")
     private ConfigurationStatus configurationStatus;
 
-    /** Creates an instance of PathRecommendation class. */
+    /**
+     * Creates an instance of PathRecommendation class.
+     */
     public PathRecommendation() {
     }
 
     /**
      * Get the path property: The full path of the file, or an identifier of the application.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -80,7 +84,7 @@ public final class PathRecommendation {
 
     /**
      * Set the path property: The full path of the file, or an identifier of the application.
-     *
+     * 
      * @param path the path value to set.
      * @return the PathRecommendation object itself.
      */
@@ -91,7 +95,7 @@ public final class PathRecommendation {
 
     /**
      * Get the action property: The recommendation action of the machine or rule.
-     *
+     * 
      * @return the action value.
      */
     public RecommendationAction action() {
@@ -100,7 +104,7 @@ public final class PathRecommendation {
 
     /**
      * Set the action property: The recommendation action of the machine or rule.
-     *
+     * 
      * @param action the action value to set.
      * @return the PathRecommendation object itself.
      */
@@ -111,7 +115,7 @@ public final class PathRecommendation {
 
     /**
      * Get the type property: The type of IoT Security recommendation.
-     *
+     * 
      * @return the type value.
      */
     public RecommendationType type() {
@@ -120,7 +124,7 @@ public final class PathRecommendation {
 
     /**
      * Set the type property: The type of IoT Security recommendation.
-     *
+     * 
      * @param type the type value to set.
      * @return the PathRecommendation object itself.
      */
@@ -131,7 +135,7 @@ public final class PathRecommendation {
 
     /**
      * Get the publisherInfo property: Represents the publisher information of a process/rule.
-     *
+     * 
      * @return the publisherInfo value.
      */
     public PublisherInfo publisherInfo() {
@@ -140,7 +144,7 @@ public final class PathRecommendation {
 
     /**
      * Set the publisherInfo property: Represents the publisher information of a process/rule.
-     *
+     * 
      * @param publisherInfo the publisherInfo value to set.
      * @return the PathRecommendation object itself.
      */
@@ -151,7 +155,7 @@ public final class PathRecommendation {
 
     /**
      * Get the common property: Whether the application is commonly run on the machine.
-     *
+     * 
      * @return the common value.
      */
     public Boolean common() {
@@ -160,7 +164,7 @@ public final class PathRecommendation {
 
     /**
      * Set the common property: Whether the application is commonly run on the machine.
-     *
+     * 
      * @param common the common value to set.
      * @return the PathRecommendation object itself.
      */
@@ -171,7 +175,7 @@ public final class PathRecommendation {
 
     /**
      * Get the userSids property: The userSids property.
-     *
+     * 
      * @return the userSids value.
      */
     public List<String> userSids() {
@@ -180,7 +184,7 @@ public final class PathRecommendation {
 
     /**
      * Set the userSids property: The userSids property.
-     *
+     * 
      * @param userSids the userSids value to set.
      * @return the PathRecommendation object itself.
      */
@@ -191,7 +195,7 @@ public final class PathRecommendation {
 
     /**
      * Get the usernames property: The usernames property.
-     *
+     * 
      * @return the usernames value.
      */
     public List<UserRecommendation> usernames() {
@@ -200,7 +204,7 @@ public final class PathRecommendation {
 
     /**
      * Set the usernames property: The usernames property.
-     *
+     * 
      * @param usernames the usernames value to set.
      * @return the PathRecommendation object itself.
      */
@@ -211,7 +215,7 @@ public final class PathRecommendation {
 
     /**
      * Get the fileType property: The type of the file (for Linux files - Executable is used).
-     *
+     * 
      * @return the fileType value.
      */
     public FileType fileType() {
@@ -220,7 +224,7 @@ public final class PathRecommendation {
 
     /**
      * Set the fileType property: The type of the file (for Linux files - Executable is used).
-     *
+     * 
      * @param fileType the fileType value to set.
      * @return the PathRecommendation object itself.
      */
@@ -231,7 +235,7 @@ public final class PathRecommendation {
 
     /**
      * Get the configurationStatus property: The configuration status of the machines group or machine or rule.
-     *
+     * 
      * @return the configurationStatus value.
      */
     public ConfigurationStatus configurationStatus() {
@@ -240,7 +244,7 @@ public final class PathRecommendation {
 
     /**
      * Set the configurationStatus property: The configuration status of the machines group or machine or rule.
-     *
+     * 
      * @param configurationStatus the configurationStatus value to set.
      * @return the PathRecommendation object itself.
      */
@@ -251,7 +255,7 @@ public final class PathRecommendation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

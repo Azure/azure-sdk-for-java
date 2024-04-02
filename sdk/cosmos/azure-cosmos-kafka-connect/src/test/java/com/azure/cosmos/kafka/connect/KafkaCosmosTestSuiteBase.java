@@ -12,7 +12,6 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.guava27.Strings;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -24,6 +23,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testcontainers.shaded.com.google.common.base.Strings;
 import org.testng.ITest;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
@@ -88,7 +88,7 @@ public class KafkaCosmosTestSuiteBase implements ITest {
         credential = new AzureKeyCredential(KafkaCosmosTestConfigurations.MASTER_KEY);
     }
 
-    @BeforeSuite(groups = { "kafka" }, timeOut = SUITE_SETUP_TIMEOUT)
+    @BeforeSuite(groups = { "kafka", "kafka-integration" }, timeOut = SUITE_SETUP_TIMEOUT)
     public static void beforeSuite() {
 
         logger.info("beforeSuite Started");
@@ -120,7 +120,19 @@ public class KafkaCosmosTestSuiteBase implements ITest {
         }
     }
 
-    @AfterSuite(groups = { "kafka" }, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+    @BeforeSuite(groups = { "unit" }, timeOut = SUITE_SETUP_TIMEOUT)
+    public static void beforeSuiteUnit() {
+        logger.info("beforeSuite for unit tests started");
+
+        databaseName =
+            StringUtils.isEmpty(databaseName) ? "KafkaCosmosTest-" + UUID.randomUUID() : databaseName;
+        multiPartitionContainerName =
+            StringUtils.isEmpty(multiPartitionContainerName) ? UUID.randomUUID().toString() : multiPartitionContainerName;
+        singlePartitionContainerName =
+            StringUtils.isEmpty(singlePartitionContainerName) ? UUID.randomUUID().toString() : singlePartitionContainerName;
+    }
+
+    @AfterSuite(groups = { "kafka", "kafka-integration" }, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public static void afterSuite() {
 
         logger.info("afterSuite Started");

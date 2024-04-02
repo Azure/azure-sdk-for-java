@@ -9,7 +9,9 @@ import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.FirmwareInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of firmwares. */
+/**
+ * List of firmwares.
+ */
 @Fluent
 public final class FirmwareList {
     /*
@@ -24,13 +26,15 @@ public final class FirmwareList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of FirmwareList class. */
+    /**
+     * Creates an instance of FirmwareList class.
+     */
     public FirmwareList() {
     }
 
     /**
      * Get the value property: The list of firmwares.
-     *
+     * 
      * @return the value value.
      */
     public List<FirmwareInner> value() {
@@ -39,7 +43,7 @@ public final class FirmwareList {
 
     /**
      * Get the nextLink property: The uri to fetch the next page of asset.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class FirmwareList {
 
     /**
      * Set the nextLink property: The uri to fetch the next page of asset.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the FirmwareList object itself.
      */
@@ -59,7 +63,7 @@ public final class FirmwareList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

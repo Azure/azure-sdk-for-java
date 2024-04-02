@@ -27,6 +27,7 @@ import com.azure.resourcemanager.mobilenetwork.fluent.MobileNetworkManagementCli
 import com.azure.resourcemanager.mobilenetwork.implementation.AttachedDataNetworksImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.DataNetworksImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.DiagnosticsPackagesImpl;
+import com.azure.resourcemanager.mobilenetwork.implementation.ExtendedUeInformationsImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.MobileNetworkManagementClientBuilder;
 import com.azure.resourcemanager.mobilenetwork.implementation.MobileNetworksImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.OperationsImpl;
@@ -40,9 +41,11 @@ import com.azure.resourcemanager.mobilenetwork.implementation.SimPoliciesImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.SimsImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.SitesImpl;
 import com.azure.resourcemanager.mobilenetwork.implementation.SlicesImpl;
+import com.azure.resourcemanager.mobilenetwork.implementation.UeInformationsImpl;
 import com.azure.resourcemanager.mobilenetwork.models.AttachedDataNetworks;
 import com.azure.resourcemanager.mobilenetwork.models.DataNetworks;
 import com.azure.resourcemanager.mobilenetwork.models.DiagnosticsPackages;
+import com.azure.resourcemanager.mobilenetwork.models.ExtendedUeInformations;
 import com.azure.resourcemanager.mobilenetwork.models.MobileNetworks;
 import com.azure.resourcemanager.mobilenetwork.models.Operations;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCaptures;
@@ -55,6 +58,7 @@ import com.azure.resourcemanager.mobilenetwork.models.SimPolicies;
 import com.azure.resourcemanager.mobilenetwork.models.Sims;
 import com.azure.resourcemanager.mobilenetwork.models.Sites;
 import com.azure.resourcemanager.mobilenetwork.models.Slices;
+import com.azure.resourcemanager.mobilenetwork.models.UeInformations;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -63,8 +67,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Entry point to MobileNetworkManager. The resources in this API specification will be used to manage attached data
- * network resources in mobile network attached to a particular packet core instance.
+ * Entry point to MobileNetworkManager.
+ * The resources in this API specification will be used to manage attached data network resources in mobile network
+ * attached to a particular packet core instance.
  */
 public final class MobileNetworkManager {
     private AttachedDataNetworks attachedDataNetworks;
@@ -97,23 +102,23 @@ public final class MobileNetworkManager {
 
     private Slices slices;
 
+    private ExtendedUeInformations extendedUeInformations;
+
+    private UeInformations ueInformations;
+
     private final MobileNetworkManagementClient clientObject;
 
     private MobileNetworkManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new MobileNetworkManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new MobileNetworkManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval).buildClient();
     }
 
     /**
      * Creates an instance of MobileNetwork service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the MobileNetwork service API instance.
@@ -126,7 +131,7 @@ public final class MobileNetworkManager {
 
     /**
      * Creates an instance of MobileNetwork service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the MobileNetwork service API instance.
@@ -139,14 +144,16 @@ public final class MobileNetworkManager {
 
     /**
      * Gets a Configurable instance that can be used to create MobileNetworkManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new MobileNetworkManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -218,8 +225,8 @@ public final class MobileNetworkManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -236,8 +243,8 @@ public final class MobileNetworkManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -257,21 +264,12 @@ public final class MobileNetworkManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
-                .append("-")
-                .append("com.azure.resourcemanager.mobilenetwork")
-                .append("/")
-                .append("1.0.0");
+            userAgentBuilder.append("azsdk-java").append("-").append("com.azure.resourcemanager.mobilenetwork")
+                .append("/").append("1.1.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
-                    .append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.name"))
-                    .append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version"))
-                    .append("; auto-generated)");
+                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -290,38 +288,25 @@ public final class MobileNetworkManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
             return new MobileNetworkManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of AttachedDataNetworks. It manages AttachedDataNetwork.
-     *
+     * 
      * @return Resource collection API of AttachedDataNetworks.
      */
     public AttachedDataNetworks attachedDataNetworks() {
@@ -333,7 +318,7 @@ public final class MobileNetworkManager {
 
     /**
      * Gets the resource collection API of DataNetworks. It manages DataNetwork.
-     *
+     * 
      * @return Resource collection API of DataNetworks.
      */
     public DataNetworks dataNetworks() {
@@ -345,7 +330,7 @@ public final class MobileNetworkManager {
 
     /**
      * Gets the resource collection API of DiagnosticsPackages.
-     *
+     * 
      * @return Resource collection API of DiagnosticsPackages.
      */
     public DiagnosticsPackages diagnosticsPackages() {
@@ -357,7 +342,7 @@ public final class MobileNetworkManager {
 
     /**
      * Gets the resource collection API of MobileNetworks. It manages MobileNetwork.
-     *
+     * 
      * @return Resource collection API of MobileNetworks.
      */
     public MobileNetworks mobileNetworks() {
@@ -369,7 +354,7 @@ public final class MobileNetworkManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -381,7 +366,7 @@ public final class MobileNetworkManager {
 
     /**
      * Gets the resource collection API of PacketCaptures. It manages PacketCapture.
-     *
+     * 
      * @return Resource collection API of PacketCaptures.
      */
     public PacketCaptures packetCaptures() {
@@ -393,33 +378,33 @@ public final class MobileNetworkManager {
 
     /**
      * Gets the resource collection API of PacketCoreControlPlanes. It manages PacketCoreControlPlane.
-     *
+     * 
      * @return Resource collection API of PacketCoreControlPlanes.
      */
     public PacketCoreControlPlanes packetCoreControlPlanes() {
         if (this.packetCoreControlPlanes == null) {
-            this.packetCoreControlPlanes =
-                new PacketCoreControlPlanesImpl(clientObject.getPacketCoreControlPlanes(), this);
+            this.packetCoreControlPlanes
+                = new PacketCoreControlPlanesImpl(clientObject.getPacketCoreControlPlanes(), this);
         }
         return packetCoreControlPlanes;
     }
 
     /**
      * Gets the resource collection API of PacketCoreControlPlaneVersions.
-     *
+     * 
      * @return Resource collection API of PacketCoreControlPlaneVersions.
      */
     public PacketCoreControlPlaneVersions packetCoreControlPlaneVersions() {
         if (this.packetCoreControlPlaneVersions == null) {
-            this.packetCoreControlPlaneVersions =
-                new PacketCoreControlPlaneVersionsImpl(clientObject.getPacketCoreControlPlaneVersions(), this);
+            this.packetCoreControlPlaneVersions
+                = new PacketCoreControlPlaneVersionsImpl(clientObject.getPacketCoreControlPlaneVersions(), this);
         }
         return packetCoreControlPlaneVersions;
     }
 
     /**
      * Gets the resource collection API of PacketCoreDataPlanes. It manages PacketCoreDataPlane.
-     *
+     * 
      * @return Resource collection API of PacketCoreDataPlanes.
      */
     public PacketCoreDataPlanes packetCoreDataPlanes() {
@@ -431,7 +416,7 @@ public final class MobileNetworkManager {
 
     /**
      * Gets the resource collection API of Services. It manages Service.
-     *
+     * 
      * @return Resource collection API of Services.
      */
     public Services services() {
@@ -443,7 +428,7 @@ public final class MobileNetworkManager {
 
     /**
      * Gets the resource collection API of Sims. It manages Sim.
-     *
+     * 
      * @return Resource collection API of Sims.
      */
     public Sims sims() {
@@ -455,7 +440,7 @@ public final class MobileNetworkManager {
 
     /**
      * Gets the resource collection API of SimGroups. It manages SimGroup.
-     *
+     * 
      * @return Resource collection API of SimGroups.
      */
     public SimGroups simGroups() {
@@ -467,7 +452,7 @@ public final class MobileNetworkManager {
 
     /**
      * Gets the resource collection API of SimPolicies. It manages SimPolicy.
-     *
+     * 
      * @return Resource collection API of SimPolicies.
      */
     public SimPolicies simPolicies() {
@@ -479,7 +464,7 @@ public final class MobileNetworkManager {
 
     /**
      * Gets the resource collection API of Sites. It manages Site.
-     *
+     * 
      * @return Resource collection API of Sites.
      */
     public Sites sites() {
@@ -491,7 +476,7 @@ public final class MobileNetworkManager {
 
     /**
      * Gets the resource collection API of Slices. It manages Slice.
-     *
+     * 
      * @return Resource collection API of Slices.
      */
     public Slices slices() {
@@ -502,9 +487,34 @@ public final class MobileNetworkManager {
     }
 
     /**
+     * Gets the resource collection API of ExtendedUeInformations.
+     * 
+     * @return Resource collection API of ExtendedUeInformations.
+     */
+    public ExtendedUeInformations extendedUeInformations() {
+        if (this.extendedUeInformations == null) {
+            this.extendedUeInformations
+                = new ExtendedUeInformationsImpl(clientObject.getExtendedUeInformations(), this);
+        }
+        return extendedUeInformations;
+    }
+
+    /**
+     * Gets the resource collection API of UeInformations.
+     * 
+     * @return Resource collection API of UeInformations.
+     */
+    public UeInformations ueInformations() {
+        if (this.ueInformations == null) {
+            this.ueInformations = new UeInformationsImpl(clientObject.getUeInformations(), this);
+        }
+        return ueInformations;
+    }
+
+    /**
      * Gets wrapped service client MobileNetworkManagementClient providing direct access to the underlying
      * auto-generated API implementation, based on Azure REST API.
-     *
+     * 
      * @return Wrapped service client MobileNetworkManagementClient.
      */
     public MobileNetworkManagementClient serviceClient() {

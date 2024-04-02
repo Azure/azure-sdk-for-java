@@ -11,7 +11,7 @@ import com.generic.core.http.annotation.HostParam;
 import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.annotation.QueryParam;
-import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
+import com.generic.core.http.annotation.UnexpectedResponseExceptionDetail;
 import com.generic.core.http.exception.HttpExceptionType;
 import com.generic.core.http.models.ContentType;
 import com.generic.core.http.models.HttpHeaderName;
@@ -78,19 +78,16 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final List<Substitution> formSubstitutions = new ArrayList<>();
     private final List<HeaderSubstitution> headerSubstitutions = new ArrayList<>();
     private final HttpHeaders requestHeaders = new HttpHeaders();
-    private final HttpHeaders responseHeaders = new HttpHeaders();
     private final Integer bodyContentMethodParameterIndex;
     private final String bodyContentType;
     private final Type bodyJavaType;
     private final BitSet expectedStatusCodes;
     private final Type returnType;
     private final Type returnValueWireType;
-    private final UnexpectedResponseExceptionInformation[] unexpectedResponseExceptionInformations;
-    private final int contextPosition;
+    private final UnexpectedResponseExceptionDetail[] unexpectedResponseExceptionDetails;
     private final int requestOptionsPosition;
     private final boolean returnTypeDecodable;
     private final boolean headersEagerlyConverted;
-    private final String spanName;
 
     private Map<Integer, UnexpectedExceptionInformation> exceptionMapping;
     private UnexpectedExceptionInformation defaultException;
@@ -104,7 +101,6 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         this(SwaggerInterfaceParser.getInstance(swaggerMethod.getDeclaringClass()), swaggerMethod);
     }
 
-    @SuppressWarnings("deprecation")
     SwaggerMethodParser(SwaggerInterfaceParser interfaceParser, Method swaggerMethod) {
         this.rawHost = interfaceParser.getHost();
         final Class<?> swaggerInterface = swaggerMethod.getDeclaringClass();
@@ -173,8 +169,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             expectedStatusCodes = null;
         }
 
-        unexpectedResponseExceptionInformations =
-            swaggerMethod.getAnnotationsByType(UnexpectedResponseExceptionInformation.class);
+        unexpectedResponseExceptionDetails =
+            swaggerMethod.getAnnotationsByType(UnexpectedResponseExceptionDetail.class);
 
         Integer bodyContentMethodParameterIndex = null;
         String bodyContentType = null;
@@ -243,12 +239,10 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             }
         }
 
-        this.contextPosition = contextPosition;
         this.requestOptionsPosition = requestOptionsPosition;
         this.headersEagerlyConverted = TypeUtil.isTypeOrSubTypeOf(Response.class, returnType);
         Type unwrappedReturnType = unwrapReturnType(returnType);
         this.returnTypeDecodable = isReturnTypeDecodable(unwrappedReturnType);
-        this.spanName = interfaceParser.getServiceName() + "." + swaggerMethod.getName();
     }
 
     /**
@@ -367,7 +361,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @param serializer {@link ObjectSerializer} that is used to serialize the header values.
      */
     public void setHeaders(Object[] swaggerMethodArguments, HttpHeaders headers, ObjectSerializer serializer) {
-        headers.setAllHeaders(requestHeaders);
+        headers.setAll(requestHeaders);
 
         if (swaggerMethodArguments == null) {
             return;
@@ -380,11 +374,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                 final Object methodArgument = swaggerMethodArguments[headerSubstitution.getMethodParameterIndex()];
 
                 if (methodArgument instanceof Map) {
-                    @SuppressWarnings("unchecked") final Map<String, ?> headerCollection =
-                        (Map<String, ?>) methodArgument;
+                    @SuppressWarnings("unchecked") final Map<HttpHeaderName, ?> headerCollection =
+                        (Map<HttpHeaderName, ?>) methodArgument;
                     final String headerCollectionPrefix = headerSubstitution.getUrlParameterName();
 
-                    for (final Map.Entry<String, ?> headerCollectionEntry : headerCollection.entrySet()) {
+                    for (final Map.Entry<HttpHeaderName, ?> headerCollectionEntry : headerCollection.entrySet()) {
                         final String headerName = headerCollectionPrefix + headerCollectionEntry.getKey();
                         final String headerValue = serialize(serializer, headerCollectionEntry.getValue());
 
@@ -657,7 +651,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private Map<Integer, UnexpectedExceptionInformation> processUnexpectedResponseExceptionTypes() {
         HashMap<Integer, UnexpectedExceptionInformation> exceptionHashMap = new HashMap<>();
 
-        for (UnexpectedResponseExceptionInformation exceptionAnnotation : unexpectedResponseExceptionInformations) {
+        for (UnexpectedResponseExceptionDetail exceptionAnnotation : unexpectedResponseExceptionDetails) {
             UnexpectedExceptionInformation exception =
                 new UnexpectedExceptionInformation(
                     HttpExceptionType.fromString(exceptionAnnotation.exceptionTypeName()),
@@ -687,15 +681,6 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     @Override
     public boolean isHeadersEagerlyConverted() {
         return headersEagerlyConverted;
-    }
-
-    /**
-     * Gets the name of the span that will be used when this {@link SwaggerMethodParser} is called.
-     *
-     * @return The span name of this {@link SwaggerMethodParser}.
-     */
-    public String getSpanName() {
-        return spanName;
     }
 
     public static boolean isReturnTypeDecodable(Type unwrappedReturnType) {

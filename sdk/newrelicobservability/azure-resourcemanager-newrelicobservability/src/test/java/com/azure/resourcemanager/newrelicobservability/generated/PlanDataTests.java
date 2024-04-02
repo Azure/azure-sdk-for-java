@@ -14,29 +14,23 @@ import org.junit.jupiter.api.Assertions;
 public final class PlanDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PlanData model =
-            BinaryData
-                .fromString(
-                    "{\"usageType\":\"PAYG\",\"billingCycle\":\"MONTHLY\",\"planDetails\":\"mdwzjeiachboo\",\"effectiveDate\":\"2021-07-31T08:54:57Z\"}")
-                .toObject(PlanData.class);
-        Assertions.assertEquals(UsageType.PAYG, model.usageType());
-        Assertions.assertEquals(BillingCycle.MONTHLY, model.billingCycle());
-        Assertions.assertEquals("mdwzjeiachboo", model.planDetails());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T08:54:57Z"), model.effectiveDate());
+        PlanData model = BinaryData.fromString(
+            "{\"usageType\":\"COMMITTED\",\"billingCycle\":\"WEEKLY\",\"planDetails\":\"gsntnbybkzgcwr\",\"effectiveDate\":\"2021-09-26T22:03:54Z\"}")
+            .toObject(PlanData.class);
+        Assertions.assertEquals(UsageType.COMMITTED, model.usageType());
+        Assertions.assertEquals(BillingCycle.WEEKLY, model.billingCycle());
+        Assertions.assertEquals("gsntnbybkzgcwr", model.planDetails());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-26T22:03:54Z"), model.effectiveDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PlanData model =
-            new PlanData()
-                .withUsageType(UsageType.PAYG)
-                .withBillingCycle(BillingCycle.MONTHLY)
-                .withPlanDetails("mdwzjeiachboo")
-                .withEffectiveDate(OffsetDateTime.parse("2021-07-31T08:54:57Z"));
+        PlanData model = new PlanData().withUsageType(UsageType.COMMITTED).withBillingCycle(BillingCycle.WEEKLY)
+            .withPlanDetails("gsntnbybkzgcwr").withEffectiveDate(OffsetDateTime.parse("2021-09-26T22:03:54Z"));
         model = BinaryData.fromObject(model).toObject(PlanData.class);
-        Assertions.assertEquals(UsageType.PAYG, model.usageType());
-        Assertions.assertEquals(BillingCycle.MONTHLY, model.billingCycle());
-        Assertions.assertEquals("mdwzjeiachboo", model.planDetails());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T08:54:57Z"), model.effectiveDate());
+        Assertions.assertEquals(UsageType.COMMITTED, model.usageType());
+        Assertions.assertEquals(BillingCycle.WEEKLY, model.billingCycle());
+        Assertions.assertEquals("gsntnbybkzgcwr", model.planDetails());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-26T22:03:54Z"), model.effectiveDate());
     }
 }

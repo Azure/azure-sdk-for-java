@@ -15,19 +15,15 @@ public final class StoreWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StoreWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"datakoxqbozezx\",\"disableMetricsCollection\":\"datainrguk\",\"copyBehavior\":\"databov\",\"metadata\":[{\"name\":\"dataqlqufkrnrbnjkco\",\"value\":\"datazqlyputawdmdikuf\"},{\"name\":\"datav\",\"value\":\"dataujzofyldxk\"},{\"name\":\"datavfojcvnhpebuiy\",\"value\":\"dataysgq\"},{\"name\":\"databeauvldb\",\"value\":\"datamguifqjtoxz\"}],\"\":{\"aii\":\"datajpzauugdarfumit\",\"wbgmjrvrsq\":\"datamokfdybv\",\"cttvxkxgffpvv\":\"datajcozrwry\"}}")
+            "{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"datagcgefay\",\"disableMetricsCollection\":\"datavgotbjnxozi\",\"copyBehavior\":\"dataxnpov\",\"metadata\":[{\"name\":\"datauvmsgdis\",\"value\":\"datanxthu\"}],\"\":{\"dbqeahgsibldxya\":\"datavokxuyhhrdi\",\"h\":\"datadaaznzaxz\"}}")
             .toObject(StoreWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StoreWriteSettings model = new StoreWriteSettings().withMaxConcurrentConnections("datakoxqbozezx")
-            .withDisableMetricsCollection("datainrguk").withCopyBehavior("databov")
-            .withMetadata(
-                Arrays.asList(new MetadataItem().withName("dataqlqufkrnrbnjkco").withValue("datazqlyputawdmdikuf"),
-                    new MetadataItem().withName("datav").withValue("dataujzofyldxk"),
-                    new MetadataItem().withName("datavfojcvnhpebuiy").withValue("dataysgq"),
-                    new MetadataItem().withName("databeauvldb").withValue("datamguifqjtoxz")))
+        StoreWriteSettings model = new StoreWriteSettings().withMaxConcurrentConnections("datagcgefay")
+            .withDisableMetricsCollection("datavgotbjnxozi").withCopyBehavior("dataxnpov")
+            .withMetadata(Arrays.asList(new MetadataItem().withName("datauvmsgdis").withValue("datanxthu")))
             .withAdditionalProperties(mapOf("type", "StoreWriteSettings"));
         model = BinaryData.fromObject(model).toObject(StoreWriteSettings.class);
     }

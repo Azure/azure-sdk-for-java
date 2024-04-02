@@ -8,38 +8,40 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Assessments. */
+/**
+ * Resource collection API of Assessments.
+ */
 public interface Assessments {
     /**
      * Get security assessments on all your scanned resources inside a scope.
-     *
+     * 
      * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security assessments on all your scanned resources inside a scope as paginated response with {@link
-     *     PagedIterable}.
+     * @return security assessments on all your scanned resources inside a scope as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<SecurityAssessmentResponse> list(String scope);
 
     /**
      * Get security assessments on all your scanned resources inside a scope.
-     *
+     * 
      * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security assessments on all your scanned resources inside a scope as paginated response with {@link
-     *     PagedIterable}.
+     * @return security assessments on all your scanned resources inside a scope as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<SecurityAssessmentResponse> list(String scope, Context context);
 
     /**
      * Get a security assessment on your scanned resource.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param expand OData expand. Optional.
@@ -49,12 +51,12 @@ public interface Assessments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a security assessment on your scanned resource along with {@link Response}.
      */
-    Response<SecurityAssessmentResponse> getWithResponse(
-        String resourceId, String assessmentName, ExpandEnum expand, Context context);
+    Response<SecurityAssessmentResponse> getWithResponse(String resourceId, String assessmentName, ExpandEnum expand,
+        Context context);
 
     /**
      * Get a security assessment on your scanned resource.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -67,7 +69,7 @@ public interface Assessments {
     /**
      * Delete a security assessment on your resource. An assessment metadata that describes this assessment must be
      * predefined with the same name before inserting the assessment result.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param context The context to associate with this operation.
@@ -81,7 +83,7 @@ public interface Assessments {
     /**
      * Delete a security assessment on your resource. An assessment metadata that describes this assessment must be
      * predefined with the same name before inserting the assessment result.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -92,7 +94,7 @@ public interface Assessments {
 
     /**
      * Get a security assessment on your scanned resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -103,7 +105,7 @@ public interface Assessments {
 
     /**
      * Get a security assessment on your scanned resource.
-     *
+     * 
      * @param id the resource ID.
      * @param expand OData expand. Optional.
      * @param context The context to associate with this operation.
@@ -117,7 +119,7 @@ public interface Assessments {
     /**
      * Delete a security assessment on your resource. An assessment metadata that describes this assessment must be
      * predefined with the same name before inserting the assessment result.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -128,7 +130,7 @@ public interface Assessments {
     /**
      * Delete a security assessment on your resource. An assessment metadata that describes this assessment must be
      * predefined with the same name before inserting the assessment result.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -140,7 +142,7 @@ public interface Assessments {
 
     /**
      * Begins definition for a new SecurityAssessmentResponse resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new SecurityAssessmentResponse definition.
      */

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Container App Dapr configuration. */
+/**
+ * Container App Dapr configuration.
+ */
 @Fluent
 public final class Dapr {
     /*
@@ -59,13 +61,15 @@ public final class Dapr {
     @JsonProperty(value = "enableApiLogging")
     private Boolean enableApiLogging;
 
-    /** Creates an instance of Dapr class. */
+    /**
+     * Creates an instance of Dapr class.
+     */
     public Dapr() {
     }
 
     /**
      * Get the enabled property: Boolean indicating if the Dapr side car is enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -74,7 +78,7 @@ public final class Dapr {
 
     /**
      * Set the enabled property: Boolean indicating if the Dapr side car is enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the Dapr object itself.
      */
@@ -85,7 +89,7 @@ public final class Dapr {
 
     /**
      * Get the appId property: Dapr application identifier.
-     *
+     * 
      * @return the appId value.
      */
     public String appId() {
@@ -94,7 +98,7 @@ public final class Dapr {
 
     /**
      * Set the appId property: Dapr application identifier.
-     *
+     * 
      * @param appId the appId value to set.
      * @return the Dapr object itself.
      */
@@ -106,7 +110,7 @@ public final class Dapr {
     /**
      * Get the appProtocol property: Tells Dapr which protocol your application is using. Valid options are http and
      * grpc. Default is http.
-     *
+     * 
      * @return the appProtocol value.
      */
     public AppProtocol appProtocol() {
@@ -116,7 +120,7 @@ public final class Dapr {
     /**
      * Set the appProtocol property: Tells Dapr which protocol your application is using. Valid options are http and
      * grpc. Default is http.
-     *
+     * 
      * @param appProtocol the appProtocol value to set.
      * @return the Dapr object itself.
      */
@@ -127,7 +131,7 @@ public final class Dapr {
 
     /**
      * Get the appPort property: Tells Dapr which port your application is listening on.
-     *
+     * 
      * @return the appPort value.
      */
     public Integer appPort() {
@@ -136,7 +140,7 @@ public final class Dapr {
 
     /**
      * Set the appPort property: Tells Dapr which port your application is listening on.
-     *
+     * 
      * @param appPort the appPort value to set.
      * @return the Dapr object itself.
      */
@@ -148,7 +152,7 @@ public final class Dapr {
     /**
      * Get the httpReadBufferSize property: Dapr max size of http header read buffer in KB to handle when sending
      * multi-KB headers. Default is 65KB.
-     *
+     * 
      * @return the httpReadBufferSize value.
      */
     public Integer httpReadBufferSize() {
@@ -158,7 +162,7 @@ public final class Dapr {
     /**
      * Set the httpReadBufferSize property: Dapr max size of http header read buffer in KB to handle when sending
      * multi-KB headers. Default is 65KB.
-     *
+     * 
      * @param httpReadBufferSize the httpReadBufferSize value to set.
      * @return the Dapr object itself.
      */
@@ -168,9 +172,9 @@ public final class Dapr {
     }
 
     /**
-     * Get the httpMaxRequestSize property: Increasing max size of request body http and grpc servers parameter in MB to
-     * handle uploading of big files. Default is 4 MB.
-     *
+     * Get the httpMaxRequestSize property: Increasing max size of request body http and grpc servers parameter in MB
+     * to handle uploading of big files. Default is 4 MB.
+     * 
      * @return the httpMaxRequestSize value.
      */
     public Integer httpMaxRequestSize() {
@@ -178,9 +182,9 @@ public final class Dapr {
     }
 
     /**
-     * Set the httpMaxRequestSize property: Increasing max size of request body http and grpc servers parameter in MB to
-     * handle uploading of big files. Default is 4 MB.
-     *
+     * Set the httpMaxRequestSize property: Increasing max size of request body http and grpc servers parameter in MB
+     * to handle uploading of big files. Default is 4 MB.
+     * 
      * @param httpMaxRequestSize the httpMaxRequestSize value to set.
      * @return the Dapr object itself.
      */
@@ -192,7 +196,7 @@ public final class Dapr {
     /**
      * Get the logLevel property: Sets the log level for the Dapr sidecar. Allowed values are debug, info, warn, error.
      * Default is info.
-     *
+     * 
      * @return the logLevel value.
      */
     public LogLevel logLevel() {
@@ -202,7 +206,7 @@ public final class Dapr {
     /**
      * Set the logLevel property: Sets the log level for the Dapr sidecar. Allowed values are debug, info, warn, error.
      * Default is info.
-     *
+     * 
      * @param logLevel the logLevel value to set.
      * @return the Dapr object itself.
      */
@@ -213,7 +217,7 @@ public final class Dapr {
 
     /**
      * Get the enableApiLogging property: Enables API logging for the Dapr sidecar.
-     *
+     * 
      * @return the enableApiLogging value.
      */
     public Boolean enableApiLogging() {
@@ -222,7 +226,7 @@ public final class Dapr {
 
     /**
      * Set the enableApiLogging property: Enables API logging for the Dapr sidecar.
-     *
+     * 
      * @param enableApiLogging the enableApiLogging value to set.
      * @return the Dapr object itself.
      */
@@ -233,7 +237,7 @@ public final class Dapr {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

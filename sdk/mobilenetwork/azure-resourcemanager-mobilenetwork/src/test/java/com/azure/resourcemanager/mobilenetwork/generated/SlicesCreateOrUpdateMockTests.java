@@ -33,51 +33,35 @@ public final class SlicesCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"snssai\":{\"sst\":1368337074,\"sd\":\"izhyhnep\"},\"description\":\"etiarxqiubxdukec\"},\"location\":\"dazvdhctm\",\"tags\":{\"iofkbtfmh\":\"szudblnsntrpcaq\"},\"id\":\"lbnld\",\"name\":\"vcb\",\"type\":\"hez\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"snssai\":{\"sst\":631894274,\"sd\":\"gmxitpfi\"},\"description\":\"cpdltkrlg\"},\"location\":\"tbdrvcqgue\",\"tags\":{\"lyujlfyoump\":\"ompheqdur\",\"brzmqxucycijoclx\":\"kyeclcdigpta\",\"zjd\":\"utgjcyz\",\"jb\":\"r\"},\"id\":\"xjeaoqaqbzgyh\",\"name\":\"w\",\"type\":\"v\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MobileNetworkManager manager = MobileNetworkManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Slice response =
-            manager
-                .slices()
-                .define("kqevadrmmw")
-                .withRegion("iidisczskoswoqiq")
-                .withExistingMobileNetwork("c", "equygdjboqgrmtq")
-                .withSnssai(new Snssai().withSst(1097578040).withSd("c"))
-                .withTags(mapOf("amnppcce", "gamxzkrrcoiis"))
-                .withDescription("z")
-                .create();
+        Slice response
+            = manager.slices().define("sgftipwc").withRegion("byl").withExistingMobileNetwork("ccgzpraoxnyu", "fa")
+                .withSnssai(new Snssai().withSst(437350600).withSd("hiqdxy"))
+                .withTags(mapOf("rkdlb", "gvxvatv", "ov", "bqxvhcsyhzlwxae", "ead", "rexdndsbd"))
+                .withDescription("npnuhzafccnuhi").create();
 
-        Assertions.assertEquals("dazvdhctm", response.location());
-        Assertions.assertEquals("szudblnsntrpcaq", response.tags().get("iofkbtfmh"));
-        Assertions.assertEquals(1368337074, response.snssai().sst());
-        Assertions.assertEquals("izhyhnep", response.snssai().sd());
-        Assertions.assertEquals("etiarxqiubxdukec", response.description());
+        Assertions.assertEquals("tbdrvcqgue", response.location());
+        Assertions.assertEquals("ompheqdur", response.tags().get("lyujlfyoump"));
+        Assertions.assertEquals(631894274, response.snssai().sst());
+        Assertions.assertEquals("gmxitpfi", response.snssai().sd());
+        Assertions.assertEquals("cpdltkrlg", response.description());
     }
 
     // Use "Map.of" if available

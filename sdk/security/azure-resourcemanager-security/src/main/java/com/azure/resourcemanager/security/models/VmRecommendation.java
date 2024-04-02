@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents a machine that is part of a machine group. */
+/**
+ * Represents a machine that is part of a machine group.
+ */
 @Fluent
 public final class VmRecommendation {
     /*
@@ -34,13 +36,15 @@ public final class VmRecommendation {
     @JsonProperty(value = "enforcementSupport")
     private EnforcementSupport enforcementSupport;
 
-    /** Creates an instance of VmRecommendation class. */
+    /**
+     * Creates an instance of VmRecommendation class.
+     */
     public VmRecommendation() {
     }
 
     /**
      * Get the configurationStatus property: The configuration status of the machines group or machine or rule.
-     *
+     * 
      * @return the configurationStatus value.
      */
     public ConfigurationStatus configurationStatus() {
@@ -49,7 +53,7 @@ public final class VmRecommendation {
 
     /**
      * Set the configurationStatus property: The configuration status of the machines group or machine or rule.
-     *
+     * 
      * @param configurationStatus the configurationStatus value to set.
      * @return the VmRecommendation object itself.
      */
@@ -60,7 +64,7 @@ public final class VmRecommendation {
 
     /**
      * Get the recommendationAction property: The recommendation action of the machine or rule.
-     *
+     * 
      * @return the recommendationAction value.
      */
     public RecommendationAction recommendationAction() {
@@ -69,7 +73,7 @@ public final class VmRecommendation {
 
     /**
      * Set the recommendationAction property: The recommendation action of the machine or rule.
-     *
+     * 
      * @param recommendationAction the recommendationAction value to set.
      * @return the VmRecommendation object itself.
      */
@@ -80,7 +84,7 @@ public final class VmRecommendation {
 
     /**
      * Get the resourceId property: The full resource id of the machine.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -89,7 +93,7 @@ public final class VmRecommendation {
 
     /**
      * Set the resourceId property: The full resource id of the machine.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the VmRecommendation object itself.
      */
@@ -100,7 +104,7 @@ public final class VmRecommendation {
 
     /**
      * Get the enforcementSupport property: The machine supportability of Enforce feature.
-     *
+     * 
      * @return the enforcementSupport value.
      */
     public EnforcementSupport enforcementSupport() {
@@ -109,7 +113,7 @@ public final class VmRecommendation {
 
     /**
      * Set the enforcementSupport property: The machine supportability of Enforce feature.
-     *
+     * 
      * @param enforcementSupport the enforcementSupport value to set.
      * @return the VmRecommendation object itself.
      */
@@ -120,7 +124,7 @@ public final class VmRecommendation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

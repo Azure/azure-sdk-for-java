@@ -10,8 +10,8 @@ import com.azure.resourcemanager.security.models.GitlabScopeEnvironmentData;
 public final class GitlabScopeEnvironmentDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GitlabScopeEnvironmentData model =
-            BinaryData.fromString("{\"environmentType\":\"GitlabScope\"}").toObject(GitlabScopeEnvironmentData.class);
+        GitlabScopeEnvironmentData model
+            = BinaryData.fromString("{\"environmentType\":\"GitlabScope\"}").toObject(GitlabScopeEnvironmentData.class);
     }
 
     @org.junit.jupiter.api.Test

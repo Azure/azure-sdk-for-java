@@ -12,10 +12,12 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.security.SecurityManager;
+import com.azure.resourcemanager.security.models.SecurityFamily;
 import com.azure.resourcemanager.security.models.SecuritySolutionsReferenceDataList;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -29,36 +31,33 @@ public final class SecuritySolutionsReferenceDatasListWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"location\":\"iljpibk\",\"id\":\"xyxyaux\",\"name\":\"eddobmcnltm\",\"type\":\"ytkujsq\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"securityFamily\":\"Va\",\"alertVendorName\":\"ui\",\"packageInfoUrl\":\"ngmndwohoeash\",\"productName\":\"xfvbjimzwyns\",\"publisher\":\"mphvkyezwseyuoyj\",\"publisherDisplayName\":\"jwq\",\"template\":\"slqreofzrkrzt\"},\"location\":\"aymhxlnmwaxs\",\"id\":\"mnrt\",\"name\":\"qm\",\"type\":\"mavyotpcvp\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SecuritySolutionsReferenceDataList response =
-            manager.securitySolutionsReferenceDatas().listWithResponse(com.azure.core.util.Context.NONE).getValue();
+        SecuritySolutionsReferenceDataList response
+            = manager.securitySolutionsReferenceDatas().listWithResponse(com.azure.core.util.Context.NONE).getValue();
+
+        Assertions.assertEquals(SecurityFamily.VA, response.value().get(0).securityFamily());
+        Assertions.assertEquals("ui", response.value().get(0).alertVendorName());
+        Assertions.assertEquals("ngmndwohoeash", response.value().get(0).packageInfoUrl());
+        Assertions.assertEquals("xfvbjimzwyns", response.value().get(0).productName());
+        Assertions.assertEquals("mphvkyezwseyuoyj", response.value().get(0).publisher());
+        Assertions.assertEquals("jwq", response.value().get(0).publisherDisplayName());
+        Assertions.assertEquals("slqreofzrkrzt", response.value().get(0).template());
     }
 }

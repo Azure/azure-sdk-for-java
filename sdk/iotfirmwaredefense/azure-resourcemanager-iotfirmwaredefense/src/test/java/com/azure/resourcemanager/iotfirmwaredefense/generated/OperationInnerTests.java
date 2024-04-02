@@ -11,11 +11,9 @@ import com.azure.resourcemanager.iotfirmwaredefense.models.OperationDisplay;
 public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"w\",\"isDataAction\":false,\"display\":{\"provider\":\"mmqhgyxzkonocuk\",\"resource\":\"lyaxuc\",\"operation\":\"uqszfk\",\"description\":\"ypewrmjmwvvjekt\"},\"origin\":\"system\",\"actionType\":\"Internal\"}")
-                .toObject(OperationInner.class);
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"pcyvahfnljkyqx\",\"isDataAction\":true,\"display\":{\"provider\":\"qgidokgjljyo\",\"resource\":\"vcltbgsncgh\",\"operation\":\"esz\",\"description\":\"bijhtxfvgxbf\"},\"origin\":\"system\",\"actionType\":\"Internal\"}")
+            .toObject(OperationInner.class);
     }
 
     @org.junit.jupiter.api.Test

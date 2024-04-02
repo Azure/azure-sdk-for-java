@@ -39,7 +39,7 @@ public class RestProxySpecialParametersBenchmark {
         "another string",
         new Object(),
         -7,
-        Context.NONE
+        Context.EMPTY
     };
 
     /**

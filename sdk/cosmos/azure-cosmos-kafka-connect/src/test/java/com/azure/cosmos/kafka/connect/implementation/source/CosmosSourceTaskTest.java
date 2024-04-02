@@ -6,8 +6,6 @@ package com.azure.cosmos.kafka.connect.implementation.source;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
-import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.kafka.connect.KafkaCosmosTestSuiteBase;
 import com.azure.cosmos.kafka.connect.TestItem;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
@@ -62,8 +60,8 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
                 client.getDatabase(databaseName).getContainer(testContainerName).getFeedRanges().block();
             assertThat(feedRanges.size()).isEqualTo(1);
 
-            Map<String, List<Range<String>>> containersEffectiveRangesMap = new HashMap<>();
-            containersEffectiveRangesMap.put(testContainer.getResourceId(), Arrays.asList(FeedRangeEpkImpl.forFullRange().getRange()));
+            Map<String, List<FeedRange>> containersEffectiveRangesMap = new HashMap<>();
+            containersEffectiveRangesMap.put(testContainer.getResourceId(), Arrays.asList(FeedRange.forFullRange()));
             MetadataTaskUnit metadataTaskUnit = new MetadataTaskUnit(
                 databaseName,
                 Arrays.asList(testContainer.getResourceId()),
@@ -76,7 +74,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
                 databaseName,
                 testContainerName,
                 testContainer.getResourceId(),
-                FeedRangeEpkImpl.forFullRange().getRange(),
+                FeedRange.forFullRange(),
                 null,
                 testContainerName);
             taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
@@ -158,7 +156,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
                 databaseName,
                 multiPartitionContainer.getId(),
                 multiPartitionContainer.getResourceId(),
-                ((FeedRangeEpkImpl)feedRanges.get(0)).getRange(),
+                feedRanges.get(0),
                 null,
                 multiPartitionContainer.getId());
             taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
@@ -211,7 +209,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         for (int i = 0; i < metadataTaskUnit.getContainerRids().size(); i++) {
             String containerRid = metadataTaskUnit.getContainerRids().get(i);
             SourceRecord sourceRecord = sourceRecords.get(i + 1);
-            List<Range<String>> containerFeedRanges =
+            List<FeedRange> containerFeedRanges =
                 metadataTaskUnit.getContainersEffectiveRangesMap().get(containerRid);
             assertThat(containerFeedRanges).isNotNull();
 

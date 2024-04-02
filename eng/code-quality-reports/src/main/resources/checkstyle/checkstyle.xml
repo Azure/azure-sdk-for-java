@@ -9,6 +9,8 @@ what the following rules do, please see the checkstyle configuration
 page at http://checkstyle.sourceforge.net/config.html -->
 
 <module name="Checker">
+  <property name="haltOnException" value="false" />
+
   <!-- Exclude module-info.java from checks, as CheckStyle does not presently support it -->
   <module name="BeforeExecutionExclusionFileFilter">
     <property name="fileNamePattern" value="module\-info\.java$"/>

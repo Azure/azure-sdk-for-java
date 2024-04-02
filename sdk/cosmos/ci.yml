@@ -152,7 +152,7 @@ extends:
         uberJar: true
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
-        releaseInBatch: ${{ parameters.release_azurecosmosspark34 }}        
+        releaseInBatch: ${{ parameters.release_azurecosmosspark34 }}
       - name: azure-cosmos-test
         groupId: com.azure
         safeName: azurecosmostest

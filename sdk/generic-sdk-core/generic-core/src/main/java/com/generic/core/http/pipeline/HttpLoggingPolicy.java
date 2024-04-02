@@ -11,8 +11,6 @@ import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.Response;
 import com.generic.core.implementation.http.HttpResponseAccessHelper;
-import com.generic.core.implementation.http.policy.HttpRequestLogger;
-import com.generic.core.implementation.http.policy.HttpResponseLogger;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.LoggingKeys;
 import com.generic.core.util.ClientLogger;
@@ -22,7 +20,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,7 +36,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
     private static final ClientLogger LOGGER = new ClientLogger(HttpLoggingPolicy.class);
     private final HttpLogOptions.HttpLogDetailLevel httpLogDetailLevel;
-    private final List<HttpHeaderName> allowedHeaderNames;
+    private final Set<HttpHeaderName> allowedHeaderNames;
     private final Set<String> allowedQueryParameterNames;
     private final HttpRequestLogger requestLogger;
     private final HttpResponseLogger responseLogger;
@@ -55,7 +52,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     public HttpLoggingPolicy(HttpLogOptions httpLogOptions) {
         if (httpLogOptions == null) {
             this.httpLogDetailLevel = HttpLogOptions.HttpLogDetailLevel.NONE;
-            this.allowedHeaderNames = Collections.emptyList();
+            this.allowedHeaderNames = Collections.emptySet();
             this.allowedQueryParameterNames = Collections.emptySet();
             this.requestLogger = new DefaultHttpRequestLogger();
             this.responseLogger = new DefaultHttpResponseLogger();
@@ -99,7 +96,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         } catch (RuntimeException e) {
             createBasicLoggingContext(logger, ClientLogger.LogLevel.WARNING, httpRequest)
                 .log("HTTP FAILED", e);
-            throw e;
+            throw LOGGER.logThrowableAsError(e);
         }
     }
 
@@ -292,13 +289,13 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @param sb StringBuilder that is generating the log message.
      * @param logLevel Log level the environment is configured to use.
      */
-    private static void addHeadersToLogMessage(List<HttpHeaderName> allowedHeaderNames, HttpHeaders headers,
+    private static void addHeadersToLogMessage(Set<HttpHeaderName> allowedHeaderNames, HttpHeaders headers,
                                                ClientLogger.LoggingEventBuilder logBuilder) {
         for (HttpHeader header : headers) {
-            String headerName = header.getName();
-            String headerValue = allowedHeaderNames.contains(HttpHeaderName.fromString(headerName))
+            HttpHeaderName headerName = header.getName();
+            String headerValue = allowedHeaderNames.contains(headerName)
                 ? header.getValue() : REDACTED_PLACEHOLDER;
-            logBuilder.addKeyValue(headerName, headerValue);
+            logBuilder.addKeyValue(headerName.toString(), headerValue);
         }
     }
 

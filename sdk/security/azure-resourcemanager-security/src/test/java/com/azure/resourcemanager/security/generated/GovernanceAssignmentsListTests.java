@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.models.GovernanceAssignmentsList;
 public final class GovernanceAssignmentsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GovernanceAssignmentsList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"owner\":\"ny\",\"remediationDueDate\":\"2021-07-02T15:24:24Z\",\"isGracePeriod\":true},\"id\":\"nsrpmeyy\",\"name\":\"pkpatlbijpzgsks\",\"type\":\"fhfv\"}],\"nextLink\":\"mknbnxwcdommpv\"}")
-                .toObject(GovernanceAssignmentsList.class);
+        GovernanceAssignmentsList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"owner\":\"xzsjabib\",\"remediationDueDate\":\"2021-04-04T23:46:46Z\",\"remediationEta\":{\"eta\":\"2021-06-28T10:05:38Z\",\"justification\":\"awfsdjpvkvpbjxbk\"},\"isGracePeriod\":false,\"governanceEmailNotification\":{\"disableManagerEmailNotification\":true,\"disableOwnerEmailNotification\":true},\"additionalData\":{\"ticketNumber\":576283685,\"ticketLink\":\"durgkakmokz\",\"ticketStatus\":\"jk\"}},\"id\":\"ffhmouwqlgzr\",\"name\":\"zeeyebi\",\"type\":\"ikayuhqlbjbsybb\"},{\"properties\":{\"owner\":\"vtldgmfpgvmpip\",\"remediationDueDate\":\"2020-12-22T19:26:22Z\",\"remediationEta\":{\"eta\":\"2021-06-16T02:53:31Z\",\"justification\":\"haq\"},\"isGracePeriod\":false,\"governanceEmailNotification\":{\"disableManagerEmailNotification\":true,\"disableOwnerEmailNotification\":true},\"additionalData\":{\"ticketNumber\":1781178234,\"ticketLink\":\"rezpdr\",\"ticketStatus\":\"euyowqkd\"}},\"id\":\"ytisibir\",\"name\":\"gpikpzimejza\",\"type\":\"lfzxiavrmbzonoki\"},{\"properties\":{\"owner\":\"q\",\"remediationDueDate\":\"2021-03-16T14:26:02Z\",\"remediationEta\":{\"eta\":\"2021-10-08T15:41:33Z\",\"justification\":\"zpfrla\"},\"isGracePeriod\":false,\"governanceEmailNotification\":{\"disableManagerEmailNotification\":false,\"disableOwnerEmailNotification\":false},\"additionalData\":{\"ticketNumber\":1988160983,\"ticketLink\":\"pwp\",\"ticketStatus\":\"lwbtlhf\"}},\"id\":\"sj\",\"name\":\"dhszfjv\",\"type\":\"bgofeljag\"},{\"properties\":{\"owner\":\"qhl\",\"remediationDueDate\":\"2021-03-07T21:36:25Z\",\"remediationEta\":{\"eta\":\"2021-10-25T17:37:19Z\",\"justification\":\"iiojnal\"},\"isGracePeriod\":false,\"governanceEmailNotification\":{\"disableManagerEmailNotification\":true,\"disableOwnerEmailNotification\":false},\"additionalData\":{\"ticketNumber\":1376433367,\"ticketLink\":\"wueluqhhahhxv\",\"ticketStatus\":\"mzkwpjg\"}},\"id\":\"wspughftqsxhqx\",\"name\":\"j\",\"type\":\"ukndxdigrjgu\"}],\"nextLink\":\"zdmsyqtfi\"}")
+            .toObject(GovernanceAssignmentsList.class);
     }
 
     @org.junit.jupiter.api.Test

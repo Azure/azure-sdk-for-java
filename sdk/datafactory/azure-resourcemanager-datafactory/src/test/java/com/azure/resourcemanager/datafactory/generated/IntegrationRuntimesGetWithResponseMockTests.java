@@ -31,7 +31,7 @@ public final class IntegrationRuntimesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"myemvyijvvbe\",\"\":{\"zvpgttvykz\":\"datatk\",\"ikhbkcvpubvmsz\":\"datalktenbvpadoseqc\",\"sxncykfq\":\"datazrs\",\"gqctrvfpg\":\"databwes\"}},\"name\":\"l\",\"type\":\"wbavlgovg\",\"etag\":\"ppoddnwhaokkw\",\"id\":\"vimstbyaklfvc\"}";
+            = "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"oahfaqlcqjnwvqif\",\"\":{\"qivvpvuy\":\"datafsvrjdpzvhxssn\",\"aadbwhsvxmvk\":\"datasnmdinnisuua\"}},\"name\":\"fwseoqkal\",\"type\":\"neahowvjup\",\"etag\":\"bupgtrnjz\",\"id\":\"bwabilybmf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,10 +49,10 @@ public final class IntegrationRuntimesGetWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeResource response = manager.integrationRuntimes()
-            .getWithResponse("anhjslkoa", "ocsetkrt", "xjiiqsxecejlyhu", "hqqqqcdzmh", com.azure.core.util.Context.NONE)
+            .getWithResponse("xmsiblieg", "jktfsci", "yclv", "ivsagrfjhcrq", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vimstbyaklfvc", response.id());
-        Assertions.assertEquals("myemvyijvvbe", response.properties().description());
+        Assertions.assertEquals("bwabilybmf", response.id());
+        Assertions.assertEquals("oahfaqlcqjnwvqif", response.properties().description());
     }
 }

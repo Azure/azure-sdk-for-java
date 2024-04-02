@@ -35,141 +35,113 @@ import com.azure.resourcemanager.security.models.IoTSecuritySolutionsList;
 import com.azure.resourcemanager.security.models.UpdateIotSecuritySolutionData;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in IotSecuritySolutionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IotSecuritySolutionsClient.
+ */
 public final class IotSecuritySolutionsClientImpl implements IotSecuritySolutionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final IotSecuritySolutionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SecurityCenterImpl client;
 
     /**
      * Initializes an instance of IotSecuritySolutionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     IotSecuritySolutionsClientImpl(SecurityCenterImpl client) {
-        this.service =
-            RestProxy
-                .create(IotSecuritySolutionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(IotSecuritySolutionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for SecurityCenterIotSecuritySolutions to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for SecurityCenterIotSecuritySolutions to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterIotSec")
     public interface IotSecuritySolutionsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/iotSecuritySolutions")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<IoTSecuritySolutionsList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<IoTSecuritySolutionsList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<IoTSecuritySolutionsList>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<IoTSecuritySolutionsList>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$filter") String filter,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<IoTSecuritySolutionModelInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("solutionName") String solutionName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<IoTSecuritySolutionModelInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("solutionName") String solutionName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<IoTSecuritySolutionModelInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("solutionName") String solutionName,
+        Mono<Response<IoTSecuritySolutionModelInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("solutionName") String solutionName,
             @BodyParam("application/json") IoTSecuritySolutionModelInner iotSecuritySolutionData,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<IoTSecuritySolutionModelInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("solutionName") String solutionName,
+        Mono<Response<IoTSecuritySolutionModelInner>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("solutionName") String solutionName,
             @BodyParam("application/json") UpdateIotSecuritySolutionData updateIotSecuritySolutionData,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("solutionName") String solutionName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("solutionName") String solutionName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IoTSecuritySolutionsList>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IoTSecuritySolutionsList>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Use this method to get the list of IoT Security solutions by subscription.
-     *
+     * 
      * @param filter Filter the IoT Security solution with OData syntax. Supports filtering by iotHubs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -179,45 +151,26 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IoTSecuritySolutionModelInner>> listSinglePageAsync(String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<IoTSecuritySolutionModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                filter, accept, context))
+            .<PagedResponse<IoTSecuritySolutionModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Use this method to get the list of IoT Security solutions by subscription.
-     *
+     * 
      * @param filter Filter the IoT Security solution with OData syntax. Supports filtering by iotHubs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -228,36 +181,25 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IoTSecuritySolutionModelInner>> listSinglePageAsync(String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), filter, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Use this method to get the list of IoT Security solutions by subscription.
-     *
+     * 
      * @param filter Filter the IoT Security solution with OData syntax. Supports filtering by iotHubs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -266,13 +208,13 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IoTSecuritySolutionModelInner> listAsync(String filter) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(filter),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Use this method to get the list of IoT Security solutions by subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of IoT Security solutions as paginated response with {@link PagedFlux}.
@@ -280,13 +222,13 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IoTSecuritySolutionModelInner> listAsync() {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(filter),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Use this method to get the list of IoT Security solutions by subscription.
-     *
+     * 
      * @param filter Filter the IoT Security solution with OData syntax. Supports filtering by iotHubs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -296,14 +238,13 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IoTSecuritySolutionModelInner> listAsync(String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, context),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Use this method to get the list of IoT Security solutions by subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of IoT Security solutions as paginated response with {@link PagedIterable}.
@@ -316,7 +257,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
 
     /**
      * Use this method to get the list of IoT Security solutions by subscription.
-     *
+     * 
      * @param filter Filter the IoT Security solution with OData syntax. Supports filtering by iotHubs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -331,9 +272,9 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
 
     /**
      * Use this method to get the list IoT Security solutions organized by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param filter Filter the IoT Security solution with OData syntax. Supports filtering by iotHubs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -341,19 +282,15 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @return list of IoT Security solutions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IoTSecuritySolutionModelInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String filter) {
+    private Mono<PagedResponse<IoTSecuritySolutionModelInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -362,34 +299,18 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
         final String apiVersion = "2019-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<IoTSecuritySolutionModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, filter, accept, context))
+            .<PagedResponse<IoTSecuritySolutionModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Use this method to get the list IoT Security solutions organized by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param filter Filter the IoT Security solution with OData syntax. Supports filtering by iotHubs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -398,19 +319,15 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @return list of IoT Security solutions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IoTSecuritySolutionModelInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String filter, Context context) {
+    private Mono<PagedResponse<IoTSecuritySolutionModelInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -420,30 +337,17 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                filter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, filter, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Use this method to get the list IoT Security solutions organized by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param filter Filter the IoT Security solution with OData syntax. Supports filtering by iotHubs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -452,16 +356,15 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IoTSecuritySolutionModelInner> listByResourceGroupAsync(String resourceGroupName, String filter) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Use this method to get the list IoT Security solutions organized by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -470,16 +373,15 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IoTSecuritySolutionModelInner> listByResourceGroupAsync(String resourceGroupName) {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Use this method to get the list IoT Security solutions organized by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param filter Filter the IoT Security solution with OData syntax. Supports filtering by iotHubs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -488,18 +390,17 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @return list of IoT Security solutions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<IoTSecuritySolutionModelInner> listByResourceGroupAsync(
-        String resourceGroupName, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, context),
+    private PagedFlux<IoTSecuritySolutionModelInner> listByResourceGroupAsync(String resourceGroupName, String filter,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Use this method to get the list IoT Security solutions organized by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -513,9 +414,9 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
 
     /**
      * Use this method to get the list IoT Security solutions organized by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param filter Filter the IoT Security solution with OData syntax. Supports filtering by iotHubs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -524,37 +425,33 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @return list of IoT Security solutions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IoTSecuritySolutionModelInner> listByResourceGroup(
-        String resourceGroupName, String filter, Context context) {
+    public PagedIterable<IoTSecuritySolutionModelInner> listByResourceGroup(String resourceGroupName, String filter,
+        Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, context));
     }
 
     /**
      * User this method to get details of a specific IoT Security solution based on solution name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return ioT Security solution configuration and resource information along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IoTSecuritySolutionModelInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String solutionName) {
+    private Mono<Response<IoTSecuritySolutionModelInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String solutionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -566,47 +463,34 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
         final String apiVersion = "2019-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            solutionName,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, solutionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * User this method to get details of a specific IoT Security solution based on solution name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return ioT Security solution configuration and resource information along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IoTSecuritySolutionModelInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String solutionName, Context context) {
+    private Mono<Response<IoTSecuritySolutionModelInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String solutionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -618,22 +502,15 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
         final String apiVersion = "2019-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                solutionName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, solutionName, accept, context);
     }
 
     /**
      * User this method to get details of a specific IoT Security solution based on solution name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -648,9 +525,9 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
 
     /**
      * User this method to get details of a specific IoT Security solution based on solution name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -659,16 +536,16 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @return ioT Security solution configuration and resource information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IoTSecuritySolutionModelInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String solutionName, Context context) {
+    public Response<IoTSecuritySolutionModelInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String solutionName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, solutionName, context).block();
     }
 
     /**
      * User this method to get details of a specific IoT Security solution based on solution name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -682,31 +559,27 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
 
     /**
      * Use this method to create or update yours IoT Security solution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param iotSecuritySolutionData The security solution data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return ioT Security solution configuration and resource information along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IoTSecuritySolutionModelInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String solutionName, IoTSecuritySolutionModelInner iotSecuritySolutionData) {
+    private Mono<Response<IoTSecuritySolutionModelInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String solutionName, IoTSecuritySolutionModelInner iotSecuritySolutionData) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -716,35 +589,23 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
             return Mono.error(new IllegalArgumentException("Parameter solutionName is required and cannot be null."));
         }
         if (iotSecuritySolutionData == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter iotSecuritySolutionData is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter iotSecuritySolutionData is required and cannot be null."));
         } else {
             iotSecuritySolutionData.validate();
         }
         final String apiVersion = "2019-08-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            solutionName,
-                            iotSecuritySolutionData,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, solutionName, iotSecuritySolutionData, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Use this method to create or update yours IoT Security solution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param iotSecuritySolutionData The security solution data.
      * @param context The context to associate with this operation.
@@ -752,25 +613,18 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return ioT Security solution configuration and resource information along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IoTSecuritySolutionModelInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String solutionName,
-        IoTSecuritySolutionModelInner iotSecuritySolutionData,
-        Context context) {
+    private Mono<Response<IoTSecuritySolutionModelInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String solutionName, IoTSecuritySolutionModelInner iotSecuritySolutionData, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -780,32 +634,23 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
             return Mono.error(new IllegalArgumentException("Parameter solutionName is required and cannot be null."));
         }
         if (iotSecuritySolutionData == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter iotSecuritySolutionData is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter iotSecuritySolutionData is required and cannot be null."));
         } else {
             iotSecuritySolutionData.validate();
         }
         final String apiVersion = "2019-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                solutionName,
-                iotSecuritySolutionData,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, solutionName, iotSecuritySolutionData, accept, context);
     }
 
     /**
      * Use this method to create or update yours IoT Security solution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param iotSecuritySolutionData The security solution data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -814,17 +659,17 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @return ioT Security solution configuration and resource information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IoTSecuritySolutionModelInner> createOrUpdateAsync(
-        String resourceGroupName, String solutionName, IoTSecuritySolutionModelInner iotSecuritySolutionData) {
+    private Mono<IoTSecuritySolutionModelInner> createOrUpdateAsync(String resourceGroupName, String solutionName,
+        IoTSecuritySolutionModelInner iotSecuritySolutionData) {
         return createOrUpdateWithResponseAsync(resourceGroupName, solutionName, iotSecuritySolutionData)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Use this method to create or update yours IoT Security solution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param iotSecuritySolutionData The security solution data.
      * @param context The context to associate with this operation.
@@ -834,20 +679,17 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @return ioT Security solution configuration and resource information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IoTSecuritySolutionModelInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String solutionName,
-        IoTSecuritySolutionModelInner iotSecuritySolutionData,
-        Context context) {
+    public Response<IoTSecuritySolutionModelInner> createOrUpdateWithResponse(String resourceGroupName,
+        String solutionName, IoTSecuritySolutionModelInner iotSecuritySolutionData, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, solutionName, iotSecuritySolutionData, context)
             .block();
     }
 
     /**
      * Use this method to create or update yours IoT Security solution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param iotSecuritySolutionData The security solution data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -856,8 +698,8 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @return ioT Security solution configuration and resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IoTSecuritySolutionModelInner createOrUpdate(
-        String resourceGroupName, String solutionName, IoTSecuritySolutionModelInner iotSecuritySolutionData) {
+    public IoTSecuritySolutionModelInner createOrUpdate(String resourceGroupName, String solutionName,
+        IoTSecuritySolutionModelInner iotSecuritySolutionData) {
         return createOrUpdateWithResponse(resourceGroupName, solutionName, iotSecuritySolutionData, Context.NONE)
             .getValue();
     }
@@ -865,31 +707,27 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
     /**
      * Use this method to update existing IoT Security solution tags or user defined resources. To update other fields
      * use the CreateOrUpdate method.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param updateIotSecuritySolutionData The security solution data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return ioT Security solution configuration and resource information along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IoTSecuritySolutionModelInner>> updateWithResponseAsync(
-        String resourceGroupName, String solutionName, UpdateIotSecuritySolutionData updateIotSecuritySolutionData) {
+    private Mono<Response<IoTSecuritySolutionModelInner>> updateWithResponseAsync(String resourceGroupName,
+        String solutionName, UpdateIotSecuritySolutionData updateIotSecuritySolutionData) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -899,10 +737,8 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
             return Mono.error(new IllegalArgumentException("Parameter solutionName is required and cannot be null."));
         }
         if (updateIotSecuritySolutionData == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter updateIotSecuritySolutionData is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter updateIotSecuritySolutionData is required and cannot be null."));
         } else {
             updateIotSecuritySolutionData.validate();
         }
@@ -910,26 +746,17 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            solutionName,
-                            updateIotSecuritySolutionData,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, solutionName, updateIotSecuritySolutionData, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Use this method to update existing IoT Security solution tags or user defined resources. To update other fields
      * use the CreateOrUpdate method.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param updateIotSecuritySolutionData The security solution data.
      * @param context The context to associate with this operation.
@@ -937,25 +764,18 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return ioT Security solution configuration and resource information along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IoTSecuritySolutionModelInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String solutionName,
-        UpdateIotSecuritySolutionData updateIotSecuritySolutionData,
-        Context context) {
+    private Mono<Response<IoTSecuritySolutionModelInner>> updateWithResponseAsync(String resourceGroupName,
+        String solutionName, UpdateIotSecuritySolutionData updateIotSecuritySolutionData, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -965,34 +785,24 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
             return Mono.error(new IllegalArgumentException("Parameter solutionName is required and cannot be null."));
         }
         if (updateIotSecuritySolutionData == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter updateIotSecuritySolutionData is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter updateIotSecuritySolutionData is required and cannot be null."));
         } else {
             updateIotSecuritySolutionData.validate();
         }
         final String apiVersion = "2019-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                solutionName,
-                updateIotSecuritySolutionData,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            solutionName, updateIotSecuritySolutionData, accept, context);
     }
 
     /**
      * Use this method to update existing IoT Security solution tags or user defined resources. To update other fields
      * use the CreateOrUpdate method.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param updateIotSecuritySolutionData The security solution data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1001,8 +811,8 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @return ioT Security solution configuration and resource information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IoTSecuritySolutionModelInner> updateAsync(
-        String resourceGroupName, String solutionName, UpdateIotSecuritySolutionData updateIotSecuritySolutionData) {
+    private Mono<IoTSecuritySolutionModelInner> updateAsync(String resourceGroupName, String solutionName,
+        UpdateIotSecuritySolutionData updateIotSecuritySolutionData) {
         return updateWithResponseAsync(resourceGroupName, solutionName, updateIotSecuritySolutionData)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1010,9 +820,9 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
     /**
      * Use this method to update existing IoT Security solution tags or user defined resources. To update other fields
      * use the CreateOrUpdate method.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param updateIotSecuritySolutionData The security solution data.
      * @param context The context to associate with this operation.
@@ -1022,20 +832,17 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @return ioT Security solution configuration and resource information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IoTSecuritySolutionModelInner> updateWithResponse(
-        String resourceGroupName,
-        String solutionName,
-        UpdateIotSecuritySolutionData updateIotSecuritySolutionData,
-        Context context) {
+    public Response<IoTSecuritySolutionModelInner> updateWithResponse(String resourceGroupName, String solutionName,
+        UpdateIotSecuritySolutionData updateIotSecuritySolutionData, Context context) {
         return updateWithResponseAsync(resourceGroupName, solutionName, updateIotSecuritySolutionData, context).block();
     }
 
     /**
      * Use this method to update existing IoT Security solution tags or user defined resources. To update other fields
      * use the CreateOrUpdate method.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param updateIotSecuritySolutionData The security solution data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1044,17 +851,17 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @return ioT Security solution configuration and resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IoTSecuritySolutionModelInner update(
-        String resourceGroupName, String solutionName, UpdateIotSecuritySolutionData updateIotSecuritySolutionData) {
+    public IoTSecuritySolutionModelInner update(String resourceGroupName, String solutionName,
+        UpdateIotSecuritySolutionData updateIotSecuritySolutionData) {
         return updateWithResponse(resourceGroupName, solutionName, updateIotSecuritySolutionData, Context.NONE)
             .getValue();
     }
 
     /**
      * Use this method to delete yours IoT Security solution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1064,16 +871,12 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String solutionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1085,25 +888,16 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
         final String apiVersion = "2019-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            solutionName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, solutionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Use this method to delete yours IoT Security solution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1112,19 +906,15 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String solutionName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String solutionName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1136,22 +926,15 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
         final String apiVersion = "2019-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                solutionName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            solutionName, accept, context);
     }
 
     /**
      * Use this method to delete yours IoT Security solution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1165,9 +948,9 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
 
     /**
      * Use this method to delete yours IoT Security solution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1182,9 +965,9 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
 
     /**
      * Use this method to delete yours IoT Security solution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1197,9 +980,10 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1211,32 +995,24 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<IoTSecuritySolutionModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<IoTSecuritySolutionModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1244,37 +1020,28 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @return list of IoT Security solutions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IoTSecuritySolutionModelInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<IoTSecuritySolutionModelInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1286,32 +1053,24 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<IoTSecuritySolutionModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<IoTSecuritySolutionModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1319,29 +1078,19 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @return list of IoT Security solutions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IoTSecuritySolutionModelInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<IoTSecuritySolutionModelInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

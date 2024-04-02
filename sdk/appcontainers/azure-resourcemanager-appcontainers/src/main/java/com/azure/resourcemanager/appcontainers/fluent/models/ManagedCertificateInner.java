@@ -11,7 +11,9 @@ import com.azure.resourcemanager.appcontainers.models.ManagedCertificateProperti
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Managed certificates used for Custom Domain bindings of Container Apps in a Managed Environment. */
+/**
+ * Managed certificates used for Custom Domain bindings of Container Apps in a Managed Environment.
+ */
 @Fluent
 public final class ManagedCertificateInner extends Resource {
     /*
@@ -26,13 +28,15 @@ public final class ManagedCertificateInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ManagedCertificateInner class. */
+    /**
+     * Creates an instance of ManagedCertificateInner class.
+     */
     public ManagedCertificateInner() {
     }
 
     /**
      * Get the properties property: Certificate resource specific properties.
-     *
+     * 
      * @return the properties value.
      */
     public ManagedCertificateProperties properties() {
@@ -41,7 +45,7 @@ public final class ManagedCertificateInner extends Resource {
 
     /**
      * Set the properties property: Certificate resource specific properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ManagedCertificateInner object itself.
      */
@@ -52,21 +56,25 @@ public final class ManagedCertificateInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ManagedCertificateInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ManagedCertificateInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -75,7 +83,7 @@ public final class ManagedCertificateInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

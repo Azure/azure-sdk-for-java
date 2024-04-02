@@ -11,23 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class DefenderForServersGcpOfferingArcAutoProvisioningConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderForServersGcpOfferingArcAutoProvisioningConfiguration model =
-            BinaryData
-                .fromString("{\"proxy\":\"n\",\"privateLinkScope\":\"ali\"}")
+        DefenderForServersGcpOfferingArcAutoProvisioningConfiguration model
+            = BinaryData.fromString("{\"proxy\":\"fnqh\",\"privateLinkScope\":\"snosnqliwkmzojf\"}")
                 .toObject(DefenderForServersGcpOfferingArcAutoProvisioningConfiguration.class);
-        Assertions.assertEquals("n", model.proxy());
-        Assertions.assertEquals("ali", model.privateLinkScope());
+        Assertions.assertEquals("fnqh", model.proxy());
+        Assertions.assertEquals("snosnqliwkmzojf", model.privateLinkScope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderForServersGcpOfferingArcAutoProvisioningConfiguration model =
-            new DefenderForServersGcpOfferingArcAutoProvisioningConfiguration()
-                .withProxy("n")
-                .withPrivateLinkScope("ali");
-        model =
-            BinaryData.fromObject(model).toObject(DefenderForServersGcpOfferingArcAutoProvisioningConfiguration.class);
-        Assertions.assertEquals("n", model.proxy());
-        Assertions.assertEquals("ali", model.privateLinkScope());
+        DefenderForServersGcpOfferingArcAutoProvisioningConfiguration model
+            = new DefenderForServersGcpOfferingArcAutoProvisioningConfiguration().withProxy("fnqh")
+                .withPrivateLinkScope("snosnqliwkmzojf");
+        model = BinaryData.fromObject(model)
+            .toObject(DefenderForServersGcpOfferingArcAutoProvisioningConfiguration.class);
+        Assertions.assertEquals("fnqh", model.proxy());
+        Assertions.assertEquals("snosnqliwkmzojf", model.privateLinkScope());
     }
 }

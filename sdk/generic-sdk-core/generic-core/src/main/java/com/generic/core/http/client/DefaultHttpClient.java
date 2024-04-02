@@ -148,7 +148,7 @@ class DefaultHttpClient implements HttpClient {
 
             for (HttpHeader header : httpRequest.getHeaders()) {
                 for (String value : header.getValues()) {
-                    connection.addRequestProperty(header.getName(), value);
+                    connection.addRequestProperty(header.getName().toString(), value);
                 }
             }
 

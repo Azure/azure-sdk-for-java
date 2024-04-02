@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.cosmosdbforpostgresql.generated;
 
-/** Samples for Clusters Stop. */
+/**
+ * Samples for Clusters Stop.
+ */
 public final class ClustersStopSamples {
     /*
-     * x-ms-original-file: specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterStop.json
+     * x-ms-original-file:
+     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
+     * ClusterStop.json
      */
     /**
      * Sample code: Stop all servers in the cluster.
-     *
+     * 
      * @param manager Entry point to CosmosDBForPostgreSqlManager.
      */
     public static void stopAllServersInTheCluster(

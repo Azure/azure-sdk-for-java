@@ -39,159 +39,187 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the ChaosManagementClientImpl type. */
+/**
+ * Initializes a new instance of the ChaosManagementClientImpl type.
+ */
 @ServiceClient(builder = ChaosManagementClientBuilder.class)
 public final class ChaosManagementClientImpl implements ChaosManagementClient {
-    /** GUID that represents an Azure subscription ID. */
+    /**
+     * GUID that represents an Azure subscription ID.
+     */
     private final String subscriptionId;
 
     /**
      * Gets GUID that represents an Azure subscription ID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The CapabilitiesClient object to access its operations. */
+    /**
+     * The CapabilitiesClient object to access its operations.
+     */
     private final CapabilitiesClient capabilities;
 
     /**
      * Gets the CapabilitiesClient object to access its operations.
-     *
+     * 
      * @return the CapabilitiesClient object.
      */
     public CapabilitiesClient getCapabilities() {
         return this.capabilities;
     }
 
-    /** The CapabilityTypesClient object to access its operations. */
+    /**
+     * The CapabilityTypesClient object to access its operations.
+     */
     private final CapabilityTypesClient capabilityTypes;
 
     /**
      * Gets the CapabilityTypesClient object to access its operations.
-     *
+     * 
      * @return the CapabilityTypesClient object.
      */
     public CapabilityTypesClient getCapabilityTypes() {
         return this.capabilityTypes;
     }
 
-    /** The ExperimentsClient object to access its operations. */
+    /**
+     * The ExperimentsClient object to access its operations.
+     */
     private final ExperimentsClient experiments;
 
     /**
      * Gets the ExperimentsClient object to access its operations.
-     *
+     * 
      * @return the ExperimentsClient object.
      */
     public ExperimentsClient getExperiments() {
         return this.experiments;
     }
 
-    /** The OperationStatusesClient object to access its operations. */
+    /**
+     * The OperationStatusesClient object to access its operations.
+     */
     private final OperationStatusesClient operationStatuses;
 
     /**
      * Gets the OperationStatusesClient object to access its operations.
-     *
+     * 
      * @return the OperationStatusesClient object.
      */
     public OperationStatusesClient getOperationStatuses() {
         return this.operationStatuses;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The TargetTypesClient object to access its operations. */
+    /**
+     * The TargetTypesClient object to access its operations.
+     */
     private final TargetTypesClient targetTypes;
 
     /**
      * Gets the TargetTypesClient object to access its operations.
-     *
+     * 
      * @return the TargetTypesClient object.
      */
     public TargetTypesClient getTargetTypes() {
         return this.targetTypes;
     }
 
-    /** The TargetsClient object to access its operations. */
+    /**
+     * The TargetsClient object to access its operations.
+     */
     private final TargetsClient targets;
 
     /**
      * Gets the TargetsClient object to access its operations.
-     *
+     * 
      * @return the TargetsClient object.
      */
     public TargetsClient getTargets() {
@@ -200,7 +228,7 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
 
     /**
      * Initializes an instance of ChaosManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -208,19 +236,14 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
      * @param subscriptionId GUID that represents an Azure subscription ID.
      * @param endpoint server parameter.
      */
-    ChaosManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    ChaosManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-11-01";
+        this.apiVersion = "2024-01-01";
         this.capabilities = new CapabilitiesClientImpl(this);
         this.capabilityTypes = new CapabilityTypesClientImpl(this);
         this.experiments = new ExperimentsClientImpl(this);
@@ -232,7 +255,7 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -241,7 +264,7 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -251,7 +274,7 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -261,26 +284,15 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -293,19 +305,16 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
+                            SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
