@@ -23,85 +23,85 @@ import scala.util.control.NonFatal
  * For each schema we have an object pool that will use a soft-limit to limit the memory footprint
  */
 private object RowSerializerPool extends BasicLoggingTrait {
-    val MaxPooledSerializerCount = 256
-    private[this] val cleanUpIntervalInSeconds = 300
-    private[this] val expirationIntervalInSeconds = 1800
-    private[this] val schemaScopedSerializerMap =
-        new TrieMap[StructType, RowSerializerQueue]
-    private[this] val executorService = Executors.newSingleThreadScheduledExecutor(SparkUtils.daemonThreadFactory())
+  val MaxPooledSerializerCount = 256
+  private[this] val cleanUpIntervalInSeconds = 300
+  private[this] val expirationIntervalInSeconds = 1800
+  private[this] val schemaScopedSerializerMap =
+    new TrieMap[StructType, RowSerializerQueue]
+  private[this] val executorService = Executors.newSingleThreadScheduledExecutor(SparkUtils.daemonThreadFactory())
 
-    executorService.scheduleWithFixedDelay(
-        () => this.onCleanUp(),
-        cleanUpIntervalInSeconds,
-        cleanUpIntervalInSeconds,
-        TimeUnit.SECONDS)
+  executorService.scheduleWithFixedDelay(
+    () => this.onCleanUp(),
+    cleanUpIntervalInSeconds,
+    cleanUpIntervalInSeconds,
+    TimeUnit.SECONDS)
 
-    def getOrCreateSerializer(schema: StructType): ExpressionEncoder.Serializer[Row] = {
-        schemaScopedSerializerMap.get(schema) match {
-            case Some(objectPool) => objectPool.borrowSerializer(schema)
-            case None => RowEncoder(schema).createSerializer()
-        }
+  def getOrCreateSerializer(schema: StructType): ExpressionEncoder.Serializer[Row] = {
+    schemaScopedSerializerMap.get(schema) match {
+      case Some(objectPool) => objectPool.borrowSerializer(schema)
+      case None => RowEncoder(schema).createSerializer()
+    }
+  }
+
+  def returnSerializerToPool(schema: StructType, serializer: ExpressionEncoder.Serializer[Row]): Boolean = {
+    schemaScopedSerializerMap.get(schema) match {
+      case Some(objectPool) => objectPool.returnSerializer(serializer)
+      case None =>
+        val newQueue = new RowSerializerQueue()
+        newQueue.returnSerializer(serializer)
+        schemaScopedSerializerMap.putIfAbsent(schema, newQueue).isEmpty
+    }
+  }
+
+  private[this] def onCleanUp(): Unit = {
+    try {
+      val expirationThreshold: Long = Instant.now.minusSeconds(expirationIntervalInSeconds).toEpochMilli
+
+      schemaScopedSerializerMap
+        .readOnlySnapshot()
+        .foreach(keyValuePair => {
+          if (keyValuePair._2.getLastBorrowedAny < expirationThreshold) {
+            schemaScopedSerializerMap.remove(keyValuePair._1, keyValuePair._2)
+          }
+        })
+    } catch {
+      case NonFatal(e) => logError("Callback onCleanup invocation failed.", e)
+    }
+  }
+
+  /**
+   * A slim wrapper around ConcurrentLinkedQueue with the purpose of
+   * - having a soft-limit on how many serializers can be pooled - there is no need to have an
+   *   exact limit - best effort is acceptable. When we exceed the max size we don't offer
+   *   returned serializers to the pool anymore to have a limited memory footprint.
+   * - keeping track of when any serializer for a certain schema was used last to allow the owner
+   *   to purge serializers for schemas not used anymore.
+   */
+  private class RowSerializerQueue() {
+    private[this] val objectPool = new ConcurrentLinkedQueue[ExpressionEncoder.Serializer[Row]]()
+    private[this] val estimatedSize = new AtomicLong(0)
+    private[this] val lastBorrowedAny = new AtomicLong(Instant.now.toEpochMilli)
+
+    def borrowSerializer(schema: StructType): ExpressionEncoder.Serializer[Row] = {
+      lastBorrowedAny.set(Instant.now.toEpochMilli)
+      Option.apply(objectPool.poll()) match {
+        case Some(serializer) =>
+          estimatedSize.decrementAndGet()
+          serializer
+        case None => RowEncoder(schema).createSerializer()
+      }
     }
 
-    def returnSerializerToPool(schema: StructType, serializer: ExpressionEncoder.Serializer[Row]): Boolean = {
-        schemaScopedSerializerMap.get(schema) match {
-            case Some(objectPool) => objectPool.returnSerializer(serializer)
-            case None =>
-                val newQueue = new RowSerializerQueue()
-                newQueue.returnSerializer(serializer)
-                schemaScopedSerializerMap.putIfAbsent(schema, newQueue).isEmpty
-        }
+    def returnSerializer(serializer: ExpressionEncoder.Serializer[Row]): Boolean = {
+      if (estimatedSize.incrementAndGet() > MaxPooledSerializerCount) {
+        estimatedSize.decrementAndGet()
+        false
+      } else {
+        objectPool.offer(serializer)
+        true
+      }
     }
 
-    private[this] def onCleanUp(): Unit = {
-        try {
-            val expirationThreshold: Long = Instant.now.minusSeconds(expirationIntervalInSeconds).toEpochMilli
-
-            schemaScopedSerializerMap
-                .readOnlySnapshot()
-                .foreach(keyValuePair => {
-                    if (keyValuePair._2.getLastBorrowedAny < expirationThreshold) {
-                        schemaScopedSerializerMap.remove(keyValuePair._1, keyValuePair._2)
-                    }
-                })
-        } catch {
-            case NonFatal(e) => logError("Callback onCleanup invocation failed.", e)
-        }
-    }
-
-    /**
-     * A slim wrapper around ConcurrentLinkedQueue with the purpose of
-     * - having a soft-limit on how many serializers can be pooled - there is no need to have an
-     *   exact limit - best effort is acceptable. When we exceed the max size we don't offer
-     *   returned serializers to the pool anymore to have a limited memory footprint.
-     * - keeping track of when any serializer for a certain schema was used last to allow the owner
-     *   to purge serializers for schemas not used anymore.
-     */
-    private class RowSerializerQueue() {
-        private[this] val objectPool = new ConcurrentLinkedQueue[ExpressionEncoder.Serializer[Row]]()
-        private[this] val estimatedSize = new AtomicLong(0)
-        private[this] val lastBorrowedAny = new AtomicLong(Instant.now.toEpochMilli)
-
-        def borrowSerializer(schema: StructType): ExpressionEncoder.Serializer[Row] = {
-            lastBorrowedAny.set(Instant.now.toEpochMilli)
-            Option.apply(objectPool.poll()) match {
-                case Some(serializer) =>
-                    estimatedSize.decrementAndGet()
-                    serializer
-                case None => RowEncoder(schema).createSerializer()
-            }
-        }
-
-        def returnSerializer(serializer: ExpressionEncoder.Serializer[Row]): Boolean = {
-            if (estimatedSize.incrementAndGet() > MaxPooledSerializerCount) {
-                estimatedSize.decrementAndGet()
-                false
-            } else {
-                objectPool.offer(serializer)
-                true
-            }
-        }
-
-        def getLastBorrowedAny: Long = lastBorrowedAny.get()
-    }
+    def getLastBorrowedAny: Long = lastBorrowedAny.get()
+  }
 }
