@@ -165,7 +165,9 @@ class OkHttpHttpClient implements HttpClient {
         if (responseHandlingMode == null) {
             String contentType = response.headers().get(CONTENT_TYPE.getCaseInsensitiveName());
 
-            if (APPLICATION_OCTET_STREAM.equalsIgnoreCase(contentType)) {
+            if (contentType != null
+                && APPLICATION_OCTET_STREAM.regionMatches(true, 0, contentType, 0, APPLICATION_OCTET_STREAM.length())) {
+
                 responseHandlingMode = STREAM;
             } else {
                 responseHandlingMode = BUFFER;
