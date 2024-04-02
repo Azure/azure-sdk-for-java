@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue where `exceptionMessage` is not populated for non-cosmos Exceptions in `GatewayStatistics` - See [PR 39507](https://github.com/Azure/azure-sdk-for-java/pull/39507)
 
 #### Other Changes
 
