@@ -35,8 +35,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class KafkaCosmosBulkWriter extends KafkaCosmosWriterBase {
-    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaCosmosBulkWriter.class);
+public class CosmosBulkWriter extends CosmosWriterBase {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosBulkWriter.class);
     private static final int MAX_DELAY_ON_408_REQUEST_TIMEOUT_IN_MS = 10000;
     private static final int MIN_DELAY_ON_408_REQUEST_TIMEOUT_IN_MS = 1000;
     private static final Random RANDOM = new Random();
@@ -45,7 +45,7 @@ public class KafkaCosmosBulkWriter extends KafkaCosmosWriterBase {
     private final CosmosThroughputControlConfig throughputControlConfig;
     private final Sinks.EmitFailureHandler emitFailureHandler;
 
-    public KafkaCosmosBulkWriter(
+    public CosmosBulkWriter(
         CosmosSinkWriteConfig writeConfig,
         CosmosThroughputControlConfig throughputControlConfig,
         ErrantRecordReporter errantRecordReporter) {

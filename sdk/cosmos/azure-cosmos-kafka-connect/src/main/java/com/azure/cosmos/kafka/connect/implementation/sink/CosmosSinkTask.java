@@ -42,13 +42,13 @@ public class CosmosSinkTask extends SinkTask {
 
         if (this.sinkTaskConfig.getWriteConfig().isBulkEnabled()) {
             this.cosmosWriter =
-                new KafkaCosmosBulkWriter(
+                new CosmosBulkWriter(
                     this.sinkTaskConfig.getWriteConfig(),
                     this.sinkTaskConfig.getThroughputControlConfig(),
                     this.context.errantRecordReporter());
         } else {
             this.cosmosWriter =
-                new KafkaCosmosPointWriter(
+                new CosmosPointWriter(
                     this.sinkTaskConfig.getWriteConfig(),
                     this.sinkTaskConfig.getThroughputControlConfig(),
                     context.errantRecordReporter());
