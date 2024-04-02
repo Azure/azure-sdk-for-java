@@ -1,14 +1,12 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0 (Unreleased)
+This Azure DevCenter library release uses the 2023-04-01 GA API.
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added models and models serialization for each Dev Center concept.
+- For each previous client method, added the correspondent method with model return instead of BinaryData
 
 ## 1.0.0-beta.3 (2023-11-09)
 
