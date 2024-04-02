@@ -25,6 +25,7 @@ private object RowSerializerPool extends RowSerializerPoolBase[RowSerializerQueu
             case None => RowEncoder(schema).createSerializer()
         }
     }
+
     def returnSerializerToPool(schema: StructType, serializer: ExpressionEncoder.Serializer[Row]): Boolean = {
         schemaScopedSerializerMap.get(schema) match {
             case Some(objectPool) => objectPool.returnSerializer(serializer)
