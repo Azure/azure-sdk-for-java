@@ -85,20 +85,20 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-codegen</artifactId>
-      <version>4.5.5</version> <!-- {x-version-update;io.vertx:vertx-codegen;external_dependency} -->
+      <version>4.5.7</version> <!-- {x-version-update;io.vertx:vertx-codegen;external_dependency} -->
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-core</artifactId>
-      <version>4.5.5</version> <!-- {x-version-update;io.vertx:vertx-core;external_dependency} -->
+      <version>4.5.7</version> <!-- {x-version-update;io.vertx:vertx-core;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-reactive-streams</artifactId>
-      <version>4.5.5</version> <!-- {x-version-update;io.vertx:vertx-reactive-streams;external_dependency} -->
+      <version>4.5.7</version> <!-- {x-version-update;io.vertx:vertx-reactive-streams;external_dependency} -->
     </dependency>
 
     <!-- test dependencies on azure-core, because we want to run tests inherited from this module using Vert.x Web Client -->
@@ -180,9 +180,9 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.vertx:vertx-codegen:[4.5.5]</include> <!-- {x-include-update;io.vertx:vertx-codegen;external_dependency} -->
-                <include>io.vertx:vertx-core:[4.5.5]</include> <!-- {x-include-update;io.vertx:vertx-core;external_dependency} -->
-                <include>io.vertx:vertx-reactive-streams:[4.5.5]</include> <!-- {x-include-update;io.vertx:vertx-reactive-streams;external_dependency} -->
+                <include>io.vertx:vertx-codegen:[4.5.7]</include> <!-- {x-include-update;io.vertx:vertx-codegen;external_dependency} -->
+                <include>io.vertx:vertx-core:[4.5.7]</include> <!-- {x-include-update;io.vertx:vertx-core;external_dependency} -->
+                <include>io.vertx:vertx-reactive-streams:[4.5.7]</include> <!-- {x-include-update;io.vertx:vertx-reactive-streams;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
