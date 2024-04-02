@@ -7,7 +7,6 @@ import com.azure.communication.jobrouter.implementation.accesshelpers.ExceptionP
 import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyInternal;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;

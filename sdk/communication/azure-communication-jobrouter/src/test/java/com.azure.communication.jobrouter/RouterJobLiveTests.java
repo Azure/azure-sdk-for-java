@@ -3,7 +3,24 @@
 
 package com.azure.communication.jobrouter;
 
-import com.azure.communication.jobrouter.models.*;
+import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
+import com.azure.communication.jobrouter.models.CancelJobOptions;
+import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateWorkerOptions;
+import com.azure.communication.jobrouter.models.DistributionPolicy;
+import com.azure.communication.jobrouter.models.LabelOperator;
+import com.azure.communication.jobrouter.models.QueueAndMatchMode;
+import com.azure.communication.jobrouter.models.RouterChannel;
+import com.azure.communication.jobrouter.models.RouterJob;
+import com.azure.communication.jobrouter.models.RouterJobNote;
+import com.azure.communication.jobrouter.models.RouterJobOffer;
+import com.azure.communication.jobrouter.models.RouterJobStatus;
+import com.azure.communication.jobrouter.models.RouterQueue;
+import com.azure.communication.jobrouter.models.RouterValue;
+import com.azure.communication.jobrouter.models.RouterWorker;
+import com.azure.communication.jobrouter.models.RouterWorkerSelector;
+import com.azure.communication.jobrouter.models.ScheduleAndSuspendMode;
+import com.azure.communication.jobrouter.models.UnassignJobResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
@@ -15,9 +32,9 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class RouterJobLiveTests extends JobRouterTestBase {
     private JobRouterClient jobRouterClient;
@@ -41,37 +58,61 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         String channelId = String.format("%s-%s-Channel", JAVA_LIVE_TESTS, testName);
 
         RouterWorker createdWorker = jobRouterClient.createWorker(new CreateWorkerOptions(workerId, 10)
-            .setLabels(new HashMap<String, RouterValue>() {{
-                put("IntKey", new RouterValue(4));
-                put("BoolKey", new RouterValue(true));
-                put("StringLabel", new RouterValue("test"));
-            }})
-            .setTags(new HashMap<String, RouterValue>() {{
-                put("IntTag", new RouterValue(5));
-                put("BoolTag", new RouterValue(false));
-                put("StringTag", new RouterValue("test2"));
-            }})
+            .setLabels(new HashMap<String, RouterValue>() {
+                {
+                    put("IntKey", new RouterValue(4));
+                    put("BoolKey", new RouterValue(true));
+                    put("StringLabel", new RouterValue("test"));
+                }
+            })
+            .setTags(new HashMap<String, RouterValue>() {
+                {
+                    put("IntTag", new RouterValue(5));
+                    put("BoolTag", new RouterValue(false));
+                    put("StringTag", new RouterValue("test2"));
+                }
+            })
             .setAvailableForOffers(true)
-            .setChannels(new ArrayList<RouterChannel>() {{ add(new RouterChannel(channelId, 1)); }})
-            .setQueues(new ArrayList<String>() {{ add(jobQueue.getId()); }}));
+            .setChannels(new ArrayList<RouterChannel>() {
+                {
+                    add(new RouterChannel(channelId, 1));
+                }
+            })
+            .setQueues(new ArrayList<String>() {
+                {
+                    add(jobQueue.getId());
+                }
+            }));
 
         String jobId = String.format("%s-%s-Job", JAVA_LIVE_TESTS, testName);
         CreateJobOptions createJobOptions = new CreateJobOptions(jobId, channelId, queueId)
-            .setLabels(new HashMap<String, RouterValue>() {{
-                put("IntLabel", new RouterValue(10));
-                put("BoolLabel", new RouterValue(true));
-                put("StringLabel", new RouterValue("test"));
-            }})
-            .setTags(new HashMap<String, RouterValue>() {{
-                put("IntTag", new RouterValue(5));
-                put("BoolTag", new RouterValue(false));
-                put("StringTag", new RouterValue("test2"));
-            }})
-            .setRequestedWorkerSelectors(new ArrayList<RouterWorkerSelector>() {{
-                add(new RouterWorkerSelector("IntKey", LabelOperator.GREATER_THAN).setValue(new RouterValue(2)));
-                add(new RouterWorkerSelector("BoolKey", LabelOperator.EQUAL).setValue(new RouterValue(true)));
-            }})
-            .setNotes(new ArrayList<RouterJobNote>() {{ add(new RouterJobNote("Note1")); }})
+            .setLabels(new HashMap<String, RouterValue>() {
+                {
+                    put("IntLabel", new RouterValue(10));
+                    put("BoolLabel", new RouterValue(true));
+                    put("StringLabel", new RouterValue("test"));
+                }
+            })
+            .setTags(new HashMap<String, RouterValue>() {
+                {
+                    put("IntTag", new RouterValue(5));
+                    put("BoolTag", new RouterValue(false));
+                    put("StringTag", new RouterValue("test2"));
+                }
+            })
+            .setRequestedWorkerSelectors(new ArrayList<RouterWorkerSelector>() {
+                {
+                    add(new RouterWorkerSelector("IntKey", LabelOperator.GREATER_THAN)
+                        .setValue(new RouterValue(2)));
+                    add(new RouterWorkerSelector("BoolKey", LabelOperator.EQUAL)
+                        .setValue(new RouterValue(true)));
+                }
+            })
+            .setNotes(new ArrayList<RouterJobNote>() {
+                {
+                    add(new RouterJobNote("Note1"));
+                }
+            })
             .setDispositionCode("code1")
             .setChannelReference("ref")
             .setPriority(5);
@@ -84,9 +125,9 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         assertEquals(3, job.getLabels().size());
         assertEquals(3, job.getTags().size());
         assertEquals(1, job.getNotes().size());
-        assertEquals( "code1", job.getDispositionCode());
+        assertEquals("code1", job.getDispositionCode());
         assertEquals("ref", job.getChannelReference());
-        assertEquals( 5, job.getPriority());
+        assertEquals(5, job.getPriority());
         assertEquals(2, job.getRequestedWorkerSelectors().size());
 
         List<RouterJobOffer> jobOffers = new ArrayList<RouterJobOffer>();
@@ -99,7 +140,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
             }
         }
 
-        assertTrue(jobOffers.size() == 1);
+        assertEquals(1, jobOffers.size());
 
         RouterJobOffer offer = jobOffers.get(0);
 

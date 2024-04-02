@@ -7,7 +7,6 @@ import com.azure.communication.jobrouter.implementation.accesshelpers.Distributi
 import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Duration;

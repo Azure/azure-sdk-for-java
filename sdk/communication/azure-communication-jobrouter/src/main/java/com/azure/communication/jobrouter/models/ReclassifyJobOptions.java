@@ -4,7 +4,6 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 
 /** Request payload for reclassifying jobs. */

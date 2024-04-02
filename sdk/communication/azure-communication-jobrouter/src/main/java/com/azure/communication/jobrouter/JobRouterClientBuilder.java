@@ -340,7 +340,7 @@ public final class JobRouterClientBuilder
 
     /**
      * Set a connection string for authorization.
-     * 
+     *
      * @param connectionString valid connectionString as a string.
      * @return the updated JobRouterClientBuilder object.
      */

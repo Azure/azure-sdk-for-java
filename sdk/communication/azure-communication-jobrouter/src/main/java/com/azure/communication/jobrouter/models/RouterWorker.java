@@ -7,7 +7,6 @@ import com.azure.communication.jobrouter.implementation.accesshelpers.RouterValu
 import com.azure.communication.jobrouter.implementation.accesshelpers.RouterWorkerConstructorProxy;
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
