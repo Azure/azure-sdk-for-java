@@ -41,6 +41,8 @@ Licensed under the MIT License.
       --add-opens com.azure.data.tables/com.azure.data.tables.models=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <javadoc.excludePackageNames>com.azure.json:com.azure.core.*</javadoc.excludePackageNames>
+
+    <revapi.differences.file>revapi-differences.json</revapi.differences.file>
   </properties>
 
   <dependencies>
