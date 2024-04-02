@@ -17,13 +17,13 @@ import java.util.Map;
 
 public class CosmosClientStore {
     // TODO[Public Preview]: revalidate how to get the active directory endpoint map. It suppose to come from management SDK.
-    private final static Map<CosmosAzureEnvironments, String> activeDirectoryEndpointMap;
+    private static final Map<CosmosAzureEnvironments, String> ACTIVE_DIRECTORY_ENDPOINT_MAP;
     static {
-        activeDirectoryEndpointMap = new HashMap<>();
-        activeDirectoryEndpointMap.put(CosmosAzureEnvironments.AZURE, "https://login.microsoftonline.com/");
-        activeDirectoryEndpointMap.put(CosmosAzureEnvironments.AZURE_CHINA, "https://login.chinacloudapi.cn/");
-        activeDirectoryEndpointMap.put(CosmosAzureEnvironments.AZURE_US_GOVERNMENT, "https://login.microsoftonline.us/");
-        activeDirectoryEndpointMap.put(CosmosAzureEnvironments.AZURE_GERMANY, "https://login.microsoftonline.de/");
+        ACTIVE_DIRECTORY_ENDPOINT_MAP = new HashMap<>();
+        ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironments.AZURE, "https://login.microsoftonline.com/");
+        ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironments.AZURE_CHINA, "https://login.chinacloudapi.cn/");
+        ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironments.AZURE_US_GOVERNMENT, "https://login.microsoftonline.us/");
+        ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironments.AZURE_GERMANY, "https://login.microsoftonline.de/");
     }
 
     public static CosmosAsyncClient getCosmosClient(CosmosAccountConfig accountConfig) {
@@ -50,7 +50,7 @@ public class CosmosClientStore {
 
             CosmosAadAuthConfig aadAuthConfig = (CosmosAadAuthConfig) accountConfig.getCosmosAuthConfig();
             ClientSecretCredential tokenCredential = new ClientSecretCredentialBuilder()
-                .authorityHost(activeDirectoryEndpointMap.get(aadAuthConfig.getAzureEnvironment()).replaceAll("/$", "") +"/")
+                .authorityHost(ACTIVE_DIRECTORY_ENDPOINT_MAP.get(aadAuthConfig.getAzureEnvironment()).replaceAll("/$", "") + "/")
                 .tenantId(aadAuthConfig.getTenantId())
                 .clientId(aadAuthConfig.getClientId())
                 .clientSecret(aadAuthConfig.getClientSecret())

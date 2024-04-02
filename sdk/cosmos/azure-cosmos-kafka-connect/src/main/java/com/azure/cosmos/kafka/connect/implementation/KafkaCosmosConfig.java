@@ -772,7 +772,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
         CosmosAuthTypes authType = CosmosAuthTypes.fromName(configValueMap.get(authTypeConfig).value().toString());
         switch (authType) {
             case MASTER_KEY:
-                String masterKey = ((Password)configValueMap.get(accountKeyConfig).value()).value();
+                String masterKey = ((Password) configValueMap.get(accountKeyConfig).value()).value();
                 if (StringUtils.isEmpty(masterKey)) {
                     configValueMap
                         .get(accountKeyConfig)
@@ -794,7 +794,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
                         .addErrorMessage("ClientId is required for Service Principal auth type");
                 }
 
-                String clientSecret = ((Password)configValueMap.get(clientSecretConfig).value()).value();
+                String clientSecret = ((Password) configValueMap.get(clientSecretConfig).value()).value();
                 if (StringUtils.isEmpty(clientSecret)) {
                     configValueMap
                         .get(clientSecretConfig)
