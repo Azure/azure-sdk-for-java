@@ -23,8 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class OkHttpHttpClientProviderTests {
     @Test
     public void getBaseClient() {
-        OkHttpHttpClient httpClient = (OkHttpHttpClient) new OkHttpHttpClientProvider()
-            .getNewInstance();
+        OkHttpHttpClient httpClient = (OkHttpHttpClient) new OkHttpHttpClientProvider().getSharedInstance();
 
         ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
 
