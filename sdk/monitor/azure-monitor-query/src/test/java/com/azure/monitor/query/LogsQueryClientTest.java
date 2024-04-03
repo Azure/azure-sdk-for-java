@@ -38,7 +38,6 @@ import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Objects;
 
 import static com.azure.monitor.query.MonitorQueryTestUtils.QUERY_STRING;
 import static com.azure.monitor.query.MonitorQueryTestUtils.getAdditionalLogWorkspaceId;
@@ -190,7 +189,6 @@ public class LogsQueryClientTest extends TestProxyTestBase {
         } else if (getTestMode() == TestMode.LIVE) {
             clientBuilder.credential(getCredential());
             clientBuilder.endpoint(MonitorQueryTestUtils.getLogEndpoint());
-            Objects.equals(clientBuilder, null);
         }
         LogsQueryClient client = clientBuilder
             .addPolicy((context, next) -> {
