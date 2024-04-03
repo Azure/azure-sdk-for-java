@@ -5,7 +5,6 @@ package com.azure.monitor.query;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.policy.RetryPolicy;
@@ -15,7 +14,6 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
-import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -31,7 +29,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -344,15 +341,15 @@ public class LogsQueryClientTest extends TestProxyTestBase {
         long count = 5;
         client.queryWorkspaceWithResponse(workspaceId, "range x from 1 to " + count + " step 1 | count", null,
             new LogsQueryOptions().setServerTimeout(Duration.ofSeconds(5)), Context.NONE);
-        }
+    }
 
     @Test
     public void testVisualization() {
         String query = "datatable (s: string, i: long) [ \"a\", 1, \"b\", 2, \"c\", 3 ] "
                 + "| render columnchart with (title=\"the chart title\", xtitle=\"the x axis title\")";
         LogsQueryResult queryResults = client.queryWorkspaceWithResponse(workspaceId,
-                query, null, new LogsQueryOptions().setIncludeStatistics(true).setIncludeVisualization(true),
-                Context.NONE).getValue();
+            query, null, new LogsQueryOptions().setIncludeStatistics(true).setIncludeVisualization(true),
+            Context.NONE).getValue();
 
         assertEquals(1, queryResults.getAllTables().size());
         assertNotNull(queryResults.getVisualization());
