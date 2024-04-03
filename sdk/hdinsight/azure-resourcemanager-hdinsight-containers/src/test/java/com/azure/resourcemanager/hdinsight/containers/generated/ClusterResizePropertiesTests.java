@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.hdinsight.containers.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterResizeProperties;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterResizeProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class ClusterResizePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterResizeProperties model =
-            BinaryData.fromString("{\"targetWorkerNodeCount\":1194461063}").toObject(ClusterResizeProperties.class);
-        Assertions.assertEquals(1194461063, model.targetWorkerNodeCount());
+        ClusterResizeProperties model
+            = BinaryData.fromString("{\"targetWorkerNodeCount\":1950925712}").toObject(ClusterResizeProperties.class);
+        Assertions.assertEquals(1950925712, model.targetWorkerNodeCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterResizeProperties model = new ClusterResizeProperties().withTargetWorkerNodeCount(1194461063);
+        ClusterResizeProperties model = new ClusterResizeProperties().withTargetWorkerNodeCount(1950925712);
         model = BinaryData.fromObject(model).toObject(ClusterResizeProperties.class);
-        Assertions.assertEquals(1194461063, model.targetWorkerNodeCount());
+        Assertions.assertEquals(1950925712, model.targetWorkerNodeCount());
     }
 }

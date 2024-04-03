@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cluster Prometheus profile. */
+/**
+ * Cluster Prometheus profile.
+ */
 @Fluent
 public final class ClusterPrometheusProfile {
     /*
@@ -16,13 +18,15 @@ public final class ClusterPrometheusProfile {
     @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
-    /** Creates an instance of ClusterPrometheusProfile class. */
+    /**
+     * Creates an instance of ClusterPrometheusProfile class.
+     */
     public ClusterPrometheusProfile() {
     }
 
     /**
      * Get the enabled property: Enable Prometheus for cluster or not.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -31,7 +35,7 @@ public final class ClusterPrometheusProfile {
 
     /**
      * Set the enabled property: Enable Prometheus for cluster or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ClusterPrometheusProfile object itself.
      */
@@ -42,7 +46,7 @@ public final class ClusterPrometheusProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
