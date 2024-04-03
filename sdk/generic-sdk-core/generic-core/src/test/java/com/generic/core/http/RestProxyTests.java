@@ -33,6 +33,7 @@ import java.nio.file.Path;
 import java.util.stream.Stream;
 
 import static com.generic.core.http.models.ResponseHandlingMode.BUFFER;
+import static com.generic.core.http.models.ResponseHandlingMode.IGNORE;
 import static com.generic.core.http.models.ResponseHandlingMode.STREAM;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -64,8 +65,8 @@ public class RestProxyTests {
         @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path", expectedStatusCodes = {200})
         Void testMethodReturnsVoid();
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path", expectedStatusCodes = {200})
-        void testVoidMethod();
+        @HttpRequestInformation(method = HttpMethod.HEAD, path = "my/url/path", expectedStatusCodes = {200})
+        void testHeadMethod();
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path", expectedStatusCodes = {200})
         Response<Void> testMethodReturnsResponseVoid();
@@ -173,7 +174,7 @@ public class RestProxyTests {
     }
 
     @Test
-    public void voidReturningApiIgnoresResponseBody() {
+    public void headApiIgnoresResponseBody() {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
@@ -181,13 +182,13 @@ public class RestProxyTests {
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
 
-        testInterface.testVoidMethod();
+        testInterface.testHeadMethod();
 
-        assertEquals(BUFFER, client.getLastHttpRequest().getMetadata().getResponseHandlingMode());
+        assertEquals(IGNORE, client.getLastHttpRequest().getMetadata().getResponseHandlingMode());
     }
 
     @Test
-    public void responseVoidReturningApiIgnoresResponseBody() {
+    public void responseVoidReturningApiBuffersResponseBody() {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
@@ -246,7 +247,8 @@ public class RestProxyTests {
             if (request.getHttpMethod().equals(HttpMethod.POST)) {
                 success &= "application/json".equals(request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
             } else {
-                success &= request.getHttpMethod().equals(HttpMethod.GET);
+                success &= request.getHttpMethod().equals(HttpMethod.GET)
+                    || request.getHttpMethod().equals(HttpMethod.HEAD);
             }
 
             return new MockHttpResponse(request, success ? 200 : 400) {

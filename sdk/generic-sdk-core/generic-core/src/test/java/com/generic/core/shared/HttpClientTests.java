@@ -1859,6 +1859,15 @@ public abstract class HttpClientTests {
         Response<HttpBinJSON> putResponse(@HostParam("url") String url,
                                           @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody,
                                           RequestOptions requestOptions);
+
+        @HttpRequestInformation(method = HttpMethod.POST, path = "stream", expectedStatusCodes = {200})
+        HttpBinJSON postStream(@HostParam("url") String url, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody,
+                               RequestOptions requestOptions);
+
+        @HttpRequestInformation(method = HttpMethod.POST, path = "stream", expectedStatusCodes = {200})
+        Response<HttpBinJSON> postStreamResponse(@HostParam("url") String url,
+                                                @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody,
+                                                RequestOptions requestOptions);
     }
 
     @Test
@@ -1885,6 +1894,23 @@ public abstract class HttpClientTests {
         assertNull(httpBinJSON);
 
         try (Response<HttpBinJSON> response = service.putResponse(getServerUri(isSecure()), 42, requestOptions)) {
+            assertNotNull(response.getBody());
+            assertEquals(0, response.getBody().toBytes().length);
+            assertNull(response.getValue());
+        }
+    }
+
+    @Test
+    public void bodyIsEmptyWhenIgnoreBodyIsSetForStreamResponse() throws IOException {
+        Service30 service = createService(Service30.class);
+        RequestOptions requestOptions = new RequestOptions()
+            .setResponseHandlingMode(IGNORE);
+        HttpBinJSON httpBinJSON = service.postStream(getServerUri(isSecure()), 42, requestOptions);
+
+        assertNull(httpBinJSON);
+
+        try (Response<HttpBinJSON> response =
+                 service.postStreamResponse(getServerUri(isSecure()), 42, requestOptions)) {
             assertNotNull(response.getBody());
             assertEquals(0, response.getBody().toBytes().length);
             assertNull(response.getValue());
