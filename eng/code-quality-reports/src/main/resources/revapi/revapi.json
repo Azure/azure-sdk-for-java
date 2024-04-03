@@ -388,6 +388,20 @@
           "code": "java.field.addedStaticField",
           "new": "field com\\.azure\\.data\\.schemaregistry\\.models\\.SchemaFormat\\.(CUSTOM|JSON)",
           "justification": "Additional schema formats are supported by Schema Registry."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.removed",
+          "package": "com.azure.ai.contentsafety.models",
+          "annotationType": "com.fasterxml.jackson.annotation.JsonProperty",
+          "justification": "Migrate to azure-json."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.removed",
+          "package": "com.azure.ai.contentsafety.models",
+          "annotationType": "com.fasterxml.jackson.annotation.JsonCreator",
+          "justification": "Migrate to azure-json."
         }
       ]
     }

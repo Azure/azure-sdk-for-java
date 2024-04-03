@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,7 +16,11 @@ import java.util.List;
  * Detailed information about observations
  * Based on [FHIR Observation](https://www.hl7.org/fhir/R4/observation.html).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "resourceType",
+    defaultImpl = FhirR4Observation.class,
+    visible = true)
 @JsonTypeName("Observation")
 @Fluent
 public final class FhirR4Observation extends FhirR4DomainResource {
@@ -32,10 +37,10 @@ public final class FhirR4Observation extends FhirR4DomainResource {
      */
     @Generated
     @JsonProperty(value = "status")
-    private ObservationStatusCodeType status;
+    private final ObservationStatusCodeType status;
 
     /*
-     * Classification of type of observation
+     * Classification of  type of observation
      */
     @Generated
     @JsonProperty(value = "category")
@@ -46,7 +51,7 @@ public final class FhirR4Observation extends FhirR4DomainResource {
      */
     @Generated
     @JsonProperty(value = "code")
-    private FhirR4CodeableConcept code;
+    private final FhirR4CodeableConcept code;
 
     /*
      * Who and/or what the observation is about
@@ -961,5 +966,24 @@ public final class FhirR4Observation extends FhirR4DomainResource {
     public FhirR4Observation setLanguage(String language) {
         super.setLanguage(language);
         return this;
+    }
+
+    /*
+     * resourceType
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "resourceType")
+    private String resourceType = "Observation";
+
+    /**
+     * Get the resourceType property: resourceType.
+     *
+     * @return the resourceType value.
+     */
+    @Generated
+    @Override
+    public String getResourceType() {
+        return this.resourceType;
     }
 }

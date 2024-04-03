@@ -13,15 +13,19 @@ import java.util.Collection;
  * content is base64 encoded. Set it to none or skip it if the content is plain text.
  */
 public final class ContentEncoding extends ExpandableStringEnum<ContentEncoding> {
-    /** Static value Base64 for ContentEncoding. */
+    /**
+     * Static value Base64 for ContentEncoding.
+     */
     public static final ContentEncoding BASE64 = fromString("Base64");
 
-    /** Static value None for ContentEncoding. */
+    /**
+     * Static value None for ContentEncoding.
+     */
     public static final ContentEncoding NONE = fromString("None");
 
     /**
      * Creates a new instance of ContentEncoding value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +34,7 @@ public final class ContentEncoding extends ExpandableStringEnum<ContentEncoding>
 
     /**
      * Creates or finds a ContentEncoding from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ContentEncoding.
      */
@@ -41,7 +45,7 @@ public final class ContentEncoding extends ExpandableStringEnum<ContentEncoding>
 
     /**
      * Gets known ContentEncoding values.
-     *
+     * 
      * @return known ContentEncoding values.
      */
     public static Collection<ContentEncoding> values() {

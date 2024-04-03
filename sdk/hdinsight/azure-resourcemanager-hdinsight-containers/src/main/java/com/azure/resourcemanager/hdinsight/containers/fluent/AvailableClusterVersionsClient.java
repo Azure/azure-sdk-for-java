@@ -10,11 +10,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterVersionInner;
 
-/** An instance of this class provides access to all the operations defined in AvailableClusterVersionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AvailableClusterVersionsClient.
+ */
 public interface AvailableClusterVersionsClient {
     /**
      * Returns a list of available cluster versions.
-     *
+     * 
      * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -26,7 +28,7 @@ public interface AvailableClusterVersionsClient {
 
     /**
      * Returns a list of available cluster versions.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

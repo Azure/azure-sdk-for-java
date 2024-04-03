@@ -6,7 +6,6 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class SearchSortOrder extends ExpandableStringEnum<SearchSortOrder>
      * @return the corresponding SearchSortOrder.
      */
     @Generated
-    @JsonCreator
     public static SearchSortOrder fromString(String name) {
         return fromString(name, SearchSortOrder.class);
     }

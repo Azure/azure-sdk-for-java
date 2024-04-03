@@ -6,7 +6,6 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -72,7 +71,6 @@ public final class AtlasTermAssignmentStatus extends ExpandableStringEnum<AtlasT
      * @return the corresponding AtlasTermAssignmentStatus.
      */
     @Generated
-    @JsonCreator
     public static AtlasTermAssignmentStatus fromString(String name) {
         return fromString(name, AtlasTermAssignmentStatus.class);
     }

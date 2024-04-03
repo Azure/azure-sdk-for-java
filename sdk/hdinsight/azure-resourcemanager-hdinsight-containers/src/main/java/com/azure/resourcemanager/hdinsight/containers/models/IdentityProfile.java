@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Identity Profile with details of an MSI. */
+/**
+ * Identity Profile with details of an MSI.
+ */
 @Fluent
 public class IdentityProfile {
     /*
@@ -29,13 +31,15 @@ public class IdentityProfile {
     @JsonProperty(value = "msiObjectId", required = true)
     private String msiObjectId;
 
-    /** Creates an instance of IdentityProfile class. */
+    /**
+     * Creates an instance of IdentityProfile class.
+     */
     public IdentityProfile() {
     }
 
     /**
      * Get the msiResourceId property: ResourceId of the MSI.
-     *
+     * 
      * @return the msiResourceId value.
      */
     public String msiResourceId() {
@@ -44,7 +48,7 @@ public class IdentityProfile {
 
     /**
      * Set the msiResourceId property: ResourceId of the MSI.
-     *
+     * 
      * @param msiResourceId the msiResourceId value to set.
      * @return the IdentityProfile object itself.
      */
@@ -55,7 +59,7 @@ public class IdentityProfile {
 
     /**
      * Get the msiClientId property: ClientId of the MSI.
-     *
+     * 
      * @return the msiClientId value.
      */
     public String msiClientId() {
@@ -64,7 +68,7 @@ public class IdentityProfile {
 
     /**
      * Set the msiClientId property: ClientId of the MSI.
-     *
+     * 
      * @param msiClientId the msiClientId value to set.
      * @return the IdentityProfile object itself.
      */
@@ -75,7 +79,7 @@ public class IdentityProfile {
 
     /**
      * Get the msiObjectId property: ObjectId of the MSI.
-     *
+     * 
      * @return the msiObjectId value.
      */
     public String msiObjectId() {
@@ -84,7 +88,7 @@ public class IdentityProfile {
 
     /**
      * Set the msiObjectId property: ObjectId of the MSI.
-     *
+     * 
      * @param msiObjectId the msiObjectId value to set.
      * @return the IdentityProfile object itself.
      */
@@ -95,24 +99,21 @@ public class IdentityProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (msiResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property msiResourceId in model IdentityProfile"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property msiResourceId in model IdentityProfile"));
         }
         if (msiClientId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property msiClientId in model IdentityProfile"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property msiClientId in model IdentityProfile"));
         }
         if (msiObjectId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property msiObjectId in model IdentityProfile"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property msiObjectId in model IdentityProfile"));
         }
     }
 

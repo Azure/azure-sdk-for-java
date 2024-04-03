@@ -19,14 +19,14 @@ public final class TransliteratedText {
      */
     @Generated
     @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /*
      * A string specifying the script used in the output.
      */
     @Generated
     @JsonProperty(value = "script")
-    private String script;
+    private final String script;
 
     /**
      * Creates an instance of TransliteratedText class.
