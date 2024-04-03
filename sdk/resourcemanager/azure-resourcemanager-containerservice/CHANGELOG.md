@@ -5,6 +5,9 @@
 ### Features Added
 
 - Supported disabling public network access in `KubernetesCluster` via `disablePublicNetworkAccess()`, for private link feature.
+- Supported specifying network mode of Azure CNI configuration for `KubernetesCluster` during create.
+- Supported specifying network plugin mode for `KubernetesCluster` during create.
+- Supported specifying nNetwork data plane for `KubernetesCluster` during create.
 
 ### Breaking Changes
 
