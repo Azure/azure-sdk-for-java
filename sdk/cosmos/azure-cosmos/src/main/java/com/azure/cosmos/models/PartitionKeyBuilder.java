@@ -9,7 +9,7 @@ import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -153,8 +153,8 @@ public final class PartitionKeyBuilder {
         checkNotNull(item, "Argument 'item' must not be null.");
         checkNotNull(partitionKeyDefinition, "Argument 'partitionKeyDefinition' must not be null.");
 
-        ObjectMapper objectMapper = Utils.getSimpleObjectMapper();
         return PartitionKeyHelper.extractPartitionKeyFromDocument(
-            new JsonSerializable(objectMapper.writeValueAsString(item)), partitionKeyDefinition);
+            new JsonSerializable(Utils.getSimpleObjectMapper().convertValue(item, ObjectNode.class)),
+            partitionKeyDefinition);
     }
 }
