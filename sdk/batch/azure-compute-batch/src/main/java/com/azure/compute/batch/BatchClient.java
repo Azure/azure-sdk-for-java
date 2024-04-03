@@ -3346,6 +3346,67 @@ public final class BatchClient {
     }
 
     /**
+     * Lists all of the applications available in the specified Account.
+     *
+     * This operation returns only Applications and versions that are available for
+     * use on Compute Nodes; that is, that can be used in an Package reference. For
+     * administrator information about applications and versions that are not yet
+     * available to Compute Nodes, use the Azure portal or the Azure Resource Manager
+     * API.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>timeOut</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
+     * </tr>
+     * <tr>
+     * <td>maxresults</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     displayName: String (Required)
+     *     versions (Required): [
+     *         String (Required)
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the applications available in an Account as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BinaryData> listApplications(RequestOptions requestOptions) {
+        return this.listApplicationsInternal(requestOptions);
+    }
+
+    /**
      * Gets information about the specified Application.
      *
      * This operation returns only Applications and versions that are available for
@@ -3541,6 +3602,92 @@ public final class BatchClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BinaryData> listPoolUsageMetricsInternal(RequestOptions requestOptions) {
         return this.serviceClient.listPoolUsageMetricsInternal(requestOptions);
+    }
+
+    /**
+     * Lists the usage metrics, aggregated by Pool across individual time intervals,
+     * for the specified Account.
+     *
+     * If you do not specify a $filter clause including a poolId, the response
+     * includes all Pools that existed in the Account in the time range of the
+     * returned aggregation intervals. If you do not specify a $filter clause
+     * including a startTime or endTime these filters default to the start and end
+     * times of the last aggregation interval currently available; that is, only the
+     * last aggregation interval is returned.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>timeOut</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
+     * </tr>
+     * <tr>
+     * <td>maxresults</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td>
+     * </tr>
+     * <tr>
+     * <td>startTime</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The earliest time from which to include metrics. This must be at least two and
+     * a half hours before the current time. If not specified this defaults to the
+     * start time of the last aggregation interval currently available.</td>
+     * </tr>
+     * <tr>
+     * <td>endtime</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The latest time from which to include metrics. This must be at least two hours
+     * before the current time. If not specified this defaults to the end time of the
+     * last aggregation interval currently available.</td>
+     * </tr>
+     * <tr>
+     * <td>$filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     poolId: String (Required)
+     *     startTime: OffsetDateTime (Required)
+     *     endTime: OffsetDateTime (Required)
+     *     vmSize: String (Required)
+     *     totalCoreHours: double (Required)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of a listing the usage metrics for an Account as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BinaryData> listPoolUsageMetrics(RequestOptions requestOptions) {
+        return this.listPoolUsageMetricsInternal(requestOptions);
     }
 
     /**
@@ -4529,6 +4676,404 @@ public final class BatchClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BinaryData> listPoolsInternal(RequestOptions requestOptions) {
         return this.serviceClient.listPoolsInternal(requestOptions);
+    }
+
+    /**
+     * Lists all of the Pools in the specified Account.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>timeOut</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
+     * </tr>
+     * <tr>
+     * <td>maxresults</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td>
+     * </tr>
+     * <tr>
+     * <td>$filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.</td>
+     * </tr>
+     * <tr>
+     * <td>$select</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>An OData $select clause. In the form of "," separated string.</td>
+     * </tr>
+     * <tr>
+     * <td>$expand</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>An OData $expand clause. In the form of "," separated string.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     displayName: String (Optional)
+     *     url: String (Optional)
+     *     eTag: String (Optional)
+     *     lastModified: OffsetDateTime (Optional)
+     *     creationTime: OffsetDateTime (Optional)
+     *     state: String(active/deleting) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     allocationState: String(steady/resizing/stopping) (Optional)
+     *     allocationStateTransitionTime: OffsetDateTime (Optional)
+     *     vmSize: String (Optional)
+     *     virtualMachineConfiguration (Optional): {
+     *         imageReference (Required): {
+     *             publisher: String (Optional)
+     *             offer: String (Optional)
+     *             sku: String (Optional)
+     *             version: String (Optional)
+     *             virtualMachineImageId: String (Optional)
+     *             exactVersion: String (Optional)
+     *         }
+     *         nodeAgentSKUId: String (Required)
+     *         windowsConfiguration (Optional): {
+     *             enableAutomaticUpdates: Boolean (Optional)
+     *         }
+     *         dataDisks (Optional): [
+     *              (Optional){
+     *                 lun: int (Required)
+     *                 caching: String(none/readonly/readwrite) (Optional)
+     *                 diskSizeGB: int (Required)
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *             }
+     *         ]
+     *         licenseType: String (Optional)
+     *         containerConfiguration (Optional): {
+     *             type: String(dockerCompatible/criCompatible) (Required)
+     *             containerImageNames (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             containerRegistries (Optional): [
+     *                  (Optional){
+     *                     username: String (Optional)
+     *                     password: String (Optional)
+     *                     registryServer: String (Optional)
+     *                     identityReference (Optional): {
+     *                         resourceId: String (Optional)
+     *                     }
+     *                 }
+     *             ]
+     *         }
+     *         diskEncryptionConfiguration (Optional): {
+     *             targets (Optional): [
+     *                 String(osdisk/temporarydisk) (Optional)
+     *             ]
+     *         }
+     *         nodePlacementConfiguration (Optional): {
+     *             policy: String(regional/zonal) (Optional)
+     *         }
+     *         extensions (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 publisher: String (Required)
+     *                 type: String (Required)
+     *                 typeHandlerVersion: String (Optional)
+     *                 autoUpgradeMinorVersion: Boolean (Optional)
+     *                 enableAutomaticUpgrade: Boolean (Optional)
+     *                 settings (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *                 protectedSettings (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *                 provisionAfterExtensions (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *             }
+     *         ]
+     *         osDisk (Optional): {
+     *             ephemeralOSDiskSettings (Optional): {
+     *                 placement: String(cachedisk) (Optional)
+     *             }
+     *             caching: String(none/readonly/readwrite) (Optional)
+     *             diskSizeGB: Integer (Optional)
+     *             managedDisk (Optional): {
+     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *             }
+     *             writeAcceleratorEnabled: Boolean (Optional)
+     *         }
+     *         securityProfile (Optional): {
+     *             encryptionAtHost: boolean (Required)
+     *             securityType: String(trustedLaunch) (Required)
+     *             uefiSettings (Required): {
+     *                 secureBootEnabled: Boolean (Optional)
+     *                 vTpmEnabled: Boolean (Optional)
+     *             }
+     *         }
+     *         serviceArtifactReference (Optional): {
+     *             id: String (Required)
+     *         }
+     *     }
+     *     resizeTimeout: Duration (Optional)
+     *     resizeErrors (Optional): [
+     *          (Optional){
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             values (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     resourceTags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     currentDedicatedNodes: Integer (Optional)
+     *     currentLowPriorityNodes: Integer (Optional)
+     *     targetDedicatedNodes: Integer (Optional)
+     *     targetLowPriorityNodes: Integer (Optional)
+     *     enableAutoScale: Boolean (Optional)
+     *     autoScaleFormula: String (Optional)
+     *     autoScaleEvaluationInterval: Duration (Optional)
+     *     autoScaleRun (Optional): {
+     *         timestamp: OffsetDateTime (Required)
+     *         results: String (Optional)
+     *         error (Optional): {
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             values (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *     }
+     *     enableInterNodeCommunication: Boolean (Optional)
+     *     networkConfiguration (Optional): {
+     *         subnetId: String (Optional)
+     *         dynamicVNetAssignmentScope: String(none/job) (Optional)
+     *         endpointConfiguration (Optional): {
+     *             inboundNATPools (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     protocol: String(tcp/udp) (Required)
+     *                     backendPort: int (Required)
+     *                     frontendPortRangeStart: int (Required)
+     *                     frontendPortRangeEnd: int (Required)
+     *                     networkSecurityGroupRules (Optional): [
+     *                          (Optional){
+     *                             priority: int (Required)
+     *                             access: String(allow/deny) (Required)
+     *                             sourceAddressPrefix: String (Required)
+     *                             sourcePortRanges (Optional): [
+     *                                 String (Optional)
+     *                             ]
+     *                         }
+     *                     ]
+     *                 }
+     *             ]
+     *         }
+     *         publicIPAddressConfiguration (Optional): {
+     *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipAddressIds (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *         enableAcceleratedNetworking: Boolean (Optional)
+     *     }
+     *     startTask (Optional): {
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): {
+     *             containerRunOptions: String (Optional)
+     *             imageName: String (Required)
+     *             registry (Optional): (recursive schema, see registry above)
+     *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         }
+     *         resourceFiles (Optional): [
+     *              (Optional){
+     *                 autoStorageContainerName: String (Optional)
+     *                 storageContainerUrl: String (Optional)
+     *                 httpUrl: String (Optional)
+     *                 blobPrefix: String (Optional)
+     *                 filePath: String (Optional)
+     *                 fileMode: String (Optional)
+     *                 identityReference (Optional): (recursive schema, see identityReference above)
+     *             }
+     *         ]
+     *         environmentSettings (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *         userIdentity (Optional): {
+     *             username: String (Optional)
+     *             autoUser (Optional): {
+     *                 scope: String(task/pool) (Optional)
+     *                 elevationLevel: String(nonadmin/admin) (Optional)
+     *             }
+     *         }
+     *         maxTaskRetryCount: Integer (Optional)
+     *         waitForSuccess: Boolean (Optional)
+     *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
+     *     applicationPackageReferences (Optional): [
+     *          (Optional){
+     *             applicationId: String (Required)
+     *             version: String (Optional)
+     *         }
+     *     ]
+     *     taskSlotsPerNode: Integer (Optional)
+     *     taskSchedulingPolicy (Optional): {
+     *         nodeFillType: String(spread/pack) (Required)
+     *     }
+     *     userAccounts (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             password: String (Required)
+     *             elevationLevel: String(nonadmin/admin) (Optional)
+     *             linuxUserConfiguration (Optional): {
+     *                 uid: Integer (Optional)
+     *                 gid: Integer (Optional)
+     *                 sshPrivateKey: String (Optional)
+     *             }
+     *             windowsUserConfiguration (Optional): {
+     *                 loginMode: String(batch/interactive) (Optional)
+     *             }
+     *         }
+     *     ]
+     *     metadata (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             value: String (Required)
+     *         }
+     *     ]
+     *     stats (Optional): {
+     *         url: String (Required)
+     *         startTime: OffsetDateTime (Required)
+     *         lastUpdateTime: OffsetDateTime (Required)
+     *         usageStats (Optional): {
+     *             startTime: OffsetDateTime (Required)
+     *             lastUpdateTime: OffsetDateTime (Required)
+     *             dedicatedCoreTime: Duration (Required)
+     *         }
+     *         resourceStats (Optional): {
+     *             startTime: OffsetDateTime (Required)
+     *             lastUpdateTime: OffsetDateTime (Required)
+     *             avgCPUPercentage: double (Required)
+     *             avgMemoryGiB: double (Required)
+     *             peakMemoryGiB: double (Required)
+     *             avgDiskGiB: double (Required)
+     *             peakDiskGiB: double (Required)
+     *             diskReadIOps: long (Required)
+     *             diskWriteIOps: long (Required)
+     *             diskReadGiB: double (Required)
+     *             diskWriteGiB: double (Required)
+     *             networkReadGiB: double (Required)
+     *             networkWriteGiB: double (Required)
+     *         }
+     *     }
+     *     mountConfiguration (Optional): [
+     *          (Optional){
+     *             azureBlobFileSystemConfiguration (Optional): {
+     *                 accountName: String (Required)
+     *                 containerName: String (Required)
+     *                 accountKey: String (Optional)
+     *                 sasKey: String (Optional)
+     *                 blobfuseOptions: String (Optional)
+     *                 relativeMountPath: String (Required)
+     *                 identityReference (Optional): (recursive schema, see identityReference above)
+     *             }
+     *             nfsMountConfiguration (Optional): {
+     *                 source: String (Required)
+     *                 relativeMountPath: String (Required)
+     *                 mountOptions: String (Optional)
+     *             }
+     *             cifsMountConfiguration (Optional): {
+     *                 username: String (Required)
+     *                 source: String (Required)
+     *                 relativeMountPath: String (Required)
+     *                 mountOptions: String (Optional)
+     *                 password: String (Required)
+     *             }
+     *             azureFileShareConfiguration (Optional): {
+     *                 accountName: String (Required)
+     *                 azureFileUrl: String (Required)
+     *                 accountKey: String (Required)
+     *                 relativeMountPath: String (Required)
+     *                 mountOptions: String (Optional)
+     *             }
+     *         }
+     *     ]
+     *     identity (Optional): {
+     *         type: String(UserAssigned/None) (Required)
+     *         userAssignedIdentities (Optional): [
+     *              (Optional){
+     *                 resourceId: String (Required)
+     *                 clientId: String (Optional)
+     *                 principalId: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *     upgradePolicy (Optional): {
+     *         mode: String(automatic/manual/rolling) (Required)
+     *         automaticOsUpgradePolicy (Optional): {
+     *             disableAutomaticRollback: Boolean (Optional)
+     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             useRollingUpgradePolicy: Boolean (Optional)
+     *             osRollingUpgradeDeferral: Boolean (Optional)
+     *         }
+     *         rollingUpgradePolicy (Optional): {
+     *             enableCrossZoneUpgrade: Boolean (Optional)
+     *             maxBatchInstancePercent: Integer (Optional)
+     *             maxUnhealthyInstancePercent: Integer (Optional)
+     *             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *             pauseTimeBetweenBatches: Duration (Optional)
+     *             prioritizeUnhealthyInstances: Boolean (Optional)
+     *             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Pools in an Account as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BinaryData> listPools(RequestOptions requestOptions) {
+        return this.listPoolsInternal(requestOptions);
     }
 
     /**
@@ -7380,6 +7925,78 @@ public final class BatchClient {
     }
 
     /**
+     * Lists all Virtual Machine Images supported by the Azure Batch service.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>timeOut</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
+     * </tr>
+     * <tr>
+     * <td>maxresults</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td>
+     * </tr>
+     * <tr>
+     * <td>$filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     nodeAgentSKUId: String (Required)
+     *     imageReference (Required): {
+     *         publisher: String (Optional)
+     *         offer: String (Optional)
+     *         sku: String (Optional)
+     *         version: String (Optional)
+     *         virtualMachineImageId: String (Optional)
+     *         exactVersion: String (Optional)
+     *     }
+     *     osType: String(linux/windows) (Required)
+     *     capabilities (Optional): [
+     *         String (Optional)
+     *     ]
+     *     batchSupportEndOfLife: OffsetDateTime (Optional)
+     *     verificationType: String(verified/unverified) (Required)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the supported Virtual Machine Images as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BinaryData> listSupportedImages(RequestOptions requestOptions) {
+        return this.listSupportedImagesInternal(requestOptions);
+    }
+
+    /**
      * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the
      * numbers returned may not always be up to date. If you need exact node counts,
      * use a list query.
@@ -7456,6 +8073,84 @@ public final class BatchClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BinaryData> listPoolNodeCountsInternal(RequestOptions requestOptions) {
         return this.serviceClient.listPoolNodeCountsInternal(requestOptions);
+    }
+
+    /**
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the
+     * numbers returned may not always be up to date. If you need exact node counts,
+     * use a list query.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>timeOut</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
+     * </tr>
+     * <tr>
+     * <td>maxresults</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td>
+     * </tr>
+     * <tr>
+     * <td>$filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     poolId: String (Required)
+     *     dedicated (Optional): {
+     *         creating: int (Required)
+     *         idle: int (Required)
+     *         offline: int (Required)
+     *         preempted: int (Required)
+     *         rebooting: int (Required)
+     *         reimaging: int (Required)
+     *         running: int (Required)
+     *         starting: int (Required)
+     *         startTaskFailed: int (Required)
+     *         leavingPool: int (Required)
+     *         unknown: int (Required)
+     *         unusable: int (Required)
+     *         waitingForStartTask: int (Required)
+     *         total: int (Required)
+     *         upgradingOs: int (Required)
+     *     }
+     *     lowPriority (Optional): (recursive schema, see lowPriority above)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BinaryData> listPoolNodeCounts(RequestOptions requestOptions) {
+        return this.listPoolNodeCountsInternal(requestOptions);
     }
 
     /**
@@ -12024,6 +12719,484 @@ public final class BatchClient {
     }
 
     /**
+     * Lists all of the Jobs in the specified Account.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>timeOut</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
+     * </tr>
+     * <tr>
+     * <td>maxresults</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td>
+     * </tr>
+     * <tr>
+     * <td>$filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td>
+     * </tr>
+     * <tr>
+     * <td>$select</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>An OData $select clause. In the form of "," separated string.</td>
+     * </tr>
+     * <tr>
+     * <td>$expand</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>An OData $expand clause. In the form of "," separated string.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     displayName: String (Optional)
+     *     usesTaskDependencies: Boolean (Optional)
+     *     url: String (Optional)
+     *     eTag: String (Optional)
+     *     lastModified: OffsetDateTime (Optional)
+     *     creationTime: OffsetDateTime (Optional)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     priority: Integer (Optional)
+     *     allowTaskPreemption: Boolean (Optional)
+     *     maxParallelTasks: Integer (Optional)
+     *     constraints (Optional): {
+     *         maxWallClockTime: Duration (Optional)
+     *         maxTaskRetryCount: Integer (Optional)
+     *     }
+     *     jobManagerTask (Optional): {
+     *         id: String (Required)
+     *         displayName: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): {
+     *             containerRunOptions: String (Optional)
+     *             imageName: String (Required)
+     *             registry (Optional): {
+     *                 username: String (Optional)
+     *                 password: String (Optional)
+     *                 registryServer: String (Optional)
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *             }
+     *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         }
+     *         resourceFiles (Optional): [
+     *              (Optional){
+     *                 autoStorageContainerName: String (Optional)
+     *                 storageContainerUrl: String (Optional)
+     *                 httpUrl: String (Optional)
+     *                 blobPrefix: String (Optional)
+     *                 filePath: String (Optional)
+     *                 fileMode: String (Optional)
+     *                 identityReference (Optional): (recursive schema, see identityReference above)
+     *             }
+     *         ]
+     *         outputFiles (Optional): [
+     *              (Optional){
+     *                 filePattern: String (Required)
+     *                 destination (Required): {
+     *                     container (Optional): {
+     *                         path: String (Optional)
+     *                         containerUrl: String (Required)
+     *                         identityReference (Optional): (recursive schema, see identityReference above)
+     *                         uploadHeaders (Optional): [
+     *                              (Optional){
+     *                                 name: String (Required)
+     *                                 value: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
+     *                 }
+     *                 uploadOptions (Required): {
+     *                     uploadCondition: String(tasksuccess/taskfailure/taskcompletion) (Required)
+     *                 }
+     *             }
+     *         ]
+     *         environmentSettings (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *         constraints (Optional): {
+     *             maxWallClockTime: Duration (Optional)
+     *             retentionTime: Duration (Optional)
+     *             maxTaskRetryCount: Integer (Optional)
+     *         }
+     *         requiredSlots: Integer (Optional)
+     *         killJobOnCompletion: Boolean (Optional)
+     *         userIdentity (Optional): {
+     *             username: String (Optional)
+     *             autoUser (Optional): {
+     *                 scope: String(task/pool) (Optional)
+     *                 elevationLevel: String(nonadmin/admin) (Optional)
+     *             }
+     *         }
+     *         runExclusive: Boolean (Optional)
+     *         applicationPackageReferences (Optional): [
+     *              (Optional){
+     *                 applicationId: String (Required)
+     *                 version: String (Optional)
+     *             }
+     *         ]
+     *         authenticationTokenSettings (Optional): {
+     *             access (Optional): [
+     *                 String(job) (Optional)
+     *             ]
+     *         }
+     *         allowLowPriorityNode: Boolean (Optional)
+     *     }
+     *     jobPreparationTask (Optional): {
+     *         id: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): (recursive schema, see containerSettings above)
+     *         resourceFiles (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         environmentSettings (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         constraints (Optional): (recursive schema, see constraints above)
+     *         waitForSuccess: Boolean (Optional)
+     *         userIdentity (Optional): (recursive schema, see userIdentity above)
+     *         rerunOnNodeRebootAfterSuccess: Boolean (Optional)
+     *     }
+     *     jobReleaseTask (Optional): {
+     *         id: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): (recursive schema, see containerSettings above)
+     *         resourceFiles (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         environmentSettings (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         maxWallClockTime: Duration (Optional)
+     *         retentionTime: Duration (Optional)
+     *         userIdentity (Optional): (recursive schema, see userIdentity above)
+     *     }
+     *     commonEnvironmentSettings (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     poolInfo (Required): {
+     *         poolId: String (Optional)
+     *         autoPoolSpecification (Optional): {
+     *             autoPoolIdPrefix: String (Optional)
+     *             poolLifetimeOption: String(jobschedule/job) (Required)
+     *             keepAlive: Boolean (Optional)
+     *             pool (Optional): {
+     *                 displayName: String (Optional)
+     *                 vmSize: String (Required)
+     *                 virtualMachineConfiguration (Optional): {
+     *                     imageReference (Required): {
+     *                         publisher: String (Optional)
+     *                         offer: String (Optional)
+     *                         sku: String (Optional)
+     *                         version: String (Optional)
+     *                         virtualMachineImageId: String (Optional)
+     *                         exactVersion: String (Optional)
+     *                     }
+     *                     nodeAgentSKUId: String (Required)
+     *                     windowsConfiguration (Optional): {
+     *                         enableAutomaticUpdates: Boolean (Optional)
+     *                     }
+     *                     dataDisks (Optional): [
+     *                          (Optional){
+     *                             lun: int (Required)
+     *                             caching: String(none/readonly/readwrite) (Optional)
+     *                             diskSizeGB: int (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                         }
+     *                     ]
+     *                     licenseType: String (Optional)
+     *                     containerConfiguration (Optional): {
+     *                         type: String(dockerCompatible/criCompatible) (Required)
+     *                         containerImageNames (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         containerRegistries (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                     diskEncryptionConfiguration (Optional): {
+     *                         targets (Optional): [
+     *                             String(osdisk/temporarydisk) (Optional)
+     *                         ]
+     *                     }
+     *                     nodePlacementConfiguration (Optional): {
+     *                         policy: String(regional/zonal) (Optional)
+     *                     }
+     *                     extensions (Optional): [
+     *                          (Optional){
+     *                             name: String (Required)
+     *                             publisher: String (Required)
+     *                             type: String (Required)
+     *                             typeHandlerVersion: String (Optional)
+     *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
+     *                             settings (Optional): {
+     *                                 String: String (Required)
+     *                             }
+     *                             protectedSettings (Optional): {
+     *                                 String: String (Required)
+     *                             }
+     *                             provisionAfterExtensions (Optional): [
+     *                                 String (Optional)
+     *                             ]
+     *                         }
+     *                     ]
+     *                     osDisk (Optional): {
+     *                         ephemeralOSDiskSettings (Optional): {
+     *                             placement: String(cachedisk) (Optional)
+     *                         }
+     *                         caching: String(none/readonly/readwrite) (Optional)
+     *                         diskSizeGB: Integer (Optional)
+     *                         managedDisk (Optional): {
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                         }
+     *                         writeAcceleratorEnabled: Boolean (Optional)
+     *                     }
+     *                     securityProfile (Optional): {
+     *                         encryptionAtHost: boolean (Required)
+     *                         securityType: String(trustedLaunch) (Required)
+     *                         uefiSettings (Required): {
+     *                             secureBootEnabled: Boolean (Optional)
+     *                             vTpmEnabled: Boolean (Optional)
+     *                         }
+     *                     }
+     *                     serviceArtifactReference (Optional): {
+     *                         id: String (Required)
+     *                     }
+     *                 }
+     *                 taskSlotsPerNode: Integer (Optional)
+     *                 taskSchedulingPolicy (Optional): {
+     *                     nodeFillType: String(spread/pack) (Required)
+     *                 }
+     *                 resizeTimeout: Duration (Optional)
+     *                 resourceTags: String (Optional)
+     *                 targetDedicatedNodes: Integer (Optional)
+     *                 targetLowPriorityNodes: Integer (Optional)
+     *                 enableAutoScale: Boolean (Optional)
+     *                 autoScaleFormula: String (Optional)
+     *                 autoScaleEvaluationInterval: Duration (Optional)
+     *                 enableInterNodeCommunication: Boolean (Optional)
+     *                 networkConfiguration (Optional): {
+     *                     subnetId: String (Optional)
+     *                     dynamicVNetAssignmentScope: String(none/job) (Optional)
+     *                     endpointConfiguration (Optional): {
+     *                         inboundNATPools (Required): [
+     *                              (Required){
+     *                                 name: String (Required)
+     *                                 protocol: String(tcp/udp) (Required)
+     *                                 backendPort: int (Required)
+     *                                 frontendPortRangeStart: int (Required)
+     *                                 frontendPortRangeEnd: int (Required)
+     *                                 networkSecurityGroupRules (Optional): [
+     *                                      (Optional){
+     *                                         priority: int (Required)
+     *                                         access: String(allow/deny) (Required)
+     *                                         sourceAddressPrefix: String (Required)
+     *                                         sourcePortRanges (Optional): [
+     *                                             String (Optional)
+     *                                         ]
+     *                                     }
+     *                                 ]
+     *                             }
+     *                         ]
+     *                     }
+     *                     publicIPAddressConfiguration (Optional): {
+     *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipAddressIds (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
+     *                 }
+     *                 startTask (Optional): {
+     *                     commandLine: String (Required)
+     *                     containerSettings (Optional): (recursive schema, see containerSettings above)
+     *                     resourceFiles (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     environmentSettings (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     userIdentity (Optional): (recursive schema, see userIdentity above)
+     *                     maxTaskRetryCount: Integer (Optional)
+     *                     waitForSuccess: Boolean (Optional)
+     *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
+     *                 applicationPackageReferences (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 userAccounts (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         password: String (Required)
+     *                         elevationLevel: String(nonadmin/admin) (Optional)
+     *                         linuxUserConfiguration (Optional): {
+     *                             uid: Integer (Optional)
+     *                             gid: Integer (Optional)
+     *                             sshPrivateKey: String (Optional)
+     *                         }
+     *                         windowsUserConfiguration (Optional): {
+     *                             loginMode: String(batch/interactive) (Optional)
+     *                         }
+     *                     }
+     *                 ]
+     *                 metadata (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         value: String (Required)
+     *                     }
+     *                 ]
+     *                 mountConfiguration (Optional): [
+     *                      (Optional){
+     *                         azureBlobFileSystemConfiguration (Optional): {
+     *                             accountName: String (Required)
+     *                             containerName: String (Required)
+     *                             accountKey: String (Optional)
+     *                             sasKey: String (Optional)
+     *                             blobfuseOptions: String (Optional)
+     *                             relativeMountPath: String (Required)
+     *                             identityReference (Optional): (recursive schema, see identityReference above)
+     *                         }
+     *                         nfsMountConfiguration (Optional): {
+     *                             source: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                         }
+     *                         cifsMountConfiguration (Optional): {
+     *                             username: String (Required)
+     *                             source: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                             password: String (Required)
+     *                         }
+     *                         azureFileShareConfiguration (Optional): {
+     *                             accountName: String (Required)
+     *                             azureFileUrl: String (Required)
+     *                             accountKey: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                         }
+     *                     }
+     *                 ]
+     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOsUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
+     *             }
+     *         }
+     *     }
+     *     onAllTasksComplete: String(noaction/terminatejob) (Optional)
+     *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
+     *     networkConfiguration (Optional): {
+     *         subnetId: String (Required)
+     *     }
+     *     metadata (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     executionInfo (Optional): {
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Optional)
+     *         poolId: String (Optional)
+     *         schedulingError (Optional): {
+     *             category: String(usererror/servererror) (Required)
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             details (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *         terminateReason: String (Optional)
+     *     }
+     *     stats (Optional): {
+     *         url: String (Required)
+     *         startTime: OffsetDateTime (Required)
+     *         lastUpdateTime: OffsetDateTime (Required)
+     *         userCPUTime: Duration (Required)
+     *         kernelCPUTime: Duration (Required)
+     *         wallClockTime: Duration (Required)
+     *         readIOps: long (Required)
+     *         writeIOps: long (Required)
+     *         readIOGiB: double (Required)
+     *         writeIOGiB: double (Required)
+     *         numSucceededTasks: long (Required)
+     *         numFailedTasks: long (Required)
+     *         numTaskRetries: long (Required)
+     *         waitTime: Duration (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BinaryData> listJobs(RequestOptions requestOptions) {
+        return this.listJobsInternal(requestOptions);
+    }
+
+    /**
      * Lists the Jobs that have been created under the specified Job Schedule.
      * <p>
      * <strong>Query Parameters</strong>
@@ -12504,6 +13677,485 @@ public final class BatchClient {
     }
 
     /**
+     * Lists the Jobs that have been created under the specified Job Schedule.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>timeOut</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
+     * </tr>
+     * <tr>
+     * <td>maxresults</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td>
+     * </tr>
+     * <tr>
+     * <td>$filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td>
+     * </tr>
+     * <tr>
+     * <td>$select</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>An OData $select clause. In the form of "," separated string.</td>
+     * </tr>
+     * <tr>
+     * <td>$expand</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>An OData $expand clause. In the form of "," separated string.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     displayName: String (Optional)
+     *     usesTaskDependencies: Boolean (Optional)
+     *     url: String (Optional)
+     *     eTag: String (Optional)
+     *     lastModified: OffsetDateTime (Optional)
+     *     creationTime: OffsetDateTime (Optional)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     priority: Integer (Optional)
+     *     allowTaskPreemption: Boolean (Optional)
+     *     maxParallelTasks: Integer (Optional)
+     *     constraints (Optional): {
+     *         maxWallClockTime: Duration (Optional)
+     *         maxTaskRetryCount: Integer (Optional)
+     *     }
+     *     jobManagerTask (Optional): {
+     *         id: String (Required)
+     *         displayName: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): {
+     *             containerRunOptions: String (Optional)
+     *             imageName: String (Required)
+     *             registry (Optional): {
+     *                 username: String (Optional)
+     *                 password: String (Optional)
+     *                 registryServer: String (Optional)
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *             }
+     *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         }
+     *         resourceFiles (Optional): [
+     *              (Optional){
+     *                 autoStorageContainerName: String (Optional)
+     *                 storageContainerUrl: String (Optional)
+     *                 httpUrl: String (Optional)
+     *                 blobPrefix: String (Optional)
+     *                 filePath: String (Optional)
+     *                 fileMode: String (Optional)
+     *                 identityReference (Optional): (recursive schema, see identityReference above)
+     *             }
+     *         ]
+     *         outputFiles (Optional): [
+     *              (Optional){
+     *                 filePattern: String (Required)
+     *                 destination (Required): {
+     *                     container (Optional): {
+     *                         path: String (Optional)
+     *                         containerUrl: String (Required)
+     *                         identityReference (Optional): (recursive schema, see identityReference above)
+     *                         uploadHeaders (Optional): [
+     *                              (Optional){
+     *                                 name: String (Required)
+     *                                 value: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
+     *                 }
+     *                 uploadOptions (Required): {
+     *                     uploadCondition: String(tasksuccess/taskfailure/taskcompletion) (Required)
+     *                 }
+     *             }
+     *         ]
+     *         environmentSettings (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *         constraints (Optional): {
+     *             maxWallClockTime: Duration (Optional)
+     *             retentionTime: Duration (Optional)
+     *             maxTaskRetryCount: Integer (Optional)
+     *         }
+     *         requiredSlots: Integer (Optional)
+     *         killJobOnCompletion: Boolean (Optional)
+     *         userIdentity (Optional): {
+     *             username: String (Optional)
+     *             autoUser (Optional): {
+     *                 scope: String(task/pool) (Optional)
+     *                 elevationLevel: String(nonadmin/admin) (Optional)
+     *             }
+     *         }
+     *         runExclusive: Boolean (Optional)
+     *         applicationPackageReferences (Optional): [
+     *              (Optional){
+     *                 applicationId: String (Required)
+     *                 version: String (Optional)
+     *             }
+     *         ]
+     *         authenticationTokenSettings (Optional): {
+     *             access (Optional): [
+     *                 String(job) (Optional)
+     *             ]
+     *         }
+     *         allowLowPriorityNode: Boolean (Optional)
+     *     }
+     *     jobPreparationTask (Optional): {
+     *         id: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): (recursive schema, see containerSettings above)
+     *         resourceFiles (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         environmentSettings (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         constraints (Optional): (recursive schema, see constraints above)
+     *         waitForSuccess: Boolean (Optional)
+     *         userIdentity (Optional): (recursive schema, see userIdentity above)
+     *         rerunOnNodeRebootAfterSuccess: Boolean (Optional)
+     *     }
+     *     jobReleaseTask (Optional): {
+     *         id: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): (recursive schema, see containerSettings above)
+     *         resourceFiles (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         environmentSettings (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         maxWallClockTime: Duration (Optional)
+     *         retentionTime: Duration (Optional)
+     *         userIdentity (Optional): (recursive schema, see userIdentity above)
+     *     }
+     *     commonEnvironmentSettings (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     poolInfo (Required): {
+     *         poolId: String (Optional)
+     *         autoPoolSpecification (Optional): {
+     *             autoPoolIdPrefix: String (Optional)
+     *             poolLifetimeOption: String(jobschedule/job) (Required)
+     *             keepAlive: Boolean (Optional)
+     *             pool (Optional): {
+     *                 displayName: String (Optional)
+     *                 vmSize: String (Required)
+     *                 virtualMachineConfiguration (Optional): {
+     *                     imageReference (Required): {
+     *                         publisher: String (Optional)
+     *                         offer: String (Optional)
+     *                         sku: String (Optional)
+     *                         version: String (Optional)
+     *                         virtualMachineImageId: String (Optional)
+     *                         exactVersion: String (Optional)
+     *                     }
+     *                     nodeAgentSKUId: String (Required)
+     *                     windowsConfiguration (Optional): {
+     *                         enableAutomaticUpdates: Boolean (Optional)
+     *                     }
+     *                     dataDisks (Optional): [
+     *                          (Optional){
+     *                             lun: int (Required)
+     *                             caching: String(none/readonly/readwrite) (Optional)
+     *                             diskSizeGB: int (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                         }
+     *                     ]
+     *                     licenseType: String (Optional)
+     *                     containerConfiguration (Optional): {
+     *                         type: String(dockerCompatible/criCompatible) (Required)
+     *                         containerImageNames (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         containerRegistries (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                     diskEncryptionConfiguration (Optional): {
+     *                         targets (Optional): [
+     *                             String(osdisk/temporarydisk) (Optional)
+     *                         ]
+     *                     }
+     *                     nodePlacementConfiguration (Optional): {
+     *                         policy: String(regional/zonal) (Optional)
+     *                     }
+     *                     extensions (Optional): [
+     *                          (Optional){
+     *                             name: String (Required)
+     *                             publisher: String (Required)
+     *                             type: String (Required)
+     *                             typeHandlerVersion: String (Optional)
+     *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
+     *                             settings (Optional): {
+     *                                 String: String (Required)
+     *                             }
+     *                             protectedSettings (Optional): {
+     *                                 String: String (Required)
+     *                             }
+     *                             provisionAfterExtensions (Optional): [
+     *                                 String (Optional)
+     *                             ]
+     *                         }
+     *                     ]
+     *                     osDisk (Optional): {
+     *                         ephemeralOSDiskSettings (Optional): {
+     *                             placement: String(cachedisk) (Optional)
+     *                         }
+     *                         caching: String(none/readonly/readwrite) (Optional)
+     *                         diskSizeGB: Integer (Optional)
+     *                         managedDisk (Optional): {
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                         }
+     *                         writeAcceleratorEnabled: Boolean (Optional)
+     *                     }
+     *                     securityProfile (Optional): {
+     *                         encryptionAtHost: boolean (Required)
+     *                         securityType: String(trustedLaunch) (Required)
+     *                         uefiSettings (Required): {
+     *                             secureBootEnabled: Boolean (Optional)
+     *                             vTpmEnabled: Boolean (Optional)
+     *                         }
+     *                     }
+     *                     serviceArtifactReference (Optional): {
+     *                         id: String (Required)
+     *                     }
+     *                 }
+     *                 taskSlotsPerNode: Integer (Optional)
+     *                 taskSchedulingPolicy (Optional): {
+     *                     nodeFillType: String(spread/pack) (Required)
+     *                 }
+     *                 resizeTimeout: Duration (Optional)
+     *                 resourceTags: String (Optional)
+     *                 targetDedicatedNodes: Integer (Optional)
+     *                 targetLowPriorityNodes: Integer (Optional)
+     *                 enableAutoScale: Boolean (Optional)
+     *                 autoScaleFormula: String (Optional)
+     *                 autoScaleEvaluationInterval: Duration (Optional)
+     *                 enableInterNodeCommunication: Boolean (Optional)
+     *                 networkConfiguration (Optional): {
+     *                     subnetId: String (Optional)
+     *                     dynamicVNetAssignmentScope: String(none/job) (Optional)
+     *                     endpointConfiguration (Optional): {
+     *                         inboundNATPools (Required): [
+     *                              (Required){
+     *                                 name: String (Required)
+     *                                 protocol: String(tcp/udp) (Required)
+     *                                 backendPort: int (Required)
+     *                                 frontendPortRangeStart: int (Required)
+     *                                 frontendPortRangeEnd: int (Required)
+     *                                 networkSecurityGroupRules (Optional): [
+     *                                      (Optional){
+     *                                         priority: int (Required)
+     *                                         access: String(allow/deny) (Required)
+     *                                         sourceAddressPrefix: String (Required)
+     *                                         sourcePortRanges (Optional): [
+     *                                             String (Optional)
+     *                                         ]
+     *                                     }
+     *                                 ]
+     *                             }
+     *                         ]
+     *                     }
+     *                     publicIPAddressConfiguration (Optional): {
+     *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipAddressIds (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
+     *                 }
+     *                 startTask (Optional): {
+     *                     commandLine: String (Required)
+     *                     containerSettings (Optional): (recursive schema, see containerSettings above)
+     *                     resourceFiles (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     environmentSettings (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     userIdentity (Optional): (recursive schema, see userIdentity above)
+     *                     maxTaskRetryCount: Integer (Optional)
+     *                     waitForSuccess: Boolean (Optional)
+     *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
+     *                 applicationPackageReferences (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 userAccounts (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         password: String (Required)
+     *                         elevationLevel: String(nonadmin/admin) (Optional)
+     *                         linuxUserConfiguration (Optional): {
+     *                             uid: Integer (Optional)
+     *                             gid: Integer (Optional)
+     *                             sshPrivateKey: String (Optional)
+     *                         }
+     *                         windowsUserConfiguration (Optional): {
+     *                             loginMode: String(batch/interactive) (Optional)
+     *                         }
+     *                     }
+     *                 ]
+     *                 metadata (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         value: String (Required)
+     *                     }
+     *                 ]
+     *                 mountConfiguration (Optional): [
+     *                      (Optional){
+     *                         azureBlobFileSystemConfiguration (Optional): {
+     *                             accountName: String (Required)
+     *                             containerName: String (Required)
+     *                             accountKey: String (Optional)
+     *                             sasKey: String (Optional)
+     *                             blobfuseOptions: String (Optional)
+     *                             relativeMountPath: String (Required)
+     *                             identityReference (Optional): (recursive schema, see identityReference above)
+     *                         }
+     *                         nfsMountConfiguration (Optional): {
+     *                             source: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                         }
+     *                         cifsMountConfiguration (Optional): {
+     *                             username: String (Required)
+     *                             source: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                             password: String (Required)
+     *                         }
+     *                         azureFileShareConfiguration (Optional): {
+     *                             accountName: String (Required)
+     *                             azureFileUrl: String (Required)
+     *                             accountKey: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                         }
+     *                     }
+     *                 ]
+     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOsUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
+     *             }
+     *         }
+     *     }
+     *     onAllTasksComplete: String(noaction/terminatejob) (Optional)
+     *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
+     *     networkConfiguration (Optional): {
+     *         subnetId: String (Required)
+     *     }
+     *     metadata (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     executionInfo (Optional): {
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Optional)
+     *         poolId: String (Optional)
+     *         schedulingError (Optional): {
+     *             category: String(usererror/servererror) (Required)
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             details (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *         terminateReason: String (Optional)
+     *     }
+     *     stats (Optional): {
+     *         url: String (Required)
+     *         startTime: OffsetDateTime (Required)
+     *         lastUpdateTime: OffsetDateTime (Required)
+     *         userCPUTime: Duration (Required)
+     *         kernelCPUTime: Duration (Required)
+     *         wallClockTime: Duration (Required)
+     *         readIOps: long (Required)
+     *         writeIOps: long (Required)
+     *         readIOGiB: double (Required)
+     *         writeIOGiB: double (Required)
+     *         numSucceededTasks: long (Required)
+     *         numFailedTasks: long (Required)
+     *         numTaskRetries: long (Required)
+     *         waitTime: Duration (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BinaryData> listJobsFromSchedule(String jobScheduleId, RequestOptions requestOptions) {
+        return this.listJobsFromScheduleInternal(jobScheduleId, requestOptions);
+    }
+
+    /**
      * Lists the execution status of the Job Preparation and Job Release Task for the
      * specified Job across the Compute Nodes where the Job has run.
      *
@@ -12616,6 +14268,120 @@ public final class BatchClient {
     PagedIterable<BinaryData> listJobPreparationAndReleaseTaskStatusInternal(String jobId,
         RequestOptions requestOptions) {
         return this.serviceClient.listJobPreparationAndReleaseTaskStatusInternal(jobId, requestOptions);
+    }
+
+    /**
+     * Lists the execution status of the Job Preparation and Job Release Task for the
+     * specified Job across the Compute Nodes where the Job has run.
+     *
+     * This API returns the Job Preparation and Job Release Task status on all Compute
+     * Nodes that have run the Job Preparation or Job Release Task. This includes
+     * Compute Nodes which have since been removed from the Pool. If this API is
+     * invoked on a Job which has no Job Preparation or Job Release Task, the Batch
+     * service returns HTTP status code 409 (Conflict) with an error code of
+     * JobPreparationTaskNotSpecified.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>timeOut</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
+     * </tr>
+     * <tr>
+     * <td>maxresults</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td>
+     * </tr>
+     * <tr>
+     * <td>$filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td>
+     * </tr>
+     * <tr>
+     * <td>$select</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>An OData $select clause. In the form of "," separated string.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     poolId: String (Optional)
+     *     nodeId: String (Optional)
+     *     nodeUrl: String (Optional)
+     *     jobPreparationTaskExecutionInfo (Optional): {
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Optional)
+     *         state: String(running/completed) (Required)
+     *         taskRootDirectory: String (Optional)
+     *         taskRootDirectoryUrl: String (Optional)
+     *         exitCode: Integer (Optional)
+     *         containerInfo (Optional): {
+     *             containerId: String (Optional)
+     *             state: String (Optional)
+     *             error: String (Optional)
+     *         }
+     *         failureInfo (Optional): {
+     *             category: String(usererror/servererror) (Required)
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             details (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *         retryCount: int (Required)
+     *         lastRetryTime: OffsetDateTime (Optional)
+     *         result: String(success/failure) (Optional)
+     *     }
+     *     jobReleaseTaskExecutionInfo (Optional): {
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Optional)
+     *         state: String(running/completed) (Required)
+     *         taskRootDirectory: String (Optional)
+     *         taskRootDirectoryUrl: String (Optional)
+     *         exitCode: Integer (Optional)
+     *         containerInfo (Optional): (recursive schema, see containerInfo above)
+     *         failureInfo (Optional): (recursive schema, see failureInfo above)
+     *         result: String(success/failure) (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param jobId The ID of the Job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the status of the Job Preparation and Job Release Tasks
+     * for a Job as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BinaryData> listJobPreparationAndReleaseTaskStatus(String jobId,
+        RequestOptions requestOptions) {
+        return this.listJobPreparationAndReleaseTaskStatusInternal(jobId, requestOptions);
     }
 
     /**
@@ -12960,6 +14726,89 @@ public final class BatchClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BinaryData> listCertificatesInternal(RequestOptions requestOptions) {
         return this.serviceClient.listCertificatesInternal(requestOptions);
+    }
+
+    /**
+     * Lists all of the Certificates that have been added to the specified Account.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>timeOut</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
+     * </tr>
+     * <tr>
+     * <td>maxresults</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td>
+     * </tr>
+     * <tr>
+     * <td>$filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.</td>
+     * </tr>
+     * <tr>
+     * <td>$select</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>An OData $select clause. In the form of "," separated string.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Certificates in the Account as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BinaryData> listCertificates(RequestOptions requestOptions) {
+        return this.listCertificatesInternal(requestOptions);
     }
 
     /**
@@ -18398,6 +20247,487 @@ public final class BatchClient {
     }
 
     /**
+     * Lists all of the Job Schedules in the specified Account.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>timeOut</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
+     * </tr>
+     * <tr>
+     * <td>maxresults</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td>
+     * </tr>
+     * <tr>
+     * <td>$filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td>
+     * </tr>
+     * <tr>
+     * <td>$select</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>An OData $select clause. In the form of "," separated string.</td>
+     * </tr>
+     * <tr>
+     * <td>$expand</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>An OData $expand clause. In the form of "," separated string.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     displayName: String (Optional)
+     *     url: String (Optional)
+     *     eTag: String (Optional)
+     *     lastModified: OffsetDateTime (Optional)
+     *     creationTime: OffsetDateTime (Optional)
+     *     state: String(active/completed/disabled/terminating/deleting) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/completed/disabled/terminating/deleting) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     schedule (Optional): {
+     *         doNotRunUntil: OffsetDateTime (Optional)
+     *         doNotRunAfter: OffsetDateTime (Optional)
+     *         startWindow: Duration (Optional)
+     *         recurrenceInterval: Duration (Optional)
+     *     }
+     *     jobSpecification (Required): {
+     *         priority: Integer (Optional)
+     *         allowTaskPreemption: Boolean (Optional)
+     *         maxParallelTasks: Integer (Optional)
+     *         displayName: String (Optional)
+     *         usesTaskDependencies: Boolean (Optional)
+     *         onAllTasksComplete: String(noaction/terminatejob) (Optional)
+     *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
+     *         networkConfiguration (Optional): {
+     *             subnetId: String (Required)
+     *         }
+     *         constraints (Optional): {
+     *             maxWallClockTime: Duration (Optional)
+     *             maxTaskRetryCount: Integer (Optional)
+     *         }
+     *         jobManagerTask (Optional): {
+     *             id: String (Required)
+     *             displayName: String (Optional)
+     *             commandLine: String (Required)
+     *             containerSettings (Optional): {
+     *                 containerRunOptions: String (Optional)
+     *                 imageName: String (Required)
+     *                 registry (Optional): {
+     *                     username: String (Optional)
+     *                     password: String (Optional)
+     *                     registryServer: String (Optional)
+     *                     identityReference (Optional): {
+     *                         resourceId: String (Optional)
+     *                     }
+     *                 }
+     *                 workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             }
+     *             resourceFiles (Optional): [
+     *                  (Optional){
+     *                     autoStorageContainerName: String (Optional)
+     *                     storageContainerUrl: String (Optional)
+     *                     httpUrl: String (Optional)
+     *                     blobPrefix: String (Optional)
+     *                     filePath: String (Optional)
+     *                     fileMode: String (Optional)
+     *                     identityReference (Optional): (recursive schema, see identityReference above)
+     *                 }
+     *             ]
+     *             outputFiles (Optional): [
+     *                  (Optional){
+     *                     filePattern: String (Required)
+     *                     destination (Required): {
+     *                         container (Optional): {
+     *                             path: String (Optional)
+     *                             containerUrl: String (Required)
+     *                             identityReference (Optional): (recursive schema, see identityReference above)
+     *                             uploadHeaders (Optional): [
+     *                                  (Optional){
+     *                                     name: String (Required)
+     *                                     value: String (Optional)
+     *                                 }
+     *                             ]
+     *                         }
+     *                     }
+     *                     uploadOptions (Required): {
+     *                         uploadCondition: String(tasksuccess/taskfailure/taskcompletion) (Required)
+     *                     }
+     *                 }
+     *             ]
+     *             environmentSettings (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
+     *             constraints (Optional): {
+     *                 maxWallClockTime: Duration (Optional)
+     *                 retentionTime: Duration (Optional)
+     *                 maxTaskRetryCount: Integer (Optional)
+     *             }
+     *             requiredSlots: Integer (Optional)
+     *             killJobOnCompletion: Boolean (Optional)
+     *             userIdentity (Optional): {
+     *                 username: String (Optional)
+     *                 autoUser (Optional): {
+     *                     scope: String(task/pool) (Optional)
+     *                     elevationLevel: String(nonadmin/admin) (Optional)
+     *                 }
+     *             }
+     *             runExclusive: Boolean (Optional)
+     *             applicationPackageReferences (Optional): [
+     *                  (Optional){
+     *                     applicationId: String (Required)
+     *                     version: String (Optional)
+     *                 }
+     *             ]
+     *             authenticationTokenSettings (Optional): {
+     *                 access (Optional): [
+     *                     String(job) (Optional)
+     *                 ]
+     *             }
+     *             allowLowPriorityNode: Boolean (Optional)
+     *         }
+     *         jobPreparationTask (Optional): {
+     *             id: String (Optional)
+     *             commandLine: String (Required)
+     *             containerSettings (Optional): (recursive schema, see containerSettings above)
+     *             resourceFiles (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             environmentSettings (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             constraints (Optional): (recursive schema, see constraints above)
+     *             waitForSuccess: Boolean (Optional)
+     *             userIdentity (Optional): (recursive schema, see userIdentity above)
+     *             rerunOnNodeRebootAfterSuccess: Boolean (Optional)
+     *         }
+     *         jobReleaseTask (Optional): {
+     *             id: String (Optional)
+     *             commandLine: String (Required)
+     *             containerSettings (Optional): (recursive schema, see containerSettings above)
+     *             resourceFiles (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             environmentSettings (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             maxWallClockTime: Duration (Optional)
+     *             retentionTime: Duration (Optional)
+     *             userIdentity (Optional): (recursive schema, see userIdentity above)
+     *         }
+     *         commonEnvironmentSettings (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         poolInfo (Required): {
+     *             poolId: String (Optional)
+     *             autoPoolSpecification (Optional): {
+     *                 autoPoolIdPrefix: String (Optional)
+     *                 poolLifetimeOption: String(jobschedule/job) (Required)
+     *                 keepAlive: Boolean (Optional)
+     *                 pool (Optional): {
+     *                     displayName: String (Optional)
+     *                     vmSize: String (Required)
+     *                     virtualMachineConfiguration (Optional): {
+     *                         imageReference (Required): {
+     *                             publisher: String (Optional)
+     *                             offer: String (Optional)
+     *                             sku: String (Optional)
+     *                             version: String (Optional)
+     *                             virtualMachineImageId: String (Optional)
+     *                             exactVersion: String (Optional)
+     *                         }
+     *                         nodeAgentSKUId: String (Required)
+     *                         windowsConfiguration (Optional): {
+     *                             enableAutomaticUpdates: Boolean (Optional)
+     *                         }
+     *                         dataDisks (Optional): [
+     *                              (Optional){
+     *                                 lun: int (Required)
+     *                                 caching: String(none/readonly/readwrite) (Optional)
+     *                                 diskSizeGB: int (Required)
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             }
+     *                         ]
+     *                         licenseType: String (Optional)
+     *                         containerConfiguration (Optional): {
+     *                             type: String(dockerCompatible/criCompatible) (Required)
+     *                             containerImageNames (Optional): [
+     *                                 String (Optional)
+     *                             ]
+     *                             containerRegistries (Optional): [
+     *                                 (recursive schema, see above)
+     *                             ]
+     *                         }
+     *                         diskEncryptionConfiguration (Optional): {
+     *                             targets (Optional): [
+     *                                 String(osdisk/temporarydisk) (Optional)
+     *                             ]
+     *                         }
+     *                         nodePlacementConfiguration (Optional): {
+     *                             policy: String(regional/zonal) (Optional)
+     *                         }
+     *                         extensions (Optional): [
+     *                              (Optional){
+     *                                 name: String (Required)
+     *                                 publisher: String (Required)
+     *                                 type: String (Required)
+     *                                 typeHandlerVersion: String (Optional)
+     *                                 autoUpgradeMinorVersion: Boolean (Optional)
+     *                                 enableAutomaticUpgrade: Boolean (Optional)
+     *                                 settings (Optional): {
+     *                                     String: String (Required)
+     *                                 }
+     *                                 protectedSettings (Optional): {
+     *                                     String: String (Required)
+     *                                 }
+     *                                 provisionAfterExtensions (Optional): [
+     *                                     String (Optional)
+     *                                 ]
+     *                             }
+     *                         ]
+     *                         osDisk (Optional): {
+     *                             ephemeralOSDiskSettings (Optional): {
+     *                                 placement: String(cachedisk) (Optional)
+     *                             }
+     *                             caching: String(none/readonly/readwrite) (Optional)
+     *                             diskSizeGB: Integer (Optional)
+     *                             managedDisk (Optional): {
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Required)
+     *                             }
+     *                             writeAcceleratorEnabled: Boolean (Optional)
+     *                         }
+     *                         securityProfile (Optional): {
+     *                             encryptionAtHost: boolean (Required)
+     *                             securityType: String(trustedLaunch) (Required)
+     *                             uefiSettings (Required): {
+     *                                 secureBootEnabled: Boolean (Optional)
+     *                                 vTpmEnabled: Boolean (Optional)
+     *                             }
+     *                         }
+     *                         serviceArtifactReference (Optional): {
+     *                             id: String (Required)
+     *                         }
+     *                     }
+     *                     taskSlotsPerNode: Integer (Optional)
+     *                     taskSchedulingPolicy (Optional): {
+     *                         nodeFillType: String(spread/pack) (Required)
+     *                     }
+     *                     resizeTimeout: Duration (Optional)
+     *                     resourceTags: String (Optional)
+     *                     targetDedicatedNodes: Integer (Optional)
+     *                     targetLowPriorityNodes: Integer (Optional)
+     *                     enableAutoScale: Boolean (Optional)
+     *                     autoScaleFormula: String (Optional)
+     *                     autoScaleEvaluationInterval: Duration (Optional)
+     *                     enableInterNodeCommunication: Boolean (Optional)
+     *                     networkConfiguration (Optional): {
+     *                         subnetId: String (Optional)
+     *                         dynamicVNetAssignmentScope: String(none/job) (Optional)
+     *                         endpointConfiguration (Optional): {
+     *                             inboundNATPools (Required): [
+     *                                  (Required){
+     *                                     name: String (Required)
+     *                                     protocol: String(tcp/udp) (Required)
+     *                                     backendPort: int (Required)
+     *                                     frontendPortRangeStart: int (Required)
+     *                                     frontendPortRangeEnd: int (Required)
+     *                                     networkSecurityGroupRules (Optional): [
+     *                                          (Optional){
+     *                                             priority: int (Required)
+     *                                             access: String(allow/deny) (Required)
+     *                                             sourceAddressPrefix: String (Required)
+     *                                             sourcePortRanges (Optional): [
+     *                                                 String (Optional)
+     *                                             ]
+     *                                         }
+     *                                     ]
+     *                                 }
+     *                             ]
+     *                         }
+     *                         publicIPAddressConfiguration (Optional): {
+     *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipAddressIds (Optional): [
+     *                                 String (Optional)
+     *                             ]
+     *                         }
+     *                         enableAcceleratedNetworking: Boolean (Optional)
+     *                     }
+     *                     startTask (Optional): {
+     *                         commandLine: String (Required)
+     *                         containerSettings (Optional): (recursive schema, see containerSettings above)
+     *                         resourceFiles (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         environmentSettings (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         userIdentity (Optional): (recursive schema, see userIdentity above)
+     *                         maxTaskRetryCount: Integer (Optional)
+     *                         waitForSuccess: Boolean (Optional)
+     *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
+     *                     applicationPackageReferences (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     userAccounts (Optional): [
+     *                          (Optional){
+     *                             name: String (Required)
+     *                             password: String (Required)
+     *                             elevationLevel: String(nonadmin/admin) (Optional)
+     *                             linuxUserConfiguration (Optional): {
+     *                                 uid: Integer (Optional)
+     *                                 gid: Integer (Optional)
+     *                                 sshPrivateKey: String (Optional)
+     *                             }
+     *                             windowsUserConfiguration (Optional): {
+     *                                 loginMode: String(batch/interactive) (Optional)
+     *                             }
+     *                         }
+     *                     ]
+     *                     metadata (Optional): [
+     *                          (Optional){
+     *                             name: String (Required)
+     *                             value: String (Required)
+     *                         }
+     *                     ]
+     *                     mountConfiguration (Optional): [
+     *                          (Optional){
+     *                             azureBlobFileSystemConfiguration (Optional): {
+     *                                 accountName: String (Required)
+     *                                 containerName: String (Required)
+     *                                 accountKey: String (Optional)
+     *                                 sasKey: String (Optional)
+     *                                 blobfuseOptions: String (Optional)
+     *                                 relativeMountPath: String (Required)
+     *                                 identityReference (Optional): (recursive schema, see identityReference above)
+     *                             }
+     *                             nfsMountConfiguration (Optional): {
+     *                                 source: String (Required)
+     *                                 relativeMountPath: String (Required)
+     *                                 mountOptions: String (Optional)
+     *                             }
+     *                             cifsMountConfiguration (Optional): {
+     *                                 username: String (Required)
+     *                                 source: String (Required)
+     *                                 relativeMountPath: String (Required)
+     *                                 mountOptions: String (Optional)
+     *                                 password: String (Required)
+     *                             }
+     *                             azureFileShareConfiguration (Optional): {
+     *                                 accountName: String (Required)
+     *                                 azureFileUrl: String (Required)
+     *                                 accountKey: String (Required)
+     *                                 relativeMountPath: String (Required)
+     *                                 mountOptions: String (Optional)
+     *                             }
+     *                         }
+     *                     ]
+     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                     upgradePolicy (Optional): {
+     *                         mode: String(automatic/manual/rolling) (Required)
+     *                         automaticOsUpgradePolicy (Optional): {
+     *                             disableAutomaticRollback: Boolean (Optional)
+     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             useRollingUpgradePolicy: Boolean (Optional)
+     *                             osRollingUpgradeDeferral: Boolean (Optional)
+     *                         }
+     *                         rollingUpgradePolicy (Optional): {
+     *                             enableCrossZoneUpgrade: Boolean (Optional)
+     *                             maxBatchInstancePercent: Integer (Optional)
+     *                             maxUnhealthyInstancePercent: Integer (Optional)
+     *                             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                             pauseTimeBetweenBatches: Duration (Optional)
+     *                             prioritizeUnhealthyInstances: Boolean (Optional)
+     *                             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                         }
+     *                     }
+     *                 }
+     *             }
+     *         }
+     *         metadata (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *     }
+     *     executionInfo (Optional): {
+     *         nextRunTime: OffsetDateTime (Optional)
+     *         recentJob (Optional): {
+     *             id: String (Optional)
+     *             url: String (Optional)
+     *         }
+     *         endTime: OffsetDateTime (Optional)
+     *     }
+     *     metadata (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     stats (Optional): {
+     *         url: String (Required)
+     *         startTime: OffsetDateTime (Required)
+     *         lastUpdateTime: OffsetDateTime (Required)
+     *         userCPUTime: Duration (Required)
+     *         kernelCPUTime: Duration (Required)
+     *         wallClockTime: Duration (Required)
+     *         readIOps: long (Required)
+     *         writeIOps: long (Required)
+     *         readIOGiB: double (Required)
+     *         writeIOGiB: double (Required)
+     *         numSucceededTasks: long (Required)
+     *         numFailedTasks: long (Required)
+     *         numTaskRetries: long (Required)
+     *         waitTime: Duration (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BinaryData> listJobSchedules(RequestOptions requestOptions) {
+        return this.listJobSchedulesInternal(requestOptions);
+    }
+
+    /**
      * Creates a Task to the specified Job.
      *
      * The maximum lifetime of a Task from addition to completion is 180 days. If a
@@ -18984,6 +21314,254 @@ public final class BatchClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BinaryData> listTasksInternal(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.listTasksInternal(jobId, requestOptions);
+    }
+
+    /**
+     * Lists all of the Tasks that are associated with the specified Job.
+     *
+     * For multi-instance Tasks, information such as affinityId, executionInfo and
+     * nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
+     * information about subtasks.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>timeOut</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
+     * </tr>
+     * <tr>
+     * <td>maxresults</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td>
+     * </tr>
+     * <tr>
+     * <td>$filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td>
+     * </tr>
+     * <tr>
+     * <td>$select</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>An OData $select clause. In the form of "," separated string.</td>
+     * </tr>
+     * <tr>
+     * <td>$expand</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>An OData $expand clause. In the form of "," separated string.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     displayName: String (Optional)
+     *     url: String (Optional)
+     *     eTag: String (Optional)
+     *     lastModified: OffsetDateTime (Optional)
+     *     creationTime: OffsetDateTime (Optional)
+     *     exitConditions (Optional): {
+     *         exitCodes (Optional): [
+     *              (Optional){
+     *                 code: int (Required)
+     *                 exitOptions (Required): {
+     *                     jobAction: String(none/disable/terminate) (Optional)
+     *                     dependencyAction: String(satisfy/block) (Optional)
+     *                 }
+     *             }
+     *         ]
+     *         exitCodeRanges (Optional): [
+     *              (Optional){
+     *                 start: int (Required)
+     *                 end: int (Required)
+     *                 exitOptions (Required): (recursive schema, see exitOptions above)
+     *             }
+     *         ]
+     *         preProcessingError (Optional): (recursive schema, see preProcessingError above)
+     *         fileUploadError (Optional): (recursive schema, see fileUploadError above)
+     *         default (Optional): (recursive schema, see default above)
+     *     }
+     *     state: String(active/preparing/running/completed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/preparing/running/completed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     commandLine: String (Optional)
+     *     containerSettings (Optional): {
+     *         containerRunOptions: String (Optional)
+     *         imageName: String (Required)
+     *         registry (Optional): {
+     *             username: String (Optional)
+     *             password: String (Optional)
+     *             registryServer: String (Optional)
+     *             identityReference (Optional): {
+     *                 resourceId: String (Optional)
+     *             }
+     *         }
+     *         workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *     }
+     *     resourceFiles (Optional): [
+     *          (Optional){
+     *             autoStorageContainerName: String (Optional)
+     *             storageContainerUrl: String (Optional)
+     *             httpUrl: String (Optional)
+     *             blobPrefix: String (Optional)
+     *             filePath: String (Optional)
+     *             fileMode: String (Optional)
+     *             identityReference (Optional): (recursive schema, see identityReference above)
+     *         }
+     *     ]
+     *     outputFiles (Optional): [
+     *          (Optional){
+     *             filePattern: String (Required)
+     *             destination (Required): {
+     *                 container (Optional): {
+     *                     path: String (Optional)
+     *                     containerUrl: String (Required)
+     *                     identityReference (Optional): (recursive schema, see identityReference above)
+     *                     uploadHeaders (Optional): [
+     *                          (Optional){
+     *                             name: String (Required)
+     *                             value: String (Optional)
+     *                         }
+     *                     ]
+     *                 }
+     *             }
+     *             uploadOptions (Required): {
+     *                 uploadCondition: String(tasksuccess/taskfailure/taskcompletion) (Required)
+     *             }
+     *         }
+     *     ]
+     *     environmentSettings (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             value: String (Optional)
+     *         }
+     *     ]
+     *     affinityInfo (Optional): {
+     *         affinityId: String (Required)
+     *     }
+     *     constraints (Optional): {
+     *         maxWallClockTime: Duration (Optional)
+     *         retentionTime: Duration (Optional)
+     *         maxTaskRetryCount: Integer (Optional)
+     *     }
+     *     requiredSlots: Integer (Optional)
+     *     userIdentity (Optional): {
+     *         username: String (Optional)
+     *         autoUser (Optional): {
+     *             scope: String(task/pool) (Optional)
+     *             elevationLevel: String(nonadmin/admin) (Optional)
+     *         }
+     *     }
+     *     executionInfo (Optional): {
+     *         startTime: OffsetDateTime (Optional)
+     *         endTime: OffsetDateTime (Optional)
+     *         exitCode: Integer (Optional)
+     *         containerInfo (Optional): {
+     *             containerId: String (Optional)
+     *             state: String (Optional)
+     *             error: String (Optional)
+     *         }
+     *         failureInfo (Optional): {
+     *             category: String(usererror/servererror) (Required)
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             details (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *         retryCount: int (Required)
+     *         lastRetryTime: OffsetDateTime (Optional)
+     *         requeueCount: int (Required)
+     *         lastRequeueTime: OffsetDateTime (Optional)
+     *         result: String(success/failure) (Optional)
+     *     }
+     *     nodeInfo (Optional): {
+     *         affinityId: String (Optional)
+     *         nodeUrl: String (Optional)
+     *         poolId: String (Optional)
+     *         nodeId: String (Optional)
+     *         taskRootDirectory: String (Optional)
+     *         taskRootDirectoryUrl: String (Optional)
+     *     }
+     *     multiInstanceSettings (Optional): {
+     *         numberOfInstances: Integer (Optional)
+     *         coordinationCommandLine: String (Required)
+     *         commonResourceFiles (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *     }
+     *     stats (Optional): {
+     *         url: String (Required)
+     *         startTime: OffsetDateTime (Required)
+     *         lastUpdateTime: OffsetDateTime (Required)
+     *         userCPUTime: Duration (Required)
+     *         kernelCPUTime: Duration (Required)
+     *         wallClockTime: Duration (Required)
+     *         readIOps: long (Required)
+     *         writeIOps: long (Required)
+     *         readIOGiB: double (Required)
+     *         writeIOGiB: double (Required)
+     *         waitTime: Duration (Required)
+     *     }
+     *     dependsOn (Optional): {
+     *         taskIds (Optional): [
+     *             String (Optional)
+     *         ]
+     *         taskIdRanges (Optional): [
+     *              (Optional){
+     *                 start: int (Required)
+     *                 end: int (Required)
+     *             }
+     *         ]
+     *     }
+     *     applicationPackageReferences (Optional): [
+     *          (Optional){
+     *             applicationId: String (Required)
+     *             version: String (Optional)
+     *         }
+     *     ]
+     *     authenticationTokenSettings (Optional): {
+     *         access (Optional): [
+     *             String(job) (Optional)
+     *         ]
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param jobId The ID of the Job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Tasks in a Job as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BinaryData> listTasks(String jobId, RequestOptions requestOptions) {
+        return this.listTasksInternal(jobId, requestOptions);
     }
 
     /**
@@ -21554,6 +24132,82 @@ public final class BatchClient {
     }
 
     /**
+     * Lists the files in a Task's directory on its Compute Node.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>timeOut</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
+     * </tr>
+     * <tr>
+     * <td>maxresults</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td>
+     * </tr>
+     * <tr>
+     * <td>$filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td>
+     * </tr>
+     * <tr>
+     * <td>recursive</td>
+     * <td>Boolean</td>
+     * <td>No</td>
+     * <td>Whether to list children of the Task directory. This parameter can be used in
+     * combination with the filter parameter to list specific type of files.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     name: String (Optional)
+     *     url: String (Optional)
+     *     isDirectory: Boolean (Optional)
+     *     properties (Optional): {
+     *         creationTime: OffsetDateTime (Optional)
+     *         lastModified: OffsetDateTime (Required)
+     *         contentLength: long (Required)
+     *         contentType: String (Optional)
+     *         fileMode: String (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose files you want to list.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the files on a Compute Node, or the files associated with
+     * a Task on a Compute Node as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BinaryData> listTaskFiles(String jobId, String taskId, RequestOptions requestOptions) {
+        return this.listTaskFilesInternal(jobId, taskId, requestOptions);
+    }
+
+    /**
      * Adds a user Account to the specified Compute Node.
      *
      * You can add a user Account to a Compute Node only when it is in the idle or
@@ -22816,6 +25470,219 @@ public final class BatchClient {
     }
 
     /**
+     * Lists the Compute Nodes in the specified Pool.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>timeOut</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
+     * </tr>
+     * <tr>
+     * <td>maxresults</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td>
+     * </tr>
+     * <tr>
+     * <td>$filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td>
+     * </tr>
+     * <tr>
+     * <td>$select</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>An OData $select clause. In the form of "," separated string.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     url: String (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos) (Optional)
+     *     schedulingState: String(enabled/disabled) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     lastBootTime: OffsetDateTime (Optional)
+     *     allocationTime: OffsetDateTime (Optional)
+     *     ipAddress: String (Optional)
+     *     affinityId: String (Optional)
+     *     vmSize: String (Optional)
+     *     totalTasksRun: Integer (Optional)
+     *     runningTasksCount: Integer (Optional)
+     *     runningTaskSlotsCount: Integer (Optional)
+     *     totalTasksSucceeded: Integer (Optional)
+     *     recentTasks (Optional): [
+     *          (Optional){
+     *             taskUrl: String (Optional)
+     *             jobId: String (Optional)
+     *             taskId: String (Optional)
+     *             subtaskId: Integer (Optional)
+     *             taskState: String(active/preparing/running/completed) (Required)
+     *             executionInfo (Optional): {
+     *                 startTime: OffsetDateTime (Optional)
+     *                 endTime: OffsetDateTime (Optional)
+     *                 exitCode: Integer (Optional)
+     *                 containerInfo (Optional): {
+     *                     containerId: String (Optional)
+     *                     state: String (Optional)
+     *                     error: String (Optional)
+     *                 }
+     *                 failureInfo (Optional): {
+     *                     category: String(usererror/servererror) (Required)
+     *                     code: String (Optional)
+     *                     message: String (Optional)
+     *                     details (Optional): [
+     *                          (Optional){
+     *                             name: String (Optional)
+     *                             value: String (Optional)
+     *                         }
+     *                     ]
+     *                 }
+     *                 retryCount: int (Required)
+     *                 lastRetryTime: OffsetDateTime (Optional)
+     *                 requeueCount: int (Required)
+     *                 lastRequeueTime: OffsetDateTime (Optional)
+     *                 result: String(success/failure) (Optional)
+     *             }
+     *         }
+     *     ]
+     *     startTask (Optional): {
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): {
+     *             containerRunOptions: String (Optional)
+     *             imageName: String (Required)
+     *             registry (Optional): {
+     *                 username: String (Optional)
+     *                 password: String (Optional)
+     *                 registryServer: String (Optional)
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *             }
+     *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *         }
+     *         resourceFiles (Optional): [
+     *              (Optional){
+     *                 autoStorageContainerName: String (Optional)
+     *                 storageContainerUrl: String (Optional)
+     *                 httpUrl: String (Optional)
+     *                 blobPrefix: String (Optional)
+     *                 filePath: String (Optional)
+     *                 fileMode: String (Optional)
+     *                 identityReference (Optional): (recursive schema, see identityReference above)
+     *             }
+     *         ]
+     *         environmentSettings (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *         userIdentity (Optional): {
+     *             username: String (Optional)
+     *             autoUser (Optional): {
+     *                 scope: String(task/pool) (Optional)
+     *                 elevationLevel: String(nonadmin/admin) (Optional)
+     *             }
+     *         }
+     *         maxTaskRetryCount: Integer (Optional)
+     *         waitForSuccess: Boolean (Optional)
+     *     }
+     *     startTaskInfo (Optional): {
+     *         state: String(running/completed) (Required)
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Optional)
+     *         exitCode: Integer (Optional)
+     *         containerInfo (Optional): (recursive schema, see containerInfo above)
+     *         failureInfo (Optional): (recursive schema, see failureInfo above)
+     *         retryCount: int (Required)
+     *         lastRetryTime: OffsetDateTime (Optional)
+     *         result: String(success/failure) (Optional)
+     *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
+     *     errors (Optional): [
+     *          (Optional){
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             errorDetails (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *     ]
+     *     isDedicated: Boolean (Optional)
+     *     endpointConfiguration (Optional): {
+     *         inboundEndpoints (Required): [
+     *              (Required){
+     *                 name: String (Required)
+     *                 protocol: String(tcp/udp) (Required)
+     *                 publicIPAddress: String (Required)
+     *                 publicFQDN: String (Required)
+     *                 frontendPort: int (Required)
+     *                 backendPort: int (Required)
+     *             }
+     *         ]
+     *     }
+     *     nodeAgentInfo (Optional): {
+     *         version: String (Required)
+     *         lastUpdateTime: OffsetDateTime (Required)
+     *     }
+     *     virtualMachineInfo (Optional): {
+     *         imageReference (Optional): {
+     *             publisher: String (Optional)
+     *             offer: String (Optional)
+     *             sku: String (Optional)
+     *             version: String (Optional)
+     *             virtualMachineImageId: String (Optional)
+     *             exactVersion: String (Optional)
+     *         }
+     *         scaleSetVmResourceId: String (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param poolId The ID of the Pool from which you want to list Compute Nodes.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BinaryData> listNodes(String poolId, RequestOptions requestOptions) {
+        return this.listNodesInternal(poolId, requestOptions);
+    }
+
+    /**
      * Gets information about the specified Compute Node Extension.
      * <p>
      * <strong>Query Parameters</strong>
@@ -23079,6 +25946,97 @@ public final class BatchClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BinaryData> listNodeExtensionsInternal(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.serviceClient.listNodeExtensionsInternal(poolId, nodeId, requestOptions);
+    }
+
+    /**
+     * Lists the Compute Nodes Extensions in the specified Pool.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>timeOut</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
+     * </tr>
+     * <tr>
+     * <td>maxresults</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td>
+     * </tr>
+     * <tr>
+     * <td>$select</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>An OData $select clause. In the form of "," separated string.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     provisioningState: String (Optional)
+     *     vmExtension (Optional): {
+     *         name: String (Required)
+     *         publisher: String (Required)
+     *         type: String (Required)
+     *         typeHandlerVersion: String (Optional)
+     *         autoUpgradeMinorVersion: Boolean (Optional)
+     *         enableAutomaticUpgrade: Boolean (Optional)
+     *         settings (Optional): {
+     *             String: String (Required)
+     *         }
+     *         protectedSettings (Optional): {
+     *             String: String (Required)
+     *         }
+     *         provisionAfterExtensions (Optional): [
+     *             String (Optional)
+     *         ]
+     *     }
+     *     instanceView (Optional): {
+     *         name: String (Optional)
+     *         statuses (Optional): [
+     *              (Optional){
+     *                 code: String (Optional)
+     *                 displayStatus: String (Optional)
+     *                 level: String(Error/Info/Warning) (Optional)
+     *                 message: String (Optional)
+     *                 time: OffsetDateTime (Optional)
+     *             }
+     *         ]
+     *         subStatuses (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param poolId The ID of the Pool that contains Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to list extensions.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Compute Node extensions in a Node as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BinaryData> listNodeExtensions(String poolId, String nodeId, RequestOptions requestOptions) {
+        return this.listNodeExtensionsInternal(poolId, nodeId, requestOptions);
     }
 
     /**
@@ -23563,6 +26521,81 @@ public final class BatchClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BinaryData> listNodeFilesInternal(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.serviceClient.listNodeFilesInternal(poolId, nodeId, requestOptions);
+    }
+
+    /**
+     * Lists all of the files in Task directories on the specified Compute Node.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>timeOut</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
+     * </tr>
+     * <tr>
+     * <td>maxresults</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td>
+     * </tr>
+     * <tr>
+     * <td>$filter</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td>
+     * </tr>
+     * <tr>
+     * <td>recursive</td>
+     * <td>Boolean</td>
+     * <td>No</td>
+     * <td>Whether to list children of a directory.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     name: String (Optional)
+     *     url: String (Optional)
+     *     isDirectory: Boolean (Optional)
+     *     properties (Optional): {
+     *         creationTime: OffsetDateTime (Optional)
+     *         lastModified: OffsetDateTime (Required)
+     *         contentLength: long (Required)
+     *         contentType: String (Optional)
+     *         fileMode: String (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node whose files you want to list.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the files on a Compute Node, or the files associated with
+     * a Task on a Compute Node as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BinaryData> listNodeFiles(String poolId, String nodeId, RequestOptions requestOptions) {
+        return this.listNodeFilesInternal(poolId, nodeId, requestOptions);
     }
 
     /**
@@ -27032,6 +30065,92 @@ public final class BatchClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BinaryData> listSubTasksInternal(String jobId, String taskId, RequestOptions requestOptions) {
         return this.serviceClient.listSubTasksInternal(jobId, taskId, requestOptions);
+    }
+
+    /**
+     * Lists all of the subtasks that are associated with the specified multi-instance
+     * Task.
+     *
+     * If the Task is not a multi-instance Task then this returns an empty collection.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>timeOut</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
+     * </tr>
+     * <tr>
+     * <td>$select</td>
+     * <td>List&lt;String&gt;</td>
+     * <td>No</td>
+     * <td>An OData $select clause. In the form of "," separated string.</td>
+     * </tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     id: Integer (Optional)
+     *     nodeInfo (Optional): {
+     *         affinityId: String (Optional)
+     *         nodeUrl: String (Optional)
+     *         poolId: String (Optional)
+     *         nodeId: String (Optional)
+     *         taskRootDirectory: String (Optional)
+     *         taskRootDirectoryUrl: String (Optional)
+     *     }
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     exitCode: Integer (Optional)
+     *     containerInfo (Optional): {
+     *         containerId: String (Optional)
+     *         state: String (Optional)
+     *         error: String (Optional)
+     *     }
+     *     failureInfo (Optional): {
+     *         category: String(usererror/servererror) (Required)
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         details (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     state: String(preparing/running/completed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(preparing/running/completed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     result: String(success/failure) (Optional)
+     * }
+     * }</pre>
+     *
+     * @param jobId The ID of the Job.
+     * @param taskId The ID of the Task.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the subtasks of a Task as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BinaryData> listSubTasks(String jobId, String taskId, RequestOptions requestOptions) {
+        return this.listSubTasksInternal(jobId, taskId, requestOptions);
     }
 
     /**
