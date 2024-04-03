@@ -19,14 +19,14 @@ public final class WhatsAppMessageTemplateBindingsButton {
      */
     @Generated
     @JsonProperty(value = "subType")
-    private WhatsAppMessageButtonSubType subType;
+    private final WhatsAppMessageButtonSubType subType;
 
     /*
      * The name of the referenced item in the template values.
      */
     @Generated
     @JsonProperty(value = "refValue")
-    private String refValue;
+    private final String refValue;
 
     /**
      * Creates an instance of WhatsAppMessageTemplateBindingsButton class.

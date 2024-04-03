@@ -4,17 +4,23 @@
 package com.azure.communication.jobrouter.implementation.models;
 
 import com.azure.communication.jobrouter.models.LabelOperator;
+import com.azure.communication.jobrouter.models.WorkerSelectorAttachmentKind;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Attaches a worker selector where the value is passed through from a job's label with the same key.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = PassThroughWorkerSelectorAttachmentInternal.class,
+    visible = true)
 @JsonTypeName("passThrough")
 @Fluent
 public final class PassThroughWorkerSelectorAttachmentInternal extends WorkerSelectorAttachmentInternal {
@@ -24,14 +30,14 @@ public final class PassThroughWorkerSelectorAttachmentInternal extends WorkerSel
      */
     @Generated
     @JsonProperty(value = "key")
-    private String key;
+    private final String key;
 
     /*
      * Describes how the value of the label is compared to the value pass through.
      */
     @Generated
     @JsonProperty(value = "labelOperator")
-    private LabelOperator labelOperator;
+    private final LabelOperator labelOperator;
 
     /*
      * Describes how long the attached label selector is valid in seconds.
@@ -94,5 +100,24 @@ public final class PassThroughWorkerSelectorAttachmentInternal extends WorkerSel
     public PassThroughWorkerSelectorAttachmentInternal setExpiresAfterSeconds(Double expiresAfterSeconds) {
         this.expiresAfterSeconds = expiresAfterSeconds;
         return this;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of WorkerSelectorAttachment.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private WorkerSelectorAttachmentKind kind = WorkerSelectorAttachmentKind.PASS_THROUGH;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of WorkerSelectorAttachment.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public WorkerSelectorAttachmentKind getKind() {
+        return this.kind;
     }
 }

@@ -34,6 +34,7 @@ public class TestProxyTestServer implements Closeable {
                 .get("/", (req, res) -> res.status(HttpResponseStatus.OK).sendString(Mono.just("hello world")))
                 .post("/first/path",
                     (req, res) -> res.status(HttpResponseStatus.OK).sendString(Mono.just("first path")))
+                .post("/post", (req, res) -> res.status(HttpResponseStatus.OK))
                 .get("/echoheaders", (req, res) -> {
                     for (Map.Entry<String, String> requestHeader : req.requestHeaders()) {
                         res.addHeader(requestHeader.getKey(), requestHeader.getValue());
