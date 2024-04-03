@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.hdinsight.containers.generated;
 
-/** Samples for Clusters ListServiceConfigs. */
+/**
+ * Samples for Clusters ListServiceConfigs.
+ */
 public final class ClustersListServiceConfigsSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-06-01-preview/examples/ListClusterServiceConfigs.json
+     * x-ms-original-file:
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/
+     * ListClusterServiceConfigs.json
      */
     /**
      * Sample code: HDInsightClusterGetServiceConfigs.
-     *
+     * 
      * @param manager Entry point to HDInsightContainersManager.
      */
     public static void hDInsightClusterGetServiceConfigs(

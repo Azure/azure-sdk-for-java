@@ -6,107 +6,70 @@ package com.azure.resourcemanager.hdinsight.containers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolVersionProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Available cluster pool version. */
+/**
+ * Available cluster pool version.
+ */
 @Fluent
 public final class ClusterPoolVersionInner extends ProxyResource {
     /*
      * Cluster pool version properties.
      */
     @JsonProperty(value = "properties")
-    private ClusterPoolVersionProperties innerProperties;
+    private ClusterPoolVersionProperties properties;
 
-    /** Creates an instance of ClusterPoolVersionInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of ClusterPoolVersionInner class.
+     */
     public ClusterPoolVersionInner() {
     }
 
     /**
-     * Get the innerProperties property: Cluster pool version properties.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: Cluster pool version properties.
+     * 
+     * @return the properties value.
      */
-    private ClusterPoolVersionProperties innerProperties() {
-        return this.innerProperties;
+    public ClusterPoolVersionProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the clusterPoolVersion property: Cluster pool version is a 2-part version.
-     *
-     * @return the clusterPoolVersion value.
-     */
-    public String clusterPoolVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().clusterPoolVersion();
-    }
-
-    /**
-     * Set the clusterPoolVersion property: Cluster pool version is a 2-part version.
-     *
-     * @param clusterPoolVersion the clusterPoolVersion value to set.
+     * Set the properties property: Cluster pool version properties.
+     * 
+     * @param properties the properties value to set.
      * @return the ClusterPoolVersionInner object itself.
      */
-    public ClusterPoolVersionInner withClusterPoolVersion(String clusterPoolVersion) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterPoolVersionProperties();
-        }
-        this.innerProperties().withClusterPoolVersion(clusterPoolVersion);
+    public ClusterPoolVersionInner withProperties(ClusterPoolVersionProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
-     * Get the aksVersion property: AKS version.
-     *
-     * @return the aksVersion value.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    public String aksVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().aksVersion();
-    }
-
-    /**
-     * Set the aksVersion property: AKS version.
-     *
-     * @param aksVersion the aksVersion value to set.
-     * @return the ClusterPoolVersionInner object itself.
-     */
-    public ClusterPoolVersionInner withAksVersion(String aksVersion) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterPoolVersionProperties();
-        }
-        this.innerProperties().withAksVersion(aksVersion);
-        return this;
-    }
-
-    /**
-     * Get the isPreview property: Indicate if this version is in preview or not.
-     *
-     * @return the isPreview value.
-     */
-    public Boolean isPreview() {
-        return this.innerProperties() == null ? null : this.innerProperties().isPreview();
-    }
-
-    /**
-     * Set the isPreview property: Indicate if this version is in preview or not.
-     *
-     * @param isPreview the isPreview value to set.
-     * @return the ClusterPoolVersionInner object itself.
-     */
-    public ClusterPoolVersionInner withIsPreview(Boolean isPreview) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterPoolVersionProperties();
-        }
-        this.innerProperties().withIsPreview(isPreview);
-        return this;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }
