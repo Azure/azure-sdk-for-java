@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.http;
+package com.azure.core.implementation.serializer;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
@@ -10,10 +10,11 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.MockHttpResponse;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.json.JsonSerializable;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -51,7 +52,7 @@ public class RestProxyJsonSerializableTests {
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
             assertEquals(expectedBody, request.getBodyAsBinaryData().toString());
-            return Mono.just(new MockHttpResponse(request, 200, null, SerializerEncoding.JSON));
+            return Mono.just(new MockHttpResponse(request, 200));
         }).build();
 
         SimpleJsonSerializableProxy proxy = RestProxy.create(SimpleJsonSerializableProxy.class, pipeline);
@@ -63,8 +64,8 @@ public class RestProxyJsonSerializableTests {
         String response = "{\"boolean\":true,\"int\":10,\"decimal\":10.0,\"string\":\"10\"}";
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(request -> Mono.just(
-                new MockHttpResponse(request, 200, response.getBytes(StandardCharsets.UTF_8), SerializerEncoding.JSON)))
+            .httpClient(request -> Mono
+                .just(new MockHttpResponse(request, 200, new HttpHeaders(), response.getBytes(StandardCharsets.UTF_8))))
             .build();
 
         SimpleJsonSerializableProxy proxy = RestProxy.create(SimpleJsonSerializableProxy.class, pipeline);
@@ -81,8 +82,8 @@ public class RestProxyJsonSerializableTests {
         String response = "{\"boolean\":true,\"int\":10}";
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(request -> Mono.just(
-                new MockHttpResponse(request, 200, response.getBytes(StandardCharsets.UTF_8), SerializerEncoding.JSON)))
+            .httpClient(request -> Mono
+                .just(new MockHttpResponse(request, 200, new HttpHeaders(), response.getBytes(StandardCharsets.UTF_8))))
             .build();
 
         SimpleJsonSerializableProxy proxy = RestProxy.create(SimpleJsonSerializableProxy.class, pipeline);
