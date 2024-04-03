@@ -872,7 +872,6 @@ public final class OpenAIClient {
 
         BinaryData data = BinaryData.fromObject(audioTranscriptionOptions);
 
-
         Response<BinaryData> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, data,
                 requestOptions)
@@ -971,7 +970,7 @@ public final class OpenAIClient {
         Response<BinaryData> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, data,
                 requestOptions)
-            : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, data, "",
+            : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, data, contentType,
                 requestOptions);
         return new SimpleResponse<>(response, response.getValue().toString());
     }
