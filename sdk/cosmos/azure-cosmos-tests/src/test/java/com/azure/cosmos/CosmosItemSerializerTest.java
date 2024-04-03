@@ -7,10 +7,16 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosBatchOperationResult;
+import com.azure.cosmos.models.CosmosBatchRequestOptions;
+import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkItemRequestOptions;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -19,6 +25,7 @@ import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosReadManyRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -256,97 +263,6 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
             ObjectNode.class);
     }
 
-    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
-    public void bulkAndReadManyWithObjectNode(CosmosItemSerializer requestLevelSerializer) {
-
-        runBulkAndReadManyTestCase(
-            id -> TestDocument.createAsObjectNode(id),
-            requestLevelSerializer,
-            ObjectNode.class
-        );
-    }
-
-    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
-    public void bulkAndReadManyWithPojo(CosmosItemSerializer requestLevelSerializer) {
-
-        runBulkAndReadManyTestCase(
-            id -> TestDocument.create(id),
-            requestLevelSerializer,
-            TestDocument.class
-        );
-    }
-
-
-    private <T> void runBulkAndReadManyTestCase(
-        Function<String, T> docGenerator,
-        CosmosItemSerializer requestLevelSerializer,
-        Class<T> classType) {
-
-        CosmosBulkExecutionOptions bulkExecOptions = new CosmosBulkExecutionOptions();
-
-        List<CosmosItemOperation> bulkOperations = new ArrayList<>();
-        Map<String, T> inputItems = new HashMap<>();
-        for (int i = 0; i < 10; i++) {
-            String id = UUID.randomUUID().toString();
-            T doc = docGenerator.apply(id);
-            inputItems.put(id, doc);
-            CosmosBulkItemRequestOptions itemRequestOptions = new CosmosBulkItemRequestOptions()
-                .setCustomSerializer(requestLevelSerializer);
-            bulkOperations.add(CosmosBulkOperations.getCreateItemOperation(
-                doc,
-                new PartitionKey(id),
-                itemRequestOptions,
-                id));
-        }
-
-        Iterable<CosmosBulkOperationResponse<Object>> responseFlux =
-            container.executeBulkOperations(bulkOperations, bulkExecOptions);
-        for(CosmosBulkOperationResponse<Object> response: responseFlux) {
-            assertThat(response.getException()).isNull();
-            assertThat(response.getResponse()).isNotNull();
-            assertThat(response.getResponse().getStatusCode()).isBetween(200, 201);
-            assertThat(response.getOperation().<String>getContext()).isNotNull();
-            String id = response.getOperation().getContext();
-            assertThat(inputItems.containsKey(id)).isTrue();
-            T responseItem = response.getResponse().getItem(classType);
-
-            if (isContentOnWriteEnabled) {
-                assertSameDocument(inputItems.get(id), responseItem);
-            } else {
-                assertThat(responseItem).isNull();
-            }
-        }
-
-        List<CosmosItemIdentity> readManyTuples = new ArrayList<>();
-        for (String id: inputItems.keySet().stream().limit(3).toArray(count -> new String[count])) {
-            readManyTuples.add(new CosmosItemIdentity(new PartitionKey(id), id));
-        }
-
-        CosmosReadManyRequestOptions readManyRequestOptions = new CosmosReadManyRequestOptions()
-            .setCustomSerializer(requestLevelSerializer);
-
-        FeedResponse<T> response = container.readMany(readManyTuples, readManyRequestOptions, classType);
-        assertThat(response).isNotNull();
-        Object[] items = response.getElements().stream().toArray();
-        assertThat(items).isNotNull();
-        assertThat(items).hasSize(3);
-        for(Object responseItem: items) {
-            assertThat(responseItem).isNotNull();
-            if (responseItem instanceof TestDocument) {
-                TestDocument doc = (TestDocument) responseItem;
-                assertThat(inputItems.containsKey(doc.id)).isTrue();
-                assertSameDocument(inputItems.get(doc.id), doc);
-            } else if (responseItem instanceof ObjectNode) {
-                ObjectNode doc = (ObjectNode) responseItem;
-                String id = doc.get("id").asText();
-                assertThat(inputItems.containsKey(id)).isTrue();
-                assertSameDocument(inputItems.get(id), doc);
-            } else {
-                fail("Unexpected response item type '" + responseItem.getClass().getSimpleName() + "'.");
-            }
-        }
-    }
-
     private <T> void runPointOperationAndQueryTestCase(
         T doc,
         String id,
@@ -442,11 +358,188 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         assertThat(results).isNotNull();
         assertThat(results).hasSize(1);
         assertSameDocument(doc, results.get(0));
+    }
 
-        // TODO @fabianm - add missing test cases
+    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
+    public void bulkAndReadManyWithObjectNode(CosmosItemSerializer requestLevelSerializer) {
 
-        // Batch
-        // Change feed
+        runBulkAndReadManyTestCase(
+            id -> TestDocument.createAsObjectNode(id),
+            requestLevelSerializer,
+            ObjectNode.class
+        );
+    }
+
+    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
+    public void bulkAndReadManyWithPojo(CosmosItemSerializer requestLevelSerializer) {
+
+        runBulkAndReadManyTestCase(
+            id -> TestDocument.create(id),
+            requestLevelSerializer,
+            TestDocument.class
+        );
+    }
+
+
+    private <T> void runBulkAndReadManyTestCase(
+        Function<String, T> docGenerator,
+        CosmosItemSerializer requestLevelSerializer,
+        Class<T> classType) {
+
+        CosmosBulkExecutionOptions bulkExecOptions = new CosmosBulkExecutionOptions();
+
+        List<CosmosItemOperation> bulkOperations = new ArrayList<>();
+        Map<String, T> inputItems = new HashMap<>();
+        for (int i = 0; i < 10; i++) {
+            String id = UUID.randomUUID().toString();
+            T doc = docGenerator.apply(id);
+            inputItems.put(id, doc);
+            CosmosBulkItemRequestOptions itemRequestOptions = new CosmosBulkItemRequestOptions()
+                .setCustomSerializer(requestLevelSerializer);
+            bulkOperations.add(CosmosBulkOperations.getCreateItemOperation(
+                doc,
+                new PartitionKey(id),
+                itemRequestOptions,
+                id));
+        }
+
+        Iterable<CosmosBulkOperationResponse<Object>> responseFlux =
+            container.executeBulkOperations(bulkOperations, bulkExecOptions);
+        for(CosmosBulkOperationResponse<Object> response: responseFlux) {
+            assertThat(response.getException()).isNull();
+            assertThat(response.getResponse()).isNotNull();
+            assertThat(response.getResponse().getStatusCode()).isBetween(200, 201);
+            assertThat(response.getOperation().<String>getContext()).isNotNull();
+            String id = response.getOperation().getContext();
+            assertThat(inputItems.containsKey(id)).isTrue();
+            T responseItem = response.getResponse().getItem(classType);
+
+            if (isContentOnWriteEnabled) {
+                assertSameDocument(inputItems.get(id), responseItem);
+            } else {
+                assertThat(responseItem).isNull();
+            }
+        }
+
+        List<CosmosItemIdentity> readManyTuples = new ArrayList<>();
+        for (String id: inputItems.keySet().stream().limit(3).toArray(count -> new String[count])) {
+            readManyTuples.add(new CosmosItemIdentity(new PartitionKey(id), id));
+        }
+
+        CosmosReadManyRequestOptions readManyRequestOptions = new CosmosReadManyRequestOptions()
+            .setCustomSerializer(requestLevelSerializer);
+
+        FeedResponse<T> response = container.readMany(readManyTuples, readManyRequestOptions, classType);
+        assertThat(response).isNotNull();
+        Object[] items = response.getElements().stream().toArray();
+        assertThat(items).isNotNull();
+        assertThat(items).hasSize(3);
+        for(Object responseItem: items) {
+            assertThat(responseItem).isNotNull();
+            if (responseItem instanceof TestDocument) {
+                TestDocument doc = (TestDocument) responseItem;
+                assertThat(inputItems.containsKey(doc.id)).isTrue();
+                assertSameDocument(inputItems.get(doc.id), doc);
+            } else if (responseItem instanceof ObjectNode) {
+                ObjectNode doc = (ObjectNode) responseItem;
+                String id = doc.get("id").asText();
+                assertThat(inputItems.containsKey(id)).isTrue();
+                assertSameDocument(inputItems.get(id), doc);
+            } else {
+                fail("Unexpected response item type '" + responseItem.getClass().getSimpleName() + "'.");
+            }
+        }
+    }
+
+    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
+    public void batchAndChangeFeedWithObjectNode(CosmosItemSerializer requestLevelSerializer) {
+
+        runBatchAndChangeFeedTestCase(
+            pk -> TestDocument.createAsObjectNode(UUID.randomUUID().toString(), pk),
+            requestLevelSerializer,
+            ObjectNode.class
+        );
+    }
+
+    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
+    public void batchAndChangeFeedWithPojo(CosmosItemSerializer requestLevelSerializer) {
+
+        runBatchAndChangeFeedTestCase(
+            pk -> TestDocument.create(UUID.randomUUID().toString(), pk),
+            requestLevelSerializer,
+            TestDocument.class
+        );
+    }
+
+
+    private <T> void runBatchAndChangeFeedTestCase(
+        Function<String, T> docGenerator,
+        CosmosItemSerializer requestLevelSerializer,
+        Class<T> classType) {
+
+        String pkValue = UUID.randomUUID().toString();
+        CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(pkValue));
+        List<T> inputItems = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            T doc = docGenerator.apply(pkValue);
+            inputItems.add(doc);
+            CosmosBatchItemRequestOptions itemRequestOptions = new CosmosBatchItemRequestOptions()
+                .setCustomSerializer(requestLevelSerializer);
+            batch.createItemOperation(
+                doc,
+                itemRequestOptions);
+        }
+
+        CosmosBatchRequestOptions batchRequestOptions = new CosmosBatchRequestOptions();
+
+        CosmosBatchResponse response = container.executeCosmosBatch(batch, batchRequestOptions);
+        assertThat(response).isNotNull();
+        assertThat(response.getStatusCode()).isEqualTo(200);
+        assertThat(response.getErrorMessage()).isNull();
+        assertThat(response.getResults()).isNotNull();
+        assertThat(response.getResults()).hasSize(10);
+        for (CosmosBatchOperationResult result: response.getResults()) {
+            T responseItem = result.getItem(classType);
+            if (isContentOnWriteEnabled) {
+                boolean found = false;
+                for (T inputItem: inputItems) {
+                    if (hasSameId(inputItem, responseItem)) {
+                        assertSameDocument(inputItem, responseItem);
+                        found = true;
+                        break;
+                    }
+                }
+
+                assertThat(found).isTrue();
+
+            } else {
+                assertThat(responseItem).isNull();
+            }
+        }
+
+        CosmosChangeFeedRequestOptions changeFeedRequestOptions = CosmosChangeFeedRequestOptions
+            .createForProcessingFromBeginning(
+                FeedRange.forLogicalPartition(new PartitionKey(pkValue))
+            )
+            .setCustomSerializer(requestLevelSerializer);
+
+        List<T> results = container
+            .queryChangeFeed(changeFeedRequestOptions, classType)
+            .stream().collect(Collectors.toList());
+        assertThat(results).isNotNull();
+        assertThat(results).hasSize(10);
+        for (T responseItem: results) {
+            boolean found = false;
+            for (T inputItem: inputItems) {
+                if (hasSameId(inputItem, responseItem)) {
+                    assertSameDocument(inputItem, responseItem);
+                    found = true;
+                    break;
+                }
+            }
+
+            assertThat(found).isTrue();
+        }
     }
 
     private static class TestChildObject {
@@ -471,9 +564,13 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         public TestChildObject[] someChildObjectArray;
 
         public static TestDocument create(String id) {
+            return create(id, id);
+        }
+
+        public static TestDocument create(String id, String pk) {
             TestDocument doc = new TestDocument();
             doc.id = id;
-            doc.mypk = id;
+            doc.mypk = pk;
             doc.someNumber = 5;
             doc.someStringArray = new String[] { id, "someString2", "someString3" };
             doc.someNumberArray = new Integer[] { 1, 3, 5 };
@@ -487,9 +584,13 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         }
 
         public static ObjectNode createAsObjectNode(String id) {
+            return createAsObjectNode(id, id);
+        }
+
+        public static ObjectNode createAsObjectNode(String id, String pk) {
             ObjectNode node = objectMapper.createObjectNode();
             node.put("id", id);
-            node.put("mypk", id);
+            node.put("mypk", pk);
             node.put("someNumber", 5);
             node.put("someStringArray", objectMapper.createArrayNode().add(id).add("someString2").add("someString3"));
             node.put("someNumberArray", objectMapper.createArrayNode().add(1).add(3).add(5));
@@ -511,6 +612,17 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         }
     }
 
+    private static boolean hasSameId(Object doc, Object deserializedDoc) {
+        assertThat(doc).isNotNull();
+        assertThat(deserializedDoc).isNotNull();
+
+        if (doc instanceof TestDocument) {
+            return hasSameId((TestDocument) doc, (TestDocument) deserializedDoc);
+        }
+
+        return hasSameId((ObjectNode) doc, (ObjectNode) deserializedDoc);
+    }
+
     private static void assertSameDocument(Object doc, Object deserializedDoc) {
         assertThat(doc).isNotNull();
         assertThat(deserializedDoc).isNotNull();
@@ -523,11 +635,24 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         assertSameDocument((ObjectNode) doc, (ObjectNode) deserializedDoc);
     }
 
+    private static boolean hasSameId(ObjectNode doc, ObjectNode deserializedDoc) {
+        assertThat(doc).isNotNull();
+        assertThat(deserializedDoc).isNotNull();
+
+        return hasSameId(TestDocument.parse(doc), TestDocument.parse(deserializedDoc));
+    }
+
     private static void assertSameDocument(ObjectNode doc, ObjectNode deserializedDoc) {
         assertThat(doc).isNotNull();
         assertThat(deserializedDoc).isNotNull();
 
         assertSameDocument(TestDocument.parse(doc), TestDocument.parse(deserializedDoc));
+    }
+
+    private static boolean hasSameId(TestDocument doc, TestDocument deserializedDoc) {
+        assertThat(doc).isNotNull();
+        assertThat(deserializedDoc).isNotNull();
+        return doc.id.equals(deserializedDoc.id);
     }
 
     private static void assertSameDocument(TestDocument doc, TestDocument deserializedDoc) {
