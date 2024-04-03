@@ -158,6 +158,7 @@ public final class BatchClient {
      * @param jobId The ID of the job to which to add the task.
      * @param taskList A list of {@link BatchTaskCreateContent tasks} to add.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void createTasks(String jobId, List<BatchTaskCreateContent> taskList) {
         createTasks(jobId, taskList, null);
     }
@@ -181,6 +182,7 @@ public final class BatchClient {
      * @param taskList A list of {@link BatchTaskCreateContent tasks} to add.
      * @param batchClientParallelOptions Option that configure the parallelization of the method.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void createTasks(String jobId, List<BatchTaskCreateContent> taskList,
         BatchClientParallelOptions batchClientParallelOptions) {
         TaskSubmitter taskSubmitter = new SyncTaskSubmitter(this);
@@ -205,6 +207,7 @@ public final class BatchClient {
      * @return the result of listing the applications available in an Account as paginated response with {@link
      * PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchApplication> listApplications(ListBatchApplicationsOptions options) {
         // Delegate the call to the original function
         return this.listApplicationsInternal(options.getTimeOutInSeconds());
@@ -227,6 +230,7 @@ public final class BatchClient {
      * @return the result of listing the applications available in an Account as paginated response with {@link
      * PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchApplication> listApplications() {
         return this.listApplicationsInternal();
     }
@@ -249,6 +253,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return contains information about an application in an Azure Batch Account.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchApplication getApplication(String applicationId, GetApplicationOptions options) {
         return this.getApplicationInternal(applicationId, options.getTimeOutInSeconds());
     }
@@ -270,6 +275,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return contains information about an application in an Azure Batch Account.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchApplication getApplication(String applicationId) {
         return this.getApplicationInternal(applicationId);
     }
@@ -294,6 +300,7 @@ public final class BatchClient {
      * @return the result of a listing the usage metrics for an Account as paginated response with {@link
      * PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchPoolUsageMetrics> listPoolUsageMetrics(ListBatchPoolUsageMetricsOptions options) {
         return this.listPoolUsageMetricsInternal(options.getTimeOutInSeconds(), options.getStartTime(),
             options.getEndTime(), options.getFilter());
@@ -317,6 +324,7 @@ public final class BatchClient {
      * @return the result of a listing the usage metrics for an Account as paginated response with {@link
      * PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchPoolUsageMetrics> listPoolUsageMetrics() {
         return this.listPoolUsageMetricsInternal();
     }
@@ -337,6 +345,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void createPool(BatchPoolCreateContent body, CreateBatchPoolOptions options) {
         createPoolInternal(body, options.getTimeOutInSeconds());
     }
@@ -356,6 +365,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void createPool(BatchPoolCreateContent body) {
         createPoolInternal(body);
     }
@@ -373,6 +383,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Pools in an Account as paginated response with {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchPool> listPools(ListBatchPoolsOptions options) {
         return listPoolsInternal(options.getTimeOutInSeconds(), options.getFilter(), options.getSelect(),
             options.getExpand());
@@ -389,6 +400,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Pools in an Account as paginated response with {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchPool> listPools() {
         return listPoolsInternal();
     }
@@ -405,6 +417,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deletePool(String poolId, DeleteBatchPoolOptions options) {
         deletePoolInternal(poolId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -420,6 +433,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deletePool(String poolId) {
         deletePoolInternal(poolId);
     }
@@ -436,6 +450,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return basic properties of a Pool.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean poolExists(String poolId, BatchPoolExistsOptions options) {
         return poolExistsInternal(poolId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -451,6 +466,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return basic properties of a Pool.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean poolExists(String poolId) {
         return poolExistsInternal(poolId);
     }
@@ -469,6 +485,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Pool.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchPool getPool(String poolId, GetBatchPoolOptions options) {
         return getPoolInternal(poolId, options.getTimeOutInSeconds(), options.getSelect(), options.getExpand(),
             options.getRequestConditions());
@@ -486,6 +503,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Pool.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchPool getPool(String poolId) {
         return getPoolInternal(poolId);
     }
@@ -508,6 +526,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void updatePool(String poolId, BatchPoolUpdateContent body, UpdateBatchPoolOptions options) {
         updatePoolInternal(poolId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -529,6 +548,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void updatePool(String poolId, BatchPoolUpdateContent body) {
         updatePoolInternal(poolId, body);
     }
@@ -545,6 +565,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void disablePoolAutoScale(String poolId, DisableBatchPoolAutoScaleOptions options) {
         disablePoolAutoScaleInternal(poolId, options.getTimeOutInSeconds());
     }
@@ -560,6 +581,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void disablePoolAutoScale(String poolId) {
         disablePoolAutoScaleInternal(poolId);
     }
@@ -583,6 +605,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleContent body,
         EnableBatchPoolAutoScaleOptions options) {
         enablePoolAutoScaleInternal(poolId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
@@ -606,6 +629,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleContent body) {
         enablePoolAutoScaleInternal(poolId, body);
     }
@@ -628,6 +652,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the results and errors from an execution of a Pool autoscale formula.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public AutoScaleRun evaluatePoolAutoScale(String poolId, BatchPoolEvaluateAutoScaleContent body,
         EvaluateBatchPoolAutoScaleOptions options) {
         return evaluatePoolAutoScaleInternal(poolId, body, options.getTimeOutInSeconds());
@@ -650,6 +675,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the results and errors from an execution of a Pool autoscale formula.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public AutoScaleRun evaluatePoolAutoScale(String poolId, BatchPoolEvaluateAutoScaleContent body) {
         return evaluatePoolAutoScaleInternal(poolId, body);
     }
@@ -674,6 +700,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void resizePool(String poolId, BatchPoolResizeContent body, ResizeBatchPoolOptions options) {
         resizePoolInternal(poolId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -697,6 +724,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void resizePool(String poolId, BatchPoolResizeContent body) {
         resizePoolInternal(poolId, body);
     }
@@ -713,6 +741,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void stopPoolResize(String poolId, StopBatchPoolResizeOptions options) {
         stopPoolResizeInternal(poolId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -728,6 +757,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void stopPoolResize(String poolId) {
         stopPoolResizeInternal(poolId);
     }
@@ -745,6 +775,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void replacePoolProperties(String poolId, BatchPoolReplaceContent body,
         ReplaceBatchPoolPropertiesOptions options) {
         replacePoolPropertiesInternal(poolId, body, options.getTimeOutInSeconds());
@@ -762,6 +793,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void replacePoolProperties(String poolId, BatchPoolReplaceContent body) {
         replacePoolPropertiesInternal(poolId, body);
     }
@@ -779,6 +811,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void removeNodes(String poolId, BatchNodeRemoveContent body, RemoveBatchNodesOptions options) {
         removeNodesInternal(poolId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -795,6 +828,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void removeNodes(String poolId, BatchNodeRemoveContent body) {
         removeNodesInternal(poolId, body);
     }
@@ -812,6 +846,7 @@ public final class BatchClient {
      * @return the result of listing the supported Virtual Machine Images as paginated response with {@link
      * PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageInfo> listSupportedImages(ListSupportedBatchImagesOptions options) {
         return listSupportedImagesInternal(options.getTimeOutInSeconds(), options.getFilter());
     }
@@ -828,6 +863,7 @@ public final class BatchClient {
      * @return the result of listing the supported Virtual Machine Images as paginated response with {@link
      * PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageInfo> listSupportedImages() {
         return listSupportedImagesInternal();
     }
@@ -846,6 +882,7 @@ public final class BatchClient {
      * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with {@link
      * PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchPoolNodeCounts> listPoolNodeCounts(ListBatchPoolNodeCountsOptions options) {
         return listPoolNodeCountsInternal(options.getTimeOutInSeconds(), options.getFilter());
     }
@@ -863,6 +900,7 @@ public final class BatchClient {
      * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with {@link
      * PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchPoolNodeCounts> listPoolNodeCounts() {
         return listPoolNodeCountsInternal();
     }
@@ -887,6 +925,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteJob(String jobId, DeleteBatchJobOptions options) {
         deleteJobInternal(jobId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -910,6 +949,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteJob(String jobId) {
         deleteJobInternal(jobId);
     }
@@ -927,6 +967,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Job.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchJob getJob(String jobId, GetBatchJobOptions options) {
         return getJobInternal(jobId, options.getTimeOutInSeconds(), options.getSelect(), options.getExpand(),
             options.getRequestConditions());
@@ -944,6 +985,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Job.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchJob getJob(String jobId) {
         return getJobInternal(jobId);
     }
@@ -965,6 +1007,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateJob(String jobId, BatchJobUpdateContent body, UpdateBatchJobOptions options) {
         updateJobInternal(jobId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -985,6 +1028,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateJob(String jobId, BatchJobUpdateContent body) {
         updateJobInternal(jobId, body);
     }
@@ -1007,6 +1051,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void replaceJob(String jobId, BatchJob body, ReplaceBatchJobOptions options) {
         replaceJobInternal(jobId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -1028,6 +1073,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void replaceJob(String jobId, BatchJob body) {
         replaceJobInternal(jobId, body);
     }
@@ -1053,6 +1099,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void disableJob(String jobId, BatchJobDisableContent body, DisableBatchJobOptions options) {
         disableJobInternal(jobId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -1077,6 +1124,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void disableJob(String jobId, BatchJobDisableContent body) {
         disableJobInternal(jobId, body);
     }
@@ -1099,6 +1147,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void enableJob(String jobId, EnableBatchJobOptions options) {
         enableJobInternal(jobId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -1120,6 +1169,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void enableJob(String jobId) {
         enableJobInternal(jobId);
     }
@@ -1144,6 +1194,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void terminateJob(String jobId, TerminateBatchJobOptions options, BatchJobTerminateContent body) {
         terminateJobInternal(jobId, options.getTimeOutInSeconds(), body, options.getRequestConditions());
     }
@@ -1166,6 +1217,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void terminateJob(String jobId) {
         terminateJobInternal(jobId);
     }
@@ -1190,6 +1242,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void createJob(BatchJobCreateContent body, CreateBatchJobOptions options) {
         createJobInternal(body, options.getTimeOutInSeconds());
     }
@@ -1213,6 +1266,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void createJob(BatchJobCreateContent body) {
         createJobInternal(body);
     }
@@ -1230,6 +1284,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchJob> listJobs(ListBatchJobsOptions options) {
         return listJobsInternal(options.getTimeOutInSeconds(), options.getFilter(), options.getSelect(),
             options.getExpand());
@@ -1246,6 +1301,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchJob> listJobs() {
         return listJobsInternal();
     }
@@ -1264,6 +1320,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchJob> listJobsFromSchedule(String jobScheduleId,
         ListBatchJobsFromScheduleOptions options) {
         return listJobsFromScheduleInternal(jobScheduleId, options.getTimeOutInSeconds(), options.getFilter(),
@@ -1282,6 +1339,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchJob> listJobsFromSchedule(String jobScheduleId) {
         return listJobsFromScheduleInternal(jobScheduleId);
     }
@@ -1307,6 +1365,7 @@ public final class BatchClient {
      * @return the result of listing the status of the Job Preparation and Job Release Tasks for a Job as paginated
      * response with {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchJobPreparationAndReleaseTaskStatus> listJobPreparationAndReleaseTaskStatus(String jobId,
         ListBatchJobPreparationAndReleaseTaskStatusOptions options) {
         return listJobPreparationAndReleaseTaskStatusInternal(jobId, options.getTimeOutInSeconds(), options.getFilter(),
@@ -1333,6 +1392,7 @@ public final class BatchClient {
      * @return the result of listing the status of the Job Preparation and Job Release Tasks for a Job as paginated
      * response with {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchJobPreparationAndReleaseTaskStatus> listJobPreparationAndReleaseTaskStatus(String jobId) {
         return listJobPreparationAndReleaseTaskStatusInternal(jobId);
     }
@@ -1355,6 +1415,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Task and TaskSlot counts for a Job.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchTaskCountsResult getJobTaskCounts(String jobId, GetBatchJobTaskCountsOptions options) {
         return getJobTaskCountsInternal(jobId, options.getTimeOutInSeconds());
     }
@@ -1376,6 +1437,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Task and TaskSlot counts for a Job.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchTaskCountsResult getJobTaskCounts(String jobId) {
         return getJobTaskCountsInternal(jobId);
     }
@@ -1392,6 +1454,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void createCertificate(BatchCertificate body, CreateBatchCertificateOptions options) {
         createCertificateInternal(body, options.getTimeOutInSeconds());
     }
@@ -1407,6 +1470,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void createCertificate(BatchCertificate body) {
         createCertificateInternal(body);
     }
@@ -1423,6 +1487,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Certificates in the Account as paginated response with {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchCertificate> listCertificates(ListBatchCertificatesOptions options) {
         return listCertificatesInternal(options.getTimeOutInSeconds(), options.getFilter(), options.getSelect());
     }
@@ -1438,6 +1503,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Certificates in the Account as paginated response with {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchCertificate> listCertificates() {
         return listCertificatesInternal();
     }
@@ -1462,6 +1528,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelCertificateDeletion(String thumbprintAlgorithm, String thumbprint,
         CancelBatchCertificateDeletionOptions options) {
         cancelCertificateDeletionInternal(thumbprintAlgorithm, thumbprint, options.getTimeOutInSeconds());
@@ -1486,6 +1553,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelCertificateDeletion(String thumbprintAlgorithm, String thumbprint) {
         cancelCertificateDeletionInternal(thumbprintAlgorithm, thumbprint);
     }
@@ -1512,6 +1580,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteCertificate(String thumbprintAlgorithm, String thumbprint,
         DeleteBatchCertificateOptions options) {
         deleteCertificateInternal(thumbprintAlgorithm, thumbprint, options.getTimeOutInSeconds());
@@ -1538,6 +1607,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteCertificate(String thumbprintAlgorithm, String thumbprint) {
         deleteCertificateInternal(thumbprintAlgorithm, thumbprint);
     }
@@ -1556,6 +1626,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Certificate.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchCertificate getCertificate(String thumbprintAlgorithm, String thumbprint,
         GetBatchCertificateOptions options) {
         return getCertificateInternal(thumbprintAlgorithm, thumbprint, options.getTimeOutInSeconds(),
@@ -1575,6 +1646,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Certificate.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchCertificate getCertificate(String thumbprintAlgorithm, String thumbprint) {
         return getCertificateInternal(thumbprintAlgorithm, thumbprint);
     }
@@ -1591,6 +1663,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean jobScheduleExists(String jobScheduleId, BatchJobScheduleExistsOptions options) {
         return jobScheduleExistsInternal(jobScheduleId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -1606,6 +1679,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean jobScheduleExists(String jobScheduleId) {
         return jobScheduleExistsInternal(jobScheduleId);
     }
@@ -1628,6 +1702,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteJobSchedule(String jobScheduleId, DeleteBatchJobScheduleOptions options) {
         deleteJobScheduleInternal(jobScheduleId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -1649,6 +1724,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteJobSchedule(String jobScheduleId) {
         deleteJobScheduleInternal(jobScheduleId);
     }
@@ -1667,6 +1743,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Job Schedule.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchJobSchedule getJobSchedule(String jobScheduleId, GetBatchJobScheduleOptions options) {
         return getJobScheduleInternal(jobScheduleId, options.getTimeOutInSeconds(), options.getSelect(),
             options.getExpand(), options.getRequestConditions());
@@ -1684,6 +1761,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Job Schedule.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchJobSchedule getJobSchedule(String jobScheduleId) {
         return getJobScheduleInternal(jobScheduleId);
     }
@@ -1701,6 +1779,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateJobSchedule(String jobScheduleId, BatchJobScheduleUpdateContent body,
         UpdateBatchJobScheduleOptions options) {
         // Use the values from options to call the original method or handle them accordingly
@@ -1719,6 +1798,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateJobSchedule(String jobScheduleId, BatchJobScheduleUpdateContent body) {
         // Use the values from options to call the original method or handle them accordingly
         updateJobScheduleInternal(jobScheduleId, body);
@@ -1737,6 +1817,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void replaceJobSchedule(String jobScheduleId, BatchJobSchedule body,
         ReplaceBatchJobScheduleOptions options) {
         replaceJobScheduleInternal(jobScheduleId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
@@ -1754,6 +1835,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void replaceJobSchedule(String jobScheduleId, BatchJobSchedule body) {
         replaceJobScheduleInternal(jobScheduleId, body);
     }
@@ -1773,6 +1855,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void disableJobSchedule(String jobScheduleId, DisableBatchJobScheduleOptions options) {
         disableJobScheduleInternal(jobScheduleId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -1791,6 +1874,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void disableJobSchedule(String jobScheduleId) {
         disableJobScheduleInternal(jobScheduleId);
     }
@@ -1807,6 +1891,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void enableJobSchedule(String jobScheduleId, EnableBatchJobScheduleOptions options) {
         enableJobScheduleInternal(jobScheduleId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -1822,6 +1907,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void enableJobSchedule(String jobScheduleId) {
         enableJobScheduleInternal(jobScheduleId);
     }
@@ -1838,6 +1924,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by the server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void terminateJobSchedule(String jobScheduleId, TerminateBatchJobScheduleOptions options) {
         terminateJobScheduleInternal(jobScheduleId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -1853,6 +1940,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by the server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void terminateJobSchedule(String jobScheduleId) {
         terminateJobScheduleInternal(jobScheduleId);
     }
@@ -1869,6 +1957,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by the server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void createJobSchedule(BatchJobScheduleCreateContent body, CreateBatchJobScheduleOptions options) {
         createJobScheduleInternal(body, options.getTimeOutInSeconds());
     }
@@ -1884,6 +1973,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by the server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void createJobSchedule(BatchJobScheduleCreateContent body) {
         createJobScheduleInternal(body);
     }
@@ -1901,6 +1991,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by the server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchJobSchedule> listJobSchedules(ListBatchJobSchedulesOptions options) {
         return listJobSchedulesInternal(options.getTimeOutInSeconds(), options.getFilter(), options.getSelect(),
             options.getExpand());
@@ -1917,6 +2008,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by the server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchJobSchedule> listJobSchedules() {
         return listJobSchedulesInternal();
     }
@@ -1938,6 +2030,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void createTask(String jobId, BatchTaskCreateContent body, CreateBatchTaskOptions options) {
         createTaskInternal(jobId, body, options.getTimeOutInSeconds());
     }
@@ -1958,6 +2051,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void createTask(String jobId, BatchTaskCreateContent body) {
         createTaskInternal(jobId, body);
     }
@@ -1980,6 +2074,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Tasks in a Job as paginated response with {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchTask> listTasks(String jobId, ListBatchTasksOptions options) {
         return listTasksInternal(jobId, options.getTimeOutInSeconds(), options.getFilter(), options.getSelect(),
             options.getExpand());
@@ -2001,6 +2096,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Tasks in a Job as paginated response with {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchTask> listTasks(String jobId) {
         return listTasksInternal(jobId);
     }
@@ -2031,6 +2127,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of adding a collection of Tasks to a Job.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchTaskAddCollectionResult createTaskCollection(String jobId, BatchTaskGroup collection,
         CreateBatchTaskCollectionOptions options) {
         return createTaskCollectionInternal(jobId, collection, options.getTimeOutInSeconds());
@@ -2061,6 +2158,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of adding a collection of Tasks to a Job.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchTaskAddCollectionResult createTaskCollection(String jobId, BatchTaskGroup collection) {
         return createTaskCollectionInternal(jobId, collection);
     }
@@ -2083,6 +2181,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTask(String jobId, String taskId, DeleteBatchTaskOptions options) {
         deleteTaskInternal(jobId, taskId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -2104,6 +2203,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTask(String jobId, String taskId) {
         deleteTaskInternal(jobId, taskId);
     }
@@ -2130,6 +2230,7 @@ public final class BatchClient {
      * failure. Retries due to recovery operations are independent of and are not counted against the
      * maxTaskRetryCount.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchTask getTask(String jobId, String taskId, GetBatchTaskOptions options) {
         return getTaskInternal(jobId, taskId, options.getTimeOutInSeconds(), options.getSelect(), options.getExpand(),
             options.getRequestConditions());
@@ -2155,6 +2256,7 @@ public final class BatchClient {
      * failure. Retries due to recovery operations are independent of and are not counted against the
      * maxTaskRetryCount.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchTask getTask(String jobId, String taskId) {
         return getTaskInternal(jobId, taskId);
     }
@@ -2173,6 +2275,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void replaceTask(String jobId, String taskId, BatchTask body, ReplaceBatchTaskOptions options) {
         replaceTaskInternal(jobId, taskId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -2190,6 +2293,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void replaceTask(String jobId, String taskId, BatchTask body) {
         replaceTaskInternal(jobId, taskId, body);
     }
@@ -2211,6 +2315,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the subtasks of a Task as paginated response with {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchSubtask> listSubTasks(String jobId, String taskId, ListBatchSubTasksOptions options) {
         return listSubTasksInternal(jobId, taskId, options.getTimeOutInSeconds(), options.getSelect());
     }
@@ -2231,6 +2336,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the subtasks of a Task as paginated response with {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchSubtask> listSubTasks(String jobId, String taskId) {
         return listSubTasksInternal(jobId, taskId);
     }
@@ -2253,6 +2359,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void terminateTask(String jobId, String taskId, TerminateBatchTaskOptions options) {
         terminateTaskInternal(jobId, taskId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -2274,6 +2381,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void terminateTask(String jobId, String taskId) {
         terminateTaskInternal(jobId, taskId);
     }
@@ -2298,6 +2406,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void reactivateTask(String jobId, String taskId, ReactivateBatchTaskOptions options) {
         reactivateTaskInternal(jobId, taskId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -2321,6 +2430,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void reactivateTask(String jobId, String taskId) {
         reactivateTaskInternal(jobId, taskId);
     }
@@ -2339,6 +2449,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTaskFile(String jobId, String taskId, String filePath, DeleteBatchTaskFileOptions options) {
         deleteTaskFileInternal(jobId, taskId, filePath, options.getTimeOutInSeconds(), options.isRecursive());
     }
@@ -2356,6 +2467,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTaskFile(String jobId, String taskId, String filePath) {
         deleteTaskFileInternal(jobId, taskId, filePath);
     }
@@ -2376,6 +2488,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getTaskFile(String jobId, String taskId, String filePath, GetBatchTaskFileOptions options) {
         return getTaskFileInternal(jobId, taskId, filePath, options.getTimeOutInSeconds(), options.getIfModifiedSince(),
             options.getIfUnmodifiedSince(), options.getOcpRange());
@@ -2395,6 +2508,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getTaskFile(String jobId, String taskId, String filePath) {
         return getTaskFileInternal(jobId, taskId, filePath);
     }
@@ -2414,6 +2528,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void getTaskFileProperties(String jobId, String taskId, String filePath,
         GetBatchTaskFilePropertiesOptions options) {
         getTaskFilePropertiesInternal(jobId, taskId, filePath, options.getTimeOutInSeconds(),
@@ -2433,6 +2548,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void getTaskFileProperties(String jobId, String taskId, String filePath) {
         getTaskFilePropertiesInternal(jobId, taskId, filePath);
     }
@@ -2452,6 +2568,7 @@ public final class BatchClient {
      * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
      * as paginated response with {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchNodeFile> listTaskFiles(String jobId, String taskId, ListBatchTaskFilesOptions options) {
         return listTaskFilesInternal(jobId, taskId, options.getTimeOutInSeconds(), options.getFilter(),
             options.isRecursive());
@@ -2471,6 +2588,7 @@ public final class BatchClient {
      * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
      * as paginated response with {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchNodeFile> listTaskFiles(String jobId, String taskId) {
         return listTaskFilesInternal(jobId, taskId);
     }
@@ -2492,6 +2610,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void createNodeUser(String poolId, String nodeId, BatchNodeUserCreateContent body,
         CreateBatchNodeUserOptions options) {
         createNodeUserInternal(poolId, nodeId, body, options.getTimeOutInSeconds());
@@ -2513,6 +2632,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void createNodeUser(String poolId, String nodeId, BatchNodeUserCreateContent body) {
         createNodeUserInternal(poolId, nodeId, body);
     }
@@ -2534,6 +2654,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteNodeUser(String poolId, String nodeId, String userName, DeleteBatchNodeUserOptions options) {
         deleteNodeUserInternal(poolId, nodeId, userName, options.getTimeOutInSeconds());
     }
@@ -2554,6 +2675,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteNodeUser(String poolId, String nodeId, String userName) {
         deleteNodeUserInternal(poolId, nodeId, userName);
     }
@@ -2578,6 +2700,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void replaceNodeUser(String poolId, String nodeId, String userName, BatchNodeUserUpdateContent body,
         ReplaceBatchNodeUserOptions options) {
         replaceNodeUserInternal(poolId, nodeId, userName, body, options.getTimeOutInSeconds());
@@ -2602,6 +2725,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void replaceNodeUser(String poolId, String nodeId, String userName, BatchNodeUserUpdateContent body) {
         replaceNodeUserInternal(poolId, nodeId, userName, body);
     }
@@ -2620,6 +2744,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Compute Node.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchNode getNode(String poolId, String nodeId, GetBatchNodeOptions options) {
         return getNodeInternal(poolId, nodeId, options.getTimeOutInSeconds(), options.getSelect());
     }
@@ -2637,6 +2762,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Compute Node.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchNode getNode(String poolId, String nodeId) {
         return getNodeInternal(poolId, nodeId);
     }
@@ -2658,6 +2784,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void rebootNode(String poolId, String nodeId, RebootBatchNodeOptions options, BatchNodeRebootContent body) {
         rebootNodeInternal(poolId, nodeId, options.getTimeOutInSeconds(), body);
     }
@@ -2677,6 +2804,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void rebootNode(String poolId, String nodeId) {
         rebootNodeInternal(poolId, nodeId);
     }
@@ -2698,6 +2826,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void disableNodeScheduling(String poolId, String nodeId, DisableBatchNodeSchedulingOptions options,
         BatchNodeDisableSchedulingContent body) {
         disableNodeSchedulingInternal(poolId, nodeId, options.getTimeOutInSeconds(), body);
@@ -2718,6 +2847,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void disableNodeScheduling(String poolId, String nodeId) {
         disableNodeSchedulingInternal(poolId, nodeId);
     }
@@ -2738,6 +2868,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void enableNodeScheduling(String poolId, String nodeId, EnableBatchNodeSchedulingOptions options) {
         enableNodeSchedulingInternal(poolId, nodeId, options.getTimeOutInSeconds());
     }
@@ -2757,6 +2888,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void enableNodeScheduling(String poolId, String nodeId) {
         enableNodeSchedulingInternal(poolId, nodeId);
     }
@@ -2780,6 +2912,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the remote login settings for a Compute Node.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchNodeRemoteLoginSettings getNodeRemoteLoginSettings(String poolId, String nodeId,
         GetBatchNodeRemoteLoginSettingsOptions options) {
         return getNodeRemoteLoginSettingsInternal(poolId, nodeId, options.getTimeOutInSeconds());
@@ -2803,6 +2936,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the remote login settings for a Compute Node.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchNodeRemoteLoginSettings getNodeRemoteLoginSettings(String poolId, String nodeId) {
         return getNodeRemoteLoginSettingsInternal(poolId, nodeId);
     }
@@ -2827,6 +2961,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of uploading Batch service log files from a specific Compute Node.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public UploadBatchServiceLogsResult uploadNodeLogs(String poolId, String nodeId, UploadBatchServiceLogsContent body,
         UploadBatchNodeLogsOptions options) {
         return uploadNodeLogsInternal(poolId, nodeId, body, options.getTimeOutInSeconds());
@@ -2851,6 +2986,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of uploading Batch service log files from a specific Compute Node.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public UploadBatchServiceLogsResult uploadNodeLogs(String poolId, String nodeId,
         UploadBatchServiceLogsContent body) {
         return uploadNodeLogsInternal(poolId, nodeId, body);
@@ -2869,6 +3005,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchNode> listNodes(String poolId, ListBatchNodesOptions options) {
         return listNodesInternal(poolId, options.getTimeOutInSeconds(), options.getFilter(), options.getSelect());
     }
@@ -2885,6 +3022,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchNode> listNodes(String poolId) {
         return listNodesInternal(poolId);
     }
@@ -2904,6 +3042,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Compute Node Extension.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchNodeVMExtension getNodeExtension(String poolId, String nodeId, String extensionName,
         GetBatchNodeExtensionOptions options) {
         return getNodeExtensionInternal(poolId, nodeId, extensionName, options.getTimeOutInSeconds(),
@@ -2924,6 +3063,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Compute Node Extension.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchNodeVMExtension getNodeExtension(String poolId, String nodeId, String extensionName) {
         return getNodeExtensionInternal(poolId, nodeId, extensionName);
     }
@@ -2943,6 +3083,7 @@ public final class BatchClient {
      * @return the result of listing the Compute Node extensions in a Node as paginated response with {@link
      * PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchNodeVMExtension> listNodeExtensions(String poolId, String nodeId,
         ListBatchNodeExtensionsOptions options) {
         return listNodeExtensionsInternal(poolId, nodeId, options.getTimeOutInSeconds(), options.getSelect());
@@ -2962,6 +3103,7 @@ public final class BatchClient {
      * @return the result of listing the Compute Node extensions in a Node as paginated response with {@link
      * PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchNodeVMExtension> listNodeExtensions(String poolId, String nodeId) {
         return listNodeExtensionsInternal(poolId, nodeId);
     }
@@ -2980,6 +3122,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteNodeFile(String poolId, String nodeId, String filePath, DeleteBatchNodeFileOptions options) {
         deleteNodeFileInternal(poolId, nodeId, filePath, options.getTimeOutInSeconds(), options.isRecursive());
     }
@@ -2997,6 +3140,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteNodeFile(String poolId, String nodeId, String filePath) {
         deleteNodeFileInternal(poolId, nodeId, filePath);
     }
@@ -3017,6 +3161,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getNodeFile(String poolId, String nodeId, String filePath, GetBatchNodeFileOptions options) {
         return getNodeFileInternal(poolId, nodeId, filePath, options.getTimeOutInSeconds(),
             options.getIfModifiedSince(), options.getIfUnmodifiedSince(), options.getOcpRange());
@@ -3036,6 +3181,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData getNodeFile(String poolId, String nodeId, String filePath) {
         return getNodeFileInternal(poolId, nodeId, filePath);
     }
@@ -3056,6 +3202,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return The {@link NodeFileProperties} object containing the properties retrieved from the response headers.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public NodeFileProperties getNodeFileProperties(String poolId, String nodeId, String filePath,
         GetBatchNodeFilePropertiesOptions options) {
         // Set query and header parameters based on options provided
@@ -3090,6 +3237,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return The {@link NodeFileProperties} object containing the properties retrieved from the response headers.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public NodeFileProperties getNodeFileProperties(String poolId, String nodeId, String filePath) {
         Response<Void> response = getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, new RequestOptions());
         return new NodeFileProperties(response.getHeaders());
@@ -3110,6 +3258,7 @@ public final class BatchClient {
      * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
      * as paginated response with {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchNodeFile> listNodeFiles(String poolId, String nodeId, ListBatchNodeFilesOptions options) {
         return listNodeFilesInternal(poolId, nodeId, options.getTimeOutInSeconds(), options.getFilter(),
             options.isRecursive());
@@ -3129,6 +3278,7 @@ public final class BatchClient {
      * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
      * as paginated response with {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchNodeFile> listNodeFiles(String poolId, String nodeId) {
         return listNodeFilesInternal(poolId, nodeId);
     }
@@ -3301,6 +3451,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return contains information about an application in an Azure Batch Account along with {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getApplicationWithResponse(String applicationId, RequestOptions requestOptions) {
         return this.getApplicationInternalWithResponse(applicationId, requestOptions);
     }
@@ -3976,6 +4127,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createPoolWithResponse(BinaryData pool, RequestOptions requestOptions) {
         return this.createPoolInternalWithResponse(pool, requestOptions);
     }
@@ -4564,6 +4716,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deletePoolWithResponse(String poolId, RequestOptions requestOptions) {
         return this.deletePoolInternalWithResponse(poolId, requestOptions);
     }
@@ -4741,6 +4894,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return basic properties of a Pool along with {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> poolExistsWithResponse(String poolId, RequestOptions requestOptions) {
         return this.poolExistsInternalWithResponse(poolId, requestOptions);
     }
@@ -5575,6 +5729,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return information about the specified Pool along with {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getPoolWithResponse(String poolId, RequestOptions requestOptions) {
         return this.getPoolInternalWithResponse(poolId, requestOptions);
     }
@@ -5899,6 +6054,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updatePoolWithResponse(String poolId, BinaryData pool, RequestOptions requestOptions) {
         return this.updatePoolInternalWithResponse(poolId, pool, requestOptions);
     }
@@ -5973,6 +6129,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disablePoolAutoScaleWithResponse(String poolId, RequestOptions requestOptions) {
         return this.disablePoolAutoScaleInternalWithResponse(poolId, requestOptions);
     }
@@ -6174,6 +6331,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enablePoolAutoScaleWithResponse(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
         return this.enablePoolAutoScaleInternalWithResponse(poolId, parameters, requestOptions);
@@ -6316,6 +6474,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the results and errors from an execution of a Pool autoscale formula along with {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> evaluatePoolAutoScaleWithResponse(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
         return this.evaluatePoolAutoScaleInternalWithResponse(poolId, parameters, requestOptions);
@@ -6523,6 +6682,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resizePoolWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
         return this.resizePoolInternalWithResponse(poolId, parameters, requestOptions);
     }
@@ -6704,6 +6864,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopPoolResizeWithResponse(String poolId, RequestOptions requestOptions) {
         return this.stopPoolResizeInternalWithResponse(poolId, requestOptions);
     }
@@ -6937,6 +7098,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> replacePoolPropertiesWithResponse(String poolId, BinaryData pool,
         RequestOptions requestOptions) {
         return this.replacePoolPropertiesInternalWithResponse(poolId, pool, requestOptions);
@@ -7139,6 +7301,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeNodesWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
         return this.removeNodesInternalWithResponse(poolId, parameters, requestOptions);
     }
@@ -7474,6 +7637,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.deleteJobInternalWithResponse(jobId, requestOptions);
     }
@@ -8470,6 +8634,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return information about the specified Job along with {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.getJobInternalWithResponse(jobId, requestOptions);
     }
@@ -9190,6 +9355,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateJobWithResponse(String jobId, BinaryData job, RequestOptions requestOptions) {
         return this.updateJobInternalWithResponse(jobId, job, requestOptions);
     }
@@ -10173,6 +10339,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> replaceJobWithResponse(String jobId, BinaryData job, RequestOptions requestOptions) {
         return this.replaceJobInternalWithResponse(jobId, job, requestOptions);
     }
@@ -10375,6 +10542,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableJobWithResponse(String jobId, BinaryData parameters, RequestOptions requestOptions) {
         return this.disableJobInternalWithResponse(jobId, parameters, requestOptions);
     }
@@ -10554,6 +10722,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enableJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.enableJobInternalWithResponse(jobId, requestOptions);
     }
@@ -11370,6 +11539,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createJobWithResponse(BinaryData job, RequestOptions requestOptions) {
         return this.createJobInternalWithResponse(job, requestOptions);
     }
@@ -12571,6 +12741,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the Task and TaskSlot counts for a Job along with {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getJobTaskCountsWithResponse(String jobId, RequestOptions requestOptions) {
         return this.getJobTaskCountsInternalWithResponse(jobId, requestOptions);
     }
@@ -12702,6 +12873,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createCertificateWithResponse(BinaryData certificate, RequestOptions requestOptions) {
         return this.createCertificateInternalWithResponse(certificate, requestOptions);
     }
@@ -12879,6 +13051,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelCertificateDeletionWithResponse(String thumbprintAlgorithm, String thumbprint,
         RequestOptions requestOptions) {
         return this.cancelCertificateDeletionInternalWithResponse(thumbprintAlgorithm, thumbprint, requestOptions);
@@ -12977,6 +13150,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteCertificateWithResponse(String thumbprintAlgorithm, String thumbprint,
         RequestOptions requestOptions) {
         return this.deleteCertificateInternalWithResponse(thumbprintAlgorithm, thumbprint, requestOptions);
@@ -13124,6 +13298,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return information about the specified Certificate along with {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCertificateWithResponse(String thumbprintAlgorithm, String thumbprint,
         RequestOptions requestOptions) {
         return this.getCertificateInternalWithResponse(thumbprintAlgorithm, thumbprint, requestOptions);
@@ -13302,6 +13477,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return whether resource exists along with {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> jobScheduleExistsWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.jobScheduleExistsInternalWithResponse(jobScheduleId, requestOptions);
     }
@@ -13480,6 +13656,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.deleteJobScheduleInternalWithResponse(jobScheduleId, requestOptions);
     }
@@ -14482,6 +14659,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return information about the specified Job Schedule along with {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.getJobScheduleInternalWithResponse(jobScheduleId, requestOptions);
     }
@@ -15407,6 +15585,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateJobScheduleWithResponse(String jobScheduleId, BinaryData jobSchedule,
         RequestOptions requestOptions) {
         return this.updateJobScheduleInternalWithResponse(jobScheduleId, jobSchedule, requestOptions);
@@ -16401,6 +16580,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> replaceJobScheduleWithResponse(String jobScheduleId, BinaryData jobSchedule,
         RequestOptions requestOptions) {
         return this.replaceJobScheduleInternalWithResponse(jobScheduleId, jobSchedule, requestOptions);
@@ -16573,6 +16753,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.disableJobScheduleInternalWithResponse(jobScheduleId, requestOptions);
     }
@@ -16739,6 +16920,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enableJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.enableJobScheduleInternalWithResponse(jobScheduleId, requestOptions);
     }
@@ -16905,6 +17087,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> terminateJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.terminateJobScheduleInternalWithResponse(jobScheduleId, requestOptions);
     }
@@ -17727,6 +17910,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createJobScheduleWithResponse(BinaryData jobSchedule, RequestOptions requestOptions) {
         return this.createJobScheduleInternalWithResponse(jobSchedule, requestOptions);
     }
@@ -18548,6 +18732,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createTaskWithResponse(String jobId, BinaryData task, RequestOptions requestOptions) {
         return this.createTaskInternalWithResponse(jobId, task, requestOptions);
     }
@@ -19223,6 +19408,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the result of adding a collection of Tasks to a Job along with {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createTaskCollectionWithResponse(String jobId, BinaryData taskCollection,
         RequestOptions requestOptions) {
         return this.createTaskCollectionInternalWithResponse(jobId, taskCollection, requestOptions);
@@ -19403,6 +19589,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
         return this.deleteTaskInternalWithResponse(jobId, taskId, requestOptions);
     }
@@ -19975,6 +20162,7 @@ public final class BatchClient {
      * failure. Retries due to recovery operations are independent of and are not counted against the
      * maxTaskRetryCount along with {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
         return this.getTaskInternalWithResponse(jobId, taskId, requestOptions);
     }
@@ -20511,6 +20699,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> replaceTaskWithResponse(String jobId, String taskId, BinaryData task,
         RequestOptions requestOptions) {
         return this.replaceTaskInternalWithResponse(jobId, taskId, task, requestOptions);
@@ -20689,6 +20878,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> terminateTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
         return this.terminateTaskInternalWithResponse(jobId, taskId, requestOptions);
     }
@@ -20873,6 +21063,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> reactivateTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
         return this.reactivateTaskInternalWithResponse(jobId, taskId, requestOptions);
     }
@@ -20970,6 +21161,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTaskFileWithResponse(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
         return this.deleteTaskFileInternalWithResponse(jobId, taskId, filePath, requestOptions);
@@ -21137,6 +21329,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTaskFileWithResponse(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
         return this.getTaskFileInternalWithResponse(jobId, taskId, filePath, requestOptions);
@@ -21277,6 +21470,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the properties of the specified Task file along with {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getTaskFilePropertiesWithResponse(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
         return this.getTaskFilePropertiesInternalWithResponse(jobId, taskId, filePath, requestOptions);
@@ -21465,6 +21659,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createNodeUserWithResponse(String poolId, String nodeId, BinaryData user,
         RequestOptions requestOptions) {
         return this.createNodeUserInternalWithResponse(poolId, nodeId, user, requestOptions);
@@ -21551,6 +21746,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNodeUserWithResponse(String poolId, String nodeId, String userName,
         RequestOptions requestOptions) {
         return this.deleteNodeUserInternalWithResponse(poolId, nodeId, userName, requestOptions);
@@ -21665,6 +21861,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> replaceNodeUserWithResponse(String poolId, String nodeId, String userName,
         BinaryData parameters, RequestOptions requestOptions) {
         return this.replaceNodeUserInternalWithResponse(poolId, nodeId, userName, parameters, requestOptions);
@@ -22068,6 +22265,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return information about the specified Compute Node along with {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.getNodeInternalWithResponse(poolId, nodeId, requestOptions);
     }
@@ -22151,6 +22349,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enableNodeSchedulingWithResponse(String poolId, String nodeId,
         RequestOptions requestOptions) {
         return this.enableNodeSchedulingInternalWithResponse(poolId, nodeId, requestOptions);
@@ -22257,6 +22456,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the remote login settings for a Compute Node along with {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getNodeRemoteLoginSettingsWithResponse(String poolId, String nodeId,
         RequestOptions requestOptions) {
         return this.getNodeRemoteLoginSettingsInternalWithResponse(poolId, nodeId, requestOptions);
@@ -22395,6 +22595,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the result of uploading Batch service log files from a specific Compute Node along with {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> uploadNodeLogsWithResponse(String poolId, String nodeId, BinaryData parameters,
         RequestOptions requestOptions) {
         return this.uploadNodeLogsInternalWithResponse(poolId, nodeId, parameters, requestOptions);
@@ -22782,6 +22983,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return information about the specified Compute Node Extension along with {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getNodeExtensionWithResponse(String poolId, String nodeId, String extensionName,
         RequestOptions requestOptions) {
         return this.getNodeExtensionInternalWithResponse(poolId, nodeId, extensionName, requestOptions);
@@ -22972,6 +23174,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNodeFileWithResponse(String poolId, String nodeId, String filePath,
         RequestOptions requestOptions) {
         return this.deleteNodeFileInternalWithResponse(poolId, nodeId, filePath, requestOptions);
@@ -23139,6 +23342,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return represent a byte array along with {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getNodeFileWithResponse(String poolId, String nodeId, String filePath,
         RequestOptions requestOptions) {
         return this.getNodeFileInternalWithResponse(poolId, nodeId, filePath, requestOptions);
@@ -23279,6 +23483,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the properties of the specified Compute Node file along with {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getNodeFilePropertiesWithResponse(String poolId, String nodeId, String filePath,
         RequestOptions requestOptions) {
         return this.getNodeFilePropertiesInternalWithResponse(poolId, nodeId, filePath, requestOptions);
@@ -26465,6 +26670,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> terminateJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.terminateJobInternalWithResponse(jobId, requestOptions);
     }
@@ -26563,6 +26769,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> rebootNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.rebootNodeInternalWithResponse(poolId, nodeId, requestOptions);
     }
@@ -26663,6 +26870,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableNodeSchedulingWithResponse(String poolId, String nodeId,
         RequestOptions requestOptions) {
         return this.disableNodeSchedulingInternalWithResponse(poolId, nodeId, requestOptions);

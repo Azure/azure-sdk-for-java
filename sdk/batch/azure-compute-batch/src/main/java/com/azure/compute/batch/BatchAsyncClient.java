@@ -164,6 +164,7 @@ public final class BatchAsyncClient {
      * @param taskList A list of {@link BatchTaskCreateContent tasks} to add.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createTasks(String jobId, List<BatchTaskCreateContent> taskList) {
         return createTasks(jobId, taskList, null);
     }
@@ -188,6 +189,7 @@ public final class BatchAsyncClient {
      * @param batchClientParallelOptions Option that configure the parallelization of the method.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createTasks(String jobId, List<BatchTaskCreateContent> taskList,
         BatchClientParallelOptions batchClientParallelOptions) {
         TaskSubmitter taskSubmitter = new AsyncTaskSubmitter(this);
@@ -212,6 +214,7 @@ public final class BatchAsyncClient {
      * @return the result of listing the applications available in an Account as paginated response with {@link
      * PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchApplication> listApplications(ListBatchApplicationsOptions options) {
         return listApplicationsInternal(options.getTimeOutInSeconds());
     }
@@ -233,6 +236,7 @@ public final class BatchAsyncClient {
      * @return the result of listing the applications available in an Account as paginated response with {@link
      * PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchApplication> listApplications() {
         return listApplicationsInternal();
     }
@@ -256,6 +260,7 @@ public final class BatchAsyncClient {
      * @return contains information about an application in an Azure Batch Account on successful completion of {@link
      * Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchApplication> getApplication(String applicationId, GetApplicationOptions options) {
         return getApplicationInternal(applicationId, options.getTimeOutInSeconds());
     }
@@ -278,6 +283,7 @@ public final class BatchAsyncClient {
      * @return contains information about an application in an Azure Batch Account on successful completion of {@link
      * Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchApplication> getApplication(String applicationId) {
         return getApplicationInternal(applicationId);
     }
@@ -301,6 +307,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a listing the usage metrics for an Account as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchPoolUsageMetrics> listPoolUsageMetrics(ListBatchPoolUsageMetricsOptions options) {
         return listPoolUsageMetricsInternal(options.getTimeOutInSeconds(), options.getStartTime(), options.getEndTime(),
             options.getFilter());
@@ -323,6 +330,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a listing the usage metrics for an Account as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchPoolUsageMetrics> listPoolUsageMetrics() {
         return listPoolUsageMetricsInternal();
     }
@@ -344,6 +352,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createPool(BatchPoolCreateContent body, CreateBatchPoolOptions options) {
         return createPoolInternal(body, options.getTimeOutInSeconds());
     }
@@ -364,6 +373,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createPool(BatchPoolCreateContent body) {
         return createPoolInternal(body);
     }
@@ -381,6 +391,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Pools in an Account as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchPool> listPools(ListBatchPoolsOptions options) {
         return listPoolsInternal(options.getTimeOutInSeconds(), options.getFilter(), options.getSelect(),
             options.getExpand());
@@ -397,6 +408,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Pools in an Account as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchPool> listPools() {
         return listPoolsInternal();
     }
@@ -424,6 +436,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deletePool(String poolId, DeleteBatchPoolOptions options) {
         return deletePoolInternal(poolId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -450,6 +463,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deletePool(String poolId) {
         return deletePoolInternal(poolId);
     }
@@ -466,6 +480,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return basic properties of a Pool on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> poolExists(String poolId, BatchPoolExistsOptions options) {
         return poolExistsInternal(poolId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -481,6 +496,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return basic properties of a Pool on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> poolExists(String poolId) {
         return poolExistsInternal(poolId);
     }
@@ -499,6 +515,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Pool on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchPool> getPool(String poolId, GetBatchPoolOptions options) {
         return getPoolInternal(poolId, options.getTimeOutInSeconds(), options.getSelect(), options.getExpand(),
             options.getRequestConditions());
@@ -516,6 +533,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Pool on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchPool> getPool(String poolId) {
         return getPoolInternal(poolId);
     }
@@ -539,6 +557,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updatePool(String poolId, BatchPoolUpdateContent body, UpdateBatchPoolOptions options) {
         return updatePoolInternal(poolId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -561,6 +580,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updatePool(String poolId, BatchPoolUpdateContent body) {
         return updatePoolInternal(poolId, body);
     }
@@ -578,6 +598,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> disablePoolAutoScale(String poolId, DisableBatchPoolAutoScaleOptions options) {
         return disablePoolAutoScaleInternal(poolId, options.getTimeOutInSeconds());
     }
@@ -594,6 +615,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> disablePoolAutoScale(String poolId) {
         return disablePoolAutoScaleInternal(poolId);
     }
@@ -618,6 +640,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleContent body,
         EnableBatchPoolAutoScaleOptions options) {
         return enablePoolAutoScaleInternal(poolId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
@@ -642,6 +665,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleContent body) {
         return enablePoolAutoScaleInternal(poolId, body);
     }
@@ -665,6 +689,7 @@ public final class BatchAsyncClient {
      * @return the results and errors from an execution of a Pool autoscale formula on successful completion of {@link
      * Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AutoScaleRun> evaluatePoolAutoScale(String poolId, BatchPoolEvaluateAutoScaleContent body,
         EvaluateBatchPoolAutoScaleOptions options) {
         return evaluatePoolAutoScaleInternal(poolId, body, options.getTimeOutInSeconds());
@@ -688,6 +713,7 @@ public final class BatchAsyncClient {
      * @return the results and errors from an execution of a Pool autoscale formula on successful completion of {@link
      * Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AutoScaleRun> evaluatePoolAutoScale(String poolId, BatchPoolEvaluateAutoScaleContent body) {
         return evaluatePoolAutoScaleInternal(poolId, body);
     }
@@ -713,6 +739,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resizePool(String poolId, BatchPoolResizeContent body, ResizeBatchPoolOptions options) {
         return resizePoolInternal(poolId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -737,6 +764,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resizePool(String poolId, BatchPoolResizeContent body) {
         return resizePoolInternal(poolId, body);
     }
@@ -761,6 +789,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopPoolResize(String poolId, StopBatchPoolResizeOptions options) {
         return stopPoolResizeInternal(poolId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -784,6 +813,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopPoolResize(String poolId) {
         return stopPoolResizeInternal(poolId);
     }
@@ -807,6 +837,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> replacePoolProperties(String poolId, BatchPoolReplaceContent body,
         ReplaceBatchPoolPropertiesOptions options) {
         return replacePoolPropertiesInternal(poolId, body, options.getTimeOutInSeconds());
@@ -830,6 +861,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> replacePoolProperties(String poolId, BatchPoolReplaceContent body) {
         return replacePoolPropertiesInternal(poolId, body);
     }
@@ -852,6 +884,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> removeNodes(String poolId, BatchNodeRemoveContent body, RemoveBatchNodesOptions options) {
         return removeNodesInternal(poolId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -873,6 +906,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> removeNodes(String poolId, BatchNodeRemoveContent body) {
         return removeNodesInternal(poolId, body);
     }
@@ -889,6 +923,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the supported Virtual Machine Images as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ImageInfo> listSupportedImages(ListSupportedBatchImagesOptions options) {
         return listSupportedImagesInternal(options.getTimeOutInSeconds(), options.getFilter());
     }
@@ -904,6 +939,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the supported Virtual Machine Images as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ImageInfo> listSupportedImages() {
         return listSupportedImagesInternal();
     }
@@ -921,6 +957,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchPoolNodeCounts> listPoolNodeCounts(ListBatchPoolNodeCountsOptions options) {
         return listPoolNodeCountsInternal(options.getTimeOutInSeconds(), options.getFilter());
     }
@@ -937,6 +974,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchPoolNodeCounts> listPoolNodeCounts() {
         return listPoolNodeCountsInternal();
     }
@@ -962,6 +1000,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteJob(String jobId, DeleteBatchJobOptions options) {
         return deleteJobInternal(jobId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -986,6 +1025,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteJob(String jobId) {
         return deleteJobInternal(jobId);
     }
@@ -1004,6 +1044,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Job on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchJob> getJob(String jobId, GetBatchJobOptions options) {
         return getJobInternal(jobId, options.getTimeOutInSeconds(), options.getSelect(), options.getExpand(),
             options.getRequestConditions());
@@ -1021,6 +1062,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Job on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchJob> getJob(String jobId) {
         return getJobInternal(jobId);
     }
@@ -1043,6 +1085,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateJob(String jobId, BatchJobUpdateContent body, UpdateBatchJobOptions options) {
         return updateJobInternal(jobId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -1064,6 +1107,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateJob(String jobId, BatchJobUpdateContent body) {
         return updateJobInternal(jobId, body);
     }
@@ -1087,6 +1131,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> replaceJob(String jobId, BatchJob body, ReplaceBatchJobOptions options) {
         return replaceJobInternal(jobId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -1109,6 +1154,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> replaceJob(String jobId, BatchJob body) {
         return replaceJobInternal(jobId, body);
     }
@@ -1135,6 +1181,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> disableJob(String jobId, BatchJobDisableContent body, DisableBatchJobOptions options) {
         return disableJobInternal(jobId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -1160,6 +1207,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> disableJob(String jobId, BatchJobDisableContent body) {
         return disableJobInternal(jobId, body);
     }
@@ -1183,6 +1231,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> enableJob(String jobId, EnableBatchJobOptions options) {
         return enableJobInternal(jobId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -1205,6 +1254,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> enableJob(String jobId) {
         return enableJobInternal(jobId);
     }
@@ -1230,6 +1280,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> terminateJob(String jobId, TerminateBatchJobOptions options, BatchJobTerminateContent body) {
         return terminateJobInternal(jobId, options.getTimeOutInSeconds(), body, options.getRequestConditions());
     }
@@ -1253,6 +1304,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> terminateJob(String jobId) {
         return terminateJobInternal(jobId);
     }
@@ -1278,6 +1330,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createJob(BatchJobCreateContent body, CreateBatchJobOptions options) {
         return createJobInternal(body, options.getTimeOutInSeconds());
     }
@@ -1302,6 +1355,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createJob(BatchJobCreateContent body) {
         return createJobInternal(body);
     }
@@ -1319,6 +1373,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchJob> listJobs(ListBatchJobsOptions options) {
         return listJobsInternal(options.getTimeOutInSeconds(), options.getFilter(), options.getSelect(),
             options.getExpand());
@@ -1335,6 +1390,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchJob> listJobs() {
         return listJobsInternal();
     }
@@ -1353,6 +1409,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchJob> listJobsFromSchedule(String jobScheduleId, ListBatchJobsFromScheduleOptions options) {
         return listJobsFromScheduleInternal(jobScheduleId, options.getTimeOutInSeconds(), options.getFilter(),
             options.getSelect(), options.getExpand());
@@ -1370,6 +1427,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchJob> listJobsFromSchedule(String jobScheduleId) {
         return listJobsFromScheduleInternal(jobScheduleId);
     }
@@ -1395,6 +1453,7 @@ public final class BatchAsyncClient {
      * @return the result of listing the status of the Job Preparation and Job Release Tasks for a Job as paginated
      * response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchJobPreparationAndReleaseTaskStatus> listJobPreparationAndReleaseTaskStatus(String jobId,
         ListBatchJobPreparationAndReleaseTaskStatusOptions options) {
         return listJobPreparationAndReleaseTaskStatusInternal(jobId, options.getTimeOutInSeconds(), options.getFilter(),
@@ -1421,6 +1480,7 @@ public final class BatchAsyncClient {
      * @return the result of listing the status of the Job Preparation and Job Release Tasks for a Job as paginated
      * response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchJobPreparationAndReleaseTaskStatus> listJobPreparationAndReleaseTaskStatus(String jobId) {
         return listJobPreparationAndReleaseTaskStatusInternal(jobId);
     }
@@ -1443,6 +1503,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Task and TaskSlot counts for a Job on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchTaskCountsResult> getJobTaskCounts(String jobId, GetBatchJobTaskCountsOptions options) {
         return getJobTaskCountsInternal(jobId, options.getTimeOutInSeconds());
     }
@@ -1464,6 +1525,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Task and TaskSlot counts for a Job on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchTaskCountsResult> getJobTaskCounts(String jobId) {
         return getJobTaskCountsInternal(jobId);
     }
@@ -1481,6 +1543,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createCertificate(BatchCertificate body, CreateBatchCertificateOptions options) {
         return createCertificateInternal(body, options.getTimeOutInSeconds());
     }
@@ -1497,6 +1560,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createCertificate(BatchCertificate body) {
         return createCertificateInternal(body);
     }
@@ -1513,6 +1577,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Certificates in the Account as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchCertificate> listCertificates(ListBatchCertificatesOptions options) {
         return listCertificatesInternal(options.getTimeOutInSeconds(), options.getFilter(), options.getSelect());
     }
@@ -1528,6 +1593,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Certificates in the Account as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchCertificate> listCertificates() {
         return listCertificatesInternal();
     }
@@ -1553,6 +1619,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelCertificateDeletion(String thumbprintAlgorithm, String thumbprint,
         CancelBatchCertificateDeletionOptions options) {
         return cancelCertificateDeletionInternal(thumbprintAlgorithm, thumbprint, options.getTimeOutInSeconds());
@@ -1578,6 +1645,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelCertificateDeletion(String thumbprintAlgorithm, String thumbprint) {
         return cancelCertificateDeletionInternal(thumbprintAlgorithm, thumbprint);
     }
@@ -1605,6 +1673,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteCertificate(String thumbprintAlgorithm, String thumbprint,
         DeleteBatchCertificateOptions options) {
         return deleteCertificateInternal(thumbprintAlgorithm, thumbprint, options.getTimeOutInSeconds());
@@ -1632,6 +1701,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteCertificate(String thumbprintAlgorithm, String thumbprint) {
         return deleteCertificateInternal(thumbprintAlgorithm, thumbprint);
     }
@@ -1650,6 +1720,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Certificate on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchCertificate> getCertificate(String thumbprintAlgorithm, String thumbprint,
         GetBatchCertificateOptions options) {
         return getCertificateInternal(thumbprintAlgorithm, thumbprint, options.getTimeOutInSeconds(),
@@ -1669,6 +1740,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Certificate on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchCertificate> getCertificate(String thumbprintAlgorithm, String thumbprint) {
         return getCertificateInternal(thumbprintAlgorithm, thumbprint);
     }
@@ -1685,6 +1757,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether the resource exists on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> jobScheduleExists(String jobScheduleId, BatchJobScheduleExistsOptions options) {
         return jobScheduleExistsInternal(jobScheduleId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -1700,6 +1773,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether the resource exists on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> jobScheduleExists(String jobScheduleId) {
         return jobScheduleExistsInternal(jobScheduleId);
     }
@@ -1723,6 +1797,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteJobSchedule(String jobScheduleId, DeleteBatchJobScheduleOptions options) {
         return deleteJobScheduleInternal(jobScheduleId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -1745,6 +1820,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteJobSchedule(String jobScheduleId) {
         return deleteJobScheduleInternal(jobScheduleId);
     }
@@ -1763,6 +1839,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Job Schedule on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchJobSchedule> getJobSchedule(String jobScheduleId, GetBatchJobScheduleOptions options) {
         return getJobScheduleInternal(jobScheduleId, options.getTimeOutInSeconds(), options.getSelect(),
             options.getExpand(), options.getRequestConditions());
@@ -1780,6 +1857,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Job Schedule on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchJobSchedule> getJobSchedule(String jobScheduleId) {
         return getJobScheduleInternal(jobScheduleId);
     }
@@ -1804,6 +1882,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateJobSchedule(String jobScheduleId, BatchJobScheduleUpdateContent body,
         UpdateBatchJobScheduleOptions options) {
         return updateJobScheduleInternal(jobScheduleId, body, options.getTimeOutInSeconds(),
@@ -1829,6 +1908,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateJobSchedule(String jobScheduleId, BatchJobScheduleUpdateContent body) {
         return updateJobScheduleInternal(jobScheduleId, body);
     }
@@ -1853,6 +1933,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> replaceJobSchedule(String jobScheduleId, BatchJobSchedule body,
         ReplaceBatchJobScheduleOptions options) {
         return replaceJobScheduleInternal(jobScheduleId, body, options.getTimeOutInSeconds(),
@@ -1878,6 +1959,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> replaceJobSchedule(String jobScheduleId, BatchJobSchedule body) {
         return replaceJobScheduleInternal(jobScheduleId, body);
     }
@@ -1898,6 +1980,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> disableJobSchedule(String jobScheduleId, DisableBatchJobScheduleOptions options) {
         return disableJobScheduleInternal(jobScheduleId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -1917,6 +2000,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> disableJobSchedule(String jobScheduleId) {
         return disableJobScheduleInternal(jobScheduleId);
     }
@@ -1934,6 +2018,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> enableJobSchedule(String jobScheduleId, EnableBatchJobScheduleOptions options) {
         return enableJobScheduleInternal(jobScheduleId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -1950,6 +2035,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> enableJobSchedule(String jobScheduleId) {
         return enableJobScheduleInternal(jobScheduleId);
     }
@@ -1967,6 +2053,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> terminateJobSchedule(String jobScheduleId, TerminateBatchJobScheduleOptions options) {
         return terminateJobScheduleInternal(jobScheduleId, options.getTimeOutInSeconds(),
             options.getRequestConditions());
@@ -1984,6 +2071,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> terminateJobSchedule(String jobScheduleId) {
         return terminateJobScheduleInternal(jobScheduleId);
     }
@@ -2001,6 +2089,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createJobSchedule(BatchJobScheduleCreateContent body, CreateBatchJobScheduleOptions options) {
         return createJobScheduleInternal(body, options.getTimeOutInSeconds());
     }
@@ -2017,6 +2106,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createJobSchedule(BatchJobScheduleCreateContent body) {
         return createJobScheduleInternal(body);
     }
@@ -2034,6 +2124,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchJobSchedule> listJobSchedules(ListBatchJobSchedulesOptions options) {
         return listJobSchedulesInternal(options.getTimeOutInSeconds(), options.getFilter(), options.getSelect(),
             options.getExpand());
@@ -2050,6 +2141,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchJobSchedule> listJobSchedules() {
         return listJobSchedulesInternal();
     }
@@ -2072,6 +2164,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createTask(String jobId, BatchTaskCreateContent body, CreateBatchTaskOptions options) {
         return createTaskInternal(jobId, body, options.getTimeOutInSeconds());
     }
@@ -2093,6 +2186,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createTask(String jobId, BatchTaskCreateContent body) {
         return createTaskInternal(jobId, body);
     }
@@ -2115,6 +2209,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Tasks in a Job as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchTask> listTasks(String jobId, ListBatchTasksOptions options) {
         return listTasksInternal(jobId, options.getTimeOutInSeconds(), options.getFilter(), options.getSelect(),
             options.getExpand());
@@ -2136,6 +2231,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Tasks in a Job as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchTask> listTasks(String jobId) {
         return listTasksInternal(jobId);
     }
@@ -2166,6 +2262,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of adding a collection of Tasks to a Job on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchTaskAddCollectionResult> createTaskCollection(String jobId, BatchTaskGroup collection,
         CreateBatchTaskCollectionOptions options) {
         return createTaskCollectionInternal(jobId, collection, options.getTimeOutInSeconds());
@@ -2196,6 +2293,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of adding a collection of Tasks to a Job on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchTaskAddCollectionResult> createTaskCollection(String jobId, BatchTaskGroup collection) {
         return createTaskCollectionInternal(jobId, collection);
     }
@@ -2219,6 +2317,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTask(String jobId, String taskId, DeleteBatchTaskOptions options) {
         return deleteTaskInternal(jobId, taskId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -2241,6 +2340,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTask(String jobId, String taskId) {
         return deleteTaskInternal(jobId, taskId);
     }
@@ -2267,6 +2367,7 @@ public final class BatchAsyncClient {
      * failure. Retries due to recovery operations are independent of and are not counted against the
      * maxTaskRetryCount on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchTask> getTask(String jobId, String taskId, GetBatchTaskOptions options) {
         return getTaskInternal(jobId, taskId, options.getTimeOutInSeconds(), options.getSelect(), options.getExpand(),
             options.getRequestConditions());
@@ -2292,6 +2393,7 @@ public final class BatchAsyncClient {
      * failure. Retries due to recovery operations are independent of and are not counted against the
      * maxTaskRetryCount on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchTask> getTask(String jobId, String taskId) {
         return getTaskInternal(jobId, taskId);
     }
@@ -2311,6 +2413,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> replaceTask(String jobId, String taskId, BatchTask body, ReplaceBatchTaskOptions options) {
         return replaceTaskInternal(jobId, taskId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -2329,6 +2432,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> replaceTask(String jobId, String taskId, BatchTask body) {
         return replaceTaskInternal(jobId, taskId, body);
     }
@@ -2350,6 +2454,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the subtasks of a Task as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchSubtask> listSubTasks(String jobId, String taskId, ListBatchSubTasksOptions options) {
         return listSubTasksInternal(jobId, taskId, options.getTimeOutInSeconds(), options.getSelect());
     }
@@ -2370,6 +2475,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the subtasks of a Task as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchSubtask> listSubTasks(String jobId, String taskId) {
         return listSubTasksInternal(jobId, taskId);
     }
@@ -2393,6 +2499,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> terminateTask(String jobId, String taskId, TerminateBatchTaskOptions options) {
         return terminateTaskInternal(jobId, taskId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -2415,6 +2522,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> terminateTask(String jobId, String taskId) {
         return terminateTaskInternal(jobId, taskId);
     }
@@ -2440,6 +2548,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> reactivateTask(String jobId, String taskId, ReactivateBatchTaskOptions options) {
         return reactivateTaskInternal(jobId, taskId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
@@ -2464,6 +2573,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> reactivateTask(String jobId, String taskId) {
         return reactivateTaskInternal(jobId, taskId);
     }
@@ -2483,6 +2593,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTaskFile(String jobId, String taskId, String filePath, DeleteBatchTaskFileOptions options) {
         return deleteTaskFileInternal(jobId, taskId, filePath, options.getTimeOutInSeconds(), options.isRecursive());
     }
@@ -2501,6 +2612,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTaskFile(String jobId, String taskId, String filePath) {
         return deleteTaskFileInternal(jobId, taskId, filePath);
     }
@@ -2521,6 +2633,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getTaskFile(String jobId, String taskId, String filePath, GetBatchTaskFileOptions options) {
         return getTaskFileInternal(jobId, taskId, filePath, options.getTimeOutInSeconds(), options.getIfModifiedSince(),
             options.getIfUnmodifiedSince(), options.getOcpRange());
@@ -2540,6 +2653,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getTaskFile(String jobId, String taskId, String filePath) {
         return getTaskFileInternal(jobId, taskId, filePath);
     }
@@ -2560,6 +2674,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified Task file on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> getTaskFileProperties(String jobId, String taskId, String filePath,
         GetBatchTaskFilePropertiesOptions options) {
         return getTaskFilePropertiesInternal(jobId, taskId, filePath, options.getTimeOutInSeconds(),
@@ -2580,6 +2695,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified Task file on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> getTaskFileProperties(String jobId, String taskId, String filePath) {
         return getTaskFilePropertiesInternal(jobId, taskId, filePath);
     }
@@ -2599,6 +2715,7 @@ public final class BatchAsyncClient {
      * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
      * as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchNodeFile> listTaskFiles(String jobId, String taskId, ListBatchTaskFilesOptions options) {
         return listTaskFilesInternal(jobId, taskId, options.getTimeOutInSeconds(), options.getFilter(),
             options.isRecursive());
@@ -2618,6 +2735,7 @@ public final class BatchAsyncClient {
      * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
      * as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchNodeFile> listTaskFiles(String jobId, String taskId) {
         return listTaskFilesInternal(jobId, taskId);
     }
@@ -2640,6 +2758,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createNodeUser(String poolId, String nodeId, BatchNodeUserCreateContent body,
         CreateBatchNodeUserOptions options) {
         return createNodeUserInternal(poolId, nodeId, body, options.getTimeOutInSeconds());
@@ -2662,6 +2781,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createNodeUser(String poolId, String nodeId, BatchNodeUserCreateContent body) {
         return createNodeUserInternal(poolId, nodeId, body);
     }
@@ -2684,6 +2804,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteNodeUser(String poolId, String nodeId, String userName,
         DeleteBatchNodeUserOptions options) {
         return deleteNodeUserInternal(poolId, nodeId, userName, options.getTimeOutInSeconds());
@@ -2706,6 +2827,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteNodeUser(String poolId, String nodeId, String userName) {
         return deleteNodeUserInternal(poolId, nodeId, userName);
     }
@@ -2731,6 +2853,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> replaceNodeUser(String poolId, String nodeId, String userName, BatchNodeUserUpdateContent body,
         ReplaceBatchNodeUserOptions options) {
         return replaceNodeUserInternal(poolId, nodeId, userName, body, options.getTimeOutInSeconds());
@@ -2756,6 +2879,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> replaceNodeUser(String poolId, String nodeId, String userName, BatchNodeUserUpdateContent body) {
         return replaceNodeUserInternal(poolId, nodeId, userName, body);
     }
@@ -2774,6 +2898,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Compute Node on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchNode> getNode(String poolId, String nodeId, GetBatchNodeOptions options) {
         return getNodeInternal(poolId, nodeId, options.getTimeOutInSeconds(), options.getSelect());
     }
@@ -2791,6 +2916,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Compute Node on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchNode> getNode(String poolId, String nodeId) {
         return getNodeInternal(poolId, nodeId);
     }
@@ -2813,6 +2939,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> rebootNode(String poolId, String nodeId, RebootBatchNodeOptions options,
         BatchNodeRebootContent body) {
         return rebootNodeInternal(poolId, nodeId, options.getTimeOutInSeconds(), body);
@@ -2834,6 +2961,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> rebootNode(String poolId, String nodeId) {
         return rebootNodeInternal(poolId, nodeId);
     }
@@ -2856,6 +2984,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> disableNodeScheduling(String poolId, String nodeId, DisableBatchNodeSchedulingOptions options,
         BatchNodeDisableSchedulingContent body) {
         return disableNodeSchedulingInternal(poolId, nodeId, options.getTimeOutInSeconds(), body);
@@ -2877,6 +3006,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> disableNodeScheduling(String poolId, String nodeId) {
         return disableNodeSchedulingInternal(poolId, nodeId);
     }
@@ -2898,6 +3028,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> enableNodeScheduling(String poolId, String nodeId, EnableBatchNodeSchedulingOptions options) {
         return enableNodeSchedulingInternal(poolId, nodeId, options.getTimeOutInSeconds());
     }
@@ -2918,6 +3049,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> enableNodeScheduling(String poolId, String nodeId) {
         return enableNodeSchedulingInternal(poolId, nodeId);
     }
@@ -2941,6 +3073,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the remote login settings for a Compute Node on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchNodeRemoteLoginSettings> getNodeRemoteLoginSettings(String poolId, String nodeId,
         GetBatchNodeRemoteLoginSettingsOptions options) {
         return getNodeRemoteLoginSettingsInternal(poolId, nodeId, options.getTimeOutInSeconds());
@@ -2964,6 +3097,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the remote login settings for a Compute Node on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchNodeRemoteLoginSettings> getNodeRemoteLoginSettings(String poolId, String nodeId) {
         return getNodeRemoteLoginSettingsInternal(poolId, nodeId);
     }
@@ -2989,6 +3123,7 @@ public final class BatchAsyncClient {
      * @return the result of uploading Batch service log files from a specific Compute Node on successful completion of
      * {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UploadBatchServiceLogsResult> uploadNodeLogs(String poolId, String nodeId,
         UploadBatchServiceLogsContent body, UploadBatchNodeLogsOptions options) {
         return uploadNodeLogsInternal(poolId, nodeId, body, options.getTimeOutInSeconds());
@@ -3014,6 +3149,7 @@ public final class BatchAsyncClient {
      * @return the result of uploading Batch service log files from a specific Compute Node on successful completion of
      * {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UploadBatchServiceLogsResult> uploadNodeLogs(String poolId, String nodeId,
         UploadBatchServiceLogsContent body) {
         return uploadNodeLogsInternal(poolId, nodeId, body);
@@ -3032,6 +3168,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchNode> listNodes(String poolId, ListBatchNodesOptions options) {
         return listNodesInternal(poolId, options.getTimeOutInSeconds(), options.getFilter(), options.getSelect());
     }
@@ -3048,6 +3185,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchNode> listNodes(String poolId) {
         return listNodesInternal(poolId);
     }
@@ -3067,6 +3205,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Compute Node Extension on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchNodeVMExtension> getNodeExtension(String poolId, String nodeId, String extensionName,
         GetBatchNodeExtensionOptions options) {
         return getNodeExtensionInternal(poolId, nodeId, extensionName, options.getTimeOutInSeconds(),
@@ -3087,6 +3226,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Compute Node Extension on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchNodeVMExtension> getNodeExtension(String poolId, String nodeId, String extensionName) {
         return getNodeExtensionInternal(poolId, nodeId, extensionName);
     }
@@ -3105,6 +3245,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Compute Node extensions in a Node as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchNodeVMExtension> listNodeExtensions(String poolId, String nodeId,
         ListBatchNodeExtensionsOptions options) {
         return listNodeExtensionsInternal(poolId, nodeId, options.getTimeOutInSeconds(), options.getSelect());
@@ -3123,6 +3264,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Compute Node extensions in a Node as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchNodeVMExtension> listNodeExtensions(String poolId, String nodeId) {
         return listNodeExtensionsInternal(poolId, nodeId);
     }
@@ -3142,6 +3284,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteNodeFile(String poolId, String nodeId, String filePath,
         DeleteBatchNodeFileOptions options) {
         return deleteNodeFileInternal(poolId, nodeId, filePath, options.getTimeOutInSeconds(), options.isRecursive());
@@ -3161,6 +3304,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteNodeFile(String poolId, String nodeId, String filePath) {
         return deleteNodeFileInternal(poolId, nodeId, filePath);
     }
@@ -3181,6 +3325,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getNodeFile(String poolId, String nodeId, String filePath,
         GetBatchNodeFileOptions options) {
         return getNodeFileInternal(poolId, nodeId, filePath, options.getTimeOutInSeconds(),
@@ -3201,6 +3346,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getNodeFile(String poolId, String nodeId, String filePath) {
         return getNodeFileInternal(poolId, nodeId, filePath);
     }
@@ -3221,6 +3367,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified Compute Node file on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NodeFileProperties> getNodeFileProperties(String poolId, String nodeId, String filePath,
         GetBatchNodeFilePropertiesOptions options) {
         RequestOptions requestOptions = new RequestOptions();
@@ -3255,6 +3402,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified Compute Node file on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NodeFileProperties> getNodeFileProperties(String poolId, String nodeId, String filePath) {
         return getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, new RequestOptions())
             .map(response -> new NodeFileProperties(response.getHeaders()));
@@ -3275,6 +3423,7 @@ public final class BatchAsyncClient {
      * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
      * as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchNodeFile> listNodeFiles(String poolId, String nodeId, ListBatchNodeFilesOptions options) {
         return listNodeFilesInternal(poolId, nodeId, options.getTimeOutInSeconds(), options.getFilter(),
             options.isRecursive());
@@ -3294,6 +3443,7 @@ public final class BatchAsyncClient {
      * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
      * as paginated response with {@link PagedFlux}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BatchNodeFile> listNodeFiles(String poolId, String nodeId) {
         return listNodeFilesInternal(poolId, nodeId);
     }
@@ -3468,6 +3618,7 @@ public final class BatchAsyncClient {
      * @return contains information about an application in an Azure Batch Account along with {@link Response} on
      * successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getApplicationWithResponse(String applicationId, RequestOptions requestOptions) {
         return this.getApplicationInternalWithResponse(applicationId, requestOptions);
     }
@@ -4142,6 +4293,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createPoolWithResponse(BinaryData pool, RequestOptions requestOptions) {
         return this.createPoolInternalWithResponse(pool, requestOptions);
     }
@@ -4730,6 +4882,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deletePoolWithResponse(String poolId, RequestOptions requestOptions) {
         return this.deletePoolInternalWithResponse(poolId, requestOptions);
     }
@@ -4907,6 +5060,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return basic properties of a Pool along with {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> poolExistsWithResponse(String poolId, RequestOptions requestOptions) {
         return this.poolExistsInternalWithResponse(poolId, requestOptions);
     }
@@ -5743,6 +5897,7 @@ public final class BatchAsyncClient {
      * @return information about the specified Pool along with {@link Response} on successful completion of {@link
      * Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getPoolWithResponse(String poolId, RequestOptions requestOptions) {
         return this.getPoolInternalWithResponse(poolId, requestOptions);
     }
@@ -6067,6 +6222,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updatePoolWithResponse(String poolId, BinaryData pool, RequestOptions requestOptions) {
         return this.updatePoolInternalWithResponse(poolId, pool, requestOptions);
     }
@@ -6141,6 +6297,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disablePoolAutoScaleWithResponse(String poolId, RequestOptions requestOptions) {
         return this.disablePoolAutoScaleInternalWithResponse(poolId, requestOptions);
     }
@@ -6342,6 +6499,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> enablePoolAutoScaleWithResponse(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
         return this.enablePoolAutoScaleInternalWithResponse(poolId, parameters, requestOptions);
@@ -6486,6 +6644,7 @@ public final class BatchAsyncClient {
      * @return the results and errors from an execution of a Pool autoscale formula along with {@link Response} on
      * successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> evaluatePoolAutoScaleWithResponse(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
         return this.evaluatePoolAutoScaleInternalWithResponse(poolId, parameters, requestOptions);
@@ -6694,6 +6853,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resizePoolWithResponse(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
         return this.resizePoolInternalWithResponse(poolId, parameters, requestOptions);
@@ -6876,6 +7036,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopPoolResizeWithResponse(String poolId, RequestOptions requestOptions) {
         return this.stopPoolResizeInternalWithResponse(poolId, requestOptions);
     }
@@ -7109,6 +7270,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> replacePoolPropertiesWithResponse(String poolId, BinaryData pool,
         RequestOptions requestOptions) {
         return this.replacePoolPropertiesInternalWithResponse(poolId, pool, requestOptions);
@@ -7312,6 +7474,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeNodesWithResponse(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
         return this.removeNodesInternalWithResponse(poolId, parameters, requestOptions);
@@ -7646,6 +7809,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.deleteJobInternalWithResponse(jobId, requestOptions);
     }
@@ -8642,6 +8806,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return information about the specified Job along with {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.getJobInternalWithResponse(jobId, requestOptions);
     }
@@ -9362,6 +9527,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateJobWithResponse(String jobId, BinaryData job, RequestOptions requestOptions) {
         return this.updateJobInternalWithResponse(jobId, job, requestOptions);
     }
@@ -10345,6 +10511,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> replaceJobWithResponse(String jobId, BinaryData job, RequestOptions requestOptions) {
         return this.replaceJobInternalWithResponse(jobId, job, requestOptions);
     }
@@ -10548,6 +10715,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableJobWithResponse(String jobId, BinaryData parameters,
         RequestOptions requestOptions) {
         return this.disableJobInternalWithResponse(jobId, parameters, requestOptions);
@@ -10728,6 +10896,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> enableJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.enableJobInternalWithResponse(jobId, requestOptions);
     }
@@ -11544,6 +11713,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createJobWithResponse(BinaryData job, RequestOptions requestOptions) {
         return this.createJobInternalWithResponse(job, requestOptions);
     }
@@ -12746,6 +12916,7 @@ public final class BatchAsyncClient {
      * @return the Task and TaskSlot counts for a Job along with {@link Response} on successful completion of {@link
      * Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getJobTaskCountsWithResponse(String jobId, RequestOptions requestOptions) {
         return this.getJobTaskCountsInternalWithResponse(jobId, requestOptions);
     }
@@ -12877,6 +13048,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createCertificateWithResponse(BinaryData certificate, RequestOptions requestOptions) {
         return this.createCertificateInternalWithResponse(certificate, requestOptions);
     }
@@ -13054,6 +13226,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelCertificateDeletionWithResponse(String thumbprintAlgorithm, String thumbprint,
         RequestOptions requestOptions) {
         return this.cancelCertificateDeletionInternalWithResponse(thumbprintAlgorithm, thumbprint, requestOptions);
@@ -13152,6 +13325,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCertificateWithResponse(String thumbprintAlgorithm, String thumbprint,
         RequestOptions requestOptions) {
         return this.deleteCertificateInternalWithResponse(thumbprintAlgorithm, thumbprint, requestOptions);
@@ -13302,6 +13476,7 @@ public final class BatchAsyncClient {
      * @return information about the specified Certificate along with {@link Response} on successful completion of
      * {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCertificateWithResponse(String thumbprintAlgorithm, String thumbprint,
         RequestOptions requestOptions) {
         return this.getCertificateInternalWithResponse(thumbprintAlgorithm, thumbprint, requestOptions);
@@ -13480,6 +13655,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return whether resource exists along with {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> jobScheduleExistsWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.jobScheduleExistsInternalWithResponse(jobScheduleId, requestOptions);
     }
@@ -13658,6 +13834,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.deleteJobScheduleInternalWithResponse(jobScheduleId, requestOptions);
     }
@@ -14662,6 +14839,7 @@ public final class BatchAsyncClient {
      * @return information about the specified Job Schedule along with {@link Response} on successful completion of
      * {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.getJobScheduleInternalWithResponse(jobScheduleId, requestOptions);
     }
@@ -15588,6 +15766,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateJobScheduleWithResponse(String jobScheduleId, BinaryData jobSchedule,
         RequestOptions requestOptions) {
         return this.updateJobScheduleInternalWithResponse(jobScheduleId, jobSchedule, requestOptions);
@@ -16583,6 +16762,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> replaceJobScheduleWithResponse(String jobScheduleId, BinaryData jobSchedule,
         RequestOptions requestOptions) {
         return this.replaceJobScheduleInternalWithResponse(jobScheduleId, jobSchedule, requestOptions);
@@ -16755,6 +16935,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.disableJobScheduleInternalWithResponse(jobScheduleId, requestOptions);
     }
@@ -16921,6 +17102,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> enableJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.enableJobScheduleInternalWithResponse(jobScheduleId, requestOptions);
     }
@@ -17087,6 +17269,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> terminateJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.terminateJobScheduleInternalWithResponse(jobScheduleId, requestOptions);
     }
@@ -17909,6 +18092,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createJobScheduleWithResponse(BinaryData jobSchedule, RequestOptions requestOptions) {
         return this.createJobScheduleInternalWithResponse(jobSchedule, requestOptions);
     }
@@ -18730,6 +18914,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createTaskWithResponse(String jobId, BinaryData task, RequestOptions requestOptions) {
         return this.createTaskInternalWithResponse(jobId, task, requestOptions);
     }
@@ -19407,6 +19592,7 @@ public final class BatchAsyncClient {
      * @return the result of adding a collection of Tasks to a Job along with {@link Response} on successful completion
      * of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createTaskCollectionWithResponse(String jobId, BinaryData taskCollection,
         RequestOptions requestOptions) {
         return this.createTaskCollectionInternalWithResponse(jobId, taskCollection, requestOptions);
@@ -19587,6 +19773,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
         return this.deleteTaskInternalWithResponse(jobId, taskId, requestOptions);
     }
@@ -20159,6 +20346,7 @@ public final class BatchAsyncClient {
      * failure. Retries due to recovery operations are independent of and are not counted against the
      * maxTaskRetryCount along with {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
         return this.getTaskInternalWithResponse(jobId, taskId, requestOptions);
     }
@@ -20695,6 +20883,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> replaceTaskWithResponse(String jobId, String taskId, BinaryData task,
         RequestOptions requestOptions) {
         return this.replaceTaskInternalWithResponse(jobId, taskId, task, requestOptions);
@@ -20873,6 +21062,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> terminateTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
         return this.terminateTaskInternalWithResponse(jobId, taskId, requestOptions);
     }
@@ -21058,6 +21248,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> reactivateTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
         return this.reactivateTaskInternalWithResponse(jobId, taskId, requestOptions);
     }
@@ -21155,6 +21346,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTaskFileWithResponse(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
         return this.deleteTaskFileInternalWithResponse(jobId, taskId, filePath, requestOptions);
@@ -21322,6 +21514,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTaskFileWithResponse(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
         return this.getTaskFileInternalWithResponse(jobId, taskId, filePath, requestOptions);
@@ -21465,6 +21658,7 @@ public final class BatchAsyncClient {
      * @return the properties of the specified Task file along with {@link Response} on successful completion of {@link
      * Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getTaskFilePropertiesWithResponse(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
         return this.getTaskFilePropertiesInternalWithResponse(jobId, taskId, filePath, requestOptions);
@@ -21653,6 +21847,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createNodeUserWithResponse(String poolId, String nodeId, BinaryData user,
         RequestOptions requestOptions) {
         return this.createNodeUserInternalWithResponse(poolId, nodeId, user, requestOptions);
@@ -21739,6 +21934,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteNodeUserWithResponse(String poolId, String nodeId, String userName,
         RequestOptions requestOptions) {
         return this.deleteNodeUserInternalWithResponse(poolId, nodeId, userName, requestOptions);
@@ -21853,6 +22049,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> replaceNodeUserWithResponse(String poolId, String nodeId, String userName,
         BinaryData parameters, RequestOptions requestOptions) {
         return this.replaceNodeUserInternalWithResponse(poolId, nodeId, userName, parameters, requestOptions);
@@ -22259,6 +22456,7 @@ public final class BatchAsyncClient {
      * @return information about the specified Compute Node along with {@link Response} on successful completion of
      * {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.getNodeInternalWithResponse(poolId, nodeId, requestOptions);
     }
@@ -22342,6 +22540,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> enableNodeSchedulingWithResponse(String poolId, String nodeId,
         RequestOptions requestOptions) {
         return this.enableNodeSchedulingInternalWithResponse(poolId, nodeId, requestOptions);
@@ -22450,6 +22649,7 @@ public final class BatchAsyncClient {
      * @return the remote login settings for a Compute Node along with {@link Response} on successful completion of
      * {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getNodeRemoteLoginSettingsWithResponse(String poolId, String nodeId,
         RequestOptions requestOptions) {
         return this.getNodeRemoteLoginSettingsInternalWithResponse(poolId, nodeId, requestOptions);
@@ -22590,6 +22790,7 @@ public final class BatchAsyncClient {
      * @return the result of uploading Batch service log files from a specific Compute Node along with {@link Response}
      * on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> uploadNodeLogsWithResponse(String poolId, String nodeId, BinaryData parameters,
         RequestOptions requestOptions) {
         return this.uploadNodeLogsInternalWithResponse(poolId, nodeId, parameters, requestOptions);
@@ -22980,6 +23181,7 @@ public final class BatchAsyncClient {
      * @return information about the specified Compute Node Extension along with {@link Response} on successful
      * completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getNodeExtensionWithResponse(String poolId, String nodeId, String extensionName,
         RequestOptions requestOptions) {
         return this.getNodeExtensionInternalWithResponse(poolId, nodeId, extensionName, requestOptions);
@@ -23169,6 +23371,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteNodeFileWithResponse(String poolId, String nodeId, String filePath,
         RequestOptions requestOptions) {
         return this.deleteNodeFileInternalWithResponse(poolId, nodeId, filePath, requestOptions);
@@ -23336,6 +23539,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return represent a byte array along with {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getNodeFileWithResponse(String poolId, String nodeId, String filePath,
         RequestOptions requestOptions) {
         return this.getNodeFileInternalWithResponse(poolId, nodeId, filePath, requestOptions);
@@ -23479,6 +23683,7 @@ public final class BatchAsyncClient {
      * @return the properties of the specified Compute Node file along with {@link Response} on successful completion of
      * {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getNodeFilePropertiesWithResponse(String poolId, String nodeId, String filePath,
         RequestOptions requestOptions) {
         return this.getNodeFilePropertiesInternalWithResponse(poolId, nodeId, filePath, requestOptions);
@@ -26890,6 +27095,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> terminateJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.terminateJobInternalWithResponse(jobId, requestOptions);
     }
@@ -26988,6 +27194,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> rebootNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.rebootNodeInternalWithResponse(poolId, nodeId, requestOptions);
     }
@@ -27088,6 +27295,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableNodeSchedulingWithResponse(String poolId, String nodeId,
         RequestOptions requestOptions) {
         return this.disableNodeSchedulingInternalWithResponse(poolId, nodeId, requestOptions);
