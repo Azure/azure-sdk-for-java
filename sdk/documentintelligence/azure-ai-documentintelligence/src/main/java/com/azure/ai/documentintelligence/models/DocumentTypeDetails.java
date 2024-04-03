@@ -6,41 +6,40 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Document type info.
  */
 @Immutable
-public final class DocumentTypeDetails {
+public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeDetails> {
     /*
      * Document model description.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Custom document model build mode.
      */
     @Generated
-    @JsonProperty(value = "buildMode")
     private DocumentBuildMode buildMode;
 
     /*
      * Description of the document semantic schema using a JSON Schema style syntax.
      */
     @Generated
-    @JsonProperty(value = "fieldSchema")
-    private Map<String, DocumentFieldSchema> fieldSchema;
+    private final Map<String, DocumentFieldSchema> fieldSchema;
 
     /*
      * Estimated confidence for each field.
      */
     @Generated
-    @JsonProperty(value = "fieldConfidence")
     private Map<String, Double> fieldConfidence;
 
     /**
@@ -49,8 +48,7 @@ public final class DocumentTypeDetails {
      * @param fieldSchema the fieldSchema value to set.
      */
     @Generated
-    @JsonCreator
-    private DocumentTypeDetails(@JsonProperty(value = "fieldSchema") Map<String, DocumentFieldSchema> fieldSchema) {
+    private DocumentTypeDetails(Map<String, DocumentFieldSchema> fieldSchema) {
         this.fieldSchema = fieldSchema;
     }
 
@@ -92,5 +90,61 @@ public final class DocumentTypeDetails {
     @Generated
     public Map<String, Double> getFieldConfidence() {
         return this.fieldConfidence;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("fieldSchema", this.fieldSchema, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("buildMode", this.buildMode == null ? null : this.buildMode.toString());
+        jsonWriter.writeMapField("fieldConfidence", this.fieldConfidence,
+            (writer, element) -> writer.writeDouble(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentTypeDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentTypeDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DocumentTypeDetails.
+     */
+    @Generated
+    public static DocumentTypeDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Map<String, DocumentFieldSchema> fieldSchema = null;
+            String description = null;
+            DocumentBuildMode buildMode = null;
+            Map<String, Double> fieldConfidence = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fieldSchema".equals(fieldName)) {
+                    fieldSchema = reader.readMap(reader1 -> DocumentFieldSchema.fromJson(reader1));
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("buildMode".equals(fieldName)) {
+                    buildMode = DocumentBuildMode.fromString(reader.getString());
+                } else if ("fieldConfidence".equals(fieldName)) {
+                    fieldConfidence = reader.readMap(reader1 -> reader1.getDouble());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            DocumentTypeDetails deserializedDocumentTypeDetails = new DocumentTypeDetails(fieldSchema);
+            deserializedDocumentTypeDetails.description = description;
+            deserializedDocumentTypeDetails.buildMode = buildMode;
+            deserializedDocumentTypeDetails.fieldConfidence = fieldConfidence;
+
+            return deserializedDocumentTypeDetails;
+        });
     }
 }
