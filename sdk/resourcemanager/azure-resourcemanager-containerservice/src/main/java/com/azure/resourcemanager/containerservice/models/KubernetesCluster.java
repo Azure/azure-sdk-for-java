@@ -448,7 +448,7 @@ public interface KubernetesCluster
             }
 
             /**
-             * The stage of a network plugin mode definition allowing to specify the network policy.
+             * The stage of a network profile definition allowing to specify the network plugin mode.
              *
              * @param <ParentT> the stage of the network plugin mode definition to return to after attaching this definition
              */
@@ -463,7 +463,7 @@ public interface KubernetesCluster
             }
 
             /**
-             * The stage of a network mode definition allowing to specify the network policy.
+             * The stage of a network profile definition allowing to specify the network mode.
              *
              * @param <ParentT> the stage of the network mode definition to return to after attaching this definition
              */
@@ -478,7 +478,7 @@ public interface KubernetesCluster
             }
 
             /**
-             * The stage of a network mode definition allowing to specify the network policy.
+             * The stage of a network profile definition allowing to specify the network data plan.
              *
              * @param <ParentT> the stage of the network mode definition to return to after attaching this definition
              */
@@ -759,22 +759,6 @@ public interface KubernetesCluster
              * @return the next stage of the update
              */
             Update withNetworkProfile(ContainerServiceNetworkProfile networkProfile);
-
-            /**
-             * Updates the cluster's network policy.
-             *
-             * @param networkPolicy the cluster's networkPolicy
-             * @return the next stage of the update
-             */
-            Update withNetworkPolicy(NetworkPolicy networkPolicy);
-
-            /**
-             * Updates the cluster's network data plam.
-             *
-             * @param networkDataPlan the cluster's networkDataPlan
-             * @return the next stage of the update
-             */
-            Update withNetworkDataPlan(NetworkDataplane networkDataPlan);
         }
 
         /**

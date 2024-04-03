@@ -724,15 +724,17 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                 .create();
 
         kubernetesCluster.refresh();
+        Assertions.assertEquals(NetworkPlugin.AZURE, kubernetesCluster.networkProfile().networkPlugin());
         Assertions.assertEquals(NetworkPluginMode.OVERLAY, kubernetesCluster.networkProfile().networkPluginMode());
         Assertions.assertEquals(NetworkPolicy.AZURE, kubernetesCluster.networkProfile().networkPolicy());
         Assertions.assertEquals(NetworkMode.TRANSPARENT, kubernetesCluster.networkProfile().networkMode());
         Assertions.assertEquals(NetworkDataplane.AZURE, kubernetesCluster.networkProfile().networkDataplane());
 
-        kubernetesCluster.update()
-            .withNetworkPolicy(NetworkPolicy.CILIUM)
-            .withNetworkDataPlan(NetworkDataplane.CILIUM)
-            .apply();
+        kubernetesCluster.update().withNetworkProfile(
+            kubernetesCluster.networkProfile()
+                .withNetworkPolicy(NetworkPolicy.CILIUM)
+                .withNetworkDataplane(NetworkDataplane.CILIUM)
+            ).apply();
 
         kubernetesCluster.refresh();
         Assertions.assertEquals(NetworkPolicy.CILIUM, kubernetesCluster.networkProfile().networkPolicy());

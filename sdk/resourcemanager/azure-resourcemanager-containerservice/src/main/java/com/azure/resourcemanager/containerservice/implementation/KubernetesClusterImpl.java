@@ -39,8 +39,6 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePr
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSku;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSkuName;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSkuTier;
-import com.azure.resourcemanager.containerservice.models.NetworkDataplane;
-import com.azure.resourcemanager.containerservice.models.NetworkPolicy;
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerservice.models.ResourceIdentityType;
@@ -62,7 +60,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -585,24 +582,6 @@ public class KubernetesClusterImpl
     @Override
     public KubernetesClusterImpl withNetworkProfile(ContainerServiceNetworkProfile networkProfile) {
         this.innerModel().withNetworkProfile(networkProfile);
-        return this;
-    }
-
-    @Override
-    public KubernetesClusterImpl withNetworkPolicy(NetworkPolicy networkPolicy) {
-        if (Objects.isNull(this.networkProfile())) {
-            this.innerModel().withNetworkProfile(new ContainerServiceNetworkProfile());
-        }
-        this.innerModel().networkProfile().withNetworkPolicy(networkPolicy);
-        return this;
-    }
-
-    @Override
-    public KubernetesClusterImpl withNetworkDataPlan(NetworkDataplane networkDataPlan) {
-        if (Objects.isNull(this.innerModel().networkProfile())) {
-            this.innerModel().withNetworkProfile(new ContainerServiceNetworkProfile());
-        }
-        this.innerModel().networkProfile().withNetworkDataplane(networkDataPlan);
         return this;
     }
 
