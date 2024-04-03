@@ -11,7 +11,7 @@ import com.generic.core.util.configuration.Configuration;
  * implementation.
  */
 public abstract class HttpClientProvider {
-    final static String NO_DEFAULT_PROVIDER_MESSAGE = "A request was made to load the default HttpClient provider "
+    static final String NO_DEFAULT_PROVIDER_MESSAGE = "A request was made to load the default HttpClient provider "
         + "but one could not be found on the classpath. If you are using a dependency manager, consider including "
         + "a dependency on io.clientcore:http-okhttp. Additionally, refer to "
         + "https://aka.ms/azsdk/java/docs/custom-httpclient to learn about writing your own implementation.";
