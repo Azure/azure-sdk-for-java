@@ -2,7 +2,7 @@
 
 This guide is intended to assist in the migration to Azure Purview DataMap client library [`azure-analytics-purview-datamap`](https://central.sonatype.com/artifact/com.azure/azure-analytics-purview-datamap) from [`azure-analytics-purview-catalog`](https://central.sonatype.com/artifact/com.azure/azure-analytics-purview-catalog). It will focus on side-by-side comparisons for similar operations between the two packages.
 
-For those new to the Purview Data Map library for Java, please refer to the [`azure-analytics-purview-datamap' readme](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-datamap/README.md) and [`azure-analytics-purview-datamap` samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/purview/azure-analytics-purview-datamap/src/samples) for the `azure-analytics-purview-datamap` library rather than this guide.
+For those new to the Purview Data Map library for Java, please refer to the [`azure-analytics-purview-datamap` readme](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-datamap/README.md) and [`azure-analytics-purview-datamap` samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/purview/azure-analytics-purview-datamap/src/samples) for the `azure-analytics-purview-datamap` library rather than this guide.
 
 ## Table of contents
 
