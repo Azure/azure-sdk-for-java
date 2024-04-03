@@ -7,6 +7,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.rest.Response;
@@ -14,6 +15,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -25,6 +27,7 @@ import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsQueryResultStatus;
 import com.azure.monitor.query.models.LogsTableCell;
 import com.azure.monitor.query.models.QueryTimeInterval;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -38,6 +41,7 @@ import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Objects;
 
 import static com.azure.monitor.query.MonitorQueryTestUtils.QUERY_STRING;
 import static com.azure.monitor.query.MonitorQueryTestUtils.getAdditionalLogWorkspaceId;
@@ -176,6 +180,30 @@ public class LogsQueryClientTest extends TestProxyTestBase {
 
     @Test
     public void testLogsQueryBatchWithServerTimeout() {
+
+        LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder();
+        if (getTestMode() == TestMode.PLAYBACK) {
+            clientBuilder
+                .credential(request -> Mono.just(new AccessToken("fakeToken", OffsetDateTime.now().plusDays(1))))
+                .httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
+        } else if (getTestMode() == TestMode.RECORD) {
+            clientBuilder
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .credential(getCredential());
+        } else if (getTestMode() == TestMode.LIVE) {
+            clientBuilder.credential(getCredential());
+            clientBuilder.endpoint(MonitorQueryTestUtils.getLogEndpoint());
+
+            Objects.equals(clientBuilder, null);
+        }
+        LogsQueryClient client = clientBuilder
+            .addPolicy((context, next) -> {
+                Assertions.assertTrue(context.getHttpRequest().getBodyAsBinaryData().toString().contains("wait=10"));
+                Assertions.assertTrue(context.getHttpRequest().getBodyAsBinaryData().toString().contains("wait=20"));
+                return next.process();
+            })
+            .buildClient();
+
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
         logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING + " | take 2", null);
         logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING + " | take 5", null,
@@ -290,35 +318,33 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     }
 
     @Test
-    @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE", disabledReason = "server timeout is "
-            + " not readily reproducible and because the service caches query results, the queries that require extended time "
-            + "to complete if run the first time can return immediately if a cached result is available. So, this test can "
-            + " wait for a long time before succeeding. So, disabling this in LIVE test mode")
     public void testServerTimeout() {
-        // The server does not always stop processing the request and return a 504 before the client times out
-        // so, retry until a 504 response is returned
-        while (true) {
-            // With test proxy migration, the request body is also recorded and the request has to match exactly for the
-            // recording to work. So, updating the exact count used to record the server timeout exception. When re-recording,
-            // add a random number to this to bypass the server from returning cached results.
-            long count = 1000000007696L;
-            try {
-                // this query should take more than 5 seconds usually, but the server may have cached the
-                // response and may return before 5 seconds. So, retry with another query (different count value)
-                client.queryWorkspaceWithResponse(workspaceId, "range x from 1 to " + count + " step 1 | count", null,
-                        new LogsQueryOptions()
-                                .setServerTimeout(Duration.ofSeconds(5)),
-                        Context.NONE);
-            } catch (Exception exception) {
-                if (exception instanceof HttpResponseException) {
-                    HttpResponseException logsQueryException = (HttpResponseException) exception;
-                    if (logsQueryException.getResponse().getStatusCode() == 504) {
-                        break;
-                    }
-                }
-            }
+        // Server timeout is not readily reproducible and because the service caches query results, the queries that require extended time
+        // to complete if run the first time can return immediately if a cached result is available. So, instead of testing the server behavior,
+        // this test validates that the request is sent with the correct timeout value in the Prefer header.
+        LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder();
+        if (getTestMode() == TestMode.PLAYBACK) {
+            clientBuilder
+                .credential(request -> Mono.just(new AccessToken("fakeToken", OffsetDateTime.now().plusDays(1))))
+                .httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
+        } else if (getTestMode() == TestMode.RECORD) {
+            clientBuilder
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .credential(getCredential());
+        } else if (getTestMode() == TestMode.LIVE) {
+            clientBuilder.credential(getCredential());
+            clientBuilder.endpoint(MonitorQueryTestUtils.getLogEndpoint());
         }
-    }
+        LogsQueryClient client = clientBuilder
+            .addPolicy((context, next) -> {
+                Assertions.assertTrue(context.getHttpRequest().getHeaders().get(HttpHeaderName.fromString("Prefer")).getValue().contains("wait=5"));
+                return next.process();
+            })
+            .buildClient();
+        long count = 5;
+        client.queryWorkspaceWithResponse(workspaceId, "range x from 1 to " + count + " step 1 | count", null,
+            new LogsQueryOptions().setServerTimeout(Duration.ofSeconds(5)), Context.NONE);
+        }
 
     @Test
     public void testVisualization() {
