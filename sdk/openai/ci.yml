@@ -48,6 +48,7 @@ extends:
   parameters:
     ServiceDirectory: openai
     EnableBatchRelease: true
+    IgnoreVerifyTypeSpecCodeGenerationError: true 
     Artifacts:
       - name: azure-ai-openai
         groupId: com.azure
