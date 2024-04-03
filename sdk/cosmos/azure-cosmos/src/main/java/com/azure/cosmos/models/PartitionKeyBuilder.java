@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -156,6 +155,6 @@ public final class PartitionKeyBuilder {
 
         ObjectMapper objectMapper = Utils.getSimpleObjectMapper();
         return PartitionKeyHelper.extractPartitionKeyFromDocument(
-            objectMapper.convertValue(item, ObjectNode.class), partitionKeyDefinition);
+            new JsonSerializable(objectMapper.writeValueAsString(item)), partitionKeyDefinition);
     }
 }
