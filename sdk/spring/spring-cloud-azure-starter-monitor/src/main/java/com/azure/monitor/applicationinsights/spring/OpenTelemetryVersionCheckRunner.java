@@ -15,10 +15,10 @@ public class OpenTelemetryVersionCheckRunner implements CommandLineRunner {
     private static final Logger LOG = LoggerFactory.getLogger(OpenTelemetryVersionCheckRunner.class);
 
     // If this version is not up-to-date, a test will fail.
+    //TODO: could be generated at build time
     /**
      * OpenTelemetry version of the starter
      */
-    //TODO: could be generated at build time
     public static final String STARTER_OTEL_VERSION = "1.36.0";
 
     /**
