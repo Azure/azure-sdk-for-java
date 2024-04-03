@@ -227,7 +227,7 @@ public abstract class RestProxyBase {
      */
     Context startTracingSpan(SwaggerMethodParser method, Context context) {
         if (isTracingEnabled(context)) {
-            Object tracingContextObj = context.getData("TRACING_CONTEXT").orElse(null);
+            Object tracingContextObj = context.getData(Tracer.PARENT_TRACE_CONTEXT_KEY).orElse(null);
             Context tracingContext = tracingContextObj instanceof Context ? (Context) tracingContextObj : context;
             return tracer.start(method.getSpanName(), tracingContext);
         }

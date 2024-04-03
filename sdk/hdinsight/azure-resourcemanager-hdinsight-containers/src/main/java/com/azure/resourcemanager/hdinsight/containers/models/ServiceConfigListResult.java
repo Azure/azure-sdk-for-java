@@ -9,7 +9,9 @@ import com.azure.resourcemanager.hdinsight.containers.fluent.models.ServiceConfi
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Cluster instance service configs api response. */
+/**
+ * Cluster instance service configs api response.
+ */
 @Fluent
 public final class ServiceConfigListResult {
     /*
@@ -24,13 +26,15 @@ public final class ServiceConfigListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ServiceConfigListResult class. */
+    /**
+     * Creates an instance of ServiceConfigListResult class.
+     */
     public ServiceConfigListResult() {
     }
 
     /**
      * Get the value property: Cluster instance service config array.
-     *
+     * 
      * @return the value value.
      */
     public List<ServiceConfigResultInner> value() {
@@ -39,7 +43,7 @@ public final class ServiceConfigListResult {
 
     /**
      * Set the value property: Cluster instance service config array.
-     *
+     * 
      * @param value the value value to set.
      * @return the ServiceConfigListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class ServiceConfigListResult {
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ServiceConfigListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

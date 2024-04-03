@@ -24,7 +24,7 @@ parameters:
   OSName:
 
 jobs:
-  - job:
+  - job: LiveTest_${{ parameters.OSName }}
     dependsOn: ${{ parameters.DependsOn }}
     condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
     strategy:

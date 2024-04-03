@@ -40,6 +40,7 @@ import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
@@ -64,6 +65,7 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PriorityLevel;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -179,6 +181,7 @@ public class ImplementationBridgeHelpers {
 
         public interface PartitionKeyAccessor {
             PartitionKey toPartitionKey(PartitionKeyInternal partitionKeyInternal);
+            PartitionKey toPartitionKey(List<Object> values, boolean strict);
         }
     }
 
@@ -351,6 +354,7 @@ public class ImplementationBridgeHelpers {
             CosmosChangeFeedRequestOptions setItemFactoryMethod(CosmosChangeFeedRequestOptions queryRequestOptions, Function<JsonNode, ?> factoryMethod);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosChangeFeedRequestOptions options);
             List<String> getExcludeRegions(CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions);
+            CosmosChangeFeedRequestOptions createForProcessingFromContinuation(String continuation, FeedRange targetRange, String continuationLsn);
         }
     }
 
@@ -942,12 +946,15 @@ public class ImplementationBridgeHelpers {
 
             Mono<List<FeedRange>> getFeedRanges(CosmosAsyncContainer cosmosAsyncContainer, boolean forceRefresh);
 
-            Mono<List<FeedRangeEpkImpl>> trySplitFeedRange(
+            Mono<List<FeedRange>> trySplitFeedRange(
                 CosmosAsyncContainer cosmosAsyncContainer,
                 FeedRange feedRange,
                 int targetedCountAfterSplit);
 
             String getLinkWithoutTrailingSlash(CosmosAsyncContainer cosmosAsyncContainer);
+            Mono<Boolean> checkFeedRangeOverlapping(CosmosAsyncContainer container, FeedRange feedRange1, FeedRange feedRange2);
+            Mono<List<FeedRange>> getOverlappingFeedRanges(CosmosAsyncContainer container, FeedRange feedRange);
+            Mono<PartitionKeyDefinition> getPartitionKeyDefinition(CosmosAsyncContainer container);
         }
     }
 

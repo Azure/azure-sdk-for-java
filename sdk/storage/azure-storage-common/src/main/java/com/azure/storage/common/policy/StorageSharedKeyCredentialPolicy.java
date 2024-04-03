@@ -28,6 +28,8 @@ public final class StorageSharedKeyCredentialPolicy implements HttpPipelinePolic
     }
 
     /**
+     * Gets the {@link StorageSharedKeyCredential} linked to the policy.
+     *
      * @return the {@link StorageSharedKeyCredential} linked to the policy.
      */
     public StorageSharedKeyCredential sharedKeyCredential() {

@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Cluster connectivity profile. */
+/**
+ * Cluster connectivity profile.
+ */
 @Fluent
 public final class ConnectivityProfile {
     /*
@@ -24,13 +26,15 @@ public final class ConnectivityProfile {
     @JsonProperty(value = "ssh")
     private List<SshConnectivityEndpoint> ssh;
 
-    /** Creates an instance of ConnectivityProfile class. */
+    /**
+     * Creates an instance of ConnectivityProfile class.
+     */
     public ConnectivityProfile() {
     }
 
     /**
      * Get the web property: Web connectivity endpoint details.
-     *
+     * 
      * @return the web value.
      */
     public ConnectivityProfileWeb web() {
@@ -39,7 +43,7 @@ public final class ConnectivityProfile {
 
     /**
      * Set the web property: Web connectivity endpoint details.
-     *
+     * 
      * @param web the web value to set.
      * @return the ConnectivityProfile object itself.
      */
@@ -50,7 +54,7 @@ public final class ConnectivityProfile {
 
     /**
      * Get the ssh property: List of SSH connectivity endpoints.
-     *
+     * 
      * @return the ssh value.
      */
     public List<SshConnectivityEndpoint> ssh() {
@@ -59,7 +63,7 @@ public final class ConnectivityProfile {
 
     /**
      * Set the ssh property: List of SSH connectivity endpoints.
-     *
+     * 
      * @param ssh the ssh value to set.
      * @return the ConnectivityProfile object itself.
      */
@@ -70,14 +74,13 @@ public final class ConnectivityProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (web() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property web in model ConnectivityProfile"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property web in model ConnectivityProfile"));
         } else {
             web().validate();
         }

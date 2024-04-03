@@ -10,6 +10,7 @@ import com.azure.resourcemanager.batch.models.ApplicationPackageReference;
 import com.azure.resourcemanager.batch.models.AutoScaleSettings;
 import com.azure.resourcemanager.batch.models.AutoUserScope;
 import com.azure.resourcemanager.batch.models.AutoUserSpecification;
+import com.azure.resourcemanager.batch.models.AutomaticOSUpgradePolicy;
 import com.azure.resourcemanager.batch.models.BatchPoolIdentity;
 import com.azure.resourcemanager.batch.models.CachingType;
 import com.azure.resourcemanager.batch.models.CertificateReference;
@@ -46,6 +47,7 @@ import com.azure.resourcemanager.batch.models.PoolEndpointConfiguration;
 import com.azure.resourcemanager.batch.models.PoolIdentityType;
 import com.azure.resourcemanager.batch.models.PublicIpAddressConfiguration;
 import com.azure.resourcemanager.batch.models.ResourceFile;
+import com.azure.resourcemanager.batch.models.RollingUpgradePolicy;
 import com.azure.resourcemanager.batch.models.ScaleSettings;
 import com.azure.resourcemanager.batch.models.SecurityProfile;
 import com.azure.resourcemanager.batch.models.SecurityTypes;
@@ -54,6 +56,8 @@ import com.azure.resourcemanager.batch.models.StartTask;
 import com.azure.resourcemanager.batch.models.StorageAccountType;
 import com.azure.resourcemanager.batch.models.TaskSchedulingPolicy;
 import com.azure.resourcemanager.batch.models.UefiSettings;
+import com.azure.resourcemanager.batch.models.UpgradeMode;
+import com.azure.resourcemanager.batch.models.UpgradePolicy;
 import com.azure.resourcemanager.batch.models.UserAccount;
 import com.azure.resourcemanager.batch.models.UserAssignedIdentities;
 import com.azure.resourcemanager.batch.models.UserIdentity;
@@ -71,7 +75,7 @@ import java.util.Map;
  */
 public final class PoolCreateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/
      * PoolCreate_VirtualMachineConfiguration_ServiceArtifactReference.json
      */
     /**
@@ -93,12 +97,14 @@ public final class PoolCreateSamples {
                         "/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Compute/galleries/myGallery/serviceArtifacts/myServiceArtifact/vmArtifactsProfiles/vmArtifactsProfile"))))
             .withScaleSettings(new ScaleSettings()
                 .withFixedScale(new FixedScaleSettings().withTargetDedicatedNodes(2).withTargetLowPriorityNodes(0)))
+            .withUpgradePolicy(new UpgradePolicy().withMode(UpgradeMode.AUTOMATIC)
+                .withAutomaticOSUpgradePolicy(new AutomaticOSUpgradePolicy().withEnableAutomaticOSUpgrade(true)))
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolCreate_SecurityProfile.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_SecurityProfile.json
      */
     /**
      * Sample code: CreatePool - SecurityProfile.
@@ -122,7 +128,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/
      * PoolCreate_VirtualMachineConfiguration_ManagedOSDisk.json
      */
     /**
@@ -148,7 +154,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/
      * PoolCreate_MinimalCloudServiceConfiguration.json
      */
     /**
@@ -167,7 +173,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/
      * PoolCreate_MinimalVirtualMachineConfiguration.json
      */
     /**
@@ -192,7 +198,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/
      * PoolCreate_VirtualMachineConfiguration_Extensions.json
      */
     /**
@@ -223,7 +229,7 @@ public final class PoolCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolCreate_UserAssignedIdentities
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_UserAssignedIdentities
      * .json
      */
     /**
@@ -254,7 +260,41 @@ public final class PoolCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolCreate_AcceleratedNetworking.
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_UpgradePolicy.json
+     */
+    /**
+     * Sample code: CreatePool - UpgradePolicy.
+     * 
+     * @param manager Entry point to BatchManager.
+     */
+    public static void createPoolUpgradePolicy(com.azure.resourcemanager.batch.BatchManager manager) {
+        manager.pools().define("testpool").withExistingBatchAccount("default-azurebatch-japaneast", "sampleacct")
+            .withVmSize("Standard_d4s_v3")
+            .withDeploymentConfiguration(
+                new DeploymentConfiguration().withVirtualMachineConfiguration(new VirtualMachineConfiguration()
+                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
+                        .withOffer("WindowsServer").withSku("2019-datacenter-smalldisk").withVersion("latest"))
+                    .withNodeAgentSkuId("batch.node.windows amd64")
+                    .withWindowsConfiguration(new WindowsConfiguration().withEnableAutomaticUpdates(false))
+                    .withNodePlacementConfiguration(
+                        new NodePlacementConfiguration().withPolicy(NodePlacementPolicyType.ZONAL))))
+            .withScaleSettings(new ScaleSettings()
+                .withFixedScale(new FixedScaleSettings().withTargetDedicatedNodes(2).withTargetLowPriorityNodes(0)))
+            .withUpgradePolicy(
+                new UpgradePolicy().withMode(UpgradeMode.AUTOMATIC)
+                    .withAutomaticOSUpgradePolicy(new AutomaticOSUpgradePolicy().withDisableAutomaticRollback(true)
+                        .withEnableAutomaticOSUpgrade(true).withUseRollingUpgradePolicy(true)
+                        .withOsRollingUpgradeDeferral(true))
+                    .withRollingUpgradePolicy(new RollingUpgradePolicy().withEnableCrossZoneUpgrade(true)
+                        .withMaxBatchInstancePercent(20).withMaxUnhealthyInstancePercent(20)
+                        .withMaxUnhealthyUpgradedInstancePercent(20).withPauseTimeBetweenBatches("PT0S")
+                        .withPrioritizeUnhealthyInstances(false).withRollbackFailedInstancesOnPolicyBreach(false)))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_AcceleratedNetworking.
      * json
      */
     /**
@@ -279,7 +319,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/
      * PoolCreate_VirtualMachineConfiguration.json
      */
     /**
@@ -331,7 +371,7 @@ public final class PoolCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolCreate_SharedImageGallery.
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_SharedImageGallery.
      * json
      */
     /**
@@ -350,7 +390,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/
      * PoolCreate_CloudServiceConfiguration.json
      */
     /**
@@ -402,7 +442,7 @@ public final class PoolCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolCreate_NoPublicIPAddresses.
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_NoPublicIPAddresses.
      * json
      */
     /**
@@ -426,7 +466,7 @@ public final class PoolCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolCreate_ResourceTags.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_ResourceTags.json
      */
     /**
      * Sample code: CreatePool - ResourceTags.
@@ -448,7 +488,7 @@ public final class PoolCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolCreate_PublicIPs.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolCreate_PublicIPs.json
      */
     /**
      * Sample code: CreatePool - Public IPs.
