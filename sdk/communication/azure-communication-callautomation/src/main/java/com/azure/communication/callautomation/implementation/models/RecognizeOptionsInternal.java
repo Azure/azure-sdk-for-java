@@ -5,10 +5,15 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.regex.Pattern;
 
-/** The RecognizeOptionsInternal model. */
+/**
+ * The RecognizeOptionsInternal model.
+ */
 @Fluent
 public final class RecognizeOptionsInternal {
     /*
@@ -59,12 +64,15 @@ public final class RecognizeOptionsInternal {
     @JsonProperty(value = "speechOptions")
     private SpeechOptionsInternal speechOptions;
 
-    /** Creates an instance of RecognizeOptionsInternal class. */
-    public RecognizeOptionsInternal() {}
+    /**
+     * Creates an instance of RecognizeOptionsInternal class.
+     */
+    public RecognizeOptionsInternal() {
+    }
 
     /**
      * Get the interruptPrompt property: Determines if we interrupt the prompt and start recognizing.
-     *
+     * 
      * @return the interruptPrompt value.
      */
     public Boolean isInterruptPrompt() {
@@ -73,7 +81,7 @@ public final class RecognizeOptionsInternal {
 
     /**
      * Set the interruptPrompt property: Determines if we interrupt the prompt and start recognizing.
-     *
+     * 
      * @param interruptPrompt the interruptPrompt value to set.
      * @return the RecognizeOptionsInternal object itself.
      */
@@ -84,7 +92,7 @@ public final class RecognizeOptionsInternal {
 
     /**
      * Get the initialSilenceTimeoutInSeconds property: Time to wait for first input after prompt (if any).
-     *
+     * 
      * @return the initialSilenceTimeoutInSeconds value.
      */
     public Integer getInitialSilenceTimeoutInSeconds() {
@@ -93,7 +101,7 @@ public final class RecognizeOptionsInternal {
 
     /**
      * Set the initialSilenceTimeoutInSeconds property: Time to wait for first input after prompt (if any).
-     *
+     * 
      * @param initialSilenceTimeoutInSeconds the initialSilenceTimeoutInSeconds value to set.
      * @return the RecognizeOptionsInternal object itself.
      */
@@ -104,7 +112,7 @@ public final class RecognizeOptionsInternal {
 
     /**
      * Get the targetParticipant property: Target participant of DTMF tone recognition.
-     *
+     * 
      * @return the targetParticipant value.
      */
     public CommunicationIdentifierModel getTargetParticipant() {
@@ -113,7 +121,7 @@ public final class RecognizeOptionsInternal {
 
     /**
      * Set the targetParticipant property: Target participant of DTMF tone recognition.
-     *
+     * 
      * @param targetParticipant the targetParticipant value to set.
      * @return the RecognizeOptionsInternal object itself.
      */
@@ -124,7 +132,7 @@ public final class RecognizeOptionsInternal {
 
     /**
      * Get the speechLanguage property: Speech language to be recognized, If not set default is en-US.
-     *
+     * 
      * @return the speechLanguage value.
      */
     public String getSpeechLanguage() {
@@ -133,7 +141,7 @@ public final class RecognizeOptionsInternal {
 
     /**
      * Set the speechLanguage property: Speech language to be recognized, If not set default is en-US.
-     *
+     * 
      * @param speechLanguage the speechLanguage value to set.
      * @return the RecognizeOptionsInternal object itself.
      */
@@ -144,7 +152,7 @@ public final class RecognizeOptionsInternal {
 
     /**
      * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
-     *
+     * 
      * @return the speechRecognitionModelEndpointId value.
      */
     public String getSpeechRecognitionModelEndpointId() {
@@ -153,7 +161,7 @@ public final class RecognizeOptionsInternal {
 
     /**
      * Set the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
-     *
+     * 
      * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
      * @return the RecognizeOptionsInternal object itself.
      */
@@ -164,7 +172,7 @@ public final class RecognizeOptionsInternal {
 
     /**
      * Get the dtmfOptions property: Defines configurations for DTMF.
-     *
+     * 
      * @return the dtmfOptions value.
      */
     public DtmfOptionsInternal getDtmfOptions() {
@@ -173,7 +181,7 @@ public final class RecognizeOptionsInternal {
 
     /**
      * Set the dtmfOptions property: Defines configurations for DTMF.
-     *
+     * 
      * @param dtmfOptions the dtmfOptions value to set.
      * @return the RecognizeOptionsInternal object itself.
      */
@@ -184,7 +192,7 @@ public final class RecognizeOptionsInternal {
 
     /**
      * Get the choices property: Defines Ivr choices for recognize.
-     *
+     * 
      * @return the choices value.
      */
     public List<RecognitionChoiceInternal> getChoices() {
@@ -193,7 +201,7 @@ public final class RecognizeOptionsInternal {
 
     /**
      * Set the choices property: Defines Ivr choices for recognize.
-     *
+     * 
      * @param choices the choices value to set.
      * @return the RecognizeOptionsInternal object itself.
      */
@@ -204,7 +212,7 @@ public final class RecognizeOptionsInternal {
 
     /**
      * Get the speechOptions property: Defines continuous speech recognition option.
-     *
+     * 
      * @return the speechOptions value.
      */
     public SpeechOptionsInternal getSpeechOptions() {
@@ -213,7 +221,7 @@ public final class RecognizeOptionsInternal {
 
     /**
      * Set the speechOptions property: Defines continuous speech recognition option.
-     *
+     * 
      * @param speechOptions the speechOptions value to set.
      * @return the RecognizeOptionsInternal object itself.
      */

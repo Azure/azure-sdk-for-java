@@ -5,9 +5,15 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-/** The locator used for joining or taking action on a call. */
+/**
+ * The locator used for joining or taking action on a call.
+ */
 @Fluent
 public final class CallLocatorInternal {
     /*
@@ -28,12 +34,15 @@ public final class CallLocatorInternal {
     @JsonProperty(value = "kind")
     private CallLocatorKindInternal kind;
 
-    /** Creates an instance of CallLocatorInternal class. */
-    public CallLocatorInternal() {}
+    /**
+     * Creates an instance of CallLocatorInternal class.
+     */
+    public CallLocatorInternal() {
+    }
 
     /**
      * Get the groupCallId property: The group call id.
-     *
+     * 
      * @return the groupCallId value.
      */
     public String getGroupCallId() {
@@ -42,7 +51,7 @@ public final class CallLocatorInternal {
 
     /**
      * Set the groupCallId property: The group call id.
-     *
+     * 
      * @param groupCallId the groupCallId value to set.
      * @return the CallLocatorInternal object itself.
      */
@@ -53,7 +62,7 @@ public final class CallLocatorInternal {
 
     /**
      * Get the serverCallId property: The server call id.
-     *
+     * 
      * @return the serverCallId value.
      */
     public String getServerCallId() {
@@ -62,7 +71,7 @@ public final class CallLocatorInternal {
 
     /**
      * Set the serverCallId property: The server call id.
-     *
+     * 
      * @param serverCallId the serverCallId value to set.
      * @return the CallLocatorInternal object itself.
      */
@@ -73,7 +82,7 @@ public final class CallLocatorInternal {
 
     /**
      * Get the kind property: The call locator kind.
-     *
+     * 
      * @return the kind value.
      */
     public CallLocatorKindInternal getKind() {
@@ -82,7 +91,7 @@ public final class CallLocatorInternal {
 
     /**
      * Set the kind property: The call locator kind.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the CallLocatorInternal object itself.
      */

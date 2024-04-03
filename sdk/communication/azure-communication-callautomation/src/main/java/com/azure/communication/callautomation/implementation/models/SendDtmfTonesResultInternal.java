@@ -5,9 +5,14 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
 
-/** The SendDtmfTonesResultInternal model. */
+/**
+ * The SendDtmfTonesResultInternal model.
+ */
 @Fluent
 public final class SendDtmfTonesResultInternal {
     /*
@@ -16,12 +21,15 @@ public final class SendDtmfTonesResultInternal {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
-    /** Creates an instance of SendDtmfTonesResultInternal class. */
-    public SendDtmfTonesResultInternal() {}
+    /**
+     * Creates an instance of SendDtmfTonesResultInternal class.
+     */
+    public SendDtmfTonesResultInternal() {
+    }
 
     /**
      * Get the operationContext property: The operation context provided by client.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -30,7 +38,7 @@ public final class SendDtmfTonesResultInternal {
 
     /**
      * Set the operationContext property: The operation context provided by client.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the SendDtmfTonesResultInternal object itself.
      */

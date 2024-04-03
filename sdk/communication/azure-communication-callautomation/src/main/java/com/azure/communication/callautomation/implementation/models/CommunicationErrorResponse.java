@@ -5,9 +5,14 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
 
-/** The Communication Services error. */
+/**
+ * The Communication Services error.
+ */
 @Fluent
 public final class CommunicationErrorResponse {
     /*
@@ -16,12 +21,15 @@ public final class CommunicationErrorResponse {
     @JsonProperty(value = "error", required = true)
     private CommunicationError error;
 
-    /** Creates an instance of CommunicationErrorResponse class. */
-    public CommunicationErrorResponse() {}
+    /**
+     * Creates an instance of CommunicationErrorResponse class.
+     */
+    public CommunicationErrorResponse() {
+    }
 
     /**
      * Get the error property: The Communication Services error.
-     *
+     * 
      * @return the error value.
      */
     public CommunicationError getError() {
@@ -30,7 +38,7 @@ public final class CommunicationErrorResponse {
 
     /**
      * Set the error property: The Communication Services error.
-     *
+     * 
      * @param error the error value to set.
      * @return the CommunicationErrorResponse object itself.
      */

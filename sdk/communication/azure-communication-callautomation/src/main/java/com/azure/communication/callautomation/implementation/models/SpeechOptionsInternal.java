@@ -5,9 +5,14 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
 
-/** Options for continuous speech recognition. */
+/**
+ * Options for continuous speech recognition.
+ */
 @Fluent
 public final class SpeechOptionsInternal {
     /*
@@ -16,13 +21,16 @@ public final class SpeechOptionsInternal {
     @JsonProperty(value = "endSilenceTimeoutInMs")
     private Long endSilenceTimeoutInMs;
 
-    /** Creates an instance of SpeechOptionsInternal class. */
-    public SpeechOptionsInternal() {}
+    /**
+     * Creates an instance of SpeechOptionsInternal class.
+     */
+    public SpeechOptionsInternal() {
+    }
 
     /**
      * Get the endSilenceTimeoutInMs property: The length of end silence when user stops speaking and cogservice send
      * response.
-     *
+     * 
      * @return the endSilenceTimeoutInMs value.
      */
     public Long getEndSilenceTimeoutInMs() {
@@ -32,7 +40,7 @@ public final class SpeechOptionsInternal {
     /**
      * Set the endSilenceTimeoutInMs property: The length of end silence when user stops speaking and cogservice send
      * response.
-     *
+     * 
      * @param endSilenceTimeoutInMs the endSilenceTimeoutInMs value to set.
      * @return the SpeechOptionsInternal object itself.
      */

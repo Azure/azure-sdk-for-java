@@ -5,9 +5,14 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
 
-/** The FileSourceInternal model. */
+/**
+ * The FileSourceInternal model.
+ */
 @Fluent
 public final class FileSourceInternal {
     /*
@@ -16,12 +21,15 @@ public final class FileSourceInternal {
     @JsonProperty(value = "uri", required = true)
     private String uri;
 
-    /** Creates an instance of FileSourceInternal class. */
-    public FileSourceInternal() {}
+    /**
+     * Creates an instance of FileSourceInternal class.
+     */
+    public FileSourceInternal() {
+    }
 
     /**
      * Get the uri property: Uri for the audio file to be played.
-     *
+     * 
      * @return the uri value.
      */
     public String getUri() {
@@ -30,7 +38,7 @@ public final class FileSourceInternal {
 
     /**
      * Set the uri property: Uri for the audio file to be played.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the FileSourceInternal object itself.
      */

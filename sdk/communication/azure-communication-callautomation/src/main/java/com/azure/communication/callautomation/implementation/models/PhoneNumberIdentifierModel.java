@@ -5,9 +5,14 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
 
-/** A phone number. */
+/**
+ * A phone number.
+ */
 @Fluent
 public final class PhoneNumberIdentifierModel {
     /*
@@ -16,12 +21,15 @@ public final class PhoneNumberIdentifierModel {
     @JsonProperty(value = "value", required = true)
     private String value;
 
-    /** Creates an instance of PhoneNumberIdentifierModel class. */
-    public PhoneNumberIdentifierModel() {}
+    /**
+     * Creates an instance of PhoneNumberIdentifierModel class.
+     */
+    public PhoneNumberIdentifierModel() {
+    }
 
     /**
      * Get the value property: The phone number in E.164 format.
-     *
+     * 
      * @return the value value.
      */
     public String getValue() {
@@ -30,7 +38,7 @@ public final class PhoneNumberIdentifierModel {
 
     /**
      * Set the value property: The phone number in E.164 format.
-     *
+     * 
      * @param value the value value to set.
      * @return the PhoneNumberIdentifierModel object itself.
      */

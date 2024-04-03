@@ -5,9 +5,15 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-/** A Microsoft Teams application. */
+/**
+ * A Microsoft Teams application.
+ */
 @Fluent
 public final class MicrosoftTeamsAppIdentifierModel {
     /*
@@ -22,12 +28,15 @@ public final class MicrosoftTeamsAppIdentifierModel {
     @JsonProperty(value = "cloud")
     private CommunicationCloudEnvironmentModel cloud;
 
-    /** Creates an instance of MicrosoftTeamsAppIdentifierModel class. */
-    public MicrosoftTeamsAppIdentifierModel() {}
+    /**
+     * Creates an instance of MicrosoftTeamsAppIdentifierModel class.
+     */
+    public MicrosoftTeamsAppIdentifierModel() {
+    }
 
     /**
      * Get the appId property: The Id of the Microsoft Teams application.
-     *
+     * 
      * @return the appId value.
      */
     public String getAppId() {
@@ -36,7 +45,7 @@ public final class MicrosoftTeamsAppIdentifierModel {
 
     /**
      * Set the appId property: The Id of the Microsoft Teams application.
-     *
+     * 
      * @param appId the appId value to set.
      * @return the MicrosoftTeamsAppIdentifierModel object itself.
      */
@@ -48,7 +57,7 @@ public final class MicrosoftTeamsAppIdentifierModel {
     /**
      * Get the cloud property: The cloud that the Microsoft Teams application belongs to. By default 'public' if
      * missing.
-     *
+     * 
      * @return the cloud value.
      */
     public CommunicationCloudEnvironmentModel getCloud() {
@@ -58,7 +67,7 @@ public final class MicrosoftTeamsAppIdentifierModel {
     /**
      * Set the cloud property: The cloud that the Microsoft Teams application belongs to. By default 'public' if
      * missing.
-     *
+     * 
      * @param cloud the cloud value to set.
      * @return the MicrosoftTeamsAppIdentifierModel object itself.
      */
