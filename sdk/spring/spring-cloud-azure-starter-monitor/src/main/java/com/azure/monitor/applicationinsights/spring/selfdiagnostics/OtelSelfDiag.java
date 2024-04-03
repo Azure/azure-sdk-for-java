@@ -41,10 +41,6 @@ class OtelSelfDiag implements CommandLineRunner {
         if (applicationContext instanceof BeanDefinitionRegistry) {
             BeanDefinitionRegistry beanDefinitionRegistry = (BeanDefinitionRegistry) applicationContext;
             checkBeanComesFromOtelJavaInstrumentationConfig(beanDefinitionRegistry, OpenTelemetry.class);
-            checkBeanComesFromOtelJavaInstrumentationConfig(beanDefinitionRegistry, Resource.class);
-            checkBeanComesFromOtelJavaInstrumentationConfig(beanDefinitionRegistry, SdkTracerProvider.class);
-            checkBeanComesFromOtelJavaInstrumentationConfig(beanDefinitionRegistry, SdkLoggerProvider.class);
-            checkBeanComesFromOtelJavaInstrumentationConfig(beanDefinitionRegistry, SdkMeterProvider.class);
         }
         if (isOpenTelemetryNoop()) {
             selfDiagnosticsLogger.debug("NOOP OpenTelemetry");
