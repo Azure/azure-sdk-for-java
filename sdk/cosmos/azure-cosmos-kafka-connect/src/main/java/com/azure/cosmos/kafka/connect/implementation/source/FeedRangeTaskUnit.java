@@ -3,8 +3,9 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.FeedRange;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -26,18 +27,16 @@ public class FeedRangeTaskUnit implements ITaskUnit {
     private String databaseName;
     private String containerName;
     private String containerRid;
-    private Range<String> feedRange;
-    private String continuationState;
+    private FeedRange feedRange;
+    private KafkaCosmosChangeFeedState continuationState;
     private String topic;
-
-    public FeedRangeTaskUnit() {}
 
     public FeedRangeTaskUnit(
         String databaseName,
         String containerName,
         String containerRid,
-        Range<String> feedRange,
-        String continuationState,
+        FeedRange feedRange,
+        KafkaCosmosChangeFeedState continuationState,
         String topic) {
 
         checkArgument(StringUtils.isNotEmpty(databaseName), "Argument 'databaseName' should not be null");
@@ -66,20 +65,44 @@ public class FeedRangeTaskUnit implements ITaskUnit {
         return containerRid;
     }
 
-    public Range<String> getFeedRange() {
+    public FeedRange getFeedRange() {
         return feedRange;
     }
 
-    public String getContinuationState() {
+    public KafkaCosmosChangeFeedState getContinuationState() {
         return continuationState;
     }
 
-    public void setContinuationState(String continuationState) {
+    public void setContinuationState(KafkaCosmosChangeFeedState continuationState) {
         this.continuationState = continuationState;
     }
 
     public String getTopic() {
         return topic;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        FeedRangeTaskUnit that = (FeedRangeTaskUnit) o;
+        return Objects.equals(databaseName, that.databaseName)
+            && Objects.equals(containerName, that.containerName)
+            && Objects.equals(containerRid, that.containerRid)
+            && Objects.equals(feedRange, that.feedRange)
+            && Objects.equals(continuationState, that.continuationState)
+            && Objects.equals(topic, that.topic);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(databaseName, containerName, containerRid, feedRange, continuationState, topic);
     }
 
     @Override
@@ -94,34 +117,6 @@ public class FeedRangeTaskUnit implements ITaskUnit {
             + '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        FeedRangeTaskUnit that = (FeedRangeTaskUnit) o;
-        return databaseName.equals(that.databaseName)
-            && containerName.equals(that.containerName)
-            && containerRid.equals(that.containerRid)
-            && feedRange.equals(that.feedRange)
-            && Objects.equals(continuationState, that.continuationState)
-            && topic.equals(that.topic);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(
-            databaseName,
-            containerName,
-            containerRid,
-            feedRange,
-            continuationState,
-            topic);
-    }
-
     public static class FeedRangeTaskUnitSerializer extends com.fasterxml.jackson.databind.JsonSerializer<FeedRangeTaskUnit> {
         @Override
         public void serialize(FeedRangeTaskUnit feedRangeTaskUnit,
@@ -132,8 +127,10 @@ public class FeedRangeTaskUnit implements ITaskUnit {
             writer.writeStringField("containerName", feedRangeTaskUnit.getContainerName());
             writer.writeStringField("containerRid", feedRangeTaskUnit.getContainerRid());
             writer.writeStringField("feedRange", feedRangeTaskUnit.getFeedRange().toString());
-            if (!StringUtils.isEmpty(feedRangeTaskUnit.getContinuationState())) {
-                writer.writeStringField("continuationState", feedRangeTaskUnit.getContinuationState());
+            if (feedRangeTaskUnit.getContinuationState() != null) {
+                writer.writeStringField(
+                    "continuationState",
+                    Utils.getSimpleObjectMapper().writeValueAsString(feedRangeTaskUnit.getContinuationState()));
             }
             writer.writeStringField("topic", feedRangeTaskUnit.getTopic());
             writer.writeEndObject();
@@ -154,10 +151,13 @@ public class FeedRangeTaskUnit implements ITaskUnit {
             String databaseName = rootNode.get("databaseName").asText();
             String containerName = rootNode.get("containerName").asText();
             String containerRid = rootNode.get("containerRid").asText();
-            Range<String> feedRange = new Range<String>(rootNode.get("feedRange").asText());
-            String continuationState = null;
+            FeedRange feedRange = FeedRange.fromString(rootNode.get("feedRange").asText());
+
+            KafkaCosmosChangeFeedState continuationState = null;
             if (rootNode.has("continuationState")) {
-                continuationState = rootNode.get("continuationState").asText();
+                continuationState =
+                    Utils.getSimpleObjectMapper()
+                            .readValue(rootNode.get("continuationState").asText(), KafkaCosmosChangeFeedState.class);
             }
 
             String topic = rootNode.get("topic").asText();

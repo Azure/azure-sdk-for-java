@@ -15,23 +15,23 @@ import org.junit.jupiter.api.Assertions;
 public final class SuppressionAlertsScopeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SuppressionAlertsScope model =
-            BinaryData
-                .fromString(
-                    "{\"allOf\":[{\"field\":\"pnnbjc\",\"\":{\"orsukokwbqp\":\"dataibbdaxconfoza\",\"hw\":\"datahlvnuuepzlr\"}}]}")
-                .toObject(SuppressionAlertsScope.class);
-        Assertions.assertEquals("pnnbjc", model.allOf().get(0).field());
+        SuppressionAlertsScope model = BinaryData.fromString(
+            "{\"allOf\":[{\"field\":\"dbhrbnlankxm\",\"\":{\"nbtkcxywnytnr\":\"datapbh\"}},{\"field\":\"nlqidybyxczf\",\"\":{\"fkts\":\"dataaaxdbabphlwrq\",\"nyyazttbtwwrqpue\":\"datahsucoc\",\"xibxujwbhqwalm\":\"datackzywbiexzfeyue\"}},{\"field\":\"yoxa\",\"\":{\"bniwdj\":\"datakzjancuxrhdwbav\",\"s\":\"datawz\",\"xytxhpzxbz\":\"databpg\"}}]}")
+            .toObject(SuppressionAlertsScope.class);
+        Assertions.assertEquals("dbhrbnlankxm", model.allOf().get(0).field());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SuppressionAlertsScope model =
-            new SuppressionAlertsScope()
-                .withAllOf(Arrays.asList(new ScopeElement().withField("pnnbjc").withAdditionalProperties(mapOf())));
+        SuppressionAlertsScope model = new SuppressionAlertsScope()
+            .withAllOf(Arrays.asList(new ScopeElement().withField("dbhrbnlankxm").withAdditionalProperties(mapOf()),
+                new ScopeElement().withField("nlqidybyxczf").withAdditionalProperties(mapOf()),
+                new ScopeElement().withField("yoxa").withAdditionalProperties(mapOf())));
         model = BinaryData.fromObject(model).toObject(SuppressionAlertsScope.class);
-        Assertions.assertEquals("pnnbjc", model.allOf().get(0).field());
+        Assertions.assertEquals("dbhrbnlankxm", model.allOf().get(0).field());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

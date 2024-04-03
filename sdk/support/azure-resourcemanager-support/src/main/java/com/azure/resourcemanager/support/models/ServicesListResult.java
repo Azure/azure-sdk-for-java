@@ -9,7 +9,9 @@ import com.azure.resourcemanager.support.fluent.models.ServiceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of Service resources. */
+/**
+ * Collection of Service resources.
+ */
 @Fluent
 public final class ServicesListResult {
     /*
@@ -18,13 +20,15 @@ public final class ServicesListResult {
     @JsonProperty(value = "value")
     private List<ServiceInner> value;
 
-    /** Creates an instance of ServicesListResult class. */
+    /**
+     * Creates an instance of ServicesListResult class.
+     */
     public ServicesListResult() {
     }
 
     /**
      * Get the value property: List of Service resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ServiceInner> value() {
@@ -33,7 +37,7 @@ public final class ServicesListResult {
 
     /**
      * Set the value property: List of Service resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ServicesListResult object itself.
      */
@@ -44,7 +48,7 @@ public final class ServicesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

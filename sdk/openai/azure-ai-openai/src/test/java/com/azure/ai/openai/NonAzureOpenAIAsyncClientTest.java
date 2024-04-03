@@ -203,6 +203,24 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStreamWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        getChatCompletionsWithResponseRunnerForNonAzure(deploymentId -> chatMessages -> requestOptions -> {
+            StepVerifier.create(client.getChatCompletionsStreamWithResponse(deploymentId,
+                            new ChatCompletionsOptions(chatMessages), requestOptions))
+                    .recordWith(ArrayList::new)
+                    .thenConsumeWhile(response -> {
+                        assertResponseRequestHeader(response.getRequest());
+                        assertChatCompletionsStream(response.getValue());
+                        return true;
+                    })
+                    .consumeRecordedWith(messageList -> assertTrue(messageList.size() > 1))
+                    .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getChatCompletionsRunnerForNonAzure((modelId, chatMessages) -> {
@@ -225,6 +243,21 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             StepVerifier.create(client.getEmbeddings(modelId, embeddingsOptions))
                 .assertNext(resultEmbeddings -> assertEmbeddings(resultEmbeddings))
                 .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void getEmbeddingsWithSmallerDimensions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        getEmbeddingWithSmallerDimensionsRunner((deploymentId, embeddingsOptions) -> {
+            StepVerifier.create(client.getEmbeddings(deploymentId, embeddingsOptions))
+                    .assertNext(resultEmbeddings -> {
+                        assertEmbeddings(resultEmbeddings);
+                        assertEquals(embeddingsOptions.getDimensions(),
+                                resultEmbeddings.getData().get(0).getEmbedding().size());
+                    })
+                    .verifyComplete();
         });
     }
 

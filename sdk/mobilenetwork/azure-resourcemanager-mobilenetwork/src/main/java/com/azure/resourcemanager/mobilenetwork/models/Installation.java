@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The installation state of the packet core. */
+/**
+ * The installation state of the packet core.
+ */
 @Fluent
 public final class Installation {
     /*
@@ -41,13 +43,15 @@ public final class Installation {
     @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private AsyncOperationId operation;
 
-    /** Creates an instance of Installation class. */
+    /**
+     * Creates an instance of Installation class.
+     */
     public Installation() {
     }
 
     /**
      * Get the desiredState property: The desired installation state.
-     *
+     * 
      * @return the desiredState value.
      */
     public DesiredInstallationState desiredState() {
@@ -56,7 +60,7 @@ public final class Installation {
 
     /**
      * Set the desiredState property: The desired installation state.
-     *
+     * 
      * @param desiredState the desiredState value to set.
      * @return the Installation object itself.
      */
@@ -67,7 +71,7 @@ public final class Installation {
 
     /**
      * Get the state property: Installation state.
-     *
+     * 
      * @return the state value.
      */
     public InstallationState state() {
@@ -77,7 +81,7 @@ public final class Installation {
     /**
      * Get the reinstallRequired property: Whether a reinstall of the packet core is required to pick up the latest
      * configuration changes.
-     *
+     * 
      * @return the reinstallRequired value.
      */
     public ReinstallRequired reinstallRequired() {
@@ -86,7 +90,7 @@ public final class Installation {
 
     /**
      * Get the reasons property: Reason(s) for the current installation state of the packet core.
-     *
+     * 
      * @return the reasons value.
      */
     public List<InstallationReason> reasons() {
@@ -95,7 +99,7 @@ public final class Installation {
 
     /**
      * Get the operation property: A reference to an in-progress installation operation.
-     *
+     * 
      * @return the operation value.
      */
     public AsyncOperationId operation() {
@@ -104,7 +108,7 @@ public final class Installation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

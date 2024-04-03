@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The life cycle status of the alert. */
+/**
+ * The life cycle status of the alert.
+ */
 public final class AlertStatus extends ExpandableStringEnum<AlertStatus> {
-    /** Static value Active for AlertStatus. */
+    /**
+     * Static value Active for AlertStatus.
+     */
     public static final AlertStatus ACTIVE = fromString("Active");
 
-    /** Static value InProgress for AlertStatus. */
+    /**
+     * Static value InProgress for AlertStatus.
+     */
     public static final AlertStatus IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Resolved for AlertStatus. */
+    /**
+     * Static value Resolved for AlertStatus.
+     */
     public static final AlertStatus RESOLVED = fromString("Resolved");
 
-    /** Static value Dismissed for AlertStatus. */
+    /**
+     * Static value Dismissed for AlertStatus.
+     */
     public static final AlertStatus DISMISSED = fromString("Dismissed");
 
     /**
      * Creates a new instance of AlertStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class AlertStatus extends ExpandableStringEnum<AlertStatus> {
 
     /**
      * Creates or finds a AlertStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AlertStatus.
      */
@@ -44,7 +54,7 @@ public final class AlertStatus extends ExpandableStringEnum<AlertStatus> {
 
     /**
      * Gets known AlertStatus values.
-     *
+     * 
      * @return known AlertStatus values.
      */
     public static Collection<AlertStatus> values() {

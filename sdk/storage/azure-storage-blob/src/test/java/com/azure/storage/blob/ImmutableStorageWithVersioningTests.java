@@ -131,7 +131,7 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
                 .block();
             assertNotNull(response);
             if (response.getStatusCode() != 201) {
-                System.out.println(response.getBodyAsString().block());
+                LOGGER.warning(response.getBodyAsString().block());
             }
             assertEquals(201, response.getStatusCode());
         }
@@ -247,7 +247,7 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
                 new HttpHeaders(), Flux.empty())).block();
             assertNotNull(response);
             if (response.getStatusCode() != 200) {
-                System.out.println(response.getBodyAsString().block());
+                LOGGER.warning(response.getBodyAsString().block());
             }
             assertEquals(200, response.getStatusCode());
         }

@@ -1419,6 +1419,16 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.datafactory.models.PostgreSqlV2TableDataset",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.datafactory.fluent.models.PostgreSqlV2TableDatasetTypeProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.datafactory.models.MicrosoftAccessTableDataset",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -1635,6 +1645,16 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.datafactory.fluent.models.GoogleBigQueryDatasetTypeProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.datafactory.models.GoogleBigQueryV2ObjectDataset",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.datafactory.fluent.models.GoogleBigQueryV2DatasetTypeProperties",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -1900,6 +1920,11 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.datafactory.fluent.models.WarehouseTableDatasetTypeProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.datafactory.models.ServiceNowV2ObjectDataset",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -2370,6 +2395,16 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.datafactory.fluent.models.PostgreSqlLinkedServiceTypeProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.datafactory.models.PostgreSqlV2LinkedService",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.datafactory.fluent.models.PostgreSqlV2LinkedServiceTypeProperties",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -2894,6 +2929,16 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.datafactory.models.GoogleBigQueryV2LinkedService",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.datafactory.fluent.models.GoogleBigQueryV2LinkedServiceTypeProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.datafactory.models.GreenplumLinkedService",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -3319,6 +3364,16 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.datafactory.models.ServiceNowV2LinkedService",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.datafactory.fluent.models.ServiceNowV2LinkedServiceTypeProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.datafactory.models.ControlActivity",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -3724,6 +3779,11 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.datafactory.models.PostgreSqlV2Source",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.datafactory.models.SybaseSource",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -3980,6 +4040,11 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.datafactory.models.GoogleBigQuerySource",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.datafactory.models.GoogleBigQueryV2Source",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -4939,6 +5004,16 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.datafactory.models.ServiceNowV2Source",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.datafactory.models.ExpressionV2",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.datafactory.models.MultiplePipelineTrigger",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -5339,6 +5414,11 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.datafactory.models.GoogleBigQueryV2AuthenticationType",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.datafactory.models.HBaseAuthenticationType",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -5400,6 +5480,11 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.datafactory.models.SnowflakeAuthenticationType",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.datafactory.models.ServiceNowV2AuthenticationType",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -5515,6 +5600,11 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.datafactory.models.SalesforceV2SinkWriteBehavior",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.datafactory.models.ExpressionV2Type",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true

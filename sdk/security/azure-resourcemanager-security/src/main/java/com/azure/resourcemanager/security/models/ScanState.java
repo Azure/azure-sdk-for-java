@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The scan status. */
+/**
+ * The scan status.
+ */
 public final class ScanState extends ExpandableStringEnum<ScanState> {
-    /** Static value Failed for ScanState. */
+    /**
+     * Static value Failed for ScanState.
+     */
     public static final ScanState FAILED = fromString("Failed");
 
-    /** Static value FailedToRun for ScanState. */
+    /**
+     * Static value FailedToRun for ScanState.
+     */
     public static final ScanState FAILED_TO_RUN = fromString("FailedToRun");
 
-    /** Static value InProgress for ScanState. */
+    /**
+     * Static value InProgress for ScanState.
+     */
     public static final ScanState IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Passed for ScanState. */
+    /**
+     * Static value Passed for ScanState.
+     */
     public static final ScanState PASSED = fromString("Passed");
 
     /**
      * Creates a new instance of ScanState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class ScanState extends ExpandableStringEnum<ScanState> {
 
     /**
      * Creates or finds a ScanState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScanState.
      */
@@ -44,7 +54,7 @@ public final class ScanState extends ExpandableStringEnum<ScanState> {
 
     /**
      * Gets known ScanState values.
-     *
+     * 
      * @return known ScanState values.
      */
     public static Collection<ScanState> values() {

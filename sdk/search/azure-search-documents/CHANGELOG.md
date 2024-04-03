@@ -10,6 +10,18 @@
 
 ### Other Changes
 
+
+## 11.6.3 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.9` to version `1.4.10`.
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+
+
 ## 11.7.0-beta.2 (2024-03-11)
 
 ### Features Added
@@ -29,6 +41,17 @@
 - Upgraded `azure-core-serializer-json-jackson` to version `1.4.10`.
 - Upgraded `azure-core-http-netty` to version `1.14.1`.
 - Upgraded `azure-core` to version `1.47.0`.
+
+
+## 11.6.2 (2024-02-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+
 
 ## 11.7.0-beta.1 (2024-02-09)
 

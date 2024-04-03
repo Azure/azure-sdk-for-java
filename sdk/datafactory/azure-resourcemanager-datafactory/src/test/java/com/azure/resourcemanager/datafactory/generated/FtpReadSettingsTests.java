@@ -11,18 +11,18 @@ public final class FtpReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FtpReadSettings model = BinaryData.fromString(
-            "{\"type\":\"FtpReadSettings\",\"recursive\":\"datazcluyosigk\",\"wildcardFolderPath\":\"dataykjxqsspeqgedp\",\"wildcardFileName\":\"datajqpjzturdi\",\"enablePartitionDiscovery\":\"datarkwmafyxoqak\",\"partitionRootPath\":\"datat\",\"deleteFilesAfterCompletion\":\"dataetxokqudjdwcwja\",\"fileListPath\":\"datab\",\"useBinaryTransfer\":\"dataehxahnqjbav\",\"disableChunking\":\"datalfefbbv\",\"maxConcurrentConnections\":\"datalnnpafufwrerbnd\",\"disableMetricsCollection\":\"datazfnstlavmdc\",\"\":{\"ajyitpyzgwihk\":\"datamv\",\"vjyfdwaupjozgryo\":\"datawurzaqubryhv\",\"hilyz\":\"datagwk\"}}")
+            "{\"type\":\"FtpReadSettings\",\"recursive\":\"datadqgy\",\"wildcardFolderPath\":\"dataulzguvckpdp\",\"wildcardFileName\":\"datanrjqskikqd\",\"enablePartitionDiscovery\":\"dataybqtlvofjjsetiz\",\"partitionRootPath\":\"datanadn\",\"deleteFilesAfterCompletion\":\"datasbpxlserqgxnh\",\"fileListPath\":\"dataccd\",\"useBinaryTransfer\":\"dataxybn\",\"disableChunking\":\"datahmpmeglolpot\",\"maxConcurrentConnections\":\"datamb\",\"disableMetricsCollection\":\"dataqjrytymfnojjh\",\"\":{\"y\":\"datathjqgovvivlr\",\"wyt\":\"datarafet\",\"luolgspyqsapnh\":\"datavpiilgy\"}}")
             .toObject(FtpReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FtpReadSettings model = new FtpReadSettings().withMaxConcurrentConnections("datalnnpafufwrerbnd")
-            .withDisableMetricsCollection("datazfnstlavmdc").withRecursive("datazcluyosigk")
-            .withWildcardFolderPath("dataykjxqsspeqgedp").withWildcardFileName("datajqpjzturdi")
-            .withEnablePartitionDiscovery("datarkwmafyxoqak").withPartitionRootPath("datat")
-            .withDeleteFilesAfterCompletion("dataetxokqudjdwcwja").withFileListPath("datab")
-            .withUseBinaryTransfer("dataehxahnqjbav").withDisableChunking("datalfefbbv");
+        FtpReadSettings model = new FtpReadSettings().withMaxConcurrentConnections("datamb")
+            .withDisableMetricsCollection("dataqjrytymfnojjh").withRecursive("datadqgy")
+            .withWildcardFolderPath("dataulzguvckpdp").withWildcardFileName("datanrjqskikqd")
+            .withEnablePartitionDiscovery("dataybqtlvofjjsetiz").withPartitionRootPath("datanadn")
+            .withDeleteFilesAfterCompletion("datasbpxlserqgxnh").withFileListPath("dataccd")
+            .withUseBinaryTransfer("dataxybn").withDisableChunking("datahmpmeglolpot");
         model = BinaryData.fromObject(model).toObject(FtpReadSettings.class);
     }
 }

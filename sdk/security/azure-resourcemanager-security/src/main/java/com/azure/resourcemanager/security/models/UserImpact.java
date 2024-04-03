@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The user impact of the assessment. */
+/**
+ * The user impact of the assessment.
+ */
 public final class UserImpact extends ExpandableStringEnum<UserImpact> {
-    /** Static value Low for UserImpact. */
+    /**
+     * Static value Low for UserImpact.
+     */
     public static final UserImpact LOW = fromString("Low");
 
-    /** Static value Moderate for UserImpact. */
+    /**
+     * Static value Moderate for UserImpact.
+     */
     public static final UserImpact MODERATE = fromString("Moderate");
 
-    /** Static value High for UserImpact. */
+    /**
+     * Static value High for UserImpact.
+     */
     public static final UserImpact HIGH = fromString("High");
 
     /**
      * Creates a new instance of UserImpact value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class UserImpact extends ExpandableStringEnum<UserImpact> {
 
     /**
      * Creates or finds a UserImpact from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UserImpact.
      */
@@ -41,7 +49,7 @@ public final class UserImpact extends ExpandableStringEnum<UserImpact> {
 
     /**
      * Gets known UserImpact values.
-     *
+     * 
      * @return known UserImpact values.
      */
     public static Collection<UserImpact> values() {

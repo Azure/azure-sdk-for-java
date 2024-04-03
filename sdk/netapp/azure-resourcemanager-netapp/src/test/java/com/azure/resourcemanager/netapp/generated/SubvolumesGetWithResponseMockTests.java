@@ -31,7 +31,7 @@ public final class SubvolumesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"path\":\"jyslurl\",\"size\":1165766341545693911,\"parentPath\":\"vpedwqslsrh\",\"provisioningState\":\"qvwwsko\"},\"id\":\"cbrwi\",\"name\":\"uvqejosovyrrle\",\"type\":\"esi\"}";
+            = "{\"properties\":{\"path\":\"i\",\"size\":8841673596868858874,\"parentPath\":\"wmxqhndvnoamlds\",\"provisioningState\":\"aohdjh\"},\"id\":\"lzok\",\"name\":\"coxpelnjeta\",\"type\":\"ltsxoatf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,11 +49,11 @@ public final class SubvolumesGetWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SubvolumeInfo response = manager.subvolumes()
-            .getWithResponse("igsxcdgljplk", "ua", "htomflrytswfp", "mdgycxn", "skw", com.azure.core.util.Context.NONE)
+            .getWithResponse("qbsms", "ziqgfuh", "kzruswh", "hczznvf", "ycjsx", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("jyslurl", response.path());
-        Assertions.assertEquals(1165766341545693911L, response.size());
-        Assertions.assertEquals("vpedwqslsrh", response.parentPath());
+        Assertions.assertEquals("i", response.path());
+        Assertions.assertEquals(8841673596868858874L, response.size());
+        Assertions.assertEquals("wmxqhndvnoamlds", response.parentPath());
     }
 }

@@ -25,6 +25,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertie
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSkuTier;
 import com.azure.resourcemanager.containerservice.models.OSDiskType;
 import com.azure.resourcemanager.containerservice.models.OrchestratorVersionProfile;
+import com.azure.resourcemanager.containerservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
@@ -625,5 +626,64 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         kubernetesCluster.refresh();
         Assertions.assertEquals(ManagedClusterSkuTier.FREE, kubernetesCluster.sku().tier());
         Assertions.assertEquals(KubernetesSupportPlan.KUBERNETES_OFFICIAL, kubernetesCluster.innerModel().supportPlan());
+    }
+
+    @Test
+    public void canCreateKubernetesClusterWithDisablePublicNetworkAccess() {
+        String aksName = generateRandomResourceName("aks", 15);
+        String dnsPrefix = generateRandomResourceName("dns", 10);
+        String agentPoolName = generateRandomResourceName("ap0", 10);
+
+        // create
+        KubernetesCluster kubernetesCluster =
+            containerServiceManager.kubernetesClusters().define(aksName)
+                .withRegion(Region.US_SOUTH_CENTRAL)
+                .withExistingResourceGroup(rgName)
+                .withDefaultVersion()
+                .withRootUsername("testaks")
+                .withSshKey(SSH_KEY)
+                .withSystemAssignedManagedServiceIdentity()
+                .defineAgentPool(agentPoolName)
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+                .withAgentPoolVirtualMachineCount(1)
+                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                .withAgentPoolMode(AgentPoolMode.SYSTEM)
+                .attach()
+                .withDnsPrefix("mp1" + dnsPrefix)
+                .disablePublicNetworkAccess()
+                .create();
+
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, kubernetesCluster.publicNetworkAccess());
+    }
+
+    @Test
+    public void canUpdatePublicNetworkAccess() {
+        String aksName = generateRandomResourceName("aks", 15);
+        String dnsPrefix = generateRandomResourceName("dns", 10);
+        String agentPoolName = generateRandomResourceName("ap0", 10);
+
+        // create
+        KubernetesCluster kubernetesCluster =
+            containerServiceManager.kubernetesClusters().define(aksName)
+                .withRegion(Region.US_SOUTH_CENTRAL)
+                .withExistingResourceGroup(rgName)
+                .withDefaultVersion()
+                .withRootUsername("testaks")
+                .withSshKey(SSH_KEY)
+                .withSystemAssignedManagedServiceIdentity()
+                .defineAgentPool(agentPoolName)
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+                .withAgentPoolVirtualMachineCount(1)
+                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                .withAgentPoolMode(AgentPoolMode.SYSTEM)
+                .attach()
+                .withDnsPrefix("mp1" + dnsPrefix)
+                .create();
+
+        kubernetesCluster.update().disablePublicNetworkAccess().apply();
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, kubernetesCluster.publicNetworkAccess());
+
+        kubernetesCluster.update().enablePublicNetworkAccess().apply();
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, kubernetesCluster.publicNetworkAccess());
     }
 }

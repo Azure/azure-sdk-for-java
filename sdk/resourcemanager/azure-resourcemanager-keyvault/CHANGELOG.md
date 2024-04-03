@@ -1,6 +1,6 @@
 # Release History
 
-## 2.37.0-beta.1 (Unreleased)
+## 2.38.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.37.0 (2024-03-22)
+
+### Features Added
+
+- Supported disabling public network access in `Vault` via `disablePublicNetworkAccess()`, for private link feature.
 
 ## 2.36.0 (2024-02-29)
 

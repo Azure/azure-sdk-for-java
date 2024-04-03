@@ -14,8 +14,7 @@ public final class MonitoredResourceImpl implements MonitoredResource {
 
     private final com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager;
 
-    MonitoredResourceImpl(
-        MonitoredResourceInner innerObject,
+    MonitoredResourceImpl(MonitoredResourceInner innerObject,
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

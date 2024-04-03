@@ -15,8 +15,8 @@ public final class JobExecutionImpl implements JobExecution {
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    JobExecutionImpl(
-        JobExecutionInner innerObject, com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
+    JobExecutionImpl(JobExecutionInner innerObject,
+        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

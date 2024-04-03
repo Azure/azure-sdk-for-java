@@ -30,7 +30,7 @@ public final class ApplicationPackagesCreateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"state\":\"Pending\",\"format\":\"kpj\",\"storageUrl\":\"qmt\",\"storageUrlExpiry\":\"2021-03-16T18:33:01Z\",\"lastActivationTime\":\"2021-09-01T21:15:43Z\"},\"etag\":\"jihy\",\"id\":\"ozphvwauyqncygu\",\"name\":\"kvi\",\"type\":\"mdscwxqupev\"}";
+            = "{\"properties\":{\"state\":\"Active\",\"format\":\"gvjayvblmh\",\"storageUrl\":\"zuhbxvvyhgsopb\",\"storageUrlExpiry\":\"2021-10-16T16:37:11Z\",\"lastActivationTime\":\"2021-05-14T00:06:10Z\"},\"etag\":\"g\",\"id\":\"uvwzfbnh\",\"name\":\"mctlpdngitv\",\"type\":\"bmhrixkwmyijejv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -47,8 +47,8 @@ public final class ApplicationPackagesCreateWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ApplicationPackage response
-            = manager.applicationPackages().define("jjoqkagf").withExistingApplication("brnjwmw", "pn", "saz").create();
+        ApplicationPackage response = manager.applicationPackages().define("tmtdhtmdvypgik")
+            .withExistingApplication("tn", "htjsying", "fq").create();
 
     }
 }

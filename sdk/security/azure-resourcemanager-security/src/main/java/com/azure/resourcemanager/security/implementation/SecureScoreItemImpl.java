@@ -12,8 +12,8 @@ public final class SecureScoreItemImpl implements SecureScoreItem {
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    SecureScoreItemImpl(
-        SecureScoreItemInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    SecureScoreItemImpl(SecureScoreItemInner innerObject,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

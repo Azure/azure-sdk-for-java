@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Workspaces. */
+/**
+ * Resource collection API of Workspaces.
+ */
 public interface Workspaces {
     /**
      * Lists all of the firmware analysis workspaces in the specified subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return return a list of firmware analysis workspaces as paginated response with {@link PagedIterable}.
@@ -21,7 +23,7 @@ public interface Workspaces {
 
     /**
      * Lists all of the firmware analysis workspaces in the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -32,7 +34,7 @@ public interface Workspaces {
 
     /**
      * Lists all of the firmware analysis workspaces in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,7 +45,7 @@ public interface Workspaces {
 
     /**
      * Lists all of the firmware analysis workspaces in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,7 +57,7 @@ public interface Workspaces {
 
     /**
      * The operation to delete a firmware analysis workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @param context The context to associate with this operation.
@@ -68,7 +70,7 @@ public interface Workspaces {
 
     /**
      * The operation to delete a firmware analysis workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -79,7 +81,7 @@ public interface Workspaces {
 
     /**
      * Get firmware analysis workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @param context The context to associate with this operation.
@@ -92,7 +94,7 @@ public interface Workspaces {
 
     /**
      * Get firmware analysis workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -104,7 +106,7 @@ public interface Workspaces {
 
     /**
      * The operation to get a url for file upload.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @param generateUploadUrl Parameters when requesting a URL to upload firmware.
@@ -114,12 +116,12 @@ public interface Workspaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return url data for creating or accessing a blob file along with {@link Response}.
      */
-    Response<UrlToken> generateUploadUrlWithResponse(
-        String resourceGroupName, String workspaceName, GenerateUploadUrlRequest generateUploadUrl, Context context);
+    Response<UrlToken> generateUploadUrlWithResponse(String resourceGroupName, String workspaceName,
+        GenerateUploadUrlRequest generateUploadUrl, Context context);
 
     /**
      * The operation to get a url for file upload.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @param generateUploadUrl Parameters when requesting a URL to upload firmware.
@@ -128,12 +130,12 @@ public interface Workspaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return url data for creating or accessing a blob file.
      */
-    UrlToken generateUploadUrl(
-        String resourceGroupName, String workspaceName, GenerateUploadUrlRequest generateUploadUrl);
+    UrlToken generateUploadUrl(String resourceGroupName, String workspaceName,
+        GenerateUploadUrlRequest generateUploadUrl);
 
     /**
      * Get firmware analysis workspace.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -144,7 +146,7 @@ public interface Workspaces {
 
     /**
      * Get firmware analysis workspace.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -156,7 +158,7 @@ public interface Workspaces {
 
     /**
      * The operation to delete a firmware analysis workspace.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -166,7 +168,7 @@ public interface Workspaces {
 
     /**
      * The operation to delete a firmware analysis workspace.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -178,7 +180,7 @@ public interface Workspaces {
 
     /**
      * Begins definition for a new Workspace resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Workspace definition.
      */

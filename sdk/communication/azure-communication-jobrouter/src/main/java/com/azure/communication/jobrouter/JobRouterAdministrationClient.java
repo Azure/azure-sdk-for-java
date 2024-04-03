@@ -4,26 +4,10 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterAdministrationClientImpl;
-import com.azure.communication.jobrouter.implementation.accesshelpers.ClassificationPolicyConstructorProxy;
-import com.azure.communication.jobrouter.implementation.accesshelpers.DistributionPolicyConstructorProxy;
-import com.azure.communication.jobrouter.implementation.accesshelpers.ExceptionPolicyConstructorProxy;
-import com.azure.communication.jobrouter.implementation.accesshelpers.RouterQueueConstructorProxy;
-import com.azure.communication.jobrouter.implementation.converters.ClassificationPolicyAdapter;
-import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
-import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
-import com.azure.communication.jobrouter.implementation.converters.QueueAdapter;
 import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterQueueInternal;
-import com.azure.communication.jobrouter.models.ClassificationPolicy;
-import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
-import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
-import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
-import com.azure.communication.jobrouter.models.CreateQueueOptions;
-import com.azure.communication.jobrouter.models.DistributionPolicy;
-import com.azure.communication.jobrouter.models.ExceptionPolicy;
-import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -37,6 +21,22 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.communication.jobrouter.implementation.accesshelpers.ClassificationPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.DistributionPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.ExceptionPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterQueueConstructorProxy;
+import com.azure.communication.jobrouter.implementation.converters.ClassificationPolicyAdapter;
+import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
+import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
+import com.azure.communication.jobrouter.implementation.converters.QueueAdapter;
+import com.azure.communication.jobrouter.models.ClassificationPolicy;
+import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateQueueOptions;
+import com.azure.communication.jobrouter.models.DistributionPolicy;
+import com.azure.communication.jobrouter.models.ExceptionPolicy;
+import com.azure.communication.jobrouter.models.RouterQueue;
 
 /**
  * Initializes a new instance of the synchronous JobRouterAdministrationClient type.
@@ -59,34 +59,18 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Creates or updates a distribution policy.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The request should only proceed if an entity matches this string.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>The request should only proceed if the entity was not modified after this time.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -94,15 +78,16 @@ public final class JobRouterAdministrationClient {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
+     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -110,6 +95,7 @@ public final class JobRouterAdministrationClient {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
+     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
@@ -130,8 +116,7 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> upsertDistributionPolicyWithResponse(String distributionPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertDistributionPolicy' is 'application/merge-patch+json'
-        // and stream-style-serialization is not enabled
+        // Convenience API is not generated, as operation 'upsertDistributionPolicy' is 'application/merge-patch+json' and stream-style-serialization is not enabled
         return this.serviceClient.upsertDistributionPolicyWithResponse(distributionPolicyId, resource, requestOptions);
     }
 
@@ -326,9 +311,8 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Retrieves an existing distribution policy by Id.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -336,6 +320,7 @@ public final class JobRouterAdministrationClient {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
+     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
@@ -360,28 +345,15 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Retrieves existing distribution policies.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of objects to return per page.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -389,6 +361,7 @@ public final class JobRouterAdministrationClient {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
+     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
@@ -429,34 +402,18 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Creates or updates a classification policy.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The request should only proceed if an entity matches this string.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>The request should only proceed if the entity was not modified after this time.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -465,19 +422,22 @@ public final class JobRouterAdministrationClient {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
+     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -486,12 +446,15 @@ public final class JobRouterAdministrationClient {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
+     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
@@ -510,8 +473,7 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> upsertClassificationPolicyWithResponse(String classificationPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertClassificationPolicy' is 'application/merge-patch+json'
-        // and stream-style-serialization is not enabled
+        // Convenience API is not generated, as operation 'upsertClassificationPolicy' is 'application/merge-patch+json' and stream-style-serialization is not enabled
         return this.serviceClient.upsertClassificationPolicyWithResponse(classificationPolicyId, resource,
             requestOptions);
     }
@@ -729,9 +691,8 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Retrieves an existing classification policy by Id.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -740,12 +701,15 @@ public final class JobRouterAdministrationClient {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
+     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
@@ -768,28 +732,15 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Retrieves existing classification policies.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of objects to return per page.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -798,12 +749,15 @@ public final class JobRouterAdministrationClient {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
+     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
@@ -842,34 +796,18 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Creates or updates a exception policy.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The request should only proceed if an entity matches this string.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>The request should only proceed if the entity was not modified after this time.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -879,9 +817,11 @@ public final class JobRouterAdministrationClient {
      *          (Optional){
      *             id: String (Required)
      *             trigger (Required): {
+     *                 kind: String(queueLength/waitTime) (Required)
      *             }
      *             actions (Required): [
      *                  (Required){
+     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
      *             ]
@@ -889,9 +829,9 @@ public final class JobRouterAdministrationClient {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -901,9 +841,11 @@ public final class JobRouterAdministrationClient {
      *          (Optional){
      *             id: String (Required)
      *             trigger (Required): {
+     *                 kind: String(queueLength/waitTime) (Required)
      *             }
      *             actions (Required): [
      *                  (Required){
+     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
      *             ]
@@ -925,8 +867,7 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> upsertExceptionPolicyWithResponse(String exceptionPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertExceptionPolicy' is 'application/merge-patch+json' and
-        // stream-style-serialization is not enabled
+        // Convenience API is not generated, as operation 'upsertExceptionPolicy' is 'application/merge-patch+json' and stream-style-serialization is not enabled
         return this.serviceClient.upsertExceptionPolicyWithResponse(exceptionPolicyId, resource, requestOptions);
     }
 
@@ -1139,6 +1080,7 @@ public final class JobRouterAdministrationClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
+     *
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1197,6 +1139,7 @@ public final class JobRouterAdministrationClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
+     *
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1248,34 +1191,18 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Creates or updates a queue.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The request should only proceed if an entity matches this string.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>The request should only proceed if the entity was not modified after this time.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
+     * string.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
+     * entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1288,9 +1215,9 @@ public final class JobRouterAdministrationClient {
      *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1316,8 +1243,7 @@ public final class JobRouterAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> upsertQueueWithResponse(String queueId, BinaryData resource, RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertQueue' is 'application/merge-patch+json' and
-        // stream-style-serialization is not enabled
+        // Convenience API is not generated, as operation 'upsertQueue' is 'application/merge-patch+json' and stream-style-serialization is not enabled
         return this.serviceClient.upsertQueueWithResponse(queueId, resource, requestOptions);
     }
 
@@ -1503,9 +1429,8 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Retrieves an existing queue by Id.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1535,28 +1460,15 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Retrieves existing queues.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of objects to return per page.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     etag: String (Required)

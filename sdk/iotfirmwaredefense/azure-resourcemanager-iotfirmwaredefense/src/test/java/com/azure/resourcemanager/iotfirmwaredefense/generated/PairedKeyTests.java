@@ -11,19 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class PairedKeyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PairedKey model =
-            BinaryData
-                .fromString("{\"id\":\"okth\",\"type\":\"iuaod\",\"additionalProperties\":\"datacpkvxodp\"}")
-                .toObject(PairedKey.class);
-        Assertions.assertEquals("okth", model.id());
-        Assertions.assertEquals("iuaod", model.type());
+        PairedKey model = BinaryData.fromString("{\"id\":\"gfgibm\",\"type\":\"gakeqsr\"}").toObject(PairedKey.class);
+        Assertions.assertEquals("gfgibm", model.id());
+        Assertions.assertEquals("gakeqsr", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PairedKey model = new PairedKey().withId("okth").withType("iuaod").withAdditionalProperties("datacpkvxodp");
+        PairedKey model = new PairedKey().withId("gfgibm").withType("gakeqsr");
         model = BinaryData.fromObject(model).toObject(PairedKey.class);
-        Assertions.assertEquals("okth", model.id());
-        Assertions.assertEquals("iuaod", model.type());
+        Assertions.assertEquals("gfgibm", model.id());
+        Assertions.assertEquals("gakeqsr", model.type());
     }
 }

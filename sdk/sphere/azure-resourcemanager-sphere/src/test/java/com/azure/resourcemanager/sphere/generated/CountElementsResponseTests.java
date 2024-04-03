@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class CountElementsResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CountElementsResponse model =
-            BinaryData.fromString("{\"value\":1742159588}").toObject(CountElementsResponse.class);
-        Assertions.assertEquals(1742159588, model.value());
+        CountElementsResponse model
+            = BinaryData.fromString("{\"value\":494669618}").toObject(CountElementsResponse.class);
+        Assertions.assertEquals(494669618, model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CountElementsResponse model = new CountElementsResponse().withValue(1742159588);
+        CountElementsResponse model = new CountElementsResponse().withValue(494669618);
         model = BinaryData.fromObject(model).toObject(CountElementsResponse.class);
-        Assertions.assertEquals(1742159588, model.value());
+        Assertions.assertEquals(494669618, model.value());
     }
 }

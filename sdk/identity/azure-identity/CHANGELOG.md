@@ -7,8 +7,16 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Changed log level of an informational message in token acquisition. [#39063](https://github.com/Azure/azure-sdk-for-java/issues/39063)
 
 ### Other Changes
+
+## 1.11.4 (2024-03-14)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `msal4j` from `1.14.0` to version `1.14.3`.
 
 ## 1.11.3 (2024-03-01)
 

@@ -49,6 +49,11 @@ public final class MetricUnit extends ExpandableStringEnum<MetricUnit> {
     public static final MetricUnit BITS_PER_SECOND = fromString("BitsPerSecond");
 
     /**
+     * Creates an instance of MetricUnit.
+     */
+    public MetricUnit() { }
+
+    /**
      * Creates or finds a MetricUnit from its string representation.
      *
      * @param name a name to look for.
@@ -59,7 +64,11 @@ public final class MetricUnit extends ExpandableStringEnum<MetricUnit> {
         return fromString(name, MetricUnit.class);
     }
 
-    /** @return known MetricUnit values. */
+    /**
+     * Returns the known MetricUnit values.
+     *
+     * @return The {@link Collection} of known MetricUnit values.
+     */
     public static Collection<MetricUnit> values() {
         return values(MetricUnit.class);
     }

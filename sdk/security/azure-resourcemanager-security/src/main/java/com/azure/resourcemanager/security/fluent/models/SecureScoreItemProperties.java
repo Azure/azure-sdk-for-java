@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes properties of a calculated secure score. */
+/**
+ * Describes properties of a calculated secure score.
+ */
 @Immutable
 public final class SecureScoreItemProperties {
     /*
@@ -29,13 +31,15 @@ public final class SecureScoreItemProperties {
     @JsonProperty(value = "weight", access = JsonProperty.Access.WRITE_ONLY)
     private Long weight;
 
-    /** Creates an instance of SecureScoreItemProperties class. */
+    /**
+     * Creates an instance of SecureScoreItemProperties class.
+     */
     public SecureScoreItemProperties() {
     }
 
     /**
      * Get the displayName property: The initiative’s name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -44,7 +48,7 @@ public final class SecureScoreItemProperties {
 
     /**
      * Get the innerScore property: score object.
-     *
+     * 
      * @return the innerScore value.
      */
     private ScoreDetails innerScore() {
@@ -54,7 +58,7 @@ public final class SecureScoreItemProperties {
     /**
      * Get the weight property: The relative weight for each subscription. Used when calculating an aggregated secure
      * score for multiple subscriptions.
-     *
+     * 
      * @return the weight value.
      */
     public Long weight() {
@@ -63,7 +67,7 @@ public final class SecureScoreItemProperties {
 
     /**
      * Get the max property: Maximum score available.
-     *
+     * 
      * @return the max value.
      */
     public Integer max() {
@@ -72,7 +76,7 @@ public final class SecureScoreItemProperties {
 
     /**
      * Get the current property: Current score.
-     *
+     * 
      * @return the current value.
      */
     public Double current() {
@@ -82,7 +86,7 @@ public final class SecureScoreItemProperties {
     /**
      * Get the percentage property: Ratio of the current score divided by the maximum. Rounded to 4 digits after the
      * decimal point.
-     *
+     * 
      * @return the percentage value.
      */
     public Double percentage() {
@@ -91,7 +95,7 @@ public final class SecureScoreItemProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -16,7 +16,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Container App. */
+/**
+ * Container App.
+ */
 @Fluent
 public final class ContainerAppInner extends Resource {
     /*
@@ -52,13 +54,15 @@ public final class ContainerAppInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ContainerAppInner class. */
+    /**
+     * Creates an instance of ContainerAppInner class.
+     */
     public ContainerAppInner() {
     }
 
     /**
      * Get the extendedLocation property: The complex type of the extended location.
-     *
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -67,7 +71,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Set the extendedLocation property: The complex type of the extended location.
-     *
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the ContainerAppInner object itself.
      */
@@ -77,9 +81,9 @@ public final class ContainerAppInner extends Resource {
     }
 
     /**
-     * Get the identity property: managed identities for the Container App to interact with other Azure services without
-     * maintaining any secrets or credentials in code.
-     *
+     * Get the identity property: managed identities for the Container App to interact with other Azure services
+     * without maintaining any secrets or credentials in code.
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -87,9 +91,9 @@ public final class ContainerAppInner extends Resource {
     }
 
     /**
-     * Set the identity property: managed identities for the Container App to interact with other Azure services without
-     * maintaining any secrets or credentials in code.
-     *
+     * Set the identity property: managed identities for the Container App to interact with other Azure services
+     * without maintaining any secrets or credentials in code.
+     * 
      * @param identity the identity value to set.
      * @return the ContainerAppInner object itself.
      */
@@ -99,10 +103,10 @@ public final class ContainerAppInner extends Resource {
     }
 
     /**
-     * Get the managedBy property: The fully qualified resource ID of the resource that manages this resource. Indicates
-     * if this resource is managed by another Azure resource. If this is present, complete mode deployment will not
-     * delete the resource if it is removed from the template since it is managed by another resource.
-     *
+     * Get the managedBy property: The fully qualified resource ID of the resource that manages this resource.
+     * Indicates if this resource is managed by another Azure resource. If this is present, complete mode deployment
+     * will not delete the resource if it is removed from the template since it is managed by another resource.
+     * 
      * @return the managedBy value.
      */
     public String managedBy() {
@@ -110,10 +114,10 @@ public final class ContainerAppInner extends Resource {
     }
 
     /**
-     * Set the managedBy property: The fully qualified resource ID of the resource that manages this resource. Indicates
-     * if this resource is managed by another Azure resource. If this is present, complete mode deployment will not
-     * delete the resource if it is removed from the template since it is managed by another resource.
-     *
+     * Set the managedBy property: The fully qualified resource ID of the resource that manages this resource.
+     * Indicates if this resource is managed by another Azure resource. If this is present, complete mode deployment
+     * will not delete the resource if it is removed from the template since it is managed by another resource.
+     * 
      * @param managedBy the managedBy value to set.
      * @return the ContainerAppInner object itself.
      */
@@ -124,7 +128,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the innerProperties property: ContainerApp resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ContainerAppProperties innerProperties() {
@@ -133,21 +137,25 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContainerAppInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContainerAppInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -156,7 +164,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the Container App.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ContainerAppProvisioningState provisioningState() {
@@ -165,7 +173,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the managedEnvironmentId property: Deprecated. Resource ID of the Container App's environment.
-     *
+     * 
      * @return the managedEnvironmentId value.
      */
     public String managedEnvironmentId() {
@@ -174,7 +182,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Set the managedEnvironmentId property: Deprecated. Resource ID of the Container App's environment.
-     *
+     * 
      * @param managedEnvironmentId the managedEnvironmentId value to set.
      * @return the ContainerAppInner object itself.
      */
@@ -188,7 +196,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the environmentId property: Resource ID of environment.
-     *
+     * 
      * @return the environmentId value.
      */
     public String environmentId() {
@@ -197,7 +205,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Set the environmentId property: Resource ID of environment.
-     *
+     * 
      * @param environmentId the environmentId value to set.
      * @return the ContainerAppInner object itself.
      */
@@ -211,7 +219,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the workloadProfileName property: Workload profile name to pin for container app execution.
-     *
+     * 
      * @return the workloadProfileName value.
      */
     public String workloadProfileName() {
@@ -220,7 +228,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Set the workloadProfileName property: Workload profile name to pin for container app execution.
-     *
+     * 
      * @param workloadProfileName the workloadProfileName value to set.
      * @return the ContainerAppInner object itself.
      */
@@ -234,7 +242,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the latestRevisionName property: Name of the latest revision of the Container App.
-     *
+     * 
      * @return the latestRevisionName value.
      */
     public String latestRevisionName() {
@@ -243,7 +251,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the latestReadyRevisionName property: Name of the latest ready revision of the Container App.
-     *
+     * 
      * @return the latestReadyRevisionName value.
      */
     public String latestReadyRevisionName() {
@@ -252,7 +260,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the latestRevisionFqdn property: Fully Qualified Domain Name of the latest revision of the Container App.
-     *
+     * 
      * @return the latestRevisionFqdn value.
      */
     public String latestRevisionFqdn() {
@@ -261,7 +269,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the customDomainVerificationId property: Id used to verify domain name ownership.
-     *
+     * 
      * @return the customDomainVerificationId value.
      */
     public String customDomainVerificationId() {
@@ -270,7 +278,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the configuration property: Non versioned Container App configuration properties.
-     *
+     * 
      * @return the configuration value.
      */
     public Configuration configuration() {
@@ -279,7 +287,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Set the configuration property: Non versioned Container App configuration properties.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the ContainerAppInner object itself.
      */
@@ -293,7 +301,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the template property: Container App versioned application definition.
-     *
+     * 
      * @return the template value.
      */
     public Template template() {
@@ -302,7 +310,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Set the template property: Container App versioned application definition.
-     *
+     * 
      * @param template the template value to set.
      * @return the ContainerAppInner object itself.
      */
@@ -316,7 +324,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the outboundIpAddresses property: Outbound IP Addresses for container app.
-     *
+     * 
      * @return the outboundIpAddresses value.
      */
     public List<String> outboundIpAddresses() {
@@ -325,7 +333,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the eventStreamEndpoint property: The endpoint of the eventstream of the container app.
-     *
+     * 
      * @return the eventStreamEndpoint value.
      */
     public String eventStreamEndpoint() {
@@ -334,7 +342,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

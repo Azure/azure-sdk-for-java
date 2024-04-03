@@ -3,16 +3,12 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
-import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.kafka.connect.implementation.CosmosExceptionsHelper;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import org.apache.kafka.connect.source.SourceConnectorContext;
@@ -140,7 +136,7 @@ public class MetadataMonitorThread extends Thread {
             .byPage()
             .flatMapIterable(response -> response.getResults())
             .collectList()
-            .onErrorMap(throwable -> CosmosExceptionsHelper.convertToConnectException(throwable, "getAllContainers failed."));
+            .onErrorMap(throwable -> KafkaCosmosExceptionsHelper.convertToConnectException(throwable, "getAllContainers failed."));
     }
 
     public List<String> getContainerRidsFromOffset() {
@@ -187,13 +183,7 @@ public class MetadataMonitorThread extends Thread {
 
             return container
                 .getFeedRanges()
-                .map(feedRanges -> {
-                    return feedRanges
-                        .stream()
-                        .map(feedRange -> FeedRangeInternal.normalizeRange(((FeedRangeEpkImpl) feedRange).getRange()))
-                        .collect(Collectors.toList());
-                })
-                .flatMap(range -> {
+                .flatMap(feedRanges -> {
                     FeedRangesMetadataTopicOffset topicOffset =
                         this.offsetStorageReader
                             .getFeedRangesMetadataOffset(
@@ -205,11 +195,11 @@ public class MetadataMonitorThread extends Thread {
                         return Mono.just(true);
                     }
 
-                    List<Range<String>> differences =
+                    List<FeedRange> differences =
                         topicOffset
                             .getFeedRanges()
                             .stream()
-                            .filter(normalizedFeedRange -> !range.contains(normalizedFeedRange))
+                            .filter(normalizedFeedRange -> !feedRanges.contains(normalizedFeedRange))
                             .collect(Collectors.toList());
 
                     if (differences.size() == 0) {
@@ -239,7 +229,7 @@ public class MetadataMonitorThread extends Thread {
 
     private Mono<Boolean> shouldRequestTaskReconfigurationOnFeedRangeChanges(
         CosmosContainerProperties containerProperties,
-        List<Range<String>> changes) {
+        List<FeedRange> changes) {
         if (changes == null || changes.isEmpty()) {
             return Mono.just(false);
         }
@@ -259,26 +249,18 @@ public class MetadataMonitorThread extends Thread {
 
     private Mono<Boolean> shouldRequestTaskReconfigurationOnFeedRangeChange(
         CosmosContainerProperties containerProperties,
-        Range<String> feedRangeChanged) {
+        FeedRange feedRangeChanged) {
 
-        AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(this.cosmosClient);
+        CosmosAsyncContainer container =
+            this.cosmosClient
+                .getDatabase(this.sourceContainersConfig.getDatabaseName())
+                .getContainer(containerProperties.getId());
 
-        // find out whether it is a split or merge
-        // for split, we are going to request a task reconfiguration for load-balancing
-        // for merge, ignore as we are going to continue consuming base on the current feed range
-        return asyncDocumentClient
-            .getPartitionKeyRangeCache()
-            .tryGetOverlappingRangesAsync(
-                null,
-                containerProperties.getResourceId(),
-                feedRangeChanged,
-                false,
-                null
-            )
-            .map(pkRangesValueHolder -> {
-                List<PartitionKeyRange> matchedPkRanges =
-                    (pkRangesValueHolder == null || pkRangesValueHolder.v == null) ? new ArrayList<>() : pkRangesValueHolder.v;
-
+        return ImplementationBridgeHelpers
+                .CosmosAsyncContainerHelper
+                .getCosmosAsyncContainerAccessor()
+                .getOverlappingFeedRanges(container, feedRangeChanged)
+            .map(matchedPkRanges -> {
                 if (matchedPkRanges.size() == 0) {
                     LOGGER.warn(
                         "FeedRang {} on container {} is gone but we failed to find at least one matching pkRange",
@@ -292,7 +274,7 @@ public class MetadataMonitorThread extends Thread {
                     LOGGER.info(
                         "FeedRange {} is merged into {} on container {}",
                         feedRangeChanged,
-                        matchedPkRanges.get(0).toRange(),
+                        matchedPkRanges.get(0).toString(),
                         containerProperties.getResourceId());
                     return false;
                 }
@@ -300,7 +282,7 @@ public class MetadataMonitorThread extends Thread {
                 LOGGER.info(
                     "FeedRange {} is split into [{}] on container {}",
                     feedRangeChanged,
-                    matchedPkRanges.stream().map(PartitionKeyRange::toRange).collect(Collectors.toList()),
+                    matchedPkRanges.stream().map(FeedRange::toString).collect(Collectors.toList()),
                     containerProperties.getResourceId()
                 );
                 return true;

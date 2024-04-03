@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.security.generated;
 
-/** Samples for Tasks ListByHomeRegion. */
+/**
+ * Samples for Tasks ListByHomeRegion.
+ */
 public final class TasksListByHomeRegionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/GetTasksSubscriptionLocation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/
+     * GetTasksSubscriptionLocation_example.json
      */
     /**
      * Sample code: Get security recommendations tasks from security data location.
-     *
+     * 
      * @param manager Entry point to SecurityManager.
      */
     public static void getSecurityRecommendationsTasksFromSecurityDataLocation(
