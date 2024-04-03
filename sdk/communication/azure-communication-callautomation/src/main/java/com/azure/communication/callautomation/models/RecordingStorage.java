@@ -63,4 +63,22 @@ public abstract class RecordingStorage {
         this.recordingDestinationContainerUrl = recordingDestinationContainerUrl;
         return this;
     }
+    
+    /**
+    * Creates AzureBlobContainer Storage for Recording.
+    *
+    * @return new AzureBlobContainerRecordingStorage object.
+    */
+    public static RecordingStorage createAzureBlobContainerRecordingStorage(String recordingDestinationContainerUri) {
+        return new AzureBlobContainerRecordingStorage(recordingDestinationContainerUri);
+    }
+
+    /**
+     * Creates AzureCommunications Storage for Recording.
+     * 
+     * @return new AzureCommunicationsRecordingStorage object.
+     */
+    public static RecordingStorage createAzureCommunicationsRecordingStorage() {
+        return new AzureCommunicationsRecordingStorage();
+    }
 }

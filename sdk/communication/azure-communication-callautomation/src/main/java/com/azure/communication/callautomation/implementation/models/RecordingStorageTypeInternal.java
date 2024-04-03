@@ -8,26 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines the kind of external storage. */
+/**
+ * Defines the kind of external storage.
+ */
 public final class RecordingStorageTypeInternal extends ExpandableStringEnum<RecordingStorageTypeInternal> {
-    /** Static value AzureCommunicationServices for RecordingStorageTypeInternal. */
-    public static final RecordingStorageTypeInternal AZURE_COMMUNICATION_SERVICES =
-            fromString("AzureCommunicationServices");
+    /**
+     * Storage managed by Azure Communication Services.
+     */
+    public static final RecordingStorageTypeInternal ACS = fromString("AzureCommunicationServices");
 
-    /** Static value AzureBlobStorage for RecordingStorageTypeInternal. */
+    /**
+     * Storage managed by provided Azure blob.
+     */
     public static final RecordingStorageTypeInternal AZURE_BLOB_STORAGE = fromString("AzureBlobStorage");
 
     /**
      * Creates a new instance of RecordingStorageTypeInternal value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public RecordingStorageTypeInternal() {}
+    public RecordingStorageTypeInternal() {
+    }
 
     /**
      * Creates or finds a RecordingStorageTypeInternal from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecordingStorageTypeInternal.
      */
@@ -38,7 +44,7 @@ public final class RecordingStorageTypeInternal extends ExpandableStringEnum<Rec
 
     /**
      * Gets known RecordingStorageTypeInternal values.
-     *
+     * 
      * @return known RecordingStorageTypeInternal values.
      */
     public static Collection<RecordingStorageTypeInternal> values() {

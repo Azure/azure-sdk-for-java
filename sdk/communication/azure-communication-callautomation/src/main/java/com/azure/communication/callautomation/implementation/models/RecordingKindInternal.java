@@ -8,28 +8,37 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RecordingKindInternal. */
+/**
+ * Defines values for RecordingKindInternal.
+ */
 public final class RecordingKindInternal extends ExpandableStringEnum<RecordingKindInternal> {
-    /** Static value AzureCommunicationServices for RecordingKindInternal. */
+    /**
+     * Recording initiated by Azure Communication Services.
+     */
     public static final RecordingKindInternal AZURE_COMMUNICATION_SERVICES = fromString("AzureCommunicationServices");
 
-    /** Static value Teams for RecordingKindInternal. */
+    /**
+     * Recording initiated by Teams user.
+     */
     public static final RecordingKindInternal TEAMS = fromString("Teams");
 
-    /** Static value TeamsCompliance for RecordingKindInternal. */
+    /**
+     * Recording initiated by Teams compliance policy.
+     */
     public static final RecordingKindInternal TEAMS_COMPLIANCE = fromString("TeamsCompliance");
 
     /**
      * Creates a new instance of RecordingKindInternal value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public RecordingKindInternal() {}
+    public RecordingKindInternal() {
+    }
 
     /**
      * Creates or finds a RecordingKindInternal from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecordingKindInternal.
      */
@@ -40,7 +49,7 @@ public final class RecordingKindInternal extends ExpandableStringEnum<RecordingK
 
     /**
      * Gets known RecordingKindInternal values.
-     *
+     * 
      * @return known RecordingKindInternal values.
      */
     public static Collection<RecordingKindInternal> values() {

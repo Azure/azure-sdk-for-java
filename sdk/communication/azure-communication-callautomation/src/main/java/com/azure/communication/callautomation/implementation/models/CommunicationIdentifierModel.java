@@ -50,12 +50,15 @@ public final class CommunicationIdentifierModel {
     @JsonProperty(value = "microsoftTeamsApp")
     private MicrosoftTeamsAppIdentifierModel microsoftTeamsApp;
 
-    /** Creates an instance of CommunicationIdentifierModel class. */
-    public CommunicationIdentifierModel() {}
+    /**
+     * Creates an instance of CommunicationIdentifierModel class.
+     */
+    public CommunicationIdentifierModel() {
+    }
 
     /**
      * Get the kind property: The identifier kind. Only required in responses.
-     *
+     * 
      * @return the kind value.
      */
     public CommunicationIdentifierModelKind getKind() {
@@ -64,7 +67,7 @@ public final class CommunicationIdentifierModel {
 
     /**
      * Set the kind property: The identifier kind. Only required in responses.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the CommunicationIdentifierModel object itself.
      */
@@ -75,7 +78,7 @@ public final class CommunicationIdentifierModel {
 
     /**
      * Get the rawId property: Raw Id of the identifier. Optional in requests, required in responses.
-     *
+     * 
      * @return the rawId value.
      */
     public String getRawId() {
@@ -84,7 +87,7 @@ public final class CommunicationIdentifierModel {
 
     /**
      * Set the rawId property: Raw Id of the identifier. Optional in requests, required in responses.
-     *
+     * 
      * @param rawId the rawId value to set.
      * @return the CommunicationIdentifierModel object itself.
      */
@@ -95,7 +98,7 @@ public final class CommunicationIdentifierModel {
 
     /**
      * Get the communicationUser property: The communication user.
-     *
+     * 
      * @return the communicationUser value.
      */
     public CommunicationUserIdentifierModel getCommunicationUser() {
@@ -104,7 +107,7 @@ public final class CommunicationIdentifierModel {
 
     /**
      * Set the communicationUser property: The communication user.
-     *
+     * 
      * @param communicationUser the communicationUser value to set.
      * @return the CommunicationIdentifierModel object itself.
      */
@@ -115,7 +118,7 @@ public final class CommunicationIdentifierModel {
 
     /**
      * Get the phoneNumber property: The phone number.
-     *
+     * 
      * @return the phoneNumber value.
      */
     public PhoneNumberIdentifierModel getPhoneNumber() {
@@ -124,7 +127,7 @@ public final class CommunicationIdentifierModel {
 
     /**
      * Set the phoneNumber property: The phone number.
-     *
+     * 
      * @param phoneNumber the phoneNumber value to set.
      * @return the CommunicationIdentifierModel object itself.
      */
@@ -135,7 +138,7 @@ public final class CommunicationIdentifierModel {
 
     /**
      * Get the microsoftTeamsUser property: The Microsoft Teams user.
-     *
+     * 
      * @return the microsoftTeamsUser value.
      */
     public MicrosoftTeamsUserIdentifierModel getMicrosoftTeamsUser() {
@@ -144,7 +147,7 @@ public final class CommunicationIdentifierModel {
 
     /**
      * Set the microsoftTeamsUser property: The Microsoft Teams user.
-     *
+     * 
      * @param microsoftTeamsUser the microsoftTeamsUser value to set.
      * @return the CommunicationIdentifierModel object itself.
      */
@@ -155,7 +158,7 @@ public final class CommunicationIdentifierModel {
 
     /**
      * Get the microsoftTeamsApp property: The Microsoft Teams application.
-     *
+     * 
      * @return the microsoftTeamsApp value.
      */
     public MicrosoftTeamsAppIdentifierModel getMicrosoftTeamsApp() {
@@ -164,7 +167,7 @@ public final class CommunicationIdentifierModel {
 
     /**
      * Set the microsoftTeamsApp property: The Microsoft Teams application.
-     *
+     * 
      * @param microsoftTeamsApp the microsoftTeamsApp value to set.
      * @return the CommunicationIdentifierModel object itself.
      */

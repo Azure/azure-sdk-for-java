@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The request payload for muting participants from the call. */
+/**
+ * The request payload for muting participants from the call.
+ */
 @Fluent
 public final class MuteParticipantsRequestInternal {
     /*
@@ -24,12 +26,16 @@ public final class MuteParticipantsRequestInternal {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
-    /** Creates an instance of MuteParticipantsRequestInternal class. */
-    public MuteParticipantsRequestInternal() {}
+    /**
+     * Creates an instance of MuteParticipantsRequestInternal class.
+     */
+    public MuteParticipantsRequestInternal() {
+    }
 
     /**
-     * Get the targetParticipants property: Participants to be muted from the call. Only ACS Users are supported.
-     *
+     * Get the targetParticipants property: Participants to be muted from the call.
+     * Only ACS Users are supported.
+     * 
      * @return the targetParticipants value.
      */
     public List<CommunicationIdentifierModel> getTargetParticipants() {
@@ -37,13 +43,14 @@ public final class MuteParticipantsRequestInternal {
     }
 
     /**
-     * Set the targetParticipants property: Participants to be muted from the call. Only ACS Users are supported.
-     *
+     * Set the targetParticipants property: Participants to be muted from the call.
+     * Only ACS Users are supported.
+     * 
      * @param targetParticipants the targetParticipants value to set.
      * @return the MuteParticipantsRequestInternal object itself.
      */
-    public MuteParticipantsRequestInternal setTargetParticipants(
-            List<CommunicationIdentifierModel> targetParticipants) {
+    public MuteParticipantsRequestInternal
+        setTargetParticipants(List<CommunicationIdentifierModel> targetParticipants) {
         this.targetParticipants = targetParticipants;
         return this;
     }
@@ -51,7 +58,7 @@ public final class MuteParticipantsRequestInternal {
     /**
      * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -61,7 +68,7 @@ public final class MuteParticipantsRequestInternal {
     /**
      * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the MuteParticipantsRequestInternal object itself.
      */

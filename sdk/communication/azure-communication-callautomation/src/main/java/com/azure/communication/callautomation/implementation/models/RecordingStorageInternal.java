@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RecordingStorageInternal model. */
+/**
+ * The RecordingStorageInternal model.
+ */
 @Fluent
 public final class RecordingStorageInternal {
     /*
@@ -22,12 +24,15 @@ public final class RecordingStorageInternal {
     @JsonProperty(value = "recordingDestinationContainerUrl")
     private String recordingDestinationContainerUrl;
 
-    /** Creates an instance of RecordingStorageInternal class. */
-    public RecordingStorageInternal() {}
+    /**
+     * Creates an instance of RecordingStorageInternal class.
+     */
+    public RecordingStorageInternal() {
+    }
 
     /**
      * Get the recordingStorageKind property: Defines the kind of external storage.
-     *
+     * 
      * @return the recordingStorageKind value.
      */
     public RecordingStorageTypeInternal getRecordingStorageKind() {
@@ -36,7 +41,7 @@ public final class RecordingStorageInternal {
 
     /**
      * Set the recordingStorageKind property: Defines the kind of external storage.
-     *
+     * 
      * @param recordingStorageKind the recordingStorageKind value to set.
      * @return the RecordingStorageInternal object itself.
      */
@@ -47,7 +52,7 @@ public final class RecordingStorageInternal {
 
     /**
      * Get the recordingDestinationContainerUrl property: Uri of a container or a location within a container.
-     *
+     * 
      * @return the recordingDestinationContainerUrl value.
      */
     public String getRecordingDestinationContainerUrl() {
@@ -56,7 +61,7 @@ public final class RecordingStorageInternal {
 
     /**
      * Set the recordingDestinationContainerUrl property: Uri of a container or a location within a container.
-     *
+     * 
      * @param recordingDestinationContainerUrl the recordingDestinationContainerUrl value to set.
      * @return the RecordingStorageInternal object itself.
      */

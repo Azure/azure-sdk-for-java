@@ -164,8 +164,6 @@ public final class CallAutomationAsyncClient {
             context = context == null ? Context.NONE : context;
             return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(
                     createCallRequestInternal,
-                    UUID.randomUUID(),
-                    OffsetDateTime.now(),
                     context)
                 .map(response -> {
                     try {
@@ -270,8 +268,6 @@ public final class CallAutomationAsyncClient {
 
             return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(
                     request,
-                    UUID.randomUUID(),
-                    OffsetDateTime.now(),
                     context)
                 .map(response -> {
                     try {
@@ -326,8 +322,6 @@ public final class CallAutomationAsyncClient {
 
             return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(
                     request,
-                    UUID.randomUUID(),
-                    OffsetDateTime.now(),
                     context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -373,8 +367,6 @@ public final class CallAutomationAsyncClient {
 
             return azureCommunicationCallAutomationServiceInternal.rejectCallWithResponseAsync(
                     request,
-                    UUID.randomUUID(),
-                    OffsetDateTime.now(),
                     context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
