@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Attaches queue selectors to a job when the RouterRule is resolved. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("rule-engine")
+@JsonTypeName("ruleEngine")
 @Immutable
 public final class RuleEngineQueueSelectorAttachment extends QueueSelectorAttachment {
 
@@ -41,6 +41,7 @@ public final class RuleEngineQueueSelectorAttachment extends QueueSelectorAttach
     @JsonCreator
     public RuleEngineQueueSelectorAttachment(@JsonProperty(value = "rule") RouterRule rule) {
         this.rule = rule;
+        this.kind = "ruleEngine";
     }
 
     /**

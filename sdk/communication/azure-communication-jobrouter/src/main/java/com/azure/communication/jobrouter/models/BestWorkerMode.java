@@ -30,7 +30,9 @@ public final class BestWorkerMode extends DistributionMode {
     private ScoringRuleOptions scoringRuleOptions;
 
     /** Creates an instance of BestWorkerMode class. */
-    public BestWorkerMode() {}
+    public BestWorkerMode() {
+        this.kind = "bestWorker";
+    }
 
     /**
      * Get the scoringRule property: Define a scoring rule to use, when calculating a score to determine the best

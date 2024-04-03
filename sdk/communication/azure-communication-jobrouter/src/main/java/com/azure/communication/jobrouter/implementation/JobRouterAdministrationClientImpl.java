@@ -61,7 +61,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Gets Uri of your Communication resource.
-     * 
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -75,7 +75,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Gets Service version.
-     * 
+     *
      * @return the serviceVersion value.
      */
     public JobRouterServiceVersion getServiceVersion() {
@@ -89,7 +89,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -103,7 +103,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     * 
+     *
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -112,7 +112,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Initializes an instance of JobRouterAdministrationClient client.
-     * 
+     *
      * @param endpoint Uri of your Communication resource.
      * @param serviceVersion Service version.
      */
@@ -123,7 +123,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Initializes an instance of JobRouterAdministrationClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Uri of your Communication resource.
      * @param serviceVersion Service version.
@@ -135,7 +135,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Initializes an instance of JobRouterAdministrationClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Uri of your Communication resource.
@@ -646,7 +646,7 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param distributionPolicyId Id of a distribution policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -726,7 +726,7 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param distributionPolicyId Id of a distribution policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -763,7 +763,7 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param distributionPolicyId Id of a distribution policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -799,7 +799,7 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param distributionPolicyId Id of a distribution policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -853,7 +853,7 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -909,7 +909,7 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -983,7 +983,7 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1037,7 +1037,7 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1076,7 +1076,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Delete a distribution policy by Id.
-     * 
+     *
      * @param distributionPolicyId Id of a distribution policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1095,7 +1095,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Delete a distribution policy by Id.
-     * 
+     *
      * @param distributionPolicyId Id of a distribution policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1181,7 +1181,7 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param classificationPolicyId Id of a classification policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1271,7 +1271,7 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param classificationPolicyId Id of a classification policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1313,7 +1313,7 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param classificationPolicyId Id of a classification policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1354,7 +1354,7 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param classificationPolicyId Id of a classification policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1413,7 +1413,7 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1474,7 +1474,7 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1553,7 +1553,7 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1612,7 +1612,7 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1651,7 +1651,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Delete a classification policy by Id.
-     * 
+     *
      * @param classificationPolicyId Id of a classification policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1670,7 +1670,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Delete a classification policy by Id.
-     * 
+     *
      * @param classificationPolicyId Id of a classification policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1758,7 +1758,7 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param exceptionPolicyId Id of an exception policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1850,7 +1850,7 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param exceptionPolicyId Id of an exception policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1893,7 +1893,7 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param exceptionPolicyId Id of an exception policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1935,7 +1935,7 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param exceptionPolicyId Id of an exception policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1995,7 +1995,7 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2057,7 +2057,7 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2137,7 +2137,7 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2197,7 +2197,7 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2236,7 +2236,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Deletes a exception policy by Id.
-     * 
+     *
      * @param exceptionPolicyId Id of an exception policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2255,7 +2255,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Deletes a exception policy by Id.
-     * 
+     *
      * @param exceptionPolicyId Id of an exception policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2328,7 +2328,7 @@ public final class JobRouterAdministrationClientImpl {
      *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param queueId Id of a queue.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2405,7 +2405,7 @@ public final class JobRouterAdministrationClientImpl {
      *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param queueId Id of a queue.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2441,7 +2441,7 @@ public final class JobRouterAdministrationClientImpl {
      *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param queueId Id of a queue.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2475,7 +2475,7 @@ public final class JobRouterAdministrationClientImpl {
      *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param queueId Id of a queue.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2527,7 +2527,7 @@ public final class JobRouterAdministrationClientImpl {
      *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2582,7 +2582,7 @@ public final class JobRouterAdministrationClientImpl {
      *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2655,7 +2655,7 @@ public final class JobRouterAdministrationClientImpl {
      *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2708,7 +2708,7 @@ public final class JobRouterAdministrationClientImpl {
      *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2747,7 +2747,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Deletes a queue by Id.
-     * 
+     *
      * @param queueId Id of a queue.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2765,7 +2765,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Deletes a queue by Id.
-     * 
+     *
      * @param queueId Id of a queue.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2783,7 +2783,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing distribution policies.
-     * 
+     *
      * Get the next page of items.
      * <p>
      * <strong>Response Body Schema</strong>
@@ -2801,9 +2801,9 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2826,7 +2826,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing distribution policies.
-     * 
+     *
      * Get the next page of items.
      * <p>
      * <strong>Response Body Schema</strong>
@@ -2844,9 +2844,9 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2867,7 +2867,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing classification policies.
-     * 
+     *
      * Get the next page of items.
      * <p>
      * <strong>Response Body Schema</strong>
@@ -2890,9 +2890,9 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2915,7 +2915,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing classification policies.
-     * 
+     *
      * Get the next page of items.
      * <p>
      * <strong>Response Body Schema</strong>
@@ -2938,9 +2938,9 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2961,7 +2961,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing exception policies.
-     * 
+     *
      * Get the next page of items.
      * <p>
      * <strong>Response Body Schema</strong>
@@ -2985,9 +2985,9 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3009,7 +3009,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing exception policies.
-     * 
+     *
      * Get the next page of items.
      * <p>
      * <strong>Response Body Schema</strong>
@@ -3033,9 +3033,9 @@ public final class JobRouterAdministrationClientImpl {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3056,7 +3056,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing queues.
-     * 
+     *
      * Get the next page of items.
      * <p>
      * <strong>Response Body Schema</strong>
@@ -3073,9 +3073,9 @@ public final class JobRouterAdministrationClientImpl {
      *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3098,7 +3098,7 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing queues.
-     * 
+     *
      * Get the next page of items.
      * <p>
      * <strong>Response Body Schema</strong>
@@ -3115,9 +3115,9 @@ public final class JobRouterAdministrationClientImpl {
      *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

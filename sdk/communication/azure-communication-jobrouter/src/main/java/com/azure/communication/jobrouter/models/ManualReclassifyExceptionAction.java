@@ -12,7 +12,7 @@ import java.util.List;
 
 /** An action that manually reclassifies a job by providing the queue, priority and worker selectors. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("manual-reclassify")
+@JsonTypeName("manualReclassify")
 @Fluent
 public final class ManualReclassifyExceptionAction extends ExceptionAction {
 
@@ -35,7 +35,9 @@ public final class ManualReclassifyExceptionAction extends ExceptionAction {
     private List<RouterWorkerSelector> workerSelectors;
 
     /** Creates an instance of ManualReclassifyExceptionAction class. */
-    public ManualReclassifyExceptionAction() {}
+    public ManualReclassifyExceptionAction() {
+        this.kind = "manualReclassify";
+    }
 
     /**
      * Get the queueId property: Updated QueueId.

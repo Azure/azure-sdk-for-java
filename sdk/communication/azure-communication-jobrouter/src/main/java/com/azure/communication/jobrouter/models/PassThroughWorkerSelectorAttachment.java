@@ -13,7 +13,7 @@ import java.time.Duration;
 
 /** Attaches a worker selector where the value is passed through from the job label with the same key. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("pass-through")
+@JsonTypeName("passThrough")
 @Fluent
 public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAttachment {
 
@@ -47,6 +47,7 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
             @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
         this.key = key;
         this.labelOperator = labelOperator;
+        this.kind = "passThrough";
     }
 
     /**

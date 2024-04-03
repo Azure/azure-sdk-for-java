@@ -35,6 +35,7 @@ public final class ExpressionRouterRule extends RouterRule {
     @JsonCreator
     public ExpressionRouterRule(@JsonProperty(value = "expression") String expression) {
         this.expression = expression;
+        this.kind = "expression";
     }
 
     /**

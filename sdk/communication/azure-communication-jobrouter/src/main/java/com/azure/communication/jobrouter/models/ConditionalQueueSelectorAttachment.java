@@ -53,6 +53,7 @@ public final class ConditionalQueueSelectorAttachment extends QueueSelectorAttac
             @JsonProperty(value = "queueSelectors") List<RouterQueueSelector> queueSelectors) {
         this.condition = condition;
         this.queueSelectors = queueSelectors;
+        this.kind = "conditional";
     }
 
     /**

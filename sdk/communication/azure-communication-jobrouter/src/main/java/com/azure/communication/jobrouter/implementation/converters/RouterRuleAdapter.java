@@ -31,28 +31,31 @@ public class RouterRuleAdapter {
      */
     public static RouterRuleInternal getRouterRuleInternal(RouterRule routerRule) {
         RouterRuleInternal prioritizationRuleInternal = null;
-        if (routerRule.getClass() == ExpressionRouterRule.class) {
-            ExpressionRouterRule expressionRouterRule = (ExpressionRouterRule) routerRule;
-            prioritizationRuleInternal = new ExpressionRouterRuleInternal(expressionRouterRule.getExpression())
-                .setLanguage(expressionRouterRule.getLanguage());
-        } else if (routerRule.getClass() == DirectMapRouterRule.class) {
-            DirectMapRouterRule directMapRouterRule = (DirectMapRouterRule) routerRule;
-            prioritizationRuleInternal = new DirectMapRouterRuleInternal();
-        } else if (routerRule.getClass() == FunctionRouterRule.class) {
-            FunctionRouterRule functionRouterRule = (FunctionRouterRule) routerRule;
-            prioritizationRuleInternal = new FunctionRouterRuleInternal(functionRouterRule.getFunctionUri())
-                .setCredential(functionRouterRule.getCredential());
-        } else if (routerRule.getClass() == StaticRouterRule.class) {
-            StaticRouterRule staticRouterRule = (StaticRouterRule) routerRule;
-            prioritizationRuleInternal = new StaticRouterRuleInternal()
-                .setValue(RouterValueAdapter.getValue(staticRouterRule.getValue()));
-        } else if (routerRule.getClass() == WebhookRouterRule.class) {
-            WebhookRouterRule webhookRouterRule = (WebhookRouterRule) routerRule;
-            prioritizationRuleInternal = new WebhookRouterRuleInternal()
-                .setAuthorizationServerUri(webhookRouterRule.getAuthorizationServerUri())
-                .setClientCredential(webhookRouterRule.getClientCredential())
-                .setWebhookUri(webhookRouterRule.getWebhookUri());
+
+        if (routerRule != null) {
+            if (routerRule.getClass() == ExpressionRouterRule.class) {
+                ExpressionRouterRule expressionRouterRule = (ExpressionRouterRule) routerRule;
+                prioritizationRuleInternal = new ExpressionRouterRuleInternal(expressionRouterRule.getExpression())
+                    .setLanguage(expressionRouterRule.getLanguage());
+            } else if (routerRule.getClass() == DirectMapRouterRule.class) {
+                prioritizationRuleInternal = new DirectMapRouterRuleInternal();
+            } else if (routerRule.getClass() == FunctionRouterRule.class) {
+                FunctionRouterRule functionRouterRule = (FunctionRouterRule) routerRule;
+                prioritizationRuleInternal = new FunctionRouterRuleInternal(functionRouterRule.getFunctionUri())
+                    .setCredential(functionRouterRule.getCredential());
+            } else if (routerRule.getClass() == StaticRouterRule.class) {
+                StaticRouterRule staticRouterRule = (StaticRouterRule) routerRule;
+                prioritizationRuleInternal = new StaticRouterRuleInternal()
+                    .setValue(RouterValueAdapter.getValue(staticRouterRule.getValue()));
+            } else if (routerRule.getClass() == WebhookRouterRule.class) {
+                WebhookRouterRule webhookRouterRule = (WebhookRouterRule) routerRule;
+                prioritizationRuleInternal = new WebhookRouterRuleInternal()
+                    .setAuthorizationServerUri(webhookRouterRule.getAuthorizationServerUri())
+                    .setClientCredential(webhookRouterRule.getClientCredential())
+                    .setWebhookUri(webhookRouterRule.getWebhookUri());
+            }
         }
+
         return prioritizationRuleInternal;
     }
 

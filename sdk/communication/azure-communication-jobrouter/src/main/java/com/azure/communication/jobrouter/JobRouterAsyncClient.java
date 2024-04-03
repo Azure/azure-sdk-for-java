@@ -22,6 +22,7 @@ import com.azure.communication.jobrouter.implementation.models.RouterJobInternal
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobPositionDetails;
@@ -550,6 +551,48 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterJob> createJob(CreateJobOptions createJobOptions) {
         return this.createJobWithResponse(createJobOptions).map(response -> response.getValue());
+    }
+
+    /**
+     * Create a job using a classification policy.
+     *
+     * @param createJobWithClassificationPolicyOptions Options to create a RouterJob using a classification policy.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a unit of work to be routed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RouterJob>> createJobWithClassificationPolicyWithResponse(
+        CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions,
+        RequestOptions requestOptions) {
+        // Note: Update return type to Response<RouterJob> in version 2.
+        RouterJobInternal routerJob
+            = JobAdapter.convertCreateJobOptionsToRouterJob(createJobWithClassificationPolicyOptions);
+        return upsertJobWithResponse(createJobWithClassificationPolicyOptions.getJobId(),
+            BinaryData.fromObject(routerJob), requestOptions)
+            .map(response -> new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(),
+                RouterJobConstructorProxy.create(response.getValue().toObject(RouterJobInternal.class))));
+    }
+
+    /**
+     * Convenience method to create a job using a classification policy.
+     *
+     * @param createJobWithClassificationPolicyOptions Options to create a RouterJob using a classification policy.
+     * @return a unit of work to be routed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RouterJob> createJobWithClassificationPolicy(
+        CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        return this
+            .createJobWithClassificationPolicyWithResponse(createJobWithClassificationPolicyOptions, requestOptions)
+            .map(response -> response.getValue());
     }
 
     /**
