@@ -36,7 +36,7 @@
     <dependency>
       <groupId>org.apache.qpid</groupId>
       <artifactId>proton-j</artifactId>
-      <version>0.33.8</version> <!-- {x-version-update;org.apache.qpid:proton-j;external_dependency} -->
+      <version>0.34.1</version> <!-- {x-version-update;org.apache.qpid:proton-j;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>

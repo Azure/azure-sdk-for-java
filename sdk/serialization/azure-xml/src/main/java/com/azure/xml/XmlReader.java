@@ -9,7 +9,6 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
@@ -31,6 +30,8 @@ public final class XmlReader implements AutoCloseable {
     private final XMLStreamReader reader;
 
     private XmlToken currentToken;
+    private boolean needToReadElementString = true;
+    private String currentElementString;
 
     /**
      * Creates an {@link XMLStreamReader}-based {@link XmlReader} that parses the passed {@code xml}.
@@ -153,6 +154,8 @@ public final class XmlReader implements AutoCloseable {
         }
 
         currentToken = convertEventToToken(next);
+        needToReadElementString = true;
+        currentElementString = null;
         return currentToken;
     }
 
@@ -282,11 +285,7 @@ public final class XmlReader implements AutoCloseable {
             return null;
         }
 
-        try {
-            return converter.read(textValue);
-        } catch (IOException ex) {
-            throw new XMLStreamException(ex);
-        }
+        return converter.read(textValue);
     }
 
     /**
@@ -306,6 +305,9 @@ public final class XmlReader implements AutoCloseable {
         //
         // This logic continues to work even if the underlying XMLStreamReader implementation, such as the one
         // used in Jackson XML through Woodstox, handles this already.
+        if (!needToReadElementString) {
+            return currentElementString;
+        }
 
         int readCount = 0;
         String firstRead = null;
@@ -349,17 +351,20 @@ public final class XmlReader implements AutoCloseable {
         }
 
         if (readCount == 0) {
-            return null;
+            currentElementString = null;
         } else if (readCount == 1) {
-            return firstRead;
+            currentElementString = firstRead;
         } else {
             StringBuilder finalText = new StringBuilder(stringBufferSize);
             for (int i = 0; i < readCount; i++) {
                 finalText.append(buffer[i]);
             }
 
-            return finalText.toString();
+            currentElementString = finalText.toString();
         }
+
+        needToReadElementString = false;
+        return currentElementString;
     }
 
     /**
@@ -441,11 +446,7 @@ public final class XmlReader implements AutoCloseable {
             return null;
         }
 
-        try {
-            return converter.read(textValue);
-        } catch (IOException ex) {
-            throw new XMLStreamException(ex);
-        }
+        return converter.read(textValue);
     }
 
     /**
@@ -502,11 +503,7 @@ public final class XmlReader implements AutoCloseable {
                 "Expected XML element to be '" + startTagName + "' but it was: " + tagName + "'.");
         }
 
-        try {
-            return converter.read(this);
-        } catch (IOException ex) {
-            throw new XMLStreamException(ex);
-        }
+        return converter.read(this);
     }
 
     /**

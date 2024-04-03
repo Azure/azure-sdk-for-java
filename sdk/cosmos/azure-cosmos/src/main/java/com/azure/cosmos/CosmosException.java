@@ -493,6 +493,11 @@ public class CosmosException extends AzureException {
                 innerErrorMessage = String.valueOf(cosmosError.get("Errors"));
             }
         }
+        // if cosmosError is null as well, try to get the underlying error from the internal cause
+        if (StringUtils.isEmpty(innerErrorMessage) && this.getCause() != null) {
+            innerErrorMessage = this.getCause().getMessage();
+        }
+
         return innerErrorMessage;
     }
 

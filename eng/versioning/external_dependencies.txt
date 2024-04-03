@@ -56,25 +56,25 @@ io.fabric8:kubernetes-client;5.12.3
 io.micrometer:micrometer-core;1.9.17
 io.micrometer:micrometer-registry-azure-monitor;1.9.17
 io.micrometer:micrometer-registry-graphite;1.9.17
-io.netty:netty-buffer;4.1.107.Final
-io.netty:netty-common;4.1.107.Final
-io.netty:netty-codec;4.1.107.Final
-io.netty:netty-codec-http;4.1.107.Final
-io.netty:netty-codec-http2;4.1.107.Final
-io.netty:netty-transport;4.1.107.Final
-io.netty:netty-handler;4.1.107.Final
-io.netty:netty-handler-proxy;4.1.107.Final
+io.netty:netty-buffer;4.1.108.Final
+io.netty:netty-common;4.1.108.Final
+io.netty:netty-codec;4.1.108.Final
+io.netty:netty-codec-http;4.1.108.Final
+io.netty:netty-codec-http2;4.1.108.Final
+io.netty:netty-transport;4.1.108.Final
+io.netty:netty-handler;4.1.108.Final
+io.netty:netty-handler-proxy;4.1.108.Final
 io.netty:netty-tcnative;2.0.65.Final
 io.netty:netty-tcnative-boringssl-static;2.0.65.Final
-io.netty:netty-transport-native-epoll;4.1.107.Final
-io.netty:netty-transport-native-unix-common;4.1.107.Final
-io.netty:netty-transport-native-kqueue;4.1.107.Final
+io.netty:netty-transport-native-epoll;4.1.108.Final
+io.netty:netty-transport-native-unix-common;4.1.108.Final
+io.netty:netty-transport-native-kqueue;4.1.108.Final
 io.projectreactor.netty:reactor-netty;1.0.43
 io.projectreactor.netty:reactor-netty-http;1.0.43
 io.projectreactor:reactor-core;3.4.36
-io.vertx:vertx-codegen;4.5.5
-io.vertx:vertx-core;4.5.5
-io.vertx:vertx-reactive-streams;4.5.5
+io.vertx:vertx-codegen;4.5.7
+io.vertx:vertx-core;4.5.7
+io.vertx:vertx-reactive-streams;4.5.7
 jakarta.validation:jakarta.validation-api;2.0.2
 javax.annotation:javax.annotation-api;1.3.2
 javax.json:javax.json-api;1.1.4
@@ -94,8 +94,7 @@ org.apache.maven:maven-core;3.5.4
 org.apache.maven.archetype:archetype-packaging;3.2.0
 org.apache.maven.plugins:maven-archetype-plugin;3.2.0
 org.apache.maven.plugins:maven-gpg-plugin;3.1.0
-org.apache.qpid:proton-j;0.33.8
-org.apache.qpid:qpid-jms-client;0.53.0
+org.apache.qpid:proton-j;0.34.1
 org.apache.tinkerpop:gremlin-driver;3.2.4
 org.asynchttpclient:async-http-client;2.12.1
 org.codehaus.gmavenplus:gmavenplus-plugin;3.0.2
@@ -394,7 +393,12 @@ cosmos_org.scalastyle:scalastyle-maven-plugin;1.0.0
 ## Cosmos Kafka connector under sdk\cosmos\azure-cosmos-kafka-connect\pom.xml
 # Cosmos Kafka connector runtime dependencies
 cosmos_org.apache.kafka:connect-api;3.6.0
+cosmos_com.jayway.jsonpath:json-path;2.9.0
 # Cosmos Kafka connector tests only
+cosmos_org.apache.kafka:connect-runtime;3.6.0
+cosmos_org.testcontainers:testcontainers;1.19.5
+cosmos_org.testcontainers:kafka;1.19.5
+cosmos_org.sourcelab:kafka-connect-client;4.0.4
 # Maven Tools for Cosmos Kafka connector only
 cosmos_io.confluent:kafka-connect-maven-plugin;0.12.0
 

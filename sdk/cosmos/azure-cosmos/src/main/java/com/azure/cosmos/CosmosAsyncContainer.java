@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyHelper;
+import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.RequestOptions;
@@ -70,6 +71,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -78,6 +80,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -2566,6 +2569,36 @@ public class CosmosAsyncContainer {
         return this.getFeedRanges(true);
     }
 
+    Mono<List<FeedRange>> getOverlappingFeedRanges(FeedRange feedRange) {
+        checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
+
+        final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
+
+        return this.getNormalizedEffectiveRange(feedRange)
+            .flatMap(normalizedRange -> {
+                return clientWrapper
+                    .getCollectionCache()
+                    .resolveByNameAsync(null, this.getLinkWithoutTrailingSlash(), null)
+                    .flatMap(collection -> {
+                        return clientWrapper
+                            .getPartitionKeyRangeCache()
+                            .tryGetOverlappingRangesAsync(
+                                null,
+                                collection.getResourceId(),
+                                normalizedRange,
+                                false,
+                                null
+                            );
+                    });
+            })
+            .map(pkRangesValueHolder -> {
+                List<PartitionKeyRange> matchedPkRanges =
+                    (pkRangesValueHolder == null || pkRangesValueHolder.v == null) ? new ArrayList<>() : pkRangesValueHolder.v;
+
+                return matchedPkRanges.stream().map(pkRange -> new FeedRangeEpkImpl(pkRange.toRange())).collect(Collectors.toList());
+            });
+    }
+
     Mono<List<FeedRange>> getFeedRanges(boolean forceRefresh) {
         return this.getDatabase().getDocClientWrapper().getFeedRanges(getLink(), forceRefresh);
     }
@@ -2612,6 +2645,31 @@ public class CosmosAsyncContainer {
                 clientWrapper.getPartitionKeyRangeCache(),
                 null,
                 getCollectionObservable);
+    }
+
+    Mono<Boolean> checkFeedRangeOverlapping(FeedRange feedRange1, FeedRange feedRange2) {
+        checkNotNull(feedRange1, "Argument 'feedRange1' must not be null.");
+        checkNotNull(feedRange2, "Argument 'feedRange2' must not be null.");
+
+        return this.getNormalizedEffectiveRange(feedRange1)
+            .flatMap(normalizedRange1 -> {
+                 return this.getNormalizedEffectiveRange(feedRange2)
+                     .map(normalizedRange2 -> Range.checkOverlapping(normalizedRange1, normalizedRange2));
+            });
+    }
+
+    Mono<PartitionKeyDefinition> getPartitionKeyDefinition() {
+        final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
+        return Mono.just(clientWrapper.getCollectionCache())
+            .flatMap(collectionCache -> {
+                return collectionCache
+                    .resolveByNameAsync(
+                        null,
+                        this.getLinkWithoutTrailingSlash(),
+                        null,
+                        null)
+                    .map(documentCollection -> documentCollection.getPartitionKey());
+            });
     }
 
      /**
@@ -2791,6 +2849,39 @@ public class CosmosAsyncContainer {
                 @Override
                 public Mono<List<FeedRange>> getFeedRanges(CosmosAsyncContainer cosmosAsyncContainer, boolean forceRefresh) {
                     return cosmosAsyncContainer.getFeedRanges(forceRefresh);
+                }
+
+                @Override
+                public Mono<List<FeedRange>> trySplitFeedRange(
+                    CosmosAsyncContainer cosmosAsyncContainer,
+                    FeedRange feedRange,
+                    int targetedCountAfterSplit) {
+
+                    return cosmosAsyncContainer.trySplitFeedRange(feedRange, targetedCountAfterSplit)
+                        .map(feedRangeEpks -> feedRangeEpks.stream().collect(Collectors.toList()));
+                }
+
+                @Override
+                public Mono<Boolean> checkFeedRangeOverlapping(
+                    CosmosAsyncContainer cosmosAsyncContainer,
+                    FeedRange feedRange1,
+                    FeedRange feedRange2) {
+                    return cosmosAsyncContainer.checkFeedRangeOverlapping(feedRange1, feedRange2);
+                }
+
+                @Override
+                public Mono<List<FeedRange>> getOverlappingFeedRanges(CosmosAsyncContainer container, FeedRange feedRange) {
+                    return container.getOverlappingFeedRanges(feedRange);
+                }
+
+                @Override
+                public Mono<PartitionKeyDefinition> getPartitionKeyDefinition(CosmosAsyncContainer container) {
+                    return container.getPartitionKeyDefinition();
+                }
+
+                @Override
+                public String getLinkWithoutTrailingSlash(CosmosAsyncContainer cosmosAsyncContainer) {
+                    return cosmosAsyncContainer.getLinkWithoutTrailingSlash();
                 }
             });
     }
