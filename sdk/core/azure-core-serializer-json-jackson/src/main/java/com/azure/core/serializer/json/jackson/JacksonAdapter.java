@@ -6,7 +6,6 @@ package com.azure.core.serializer.json.jackson;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.ImplUtils;
-import com.azure.core.implementation.ReflectionSerializable;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.serializer.json.jackson.implementation.ObjectMapperShim;
 import com.azure.core.util.CoreUtils;
@@ -18,6 +17,7 @@ import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.json.JsonSerializable;
+import com.azure.xml.XmlSerializable;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,6 +35,12 @@ import java.util.UUID;
 
 import static com.azure.core.implementation.ReflectionSerializable.deserializeAsJsonSerializable;
 import static com.azure.core.implementation.ReflectionSerializable.deserializeAsXmlSerializable;
+import static com.azure.core.implementation.ReflectionSerializable.serializeJsonSerializableIntoOutputStream;
+import static com.azure.core.implementation.ReflectionSerializable.serializeJsonSerializableToBytes;
+import static com.azure.core.implementation.ReflectionSerializable.serializeJsonSerializableToString;
+import static com.azure.core.implementation.ReflectionSerializable.serializeXmlSerializableIntoOutputStream;
+import static com.azure.core.implementation.ReflectionSerializable.serializeXmlSerializableToBytes;
+import static com.azure.core.implementation.ReflectionSerializable.serializeXmlSerializableToString;
 import static com.azure.core.implementation.ReflectionSerializable.supportsJsonSerializable;
 import static com.azure.core.implementation.ReflectionSerializable.supportsXmlSerializable;
 
@@ -104,13 +110,13 @@ public final class JacksonAdapter implements SerializerAdapter {
 
         if (encoding == SerializerEncoding.XML) {
             return supportsXmlSerializable(object.getClass())
-                ? ReflectionSerializable.serializeXmlSerializableToString(object)
+                ? serializeXmlSerializableToString((XmlSerializable<?>) object)
                 : getXmlMapper().writeValueAsString(object);
         } else if (encoding == SerializerEncoding.TEXT) {
             return object.toString();
         } else {
-            return ReflectionSerializable.supportsJsonSerializable(object.getClass())
-                ? ReflectionSerializable.serializeJsonSerializableToString((JsonSerializable<?>) object)
+            return supportsJsonSerializable(object.getClass())
+                ? serializeJsonSerializableToString((JsonSerializable<?>) object)
                 : mapper.writeValueAsString(object);
         }
     }
@@ -123,13 +129,13 @@ public final class JacksonAdapter implements SerializerAdapter {
 
         if (encoding == SerializerEncoding.XML) {
             return supportsXmlSerializable(object.getClass())
-                ? ReflectionSerializable.serializeXmlSerializableToBytes(object)
+                ? serializeXmlSerializableToBytes((XmlSerializable<?>) object)
                 : getXmlMapper().writeValueAsBytes(object);
         } else if (encoding == SerializerEncoding.TEXT) {
             return object.toString().getBytes(StandardCharsets.UTF_8);
         } else {
-            return ReflectionSerializable.supportsJsonSerializable(object.getClass())
-                ? ReflectionSerializable.serializeJsonSerializableToBytes((JsonSerializable<?>) object)
+            return supportsJsonSerializable(object.getClass())
+                ? serializeJsonSerializableToBytes((JsonSerializable<?>) object)
                 : mapper.writeValueAsBytes(object);
         }
     }
@@ -142,16 +148,15 @@ public final class JacksonAdapter implements SerializerAdapter {
 
         if (encoding == SerializerEncoding.XML) {
             if (supportsXmlSerializable(object.getClass())) {
-                ReflectionSerializable.serializeXmlSerializableIntoOutputStream(object, outputStream);
+                serializeXmlSerializableIntoOutputStream((XmlSerializable<?>) object, outputStream);
             } else {
                 getXmlMapper().writeValue(outputStream, object);
             }
         } else if (encoding == SerializerEncoding.TEXT) {
             outputStream.write(object.toString().getBytes(StandardCharsets.UTF_8));
         } else {
-            if (ReflectionSerializable.supportsJsonSerializable(object.getClass())) {
-                ReflectionSerializable.serializeJsonSerializableIntoOutputStream((JsonSerializable<?>) object,
-                    outputStream);
+            if (supportsJsonSerializable(object.getClass())) {
+                serializeJsonSerializableIntoOutputStream((JsonSerializable<?>) object, outputStream);
             } else {
                 mapper.writeValue(outputStream, object);
             }
