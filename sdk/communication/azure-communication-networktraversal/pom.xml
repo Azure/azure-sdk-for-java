@@ -20,9 +20,8 @@
 
   <name>Microsoft Azure Network Traversal client library for communication</name>
   <description>
-    This package contains APIs for application Network Traversal in Microsoft Azure Communication Services.
-    For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-networktraversal/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-identity/CHANGELOG.md.
-    Microsoft Azure Communication Network Traversal quickstart - https://docs.microsoft.com/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-java
+    Please note, this package has been deprecated and will no longer be maintained after 03/31/2024. 
+    Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
   </description>
   <licenses>
     <license>
