@@ -17,7 +17,7 @@ public final class HttpRequestMetadata {
     private int retryCount;
     private ClientLogger requestLogger;
     private boolean eagerlyConvertHeaders;
-    private ResponseHandlingMode responseHandlingMode;
+    private ResponseBodyMode responseBodyMode;
 
     /**
      * Creates an instance of {@link HttpRequestMetadata}.
@@ -112,28 +112,26 @@ public final class HttpRequestMetadata {
     /**
      * Gets the configuration indicating how the body of the resulting HTTP response should be handled.
      *
-     * <p>For more information about the options for handling an HTTP response body, see {@link ResponseHandlingMode}.
-     * </p>
+     * <p>For more information about the options for handling an HTTP response body, see {@link ResponseBodyMode}.</p>
      *
      * @return The configuration indicating how the body of the resulting HTTP response should be handled.
      */
-    public ResponseHandlingMode getResponseHandlingMode() {
-        return responseHandlingMode;
+    public ResponseBodyMode getResponseBodyMode() {
+        return responseBodyMode;
     }
 
     /**
      * Sets the configuration indicating how the body of the resulting HTTP response should be handled.
      *
-     * <p>For more information about the options for handling an HTTP response body, see {@link ResponseHandlingMode}.
-     * </p>
+     * <p>For more information about the options for handling an HTTP response body, see {@link ResponseBodyMode}.</p>
      *
-     * @param responseHandlingMode The configuration indicating how the body of the resulting HTTP response should be
+     * @param responseBodyMode The configuration indicating how the body of the resulting HTTP response should be
      * handled.
      *
      * @return The updated {@link HttpRequestMetadata} object.
      */
-    public HttpRequestMetadata setResponseHandlingMode(ResponseHandlingMode responseHandlingMode) {
-        this.responseHandlingMode = responseHandlingMode;
+    public HttpRequestMetadata setResponseBodyMode(ResponseBodyMode responseBodyMode) {
+        this.responseBodyMode = responseBodyMode;
 
         return this;
     }
@@ -149,7 +147,7 @@ public final class HttpRequestMetadata {
         copy.retryCount = retryCount;
         copy.requestLogger = requestLogger;
         copy.eagerlyConvertHeaders = eagerlyConvertHeaders;
-        copy.responseHandlingMode = responseHandlingMode;
+        copy.responseBodyMode = responseBodyMode;
 
         return copy;
     }

@@ -72,8 +72,8 @@ import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static com.generic.core.http.models.ResponseHandlingMode.DESERIALIZE;
-import static com.generic.core.http.models.ResponseHandlingMode.IGNORE;
+import static com.generic.core.http.models.ResponseBodyMode.DESERIALIZE;
+import static com.generic.core.http.models.ResponseBodyMode.IGNORE;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -288,7 +288,7 @@ public abstract class HttpClientTests {
     public void bufferedResponseCanBeReadMultipleTimes() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
-        request.getMetadata().setResponseHandlingMode(DESERIALIZE);
+        request.getMetadata().setResponseBodyMode(DESERIALIZE);
 
         try (Response<?> response = createHttpClient().send(request)) {
             // Read response twice using all accessors.
@@ -1888,7 +1888,7 @@ public abstract class HttpClientTests {
     public void bodyIsEmptyWhenIgnoreBodyIsSet() throws IOException {
         Service30 service = createService(Service30.class);
         RequestOptions requestOptions = new RequestOptions()
-            .setResponseHandlingMode(IGNORE);
+            .setResponseBodyMode(IGNORE);
         HttpBinJSON httpBinJSON = service.put(getServerUri(isSecure()), 42, requestOptions);
 
         assertNull(httpBinJSON);
@@ -1904,7 +1904,7 @@ public abstract class HttpClientTests {
     public void bodyIsEmptyWhenIgnoreBodyIsSetForStreamResponse() throws IOException {
         Service30 service = createService(Service30.class);
         RequestOptions requestOptions = new RequestOptions()
-            .setResponseHandlingMode(IGNORE);
+            .setResponseBodyMode(IGNORE);
         HttpBinJSON httpBinJSON = service.postStream(getServerUri(isSecure()), 42, requestOptions);
 
         assertNull(httpBinJSON);

@@ -116,7 +116,7 @@ public final class RequestOptions {
     };
     private Context context;
 
-    private ResponseHandlingMode responseHandlingMode;
+    private ResponseBodyMode responseBodyMode;
 
     /**
      * Creates a new instance of {@link RequestOptions}.
@@ -145,13 +145,12 @@ public final class RequestOptions {
     /**
      * Gets the configuration indicating how the body of the resulting HTTP response should be handled.
      *
-     * <p>For more information about the options for handling an HTTP response body, see {@link ResponseHandlingMode}.
-     * </p>
+     * <p>For more information about the options for handling an HTTP response body, see {@link ResponseBodyMode}.</p>
      *
      * @return The configuration indicating how the body of the resulting HTTP response should be handled.
      */
-    public ResponseHandlingMode getResponseHandlingMode() {
-        return responseHandlingMode;
+    public ResponseBodyMode getResponseBodyMode() {
+        return responseBodyMode;
     }
 
     /**
@@ -272,16 +271,15 @@ public final class RequestOptions {
     /**
      * Sets the configuration indicating how the body of the resulting HTTP response should be handled.
      *
-     * <p>For more information about the options for handling an HTTP response body, see {@link ResponseHandlingMode}.
-     * </p>
+     * <p>For more information about the options for handling an HTTP response body, see {@link ResponseBodyMode}.</p>
      *
-     * @param responseHandlingMode The configuration indicating how the body of the resulting HTTP response should be
+     * @param responseBodyMode The configuration indicating how the body of the resulting HTTP response should be
      * handled.
      *
      * @return The updated {@link RequestOptions} object.
      */
-    public RequestOptions setResponseHandlingMode(ResponseHandlingMode responseHandlingMode) {
-        this.responseHandlingMode = responseHandlingMode;
+    public RequestOptions setResponseBodyMode(ResponseBodyMode responseBodyMode) {
+        this.responseBodyMode = responseBodyMode;
 
         return this;
     }
