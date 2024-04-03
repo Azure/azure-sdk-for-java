@@ -161,7 +161,7 @@ Application Insights is available for local runs (as long as you provide `APPLIC
 
 You may choose to use [ApplicationInsights Java agent](https://learn.microsoft.com/azure/azure-monitor/app/opentelemetry-enable?tabs=java#install-the-client-library) if
 your test throughput (and amount of telemetry it generates) is relatively low.
-Since agent does a lot og things, it might create some noise during performance analysis and micro-optimizations.   
+Since agent does a lot of things, it might create some noise during performance analysis and micro-optimizations.   
 
 ### Logging
 
