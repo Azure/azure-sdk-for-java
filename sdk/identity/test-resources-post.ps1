@@ -27,6 +27,8 @@ $webappRootPom = "$webappRoot/pom.xml" | Resolve-Path
 
 $azCoreRootPom = "$PSScriptRoot/../core" | Resolve-Path
 
+$azSerRootPom = "$PSScriptRoot/../serialization" | Resolve-Path
+
 $azStorageRootPom = "$PSScriptRoot/../storage" | Resolve-Path
 
 $azIdentityRootPom = "$PSScriptRoot/azure-identity/pom.xml" | Resolve-Path
@@ -41,7 +43,7 @@ az account set --subscription $(getVariable('IDENTITY_SUBSCRIPTION_ID'))
 
 
 mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f $azBuildToolsRootPom | Write-Host
-mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azCoreRootPom/azure-json/pom.xml" | Write-Host
+mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azSerRootPom/azure-json/pom.xml" | Write-Host
 mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azCoreRootPom/azure-core/pom.xml" | Write-Host
 mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azCoreRootPom/azure-core-test/pom.xml" | Write-Host
 mvn clean install -DskipTests "-Drevap.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" -f "$azCoreRootPom/azure-core-http-netty/pom.xml" | Write-Host
