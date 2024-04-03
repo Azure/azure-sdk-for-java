@@ -5,7 +5,6 @@ package com.azure.core.implementation.util;
 import reactor.util.context.Context;
 
 import java.util.LinkedHashMap;
-import java.util.Optional;
 
 /**
  * An {@link InternalContext} implementation that holds no data.
@@ -37,7 +36,7 @@ final class InternalContext0 implements InternalContext {
     }
 
     @Override
-    public Optional<Object> getData(Object key) {
+    public Object getData(Object key) {
         return null;
     }
 

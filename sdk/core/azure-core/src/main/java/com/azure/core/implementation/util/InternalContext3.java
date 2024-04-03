@@ -6,7 +6,6 @@ import reactor.util.context.Context;
 
 import java.util.LinkedHashMap;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * An {@link InternalContext} implementation that holds three key-value pairs.
@@ -49,13 +48,13 @@ final class InternalContext3 implements InternalContext {
     }
 
     @Override
-    public Optional<Object> getData(Object key) {
+    public Object getData(Object key) {
         if (Objects.equals(key, key3)) {
-            return Optional.ofNullable(value3);
+            return value3;
         } else if (Objects.equals(key, key2)) {
-            return Optional.ofNullable(value2);
+            return value2;
         } else if (Objects.equals(key, key1)) {
-            return Optional.ofNullable(value1);
+            return value1;
         }
 
         return null;
@@ -70,19 +69,7 @@ final class InternalContext3 implements InternalContext {
 
     @Override
     public Context putIntoReactorContext(Context reactorContext) {
-        if (value1 != null) {
-            reactorContext = reactorContext.put(key1, value1);
-        }
-
-        if (value2 != null) {
-            reactorContext = reactorContext.put(key2, value2);
-        }
-
-        if (value3 != null) {
-            reactorContext = reactorContext.put(key3, value3);
-        }
-
-        return reactorContext;
+        return reactorContext.putNonNull(key1, value1).putNonNull(key2, value2).putNonNull(key3, value3);
     }
 
     @Override

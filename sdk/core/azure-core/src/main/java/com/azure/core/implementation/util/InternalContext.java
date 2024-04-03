@@ -58,7 +58,7 @@ public interface InternalContext {
      * @param key The key to get the value for.
      * @return The value for the given key, or an empty {@link Optional} if the key is not found.
      */
-    Optional<Object> getData(Object key);
+    Object getData(Object key);
 
     /**
      * Get all the key-value pairs in the internal context.

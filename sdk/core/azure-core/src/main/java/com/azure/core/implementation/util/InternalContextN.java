@@ -6,12 +6,14 @@ import com.azure.core.util.CoreUtils;
 import reactor.util.context.Context;
 
 import java.util.LinkedHashMap;
-import java.util.Optional;
+import java.util.Objects;
 
 /**
  * An {@link InternalContext} implementation that holds N key-value pairs.
  */
 final class InternalContextN implements InternalContext {
+    private static final Object SENTINEL = new Object();
+
     private final InternalContext[] contexts;
     private final int count;
 
@@ -74,18 +76,18 @@ final class InternalContextN implements InternalContext {
     }
 
     @Override
-    public Optional<Object> getData(Object key) {
-        Optional<Object> data = null;
+    public Object getData(Object key) {
+        Object data = SENTINEL;
 
         // Iterate in reverse order to get the most recent data first.
         for (int i = contexts.length - 1; i >= 0; i--) {
             data = contexts[i].getData(key);
-            if (data != null) {
+            if (!Objects.equals(SENTINEL, data)) {
                 return data;
             }
         }
 
-        return data;
+        return null;
     }
 
     @Override

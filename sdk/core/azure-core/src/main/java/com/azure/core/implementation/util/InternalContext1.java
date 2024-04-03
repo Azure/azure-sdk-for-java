@@ -6,7 +6,6 @@ import reactor.util.context.Context;
 
 import java.util.LinkedHashMap;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * An {@link InternalContext} that holds a single key-value pair.
@@ -41,8 +40,8 @@ final class InternalContext1 implements InternalContext {
     }
 
     @Override
-    public Optional<Object> getData(Object key) {
-        return Objects.equals(this.key, key) ? Optional.ofNullable(value) : null;
+    public Object getData(Object key) {
+        return Objects.equals(this.key, key) ? value : null;
     }
 
     @Override
@@ -52,11 +51,7 @@ final class InternalContext1 implements InternalContext {
 
     @Override
     public Context putIntoReactorContext(Context reactorContext) {
-        if (value != null) {
-            return reactorContext.put(key, value);
-        }
-
-        return reactorContext;
+        return reactorContext.putNonNull(key, value);
     }
 
     @Override
