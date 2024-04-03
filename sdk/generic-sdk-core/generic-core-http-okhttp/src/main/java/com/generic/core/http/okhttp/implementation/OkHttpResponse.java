@@ -18,25 +18,23 @@ public class OkHttpResponse extends HttpResponse<BinaryData> {
     private static final BinaryData EMPTY_BODY = BinaryData.fromBytes(new byte[0]);
 
     private final ResponseBody responseBody;
+    private BinaryData body;
 
     public OkHttpResponse(okhttp3.Response response, HttpRequest request, boolean eagerlyConvertHeaders,
-                          byte[] bodyBytes) {
+                          BinaryData body) {
         super(request,
             response.code(),
             eagerlyConvertHeaders
                 ? fromOkHttpHeaders(response.headers())
                 : new OkHttpToCoreHttpHeadersWrapper(response.headers()),
-            bodyBytes == null
-                ? response.body() == null
-                    ? EMPTY_BODY
-                    : BinaryData.fromStream(response.body().byteStream())
-                : BinaryData.fromBytes(bodyBytes));
+            null);
         // innerResponse.body() getter will not return null for server returned responses.
         // It can be null:
         // [a]. if response is built manually with null body (e.g. for mocking)
         // [b]. for the cases described here
         // [ref](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response/body/).
         this.responseBody = response.body();
+        this.body = body;
     }
 
     /**
@@ -66,6 +64,24 @@ public class OkHttpResponse extends HttpResponse<BinaryData> {
             httpHeaders.add(HttpHeaderName.fromString(nameValuePair.getFirst()), nameValuePair.getSecond()));
 
         return httpHeaders;
+    }
+
+    /**
+     * Gets the {@link BinaryData} that represents the body of the response.
+     *
+     * @return The {@link BinaryData} containing the response body.
+     */
+    @Override
+    public BinaryData getBody() {
+        if (body == null) {
+            if (super.getValue() == null) {
+                body = EMPTY_BODY;
+            } else {
+                body = super.getValue();
+            }
+        }
+
+        return body;
     }
 
     @Override

@@ -73,14 +73,19 @@ public class HttpClientTestsServer {
                 resp.setStatus(Integer.parseInt(path.split("/", 3)[2]));
                 resp.flushBuffer();
             } else if (post && path.startsWith("/post")) {
-                sendSimpleHttpBinResponse(req, resp, new String(requestBody, StandardCharsets.UTF_8));
+                sendSimpleHttpBinResponse(req, resp, new String(requestBody, StandardCharsets.UTF_8),
+                    "application/json");
+            } else if (post && path.startsWith("/stream")) {
+                sendSimpleHttpBinResponse(req, resp, new String(requestBody, StandardCharsets.UTF_8),
+                    "application/octet-stream");
             } else if (((get || head) && path.startsWith("/anything"))
                 || (put && path.startsWith("/put"))
                 || (delete && path.startsWith("/delete"))
                 || (patch && path.startsWith("/patch"))
                 || (get && path.startsWith("/get"))) {
                 // Stub that will return a response with a body that contains the URL string as-is.
-                sendSimpleHttpBinResponse(req, resp, new String(requestBody, StandardCharsets.UTF_8));
+                sendSimpleHttpBinResponse(req, resp, new String(requestBody, StandardCharsets.UTF_8),
+                    "application/json");
             } else if (head && path.startsWith("/voideagerreadoom")) {
                 // Validates a bug where a void, or Void, response type would previously attempt to eagerly read the
                 // response body. This resulted in OutOfMemoryErrors or high memory usage in APIs such as the
@@ -197,7 +202,7 @@ public class HttpClientTestsServer {
     }
 
     private static void sendSimpleHttpBinResponse(HttpServletRequest req, HttpServletResponse resp,
-                                                  String requestString) throws IOException {
+                                                  String requestString, String contentType) throws IOException {
         HttpBinJSON responseBody = new HttpBinJSON();
 
         responseBody.url(cleanseUrl(req));
@@ -218,9 +223,8 @@ public class HttpClientTestsServer {
             responseBody.headers(headers);
         }
 
-        handleRequest(resp, "application/json", SERIALIZER.serializeToBytes(responseBody));
+        handleRequest(resp, contentType, SERIALIZER.serializeToBytes(responseBody));
     }
-
 
     private static String cleanseUrl(HttpServletRequest req) {
         StringBuilder builder = new StringBuilder();

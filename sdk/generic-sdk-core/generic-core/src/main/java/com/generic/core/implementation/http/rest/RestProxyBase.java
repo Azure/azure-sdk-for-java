@@ -5,18 +5,18 @@ package com.generic.core.implementation.http.rest;
 
 import com.generic.core.http.exception.HttpExceptionType;
 import com.generic.core.http.exception.HttpResponseException;
+import com.generic.core.http.models.ContentType;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpHeaders;
+import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.models.Response;
+import com.generic.core.http.models.ResponseBodyMode;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.implementation.ReflectionSerializable;
 import com.generic.core.implementation.ReflectiveInvoker;
 import com.generic.core.implementation.TypeUtil;
-import com.generic.core.http.models.ContentType;
-import com.generic.core.implementation.http.HttpResponseAccessHelper;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
 import com.generic.core.implementation.http.serializer.MalformedValueException;
 import com.generic.core.implementation.util.UrlBuilder;
@@ -27,6 +27,7 @@ import com.generic.core.util.serializer.ObjectSerializer;
 import com.generic.json.JsonSerializable;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -34,6 +35,10 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.function.Consumer;
+
+import static com.generic.core.http.models.ResponseBodyMode.BUFFER;
+import static com.generic.core.http.models.ResponseBodyMode.IGNORE;
+import static com.generic.core.http.models.ResponseBodyMode.STREAM;
 
 public abstract class RestProxyBase {
     static final ResponseConstructorsCache RESPONSE_CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
@@ -70,9 +75,32 @@ public abstract class RestProxyBase {
 
             request.getMetadata().setContext(context);
             request.getMetadata().setRequestLogger(methodParser.getMethodLogger());
-            request.getMetadata().setEagerlyConvertHeaders(methodParser.isHeadersEagerlyConverted());
-            request.getMetadata().setEagerlyReadResponse(methodParser.isResponseEagerlyRead());
-            request.getMetadata().setIgnoreResponseBody(methodParser.isResponseBodyIgnored());
+
+            ResponseBodyMode responseBodyMode = options == null ? null : options.getResponseBodyMode();
+
+            if (responseBodyMode == null) {
+                if (methodParser.getHttpMethod() == HttpMethod.HEAD) {
+                    responseBodyMode = IGNORE;
+                } else {
+                    Type returnType = methodParser.getReturnType();
+
+                    if (TypeUtil.isTypeOrSubTypeOf(returnType, Response.class)) {
+                        returnType = TypeUtil.getRestResponseBodyType(returnType);
+                    }
+
+                    if (TypeUtil.isTypeOrSubTypeOf(returnType, InputStream.class)) {
+                        responseBodyMode = STREAM;
+                    } else if (TypeUtil.isTypeOrSubTypeOf(returnType, Void.TYPE)
+                        || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
+
+                        responseBodyMode = BUFFER;
+                    }
+                }
+            }
+
+            // If responseBodyHandling is still null, we'll use the response's Content-Type to determine how to read its
+            // body: 'application/octet-stream' will use STREAM and everything else will use BUFFER.
+            request.getMetadata().setResponseBodyMode(responseBodyMode);
 
             return invoke(proxy, method, options, requestCallback, methodParser, request);
         } catch (IOException e) {
@@ -95,7 +123,7 @@ public abstract class RestProxyBase {
         // Response or rely on reflection to create an appropriate Response subtype.
         if (clazz.equals(Response.class)) {
             // Return the Response.
-            return HttpResponseAccessHelper.setValue((HttpResponse<?>) response, bodyAsObject);
+            return response;
         } else {
             // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response
             // subtype.

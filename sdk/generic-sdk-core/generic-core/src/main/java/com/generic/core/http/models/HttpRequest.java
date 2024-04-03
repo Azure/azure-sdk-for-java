@@ -9,6 +9,7 @@ import com.generic.core.util.binarydata.BinaryData;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
 
 import static com.generic.core.annotation.TypeConditions.FLUENT;
 
@@ -189,10 +190,14 @@ public class HttpRequest {
      * Set the request metadata.
      *
      * @param metadata The request metadata.
-     * @return This HttpRequest.
+     *
+     * @return The updated {@link HttpRequest}.
      */
     public HttpRequest setMetadata(HttpRequestMetadata metadata) {
+        Objects.requireNonNull(metadata, "'metadata' cannot be null");
+
         this.metadata = metadata;
+
         return this;
     }
 

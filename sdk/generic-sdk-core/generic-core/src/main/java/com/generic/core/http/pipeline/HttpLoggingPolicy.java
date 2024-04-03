@@ -10,6 +10,7 @@ import com.generic.core.http.models.HttpLogOptions;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.Response;
+import com.generic.core.implementation.http.HttpResponseAccessHelper;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.LoggingKeys;
 import com.generic.core.util.ClientLogger;
@@ -23,6 +24,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.generic.core.http.models.ContentType.APPLICATION_OCTET_STREAM;
 import static com.generic.core.http.models.HttpHeaderName.CLIENT_REQUEST_ID;
 import static com.generic.core.http.models.HttpHeaderName.TRACEPARENT;
 
@@ -32,7 +34,6 @@ import static com.generic.core.http.models.HttpHeaderName.TRACEPARENT;
 public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
-    private static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
     private static final ClientLogger LOGGER = new ClientLogger(HttpLoggingPolicy.class);
     private final HttpLogOptions.HttpLogDetailLevel httpLogDetailLevel;
     private final Set<HttpHeaderName> allowedHeaderNames;
@@ -369,6 +370,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         private LoggingHttpResponse(Response<T> actualResponse, ClientLogger.LoggingEventBuilder logBuilder) {
             super(actualResponse.getRequest(), actualResponse.getStatusCode(), actualResponse.getHeaders(),
                 actualResponse.getValue());
+
+            HttpResponseAccessHelper.setBody(this, actualResponse.getBody());
 
             this.logBuilder = logBuilder;
         }

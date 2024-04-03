@@ -656,36 +656,11 @@ public class SwaggerMethodParserTests {
     }
 
     private static Stream<Arguments> isReturnTypeDecodableSupplier() {
-        return returnTypeSupplierForDecodableAndEagerReading(true, false, false);
+        return returnTypeSupplierForDecodable(true, false, false);
     }
 
-    @ParameterizedTest
-    @MethodSource("isResponseEagerlyReadSupplier")
-    public void isResponseEagerlyRead(Type returnType, boolean expected) {
-        Type unwrappedReturnType = SwaggerMethodParser.unwrapReturnType(returnType);
-
-        assertEquals(expected, SwaggerMethodParser.isResponseEagerlyRead(unwrappedReturnType));
-    }
-
-    private static Stream<Arguments> isResponseEagerlyReadSupplier() {
-        return returnTypeSupplierForDecodableAndEagerReading(true, false, false);
-    }
-
-    @ParameterizedTest
-    @MethodSource("isResponseBodyIgnoredSupplier")
-    public void isResponseBodyIgnored(Type returnType, boolean expected) {
-        Type unwrappedReturnType = SwaggerMethodParser.unwrapReturnType(returnType);
-
-        assertEquals(expected, SwaggerMethodParser.isResponseBodyIgnored(unwrappedReturnType));
-    }
-
-    private static Stream<Arguments> isResponseBodyIgnoredSupplier() {
-        return returnTypeSupplierForDecodableAndEagerReading(false, false, true);
-    }
-
-    private static Stream<Arguments> returnTypeSupplierForDecodableAndEagerReading(boolean nonBinaryTypeStatus,
-                                                                                    boolean binaryTypeStatus,
-                                                                                    boolean voidTypeStatus) {
+    private static Stream<Arguments> returnTypeSupplierForDecodable(boolean nonBinaryTypeStatus,
+                                                                    boolean binaryTypeStatus, boolean voidTypeStatus) {
         return Stream.of(
             // Unknown response type can't be determined to be decodable.
             Arguments.of(null, false),

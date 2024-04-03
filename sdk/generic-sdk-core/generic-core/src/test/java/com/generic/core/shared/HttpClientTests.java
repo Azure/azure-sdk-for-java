@@ -72,9 +72,12 @@ import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import static com.generic.core.http.models.ResponseBodyMode.DESERIALIZE;
+import static com.generic.core.http.models.ResponseBodyMode.IGNORE;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -285,7 +288,7 @@ public abstract class HttpClientTests {
     public void bufferedResponseCanBeReadMultipleTimes() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
-        request.getMetadata().setEagerlyReadResponse(true);
+        request.getMetadata().setResponseBodyMode(DESERIALIZE);
 
         try (Response<?> response = getHttpClient().send(request)) {
             // Read response twice using all accessors.
@@ -1844,6 +1847,72 @@ public abstract class HttpClientTests {
             (url, service29) -> service29.headVoid(url),
             (url, service29) -> service29.headResponseVoid(url)
         );
+    }
+
+    @ServiceInterface(name = "Service30", host = "{url}")
+    interface Service30 {
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {200})
+        HttpBinJSON put(@HostParam("url") String url, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody,
+                        RequestOptions requestOptions);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {200})
+        Response<HttpBinJSON> putResponse(@HostParam("url") String url,
+                                          @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody,
+                                          RequestOptions requestOptions);
+
+        @HttpRequestInformation(method = HttpMethod.POST, path = "stream", expectedStatusCodes = {200})
+        HttpBinJSON postStream(@HostParam("url") String url, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody,
+                               RequestOptions requestOptions);
+
+        @HttpRequestInformation(method = HttpMethod.POST, path = "stream", expectedStatusCodes = {200})
+        Response<HttpBinJSON> postStreamResponse(@HostParam("url") String url,
+                                                @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody,
+                                                RequestOptions requestOptions);
+    }
+
+    @Test
+    public void bodyIsPresentWhenNoBodyHandlingOptionIsSet() throws IOException {
+        Service30 service = createService(Service30.class);
+        HttpBinJSON httpBinJSON = service.put(getServerUri(isSecure()), 42, null);
+
+        assertNotNull(httpBinJSON);
+
+        try (Response<HttpBinJSON> response = service.putResponse(getServerUri(isSecure()), 42, null)) {
+            assertNotNull(response.getBody());
+            assertNotEquals(0, response.getBody().toBytes().length);
+            assertNotNull(response.getValue());
+        }
+    }
+
+    @Test
+    public void bodyIsEmptyWhenIgnoreBodyIsSet() throws IOException {
+        Service30 service = createService(Service30.class);
+        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(IGNORE);
+        HttpBinJSON httpBinJSON = service.put(getServerUri(isSecure()), 42, requestOptions);
+
+        assertNull(httpBinJSON);
+
+        try (Response<HttpBinJSON> response = service.putResponse(getServerUri(isSecure()), 42, requestOptions)) {
+            assertNotNull(response.getBody());
+            assertEquals(0, response.getBody().toBytes().length);
+            assertNull(response.getValue());
+        }
+    }
+
+    @Test
+    public void bodyIsEmptyWhenIgnoreBodyIsSetForStreamResponse() throws IOException {
+        Service30 service = createService(Service30.class);
+        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(IGNORE);
+        HttpBinJSON httpBinJSON = service.postStream(getServerUri(isSecure()), 42, requestOptions);
+
+        assertNull(httpBinJSON);
+
+        try (Response<HttpBinJSON> response =
+                 service.postStreamResponse(getServerUri(isSecure()), 42, requestOptions)) {
+            assertNotNull(response.getBody());
+            assertEquals(0, response.getBody().toBytes().length);
+            assertNull(response.getValue());
+        }
     }
 
     // Helpers

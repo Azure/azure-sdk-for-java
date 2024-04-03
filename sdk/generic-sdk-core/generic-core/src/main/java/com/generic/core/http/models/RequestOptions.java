@@ -116,6 +116,8 @@ public final class RequestOptions {
     };
     private Context context;
 
+    private ResponseBodyMode responseBodyMode;
+
     /**
      * Creates a new instance of {@link RequestOptions}.
      */
@@ -138,6 +140,17 @@ public final class RequestOptions {
      */
     public Context getContext() {
         return context;
+    }
+
+    /**
+     * Gets the configuration indicating how the body of the resulting HTTP response should be handled.
+     *
+     * <p>For more information about the options for handling an HTTP response body, see {@link ResponseBodyMode}.</p>
+     *
+     * @return The configuration indicating how the body of the resulting HTTP response should be handled.
+     */
+    public ResponseBodyMode getResponseBodyMode() {
+        return responseBodyMode;
     }
 
     /**
@@ -251,6 +264,22 @@ public final class RequestOptions {
      */
     public RequestOptions setContext(Context context) {
         this.context = context;
+
+        return this;
+    }
+
+    /**
+     * Sets the configuration indicating how the body of the resulting HTTP response should be handled.
+     *
+     * <p>For more information about the options for handling an HTTP response body, see {@link ResponseBodyMode}.</p>
+     *
+     * @param responseBodyMode The configuration indicating how the body of the resulting HTTP response should be
+     * handled.
+     *
+     * @return The updated {@link RequestOptions} object.
+     */
+    public RequestOptions setResponseBodyMode(ResponseBodyMode responseBodyMode) {
+        this.responseBodyMode = responseBodyMode;
 
         return this;
     }

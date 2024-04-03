@@ -216,7 +216,7 @@ public class DefaultHttpClientTest {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
         try (Response<?> response = getResponse(client, "/empty", Context.EMPTY)) {
-            assertEquals(0L, response.getBody().getLength());
+            assertEquals(0L, response.getBody().toBytes().length);
         }
     }
 

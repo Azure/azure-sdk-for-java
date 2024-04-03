@@ -95,45 +95,6 @@ public interface HttpResponseDecodeData {
     }
 
     /**
-     * Whether the network response body should be eagerly read based on its {@link #getReturnType() returnType}.
-     * <p>
-     * The following types, including subtypes, aren't eagerly read from the network:
-     * <ul>
-     * <li>BinaryData</li>
-     * <li>byte[]</li>
-     * <li>ByteBuffer</li>
-     * <li>InputStream</li>
-     * <li>Void</li>
-     * <li>void</li>
-     * </ul>
-     *
-     * cracked open and their generic types are inspected for being one of the types above.
-     *
-     * @return Whether the network response body should be eagerly read.
-     */
-    default boolean isResponseEagerlyRead() {
-        return SwaggerMethodParser.isResponseEagerlyRead(SwaggerMethodParser.unwrapReturnType(getReturnType()));
-    }
-
-    /**
-     * Whether the network response body will be ignored based on its {@link #getReturnType() returnType}.
-     * <p>
-     * The following types, including subtypes, ignored the network response body:
-     * <ul>
-     * <li>Void</li>
-     * <li>void</li>
-     * </ul>
-     *
-     * cracked open and their generic types are inspected for being one of the types above.
-     *
-     * @return Whether the network response body will be ignored.
-     */
-    default boolean isResponseBodyIgnored() {
-        return SwaggerMethodParser.isResponseBodyIgnored(SwaggerMethodParser.unwrapReturnType(getReturnType()));
-
-    }
-
-    /**
      * Whether the return type contains strongly-typed headers.
      * <p>
      * If the response contains strongly-typed headers this is an indication to the HttpClient that the headers should
