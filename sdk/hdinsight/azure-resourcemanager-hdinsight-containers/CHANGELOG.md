@@ -1,5 +1,15 @@
 # Release History
 
+## 1.0.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.0.0-beta.2 (2024-04-03)
 
 - Azure Resource Manager HDInsightContainers client library for Java. This package contains Microsoft Azure SDK for HDInsightContainers Management SDK. HDInsight Containers Management Client. Package tag package-preview-2023-11. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
