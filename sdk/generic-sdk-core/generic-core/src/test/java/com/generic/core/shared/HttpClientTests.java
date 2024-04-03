@@ -1887,8 +1887,7 @@ public abstract class HttpClientTests {
     @Test
     public void bodyIsEmptyWhenIgnoreBodyIsSet() throws IOException {
         Service30 service = createService(Service30.class);
-        RequestOptions requestOptions = new RequestOptions()
-            .setResponseBodyMode(IGNORE);
+        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(IGNORE);
         HttpBinJSON httpBinJSON = service.put(getServerUri(isSecure()), 42, requestOptions);
 
         assertNull(httpBinJSON);
@@ -1903,8 +1902,7 @@ public abstract class HttpClientTests {
     @Test
     public void bodyIsEmptyWhenIgnoreBodyIsSetForStreamResponse() throws IOException {
         Service30 service = createService(Service30.class);
-        RequestOptions requestOptions = new RequestOptions()
-            .setResponseBodyMode(IGNORE);
+        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(IGNORE);
         HttpBinJSON httpBinJSON = service.postStream(getServerUri(isSecure()), 42, requestOptions);
 
         assertNull(httpBinJSON);

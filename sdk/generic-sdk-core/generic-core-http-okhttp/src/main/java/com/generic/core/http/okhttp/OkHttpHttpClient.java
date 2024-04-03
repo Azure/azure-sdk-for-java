@@ -141,8 +141,8 @@ class OkHttpHttpClient implements HttpClient {
         return contentLength;
     }
 
-    private Response<?> toResponse(HttpRequest request, okhttp3.Response response,
-                                   ResponseBodyMode responseBodyMode, boolean eagerlyConvertHeaders) throws IOException {
+    private Response<?> toResponse(HttpRequest request, okhttp3.Response response, ResponseBodyMode responseBodyMode,
+                                   boolean eagerlyConvertHeaders) throws IOException {
         okhttp3.Headers responseHeaders = response.headers();
 
         if (isTextEventStream(responseHeaders) && response.body() != null) {

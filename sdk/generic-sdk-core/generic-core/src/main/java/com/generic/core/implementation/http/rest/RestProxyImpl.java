@@ -124,8 +124,7 @@ public class RestProxyImpl extends RestProxyBase {
                 return createResponseIfNecessary(response, entityType, null);
             } else {
                 HttpRequestMetadata metadata = response.getRequest().getMetadata();
-                ResponseBodyMode responseBodyMode =
-                    metadata == null ? null : metadata.getResponseBodyMode();
+                ResponseBodyMode responseBodyMode = metadata == null ? null : metadata.getResponseBodyMode();
 
                 if (responseBodyMode == DESERIALIZE) {
                     HttpResponseAccessHelper.setValue((HttpResponse<?>) response,
