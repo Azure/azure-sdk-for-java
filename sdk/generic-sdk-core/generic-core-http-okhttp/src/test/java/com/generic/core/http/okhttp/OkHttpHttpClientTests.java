@@ -106,7 +106,7 @@ public class OkHttpHttpClientTests {
 
     @Test
     public void testServerShutsDownSocketShouldPushErrorToContentFlowable() {
-        HttpClient client = new OkHttpHttpClientProvider().createInstance();
+        HttpClient client = new OkHttpHttpClientProvider().getSharedInstance();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, "/connectionClose"));
 
         assertThrows(UncheckedIOException.class, () -> client.send(request).getBody().toBytes());
@@ -115,7 +115,7 @@ public class OkHttpHttpClientTests {
     @Test
     public void testConcurrentRequests() throws InterruptedException {
         int numRequests = 100; // 100 = 1GB of data read
-        HttpClient client = new OkHttpHttpClientProvider().createInstance();
+        HttpClient client = new OkHttpHttpClientProvider().getSharedInstance();
 
         ForkJoinPool pool = new ForkJoinPool();
         List<Callable<Void>> requests = new ArrayList<>(numRequests);
@@ -139,7 +139,7 @@ public class OkHttpHttpClientTests {
 
     @Test
     public void validateHeadersReturnAsIs() {
-        HttpClient client = new OkHttpHttpClientProvider().createInstance();
+        HttpClient client = new OkHttpHttpClientProvider().getSharedInstance();
         HttpHeaderName singleValueHeaderName = HttpHeaderName.fromString("singleValue");
         final String singleValueHeaderValue = "value";
         HttpHeaderName multiValueHeaderName = HttpHeaderName.fromString("Multi-value");

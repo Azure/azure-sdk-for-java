@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Helper class that unifies SPI instances creation.
@@ -86,19 +87,20 @@ public final class Providers<TProvider, TInstance> {
     }
 
     /**
-     * Creates instance of service.
+     * Creates an instance of a service.
      *
-     * @param createInstance Callback that creates service instance with resolved provider.
-     * @param fallbackInstance Service instance to return if provider is not found. Usually a no-op implementation. If
-     * {@code null} and no provider (satisfying all conditions) is found, throws {@link IllegalStateException}.
+     * @param createInstance Callback that creates a service instance with the resolved provider.
+     * @param fallbackSupplier Supplier to get a fallback instance from if a provider to create a service instance is
+     * not found. Usually a no-op implementation.
      * @param selectedImplementation Explicit provider implementation class. It still must be registered in
      * META-INF/services.
      *
-     * @return Created service instance.
+     * @return The created service instance.
      *
-     * @throws IllegalStateException when requested provider cannot be found and fallback instance is {@code null}.
+     * @throws IllegalStateException when the requested provider cannot be found and the fallback supplier or the value
+     * it returns are {@code null}.
      */
-    public TInstance create(Function<TProvider, TInstance> createInstance, TInstance fallbackInstance,
+    public TInstance create(Function<TProvider, TInstance> createInstance, Supplier<TInstance> fallbackSupplier,
                             Class<? extends TProvider> selectedImplementation) {
         TProvider provider;
         String implementationName;
@@ -108,11 +110,13 @@ public final class Providers<TProvider, TInstance> {
             provider = defaultProvider;
 
             if (provider == null) {
-                if (fallbackInstance == null) {
+                TInstance instance = fallbackSupplier == null ? null : fallbackSupplier.get();
+
+                if (instance == null) {
                     throw LOGGER.logThrowableAsError(new IllegalStateException(noProviderMessage));
                 }
 
-                return fallbackInstance;
+                return instance;
             }
         } else {
             implementationName = selectedImplementation == null ? defaultImplementation

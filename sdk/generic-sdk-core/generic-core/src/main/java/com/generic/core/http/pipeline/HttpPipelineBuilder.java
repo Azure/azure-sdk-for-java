@@ -4,6 +4,7 @@
 package com.generic.core.http.pipeline;
 
 import com.generic.core.http.client.HttpClient;
+import com.generic.core.util.configuration.Configuration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,7 +66,11 @@ public class HttpPipelineBuilder {
         if (httpClient != null) {
             client = httpClient;
         } else {
-            client = HttpClient.createDefault();
+            if (Configuration.getGlobalConfiguration().get("ENABLE_HTTP_CLIENT_SHARING", Boolean.TRUE)) {
+                client = HttpClient.getSharedInstance();
+            } else {
+                client = HttpClient.getNewInstance();
+            }
         }
 
         return new HttpPipeline(client, policies);

@@ -23,8 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class OkHttpHttpClientProviderTests {
     @Test
     public void getBaseClient() {
-        OkHttpHttpClient httpClient = (OkHttpHttpClient) new OkHttpHttpClientProvider()
-            .createInstance();
+        OkHttpHttpClient httpClient = (OkHttpHttpClient) new OkHttpHttpClientProvider().getSharedInstance();
 
         ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
 
@@ -64,9 +63,9 @@ public class OkHttpHttpClientProviderTests {
         assertEquals(expectedTimeout, httpClient.httpClient.readTimeoutMillis());
     }
 
-    class AnotherOkHttpHttpClientProvider implements HttpClientProvider {
+    static class AnotherOkHttpHttpClientProvider extends HttpClientProvider {
         @Override
-        public HttpClient createInstance() {
+        public HttpClient getNewInstance() {
             return new OkHttpHttpClientBuilder().build();
         }
 

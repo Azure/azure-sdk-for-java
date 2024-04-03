@@ -20,11 +20,38 @@ public interface HttpClient {
     Response<?> send(HttpRequest request);
 
     /**
-     * Creates a new {@link HttpClient} instance.
+     * Get a new instance of the {@link HttpClient} that the {@link HttpClientProvider} loaded from the classpath is
+     * configured to create.
      *
-     * @return A new {@link HttpClient} instance.
+     * <p>If no {@link HttpClientProvider} can be found on the classpath, a new instance of the default
+     * {@link HttpClient} implementation will be returned instead.
+     *
+     * @return A new instance of {@link HttpClient} that the {@link HttpClientProvider} loaded from the classpath is
+     * configured to create.
      */
-    static HttpClient createDefault() {
-        return HttpClientProviders.createInstance();
+    static HttpClient getNewInstance() {
+        return HttpClientProvider.getProviders().create(HttpClientProvider::getNewInstance,
+            () -> new DefaultHttpClientBuilder().build(), null);
+    }
+
+    /**
+     * Get a shared instance of the {@link HttpClient} that the {@link HttpClientProvider} loaded from the classpath is
+     * configured to create.
+     *
+     * <p>If no {@link HttpClientProvider} can be found on the classpath, a shared instance of the default
+     * {@link HttpClient} implementation will be returned instead.
+     *
+     * @return A shared instance of {@link HttpClient} that the {@link HttpClientProvider} loaded from the classpath is
+     * configured to create.
+     */
+    static HttpClient getSharedInstance() {
+        return HttpClientProvider.getProviders().create(HttpClientProvider::getSharedInstance,
+            () -> {
+                if (HttpClientProvider.sharedHttpClient == null) {
+                    HttpClientProvider.sharedHttpClient = new DefaultHttpClientBuilder().build();
+                }
+
+                return HttpClientProvider.sharedHttpClient;
+            }, null);
     }
 }

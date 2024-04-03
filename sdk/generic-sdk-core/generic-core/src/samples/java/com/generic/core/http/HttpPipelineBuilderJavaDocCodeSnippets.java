@@ -21,7 +21,7 @@ public class HttpPipelineBuilderJavaDocCodeSnippets {
     public void defaultHttpClientWithRetryPolicyBuild() {
         // BEGIN: com.generic.core.http.HttpPipelineBuilder.defaultHttpClientWithRetryPolicy
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(HttpClient.createDefault())
+            .httpClient(HttpClient.getNewInstance())
             .policies(new HttpRetryPolicy())
             .build();
         // END: com.generic.core.http.HttpPipelineBuilder.defaultHttpClientWithRetryPolicy
