@@ -69,7 +69,7 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
     @Override
     JsonSerializable getSerializedOperationInternal(CosmosItemSerializer clientItemSerializer) {
         final JsonSerializable jsonSerializable = new JsonSerializable();
-        this.effectiveItemSerializer = requestOptions.getEffectiveItemSerializer() != null
+        this.effectiveItemSerializer = requestOptions != null && requestOptions.getEffectiveItemSerializer() != null
             ? requestOptions.getEffectiveItemSerializer()
             : clientItemSerializer != null ? clientItemSerializer : CosmosItemSerializer.DEFAULT_SERIALIZER;
 
