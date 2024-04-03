@@ -11,6 +11,7 @@
 
 #### Other Changes
 * Only call System.exit in `DiagnosticsProvider` for `Error` scenario. Also add `System.err` for `Error` cases. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
+* Added partition key helper functions to `PartitionKeyBuilder` that are needed for `azure-spring-data-cosmos`. - See [PR 39213](https://github.com/Azure/azure-sdk-for-java/pull/39213)
 
 ### 4.53.3-hotfix (2024-03-07)
 

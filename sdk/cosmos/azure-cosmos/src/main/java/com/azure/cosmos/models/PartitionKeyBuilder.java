@@ -6,13 +6,17 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.PartitionKeyHelper;
 import com.azure.cosmos.implementation.Undefined;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Builder for partition keys.
@@ -130,29 +134,28 @@ public final class PartitionKeyBuilder {
      * @return The PartitionKey
      */
     public static PartitionKey fromObjectArray(Object[] values, boolean strict) {
-        if (values == null) {
-            throw new IllegalArgumentException("values can't be null");
+        checkNotNull(values, "Argument 'values' must not be null.");
+        checkNotNull(strict, "Argument 'strict' must not be null.");
+        if (values.length == 0) {
+            throw new NullPointerException("Argument 'values' must not be null.");
         }
         return new PartitionKey(PartitionKeyInternal.fromObjectArray(values, strict));
     }
 
     /**
      * Returns the PartitionKey extracted from the document by PartitionKeyHelper
-     * @param document The JsonSerializable object to get the PartitionKey value from
+     * @param item The JsonSerializable object to get the PartitionKey value from
      * @param partitionKeyDefinition The PartitionKeyDefinition to use to extract the PartitionKey value
      * @return The PartitionKey
      */
-    public static PartitionKey extractPartitionKeyFromDocument(
-        Map<String, Object> document,
+    public static PartitionKey extractPartitionKey(
+        Map<String, Object> item,
         PartitionKeyDefinition partitionKeyDefinition) throws JsonProcessingException {
-        if (document == null) {
-            throw new IllegalArgumentException("document can't be null");
-        }
-        if (partitionKeyDefinition == null) {
-            throw new IllegalArgumentException("partitionKeyDefinition can't be null");
-        }
-        ObjectMapper objectMapper = new ObjectMapper();
+        checkNotNull(item, "Argument 'item' must not be null.");
+        checkNotNull(partitionKeyDefinition, "Argument 'partitionKeyDefinition' must not be null.");
+
+        ObjectMapper objectMapper = Utils.getSimpleObjectMapper();
         return PartitionKeyHelper.extractPartitionKeyFromDocument(
-            new JsonSerializable(objectMapper.writeValueAsString(document)), partitionKeyDefinition);
+            objectMapper.convertValue(item, ObjectNode.class), partitionKeyDefinition);
     }
 }
