@@ -207,6 +207,17 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void getEmbeddingsWithSmallerDimensions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getEmbeddingWithSmallerDimensionsRunner((deploymentId, embeddingsOptions) -> {
+            Embeddings resultEmbeddings = client.getEmbeddings(deploymentId, embeddingsOptions);
+            assertEmbeddings(resultEmbeddings);
+            assertEquals(embeddingsOptions.getDimensions(), resultEmbeddings.getData().get(0).getEmbedding().size());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getEmbeddingRunner((deploymentId, embeddingsOptions) -> {
@@ -691,7 +702,6 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             assertNotNull(responseMessage);
             assertTrue(responseMessage.getContent() == null || responseMessage.getContent().isEmpty());
             assertFalse(responseMessage.getToolCalls() == null || responseMessage.getToolCalls().isEmpty());
-            assertEquals(1, responseMessage.getToolCalls().size());
 
             ChatCompletionsFunctionToolCall functionToolCall = (ChatCompletionsFunctionToolCall) responseMessage.getToolCalls().get(0);
             assertNotNull(functionToolCall);

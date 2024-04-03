@@ -8,6 +8,7 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -18,9 +19,9 @@ import java.util.List;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "resourceType",
-    defaultImpl = FhirR4DomainResource.class)
+    defaultImpl = FhirR4DomainResource.class,
+    visible = true)
 @JsonTypeName("Fhir_R4_DomainResource")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Observation", value = FhirR4Observation.class),
@@ -194,5 +195,24 @@ public class FhirR4DomainResource extends FhirR4Resource {
     public FhirR4DomainResource setLanguage(String language) {
         super.setLanguage(language);
         return this;
+    }
+
+    /*
+     * resourceType
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "resourceType")
+    private String resourceType;
+
+    /**
+     * Get the resourceType property: resourceType.
+     *
+     * @return the resourceType value.
+     */
+    @Generated
+    @Override
+    public String getResourceType() {
+        return this.resourceType;
     }
 }

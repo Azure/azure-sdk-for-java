@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Trino user telemetry definition. */
+/**
+ * Trino user telemetry definition.
+ */
 @Fluent
 public final class TrinoTelemetryConfig {
     /*
@@ -36,14 +38,16 @@ public final class TrinoTelemetryConfig {
     @JsonProperty(value = "path")
     private String path;
 
-    /** Creates an instance of TrinoTelemetryConfig class. */
+    /**
+     * Creates an instance of TrinoTelemetryConfig class.
+     */
     public TrinoTelemetryConfig() {
     }
 
     /**
      * Get the hivecatalogName property: Hive Catalog name used to mount external tables on the logs written by trino,
      * if not specified there tables are not created.
-     *
+     * 
      * @return the hivecatalogName value.
      */
     public String hivecatalogName() {
@@ -53,7 +57,7 @@ public final class TrinoTelemetryConfig {
     /**
      * Set the hivecatalogName property: Hive Catalog name used to mount external tables on the logs written by trino,
      * if not specified there tables are not created.
-     *
+     * 
      * @param hivecatalogName the hivecatalogName value to set.
      * @return the TrinoTelemetryConfig object itself.
      */
@@ -65,7 +69,7 @@ public final class TrinoTelemetryConfig {
     /**
      * Get the hivecatalogSchema property: Schema of the above catalog to use, to mount query logs as external tables,
      * if not specified tables will be mounted under schema trinologs.
-     *
+     * 
      * @return the hivecatalogSchema value.
      */
     public String hivecatalogSchema() {
@@ -75,7 +79,7 @@ public final class TrinoTelemetryConfig {
     /**
      * Set the hivecatalogSchema property: Schema of the above catalog to use, to mount query logs as external tables,
      * if not specified tables will be mounted under schema trinologs.
-     *
+     * 
      * @param hivecatalogSchema the hivecatalogSchema value to set.
      * @return the TrinoTelemetryConfig object itself.
      */
@@ -85,9 +89,9 @@ public final class TrinoTelemetryConfig {
     }
 
     /**
-     * Get the partitionRetentionInDays property: Retention period for query log table partitions, this doesn't have any
-     * affect on actual data.
-     *
+     * Get the partitionRetentionInDays property: Retention period for query log table partitions, this doesn't have
+     * any affect on actual data.
+     * 
      * @return the partitionRetentionInDays value.
      */
     public Integer partitionRetentionInDays() {
@@ -95,9 +99,9 @@ public final class TrinoTelemetryConfig {
     }
 
     /**
-     * Set the partitionRetentionInDays property: Retention period for query log table partitions, this doesn't have any
-     * affect on actual data.
-     *
+     * Set the partitionRetentionInDays property: Retention period for query log table partitions, this doesn't have
+     * any affect on actual data.
+     * 
      * @param partitionRetentionInDays the partitionRetentionInDays value to set.
      * @return the TrinoTelemetryConfig object itself.
      */
@@ -108,7 +112,7 @@ public final class TrinoTelemetryConfig {
 
     /**
      * Get the path property: Azure storage location of the blobs.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -117,7 +121,7 @@ public final class TrinoTelemetryConfig {
 
     /**
      * Set the path property: Azure storage location of the blobs.
-     *
+     * 
      * @param path the path value to set.
      * @return the TrinoTelemetryConfig object itself.
      */
@@ -128,7 +132,7 @@ public final class TrinoTelemetryConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

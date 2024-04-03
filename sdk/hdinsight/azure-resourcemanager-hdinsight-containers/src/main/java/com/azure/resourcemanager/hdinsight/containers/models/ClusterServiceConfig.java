@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Cluster configs per component. */
+/**
+ * Cluster configs per component.
+ */
 @Fluent
 public final class ClusterServiceConfig {
     /*
@@ -24,13 +26,15 @@ public final class ClusterServiceConfig {
     @JsonProperty(value = "files", required = true)
     private List<ClusterConfigFile> files;
 
-    /** Creates an instance of ClusterServiceConfig class. */
+    /**
+     * Creates an instance of ClusterServiceConfig class.
+     */
     public ClusterServiceConfig() {
     }
 
     /**
      * Get the component property: Name of the component the config files should apply to.
-     *
+     * 
      * @return the component value.
      */
     public String component() {
@@ -39,7 +43,7 @@ public final class ClusterServiceConfig {
 
     /**
      * Set the component property: Name of the component the config files should apply to.
-     *
+     * 
      * @param component the component value to set.
      * @return the ClusterServiceConfig object itself.
      */
@@ -50,7 +54,7 @@ public final class ClusterServiceConfig {
 
     /**
      * Get the files property: List of Config Files.
-     *
+     * 
      * @return the files value.
      */
     public List<ClusterConfigFile> files() {
@@ -59,7 +63,7 @@ public final class ClusterServiceConfig {
 
     /**
      * Set the files property: List of Config Files.
-     *
+     * 
      * @param files the files value to set.
      * @return the ClusterServiceConfig object itself.
      */
@@ -70,19 +74,17 @@ public final class ClusterServiceConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (component() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property component in model ClusterServiceConfig"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property component in model ClusterServiceConfig"));
         }
         if (files() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property files in model ClusterServiceConfig"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property files in model ClusterServiceConfig"));
         } else {
             files().forEach(e -> e.validate());
         }

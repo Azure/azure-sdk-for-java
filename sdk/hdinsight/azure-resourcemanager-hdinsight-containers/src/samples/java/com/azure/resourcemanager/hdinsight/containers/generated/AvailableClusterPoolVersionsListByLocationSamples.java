@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.hdinsight.containers.generated;
 
-/** Samples for AvailableClusterPoolVersions ListByLocation. */
+/**
+ * Samples for AvailableClusterPoolVersions ListByLocation.
+ */
 public final class AvailableClusterPoolVersionsListByLocationSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-06-01-preview/examples/ListAvailableClusterPoolVersions.json
+     * x-ms-original-file:
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/
+     * ListAvailableClusterPoolVersions.json
      */
     /**
      * Sample code: ClusterPoolVersionListResult.
-     *
+     * 
      * @param manager Entry point to HDInsightContainersManager.
      */
     public static void clusterPoolVersionListResult(

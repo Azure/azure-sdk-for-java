@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Secret reference and corresponding properties of a key vault secret. */
+/**
+ * Secret reference and corresponding properties of a key vault secret.
+ */
 @Fluent
 public final class SecretReference {
     /*
@@ -35,13 +37,15 @@ public final class SecretReference {
     @JsonProperty(value = "keyVaultObjectName", required = true)
     private String keyVaultObjectName;
 
-    /** Creates an instance of SecretReference class. */
+    /**
+     * Creates an instance of SecretReference class.
+     */
     public SecretReference() {
     }
 
     /**
      * Get the referenceName property: Reference name of the secret to be used in service configs.
-     *
+     * 
      * @return the referenceName value.
      */
     public String referenceName() {
@@ -50,7 +54,7 @@ public final class SecretReference {
 
     /**
      * Set the referenceName property: Reference name of the secret to be used in service configs.
-     *
+     * 
      * @param referenceName the referenceName value to set.
      * @return the SecretReference object itself.
      */
@@ -61,7 +65,7 @@ public final class SecretReference {
 
     /**
      * Get the type property: Type of key vault object: secret, key or certificate.
-     *
+     * 
      * @return the type value.
      */
     public KeyVaultObjectType type() {
@@ -70,7 +74,7 @@ public final class SecretReference {
 
     /**
      * Set the type property: Type of key vault object: secret, key or certificate.
-     *
+     * 
      * @param type the type value to set.
      * @return the SecretReference object itself.
      */
@@ -81,7 +85,7 @@ public final class SecretReference {
 
     /**
      * Get the version property: Version of the secret in key vault.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -90,7 +94,7 @@ public final class SecretReference {
 
     /**
      * Set the version property: Version of the secret in key vault.
-     *
+     * 
      * @param version the version value to set.
      * @return the SecretReference object itself.
      */
@@ -101,7 +105,7 @@ public final class SecretReference {
 
     /**
      * Get the keyVaultObjectName property: Object identifier name of the secret in key vault.
-     *
+     * 
      * @return the keyVaultObjectName value.
      */
     public String keyVaultObjectName() {
@@ -110,7 +114,7 @@ public final class SecretReference {
 
     /**
      * Set the keyVaultObjectName property: Object identifier name of the secret in key vault.
-     *
+     * 
      * @param keyVaultObjectName the keyVaultObjectName value to set.
      * @return the SecretReference object itself.
      */
@@ -121,25 +125,21 @@ public final class SecretReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (referenceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property referenceName in model SecretReference"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property referenceName in model SecretReference"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model SecretReference"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model SecretReference"));
         }
         if (keyVaultObjectName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyVaultObjectName in model SecretReference"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property keyVaultObjectName in model SecretReference"));
         }
     }
 
