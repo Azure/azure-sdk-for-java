@@ -200,8 +200,9 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
         }
         LogsQueryAsyncClient client = clientBuilder
             .addPolicy((context, next) -> {
-                Assertions.assertTrue(context.getHttpRequest().getBodyAsBinaryData().toString().contains("wait=10"));
-                Assertions.assertTrue(context.getHttpRequest().getBodyAsBinaryData().toString().contains("wait=20"));
+                String requestBody = context.getHttpRequest().getBodyAsBinaryData().toString();
+                Assertions.assertTrue(requestBody.contains("wait=10"));
+                Assertions.assertTrue(requestBody.contains("wait=20"));
                 return next.process();
             })
             .buildAsyncClient();

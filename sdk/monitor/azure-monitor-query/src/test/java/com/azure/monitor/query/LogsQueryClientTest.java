@@ -190,13 +190,13 @@ public class LogsQueryClientTest extends TestProxyTestBase {
         } else if (getTestMode() == TestMode.LIVE) {
             clientBuilder.credential(getCredential());
             clientBuilder.endpoint(MonitorQueryTestUtils.getLogEndpoint());
-
             Objects.equals(clientBuilder, null);
         }
         LogsQueryClient client = clientBuilder
             .addPolicy((context, next) -> {
-                Assertions.assertTrue(context.getHttpRequest().getBodyAsBinaryData().toString().contains("wait=10"));
-                Assertions.assertTrue(context.getHttpRequest().getBodyAsBinaryData().toString().contains("wait=20"));
+                String requestBody = context.getHttpRequest().getBodyAsBinaryData().toString();
+                Assertions.assertTrue(requestBody.contains("wait=10"));
+                Assertions.assertTrue(requestBody.contains("wait=20"));
                 return next.process();
             })
             .buildClient();
