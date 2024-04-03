@@ -3,7 +3,6 @@
 
 package com.generic.core.http.client;
 
-import com.generic.core.implementation.http.client.DefaultHttpClientProvider;
 import com.generic.core.shared.HttpClientTests;
 import com.generic.core.shared.HttpClientTestsServer;
 import com.generic.core.shared.LocalTestServer;
@@ -26,7 +25,7 @@ public class DefaultHttpClientTests extends HttpClientTests {
     }
     @Override
     protected HttpClient getHttpClient() {
-        return new DefaultHttpClientProvider().getSharedInstance();
+        return HttpClient.getSharedInstance();
     }
 
     @Override

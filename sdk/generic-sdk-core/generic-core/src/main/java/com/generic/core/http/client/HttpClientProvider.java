@@ -16,7 +16,7 @@ public abstract class HttpClientProvider {
         + "a dependency on io.clientcore:http-okhttp. Additionally, refer to "
         + "https://aka.ms/azsdk/java/docs/custom-httpclient to learn about writing your own implementation.";
 
-    private static HttpClient httpClient;
+    static HttpClient sharedHttpClient;
     private static Providers<HttpClientProvider, HttpClient> providers;
 
     /**
@@ -33,11 +33,11 @@ public abstract class HttpClientProvider {
      * create.
      */
     public final HttpClient getSharedInstance() {
-        if (httpClient == null) {
-            httpClient = getNewInstance();
+        if (sharedHttpClient == null) {
+            sharedHttpClient = getNewInstance();
         }
 
-        return httpClient;
+        return sharedHttpClient;
     }
 
     static Providers<HttpClientProvider, HttpClient> getProviders() {

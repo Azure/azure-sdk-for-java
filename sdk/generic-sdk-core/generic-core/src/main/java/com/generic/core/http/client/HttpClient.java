@@ -5,7 +5,6 @@ package com.generic.core.http.client;
 
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.Response;
-import com.generic.core.implementation.http.client.DefaultHttpClientProvider;
 
 /**
  * A generic interface for sending HTTP requests and getting responses.
@@ -32,7 +31,7 @@ public interface HttpClient {
      */
     static HttpClient getNewInstance() {
         return HttpClientProvider.getProviders().create(HttpClientProvider::getNewInstance,
-            () -> new DefaultHttpClientProvider().getNewInstance(), null);
+            () -> new DefaultHttpClientBuilder().build(), null);
     }
 
     /**
@@ -47,6 +46,12 @@ public interface HttpClient {
      */
     static HttpClient getSharedInstance() {
         return HttpClientProvider.getProviders().create(HttpClientProvider::getSharedInstance,
-            () -> new DefaultHttpClientProvider().getSharedInstance(), null);
+            () -> {
+                if (HttpClientProvider.sharedHttpClient == null) {
+                    HttpClientProvider.sharedHttpClient = new DefaultHttpClientBuilder().build();
+                }
+
+                return HttpClientProvider.sharedHttpClient;
+            }, null);
     }
 }

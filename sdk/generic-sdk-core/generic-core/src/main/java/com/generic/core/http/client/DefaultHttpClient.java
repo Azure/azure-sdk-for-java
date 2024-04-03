@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.implementation.http.client;
+package com.generic.core.http.client;
 
-import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpHeader;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpHeaders;
@@ -47,13 +46,13 @@ import static com.generic.core.implementation.util.ServerSentEventUtil.processTe
 /**
  * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
  */
-public class DefaultHttpClient implements HttpClient {
+class DefaultHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(DefaultHttpClient.class);
     private final long connectionTimeout;
     private final long readTimeout;
     private final ProxyOptions proxyOptions;
 
-    public DefaultHttpClient(Duration connectionTimeout, Duration readTimeout, ProxyOptions proxyOptions) {
+    DefaultHttpClient(Duration connectionTimeout, Duration readTimeout, ProxyOptions proxyOptions) {
         this.connectionTimeout = connectionTimeout == null ? -1 : connectionTimeout.toMillis();
         this.readTimeout = readTimeout == null ? -1 : readTimeout.toMillis();
         this.proxyOptions = proxyOptions;

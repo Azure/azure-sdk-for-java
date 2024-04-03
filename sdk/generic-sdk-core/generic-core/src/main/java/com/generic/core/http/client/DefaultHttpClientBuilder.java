@@ -4,7 +4,6 @@
 package com.generic.core.http.client;
 
 import com.generic.core.http.models.ProxyOptions;
-import com.generic.core.implementation.http.client.DefaultHttpClient;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.configuration.Configuration;
 
