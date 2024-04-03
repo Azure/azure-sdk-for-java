@@ -18,7 +18,6 @@ import java.time.Instant
  * For each schema we have an object pool that will use a soft-limit to limit the memory footprint
  */
 private object RowSerializerPool extends RowSerializerPoolBase[RowSerializerQueue] {
-
     def getOrCreateSerializer(schema: StructType): ExpressionEncoder.Serializer[Row] = {
         schemaScopedSerializerMap.get(schema) match {
             case Some(objectPool) => objectPool.borrowSerializer(schema)
@@ -39,7 +38,6 @@ private object RowSerializerPool extends RowSerializerPoolBase[RowSerializerQueu
 }
 
 private class RowSerializerQueue extends RowSerializerQueueBase() {
-
     override def borrowSerializer(schema: StructType): ExpressionEncoder.Serializer[Row] = {
         lastBorrowedAny.set(Instant.now.toEpochMilli)
         Option.apply(objectPool.poll()) match {
@@ -50,5 +48,3 @@ private class RowSerializerQueue extends RowSerializerQueueBase() {
         }
     }
 }
-
-
