@@ -1177,8 +1177,8 @@ public final class DevBoxesClient {
      * @param projectName The DevCenter Project upon which to execute the operation.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
-     * @param devBox A DevBox object that requires dev box name and pool. Setting local administrator status is optional.
-
+     * @param devBox A DevBox object that requires dev box name and pool. Setting local administrator status is
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
