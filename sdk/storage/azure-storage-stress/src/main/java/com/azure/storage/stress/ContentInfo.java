@@ -28,30 +28,46 @@ public class ContentInfo {
         Mono<Long> crcMono = data
             .reduce(new CRC32(),
                 (crc, bb) -> {
-                    int remaining = bb.remaining();
-                    length.getAndAdd(remaining);
-
-                    if (head.hasRemaining()) {
-                        // Calculate how much of the ByteBuffer we can read (the minimum of what's left in 'head' and 'bb')
-                        int toRead = Math.min(head.remaining(), remaining);
-                        // Create a temporary array to hold the data
-                        byte[] temp = new byte[toRead];
-                        // Copy data from 'bb' to 'temp'
-                        bb.get(temp, 0, toRead);
-                        // Then put that data into 'head'
-                        head.put(temp);
+                    length.getAndAdd(bb.remaining());
+                    if (head.hasRemaining())
+                    {
+                        ByteBuffer dup = bb.duplicate();
+                        while (head.hasRemaining() && dup.hasRemaining()) {
+                            head.put(dup.get());
+                        }
                     }
-
-                    // Update the CRC with the entire buffer
-                    // Note: The CRC32.update() method requires a rewind of the buffer if we read from it
-                    bb.rewind(); // Rewind so the CRC calculation includes all data read from this ByteBuffer
-                    byte[] crcTemp = new byte[remaining];
-                    bb.get(crcTemp);
-                    crc.update(crcTemp, 0, remaining);
-
+                    crc.update(bb);
                     return crc;
                 })
             .map(CRC32::getValue);
+//        Mono<Long> crcMono = data
+//            .reduce(new CRC32(),
+//                (crc, bb) -> {
+//                    int remaining = bb.remaining();
+//                    length.getAndAdd(remaining);
+//
+//                    if (head.hasRemaining()) {
+//                        // Calculate how much of the ByteBuffer we can read (the minimum of what's left in 'head' and 'bb')
+//                        int toRead = Math.min(head.remaining(), remaining);
+//                        // Create a temporary array to hold the data
+//                        byte[] temp = new byte[toRead];
+//                        // Copy data from 'bb' to 'temp'
+//                        bb.get(temp, 0, toRead);
+//                        // Then put that data into 'head'
+//                        head.put(temp);
+//                    }
+//
+//                    // Update the CRC with the entire buffer
+//                    // Note: The CRC32.update() method requires a rewind of the buffer if we read from it
+////                    bb.rewind(); // Rewind so the CRC calculation includes all data read from this ByteBuffer
+//                    bb.position(0);
+//                    byte[] crcTemp = new byte[remaining];
+//                    bb.get(crcTemp);
+//                    crc.update(crcTemp, 0, remaining);
+//
+//                    return crc;
+//                })
+//            .map(CRC32::getValue);
 
         return crcMono.map(crc -> new ContentInfo(crc, length.get(), head));
     }
