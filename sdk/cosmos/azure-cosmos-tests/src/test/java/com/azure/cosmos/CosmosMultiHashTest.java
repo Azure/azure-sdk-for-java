@@ -509,7 +509,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
             PartitionKey testError = PartitionKeyBuilder.fromObjectArray(null, false);
             Assert.fail();
         } catch (NullPointerException e) {
-            assertThat(e.getMessage()).isEqualTo("values can't be null");
+            assertThat(e.getMessage()).isEqualTo("Argument 'values' must not be null.");
         }
     }
 
@@ -534,13 +534,13 @@ public class CosmosMultiHashTest extends TestSuiteBase {
             mapObject, partitionKeyDefinition);
         assertThat(test.toString()).isEqualTo("[\"Redmond\",\"98052\",1.0]");
 
-        // Test invalid input for document
+        // Test invalid input for item
         try {
             PartitionKey testDocumentError = PartitionKeyBuilder.extractPartitionKey(
                 null, partitionKeyDefinition);
             Assert.fail();
         } catch (NullPointerException e) {
-            assertThat(e.getMessage()).isEqualTo("document can't be null");
+            assertThat(e.getMessage()).isEqualTo("Argument 'item' must not be null.");
         }
 
         // Test invalid input for partitionKeyDefinition
@@ -549,7 +549,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
                 mapObject, null);
             Assert.fail();
         } catch (NullPointerException e) {
-            assertThat(e.getMessage()).isEqualTo("partitionKeyDefinition can't be null");
+            assertThat(e.getMessage()).isEqualTo("Argument 'partitionKeyDefinition' must not be null.");
         }
     }
 
