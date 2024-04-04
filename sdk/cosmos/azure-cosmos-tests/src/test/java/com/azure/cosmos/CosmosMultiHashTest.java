@@ -6,6 +6,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.apachecommons.math.exception.NullArgumentException;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -503,11 +504,11 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         PartitionKey test = PartitionKeyBuilder.fromObjectArray(values, false);
         assertThat(test.toString()).isEqualTo("[\"Redmond\",\"98052\",1.0]");
 
-        // Test invalid input
+        // Test invalid input for values
         try {
             PartitionKey testError = PartitionKeyBuilder.fromObjectArray(null, false);
             Assert.fail();
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             assertThat(e.getMessage()).isEqualTo("values can't be null");
         }
     }
@@ -538,7 +539,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
             PartitionKey testDocumentError = PartitionKeyBuilder.extractPartitionKey(
                 null, partitionKeyDefinition);
             Assert.fail();
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             assertThat(e.getMessage()).isEqualTo("document can't be null");
         }
 
@@ -547,7 +548,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
             PartitionKey testDocumentError = PartitionKeyBuilder.extractPartitionKey(
                 mapObject, null);
             Assert.fail();
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             assertThat(e.getMessage()).isEqualTo("partitionKeyDefinition can't be null");
         }
     }
