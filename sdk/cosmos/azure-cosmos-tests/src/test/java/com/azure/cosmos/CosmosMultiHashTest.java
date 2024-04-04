@@ -500,12 +500,12 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         values[0] = cityItem.getCity();
         values[1] = cityItem.getZipcode();
         values[2] = cityItem.getAreaCode();
-        PartitionKey test = new PartitionKeyBuilder.fromObjectArray(values, false);
+        PartitionKey test = PartitionKeyBuilder.fromObjectArray(values, false);
         assertThat(test.toString()).isEqualTo("[\"Redmond\",\"98052\",1.0]");
 
         // Test invalid input
         try {
-            PartitionKey testError = new PartitionKeyBuilder().fromObjectArray(null, false);
+            PartitionKey testError = PartitionKeyBuilder.fromObjectArray(null, false);
             Assert.fail();
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage()).isEqualTo("values can't be null");
@@ -529,13 +529,13 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         ObjectMapper om = new ObjectMapper();
         Map<String, Object> mapObject = (Map<String, Object>)om.convertValue(cityItem,
             new ConcurrentHashMap<String, Object>().getClass());
-        PartitionKey test = new PartitionKeyBuilder().extractPartitionKeyFromDocument(
+        PartitionKey test = PartitionKeyBuilder.extractPartitionKey(
             mapObject, partitionKeyDefinition);
         assertThat(test.toString()).isEqualTo("[\"Redmond\",\"98052\",1.0]");
 
         // Test invalid input for document
         try {
-            PartitionKey testDocumentError = new PartitionKeyBuilder().extractPartitionKeyFromDocument(
+            PartitionKey testDocumentError = PartitionKeyBuilder.extractPartitionKey(
                 null, partitionKeyDefinition);
             Assert.fail();
         } catch (IllegalArgumentException e) {
@@ -544,7 +544,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
 
         // Test invalid input for partitionKeyDefinition
         try {
-            PartitionKey testDocumentError = new PartitionKeyBuilder().extractPartitionKeyFromDocument(
+            PartitionKey testDocumentError = PartitionKeyBuilder.extractPartitionKey(
                 mapObject, null);
             Assert.fail();
         } catch (IllegalArgumentException e) {
