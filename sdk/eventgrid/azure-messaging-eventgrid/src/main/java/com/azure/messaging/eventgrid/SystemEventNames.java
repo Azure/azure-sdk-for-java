@@ -4,6 +4,8 @@
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.models.CloudEvent;
+import com.azure.messaging.eventgrid.systemevents.AcsAdvancedMessageDeliveryStatusUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsAdvancedMessageReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMessageDeletedEventData;
@@ -47,6 +49,7 @@ import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerOfferExpiredEve
 import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerOfferIssuedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerOfferRevokedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerRegisteredEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsDeliveryReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsUserDisconnectedEventData;
@@ -235,6 +238,19 @@ import java.util.Map;
  * system events by their known string.
  */
 public final class SystemEventNames {
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.Communication.AdvancedMessageDeliveryStatusUpdated event.
+     */
+    public static final String COMMUNICATION_ADVANCED_MESSAGE_DELIVERY_STATUS_UPDATED
+        = "Microsoft.Communication.AdvancedMessageDeliveryStatusUpdated";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.AdvancedMessageReceived event.
+     */
+    public static final String COMMUNICATION_ADVANCED_MESSAGE_RECEIVED
+        = "Microsoft.Communication.AdvancedMessageReceived";
+
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageDeleted event.
      */
@@ -473,6 +489,11 @@ public final class SystemEventNames {
      */
     public static final String COMMUNICATION_ROUTER_WORKER_REGISTERED
         = "Microsoft.Communication.RouterWorkerRegistered";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerUpdated event.
+     */
+    public static final String COMMUNICATION_ROUTER_WORKER_UPDATED = "Microsoft.Communication.RouterWorkerUpdated";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.SMSDeliveryReportReceived event.
@@ -1454,6 +1475,9 @@ public final class SystemEventNames {
         = "Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser";
     private static final Map<String, Class<?>> SYSTEM_EVENT_MAPPINGS = new HashMap<String, Class<?>>() {
         {
+            put(COMMUNICATION_ADVANCED_MESSAGE_DELIVERY_STATUS_UPDATED,
+                AcsAdvancedMessageDeliveryStatusUpdatedEventData.class);
+            put(COMMUNICATION_ADVANCED_MESSAGE_RECEIVED, AcsAdvancedMessageReceivedEventData.class);
             put(COMMUNICATION_CHAT_MESSAGE_DELETED, AcsChatMessageDeletedEventData.class);
             put(COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD, AcsChatMessageDeletedInThreadEventData.class);
             put(COMMUNICATION_CHAT_MESSAGE_EDITED, AcsChatMessageEditedEventData.class);
@@ -1499,6 +1523,7 @@ public final class SystemEventNames {
             put(COMMUNICATION_ROUTER_WORKER_OFFER_ISSUED, AcsRouterWorkerOfferIssuedEventData.class);
             put(COMMUNICATION_ROUTER_WORKER_OFFER_REVOKED, AcsRouterWorkerOfferRevokedEventData.class);
             put(COMMUNICATION_ROUTER_WORKER_REGISTERED, AcsRouterWorkerRegisteredEventData.class);
+            put(COMMUNICATION_ROUTER_WORKER_UPDATED, AcsRouterWorkerUpdatedEventData.class);
             put(COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED, AcsSmsDeliveryReportReceivedEventData.class);
             put(COMMUNICATION_SMS_RECEIVED, AcsSmsReceivedEventData.class);
             put(COMMUNICATION_USER_DISCONNECTED, AcsUserDisconnectedEventData.class);

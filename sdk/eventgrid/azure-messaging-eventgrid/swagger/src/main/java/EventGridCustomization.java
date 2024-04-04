@@ -7,6 +7,7 @@ import com.azure.autorest.customization.PropertyCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier.Keyword;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.javadoc.Javadoc;
@@ -244,6 +245,8 @@ public class EventGridCustomization extends Customization {
         customizeEventGridClientImplImports(customization);
         customizeAcsRouterEvents(customization);
         customizeResourceNotificationEvents(customization);
+        customizeCommunicationIdentifierModelKind(customization);
+        customizeAcsAdvancedMessageChannelEventError(customization);
     }
 
     public void customizeResourceEvents(LibraryCustomization customization, Logger logger) {
@@ -336,6 +339,71 @@ public class EventGridCustomization extends Customization {
                 });
             });
         });
+    }
+
+
+    public void customizeAcsAdvancedMessageChannelEventError(LibraryCustomization customization) {
+        PackageCustomization packageCustomization = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+
+        ClassCustomization classCustomization = packageCustomization.getClass("AcsAdvancedMessageEventData");
+        classCustomization.addImports("com.azure.core.models.ResponseError");
+        classCustomization.customizeAst(comp -> {
+           ClassOrInterfaceDeclaration clazz = comp.getClassByName("AcsAdvancedMessageEventData").get();
+           // Fix up the getError method to always return a ResponseError.
+           clazz.getMethodsByName("getError").forEach(m -> {
+               m.setType("ResponseError")
+                   .setBody(parseBlock("{ return new ResponseError(this.error.getChannelCode(), this.error.getChannelMessage()); }"))
+                   .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Get the error property: The channel error code and message."))))
+                       .addBlockTag("return", "the error value."));
+               });
+
+           // Fix up the existing setError method to be private. It's used for deserializing.
+           clazz.getMethodsByName("setError").forEach(m -> {
+               m.setType("void");
+               m.setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Used for json deserialization in derived types."))))
+                   .addBlockTag("param", "error The error value to set"));
+               m.removeModifier(Keyword.PUBLIC);
+               m.setBody(parseBlock("{ this.error = error; }"));
+           });
+           // Add the new setError method that takes a ResonseError.
+           MethodDeclaration m = clazz.addMethod("setError", Keyword.PUBLIC);
+           m.setType("AcsAdvancedMessageEventData");
+           m.addParameter("ResponseError", "error");
+           m.setBody(parseBlock("{ this.error = new AcsAdvancedMessageChannelEventError().setChannelCode(error.getCode()).setChannelMessage(error.getMessage()); return this; }"))
+               .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Set the error property: The channel error code and message."))))
+                   .addBlockTag("param", "error The ResponseError object containing error code and message.")
+                   .addBlockTag("return", "the AcsAdvancedMessageEventData object itself."));
+        });
+
+        Arrays.asList("AcsAdvancedMessageDeliveryStatusUpdatedEventData", "AcsAdvancedMessageReceivedEventData").forEach(name -> {
+            ClassCustomization localClass = packageCustomization.getClass(name);
+            localClass.addImports("com.azure.core.models.ResponseError");
+            localClass.customizeAst(comp -> {
+                ClassOrInterfaceDeclaration clazz = comp.getClassByName(name).get();
+
+                // the existing setError method isn't necessary any longer as the base type doesn't return anything now.
+                clazz.getMethodsByName("setError").forEach(clazz::remove);
+
+                // add the new setError method that takes a ResponseError
+                MethodDeclaration method = clazz.addMethod("setError");
+                method.setType(name);
+                method.setModifiers(Keyword.PUBLIC);
+                method.addParameter("ResponseError", "error");
+                method.setBody(parseBlock("{ super.setError(error); return this; }"))
+                    .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Set the error property: The channel error code and message."))))
+                        .addBlockTag("param", "error The ResponseError object containing error code and message.")
+                        .addBlockTag("return", "the " + name +  " object itself."));
+
+            });
+        });
+    }
+
+    // rename-model doesn't work on enums, so do this instead.
+    public void customizeCommunicationIdentifierModelKind(LibraryCustomization customization) {
+        ClassCustomization classCustomization = customization
+            .getPackage("com.azure.messaging.eventgrid.systemevents")
+            .getClass("CommunicationIdentifierModelKind")
+            .rename("CommunicationIdentifierKind");
     }
 
     public void customizeMediaLiveEventIngestHeartbeatEventData(LibraryCustomization customization) {
