@@ -31,14 +31,14 @@
     </dependency>
 
     <dependency>
-      <groupId>com.generic</groupId>
-      <artifactId>generic-core</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.generic:generic-core;current} -->
+      <groupId>io.clientcore</groupId>
+      <artifactId>core</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core;current} -->
     </dependency>
     <dependency>
-      <groupId>com.generic</groupId>
-      <artifactId>generic-core-http-okhttp</artifactId>
-      <version>1.0.0-beta.1</version>  <!-- {x-version-update;com.generic:generic-core-http-okhttp;current} -->
+      <groupId>io.clientcore</groupId>
+      <artifactId>core-http-okhttp</artifactId>
+      <version>1.0.0-beta.1</version>  <!-- {x-version-update;io.clientcore:core-http-okhttp;current} -->
     </dependency>
     <!-- logging, tracing, metrics -->
     <dependency>
