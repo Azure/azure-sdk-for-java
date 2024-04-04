@@ -66,7 +66,7 @@ public class SwaggerInterfaceParserTests {
         final SwaggerMethodParser methodParser = interfaceParser.getMethodParser(testMethod4);
 
         assertNotNull(methodParser);
-        assertEquals("io.clientcore.core.rest.http.implementation.SwaggerInterfaceParserTests$TestInterface4.testMethod4",
+        assertEquals("io.clientcore.core.implementation.http.rest.SwaggerInterfaceParserTests$TestInterface4.testMethod4",
             methodParser.getFullyQualifiedMethodName());
 
         final SwaggerMethodParser methodDetails2 = interfaceParser.getMethodParser(testMethod4);
