@@ -441,9 +441,9 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         List<Tuple> assertTuples = createdDocuments.stream()
             .map(internalObjectNode -> tuple(internalObjectNode.getId(),
-                internalObjectNode.getObject("mypk"),
-                internalObjectNode.getObject("prop"),
-                internalObjectNode.getObject("boolProp")))
+                internalObjectNode.get("mypk"),
+                internalObjectNode.get("prop"),
+                internalObjectNode.get("boolProp")))
             .collect(Collectors.toList());
 
         assertThat(fetchedResults).extracting(TestObject::getId,
@@ -695,7 +695,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         List<Pair<String, PartitionKey>> pairList = new ArrayList<>();
         for (int i = 0; i < createdDocuments.size(); i = i + 3) {
             pairList.add(Pair.of(createdDocuments.get(i).getId(),
-                new PartitionKey(createdDocuments.get(i).getObject("mypk"))));
+                new PartitionKey(createdDocuments.get(i).get("mypk"))));
         }
         FeedResponse<JsonNode> documentFeedResponse =
             ItemOperations.readManyAsync(createdCollection, pairList, JsonNode.class).block();
@@ -710,7 +710,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         for (int i = 0; i < createdDocuments.size(); i = i + 3) {
             itemIdentities.add(
                 new CosmosItemIdentity(
-                    new PartitionKey(createdDocuments.get(i).getObject("mypk")),
+                    new PartitionKey(createdDocuments.get(i).get("mypk")),
                     createdDocuments.get(i).getId()));
         }
         FeedResponse<JsonNode> documentFeedResponse =
@@ -729,7 +729,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         for (int i = 0; i < newItems.size(); i = i + 3) {
             itemIdentities.add(
                 new CosmosItemIdentity(
-                    new PartitionKey(newItems.get(i).getObject("id")),
+                    new PartitionKey(newItems.get(i).get("id")),
                     newItems.get(i).getId()));
         }
         FeedResponse<JsonNode> documentFeedResponse =
@@ -745,7 +745,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         for (int i = 0; i < createdDocuments.size(); i = i + 3) {
             itemIdentities.add(
                     new CosmosItemIdentity(
-                            new PartitionKey(createdDocuments.get(i).getObject("mypk")),
+                            new PartitionKey(createdDocuments.get(i).get("mypk")),
                             createdDocuments.get(i).getId()));
         }
 
