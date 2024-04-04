@@ -39,8 +39,8 @@ spec:
           --duration {{ mul 60 .Stress.durationMin }} \
           --size {{ .Stress.sizeBytes }} \
           {{ ternary "--sync" "" .Stress.sync }} \
-          {{ ternary "--faults" "" .Stress.faults }} \
-          {{ ternary "--requestFaulted" "" (default false .Stress.requestFaulted) }} \
+          {{ ternary "--downloadFaults" "" (default false .Stress.downloadFaults) }} \
+          {{ ternary "--uploadFaults" "" (default false .Stress.uploadFaults) }} \
           --warmup 0 \
           2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.testScenario }}-`date +%s`.log"; \
           code=$?; \

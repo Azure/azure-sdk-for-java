@@ -19,7 +19,7 @@ import java.io.IOException;
 import static com.azure.core.util.FluxUtil.monoError;
 
 public class AppendBlobOutputStream extends BlobScenarioBase<StorageStressOptions> {
-    ClientLogger LOGGER = new ClientLogger(BlockBlobOutputStream.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlockBlobOutputStream.class);
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncNoFaultClient;

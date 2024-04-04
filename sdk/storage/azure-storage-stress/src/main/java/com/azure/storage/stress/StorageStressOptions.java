@@ -8,17 +8,17 @@ import com.azure.perf.test.core.PerfStressOptions;
 import com.beust.jcommander.Parameter;
 
 public class StorageStressOptions extends PerfStressOptions {
-    @Parameter(names = { "--faults" }, description = "Enable fault injection")
-    private boolean enableFaultInjection = false;
+    @Parameter(names = { "--downloadFaults" }, description = "Enable fault injection for downloads")
+    private boolean enableFaultInjectionDownloads = false;
     @Parameter(names = { "--cs"}, description = "Storage connection string")
     private String connectionString = Configuration.getGlobalConfiguration().get("STORAGE_CONNECTION_STRING");
     @Parameter(names = { "--pbcs"}, description = "Page Blob Storage connection string")
     private String pageBlobConnectionString = Configuration.getGlobalConfiguration().get("PAGE_BLOB_STORAGE_CONNECTION_STRING");
-    @Parameter(names = { "--requestFaulted" }, description = "Is request faulted")
-    private boolean isRequestFaulted = false;
+    @Parameter(names = { "--uploadFaults" }, description = "Enable fault injection for uploads")
+    private boolean enableFaultInjectionUploads = false;
 
-    public boolean isFaultInjectionEnabled() {
-        return enableFaultInjection;
+    public boolean isFaultInjectionEnabledForDownloads() {
+        return enableFaultInjectionDownloads;
     }
 
     public String getConnectionString() {
@@ -35,7 +35,7 @@ public class StorageStressOptions extends PerfStressOptions {
      * True: The request will be faulted. False: The response will be faulted. Default is false.
      * @return whether the request is faulted.
      */
-    public boolean isRequestFaulted() {
-        return isRequestFaulted;
+    public boolean isFaultInjectionEnabledForUploads() {
+        return enableFaultInjectionUploads;
     }
 }

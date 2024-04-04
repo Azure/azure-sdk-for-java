@@ -52,7 +52,7 @@
               "allowCustom": true
             },
             "value": {
-              "durationMs": 43200000
+              "durationMs": 172800000
             }
           },
           {
@@ -61,7 +61,7 @@
             "name": "runId",
             "type": 2,
             "isRequired": true,
-            "query": "dependencies \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-storage\" and name == \"before run\"\r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[2])\r\n| summarize start=min(timestamp) by runId, cloud_RoleInstance \r\n| order by start desc\r\n| project runId, pod=cloud_RoleInstance",
+            "query": "dependencies \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-storage\" and name == \"before run\"\r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[-1])\r\n| summarize start=min(timestamp) by runId, cloud_RoleInstance \r\n| order by start desc\r\n| project runId, pod=cloud_RoleInstance",
             "typeSettings": {
               "additionalResourceOptions": [],
               "showDefault": false
@@ -85,7 +85,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "let runs = customMetrics \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-storage\" \r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[2])\r\n| summarize start=min(timestamp), end=max(timestamp) by runId\r\n| project start, duration= end-start, runId;\r\nlet runSpans = dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-storage\"  and name == \"before run\"\r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[2])\r\n| extend packageVersion=coalesce(customDimensions[\"storagePackageVersion\"], \"null\")\r\n| extend scenarioName=tostring(split(coalesce(customDimensions[\"scenarioName\"], \"null\"), \".\")[-1])\r\n| extend sync=coalesce(customDimensions[\"sync\"], \"null\")\r\n| extend concurrency=coalesce(customDimensions[\"concurrency\"], \"null\")\r\n| extend payloadSize=coalesce(customDimensions[\"payloadSize\"], \"null\")\r\n| extend pod=tostring(customDimensions[\"hostname\"]);\r\nruns \r\n| join kind = innerunique runSpans on runId\r\n| project runId, start, duration, scenarioName, concurrency, payloadSize, sync, pod, packageVersion\r\n",
+        "query": "let runs = customMetrics \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-storage\" \r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[-1])\r\n| summarize start=min(timestamp), end=max(timestamp) by runId\r\n| project start, duration= end-start, runId;\r\nlet runSpans = dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-storage\"  and name == \"before run\"\r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[-1])\r\n| extend packageVersion=coalesce(customDimensions[\"storagePackageVersion\"], \"null\")\r\n| extend scenarioName=tostring(split(coalesce(customDimensions[\"scenarioName\"], \"null\"), \".\")[-1])\r\n| extend sync=coalesce(customDimensions[\"sync\"], \"null\")\r\n| extend concurrency=coalesce(customDimensions[\"concurrency\"], \"null\")\r\n| extend payloadSize=coalesce(customDimensions[\"payloadSize\"], \"null\")\r\n| extend pod=tostring(customDimensions[\"hostname\"]);\r\nruns \r\n| join kind = innerunique runSpans on runId\r\n| project runId, start, duration, scenarioName, concurrency, payloadSize, sync, pod, packageVersion\r\n",
         "size": 0,
         "title": "Runs in {timeRange:label}",
         "noDataMessageStyle": 5,
@@ -116,7 +116,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "let runId = \"{runId}\";\r\nlet runDuration = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith runId\r\n| where name == \"test.run.duration\"\r\n| extend errorType = tostring(customDimensions[\"error.type\"]);\r\nlet testSpans = dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith runId;\r\nlet errors = runDuration\r\n| summarize error_by_type=toint(sum(valueCount)) by errorType\r\n| summarize test_errors=make_bag(bag_pack(errorType, error_by_type))\r\n| evaluate narrow();\r\nlet runCounter = runDuration\r\n| where errorType == \"\"\r\n| summarize successful_runs=sum(valueCount)\r\n| evaluate narrow();\r\nlet actualDuration = testSpans \r\n| where name == \"after run\"\r\n| summarize actual_test_duration_in_sec = max(toreal(customDimensions[\"durationMs\"])/1000) by cloud_RoleInstance\r\n| evaluate narrow();\r\nlet avgThroughput = runDuration\r\n| summarize throughputPerMin=sum(valueCount) by bin(timestamp, 1m) // in case AppInsights ingestion drops something\r\n| summarize avg_throughtput_per_sec=round(avg(throughputPerMin/60), 2)\r\n| evaluate narrow();\r\nlet parameters = testSpans \r\n| where name == \"before run\" \r\n| project parameters=bag_remove_keys(customDimensions, dynamic(['duration', 'sample.in', 'blobName',  'jreVendor']))\r\n| evaluate narrow();\r\nparameters \r\n| union runCounter, actualDuration, errors, avgThroughput\r\n| project Property = Column, Value\r\n",
+        "query": "let runId = \"{runId}\";\r\nlet runDuration = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith runId\r\n| where name == \"test.run.duration\"\r\n| extend errorType = tostring(customDimensions[\"error.type\"]);\r\nlet testSpans = dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith runId;\r\nlet errors = runDuration\r\n| summarize error_by_type=toint(sum(valueCount)) by errorType\r\n| summarize test_errors=make_bag(bag_pack(errorType, error_by_type))\r\n| evaluate narrow();\r\nlet runCounter = runDuration\r\n| summarize successful_runs=sumif(valueCount, errorType == \"\"), failed_runs=sumif(valueCount, errorType != \"\")\r\n| evaluate narrow();\r\nlet actualDuration = testSpans \r\n| where name == \"after run\"\r\n| summarize actual_test_duration_in_sec = max(toreal(customDimensions[\"durationMs\"])/1000) by cloud_RoleInstance\r\n| evaluate narrow();\r\nlet avgThroughput = runDuration\r\n| summarize throughputPerMin=sum(valueCount) by bin(timestamp, 1m) // in case AppInsights ingestion drops something\r\n| summarize avg_throughtput_per_sec=round(avg(throughputPerMin/60), 2)\r\n| evaluate narrow();\r\nlet parameters = testSpans \r\n| where name == \"before run\" \r\n| project parameters=bag_remove_keys(customDimensions, dynamic(['duration', 'sample.in', 'name',  'jreVendor']))\r\n| evaluate narrow();\r\nparameters \r\n| union runCounter, actualDuration, errors, avgThroughput\r\n| project Property = Column, Value\r\n",
         "size": 0,
         "title": "Test summary",
         "queryType": 0,
@@ -264,7 +264,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "let runId = \"{runId}\";\r\nlet role_name=strcat(\"java-storage-\", runId);\r\nlet downloads=dependencies \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == role_name and (name == \"run\" or name == \"runAsync\")\r\n| project timestamp, duration, name, traceId=operation_Id, status=tostring(customDimensions[\"error.type\"]), success;\r\nlet faultInjections=traces \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == role_name\r\n| where message startswith \"{\\\"az.sdk.message\"\r\n| project timestamp, logger=customDimensions[\"LoggerName\"], level=customDimensions[\"LoggingLevel\"], thread=customDimensions[\"ThreadName\"], azSdkContext=parse_json(message)\r\n| where azSdkContext[\"az.sdk.message\"] == \"HTTP request\"\r\n| extend fault = coalesce(azSdkContext[\"x-ms-faultinjector-response-option\"], \"none\")\r\n| extend traceId=tostring(split(azSdkContext[\"traceparent\"], \"-\")[1])\r\n| project fault, traceId;\r\ndownloads \r\n| join kind=leftouter faultInjections on traceId\r\n| where success == False\r\n| summarize faults = make_list(fault) by timestamp, status, duration, traceId\r\n",
+        "query": "let runId = \"{runId}\";\r\nlet role_name=strcat(\"java-storage\", runId);\r\nlet downloads=dependencies \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == role_name and (name == \"run\" or name == \"runAsync\")\r\n| project timestamp, duration, name, traceId=operation_Id, status=tostring(customDimensions[\"error.type\"]), success;\r\nlet faultInjections=traces \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == role_name\r\n| where message startswith \"{\\\"az.sdk.message\"\r\n| project timestamp, logger=customDimensions[\"LoggerName\"], level=customDimensions[\"LoggingLevel\"], thread=customDimensions[\"ThreadName\"], azSdkContext=parse_json(message)\r\n| where azSdkContext[\"az.sdk.message\"] == \"HTTP request\"\r\n| extend fault = coalesce(azSdkContext[\"x-ms-faultinjector-response-option\"], \"none\")\r\n| extend traceId=tostring(split(azSdkContext[\"traceparent\"], \"-\")[1])\r\n| project fault, traceId;\r\ndownloads \r\n| join kind=leftouter faultInjections on traceId\r\n| where success == False\r\n| summarize faults = make_list(fault) by timestamp, status, duration, traceId\r\n",
         "size": 0,
         "title": "Examples of failed operations (survived after sampling)",
         "noDataMessage": "so empty",
@@ -278,6 +278,9 @@
         "maxWidth": "100"
       }
     }
+  ],
+  "fallbackResourceIds": [
+    "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-stress-cluster-pg/providers/Microsoft.Insights/components/stress-pg-ai-s7b6dif73rup6"
   ],
   "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
 }

@@ -22,7 +22,7 @@ import java.nio.ByteBuffer;
 import static com.azure.core.util.FluxUtil.monoError;
 
 public class FileSeekableByteChannelWrite extends ShareScenarioBase<StorageStressOptions> {
-    ClientLogger LOGGER = new ClientLogger(FileSeekableByteChannelWrite.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FileSeekableByteChannelWrite.class);
     private final OriginalContent originalContent = new OriginalContent();
     private final ShareFileClient syncClient;
     private final ShareFileAsyncClient asyncNoFaultClient;

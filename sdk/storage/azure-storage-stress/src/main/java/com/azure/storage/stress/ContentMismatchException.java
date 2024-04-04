@@ -1,4 +1,4 @@
-package com.azure.storage.blob.stress.utils;
+package com.azure.storage.stress;
 
 public class ContentMismatchException extends RuntimeException {
     public ContentMismatchException() {

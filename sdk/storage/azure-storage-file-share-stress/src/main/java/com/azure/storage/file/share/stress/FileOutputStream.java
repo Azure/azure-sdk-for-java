@@ -18,7 +18,7 @@ import java.io.OutputStream;
 import static com.azure.core.util.FluxUtil.monoError;
 
 public class FileOutputStream extends ShareScenarioBase<StorageStressOptions> {
-    ClientLogger LOGGER = new ClientLogger(FileOutputStream.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FileOutputStream.class);
     private final OriginalContent originalContent = new OriginalContent();
     private final ShareFileClient syncClient;
     private final ShareFileAsyncClient asyncNoFaultClient;

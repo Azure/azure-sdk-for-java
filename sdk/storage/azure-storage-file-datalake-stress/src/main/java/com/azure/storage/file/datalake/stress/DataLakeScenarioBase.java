@@ -45,9 +45,10 @@ public abstract class DataLakeScenarioBase<TOptions extends StorageStressOptions
         DataLakeServiceAsyncClient asyncNoFaultClient = clientBuilder.buildAsyncClient();
         DataLakeServiceClient syncNoFaultClient = clientBuilder.buildClient();
 
-        if (options.isFaultInjectionEnabled()) {
-            clientBuilder.addPolicy(new FaultInjectingHttpPolicy(false, getFaultProbabilities(),
-                options.isRequestFaulted()));
+        if (options.isFaultInjectionEnabledForDownloads()) {
+            clientBuilder.addPolicy(new FaultInjectingHttpPolicy(false, getFaultProbabilities(), false));
+        } else if (options.isFaultInjectionEnabledForUploads()) {
+            clientBuilder.addPolicy(new FaultInjectingHttpPolicy(true, getFaultProbabilities(), true));
         }
 
         DataLakeServiceClient syncClient = clientBuilder.buildClient();

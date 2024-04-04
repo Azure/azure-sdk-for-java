@@ -246,7 +246,8 @@ public class TelemetryHelper {
         before.setAttribute(AttributeKey.booleanKey("sync"), options.isSync());
         before.setAttribute(AttributeKey.longKey("payloadSize"), options.getSize());
         before.setAttribute(AttributeKey.stringKey("hostname"), System.getenv().get("HOSTNAME"));
-        before.setAttribute(AttributeKey.booleanKey("faultInjection"), options.isFaultInjectionEnabled());
+        before.setAttribute(AttributeKey.booleanKey("faultInjectionForDownloads"), options.isFaultInjectionEnabledForDownloads());
+        before.setAttribute(AttributeKey.booleanKey("faultInjectionForUploads"), options.isFaultInjectionEnabledForUploads());
         before.setAttribute(AttributeKey.stringKey("httpClientProvider"), options.getHttpClient().toString());
         before.setAttribute(AttributeKey.stringKey("jreVersion"), System.getProperty("java.version"));
         before.setAttribute(AttributeKey.stringKey("jreVendor"), System.getProperty("java.vendor"));
@@ -257,7 +258,8 @@ public class TelemetryHelper {
 //            .addKeyValue("blobName", options.getBlobName())
             .addKeyValue("payloadSize", options.getSize())
             .addKeyValue("concurrency", options.getParallel())
-            .addKeyValue("faultInjection", options.isFaultInjectionEnabled())
+            .addKeyValue("faultInjectionForDownloads", options.isFaultInjectionEnabledForDownloads())
+            .addKeyValue("faultInjectionForUploads", options.isFaultInjectionEnabledForUploads())
             .addKeyValue("storagePackageVersion", storageFileSharePackageVersion)
             .addKeyValue("sync", options.isSync())
             .addKeyValue("scenarioName", scenarioName)

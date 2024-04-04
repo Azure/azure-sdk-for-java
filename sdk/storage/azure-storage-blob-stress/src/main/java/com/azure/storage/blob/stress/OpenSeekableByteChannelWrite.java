@@ -24,7 +24,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteOptions.WriteMode.OVERWRITE;
 
 public class OpenSeekableByteChannelWrite extends BlobScenarioBase<StorageStressOptions> {
-    ClientLogger LOGGER = new ClientLogger(OpenSeekableByteChannelWrite.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OpenSeekableByteChannelWrite.class);
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncNoFaultClient;

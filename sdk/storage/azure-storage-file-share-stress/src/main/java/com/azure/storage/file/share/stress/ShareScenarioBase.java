@@ -45,9 +45,10 @@ public abstract class ShareScenarioBase<TOptions extends StorageStressOptions> e
         ShareServiceAsyncClient asyncNoFaultClient = clientBuilder.buildAsyncClient();
         ShareServiceClient syncNoFaultClient = clientBuilder.buildClient();
 
-        if (options.isFaultInjectionEnabled()) {
-            clientBuilder.addPolicy(new FaultInjectingHttpPolicy(false, getFaultProbabilities(),
-                options.isRequestFaulted()));
+        if (options.isFaultInjectionEnabledForDownloads()) {
+            clientBuilder.addPolicy(new FaultInjectingHttpPolicy(false, getFaultProbabilities(), false));
+        } else if (options.isFaultInjectionEnabledForUploads()) {
+            clientBuilder.addPolicy(new FaultInjectingHttpPolicy(true, getFaultProbabilities(), true));
         }
 
         ShareServiceClient syncClient = clientBuilder.buildClient();

@@ -13,6 +13,7 @@ import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.stress.ContentInfo;
+import com.azure.storage.stress.ContentMismatchException;
 import com.azure.storage.stress.CrcInputStream;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

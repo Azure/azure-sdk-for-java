@@ -25,6 +25,7 @@ import static com.azure.core.http.HttpHeaderName.X_MS_CLIENT_REQUEST_ID;
 
 public class FaultInjectingHttpPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(FaultInjectingHttpPolicy.class);
+    private static final HttpHeaderName TRACEPARENT_HEADER = HttpHeaderName.fromString("traceparent");
     private static final HttpHeaderName UPSTREAM_URI_HEADER = HttpHeaderName.fromString("X-Upstream-Base-Uri");
     private static final HttpHeaderName HTTP_FAULT_INJECTOR_RESPONSE_HEADER = HttpHeaderName.fromString("x-ms-faultinjector-response-option");
     private static final HttpHeaderName SERVER_REQUEST_ID_HEADER = HttpHeaderName.fromString("x-ms-request-id");
@@ -33,10 +34,10 @@ public class FaultInjectingHttpPolicy implements HttpPipelinePolicy {
 
     private final List<Tuple2<Double, String>> probabilities;
 
-    public FaultInjectingHttpPolicy(boolean https, FaultInjectionProbabilities probabilities, boolean isRequestFaulted) {
+    public FaultInjectingHttpPolicy(boolean https, FaultInjectionProbabilities probabilities, boolean isUploadFaultsEnabled) {
         this.https = https;
         this.probabilities = new ArrayList<>();
-        if (isRequestFaulted) {
+        if (isUploadFaultsEnabled) {
             addRequestFaultedProbabilities(probabilities);
         } else {
             addResponseFaultedProbabilities(probabilities);
@@ -49,7 +50,7 @@ public class FaultInjectingHttpPolicy implements HttpPipelinePolicy {
             .addKeyValue(HTTP_FAULT_INJECTOR_RESPONSE_HEADER.getCaseInsensitiveName(), faultType)
             .addKeyValue(X_MS_CLIENT_REQUEST_ID.getCaseInsensitiveName(), request.getHeaders().getValue(X_MS_CLIENT_REQUEST_ID))
             .addKeyValue(SERVER_REQUEST_ID_HEADER.getCaseInsensitiveName(), response == null ? null : response.getHeaders().getValue(SERVER_REQUEST_ID_HEADER))
-//            .addKeyValue(TRACEPARENT_HEADER.getCaseInsensitiveName(), request.getHeaders().getValue(TRACEPARENT_HEADER))
+            .addKeyValue(TRACEPARENT_HEADER.getCaseInsensitiveName(), request.getHeaders().getValue(TRACEPARENT_HEADER))
             .addKeyValue("responseCode", response == null ? null : response.getStatusCode())
             .log("HTTP response with fault injection");
     }

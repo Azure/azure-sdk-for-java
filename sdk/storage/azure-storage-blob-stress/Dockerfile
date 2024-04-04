@@ -13,7 +13,7 @@ ADD ./common /stress/common
 ADD ./sdk/parents /stress/sdk/parents
 
 # Build storage and stress tests
-ARG SKIP_CHECKS="-Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests -Dmaven.javadoc.skip"
+ARG SKIP_CHECKS="-Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests  -Dcodesnippet.skip -Dspotless.skip -Denforcer.skip"
 RUN --mount=type=cache,target=/root/.m2 \
  mvn -f /stress/eng/code-quality-reports/pom.xml clean install  && \
  mvn -f /stress/sdk/parents/azure-perf-test-parent/pom.xml clean install ${SKIP_CHECKS} && \

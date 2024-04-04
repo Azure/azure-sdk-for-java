@@ -11,6 +11,7 @@ import com.azure.core.util.tracing.TracerProvider;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.stress.ContentInfo;
+import com.azure.storage.stress.ContentMismatchException;
 import com.azure.storage.stress.CrcInputStream;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

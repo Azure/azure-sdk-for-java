@@ -6,7 +6,7 @@ matrix:
       sync: true
       sizeBytes: 1024
       parallel: 50
-      faults: true
+      downloadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -16,7 +16,7 @@ matrix:
       sync: false
       sizeBytes: 1024
       parallel: 50
-      faults: true
+      downloadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -26,7 +26,7 @@ matrix:
       sync: true
       sizeBytes: "52428800"
       parallel: 10
-      faults: true
+      downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -36,7 +36,7 @@ matrix:
       sync: true
       sizeBytes: 1024
       parallel: 50
-      faults: true
+      downloadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -46,7 +46,7 @@ matrix:
       sync: false
       sizeBytes: 1024
       parallel: 50
-      faults: true
+      downloadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -56,7 +56,7 @@ matrix:
       sync: true
       sizeBytes: "52428800"
       parallel: 10
-      faults: true
+      downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -66,7 +66,7 @@ matrix:
       sync: true
       sizeBytes: 1024
       parallel: 50
-      faults: true
+      downloadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -77,7 +77,7 @@ matrix:
       sync: false
       sizeBytes: 1024
       parallel: 50
-      faults: true
+      downloadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -87,7 +87,7 @@ matrix:
       sync: true
       sizeBytes: "52428800"
       parallel: 10
-      faults: true
+      downloadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -97,7 +97,7 @@ matrix:
       sync: true
       sizeBytes: 1024
       parallel: 50
-      faults: true
+      downloadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -107,7 +107,7 @@ matrix:
       sync: true
       sizeBytes: "52428800"
       parallel: 10
-      faults: true
+      downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -117,7 +117,7 @@ matrix:
       sync: true
       sizeBytes: 1024
       parallel: 50
-      faults: true
+      downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -127,7 +127,7 @@ matrix:
       sync: true
       sizeBytes: "52428800"
       parallel: 50
-      faults: true
+      downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -137,8 +137,7 @@ matrix:
       sync: true
       sizeBytes: 1024
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -148,8 +147,7 @@ matrix:
       sync: false
       sizeBytes: 1024
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -159,8 +157,7 @@ matrix:
       sync: true
       sizeBytes: "26214400"
       parallel: 10
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -170,8 +167,7 @@ matrix:
       sync: true
       sizeBytes: 1024
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -181,8 +177,7 @@ matrix:
       sync: true
       sizeBytes: "52428800"
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -192,8 +187,7 @@ matrix:
       sync: true
       sizeBytes: 1024
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -203,8 +197,7 @@ matrix:
       sync: true
       sizeBytes: "10240"
       parallel: 10
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -214,8 +207,7 @@ matrix:
       sync: true
       sizeBytes: 1024
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -225,8 +217,7 @@ matrix:
       sync: true
       sizeBytes: "26214400"
       parallel: 10
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -236,8 +227,7 @@ matrix:
       sync: true
       sizeBytes: 1024
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -247,8 +237,7 @@ matrix:
       sync: true
       sizeBytes: "52428800"
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -258,8 +247,7 @@ matrix:
       sync: true
       sizeBytes: 1024
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -269,8 +257,7 @@ matrix:
       sync: true
       sizeBytes: "26214400"
       parallel: 10
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -280,8 +267,7 @@ matrix:
       sync: true
       sizeBytes: 1024
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -291,8 +277,7 @@ matrix:
       sync: true
       sizeBytes: "26214400"
       parallel: 10
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -302,8 +287,7 @@ matrix:
       sync: true
       sizeBytes: 1024
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -313,8 +297,7 @@ matrix:
       sync: true
       sizeBytes: "52428800"
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -324,8 +307,7 @@ matrix:
       sync: true
       sizeBytes: 1024
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -335,8 +317,7 @@ matrix:
       sync: true
       sizeBytes: "26214400"
       parallel: 10
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -346,8 +327,7 @@ matrix:
       sync: true
       sizeBytes: 1024
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -357,8 +337,7 @@ matrix:
       sync: true
       sizeBytes: "26214400"
       parallel: 10
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -368,8 +347,7 @@ matrix:
       sync: true
       sizeBytes: 1024
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -379,8 +357,7 @@ matrix:
       sync: true
       sizeBytes: "10240"
       parallel: 10
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -390,8 +367,7 @@ matrix:
       sync: true
       sizeBytes: 1024
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -401,8 +377,7 @@ matrix:
       sync: true
       sizeBytes: "4194304"
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -412,8 +387,7 @@ matrix:
       sync: true
       sizeBytes: 1024
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -423,8 +397,7 @@ matrix:
       sync: true
       sizeBytes: "4194304"
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -434,8 +407,7 @@ matrix:
       sync: true
       sizeBytes: 1024
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -445,8 +417,7 @@ matrix:
       sync: false
       sizeBytes: 1024
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
 
@@ -456,8 +427,7 @@ matrix:
       sync: true
       sizeBytes: "52428800"
       parallel: 10
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -467,8 +437,7 @@ matrix:
       sync: true
       sizeBytes: 1024
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
 
@@ -478,7 +447,6 @@ matrix:
       sync: true
       sizeBytes: "52428800"
       parallel: 50
-      faults: true
-      requestFaulted: true
+      uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."

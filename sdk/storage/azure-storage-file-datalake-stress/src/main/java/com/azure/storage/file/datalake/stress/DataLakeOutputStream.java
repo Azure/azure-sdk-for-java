@@ -19,7 +19,7 @@ import java.io.OutputStream;
 import static com.azure.core.util.FluxUtil.monoError;
 
 public class DataLakeOutputStream extends DataLakeScenarioBase<StorageStressOptions> {
-    ClientLogger LOGGER = new ClientLogger(DataLakeOutputStream.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataLakeOutputStream.class);
     private final OriginalContent originalContent = new OriginalContent();
     private final DataLakeFileClient syncClient;
     private final DataLakeFileAsyncClient asyncNoFaultClient;
