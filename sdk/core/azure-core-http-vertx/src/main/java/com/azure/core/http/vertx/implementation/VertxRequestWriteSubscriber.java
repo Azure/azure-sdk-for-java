@@ -17,6 +17,8 @@ import reactor.util.context.Context;
 
 import java.nio.ByteBuffer;
 
+import static com.azure.core.http.vertx.implementation.VertxUtils.wrapVertxException;
+
 /**
  * Subscriber that writes a stream of {@link ByteBuffer ByteBuffers} to a {@link HttpClientRequest Vert.x request}.
  */
@@ -44,8 +46,7 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
      */
     public VertxRequestWriteSubscriber(HttpClientRequest request, MonoSink<HttpResponse> emitter,
         ProgressReporter progressReporter) {
-        this.request = request.exceptionHandler(this::onError)
-            .drainHandler(ignored -> requestNext());
+        this.request = request.exceptionHandler(this::onError).drainHandler(ignored -> requestNext());
         this.emitter = emitter;
         this.progressReporter = progressReporter;
     }
@@ -134,7 +135,7 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
 
     private void resetRequest(Throwable throwable) {
         subscription.cancel();
-        emitter.error(LOGGER.logThrowableAsError(throwable));
+        emitter.error(wrapVertxException(throwable));
         request.reset(0, throwable);
     }
 
@@ -157,16 +158,13 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
     private void endRequest() {
         request.end(result -> {
             if (result.failed()) {
-                emitter.error(result.cause());
+                emitter.error(wrapVertxException(result.cause()));
             }
         });
     }
 
     private enum State {
-        UNINITIALIZED(0),
-        WRITING(1),
-        COMPLETE(2),
-        ERROR(3);
+        UNINITIALIZED(0), WRITING(1), COMPLETE(2), ERROR(3);
 
         private final int code;
 

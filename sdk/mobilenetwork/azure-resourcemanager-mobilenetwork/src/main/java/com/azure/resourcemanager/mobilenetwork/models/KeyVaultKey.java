@@ -7,7 +7,9 @@ package com.azure.resourcemanager.mobilenetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An Azure key vault key. */
+/**
+ * An Azure key vault key.
+ */
 @Fluent
 public final class KeyVaultKey {
     /*
@@ -16,14 +18,16 @@ public final class KeyVaultKey {
     @JsonProperty(value = "keyUrl")
     private String keyUrl;
 
-    /** Creates an instance of KeyVaultKey class. */
+    /**
+     * Creates an instance of KeyVaultKey class.
+     */
     public KeyVaultKey() {
     }
 
     /**
      * Get the keyUrl property: The key URL, unversioned. For example:
      * https://contosovault.vault.azure.net/keys/azureKey.
-     *
+     * 
      * @return the keyUrl value.
      */
     public String keyUrl() {
@@ -33,7 +37,7 @@ public final class KeyVaultKey {
     /**
      * Set the keyUrl property: The key URL, unversioned. For example:
      * https://contosovault.vault.azure.net/keys/azureKey.
-     *
+     * 
      * @param keyUrl the keyUrl value to set.
      * @return the KeyVaultKey object itself.
      */
@@ -44,7 +48,7 @@ public final class KeyVaultKey {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class AmbrTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Ambr model =
-            BinaryData.fromString("{\"uplink\":\"lbjbsyb\",\"downlink\":\"qwrvtldgmfp\"}").toObject(Ambr.class);
-        Assertions.assertEquals("lbjbsyb", model.uplink());
-        Assertions.assertEquals("qwrvtldgmfp", model.downlink());
+        Ambr model = BinaryData.fromString("{\"uplink\":\"stkwqqtch\",\"downlink\":\"alm\"}").toObject(Ambr.class);
+        Assertions.assertEquals("stkwqqtch", model.uplink());
+        Assertions.assertEquals("alm", model.downlink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Ambr model = new Ambr().withUplink("lbjbsyb").withDownlink("qwrvtldgmfp");
+        Ambr model = new Ambr().withUplink("stkwqqtch").withDownlink("alm");
         model = BinaryData.fromObject(model).toObject(Ambr.class);
-        Assertions.assertEquals("lbjbsyb", model.uplink());
-        Assertions.assertEquals("qwrvtldgmfp", model.downlink());
+        Assertions.assertEquals("stkwqqtch", model.uplink());
+        Assertions.assertEquals("alm", model.downlink());
     }
 }

@@ -20,8 +20,8 @@ public final class ApplicationOperationsImpl implements ApplicationOperations {
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public ApplicationOperationsImpl(
-        ApplicationOperationsClient innerClient, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    public ApplicationOperationsImpl(ApplicationOperationsClient innerClient,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -29,10 +29,7 @@ public final class ApplicationOperationsImpl implements ApplicationOperations {
     public Response<Application> getWithResponse(String applicationId, Context context) {
         Response<ApplicationInner> inner = this.serviceClient().getWithResponse(applicationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplicationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -57,45 +54,37 @@ public final class ApplicationOperationsImpl implements ApplicationOperations {
     }
 
     public Application getById(String id) {
-        String applicationId = Utils.getValueFromIdByName(id, "applications");
+        String applicationId = ResourceManagerUtils.getValueFromIdByName(id, "applications");
         if (applicationId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
         }
         return this.getWithResponse(applicationId, Context.NONE).getValue();
     }
 
     public Response<Application> getByIdWithResponse(String id, Context context) {
-        String applicationId = Utils.getValueFromIdByName(id, "applications");
+        String applicationId = ResourceManagerUtils.getValueFromIdByName(id, "applications");
         if (applicationId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
         }
         return this.getWithResponse(applicationId, context);
     }
 
     public void deleteById(String id) {
-        String applicationId = Utils.getValueFromIdByName(id, "applications");
+        String applicationId = ResourceManagerUtils.getValueFromIdByName(id, "applications");
         if (applicationId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
         }
         this.deleteWithResponse(applicationId, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String applicationId = Utils.getValueFromIdByName(id, "applications");
+        String applicationId = ResourceManagerUtils.getValueFromIdByName(id, "applications");
         if (applicationId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
         }
         return this.deleteWithResponse(applicationId, context);
     }

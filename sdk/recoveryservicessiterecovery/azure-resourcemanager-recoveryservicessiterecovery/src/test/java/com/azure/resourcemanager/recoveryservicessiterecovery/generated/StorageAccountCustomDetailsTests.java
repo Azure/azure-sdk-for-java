@@ -10,10 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.StorageAcco
 public final class StorageAccountCustomDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageAccountCustomDetails model =
-            BinaryData
-                .fromString("{\"resourceType\":\"StorageAccountCustomDetails\"}")
-                .toObject(StorageAccountCustomDetails.class);
+        StorageAccountCustomDetails model = BinaryData.fromString("{\"resourceType\":\"StorageAccountCustomDetails\"}")
+            .toObject(StorageAccountCustomDetails.class);
     }
 
     @org.junit.jupiter.api.Test

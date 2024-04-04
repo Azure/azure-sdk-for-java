@@ -12,8 +12,7 @@ public final class AppServiceInfoImpl implements AppServiceInfo {
 
     private final com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager;
 
-    AppServiceInfoImpl(
-        AppServiceInfoInner innerObject,
+    AppServiceInfoImpl(AppServiceInfoInner innerObject,
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

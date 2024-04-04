@@ -7,8 +7,27 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Changed log level of an informational message in token acquisition. [#39063](https://github.com/Azure/azure-sdk-for-java/issues/39063)
 
 ### Other Changes
+
+## 1.11.4 (2024-03-14)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `msal4j` from `1.14.0` to version `1.14.3`.
+
+## 1.11.3 (2024-03-01)
+
+### Bugs fixed
+- Fixed an issue where the broker dependency library was being probed for when it shouldn't be, resulting in an erronous error message. [#39002](https://github.com/Azure/azure-sdk-for-java/pull/39002)
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+
 
 ## 1.12.0-beta.1 (2024-02-12)
 

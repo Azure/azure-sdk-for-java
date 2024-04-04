@@ -12,19 +12,16 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResyncProvi
 public final class ResyncInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResyncInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"providerSpecificDetails\":{\"instanceType\":\"ResyncProviderSpecificInput\"}}}")
-                .toObject(ResyncInput.class);
+        ResyncInput model = BinaryData
+            .fromString(
+                "{\"properties\":{\"providerSpecificDetails\":{\"instanceType\":\"ResyncProviderSpecificInput\"}}}")
+            .toObject(ResyncInput.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResyncInput model =
-            new ResyncInput()
-                .withProperties(
-                    new ResyncInputProperties().withProviderSpecificDetails(new ResyncProviderSpecificInput()));
+        ResyncInput model = new ResyncInput()
+            .withProperties(new ResyncInputProperties().withProviderSpecificDetails(new ResyncProviderSpecificInput()));
         model = BinaryData.fromObject(model).toObject(ResyncInput.class);
     }
 }

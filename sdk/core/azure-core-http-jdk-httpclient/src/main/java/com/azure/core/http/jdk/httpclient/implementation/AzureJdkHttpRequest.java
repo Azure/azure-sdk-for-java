@@ -35,6 +35,7 @@ public final class AzureJdkHttpRequest extends HttpRequest {
     private final String method;
     private final URI uri;
     private final HttpHeaders headers;
+    private final Optional<Duration> responseTimeout;
 
     /**
      * Creates a new instance of the JDK HttpRequest.
@@ -43,15 +44,18 @@ public final class AzureJdkHttpRequest extends HttpRequest {
      * @param context The context of the request.
      * @param restrictedHeaders The set of restricted headers.
      * @param logger The logger to log warnings to.
+     * @param writeTimeout The write timeout of the request.
+     * @param responseTimeout The response timeout of the request.
      */
     public AzureJdkHttpRequest(com.azure.core.http.HttpRequest azureCoreRequest, Context context,
-        Set<String> restrictedHeaders, ClientLogger logger) {
+        Set<String> restrictedHeaders, ClientLogger logger, Duration writeTimeout, Duration responseTimeout) {
         HttpMethod method = azureCoreRequest.getHttpMethod();
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
         this.method = method.toString();
         this.bodyPublisher = (method == HttpMethod.GET || method == HttpMethod.HEAD)
-            ? noBody() : BodyPublisherUtils.toBodyPublisher(azureCoreRequest, progressReporter);
+            ? noBody()
+            : BodyPublisherUtils.toBodyPublisher(azureCoreRequest, writeTimeout, progressReporter);
 
         try {
             uri = azureCoreRequest.getUrl().toURI();
@@ -59,9 +63,10 @@ public final class AzureJdkHttpRequest extends HttpRequest {
             throw logger.logExceptionAsError(Exceptions.propagate(e));
         }
 
-        this.headers = HttpHeaders.of(new HeaderFilteringMap(
-            HttpHeadersAccessHelper.getRawHeaderMap(azureCoreRequest.getHeaders()), restrictedHeaders, logger),
-            (ignored1, ignored2) -> true);
+        this.headers = HttpHeaders
+            .of(new HeaderFilteringMap(HttpHeadersAccessHelper.getRawHeaderMap(azureCoreRequest.getHeaders()),
+                restrictedHeaders, logger), (ignored1, ignored2) -> true);
+        this.responseTimeout = Optional.ofNullable(responseTimeout);
     }
 
     @Override
@@ -76,7 +81,7 @@ public final class AzureJdkHttpRequest extends HttpRequest {
 
     @Override
     public Optional<Duration> timeout() {
-        return Optional.empty();
+        return responseTimeout;
     }
 
     @Override

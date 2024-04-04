@@ -12,29 +12,24 @@ import org.junit.jupiter.api.Assertions;
 public final class RemediationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Remediation model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"kzykjtjk\",\"scripts\":[\"fwushcdpkupn\",\"rmgjfbpkuwx\"],\"automated\":true,\"portalLink\":\"jfizfavkjzwfbc\"}")
-                .toObject(Remediation.class);
-        Assertions.assertEquals("kzykjtjk", model.description());
-        Assertions.assertEquals("fwushcdpkupn", model.scripts().get(0));
-        Assertions.assertEquals(true, model.automated());
-        Assertions.assertEquals("jfizfavkjzwfbc", model.portalLink());
+        Remediation model = BinaryData.fromString(
+            "{\"description\":\"pfajnjwltlwtjj\",\"scripts\":[\"talhsnvkcdmxzr\",\"oaimlnw\",\"aaomylweazu\",\"cse\"],\"automated\":false,\"portalLink\":\"npjhlfzswpchwahf\"}")
+            .toObject(Remediation.class);
+        Assertions.assertEquals("pfajnjwltlwtjj", model.description());
+        Assertions.assertEquals("talhsnvkcdmxzr", model.scripts().get(0));
+        Assertions.assertEquals(false, model.automated());
+        Assertions.assertEquals("npjhlfzswpchwahf", model.portalLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Remediation model =
-            new Remediation()
-                .withDescription("kzykjtjk")
-                .withScripts(Arrays.asList("fwushcdpkupn", "rmgjfbpkuwx"))
-                .withAutomated(true)
-                .withPortalLink("jfizfavkjzwfbc");
+        Remediation model = new Remediation().withDescription("pfajnjwltlwtjj")
+            .withScripts(Arrays.asList("talhsnvkcdmxzr", "oaimlnw", "aaomylweazu", "cse")).withAutomated(false)
+            .withPortalLink("npjhlfzswpchwahf");
         model = BinaryData.fromObject(model).toObject(Remediation.class);
-        Assertions.assertEquals("kzykjtjk", model.description());
-        Assertions.assertEquals("fwushcdpkupn", model.scripts().get(0));
-        Assertions.assertEquals(true, model.automated());
-        Assertions.assertEquals("jfizfavkjzwfbc", model.portalLink());
+        Assertions.assertEquals("pfajnjwltlwtjj", model.description());
+        Assertions.assertEquals("talhsnvkcdmxzr", model.scripts().get(0));
+        Assertions.assertEquals(false, model.automated());
+        Assertions.assertEquals("npjhlfzswpchwahf", model.portalLink());
     }
 }

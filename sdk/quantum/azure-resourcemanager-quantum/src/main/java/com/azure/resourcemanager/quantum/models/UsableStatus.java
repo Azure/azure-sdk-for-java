@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Whether the current workspace is ready to accept Jobs. */
+/**
+ * Whether the current workspace is ready to accept Jobs.
+ */
 public final class UsableStatus extends ExpandableStringEnum<UsableStatus> {
-    /** Static value Yes for UsableStatus. */
+    /**
+     * Static value Yes for UsableStatus.
+     */
     public static final UsableStatus YES = fromString("Yes");
 
-    /** Static value No for UsableStatus. */
+    /**
+     * Static value No for UsableStatus.
+     */
     public static final UsableStatus NO = fromString("No");
 
-    /** Static value Partial for UsableStatus. */
+    /**
+     * Static value Partial for UsableStatus.
+     */
     public static final UsableStatus PARTIAL = fromString("Partial");
 
     /**
      * Creates a new instance of UsableStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class UsableStatus extends ExpandableStringEnum<UsableStatus> {
 
     /**
      * Creates or finds a UsableStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UsableStatus.
      */
@@ -41,7 +49,7 @@ public final class UsableStatus extends ExpandableStringEnum<UsableStatus> {
 
     /**
      * Gets known UsableStatus values.
-     *
+     * 
      * @return known UsableStatus values.
      */
     public static Collection<UsableStatus> values() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.RoleInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of roles. */
+/**
+ * A list of roles.
+ */
 @Fluent
 public final class RoleListResult {
     /*
@@ -18,13 +20,15 @@ public final class RoleListResult {
     @JsonProperty(value = "value")
     private List<RoleInner> value;
 
-    /** Creates an instance of RoleListResult class. */
+    /**
+     * Creates an instance of RoleListResult class.
+     */
     public RoleListResult() {
     }
 
     /**
      * Get the value property: The list of roles in a cluster.
-     *
+     * 
      * @return the value value.
      */
     public List<RoleInner> value() {
@@ -33,7 +37,7 @@ public final class RoleListResult {
 
     /**
      * Set the value property: The list of roles in a cluster.
-     *
+     * 
      * @param value the value value to set.
      * @return the RoleListResult object itself.
      */
@@ -44,7 +48,7 @@ public final class RoleListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

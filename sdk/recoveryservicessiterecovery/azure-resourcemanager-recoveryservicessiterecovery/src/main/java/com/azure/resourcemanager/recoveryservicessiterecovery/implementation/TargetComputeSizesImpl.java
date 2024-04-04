@@ -19,45 +19,26 @@ public final class TargetComputeSizesImpl implements TargetComputeSizes {
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    public TargetComputeSizesImpl(
-        TargetComputeSizesClient innerClient,
+    public TargetComputeSizesImpl(TargetComputeSizesClient innerClient,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<TargetComputeSize> listByReplicationProtectedItems(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
+    public PagedIterable<TargetComputeSize> listByReplicationProtectedItems(String resourceName,
+        String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName) {
-        PagedIterable<TargetComputeSizeInner> inner =
-            this
-                .serviceClient()
-                .listByReplicationProtectedItems(
-                    resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName);
-        return Utils.mapPage(inner, inner1 -> new TargetComputeSizeImpl(inner1, this.manager()));
+        PagedIterable<TargetComputeSizeInner> inner = this.serviceClient().listByReplicationProtectedItems(resourceName,
+            resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TargetComputeSizeImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<TargetComputeSize> listByReplicationProtectedItems(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
+    public PagedIterable<TargetComputeSize> listByReplicationProtectedItems(String resourceName,
+        String resourceGroupName, String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         Context context) {
-        PagedIterable<TargetComputeSizeInner> inner =
-            this
-                .serviceClient()
-                .listByReplicationProtectedItems(
-                    resourceName,
-                    resourceGroupName,
-                    fabricName,
-                    protectionContainerName,
-                    replicatedProtectedItemName,
-                    context);
-        return Utils.mapPage(inner, inner1 -> new TargetComputeSizeImpl(inner1, this.manager()));
+        PagedIterable<TargetComputeSizeInner> inner = this.serviceClient().listByReplicationProtectedItems(resourceName,
+            resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TargetComputeSizeImpl(inner1, this.manager()));
     }
 
     private TargetComputeSizesClient serviceClient() {

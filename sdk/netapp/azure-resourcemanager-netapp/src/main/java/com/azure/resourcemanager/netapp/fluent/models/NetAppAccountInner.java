@@ -180,40 +180,6 @@ public final class NetAppAccountInner extends Resource {
     }
 
     /**
-     * Get the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
-     * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
-     * 
-     * @return the nfsV4IdDomain value.
-     */
-    public String nfsV4IdDomain() {
-        return this.innerProperties() == null ? null : this.innerProperties().nfsV4IdDomain();
-    }
-
-    /**
-     * Set the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
-     * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
-     * 
-     * @param nfsV4IdDomain the nfsV4IdDomain value to set.
-     * @return the NetAppAccountInner object itself.
-     */
-    public NetAppAccountInner withNfsV4IdDomain(String nfsV4IdDomain) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AccountProperties();
-        }
-        this.innerProperties().withNfsV4IdDomain(nfsV4IdDomain);
-        return this;
-    }
-
-    /**
-     * Get the isMultiAdEnabled property: This will have true value only if account is Multiple AD enabled.
-     * 
-     * @return the isMultiAdEnabled value.
-     */
-    public Boolean isMultiAdEnabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().isMultiAdEnabled();
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

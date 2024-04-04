@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.CurrentJobD
 public final class CurrentJobDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CurrentJobDetails model =
-            BinaryData
-                .fromString("{\"jobName\":\"obbc\",\"jobId\":\"s\",\"startTime\":\"2021-04-25T18:58:37Z\"}")
+        CurrentJobDetails model
+            = BinaryData.fromString("{\"jobName\":\"obbc\",\"jobId\":\"s\",\"startTime\":\"2021-04-25T18:58:37Z\"}")
                 .toObject(CurrentJobDetails.class);
     }
 

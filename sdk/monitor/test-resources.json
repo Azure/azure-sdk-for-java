@@ -45,25 +45,6 @@
       "type": "string",
       "defaultValue": "servicebus.windows.net"
     },
-    "testApplicationId": {
-      "type": "string",
-      "metadata": {
-        "description": "The client id of the service principal used to run tests."
-      }
-    },
-    "testApplicationSecret": {
-      "type": "string",
-      "metadata": {
-        "description": "The application client secret used to run tests."
-      }
-    },
-    "tenantId": {
-      "type": "string",
-      "defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-      "metadata": {
-        "description": "The tenant id to which the application and resources belong."
-      }
-    },
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
@@ -88,7 +69,8 @@
     "dcrRoleName": "[concat('dcrrole', parameters('baseName'))]",
     "dataCollectionRuleName": "[concat(parameters('baseName'), '-', 'azmonitordcr')]",
     "dataCollectionEndpointName": "[concat(parameters('baseName'), '-', 'azmonitordce')]",
-    "workspaceName": "[concat(parameters('baseName'), '-', 'azmonitorlogsws')]"
+    "workspaceName": "[concat(parameters('baseName'), '-', 'azmonitorlogsws')]",
+    "additionalWorkspaceName": "[concat(parameters('baseName'), '-', 'azmonitorlogsws2')]"
   },
   "resources": [
     {
@@ -276,6 +258,26 @@
       }
     },
     {
+      "type": "microsoft.operationalinsights/workspaces",
+      "apiVersion": "2021-12-01-preview",
+      "name": "[variables('additionalWorkspaceName')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "sku": {
+          "name": "pergb2018"
+        },
+        "retentionInDays": 30,
+        "features": {
+          "enableLogAccessUsingOnlyResourcePermissions": true
+        },
+        "workspaceCapping": {
+          "dailyQuotaGb": -1
+        },
+        "publicNetworkAccessForIngestion": "Enabled",
+        "publicNetworkAccessForQuery": "Enabled"
+      }
+    },
+    {
       "type": "Microsoft.OperationalInsights/workspaces/tables",
       "apiVersion": "2021-12-01-preview",
       "name": "[concat(variables('workspaceName'), '/', 'MyTable_CL')]",
@@ -322,18 +324,6 @@
       "value": "[reference(resourceId('Microsoft.Insights/components', variables('uniqueAppInsightsName')), '2020-02-02-preview').ConnectionString]",
       "type": "string"
     },
-    "AZURE_TENANT_ID": {
-      "type": "string",
-      "value": "[parameters('tenantId')]"
-    },
-    "AZURE_CLIENT_ID": {
-      "type": "string",
-      "value": "[parameters('testApplicationId')]"
-    },
-    "AZURE_CLIENT_SECRET": {
-      "type": "string",
-      "value": "[parameters('testApplicationSecret')]"
-    },
     "AZURE_EVENTHUBS_CONNECTION_STRING": {
       "type": "string",
       "value": "[concat(listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('eventHubsNamespaceName'), variables('eventHubsNamespaceKeyName')), variables('eventHubsApiVersion')).primaryConnectionString, ';EntityPath=', parameters('eventHubName'))]"
@@ -357,6 +347,10 @@
     "AZURE_MONITOR_LOGS_WORKSPACE_ID": {
       "type": "string",
       "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', variables('workspaceName'))).customerId]"
+    },
+    "AZURE_MONITOR_LOGS_ADDITIONAL_WORKSPACE_ID": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', variables('additionalWorkspaceName'))).customerId]"
     },
     "AZURE_MONITOR_LOGS_RESOURCE_ID": {
       "type": "string",

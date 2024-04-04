@@ -19,8 +19,7 @@ public final class IoTSecuritySolutionAnalyticsModelImpl implements IoTSecurityS
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    IoTSecuritySolutionAnalyticsModelImpl(
-        IoTSecuritySolutionAnalyticsModelInner innerObject,
+    IoTSecuritySolutionAnalyticsModelImpl(IoTSecuritySolutionAnalyticsModelInner innerObject,
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

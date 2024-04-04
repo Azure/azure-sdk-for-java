@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Files. */
+/**
+ * Resource collection API of Files.
+ */
 public interface Files {
     /**
      * Lists all the Files information under a workspace for an Azure subscription.
-     *
+     * 
      * @param fileWorkspaceName File Workspace Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -23,7 +25,7 @@ public interface Files {
 
     /**
      * Lists all the Files information under a workspace for an Azure subscription.
-     *
+     * 
      * @param fileWorkspaceName File Workspace Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,7 +37,7 @@ public interface Files {
 
     /**
      * Returns details of a specific file in a work space.
-     *
+     * 
      * @param fileWorkspaceName File Workspace Name.
      * @param fileName File Name.
      * @param context The context to associate with this operation.
@@ -48,7 +50,7 @@ public interface Files {
 
     /**
      * Returns details of a specific file in a work space.
-     *
+     * 
      * @param fileWorkspaceName File Workspace Name.
      * @param fileName File Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -60,7 +62,7 @@ public interface Files {
 
     /**
      * This API allows you to upload content to a file.
-     *
+     * 
      * @param fileWorkspaceName File WorkspaceName.
      * @param fileName File Name.
      * @param uploadFile UploadFile object.
@@ -70,12 +72,12 @@ public interface Files {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> uploadWithResponse(
-        String fileWorkspaceName, String fileName, UploadFile uploadFile, Context context);
+    Response<Void> uploadWithResponse(String fileWorkspaceName, String fileName, UploadFile uploadFile,
+        Context context);
 
     /**
      * This API allows you to upload content to a file.
-     *
+     * 
      * @param fileWorkspaceName File WorkspaceName.
      * @param fileName File Name.
      * @param uploadFile UploadFile object.
@@ -87,7 +89,7 @@ public interface Files {
 
     /**
      * Returns details of a specific file in a work space.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -98,7 +100,7 @@ public interface Files {
 
     /**
      * Returns details of a specific file in a work space.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -110,7 +112,7 @@ public interface Files {
 
     /**
      * Begins definition for a new FileDetails resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new FileDetails definition.
      */

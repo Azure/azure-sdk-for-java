@@ -9,7 +9,9 @@ import com.azure.resourcemanager.storagecache.models.ErrorResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The status of operation. */
+/**
+ * The status of operation.
+ */
 @Fluent
 public final class AscOperationInner {
     /*
@@ -54,13 +56,15 @@ public final class AscOperationInner {
     @JsonProperty(value = "properties")
     private AscOperationProperties innerProperties;
 
-    /** Creates an instance of AscOperationInner class. */
+    /**
+     * Creates an instance of AscOperationInner class.
+     */
     public AscOperationInner() {
     }
 
     /**
      * Get the id property: The operation Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -69,7 +73,7 @@ public final class AscOperationInner {
 
     /**
      * Set the id property: The operation Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the AscOperationInner object itself.
      */
@@ -80,7 +84,7 @@ public final class AscOperationInner {
 
     /**
      * Get the name property: The operation name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -89,7 +93,7 @@ public final class AscOperationInner {
 
     /**
      * Set the name property: The operation name.
-     *
+     * 
      * @param name the name value to set.
      * @return the AscOperationInner object itself.
      */
@@ -100,7 +104,7 @@ public final class AscOperationInner {
 
     /**
      * Get the startTime property: The start time of the operation.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -109,7 +113,7 @@ public final class AscOperationInner {
 
     /**
      * Set the startTime property: The start time of the operation.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the AscOperationInner object itself.
      */
@@ -120,7 +124,7 @@ public final class AscOperationInner {
 
     /**
      * Get the endTime property: The end time of the operation.
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -129,7 +133,7 @@ public final class AscOperationInner {
 
     /**
      * Set the endTime property: The end time of the operation.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the AscOperationInner object itself.
      */
@@ -140,7 +144,7 @@ public final class AscOperationInner {
 
     /**
      * Get the status property: The status of the operation.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -149,7 +153,7 @@ public final class AscOperationInner {
 
     /**
      * Set the status property: The status of the operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the AscOperationInner object itself.
      */
@@ -160,7 +164,7 @@ public final class AscOperationInner {
 
     /**
      * Get the error property: The error detail of the operation if any.
-     *
+     * 
      * @return the error value.
      */
     public ErrorResponse error() {
@@ -169,7 +173,7 @@ public final class AscOperationInner {
 
     /**
      * Set the error property: The error detail of the operation if any.
-     *
+     * 
      * @param error the error value to set.
      * @return the AscOperationInner object itself.
      */
@@ -180,7 +184,7 @@ public final class AscOperationInner {
 
     /**
      * Get the innerProperties property: Additional operation-specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AscOperationProperties innerProperties() {
@@ -189,7 +193,7 @@ public final class AscOperationInner {
 
     /**
      * Get the output property: Additional operation-specific output.
-     *
+     * 
      * @return the output value.
      */
     public Map<String, Object> output() {
@@ -198,7 +202,7 @@ public final class AscOperationInner {
 
     /**
      * Set the output property: Additional operation-specific output.
-     *
+     * 
      * @param output the output value to set.
      * @return the AscOperationInner object itself.
      */
@@ -212,7 +216,7 @@ public final class AscOperationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

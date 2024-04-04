@@ -15,8 +15,7 @@ public final class SecretsCollectionImpl implements SecretsCollection {
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    SecretsCollectionImpl(
-        SecretsCollectionInner innerObject,
+    SecretsCollectionImpl(SecretsCollectionInner innerObject,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

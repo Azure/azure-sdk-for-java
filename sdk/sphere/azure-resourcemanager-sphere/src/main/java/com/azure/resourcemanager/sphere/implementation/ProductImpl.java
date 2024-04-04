@@ -6,13 +6,15 @@ package com.azure.resourcemanager.sphere.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.sphere.fluent.models.ProductInner;
-import com.azure.resourcemanager.sphere.models.CountDeviceResponse;
+import com.azure.resourcemanager.sphere.models.CountDevicesResponse;
 import com.azure.resourcemanager.sphere.models.DeviceGroup;
 import com.azure.resourcemanager.sphere.models.Product;
+import com.azure.resourcemanager.sphere.models.ProductProperties;
 import com.azure.resourcemanager.sphere.models.ProductUpdate;
-import com.azure.resourcemanager.sphere.models.ProvisioningState;
+import com.azure.resourcemanager.sphere.models.ProductUpdateProperties;
 
 public final class ProductImpl implements Product, Product.Definition, Product.Update {
     private ProductInner innerObject;
@@ -31,12 +33,12 @@ public final class ProductImpl implements Product, Product.Definition, Product.U
         return this.innerModel().type();
     }
 
-    public String description() {
-        return this.innerModel().description();
+    public ProductProperties properties() {
+        return this.innerModel().properties();
     }
 
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String resourceGroupName() {
@@ -66,20 +68,14 @@ public final class ProductImpl implements Product, Product.Definition, Product.U
     }
 
     public Product create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProducts()
-                .createOrUpdate(resourceGroupName, catalogName, productName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getProducts().createOrUpdate(resourceGroupName, catalogName,
+            productName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Product create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProducts()
-                .createOrUpdate(resourceGroupName, catalogName, productName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getProducts().createOrUpdate(resourceGroupName, catalogName,
+            productName, this.innerModel(), context);
         return this;
     }
 
@@ -95,56 +91,42 @@ public final class ProductImpl implements Product, Product.Definition, Product.U
     }
 
     public Product apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProducts()
-                .update(resourceGroupName, catalogName, productName, updateProperties, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getProducts().update(resourceGroupName, catalogName,
+            productName, updateProperties, Context.NONE);
         return this;
     }
 
     public Product apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProducts()
-                .update(resourceGroupName, catalogName, productName, updateProperties, context);
+        this.innerObject = serviceManager.serviceClient().getProducts().update(resourceGroupName, catalogName,
+            productName, updateProperties, context);
         return this;
     }
 
     ProductImpl(ProductInner innerObject, com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.catalogName = Utils.getValueFromIdByName(innerObject.id(), "catalogs");
-        this.productName = Utils.getValueFromIdByName(innerObject.id(), "products");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.catalogName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "catalogs");
+        this.productName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "products");
     }
 
     public Product refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProducts()
-                .getWithResponse(resourceGroupName, catalogName, productName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getProducts()
+            .getWithResponse(resourceGroupName, catalogName, productName, Context.NONE).getValue();
         return this;
     }
 
     public Product refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProducts()
-                .getWithResponse(resourceGroupName, catalogName, productName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getProducts()
+            .getWithResponse(resourceGroupName, catalogName, productName, context).getValue();
         return this;
     }
 
-    public Response<CountDeviceResponse> countDevicesWithResponse(Context context) {
+    public Response<CountDevicesResponse> countDevicesWithResponse(Context context) {
         return serviceManager.products().countDevicesWithResponse(resourceGroupName, catalogName, productName, context);
     }
 
-    public CountDeviceResponse countDevices() {
+    public CountDevicesResponse countDevices() {
         return serviceManager.products().countDevices(resourceGroupName, catalogName, productName);
     }
 
@@ -153,22 +135,17 @@ public final class ProductImpl implements Product, Product.Definition, Product.U
     }
 
     public PagedIterable<DeviceGroup> generateDefaultDeviceGroups(Context context) {
-        return serviceManager
-            .products()
-            .generateDefaultDeviceGroups(resourceGroupName, catalogName, productName, context);
+        return serviceManager.products().generateDefaultDeviceGroups(resourceGroupName, catalogName, productName,
+            context);
     }
 
-    public ProductImpl withDescription(String description) {
-        if (isInCreateMode()) {
-            this.innerModel().withDescription(description);
-            return this;
-        } else {
-            this.updateProperties.withDescription(description);
-            return this;
-        }
+    public ProductImpl withProperties(ProductProperties properties) {
+        this.innerModel().withProperties(properties);
+        return this;
     }
 
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+    public ProductImpl withProperties(ProductUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
+        return this;
     }
 }

@@ -25,8 +25,7 @@ public final class ContainerAppsDiagnosticsImpl implements ContainerAppsDiagnost
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    public ContainerAppsDiagnosticsImpl(
-        ContainerAppsDiagnosticsClient innerClient,
+    public ContainerAppsDiagnosticsImpl(ContainerAppsDiagnosticsClient innerClient,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -34,25 +33,22 @@ public final class ContainerAppsDiagnosticsImpl implements ContainerAppsDiagnost
 
     public PagedIterable<Diagnostics> listDetectors(String resourceGroupName, String containerAppName) {
         PagedIterable<DiagnosticsInner> inner = this.serviceClient().listDetectors(resourceGroupName, containerAppName);
-        return Utils.mapPage(inner, inner1 -> new DiagnosticsImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DiagnosticsImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Diagnostics> listDetectors(
-        String resourceGroupName, String containerAppName, Context context) {
-        PagedIterable<DiagnosticsInner> inner =
-            this.serviceClient().listDetectors(resourceGroupName, containerAppName, context);
-        return Utils.mapPage(inner, inner1 -> new DiagnosticsImpl(inner1, this.manager()));
+    public PagedIterable<Diagnostics> listDetectors(String resourceGroupName, String containerAppName,
+        Context context) {
+        PagedIterable<DiagnosticsInner> inner
+            = this.serviceClient().listDetectors(resourceGroupName, containerAppName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DiagnosticsImpl(inner1, this.manager()));
     }
 
-    public Response<Diagnostics> getDetectorWithResponse(
-        String resourceGroupName, String containerAppName, String detectorName, Context context) {
-        Response<DiagnosticsInner> inner =
-            this.serviceClient().getDetectorWithResponse(resourceGroupName, containerAppName, detectorName, context);
+    public Response<Diagnostics> getDetectorWithResponse(String resourceGroupName, String containerAppName,
+        String detectorName, Context context) {
+        Response<DiagnosticsInner> inner
+            = this.serviceClient().getDetectorWithResponse(resourceGroupName, containerAppName, detectorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DiagnosticsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -70,25 +66,22 @@ public final class ContainerAppsDiagnosticsImpl implements ContainerAppsDiagnost
 
     public PagedIterable<Revision> listRevisions(String resourceGroupName, String containerAppName) {
         PagedIterable<RevisionInner> inner = this.serviceClient().listRevisions(resourceGroupName, containerAppName);
-        return Utils.mapPage(inner, inner1 -> new RevisionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RevisionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Revision> listRevisions(
-        String resourceGroupName, String containerAppName, String filter, Context context) {
-        PagedIterable<RevisionInner> inner =
-            this.serviceClient().listRevisions(resourceGroupName, containerAppName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new RevisionImpl(inner1, this.manager()));
+    public PagedIterable<Revision> listRevisions(String resourceGroupName, String containerAppName, String filter,
+        Context context) {
+        PagedIterable<RevisionInner> inner
+            = this.serviceClient().listRevisions(resourceGroupName, containerAppName, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RevisionImpl(inner1, this.manager()));
     }
 
-    public Response<Revision> getRevisionWithResponse(
-        String resourceGroupName, String containerAppName, String revisionName, Context context) {
-        Response<RevisionInner> inner =
-            this.serviceClient().getRevisionWithResponse(resourceGroupName, containerAppName, revisionName, context);
+    public Response<Revision> getRevisionWithResponse(String resourceGroupName, String containerAppName,
+        String revisionName, Context context) {
+        Response<RevisionInner> inner
+            = this.serviceClient().getRevisionWithResponse(resourceGroupName, containerAppName, revisionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RevisionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -104,15 +97,12 @@ public final class ContainerAppsDiagnosticsImpl implements ContainerAppsDiagnost
         }
     }
 
-    public Response<ContainerApp> getRootWithResponse(
-        String resourceGroupName, String containerAppName, Context context) {
-        Response<ContainerAppInner> inner =
-            this.serviceClient().getRootWithResponse(resourceGroupName, containerAppName, context);
+    public Response<ContainerApp> getRootWithResponse(String resourceGroupName, String containerAppName,
+        Context context) {
+        Response<ContainerAppInner> inner
+            = this.serviceClient().getRootWithResponse(resourceGroupName, containerAppName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ContainerAppImpl(inner.getValue(), this.manager()));
         } else {
             return null;

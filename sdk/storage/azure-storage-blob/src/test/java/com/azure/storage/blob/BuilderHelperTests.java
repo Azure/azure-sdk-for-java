@@ -4,7 +4,6 @@
 package com.azure.storage.blob;
 
 import com.azure.core.credential.AzureSasCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
@@ -15,6 +14,7 @@ import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
@@ -32,7 +32,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -435,7 +434,7 @@ public class BuilderHelperTests {
             .endpoint(ENDPOINT)
             .blobName("foo")
             .credential(new StorageSharedKeyCredential("foo", "bar"))
-            .credential(Mockito.mock(TokenCredential.class))
+            .credential(new MockTokenCredential())
             .sasToken("foo")
             .buildClient());
 
@@ -443,21 +442,21 @@ public class BuilderHelperTests {
             .endpoint(ENDPOINT)
             .blobName("foo")
             .credential(new StorageSharedKeyCredential("foo", "bar"))
-            .credential(Mockito.mock(TokenCredential.class))
+            .credential(new MockTokenCredential())
             .sasToken("foo")
             .buildBlockBlobClient());
 
         assertDoesNotThrow(() -> new BlobContainerClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new StorageSharedKeyCredential("foo", "bar"))
-            .credential(Mockito.mock(TokenCredential.class))
+            .credential(new MockTokenCredential())
             .sasToken("foo")
             .buildClient());
 
         assertDoesNotThrow(() -> new BlobServiceClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new StorageSharedKeyCredential("foo", "bar"))
-            .credential(Mockito.mock(TokenCredential.class))
+            .credential(new MockTokenCredential())
             .sasToken("foo")
             .buildClient());
     }
@@ -474,7 +473,7 @@ public class BuilderHelperTests {
         assertThrows(IllegalStateException.class, () -> new BlobClientBuilder()
             .endpoint(ENDPOINT)
             .blobName("foo")
-            .credential(Mockito.mock(TokenCredential.class))
+            .credential(new MockTokenCredential())
             .credential(new AzureSasCredential("foo"))
             .buildClient());
 
@@ -501,7 +500,7 @@ public class BuilderHelperTests {
         assertThrows(IllegalStateException.class, () -> new SpecializedBlobClientBuilder()
             .endpoint(ENDPOINT)
             .blobName("foo")
-            .credential(Mockito.mock(TokenCredential.class))
+            .credential(new MockTokenCredential())
             .credential(new AzureSasCredential("foo"))
             .buildBlockBlobClient());
 
@@ -526,7 +525,7 @@ public class BuilderHelperTests {
 
         assertThrows(IllegalStateException.class, () -> new BlobContainerClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(Mockito.mock(TokenCredential.class))
+            .credential(new MockTokenCredential())
             .credential(new AzureSasCredential("foo"))
             .buildClient());
 
@@ -549,7 +548,7 @@ public class BuilderHelperTests {
 
         assertThrows(IllegalStateException.class, () -> new BlobServiceClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(Mockito.mock(TokenCredential.class))
+            .credential(new MockTokenCredential())
             .credential(new AzureSasCredential("foo"))
             .buildClient());
 

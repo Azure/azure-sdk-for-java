@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Describes the properties of a file workspace. */
+/**
+ * Describes the properties of a file workspace.
+ */
 @Immutable
 public final class FileWorkspaceDetailsProperties {
     /*
@@ -23,13 +25,15 @@ public final class FileWorkspaceDetailsProperties {
     @JsonProperty(value = "expirationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expirationTime;
 
-    /** Creates an instance of FileWorkspaceDetailsProperties class. */
+    /**
+     * Creates an instance of FileWorkspaceDetailsProperties class.
+     */
     public FileWorkspaceDetailsProperties() {
     }
 
     /**
      * Get the createdOn property: Time in UTC (ISO 8601 format) when file workspace was created.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -38,7 +42,7 @@ public final class FileWorkspaceDetailsProperties {
 
     /**
      * Get the expirationTime property: Time in UTC (ISO 8601 format) when file workspace is going to expire.
-     *
+     * 
      * @return the expirationTime value.
      */
     public OffsetDateTime expirationTime() {
@@ -47,7 +51,7 @@ public final class FileWorkspaceDetailsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

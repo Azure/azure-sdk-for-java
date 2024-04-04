@@ -13,33 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class VMHostsListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMHostsListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"vmId\":\"ounqecano\",\"agentVersion\":\"upfh\",\"agentStatus\":\"ltrpmopj\"}],\"nextLink\":\"matuok\"}")
-                .toObject(VMHostsListResponse.class);
-        Assertions.assertEquals("ounqecano", model.value().get(0).vmId());
-        Assertions.assertEquals("upfh", model.value().get(0).agentVersion());
-        Assertions.assertEquals("ltrpmopj", model.value().get(0).agentStatus());
-        Assertions.assertEquals("matuok", model.nextLink());
+        VMHostsListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"vmId\":\"gxlefgugnxkrxd\",\"agentVersion\":\"i\",\"agentStatus\":\"thz\"}],\"nextLink\":\"qdrabhjybigehoqf\"}")
+            .toObject(VMHostsListResponse.class);
+        Assertions.assertEquals("gxlefgugnxkrxd", model.value().get(0).vmId());
+        Assertions.assertEquals("i", model.value().get(0).agentVersion());
+        Assertions.assertEquals("thz", model.value().get(0).agentStatus());
+        Assertions.assertEquals("qdrabhjybigehoqf", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMHostsListResponse model =
-            new VMHostsListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new VMInfoInner()
-                                .withVmId("ounqecano")
-                                .withAgentVersion("upfh")
-                                .withAgentStatus("ltrpmopj")))
-                .withNextLink("matuok");
+        VMHostsListResponse model = new VMHostsListResponse()
+            .withValue(Arrays
+                .asList(new VMInfoInner().withVmId("gxlefgugnxkrxd").withAgentVersion("i").withAgentStatus("thz")))
+            .withNextLink("qdrabhjybigehoqf");
         model = BinaryData.fromObject(model).toObject(VMHostsListResponse.class);
-        Assertions.assertEquals("ounqecano", model.value().get(0).vmId());
-        Assertions.assertEquals("upfh", model.value().get(0).agentVersion());
-        Assertions.assertEquals("ltrpmopj", model.value().get(0).agentStatus());
-        Assertions.assertEquals("matuok", model.nextLink());
+        Assertions.assertEquals("gxlefgugnxkrxd", model.value().get(0).vmId());
+        Assertions.assertEquals("i", model.value().get(0).agentVersion());
+        Assertions.assertEquals("thz", model.value().get(0).agentStatus());
+        Assertions.assertEquals("qdrabhjybigehoqf", model.nextLink());
     }
 }

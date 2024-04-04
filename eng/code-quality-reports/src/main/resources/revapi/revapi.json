@@ -178,17 +178,17 @@
           "old": "method void com\\.azure\\.spring\\.cloud\\.autoconfigure\\.jms\\.properties\\.AzureServiceBusJmsProperties::(setPassword|setRemoteUrl|setUsername)\\(java\\.lang\\.String\\)",
           "justification": "Remove some meaningless jms properties"
         },
-		{
+        {
           "code": "java.method.addedToInterface",
           "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionQueue(java.lang.String, java.lang.String, com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusQueueProperties)",
           "justification": "New method added to support more properties."
         },
-		{
+        {
           "code": "java.method.addedToInterface",
           "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionSubscription(java.lang.String, java.lang.String, java.lang.String, com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties)",
           "justification": "New method added to support more properties."
         },
-		{
+        {
           "code": "java.method.addedToInterface",
           "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionTopic(java.lang.String, java.lang.String, com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties)",
           "justification": "New method added to support more properties."
@@ -327,15 +327,9 @@
         {
           "regex": true,
           "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.(containers\\.containerregistry|search\\.documents(\\.indexes)?|security\\.keyvault\\.(administration|certificates|keys|keys\\.cryptography)|ai\\.textanalytics|ai\\.formrecognizer(\\.(documentanalysis(\\.administration)?|training))?)\\.models.*",
+          "old": ".*? com\\.azure\\.(containers\\.containerregistry|search\\.documents(\\.indexes)?|security\\.keyvault\\.(administration|certificates|keys|keys\\.cryptography)|ai\\.textanalytics|ai\\.formrecognizer(\\.(documentanalysis(\\.administration)?|training))?|ai\\.metricsadvisor(\\.administration)?|messaging.servicebus(\\.administration)?)\\.models.*",
           "description": ".*com.fasterxml.jackson.*",
-          "justification": "Removing Jackson annotations from ACR, KeyVault, Search, and Text Analytics in transition to stream-style."
-        },
-        {
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.ai\\.metricsadvisor\\.(administration\\.)?models.*",
-          "justification": "Removing Jackson annotations from Metrics Advisor in transition to stream-style."
+          "justification": "Removing Jackson annotations from ACR, Form Recognizer, KeyVault, Metrics Advisor, Search, ServiceBus, and Text Analytics in transition to stream-style."
         },
         {
           "regex": true,
@@ -381,6 +375,12 @@
         },
         {
           "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.data\\.tables\\.models.*",
+          "justification": "Removing Jackson annotations from Tables in transition to stream-style."
+        },
+        {
+          "regex": true,
           "code": "java.method.(returnTypeTypeParametersChanged|parameterTypeChanged|returnTypeChanged)",
           "new": ".* com.azure.security.attestation.*attestTpm.*"
         },
@@ -406,6 +406,20 @@
           "code": "java.field.addedStaticField",
           "new": "field com\\.azure\\.data\\.schemaregistry\\.models\\.SchemaFormat\\.(CUSTOM|JSON)",
           "justification": "Additional schema formats are supported by Schema Registry."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.removed",
+          "package": "com.azure.ai.contentsafety.models",
+          "annotationType": "com.fasterxml.jackson.annotation.JsonProperty",
+          "justification": "Migrate to azure-json."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.removed",
+          "package": "com.azure.ai.contentsafety.models",
+          "annotationType": "com.fasterxml.jackson.annotation.JsonCreator",
+          "justification": "Migrate to azure-json."
         }
       ]
     }

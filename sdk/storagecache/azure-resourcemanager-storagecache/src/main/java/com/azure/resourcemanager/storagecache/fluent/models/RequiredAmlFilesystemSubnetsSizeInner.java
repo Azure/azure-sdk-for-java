@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagecache.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about the number of available IP addresses that are required for the AML file system. */
+/**
+ * Information about the number of available IP addresses that are required for the AML file system.
+ */
 @Fluent
 public final class RequiredAmlFilesystemSubnetsSizeInner {
     /*
@@ -16,14 +18,16 @@ public final class RequiredAmlFilesystemSubnetsSizeInner {
     @JsonProperty(value = "filesystemSubnetSize")
     private Integer filesystemSubnetSize;
 
-    /** Creates an instance of RequiredAmlFilesystemSubnetsSizeInner class. */
+    /**
+     * Creates an instance of RequiredAmlFilesystemSubnetsSizeInner class.
+     */
     public RequiredAmlFilesystemSubnetsSizeInner() {
     }
 
     /**
      * Get the filesystemSubnetSize property: The number of available IP addresses that are required for the AML file
      * system.
-     *
+     * 
      * @return the filesystemSubnetSize value.
      */
     public Integer filesystemSubnetSize() {
@@ -33,7 +37,7 @@ public final class RequiredAmlFilesystemSubnetsSizeInner {
     /**
      * Set the filesystemSubnetSize property: The number of available IP addresses that are required for the AML file
      * system.
-     *
+     * 
      * @param filesystemSubnetSize the filesystemSubnetSize value to set.
      * @return the RequiredAmlFilesystemSubnetsSizeInner object itself.
      */
@@ -44,7 +48,7 @@ public final class RequiredAmlFilesystemSubnetsSizeInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

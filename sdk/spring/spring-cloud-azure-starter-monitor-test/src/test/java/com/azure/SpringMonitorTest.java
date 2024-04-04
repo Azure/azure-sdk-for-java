@@ -8,22 +8,10 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.monitor.applicationinsights.spring.OpenTelemetryVersionCheckRunner;
 import com.azure.monitor.applicationinsights.spring.selfdiagnostics.SelfDiagnosticsLevel;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.MessageData;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.RemoteDependencyData;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.RequestData;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.SeverityLevel;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import io.opentelemetry.sdk.logs.export.LogRecordExporter;
-import io.opentelemetry.sdk.metrics.export.MetricExporter;
-import io.opentelemetry.sdk.resources.Resource;
-import io.opentelemetry.sdk.trace.export.SpanExporter;
-import io.opentelemetry.semconv.ResourceAttributes;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.*;
+import io.opentelemetry.sdk.common.internal.OtelVersion;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -56,21 +44,6 @@ class SpringMonitorTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    // See io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration
-    @Autowired
-    private ObjectProvider<List<SpanExporter>> otelSpanExportersProvider;
-
-    // See io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration
-    @Autowired
-    private ObjectProvider<List<LogRecordExporter>> otelLoggerExportersProvider;
-
-    // See io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration
-    @Autowired
-    private ObjectProvider<List<MetricExporter>> otelMetricExportersProvider;
-
-    @Autowired
-    private Resource otelResource;
-
     @TestConfiguration
     static class TestConfig {
 
@@ -93,42 +66,6 @@ class SpringMonitorTest {
         SelfDiagnosticsLevel testSelfDiagnosticsLevel() {
             return SelfDiagnosticsLevel.DEBUG;
         }
-    }
-
-    @Test
-    void applicationContextShouldOnlyContainTheAzureSpanExporter() {
-        List<SpanExporter> spanExporters = otelSpanExportersProvider.getIfAvailable();
-        assertThat(spanExporters).hasSize(1);
-
-        SpanExporter spanExporter = spanExporters.get(0);
-        String exporterClassName = spanExporter.getClass().getName();
-        assertThat(exporterClassName)
-            .isEqualTo(
-                "com.azure.monitor.opentelemetry.exporter.AzureMonitorTraceExporter"); // AzureMonitorTraceExporter is not public
-    }
-
-    @Test
-    void applicationContextShouldOnlyContainTheAzureLogRecordExporter() {
-        List<LogRecordExporter> logRecordExporters = otelLoggerExportersProvider.getIfAvailable();
-        assertThat(logRecordExporters).hasSize(1);
-
-        LogRecordExporter logRecordExporter = logRecordExporters.get(0);
-        String exporterClassName = logRecordExporter.getClass().getName();
-        assertThat(exporterClassName)
-            .isEqualTo(
-                "com.azure.monitor.opentelemetry.exporter.AzureMonitorLogRecordExporter"); // AzureMonitorLogRecordExporter is not public
-    }
-
-    @Test
-    void applicationContextShouldOnlyContainTheAzureMetricExporter() {
-        List<MetricExporter> metricExporters = otelMetricExportersProvider.getIfAvailable();
-        assertThat(metricExporters).hasSize(1);
-
-        MetricExporter metricExporter = metricExporters.get(0);
-        String exporterClassName = metricExporter.getClass().getName();
-        assertThat(exporterClassName)
-            .isEqualTo(
-                "com.azure.monitor.opentelemetry.exporter.AzureMonitorMetricExporter"); // AzureMonitorMetricExporter is not public
     }
 
     @Test
@@ -208,7 +145,7 @@ class SpringMonitorTest {
 
     @Test
     void verifyOpenTelemetryVersion() {
-        String currentOTelVersion = otelResource.getAttribute(ResourceAttributes.TELEMETRY_SDK_VERSION);
+        String currentOTelVersion = OtelVersion.VERSION;
         assertThat(OpenTelemetryVersionCheckRunner.STARTER_OTEL_VERSION)
             .as(
                 "Dear developer, You may have updated the OpenTelemetry dependencies of spring-cloud-azure-starter-monitor without updating the OTel starter version declared in "

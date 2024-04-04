@@ -11,6 +11,7 @@ import com.azure.resourcemanager.keyvault.models.AccessPolicy;
 import com.azure.resourcemanager.keyvault.models.CertificatePermissions;
 import com.azure.resourcemanager.keyvault.models.KeyPermissions;
 import com.azure.resourcemanager.keyvault.models.NetworkRuleBypassOptions;
+import com.azure.resourcemanager.keyvault.models.PublicNetworkAccess;
 import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.core.management.Region;
@@ -280,6 +281,26 @@ public class VaultTests extends KeyVaultManagementTest {
             authorizationManager.servicePrincipals().deleteById(servicePrincipal.id());
             // graphRbacManager.users().deleteById(user.id());
         }
+    }
+
+    @Test
+    public void canDisablePublicNetworkAccess() {
+        Vault vault = keyVaultManager.vaults().define(vaultName)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(rgName)
+            .withEmptyAccessPolicy()
+            .disablePublicNetworkAccess()
+            .create();
+
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, vault.publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, keyVaultManager.vaults().getById(vault.id()).publicNetworkAccess());
+
+        vault.update()
+            .enablePublicNetworkAccess()
+            .apply();
+
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, vault.publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, keyVaultManager.vaults().getById(vault.id()).publicNetworkAccess());
     }
 
     private void assertVaultDeleted(String name, String location) {

@@ -14,19 +14,21 @@ public final class DatabricksSparkPythonActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabricksSparkPythonActivityTypeProperties model = BinaryData.fromString(
-            "{\"pythonFile\":\"datalstgsmeijgjbev\",\"parameters\":[\"datacsyjxdwvdklgw\",\"dataywal\",\"datafmenbaj\",\"dataeelbcsyaohizfysa\"],\"libraries\":[{\"ddohxvcsoqxydcqp\":\"datapft\"},{\"wt\":\"datawttdanuf\",\"fugikhm\":\"datahcmoccgt\"},{\"dcrdveccmqenfgba\":\"datastkkztexdsnmh\",\"denv\":\"datauuyt\"},{\"y\":\"datalfiigoxohjyvpfis\",\"vmilpgx\":\"dataoymccwvcfayllxvh\"}]}")
+            "{\"pythonFile\":\"databen\",\"parameters\":[\"dataxhxfsknmr\"],\"libraries\":[{\"wbwoflfnii\":\"datafbdxwywdyqp\",\"cyvtsgopmatu\":\"datalohftmfmxrxrya\",\"oelqfsfxthcdzeu\":\"datatejipqynrlnqo\",\"f\":\"datakqkvfthbnikoybrs\"},{\"iszoxmzvlofzdn\":\"dataqmtzhikuby\",\"vxrqegk\":\"datasrvlbwzujafcx\",\"deuvsbsdcoq\":\"datacxtxgrhaqbst\"},{\"vsijwrjrxccnf\":\"dataffeqlwk\",\"q\":\"dataknxuoccey\"},{\"ksgejmpkqtjacnbe\":\"datahkqmlld\",\"ov\":\"dataiqhpkaam\",\"uoqbclhn\":\"databv\",\"kzhqpkckwaafu\":\"dataqxuxrggx\"}]}")
             .toObject(DatabricksSparkPythonActivityTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabricksSparkPythonActivityTypeProperties model
-            = new DatabricksSparkPythonActivityTypeProperties().withPythonFile("datalstgsmeijgjbev")
-                .withParameters(Arrays.asList("datacsyjxdwvdklgw", "dataywal", "datafmenbaj", "dataeelbcsyaohizfysa"))
-                .withLibraries(Arrays.asList(mapOf("ddohxvcsoqxydcqp", "datapft"),
-                    mapOf("wt", "datawttdanuf", "fugikhm", "datahcmoccgt"),
-                    mapOf("dcrdveccmqenfgba", "datastkkztexdsnmh", "denv", "datauuyt"),
-                    mapOf("y", "datalfiigoxohjyvpfis", "vmilpgx", "dataoymccwvcfayllxvh")));
+        DatabricksSparkPythonActivityTypeProperties model = new DatabricksSparkPythonActivityTypeProperties()
+            .withPythonFile("databen").withParameters(Arrays.asList("dataxhxfsknmr"))
+            .withLibraries(Arrays.asList(
+                mapOf("wbwoflfnii", "datafbdxwywdyqp", "cyvtsgopmatu", "datalohftmfmxrxrya", "oelqfsfxthcdzeu",
+                    "datatejipqynrlnqo", "f", "datakqkvfthbnikoybrs"),
+                mapOf("iszoxmzvlofzdn", "dataqmtzhikuby", "vxrqegk", "datasrvlbwzujafcx", "deuvsbsdcoq",
+                    "datacxtxgrhaqbst"),
+                mapOf("vsijwrjrxccnf", "dataffeqlwk", "q", "dataknxuoccey"), mapOf("ksgejmpkqtjacnbe", "datahkqmlld",
+                    "ov", "dataiqhpkaam", "uoqbclhn", "databv", "kzhqpkckwaafu", "dataqxuxrggx")));
         model = BinaryData.fromObject(model).toObject(DatabricksSparkPythonActivityTypeProperties.class);
     }
 

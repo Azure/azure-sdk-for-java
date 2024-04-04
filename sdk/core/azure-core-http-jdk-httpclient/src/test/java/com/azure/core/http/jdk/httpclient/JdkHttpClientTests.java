@@ -8,10 +8,11 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.UrlBuilder;
 import org.junit.jupiter.api.Assertions;
@@ -36,6 +37,7 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.http.HttpTimeoutException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
@@ -53,15 +55,19 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.http.jdk.httpclient.JdkHttpClientLocalTestServer.LONG_BODY;
 import static com.azure.core.http.jdk.httpclient.JdkHttpClientLocalTestServer.SHORT_BODY;
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisabledForJreRange(max = JRE.JAVA_11)
 @Execution(ExecutionMode.SAME_THREAD)
 public class JdkHttpClientTests {
-    private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS = StepVerifierOptions.create()
-        .initialRequest(0);
+    private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS
+        = StepVerifierOptions.create().initialRequest(0);
 
     private static final String SERVER_HTTP_URI = JdkHttpClientLocalTestServer.getServer().getHttpUri();
 
@@ -89,7 +95,7 @@ public class JdkHttpClientTests {
     public void testBufferResponseSync() {
         HttpClient client = new JdkHttpClientBuilder().build();
         try (HttpResponse response = doRequestSync(client, "/long").buffer()) {
-            TestUtils.assertArraysEqual(LONG_BODY, response.getBodyAsBinaryData().toBytes());
+            assertArraysEqual(LONG_BODY, response.getBodyAsBinaryData().toBytes());
         }
     }
 
@@ -98,7 +104,7 @@ public class JdkHttpClientTests {
         HttpClient client = new JdkHttpClientBuilder().build();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url("/long"));
         try (HttpResponse response = client.sendSync(request, new Context("azure-eagerly-read-response", true))) {
-            TestUtils.assertArraysEqual(LONG_BODY, response.getBodyAsBinaryData().toBytes());
+            assertArraysEqual(LONG_BODY, response.getBodyAsBinaryData().toBytes());
         }
     }
 
@@ -149,21 +155,17 @@ public class JdkHttpClientTests {
     public void testMultipleGetBinaryDataSync() {
         HttpClient client = new JdkHttpClientBuilder().build();
         try (HttpResponse response = doRequestSync(client, "/short")) {
-            TestUtils.assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
-            TestUtils.assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+            assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+            assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
         }
     }
 
     @Test
     public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() {
-        StepVerifier.create(getResponse("/error")
-                .flatMap(response -> {
-                    assertEquals(500, response.getStatusCode());
-                    return response.getBodyAsString();
-                }))
-            .expectNext("error")
-            .expectComplete()
-            .verify(Duration.ofSeconds(20));
+        StepVerifier.create(getResponse("/error").flatMap(response -> {
+            assertEquals(500, response.getStatusCode());
+            return response.getBodyAsString();
+        })).expectNext("error").expectComplete().verify(Duration.ofSeconds(20));
     }
 
     @Test
@@ -192,13 +194,11 @@ public class JdkHttpClientTests {
     @Test
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
         HttpClient client = new JdkHttpClientProvider().createInstance();
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url("/shortPost"))
-            .setHeader(HttpHeaderName.CONTENT_LENGTH, "132")
-            .setBody(Flux.error(new RuntimeException("boo")));
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, url("/shortPost")).setHeader(HttpHeaderName.CONTENT_LENGTH, "132")
+                .setBody(Flux.error(new RuntimeException("boo")));
 
-        StepVerifier.create(client.send(request))
-            .expectErrorMessage("boo")
-            .verify();
+        StepVerifier.create(client.send(request)).expectErrorMessage("boo").verify();
     }
 
     @Test
@@ -208,15 +208,11 @@ public class JdkHttpClientTests {
         ConcurrentLinkedDeque<Long> progress = new ConcurrentLinkedDeque<>();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url("/shortPost"))
             .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(SHORT_BODY.length + LONG_BODY.length))
-            .setBody(Flux.just(ByteBuffer.wrap(LONG_BODY))
-                .concatWith(Flux.just(ByteBuffer.wrap(SHORT_BODY))));
+            .setBody(Flux.just(ByteBuffer.wrap(LONG_BODY)).concatWith(Flux.just(ByteBuffer.wrap(SHORT_BODY))));
 
         Contexts contexts = Contexts.with(Context.NONE)
             .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progress::add));
-        StepVerifier.create(client.send(request, contexts.getContext()))
-            .expectNextCount(1)
-            .expectComplete()
-            .verify();
+        StepVerifier.create(client.send(request, contexts.getContext())).expectNextCount(1).expectComplete().verify();
 
         List<Long> progressList = progress.stream().collect(Collectors.toList());
         assertEquals(LONG_BODY.length, progressList.get(0));
@@ -230,8 +226,7 @@ public class JdkHttpClientTests {
         ConcurrentLinkedDeque<Long> progress = new ConcurrentLinkedDeque<>();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url("/shortPost"))
             .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(SHORT_BODY.length + LONG_BODY.length))
-            .setBody(Flux.just(ByteBuffer.wrap(LONG_BODY))
-                .concatWith(Flux.just(ByteBuffer.wrap(SHORT_BODY))));
+            .setBody(Flux.just(ByteBuffer.wrap(LONG_BODY)).concatWith(Flux.just(ByteBuffer.wrap(SHORT_BODY))));
 
         Contexts contexts = Contexts.with(Context.NONE)
             .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progress::add));
@@ -251,8 +246,7 @@ public class JdkHttpClientTests {
         BinaryData body = BinaryData.fromFile(tempFile, 1L, 42L);
 
         HttpClient client = new JdkHttpClientProvider().createInstance();
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url("/shortPostWithBodyValidation"))
-            .setBody(body);
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url("/shortPostWithBodyValidation")).setBody(body);
 
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             assertEquals(200, response.getStatusCode());
@@ -277,12 +271,12 @@ public class JdkHttpClientTests {
     @Test
     public void testRequestBodyIsErrorShouldPropagateToResponseSync() {
         HttpClient client = new JdkHttpClientProvider().createInstance();
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url("/shortPost"))
-            .setHeader(HttpHeaderName.CONTENT_LENGTH, "132")
-            .setBody(Flux.error(new RuntimeException("boo")));
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, url("/shortPost")).setHeader(HttpHeaderName.CONTENT_LENGTH, "132")
+                .setBody(Flux.error(new RuntimeException("boo")));
 
-        UncheckedIOException thrown = assertThrows(UncheckedIOException.class,
-            () -> client.sendSync(request, Context.NONE));
+        UncheckedIOException thrown
+            = assertThrows(UncheckedIOException.class, () -> client.sendSync(request, Context.NONE));
         assertEquals("boo", thrown.getCause().getMessage());
     }
 
@@ -299,9 +293,7 @@ public class JdkHttpClientTests {
                 .concatWith(Flux.error(new RuntimeException("boo"))));
 
         try {
-            StepVerifier.create(client.send(request))
-                .expectErrorMessage("boo")
-                .verify(Duration.ofSeconds(10));
+            StepVerifier.create(client.send(request)).expectErrorMessage("boo").verify(Duration.ofSeconds(10));
         } catch (Exception ex) {
             assertEquals("boo", ex.getMessage());
         }
@@ -319,8 +311,8 @@ public class JdkHttpClientTests {
                 .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
                 .concatWith(Flux.error(new RuntimeException("boo"))));
 
-        UncheckedIOException thrown = assertThrows(UncheckedIOException.class,
-            () -> client.sendSync(request, Context.NONE));
+        UncheckedIOException thrown
+            = assertThrows(UncheckedIOException.class, () -> client.sendSync(request, Context.NONE));
         assertEquals("boo", thrown.getCause().getMessage());
     }
 
@@ -350,16 +342,13 @@ public class JdkHttpClientTests {
         ParallelFlux<byte[]> responses = Flux.range(1, numRequests)
             .parallel()
             .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> doRequest(client, "/long")
-                .flatMap(HttpResponse::getBodyAsByteArray));
+            .flatMap(ignored -> doRequest(client, "/long"))
+            .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close));
 
-        StepVerifier.create(responses)
-            .thenConsumeWhile(response -> {
-                TestUtils.assertArraysEqual(LONG_BODY, response);
-                return true;
-            })
-            .expectComplete()
-            .verify(Duration.ofSeconds(60));
+        StepVerifier.create(responses).thenConsumeWhile(response -> {
+            assertArraysEqual(LONG_BODY, response);
+            return true;
+        }).expectComplete().verify(Duration.ofSeconds(60));
     }
 
     @Test
@@ -373,7 +362,7 @@ public class JdkHttpClientTests {
             requests.add(() -> {
                 try (HttpResponse response = doRequestSync(client, "/long")) {
                     byte[] body = response.getBodyAsBinaryData().toBytes();
-                    TestUtils.assertArraysEqual(LONG_BODY, body);
+                    assertArraysEqual(LONG_BODY, body);
                     return null;
                 }
             });
@@ -395,6 +384,91 @@ public class JdkHttpClientTests {
         });
     }
 
+    @Test
+    public void noResponseTimesOutAsync() {
+        HttpClient client = new JdkHttpClientProvider()
+            .createInstance(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(1)));
+
+        StepVerifier.create(doRequest(client, "/noResponse"))
+            .expectError(HttpTimeoutException.class)
+            .verify(Duration.ofSeconds(5));
+    }
+
+    @Test
+    public void noResponseTimesOutSync() {
+        HttpClient client = new JdkHttpClientProvider()
+            .createInstance(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(1)));
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> assertTimeout(Duration.ofSeconds(5), () -> {
+            try (HttpResponse response = doRequestSync(client, "/noResponse")) {
+                assertNotNull(response);
+            }
+        }));
+
+        assertInstanceOf(HttpTimeoutException.class, ex.getCause());
+    }
+
+    @Test
+    public void slowStreamReadingTimesOutSync() {
+        // Set both the response timeout and read timeout to make sure we aren't getting a response timeout when the
+        // response body is slow to be sent.
+        HttpClient client = new JdkHttpClientProvider().createInstance(
+            new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(1)).setReadTimeout(Duration.ofSeconds(1)));
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> assertTimeout(Duration.ofSeconds(5), () -> {
+            try (HttpResponse response = doRequestSync(client, "/slowResponse")) {
+                assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+            }
+        }));
+
+        assertInstanceOf(HttpTimeoutException.class, ex.getCause());
+    }
+
+    @Test
+    public void slowStreamReadingTimesOutAsync() {
+        // Set both the response timeout and read timeout to make sure we aren't getting a response timeout when the
+        // response body is slow to be sent.
+        HttpClient client = new JdkHttpClientProvider().createInstance(
+            new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(1)).setReadTimeout(Duration.ofSeconds(1)));
+
+        StepVerifier
+            .create(doRequest(client, "/slowResponse").flatMap(
+                response -> FluxUtil.collectBytesFromNetworkResponse(response.getBody(), response.getHeaders())))
+            .expectError(HttpTimeoutException.class)
+            .verify(Duration.ofSeconds(5));
+    }
+
+    @Test
+    public void slowEagerReadingTimesOutSync() {
+        // Set both the response timeout and read timeout to make sure we aren't getting a response timeout when the
+        // response body is slow to be sent.
+        HttpClient client = new JdkHttpClientProvider().createInstance(
+            new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(1)).setReadTimeout(Duration.ofSeconds(1)));
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> assertTimeout(Duration.ofSeconds(5), () -> {
+            try (HttpResponse response
+                = doRequestSync(client, "/slowResponse", new Context("azure-eagerly-read-response", true))) {
+                assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+            }
+        }));
+
+        assertInstanceOf(HttpTimeoutException.class, ex.getCause());
+    }
+
+    @Test
+    public void slowEagerReadingTimesOutAsync() {
+        // Set both the response timeout and read timeout to make sure we aren't getting a response timeout when the
+        // response body is slow to be sent.
+        HttpClient client = new JdkHttpClientProvider().createInstance(
+            new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(1)).setReadTimeout(Duration.ofSeconds(1)));
+
+        StepVerifier
+            .create(doRequest(client, "/slowResponse", new Context("azure-eagerly-read-response", true))
+                .flatMap(HttpResponse::getBodyAsByteArray))
+            .expectError(HttpTimeoutException.class)
+            .verify(Duration.ofSeconds(5));
+    }
+
     private static Mono<HttpResponse> getResponse(String path) {
         HttpClient client = new JdkHttpClientBuilder().build();
         return doRequest(client, path);
@@ -413,8 +487,7 @@ public class JdkHttpClientTests {
         byte[] longBody = new byte[duplicateBytes.length * 100000];
 
         for (int i = 0; i < 100000; i++) {
-            System.arraycopy(duplicateBytes, 0, longBody, i * duplicateBytes.length,
-                duplicateBytes.length);
+            System.arraycopy(duplicateBytes, 0, longBody, i * duplicateBytes.length, duplicateBytes.length);
         }
 
         return longBody;
@@ -423,7 +496,7 @@ public class JdkHttpClientTests {
     private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new JdkHttpClientBuilder().build();
         StepVerifier.create(doRequest(client, path).flatMap(HttpResponse::getBodyAsByteArray))
-            .assertNext(bytes -> TestUtils.assertArraysEqual(expectedBody, bytes))
+            .assertNext(bytes -> assertArraysEqual(expectedBody, bytes))
             .verifyComplete();
     }
 
@@ -433,16 +506,24 @@ public class JdkHttpClientTests {
             ByteArrayOutputStream outStream = new ByteArrayOutputStream();
             WritableByteChannel body = Channels.newChannel(outStream);
             response.writeBodyTo(body);
-            TestUtils.assertArraysEqual(expectedBody, outStream.toByteArray());
+            assertArraysEqual(expectedBody, outStream.toByteArray());
         }
     }
 
     private static Mono<HttpResponse> doRequest(HttpClient client, String path) {
-        return client.send(new HttpRequest(HttpMethod.GET, url(path)));
+        return doRequest(client, path, Context.NONE);
+    }
+
+    private static Mono<HttpResponse> doRequest(HttpClient client, String path, Context context) {
+        return client.send(new HttpRequest(HttpMethod.GET, url(path)), context);
     }
 
     private static HttpResponse doRequestSync(HttpClient client, String path) {
-        return client.sendSync(new HttpRequest(HttpMethod.GET, url(path)), Context.NONE);
+        return doRequestSync(client, path, Context.NONE);
+    }
+
+    private static HttpResponse doRequestSync(HttpClient client, String path, Context context) {
+        return client.sendSync(new HttpRequest(HttpMethod.GET, url(path)), context);
     }
 
     private static Path writeToTempFile(byte[] body) throws IOException {

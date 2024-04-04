@@ -25,6 +25,11 @@ public final class MetricClass extends ExpandableStringEnum<MetricClass> {
     public static final MetricClass SATURATION = fromString("Saturation");
 
     /**
+     * Creates an instance of MetricClass.
+     */
+    public MetricClass() { }
+
+    /**
      * Creates or finds a MetricClass from its string representation.
      *
      * @param name a name to look for.
@@ -35,7 +40,11 @@ public final class MetricClass extends ExpandableStringEnum<MetricClass> {
         return fromString(name, MetricClass.class);
     }
 
-    /** @return known MetricClass values. */
+    /**
+     * Returns the known MetricClass values.
+     *
+     * @return The {@link Collection} of known MetricClass values.
+     */
     public static Collection<MetricClass> values() {
         return values(MetricClass.class);
     }

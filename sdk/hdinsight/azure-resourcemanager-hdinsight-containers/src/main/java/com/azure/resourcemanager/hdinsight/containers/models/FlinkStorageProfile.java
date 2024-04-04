@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The storage profile. */
+/**
+ * The storage profile.
+ */
 @Fluent
 public final class FlinkStorageProfile {
     /*
@@ -23,13 +25,15 @@ public final class FlinkStorageProfile {
     @JsonProperty(value = "storagekey")
     private String storagekey;
 
-    /** Creates an instance of FlinkStorageProfile class. */
+    /**
+     * Creates an instance of FlinkStorageProfile class.
+     */
     public FlinkStorageProfile() {
     }
 
     /**
      * Get the storageUri property: Storage account uri which is used for savepoint and checkpoint state.
-     *
+     * 
      * @return the storageUri value.
      */
     public String storageUri() {
@@ -38,7 +42,7 @@ public final class FlinkStorageProfile {
 
     /**
      * Set the storageUri property: Storage account uri which is used for savepoint and checkpoint state.
-     *
+     * 
      * @param storageUri the storageUri value to set.
      * @return the FlinkStorageProfile object itself.
      */
@@ -49,7 +53,7 @@ public final class FlinkStorageProfile {
 
     /**
      * Get the storagekey property: Storage key is only required for wasb(s) storage.
-     *
+     * 
      * @return the storagekey value.
      */
     public String storagekey() {
@@ -58,7 +62,7 @@ public final class FlinkStorageProfile {
 
     /**
      * Set the storagekey property: Storage key is only required for wasb(s) storage.
-     *
+     * 
      * @param storagekey the storagekey value to set.
      * @return the FlinkStorageProfile object itself.
      */
@@ -69,14 +73,13 @@ public final class FlinkStorageProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storageUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property storageUri in model FlinkStorageProfile"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property storageUri in model FlinkStorageProfile"));
         }
     }
 

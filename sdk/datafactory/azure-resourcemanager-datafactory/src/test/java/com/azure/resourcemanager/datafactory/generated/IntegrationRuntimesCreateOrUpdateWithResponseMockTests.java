@@ -34,7 +34,7 @@ public final class IntegrationRuntimesCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"rdhxamjhpqfj\",\"\":{\"cillfq\":\"datairjkinofw\"}},\"name\":\"yifdrbkprblwsb\",\"type\":\"ekqqtsrupogtrwku\",\"etag\":\"abfjeoqwng\",\"id\":\"y\"}";
+            = "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"fhsgpy\",\"\":{\"lpsjbnnuqszy\":\"datatsdjn\",\"fata\":\"dataoiufrqsmjgddbunx\",\"p\":\"datas\",\"livvnyzc\":\"datagdwhacurmmbuna\"}},\"name\":\"wisuhareqyiadvvg\",\"type\":\"fyel\",\"etag\":\"l\",\"id\":\"yyuxcj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -51,14 +51,13 @@ public final class IntegrationRuntimesCreateOrUpdateWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        IntegrationRuntimeResource response
-            = manager.integrationRuntimes().define("qivvpvuy").withExistingFactory("rjdpzvh", "ssn")
-                .withProperties(new IntegrationRuntime().withDescription("n")
-                    .withAdditionalProperties(mapOf("type", "IntegrationRuntime")))
-                .withIfMatch("litcydgesflnzibg").create();
+        IntegrationRuntimeResource response = manager.integrationRuntimes().define("jxud")
+            .withExistingFactory("owtazqexwkkjx", "jomnkeaiamh").withProperties(new IntegrationRuntime()
+                .withDescription("lz").withAdditionalProperties(mapOf("type", "IntegrationRuntime")))
+            .withIfMatch("uyxccra").create();
 
-        Assertions.assertEquals("y", response.id());
-        Assertions.assertEquals("rdhxamjhpqfj", response.properties().description());
+        Assertions.assertEquals("yyuxcj", response.id());
+        Assertions.assertEquals("fhsgpy", response.properties().description());
     }
 
     // Use "Map.of" if available

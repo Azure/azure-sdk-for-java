@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A segment of a compliance assessment. */
+/**
+ * A segment of a compliance assessment.
+ */
 @Immutable
 public final class ComplianceSegment {
     /*
@@ -22,13 +24,15 @@ public final class ComplianceSegment {
     @JsonProperty(value = "percentage", access = JsonProperty.Access.WRITE_ONLY)
     private Double percentage;
 
-    /** Creates an instance of ComplianceSegment class. */
+    /**
+     * Creates an instance of ComplianceSegment class.
+     */
     public ComplianceSegment() {
     }
 
     /**
      * Get the segmentType property: The segment type, e.g. compliant, non-compliance, insufficient coverage, N/A, etc.
-     *
+     * 
      * @return the segmentType value.
      */
     public String segmentType() {
@@ -37,7 +41,7 @@ public final class ComplianceSegment {
 
     /**
      * Get the percentage property: The size (%) of the segment.
-     *
+     * 
      * @return the percentage value.
      */
     public Double percentage() {
@@ -46,7 +50,7 @@ public final class ComplianceSegment {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

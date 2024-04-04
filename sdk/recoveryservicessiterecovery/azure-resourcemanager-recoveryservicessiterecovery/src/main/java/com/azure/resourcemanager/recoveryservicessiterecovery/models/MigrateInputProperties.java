@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Migrate input properties. */
+/**
+ * Migrate input properties.
+ */
 @Fluent
 public final class MigrateInputProperties {
     /*
@@ -17,13 +19,15 @@ public final class MigrateInputProperties {
     @JsonProperty(value = "providerSpecificDetails", required = true)
     private MigrateProviderSpecificInput providerSpecificDetails;
 
-    /** Creates an instance of MigrateInputProperties class. */
+    /**
+     * Creates an instance of MigrateInputProperties class.
+     */
     public MigrateInputProperties() {
     }
 
     /**
      * Get the providerSpecificDetails property: The provider specific details.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public MigrateProviderSpecificInput providerSpecificDetails() {
@@ -32,7 +36,7 @@ public final class MigrateInputProperties {
 
     /**
      * Set the providerSpecificDetails property: The provider specific details.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the MigrateInputProperties object itself.
      */
@@ -43,15 +47,13 @@ public final class MigrateInputProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (providerSpecificDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property providerSpecificDetails in model MigrateInputProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property providerSpecificDetails in model MigrateInputProperties"));
         } else {
             providerSpecificDetails().validate();
         }

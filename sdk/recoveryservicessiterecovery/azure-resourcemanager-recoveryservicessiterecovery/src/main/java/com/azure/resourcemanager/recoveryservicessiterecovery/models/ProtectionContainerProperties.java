@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Protection profile custom data details. */
+/**
+ * Protection profile custom data details.
+ */
 @Fluent
 public final class ProtectionContainerProperties {
     /*
@@ -52,13 +54,15 @@ public final class ProtectionContainerProperties {
     @JsonProperty(value = "fabricSpecificDetails")
     private ProtectionContainerFabricSpecificDetails fabricSpecificDetails;
 
-    /** Creates an instance of ProtectionContainerProperties class. */
+    /**
+     * Creates an instance of ProtectionContainerProperties class.
+     */
     public ProtectionContainerProperties() {
     }
 
     /**
      * Get the fabricFriendlyName property: Fabric friendly name.
-     *
+     * 
      * @return the fabricFriendlyName value.
      */
     public String fabricFriendlyName() {
@@ -67,7 +71,7 @@ public final class ProtectionContainerProperties {
 
     /**
      * Set the fabricFriendlyName property: Fabric friendly name.
-     *
+     * 
      * @param fabricFriendlyName the fabricFriendlyName value to set.
      * @return the ProtectionContainerProperties object itself.
      */
@@ -78,7 +82,7 @@ public final class ProtectionContainerProperties {
 
     /**
      * Get the friendlyName property: The name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -87,7 +91,7 @@ public final class ProtectionContainerProperties {
 
     /**
      * Set the friendlyName property: The name.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the ProtectionContainerProperties object itself.
      */
@@ -98,7 +102,7 @@ public final class ProtectionContainerProperties {
 
     /**
      * Get the fabricType property: The fabric type.
-     *
+     * 
      * @return the fabricType value.
      */
     public String fabricType() {
@@ -107,7 +111,7 @@ public final class ProtectionContainerProperties {
 
     /**
      * Set the fabricType property: The fabric type.
-     *
+     * 
      * @param fabricType the fabricType value to set.
      * @return the ProtectionContainerProperties object itself.
      */
@@ -118,7 +122,7 @@ public final class ProtectionContainerProperties {
 
     /**
      * Get the protectedItemCount property: Number of protected PEs.
-     *
+     * 
      * @return the protectedItemCount value.
      */
     public Integer protectedItemCount() {
@@ -127,7 +131,7 @@ public final class ProtectionContainerProperties {
 
     /**
      * Set the protectedItemCount property: Number of protected PEs.
-     *
+     * 
      * @param protectedItemCount the protectedItemCount value to set.
      * @return the ProtectionContainerProperties object itself.
      */
@@ -138,7 +142,7 @@ public final class ProtectionContainerProperties {
 
     /**
      * Get the pairingStatus property: The pairing status of this cloud.
-     *
+     * 
      * @return the pairingStatus value.
      */
     public String pairingStatus() {
@@ -147,7 +151,7 @@ public final class ProtectionContainerProperties {
 
     /**
      * Set the pairingStatus property: The pairing status of this cloud.
-     *
+     * 
      * @param pairingStatus the pairingStatus value to set.
      * @return the ProtectionContainerProperties object itself.
      */
@@ -158,7 +162,7 @@ public final class ProtectionContainerProperties {
 
     /**
      * Get the role property: The role of this cloud.
-     *
+     * 
      * @return the role value.
      */
     public String role() {
@@ -167,7 +171,7 @@ public final class ProtectionContainerProperties {
 
     /**
      * Set the role property: The role of this cloud.
-     *
+     * 
      * @param role the role value to set.
      * @return the ProtectionContainerProperties object itself.
      */
@@ -178,7 +182,7 @@ public final class ProtectionContainerProperties {
 
     /**
      * Get the fabricSpecificDetails property: Fabric specific details.
-     *
+     * 
      * @return the fabricSpecificDetails value.
      */
     public ProtectionContainerFabricSpecificDetails fabricSpecificDetails() {
@@ -187,19 +191,19 @@ public final class ProtectionContainerProperties {
 
     /**
      * Set the fabricSpecificDetails property: Fabric specific details.
-     *
+     * 
      * @param fabricSpecificDetails the fabricSpecificDetails value to set.
      * @return the ProtectionContainerProperties object itself.
      */
-    public ProtectionContainerProperties withFabricSpecificDetails(
-        ProtectionContainerFabricSpecificDetails fabricSpecificDetails) {
+    public ProtectionContainerProperties
+        withFabricSpecificDetails(ProtectionContainerFabricSpecificDetails fabricSpecificDetails) {
         this.fabricSpecificDetails = fabricSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

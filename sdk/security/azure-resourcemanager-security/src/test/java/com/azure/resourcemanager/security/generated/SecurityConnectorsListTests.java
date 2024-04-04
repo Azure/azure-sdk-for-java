@@ -7,6 +7,8 @@ package com.azure.resourcemanager.security.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.fluent.models.SecurityConnectorInner;
 import com.azure.resourcemanager.security.models.CloudName;
+import com.azure.resourcemanager.security.models.CloudOffering;
+import com.azure.resourcemanager.security.models.EnvironmentData;
 import com.azure.resourcemanager.security.models.SecurityConnectorsList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,52 +18,41 @@ import org.junit.jupiter.api.Assertions;
 public final class SecurityConnectorsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecurityConnectorsList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"ifrkgwltxeqipx\",\"hierarchyIdentifierTrialEndDate\":\"2021-05-11T17:28:43Z\",\"environmentName\":\"GCP\",\"offerings\":[]},\"location\":\"fayorpravkjoges\",\"tags\":{\"kvwjtqpkevmy\":\"nsmjkwynqxaekqs\",\"gxannnoytzposewx\":\"tjcrspxklurccl\",\"dfaifyzyzeyuube\":\"gpxvkqmaupxvpi\",\"l\":\"ds\"},\"id\":\"ytoithgygvfl\",\"name\":\"gvdihoynkrxwetwk\",\"type\":\"rcyrucpcunnu\"},{\"properties\":{\"hierarchyIdentifier\":\"moenodnaien\",\"hierarchyIdentifierTrialEndDate\":\"2021-09-25T15:40:50Z\",\"environmentName\":\"GCP\",\"offerings\":[]},\"location\":\"nelqkaadl\",\"tags\":{\"vcnrly\":\"foanniyopetx\"},\"id\":\"nucaephblkwqpat\",\"name\":\"bqsdtcjbctvi\",\"type\":\"uzqymtuowog\"}],\"nextLink\":\"it\"}")
-                .toObject(SecurityConnectorsList.class);
-        Assertions.assertEquals("fayorpravkjoges", model.value().get(0).location());
-        Assertions.assertEquals("nsmjkwynqxaekqs", model.value().get(0).tags().get("kvwjtqpkevmy"));
-        Assertions.assertEquals("ifrkgwltxeqipx", model.value().get(0).hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.GCP, model.value().get(0).environmentName());
+        SecurityConnectorsList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"qthwmgnmbscbb\",\"hierarchyIdentifierTrialEndDate\":\"2021-04-02T07:57:24Z\",\"environmentName\":\"GitLab\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"d\"},{\"offeringType\":\"CloudOffering\",\"description\":\"pedbwdpyqy\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"xubmdnafcbqw\",\"tags\":{\"hdbvqvwzkjop\":\"jelaqacigele\"},\"id\":\"beonrlkwzdq\",\"name\":\"bxcea\",\"type\":\"xcptsoqfyiaseqc\"},{\"properties\":{\"hierarchyIdentifier\":\"tzrazisgyk\",\"hierarchyIdentifierTrialEndDate\":\"2021-05-23T19:22:14Z\",\"environmentName\":\"GCP\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"wzohm\"},{\"offeringType\":\"CloudOffering\",\"description\":\"xxbsojklinhmd\"},{\"offeringType\":\"CloudOffering\",\"description\":\"ysprq\"},{\"offeringType\":\"CloudOffering\",\"description\":\"nzxojpslsvjgpli\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"iqwoyxqvapcoh\",\"tags\":{\"dzbenri\":\"cqpqojxcxzrzdc\",\"wflj\":\"cawetzqddt\",\"mtuatmzwcjjncqtj\":\"zn\",\"grebwggahttzlsw\":\"mizvgbgatzuuvbx\"},\"id\":\"ajqfutlx\",\"name\":\"oqza\",\"type\":\"unwqr\"},{\"properties\":{\"hierarchyIdentifier\":\"gqhaohcmbuocn\",\"hierarchyIdentifierTrialEndDate\":\"2021-05-14T07:13:07Z\",\"environmentName\":\"GitLab\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"ryxameblydyvkfkm\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"cxneh\",\"tags\":{\"fpyapucygvoavyu\":\"tod\",\"vpaseksgbu\":\"ssxlghieegjlg\"},\"id\":\"antuygdhgaqipirp\",\"name\":\"wrq\",\"type\":\"fulopmjnlexwhcb\"}],\"nextLink\":\"ibkeph\"}")
+            .toObject(SecurityConnectorsList.class);
+        Assertions.assertEquals("xubmdnafcbqw", model.value().get(0).location());
+        Assertions.assertEquals("jelaqacigele", model.value().get(0).tags().get("hdbvqvwzkjop"));
+        Assertions.assertEquals("qthwmgnmbscbb", model.value().get(0).hierarchyIdentifier());
+        Assertions.assertEquals(CloudName.GIT_LAB, model.value().get(0).environmentName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityConnectorsList model =
-            new SecurityConnectorsList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SecurityConnectorInner()
-                                .withLocation("fayorpravkjoges")
-                                .withTags(
-                                    mapOf(
-                                        "kvwjtqpkevmy",
-                                        "nsmjkwynqxaekqs",
-                                        "gxannnoytzposewx",
-                                        "tjcrspxklurccl",
-                                        "dfaifyzyzeyuube",
-                                        "gpxvkqmaupxvpi",
-                                        "l",
-                                        "ds"))
-                                .withHierarchyIdentifier("ifrkgwltxeqipx")
-                                .withEnvironmentName(CloudName.GCP)
-                                .withOfferings(Arrays.asList()),
-                            new SecurityConnectorInner()
-                                .withLocation("nelqkaadl")
-                                .withTags(mapOf("vcnrly", "foanniyopetx"))
-                                .withHierarchyIdentifier("moenodnaien")
-                                .withEnvironmentName(CloudName.GCP)
-                                .withOfferings(Arrays.asList())));
+        SecurityConnectorsList model = new SecurityConnectorsList().withValue(Arrays.asList(
+            new SecurityConnectorInner().withLocation("xubmdnafcbqw").withTags(mapOf("hdbvqvwzkjop", "jelaqacigele"))
+                .withHierarchyIdentifier("qthwmgnmbscbb").withEnvironmentName(CloudName.GIT_LAB)
+                .withOfferings(Arrays.asList(new CloudOffering(), new CloudOffering()))
+                .withEnvironmentData(new EnvironmentData()),
+            new SecurityConnectorInner().withLocation("iqwoyxqvapcoh")
+                .withTags(mapOf("dzbenri", "cqpqojxcxzrzdc", "wflj", "cawetzqddt", "mtuatmzwcjjncqtj", "zn",
+                    "grebwggahttzlsw", "mizvgbgatzuuvbx"))
+                .withHierarchyIdentifier("tzrazisgyk").withEnvironmentName(CloudName.GCP)
+                .withOfferings(
+                    Arrays.asList(new CloudOffering(), new CloudOffering(), new CloudOffering(), new CloudOffering()))
+                .withEnvironmentData(new EnvironmentData()),
+            new SecurityConnectorInner().withLocation("cxneh")
+                .withTags(mapOf("fpyapucygvoavyu", "tod", "vpaseksgbu", "ssxlghieegjlg"))
+                .withHierarchyIdentifier("gqhaohcmbuocn").withEnvironmentName(CloudName.GIT_LAB)
+                .withOfferings(Arrays.asList(new CloudOffering())).withEnvironmentData(new EnvironmentData())));
         model = BinaryData.fromObject(model).toObject(SecurityConnectorsList.class);
-        Assertions.assertEquals("fayorpravkjoges", model.value().get(0).location());
-        Assertions.assertEquals("nsmjkwynqxaekqs", model.value().get(0).tags().get("kvwjtqpkevmy"));
-        Assertions.assertEquals("ifrkgwltxeqipx", model.value().get(0).hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.GCP, model.value().get(0).environmentName());
+        Assertions.assertEquals("xubmdnafcbqw", model.value().get(0).location());
+        Assertions.assertEquals("jelaqacigele", model.value().get(0).tags().get("hdbvqvwzkjop"));
+        Assertions.assertEquals("qthwmgnmbscbb", model.value().get(0).hierarchyIdentifier());
+        Assertions.assertEquals(CloudName.GIT_LAB, model.value().get(0).environmentName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
