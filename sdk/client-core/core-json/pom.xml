@@ -84,7 +84,7 @@
 
   <build>
     <plugins>
-      <!-- JsonWriterContractTests is inherited by tests in generic-json-* -->
+      <!-- JsonWriterContractTests is inherited by tests in core-json-* -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>

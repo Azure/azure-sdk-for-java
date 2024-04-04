@@ -153,8 +153,8 @@ public class BinaryDataJavaDocCodeSnippet {
         final Person data = new Person().setName("John");
 
         // Provide your custom serializer or use Azure provided serializers.
-        // https://central.sonatype.com/artifact/com.generic/azure-core-serializer-json-jackson or
-        // https://central.sonatype.com/artifact/com.generic/azure-core-serializer-json-gson
+        // https://central.sonatype.com/artifact/io.clientcore/azure-core-serializer-json-jackson or
+        // https://central.sonatype.com/artifact/io.clientcore/azure-core-serializer-json-gson
         BinaryData binaryData = BinaryData.fromObject(data);
 
         System.out.println(binaryData);
@@ -173,8 +173,8 @@ public class BinaryDataJavaDocCodeSnippet {
         final Person data = new Person().setName("John");
 
         // Provide your custom serializer or use Azure provided serializers.
-        // https://central.sonatype.com/artifact/com.generic/azure-core-serializer-json-jackson or
-        // https://central.sonatype.com/artifact/com.generic/azure-core-serializer-json-gson
+        // https://central.sonatype.com/artifact/io.clientcore/azure-core-serializer-json-jackson or
+        // https://central.sonatype.com/artifact/io.clientcore/azure-core-serializer-json-gson
         final ObjectSerializer serializer = new MyJsonSerializer(); // Replace this with your Serializer
         BinaryData binaryData = BinaryData.fromObject(data, serializer);
 
@@ -192,8 +192,8 @@ public class BinaryDataJavaDocCodeSnippet {
         // Ensure your classpath have the Serializer to serialize the object which implement implement
         // io.clientcore.core.serializer.util.JsonSerializer interface.
         // Or use Azure provided libraries for this.
-        // https://central.sonatype.com/artifact/com.generic/azure-core-serializer-json-jackson or
-        // https://central.sonatype.com/artifact/com.generic/azure-core-serializer-json-gson
+        // https://central.sonatype.com/artifact/io.clientcore/azure-core-serializer-json-jackson or
+        // https://central.sonatype.com/artifact/io.clientcore/azure-core-serializer-json-gson
 
         BinaryData binaryData = BinaryData.fromObject(data);
 
@@ -217,8 +217,8 @@ public class BinaryDataJavaDocCodeSnippet {
         // Ensure your classpath have the Serializer to serialize the object which implement implement
         // io.clientcore.core.serializer.util.JsonSerializer interface.
         // Or use Azure provided libraries for this.
-        // https://central.sonatype.com/artifact/com.generic/azure-core-serializer-json-jackson or
-        // https://central.sonatype.com/artifact/com.generic/azure-core-serializer-json-gson
+        // https://central.sonatype.com/artifact/io.clientcore/azure-core-serializer-json-jackson or
+        // https://central.sonatype.com/artifact/io.clientcore/azure-core-serializer-json-gson
 
 
         BinaryData binaryData = BinaryData.fromObject(personList);
@@ -253,8 +253,8 @@ public class BinaryDataJavaDocCodeSnippet {
         final Person data = new Person().setName("John");
 
         // Provide your custom serializer or use Azure provided serializers.
-        // https://central.sonatype.com/artifact/com.generic/azure-core-serializer-json-jackson or
-        // https://central.sonatype.com/artifact/com.generic/azure-core-serializer-json-gson
+        // https://central.sonatype.com/artifact/io.clientcore/azure-core-serializer-json-jackson or
+        // https://central.sonatype.com/artifact/io.clientcore/azure-core-serializer-json-gson
 
         final ObjectSerializer serializer = new MyJsonSerializer(); // Replace this with your Serializer
         BinaryData binaryData = BinaryData.fromObject(data, serializer);

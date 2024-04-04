@@ -278,12 +278,12 @@ public class DefaultJsonSerializerTests {
     private static Stream<Arguments> unsupportedDeserializationSupplier() {
         return Stream.of(
             Arguments.of(InputStream.class, JsonParseException.class),
-            // Thrown when the String cannot be parsed by generic-json
+            // Thrown when the String cannot be parsed by core-json
             Arguments.of(SimpleClass.class, InvocationTargetException.class),
             // Thrown when the class doesn't have a fromJson method
             Arguments.of(URL.class, JsonParseException.class),
-            // Thrown when the String cannot be parsed by generic-json
-            Arguments.of(URI.class, JsonParseException.class) // Thrown when the String cannot be parsed by generic-json
+            // Thrown when the String cannot be parsed by core-json
+            Arguments.of(URI.class, JsonParseException.class) // Thrown when the String cannot be parsed by core-json
         );
     }
 }

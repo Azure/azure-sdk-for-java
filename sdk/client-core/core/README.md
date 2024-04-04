@@ -119,7 +119,7 @@ polling is cancelled or reaches a terminal state.
 Builders are used to create service clients and some `TokenCredential` implementations. They can be configured with a 
 variety of options, including `HttpPipeline` and `HttpClient` for HTTP-based clients and more general options such as 
 `Configuration` and`endpoint`. To allow for simpler integration into frameworks such as Spring and to allow generic 
-methods to be used for all builders `generic-core` provides a set of interfaces that can be implemented to provide
+methods to be used for all builders `core` provides a set of interfaces that can be implemented to provide
 the necessary functionality.
 
 #### HttpTrait<T>

@@ -62,7 +62,7 @@ public final class JsonProviders {
 
         if (implementationNames.size() > 1) {
             throw new IllegalStateException("More than one implementation of 'io.clientcore.core.json.JsonProvider' was found "
-                + "on the classpath. At this time 'generic-json' only supports one implementation being on the "
+                + "on the classpath. At this time 'core-json' only supports one implementation being on the "
                 + "classpath. Remove all implementations, except the one that should be used during runtime, from "
                 + "'META-INF/services/io.clientcore.core.json.JsonProvider'. Found implementations were: "
                 + String.join(", ", implementationNames));

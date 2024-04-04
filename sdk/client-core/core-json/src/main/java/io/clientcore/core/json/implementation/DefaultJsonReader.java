@@ -190,9 +190,9 @@ public final class DefaultJsonReader extends JsonReader {
     }
 
     /*
-     * Maps the Jackson Core JsonToken to the generic-json JsonToken.
+     * Maps the Jackson Core JsonToken to the core-json JsonToken.
      *
-     * generic-json doesn't support the EMBEDDED_OBJECT or NOT_AVAILABLE Jackson Core JsonTokens, but those should only
+     * core-json doesn't support the EMBEDDED_OBJECT or NOT_AVAILABLE Jackson Core JsonTokens, but those should only
      * be returned by specialty implementations that aren't used.
      */
     private static JsonToken mapToken(io.clientcore.core.json.implementation.jackson.core.JsonToken nextToken,

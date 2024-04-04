@@ -10,7 +10,7 @@ import java.io.Reader;
 import java.io.Writer;
 
 /**
- * An interface to be implemented by any generic-json plugin that wishes to provide an alternate {@link JsonReader} or
+ * An interface to be implemented by any core-json plugin that wishes to provide an alternate {@link JsonReader} or
  * {@link JsonWriter} implementation.
  *
  * @see io.clientcore.core.json
