@@ -5,8 +5,8 @@
 Azure Core provides shared primitives, abstractions, and helpers for modern Java Core SDK client libraries.
 These libraries follow
 the [SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html)
-and can be easily identified by package names starting with `com.generic` and module names starting with `generic-`,
-e.g. `com.generic.core` would be found within the `/sdk/generic-sdk-core/generic-core` directory. A more complete
+and can be easily identified by package names starting with `io.clientcore` and module names starting with `clientcore`,
+e.g. `io.clientcore.core` would be found within the `/sdk/client-core/core` directory. A more complete
 list of client libraries using Azure Core can be
 found [here](https://azure.github.io/azure-sdk/releases/latest/#java-packages).
 
@@ -33,7 +33,7 @@ the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main
 <dependencyManagement>
     <dependencies>
         <dependency>
-            <groupId>com.genericcom.generic</groupId>
+            <groupId>io.clientcore</groupId>
             <artifactId>azure-sdk-bom</artifactId>
             <version>{bom_version_to_target}</version>
             <type>pom</type>
@@ -50,8 +50,8 @@ tool when you depend on client libraries using it.
 ```xml
 <dependencies>
     <dependency>
-        <groupId>com.generic</groupId>
-        <artifactId>generic-core</artifactId>
+        <groupId>io.clientcore</groupId>
+        <artifactId>core</artifactId>
     </dependency>
 </dependencies>
 ```
@@ -61,11 +61,11 @@ tool when you depend on client libraries using it.
 If you want to take dependency on a particular version of the library that is not present in the BOM,
 add the direct dependency to your project as follows.
 
-[//]: # ({x-version-update-start;com.generic:generic-core;current})
+[//]: # ({x-version-update-start;io.clientcore:core;current})
 ```xml
 <dependency>
-    <groupId>com.generic</groupId>
-    <artifactId>generic-core</artifactId>
+    <groupId>io.clientcore</groupId>
+    <artifactId>core</artifactId>
     <version>1.0.0</version>
 </dependency>
 ```

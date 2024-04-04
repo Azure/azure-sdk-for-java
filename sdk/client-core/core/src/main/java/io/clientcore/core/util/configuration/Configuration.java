@@ -95,7 +95,7 @@ public class Configuration {
      * Sets the name of the {@link HttpClientProvider} implementation that should be used to construct instances of
      * {@link HttpClient}.
      * <p>
-     * The name must be the full class name, ex {@code io.clientcore.core.http.okhttp.OkHttpHttpClientProvider} and not
+     * The name must be the full class name, ex {@code io.clientcore.http.okhttp3.OkHttpHttpClientProvider} and not
      * {@code OkHttpHttpClientProvider}, to disambiguate multiple providers with the same name but from different
      * packages.
      * <p>

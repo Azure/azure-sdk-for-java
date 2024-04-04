@@ -11,7 +11,7 @@
 
   <modules>
     <module>core</module>
-    <module>core-http-okhttp</module>
+    <module>http-okhttp3</module>
     <module>core-json</module>
   </modules>
 </project>

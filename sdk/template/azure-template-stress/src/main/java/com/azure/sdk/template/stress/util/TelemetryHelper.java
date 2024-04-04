@@ -5,7 +5,7 @@ package com.azure.sdk.template.stress.util;
 
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
 import com.azure.sdk.template.stress.StressOptions;
-import com.generic.core.util.ClientLogger;
+import io.clientcore.core.util.ClientLogger;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;

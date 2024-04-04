@@ -37,8 +37,8 @@
     </dependency>
     <dependency>
       <groupId>io.clientcore</groupId>
-      <artifactId>core-http-okhttp</artifactId>
-      <version>1.0.0-beta.1</version>  <!-- {x-version-update;io.clientcore:core-http-okhttp;current} -->
+      <artifactId>http-okhttp3</artifactId>
+      <version>1.0.0-beta.1</version>  <!-- {x-version-update;io.clientcore:http-okhttp3;current} -->
     </dependency>
     <!-- logging, tracing, metrics -->
     <dependency>

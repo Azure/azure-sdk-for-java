@@ -53,8 +53,6 @@
       --add-opens io.clientcore.core/io.clientcore.core.http.policy=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation.http=ALL-UNNAMED
-      --add-opens io.clientcore.core/io.clientcore.core.implementation.http.annotation=ALL-UNNAMED
-      --add-opens io.clientcore.core/io.clientcore.core.implementation.http.policy=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation.http.rest=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation.http.serializer=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation.util=ALL-UNNAMED
@@ -192,14 +190,6 @@
               <version>1.9.0</version> <!-- {x-version-update;com.h3xstream.findsecbugs:findsecbugs-plugin;external_dependency} -->
             </plugin>
           </plugins>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>9</source>
-          <target>9</target>
         </configuration>
       </plugin>
     </plugins>

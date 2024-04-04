@@ -1,29 +1,29 @@
 [
   {
-    "name":"com.generic.core.util.logging.ClientLogger",
+    "name":"io.clientcore.core.util.logging.ClientLogger",
     "allDeclaredFields":true,
     "queryAllDeclaredMethods":true,
     "queryAllDeclaredConstructors":true
   },
   {
-    "name":"com.generic.core.http.HttpHeaderName",
+    "name":"io.clientcore.core.http.HttpHeaderName",
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,
     "allDeclaredMethods": true,
     "allPublicMethods": true
   },
   {
-    "name":"com.generic.core.util.ExpandableStringEnum",
+    "name":"io.clientcore.core.util.ExpandableStringEnum",
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,
     "allDeclaredMethods": true,
     "allPublicMethods": true
   },
   {
-    "name":"com.generic.core.util.CoreUtils"
+    "name":"io.clientcore.core.util.CoreUtils"
   },
   {
-    "name":"com.generic.core.http.rest.ResponseBase",
+    "name":"io.clientcore.core.http.rest.ResponseBase",
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,
     "allDeclaredMethods": true,
