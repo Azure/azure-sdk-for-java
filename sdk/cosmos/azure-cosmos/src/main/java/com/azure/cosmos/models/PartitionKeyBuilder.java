@@ -149,7 +149,7 @@ public final class PartitionKeyBuilder {
      */
     public static PartitionKey extractPartitionKey(
         Map<String, Object> item,
-        PartitionKeyDefinition partitionKeyDefinition) throws JsonProcessingException {
+        PartitionKeyDefinition partitionKeyDefinition) {
         checkNotNull(item, "Argument 'item' must not be null.");
         checkNotNull(partitionKeyDefinition, "Argument 'partitionKeyDefinition' must not be null.");
 
