@@ -6,6 +6,10 @@
 
 ### Breaking Changes
 
+#### Behavioral Breaking Change
+- The timeout interval for IMDS probing has been adjusted from 0.5 seconds to 1 second. This update is designed to
+enhance the system's reliability without affecting user applications.
+
 ### Bugs Fixed
 
 ### Other Changes
