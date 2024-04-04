@@ -22,7 +22,7 @@ module io.clientcore.core {
     exports io.clientcore.core.util.configuration;
     exports io.clientcore.core.util.serializer;
 
-    exports io.clientcore.core.implementation.util to io.clientcore.http.okhttp;
+    exports io.clientcore.core.implementation.util to io.clientcore.http.okhttp3;
 
     uses HttpClientProvider;
 }
