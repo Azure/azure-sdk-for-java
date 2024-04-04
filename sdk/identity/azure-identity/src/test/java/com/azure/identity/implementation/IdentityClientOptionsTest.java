@@ -10,6 +10,9 @@ import com.azure.identity.util.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.util.*;
+
 public class IdentityClientOptionsTest {
 
     @Test
@@ -50,5 +53,24 @@ public class IdentityClientOptionsTest {
         IdentityClientOptions clonedOptions = identityClientOptions.clone();
         Assertions.assertFalse(clonedOptions.isBrokerEnabled());
         Assertions.assertFalse(clonedOptions.isUnsafeSupportLoggingEnabled());
+    }
+
+    @Test
+    public void testIMDSRetry() {
+        IdentityClientOptions identityClientOptions = new IdentityClientOptions();
+        IdentityClient idClient = new IdentityClientBuilder().identityClientOptions(identityClientOptions).build();
+        int retry = 1;
+        Set<Integer> expectedEntries = new HashSet<>();
+        expectedEntries.addAll(Arrays.asList(800, 1600, 3200, 3200, 3200));
+
+
+        while (retry < identityClientOptions.getMaxRetry()) {
+            int timeout = idClient.getRetryTimeoutInMs(retry);
+            if (expectedEntries.contains(timeout)) {
+                expectedEntries.remove(timeout);
+            } else {
+                Assertions.fail("Unexpected timeout: " + timeout);
+            }
+        }
     }
 }

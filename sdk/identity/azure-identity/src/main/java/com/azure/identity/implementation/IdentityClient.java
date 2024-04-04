@@ -1236,8 +1236,7 @@ public class IdentityClient extends IdentityClientBase {
                             || responseCode == 429
                             || responseCode == 404
                             || (responseCode >= 500 && responseCode <= 599)) {
-                        int retryTimeoutInMs = (int) options.getRetryTimeout()
-                                .apply(Duration.ofSeconds(retry)).toMillis();
+                        int retryTimeoutInMs = getRetryTimeoutInMs(retry);
                         // Error code 410 indicates IMDS upgrade is in progress, which can take up to 70s
                         //
                         retryTimeoutInMs =
@@ -1264,6 +1263,11 @@ public class IdentityClient extends IdentityClientBase {
                     String.format("MSI: Failed to acquire tokens after retrying %s times",
                     options.getMaxRetry())));
         }));
+    }
+
+    int getRetryTimeoutInMs(int retry) {
+        return (int) options.getRetryTimeout()
+            .apply(Duration.ofSeconds(retry)).toMillis();
     }
 
     private Mono<Boolean> checkIMDSAvailable(String endpoint) {
