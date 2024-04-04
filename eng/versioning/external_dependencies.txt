@@ -360,6 +360,10 @@ cosmos_io.dropwizard.metrics:metrics-graphite;4.1.0
 cosmos_io.dropwizard.metrics:metrics-jvm;4.1.0
 cosmos_org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir;1.1.0
 cosmos_org.hdrhistogram:HdrHistogram;2.1.12
+cosmos_org.codehaus.mojo:build-helper-maven-plugin;3.5.0
+cosmos_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.15.2
+cosmos_com.fasterxml.jackson.core:jackson-databind;2.15.2
+cosmos_com.fasterxml.jackson.module:jackson-module-scala_2.12;2.15.2
 
 ## Cosmos Spark connector under sdk\cosmos\azure-cosmos-spark_3-1_2-12\pom.xml
 # Cosmos Spark connector runtime dependencies - provided by Spark runtime/host
@@ -367,10 +371,12 @@ cosmos-spark_3-1_org.apache.spark:spark-sql_2.12;3.1.1
 cosmos-spark_3-2_org.apache.spark:spark-sql_2.12;3.2.0
 cosmos-spark_3-3_org.apache.spark:spark-sql_2.12;3.3.0
 cosmos-spark_3-4_org.apache.spark:spark-sql_2.12;3.4.0
+cosmos-spark_3-5_org.apache.spark:spark-sql_2.12;3.5.0
 cosmos-spark_3-1_org.apache.spark:spark-hive_2.12;3.1.1
 cosmos-spark_3-2_org.apache.spark:spark-hive_2.12;3.2.0
 cosmos-spark_3-3_org.apache.spark:spark-hive_2.12;3.3.0
 cosmos-spark_3-4_org.apache.spark:spark-hive_2.12;3.4.0
+cosmos-spark_3-5_org.apache.spark:spark-hive_2.12;3.5.0
 cosmos_org.scala-lang:scala-library;2.12.10
 cosmos_org.scala-lang.modules:scala-java8-compat_2.12;0.8.0
 cosmos_io.projectreactor:reactor-scala-extensions_2.12;0.8.0
@@ -386,7 +392,7 @@ cosmos_com.globalmentor:hadoop-bare-naked-local-fs;0.1.0
 cosmos_org.mockito:mockito-core;4.8.1
 
 # Maven Tools for Cosmos Spark connector only
-cosmos_org.scalatest:scalatest-maven-plugin;2.0.2
+cosmos_org.scalatest:scalatest-maven-plugin;2.1.0
 cosmos_net.alchim31.maven:scala-maven-plugin;4.8.1
 cosmos_org.scalastyle:scalastyle-maven-plugin;1.0.0
 
