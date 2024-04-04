@@ -1,14 +1,15 @@
 # Release History
 
-## 1.15.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.14.2 (2024-04-04)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to `1.48.0`.
+- Upgraded `reactor-netty-http` from `1.0.40` to `1.0.43`.
+- Upgraded Netty dependencies from `4.1.101.Final` to `4.1.108.Final`.
+- Upgraded Netty TcNative dependencies from `2.0.62.Final` to `2.0.65.Final`.
 
 ## 1.14.1 (2024-03-01)
 

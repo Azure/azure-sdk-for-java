@@ -1,14 +1,16 @@
 # Release History
 
-## 1.0.0-beta.12 (Unreleased)
+## 1.0.0-beta.12 (2024-04-04)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for write, response, and read timeout in `JdkHttpClientBuilder`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to `1.48.0`.
 
 ## 1.0.0-beta.11 (2024-03-01)
 
