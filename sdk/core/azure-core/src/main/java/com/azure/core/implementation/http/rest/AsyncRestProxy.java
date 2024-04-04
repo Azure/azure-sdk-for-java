@@ -75,8 +75,6 @@ public class AsyncRestProxy extends RestProxyBase {
     @SuppressWarnings({ "try", "unused" })
     public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
         Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request, Context context) {
-        RestProxyUtils.validateResumeOperationIsNotPresent(method);
-
         context = startTracingSpan(methodParser, context);
 
         // If there is 'RequestOptions' apply its request callback operations before validating the body.

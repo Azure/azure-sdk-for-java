@@ -50,10 +50,9 @@ public final class Utility {
      * @return A newly allocated {@link ByteBuffer} containing the copied bytes.
      */
     public static ByteBuffer deepCopyBuffer(ByteBuf byteBuf) {
-        ByteBuffer buffer = ByteBuffer.allocate(byteBuf.readableBytes());
-        byteBuf.readBytes(buffer);
-        buffer.rewind();
-        return buffer;
+        byte[] bytes = new byte[byteBuf.readableBytes()];
+        byteBuf.getBytes(byteBuf.readerIndex(), bytes);
+        return ByteBuffer.wrap(bytes);
     }
 
     /**

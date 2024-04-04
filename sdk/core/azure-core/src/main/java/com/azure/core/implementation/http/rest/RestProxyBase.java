@@ -98,8 +98,6 @@ public abstract class RestProxyBase {
      */
     public final Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
         Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, boolean isAsync, Object[] args) {
-        RestProxyUtils.validateResumeOperationIsNotPresent(method);
-
         try {
             HttpRequest request = createHttpRequest(methodParser, serializer, isAsync, args);
 
