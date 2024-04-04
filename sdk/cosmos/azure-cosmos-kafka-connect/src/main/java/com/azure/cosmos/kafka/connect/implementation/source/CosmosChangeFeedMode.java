@@ -3,12 +3,12 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
-public enum CosmosChangeFeedModes {
+public enum CosmosChangeFeedMode {
     LATEST_VERSION("LatestVersion"),
     ALL_VERSION_AND_DELETES("AllVersionsAndDeletes");
 
     private final String name;
-    CosmosChangeFeedModes(String name) {
+    CosmosChangeFeedMode(String name) {
         this.name = name;
     }
 
@@ -16,8 +16,8 @@ public enum CosmosChangeFeedModes {
         return name;
     }
 
-    public static CosmosChangeFeedModes fromName(String name) {
-        for (CosmosChangeFeedModes mode : CosmosChangeFeedModes.values()) {
+    public static CosmosChangeFeedMode fromName(String name) {
+        for (CosmosChangeFeedMode mode : CosmosChangeFeedMode.values()) {
             if (mode.getName().equalsIgnoreCase(name)) {
                 return mode;
             }

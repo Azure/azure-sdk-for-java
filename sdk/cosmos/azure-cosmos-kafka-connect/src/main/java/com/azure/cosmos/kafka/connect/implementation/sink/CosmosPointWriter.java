@@ -8,10 +8,14 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlConfig;
+import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosSchedulers;
-import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
+import com.azure.cosmos.kafka.connect.implementation.sink.patch.KafkaCosmosPatchHelper;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.kafka.connect.sink.ErrantRecordReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +64,9 @@ public class CosmosPointWriter extends CosmosWriterBase {
                     break;
                 case ITEM_DELETE_IF_NOT_MODIFIED:
                     this.deleteWithRetry(container, sinkOperation, true);
+                    break;
+                case ITEM_PATCH:
+                    this.patchWithRetry(container, sinkOperation);
                     break;
                 default:
                     throw new IllegalArgumentException(this.writeConfig.getItemWriteStrategy() + " is not supported");
@@ -142,6 +149,41 @@ public class CosmosPointWriter extends CosmosWriterBase {
                 return KafkaCosmosExceptionsHelper.isNotFoundException(throwable)
                     || KafkaCosmosExceptionsHelper.isPreconditionFailedException(throwable);
             },
+            sinkOperation
+        );
+    }
+
+    private void patchWithRetry(CosmosAsyncContainer container, SinkOperation sinkOperation) {
+        executeWithRetry(
+            (operation) -> {
+                CosmosPatchItemRequestOptions patchItemRequestOptions = new CosmosPatchItemRequestOptions();
+                CosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(patchItemRequestOptions, this.throughputControlConfig);
+                if (StringUtils.isNotEmpty(this.writeConfig.getCosmosPatchConfig().getFilter())) {
+                    patchItemRequestOptions.setFilterPredicate(this.writeConfig.getCosmosPatchConfig().getFilter());
+                }
+
+                return ImplementationBridgeHelpers
+                    .CosmosAsyncContainerHelper
+                    .getCosmosAsyncContainerAccessor()
+                    .getPartitionKeyDefinition(container)
+                    .flatMap(partitionKeyDefinition -> {
+                        String itemId = this.getId(sinkOperation.getSinkRecord().value());
+                        CosmosPatchOperations cosmosPatchOperations = KafkaCosmosPatchHelper.createCosmosPatchOperations(
+                            itemId,
+                            partitionKeyDefinition,
+                            sinkOperation.getSinkRecord(),
+                            this.writeConfig.getCosmosPatchConfig());
+
+                        return container
+                            .patchItem(
+                                itemId,
+                                getPartitionKeyValue(operation.getSinkRecord().value(), partitionKeyDefinition),
+                                cosmosPatchOperations,
+                                patchItemRequestOptions,
+                                ObjectNode.class);
+                    }).then();
+            },
+            (throwable) -> false, // no exceptions should be ignored
             sinkOperation
         );
     }

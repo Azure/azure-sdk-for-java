@@ -3,13 +3,13 @@
 
 package com.azure.cosmos.kafka.connect.implementation;
 
-public enum CosmosAuthTypes {
+public enum CosmosAuthType {
     MASTER_KEY("MasterKey"),
     SERVICE_PRINCIPAL("ServicePrincipal");
 
     private final String name;
 
-    CosmosAuthTypes(String name) {
+    CosmosAuthType(String name) {
         this.name = name;
     }
 
@@ -17,8 +17,8 @@ public enum CosmosAuthTypes {
         return name;
     }
 
-    public static CosmosAuthTypes fromName(String name) {
-        for (CosmosAuthTypes authTypes : CosmosAuthTypes.values()) {
+    public static CosmosAuthType fromName(String name) {
+        for (CosmosAuthType authTypes : CosmosAuthType.values()) {
             if (authTypes.getName().equalsIgnoreCase(name)) {
                 return authTypes;
             }
