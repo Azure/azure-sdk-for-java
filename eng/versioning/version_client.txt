@@ -109,6 +109,7 @@ com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12;4.28.4;4.29.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12;4.28.4;4.29.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12;4.28.4;4.29.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12;4.28.4;4.29.0-beta.1
+com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;4.29.0-beta.1;4.29.0-beta.1
 com.azure:azure-cosmos-encryption;2.9.0;2.10.0-beta.1
 com.azure:azure-cosmos-test;1.0.0-beta.6;1.0.0-beta.7
 com.azure:azure-cosmos-tests;1.0.0-beta.1;1.0.0-beta.1
@@ -198,7 +199,7 @@ com.azure:azure-storage-queue;12.20.3;12.21.0-beta.1
 com.azure:azure-template-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-template-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-verticals-agrifood-farming;1.0.0-beta.3;1.0.0-beta.4
-com.azure:azure-xml;1.0.0-beta.3;1.0.0
+com.azure:azure-xml;1.0.0;1.1.0-beta.1
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-vision-imageanalysis;1.0.0-beta.2;1.0.0-beta.3
 com.azure.spring:azure-monitor-spring-native;1.0.0-beta.1;1.0.0-beta.1
