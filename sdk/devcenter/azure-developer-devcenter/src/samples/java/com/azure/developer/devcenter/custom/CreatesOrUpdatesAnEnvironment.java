@@ -20,22 +20,15 @@ public class CreatesOrUpdatesAnEnvironment {
                     "https://8a40af38-3b4c-4672-a6a4-5e964b1870ed-contosodevcenter.centralus.devcenter.azure.com/")
                 .buildClient();
         // BEGIN:com.azure.developer.devcenter.createorupdateenvironment.createsorupdatesanenvironment
+        Map<String, Object> paramenters = new HashMap<String, Object>() {{
+                put("functionAppRuntime", "node");
+                put("storageAccountType", "Standard_LRS");
+            }};
+
         SyncPoller<DevCenterOperationDetails, DevCenterEnvironment> response
             = deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment("myProject", "me",
                 new DevCenterEnvironment("mydevenv", "DevTest", "main", "helloworld")
-                    .setParameters(mapOf("functionAppRuntime", "node", "storageAccountType", "Standard_LRS")));
+                    .setParameters(paramenters));
         // END:com.azure.developer.devcenter.createorupdateenvironment.createsorupdatesanenvironment
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
     }
 }
