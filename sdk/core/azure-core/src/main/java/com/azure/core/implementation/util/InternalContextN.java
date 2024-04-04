@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * An {@link InternalContext} implementation that holds N key-value pairs.
  */
-final class InternalContextN implements InternalContext {
+final class InternalContextN extends InternalContext {
     private final InternalContext[] contexts;
     private final int count;
 
@@ -23,7 +23,7 @@ final class InternalContextN implements InternalContext {
 
         int count = 0;
         for (InternalContext context : contexts) {
-            count += context.count();
+            count += context.size();
         }
         this.count = count;
 
@@ -49,18 +49,18 @@ final class InternalContextN implements InternalContext {
     }
 
     @Override
-    public int count() {
+    public int size() {
         return count;
     }
 
     @Override
-    public InternalContext addData(Object key, Object value) {
+    public InternalContext put(Object key, Object value) {
         InternalContext last = contexts[contexts.length - 1];
 
-        if (last.count() < 4) {
+        if (last.size() < 4) {
             // The last context can hold more data. Add the data to the last context.
             InternalContext[] newContexts = CoreUtils.clone(contexts);
-            newContexts[contexts.length - 1] = last.addData(key, value);
+            newContexts[contexts.length - 1] = last.put(key, value);
 
             return new InternalContextN(count + 1, key, value, newContexts);
         } else {
@@ -74,12 +74,12 @@ final class InternalContextN implements InternalContext {
     }
 
     @Override
-    public Object getData(Object key) {
+    Object getInternal(Object key) {
         Object data = SENTINEL;
 
         // Iterate in reverse order to get the most recent data first.
         for (int i = contexts.length - 1; i >= 0; i--) {
-            data = contexts[i].getData(key);
+            data = contexts[i].getInternal(key);
             if (!Objects.equals(SENTINEL, data)) {
                 return data;
             }
@@ -106,25 +106,25 @@ final class InternalContextN implements InternalContext {
 
     @Override
     public InternalContext merge(InternalContext other) {
-        if (other == null || other.count() == 0) {
+        if (other == null || other.size() == 0) {
             return this;
         }
 
         InternalContext last = contexts[contexts.length - 1];
-        if (last.count() + other.count() <= 4) {
+        if (last.size() + other.size() <= 4) {
             // The other context can be merged into the last context without creating a new InternalContextN.
             // Merge the last context with the other context to reduce the number of array that have to be allocated.
             InternalContext[] newContexts = CoreUtils.clone(contexts);
             newContexts[contexts.length - 1] = last.merge(other);
 
-            return new InternalContextN(count + other.count(), other.getKey(), other.getValue(), newContexts);
+            return new InternalContextN(count + other.size(), other.getKey(), other.getValue(), newContexts);
         } else {
             // The last context can't fit the other context. Create a new InternalContextN with a larger backing array.
             InternalContext[] newContexts = new InternalContext[contexts.length + 1];
             System.arraycopy(contexts, 0, newContexts, 0, contexts.length);
             newContexts[contexts.length] = other;
 
-            return new InternalContextN(count + other.count(), other.getKey(), other.getValue(), newContexts);
+            return new InternalContextN(count + other.size(), other.getKey(), other.getValue(), newContexts);
         }
     }
 }

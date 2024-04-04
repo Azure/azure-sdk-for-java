@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * An {@link InternalContext} that holds a single key-value pair.
  */
-final class InternalContext1 implements InternalContext {
+final class InternalContext1 extends InternalContext {
     final Object key;
     final Object value;
 
@@ -30,17 +30,17 @@ final class InternalContext1 implements InternalContext {
     }
 
     @Override
-    public int count() {
+    public int size() {
         return 1;
     }
 
     @Override
-    public InternalContext addData(Object key, Object value) {
+    public InternalContext put(Object key, Object value) {
         return new InternalContext2(this.key, this.value, key, value);
     }
 
     @Override
-    public Object getData(Object key) {
+    Object getInternal(Object key) {
         return Objects.equals(this.key, key) ? value : SENTINEL;
     }
 
@@ -56,14 +56,14 @@ final class InternalContext1 implements InternalContext {
 
     @Override
     public InternalContext merge(InternalContext other) {
-        if (other == null || other.count() == 0) {
+        if (other == null || other.size() == 0) {
             return this;
-        } else if (other.count() == 1) {
+        } else if (other.size() == 1) {
             return new InternalContext2(key, value, other.getKey(), other.getValue());
-        } else if (other.count() == 2) {
+        } else if (other.size() == 2) {
             InternalContext2 other2 = (InternalContext2) other;
             return new InternalContext3(key, value, other2.key1, other2.value1, other2.key2, other2.value2);
-        } else if (other.count() == 3) {
+        } else if (other.size() == 3) {
             InternalContext3 other3 = (InternalContext3) other;
             return new InternalContext4(key, value, other3.key1, other3.value1, other3.key2, other3.value2, other3.key3,
                 other3.value3);

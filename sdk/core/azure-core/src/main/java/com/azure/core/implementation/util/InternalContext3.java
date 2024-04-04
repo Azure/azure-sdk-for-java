@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * An {@link InternalContext} implementation that holds three key-value pairs.
  */
-final class InternalContext3 implements InternalContext {
+final class InternalContext3 extends InternalContext {
     final Object key1;
     final Object value1;
     final Object key2;
@@ -38,17 +38,17 @@ final class InternalContext3 implements InternalContext {
     }
 
     @Override
-    public int count() {
+    public int size() {
         return 3;
     }
 
     @Override
-    public InternalContext addData(Object key, Object value) {
+    public InternalContext put(Object key, Object value) {
         return new InternalContext4(key1, value1, key2, value2, key3, value3, key, value);
     }
 
     @Override
-    public Object getData(Object key) {
+    Object getInternal(Object key) {
         if (Objects.equals(key, key3)) {
             return value3;
         } else if (Objects.equals(key, key2)) {
@@ -74,9 +74,9 @@ final class InternalContext3 implements InternalContext {
 
     @Override
     public InternalContext merge(InternalContext other) {
-        if (other == null || other.count() == 0) {
+        if (other == null || other.size() == 0) {
             return this;
-        } else if (other.count() == 1) {
+        } else if (other.size() == 1) {
             return new InternalContext4(key1, value1, key2, value2, key3, value3, other.getKey(), other.getValue());
         } else {
             return new InternalContextN(this, other);

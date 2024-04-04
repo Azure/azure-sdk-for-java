@@ -4,18 +4,20 @@ package com.azure.core.implementation.util;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Internal representation of {@link Context}.
  */
-public interface InternalContext {
+public abstract class InternalContext {
     /**
      * Sentinel object representing that the context didn't find the value.
      */
-    Object SENTINEL = new Object();
+    static final Object SENTINEL = new Object();
 
     /**
      * Get the key for the internal context.
@@ -24,7 +26,7 @@ public interface InternalContext {
      *
      * @return The key for the internal context.
      */
-    Object getKey();
+    public abstract Object getKey();
 
     /**
      * Get the value for the internal context.
@@ -33,14 +35,14 @@ public interface InternalContext {
      *
      * @return The value for the internal context.
      */
-    Object getValue();
+    public abstract Object getValue();
 
     /**
      * Get the number of key-value pairs in the internal context.
      *
      * @return The number of key-value pairs in the internal context.
      */
-    int count();
+    public abstract int size();
 
     /**
      * Adds a new key-value pair to the internal context.
@@ -52,7 +54,19 @@ public interface InternalContext {
      * @param value The value to add.
      * @return A new instance of the internal context with the new key-value pair added.
      */
-    InternalContext addData(Object key, Object value);
+    public abstract InternalContext put(Object key, Object value);
+
+    /**
+     * Get the value for the given key.
+     *
+     * @param key The key to get the value for.
+     * @return The value for the given key, or null if the key is not found.
+     */
+    public final Object get(Object key) {
+        Object value = getInternal(key);
+
+        return Objects.equals(value, SENTINEL) ? null : value;
+    }
 
     /**
      * Get the value for the given key.
@@ -60,14 +74,14 @@ public interface InternalContext {
      * @param key The key to get the value for.
      * @return The value for the given key, or {@link #SENTINEL} if the key is not found.
      */
-    Object getData(Object key);
+    abstract Object getInternal(Object key);
 
     /**
      * Get all the key-value pairs in the internal context.
      *
      * @param map The map to populate with the key-value pairs.
      */
-    void getValues(LinkedHashMap<Object, Object> map);
+    public abstract void getValues(LinkedHashMap<Object, Object> map);
 
     /**
      * Put the internal context into the given reactor context.
@@ -75,7 +89,7 @@ public interface InternalContext {
      * @param reactorContext The reactor context to put the internal context into.
      * @return The reactor context with the internal context added.
      */
-    reactor.util.context.Context putIntoReactorContext(reactor.util.context.Context reactorContext);
+    public abstract reactor.util.context.Context putIntoReactorContext(reactor.util.context.Context reactorContext);
 
     /**
      * Merge the given internal context with this internal context.
@@ -83,14 +97,14 @@ public interface InternalContext {
      * @param other The internal context to merge with this internal context.
      * @return The merged internal context.
      */
-    InternalContext merge(InternalContext other);
+    public abstract InternalContext merge(InternalContext other);
 
     /**
      * Creates an empty {@link InternalContext}.
      *
      * @return An empty {@link InternalContext}.
      */
-    static InternalContext empty() {
+    public static InternalContext empty() {
         return InternalContext0.INSTANCE;
     }
 
@@ -101,7 +115,7 @@ public interface InternalContext {
      * @param value The value for the internal context.
      * @return The created internal context.
      */
-    static InternalContext of(Object key, Object value) {
+    public static InternalContext of(Object key, Object value) {
         return new InternalContext1(key, value);
     }
 
@@ -114,7 +128,7 @@ public interface InternalContext {
      * @param value2 The value for the second key-value pair.
      * @return The created internal context.
      */
-    static InternalContext of(Object key1, Object value1, Object key2, Object value2) {
+    public static InternalContext of(Object key1, Object value1, Object key2, Object value2) {
         return new InternalContext2(key1, value1, key2, value2);
     }
 
@@ -129,7 +143,8 @@ public interface InternalContext {
      * @param value3 The value for the third key-value pair.
      * @return The created internal context.
      */
-    static InternalContext of(Object key1, Object value1, Object key2, Object value2, Object key3, Object value3) {
+    public static InternalContext of(Object key1, Object value1, Object key2, Object value2, Object key3,
+        Object value3) {
         return new InternalContext3(key1, value1, key2, value2, key3, value3);
     }
 
@@ -146,7 +161,7 @@ public interface InternalContext {
      * @param value4 The value for the fourth key-value pair.
      * @return The created internal context.
      */
-    static InternalContext of(Object key1, Object value1, Object key2, Object value2, Object key3, Object value3,
+    public static InternalContext of(Object key1, Object value1, Object key2, Object value2, Object key3, Object value3,
         Object key4, Object value4) {
         return new InternalContext4(key1, value1, key2, value2, key3, value3, key4, value4);
     }
@@ -155,11 +170,12 @@ public interface InternalContext {
      * Creates an {@link InternalContext} from the given key-value pairs.
      *
      * @param keyValues The key-value pairs to create the internal context from.
+     * @param logger The logger to log any errors.
      * @return The created internal context.
      */
-    static InternalContext of(Map<Object, Object> keyValues) {
+    public static InternalContext of(Map<Object, Object> keyValues, ClientLogger logger) {
         if (CoreUtils.isNullOrEmpty(keyValues)) {
-            throw new IllegalArgumentException("Key value map cannot be null or empty");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Key value map cannot be null or empty"));
         }
 
         // Naive implementation that will create a new context for each key-value pair.
@@ -169,7 +185,7 @@ public interface InternalContext {
         // But this method isn't called from anywhere within SDK code, so this won't be prioritized.
         InternalContext context = InternalContext0.INSTANCE;
         for (Map.Entry<Object, Object> entry : keyValues.entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
+            context = context.put(entry.getKey(), entry.getValue());
         }
         return context;
     }

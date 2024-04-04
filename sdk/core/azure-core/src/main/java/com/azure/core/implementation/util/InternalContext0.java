@@ -9,7 +9,7 @@ import java.util.LinkedHashMap;
 /**
  * An {@link InternalContext} implementation that holds no data.
  */
-final class InternalContext0 implements InternalContext {
+final class InternalContext0 extends InternalContext {
     static final InternalContext INSTANCE = new InternalContext0();
 
     private InternalContext0() {
@@ -26,17 +26,17 @@ final class InternalContext0 implements InternalContext {
     }
 
     @Override
-    public int count() {
+    public int size() {
         return 0;
     }
 
     @Override
-    public InternalContext addData(Object key, Object value) {
+    public InternalContext put(Object key, Object value) {
         return new InternalContext1(key, value);
     }
 
     @Override
-    public Object getData(Object key) {
+    Object getInternal(Object key) {
         return SENTINEL;
     }
 
