@@ -5,7 +5,6 @@ package com.azure.developer.devcenter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -66,7 +65,6 @@ public final class EnvironmentDefinitionParameterType extends ExpandableStringEn
      * @return the corresponding EnvironmentDefinitionParameterType.
      */
     @Generated
-    @JsonCreator
     public static EnvironmentDefinitionParameterType fromString(String name) {
         return fromString(name, EnvironmentDefinitionParameterType.class);
     }

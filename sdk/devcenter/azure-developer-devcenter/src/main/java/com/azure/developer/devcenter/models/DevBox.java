@@ -6,49 +6,49 @@ package com.azure.developer.devcenter.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.models.ResponseError;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
 
 /**
  * A Dev Box.
  */
 @Fluent
-public final class DevBox {
+public final class DevBox implements JsonSerializable<DevBox> {
 
     /*
      * Display name for the Dev Box
      */
     @Generated
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Name of the project this Dev Box belongs to
      */
     @Generated
-    @JsonProperty(value = "projectName", access = JsonProperty.Access.WRITE_ONLY)
     private String projectName;
 
     /*
      * The name of the Dev Box pool this machine belongs to.
      */
     @Generated
-    @JsonProperty(value = "poolName")
-    private String poolName;
+    private final String poolName;
 
     /*
      * Indicates whether hibernate is enabled/disabled or unknown.
      */
     @Generated
-    @JsonProperty(value = "hibernateSupport", access = JsonProperty.Access.WRITE_ONLY)
     private HibernateSupport hibernateSupport;
 
     /*
      * The current provisioning state of the Dev Box.
      */
     @Generated
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private DevBoxProvisioningState provisioningState;
 
     /*
@@ -56,14 +56,12 @@ public final class DevBox {
      * action performed by user.
      */
     @Generated
-    @JsonProperty(value = "actionState", access = JsonProperty.Access.WRITE_ONLY)
     private String actionState;
 
     /*
      * The current power state of the Dev Box.
      */
     @Generated
-    @JsonProperty(value = "powerState", access = JsonProperty.Access.WRITE_ONLY)
     private PowerState powerState;
 
     /*
@@ -71,14 +69,12 @@ public final class DevBox {
      * 00000000-0000-0000-0000-000000000000).
      */
     @Generated
-    @JsonProperty(value = "uniqueId", access = JsonProperty.Access.WRITE_ONLY)
     private String uniqueId;
 
     /*
      * Provisioning or action error details. Populated only for error states.
      */
     @Generated
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ResponseError error;
 
     /*
@@ -86,56 +82,48 @@ public final class DevBox {
      * Virtual Network it is attached to.
      */
     @Generated
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * The operating system type of this Dev Box.
      */
     @Generated
-    @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private DevBoxOsType osType;
 
     /*
      * The AAD object id of the user this Dev Box is assigned to.
      */
     @Generated
-    @JsonProperty(value = "user", access = JsonProperty.Access.WRITE_ONLY)
     private String userId;
 
     /*
      * Information about the Dev Box's hardware resources
      */
     @Generated
-    @JsonProperty(value = "hardwareProfile", access = JsonProperty.Access.WRITE_ONLY)
     private DevBoxHardwareProfile hardwareProfile;
 
     /*
      * Storage settings for this Dev Box
      */
     @Generated
-    @JsonProperty(value = "storageProfile", access = JsonProperty.Access.WRITE_ONLY)
     private DevBoxStorageProfile storageProfile;
 
     /*
      * Information about the image used for this Dev Box
      */
     @Generated
-    @JsonProperty(value = "imageReference", access = JsonProperty.Access.WRITE_ONLY)
     private DevBoxImageReference imageReference;
 
     /*
      * Creation time of this Dev Box
      */
     @Generated
-    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTime;
 
     /*
      * Indicates whether the owner of the Dev Box is a local administrator.
      */
     @Generated
-    @JsonProperty(value = "localAdministrator")
     private LocalAdministratorStatus localAdministratorStatus;
 
     /**
@@ -333,5 +321,109 @@ public final class DevBox {
     public DevBox setLocalAdministratorStatus(LocalAdministratorStatus localAdministratorStatus) {
         this.localAdministratorStatus = localAdministratorStatus;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("poolName", this.poolName);
+        jsonWriter.writeStringField("localAdministrator",
+            this.localAdministratorStatus == null ? null : this.localAdministratorStatus.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DevBox from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DevBox if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DevBox.
+     */
+    @Generated
+    public static DevBox fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            String poolName = null;
+            String projectName = null;
+            HibernateSupport hibernateSupport = null;
+            DevBoxProvisioningState provisioningState = null;
+            String actionState = null;
+            PowerState powerState = null;
+            String uniqueId = null;
+            ResponseError error = null;
+            String location = null;
+            DevBoxOsType osType = null;
+            String userId = null;
+            DevBoxHardwareProfile hardwareProfile = null;
+            DevBoxStorageProfile storageProfile = null;
+            DevBoxImageReference imageReference = null;
+            OffsetDateTime createdTime = null;
+            LocalAdministratorStatus localAdministratorStatus = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("poolName".equals(fieldName)) {
+                    poolName = reader.getString();
+                } else if ("projectName".equals(fieldName)) {
+                    projectName = reader.getString();
+                } else if ("hibernateSupport".equals(fieldName)) {
+                    hibernateSupport = HibernateSupport.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    provisioningState = DevBoxProvisioningState.fromString(reader.getString());
+                } else if ("actionState".equals(fieldName)) {
+                    actionState = reader.getString();
+                } else if ("powerState".equals(fieldName)) {
+                    powerState = PowerState.fromString(reader.getString());
+                } else if ("uniqueId".equals(fieldName)) {
+                    uniqueId = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    error = ResponseError.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    location = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    osType = DevBoxOsType.fromString(reader.getString());
+                } else if ("user".equals(fieldName)) {
+                    userId = reader.getString();
+                } else if ("hardwareProfile".equals(fieldName)) {
+                    hardwareProfile = DevBoxHardwareProfile.fromJson(reader);
+                } else if ("storageProfile".equals(fieldName)) {
+                    storageProfile = DevBoxStorageProfile.fromJson(reader);
+                } else if ("imageReference".equals(fieldName)) {
+                    imageReference = DevBoxImageReference.fromJson(reader);
+                } else if ("createdTime".equals(fieldName)) {
+                    createdTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("localAdministrator".equals(fieldName)) {
+                    localAdministratorStatus = LocalAdministratorStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            DevBox deserializedDevBox = new DevBox(poolName);
+            deserializedDevBox.name = name;
+            deserializedDevBox.projectName = projectName;
+            deserializedDevBox.hibernateSupport = hibernateSupport;
+            deserializedDevBox.provisioningState = provisioningState;
+            deserializedDevBox.actionState = actionState;
+            deserializedDevBox.powerState = powerState;
+            deserializedDevBox.uniqueId = uniqueId;
+            deserializedDevBox.error = error;
+            deserializedDevBox.location = location;
+            deserializedDevBox.osType = osType;
+            deserializedDevBox.userId = userId;
+            deserializedDevBox.hardwareProfile = hardwareProfile;
+            deserializedDevBox.storageProfile = storageProfile;
+            deserializedDevBox.imageReference = imageReference;
+            deserializedDevBox.createdTime = createdTime;
+            deserializedDevBox.localAdministratorStatus = localAdministratorStatus;
+            return deserializedDevBox;
+        });
     }
 }

@@ -6,77 +6,73 @@ package com.azure.developer.devcenter.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.models.ResponseError;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
 
 /**
  * Properties of an environment.
  */
 @Fluent
-public final class DevCenterEnvironment {
+public final class DevCenterEnvironment implements JsonSerializable<DevCenterEnvironment> {
 
     /*
      * Parameters object for the environment.
      */
     @Generated
-    @JsonProperty(value = "parameters")
     private Map<String, Object> parameters;
 
     /*
      * Environment name.
      */
     @Generated
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Environment type.
      */
     @Generated
-    @JsonProperty(value = "environmentType")
-    private String environmentTypeName;
+    private final String environmentTypeName;
 
     /*
      * The AAD object id of the owner of this Environment.
      */
     @Generated
-    @JsonProperty(value = "user", access = JsonProperty.Access.WRITE_ONLY)
     private String userId;
 
     /*
      * The provisioning state of the environment.
      */
     @Generated
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private EnvironmentProvisioningState provisioningState;
 
     /*
      * The identifier of the resource group containing the environment's resources.
      */
     @Generated
-    @JsonProperty(value = "resourceGroupId", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGroupId;
 
     /*
      * Name of the catalog.
      */
     @Generated
-    @JsonProperty(value = "catalogName")
-    private String catalogName;
+    private final String catalogName;
 
     /*
      * Name of the environment definition.
      */
     @Generated
-    @JsonProperty(value = "environmentDefinitionName")
-    private String environmentDefinitionName;
+    private final String environmentDefinitionName;
 
     /*
      * Provisioning error details. Populated only for error states.
      */
     @Generated
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ResponseError error;
 
     /**
@@ -198,5 +194,77 @@ public final class DevCenterEnvironment {
     @Generated
     public ResponseError getError() {
         return this.error;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("environmentType", this.environmentTypeName);
+        jsonWriter.writeStringField("catalogName", this.catalogName);
+        jsonWriter.writeStringField("environmentDefinitionName", this.environmentDefinitionName);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DevCenterEnvironment from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DevCenterEnvironment if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DevCenterEnvironment.
+     */
+    @Generated
+    public static DevCenterEnvironment fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            String environmentTypeName = null;
+            String catalogName = null;
+            String environmentDefinitionName = null;
+            Map<String, Object> parameters = null;
+            String userId = null;
+            EnvironmentProvisioningState provisioningState = null;
+            String resourceGroupId = null;
+            ResponseError error = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("environmentType".equals(fieldName)) {
+                    environmentTypeName = reader.getString();
+                } else if ("catalogName".equals(fieldName)) {
+                    catalogName = reader.getString();
+                } else if ("environmentDefinitionName".equals(fieldName)) {
+                    environmentDefinitionName = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    parameters = reader.readMap(reader1 -> reader1.readUntyped());
+                } else if ("user".equals(fieldName)) {
+                    userId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    provisioningState = EnvironmentProvisioningState.fromString(reader.getString());
+                } else if ("resourceGroupId".equals(fieldName)) {
+                    resourceGroupId = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    error = ResponseError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            DevCenterEnvironment deserializedDevCenterEnvironment
+                = new DevCenterEnvironment(environmentTypeName, catalogName, environmentDefinitionName);
+            deserializedDevCenterEnvironment.name = name;
+            deserializedDevCenterEnvironment.parameters = parameters;
+            deserializedDevCenterEnvironment.userId = userId;
+            deserializedDevCenterEnvironment.provisioningState = provisioningState;
+            deserializedDevCenterEnvironment.resourceGroupId = resourceGroupId;
+            deserializedDevCenterEnvironment.error = error;
+            return deserializedDevCenterEnvironment;
+        });
     }
 }

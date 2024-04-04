@@ -5,7 +5,6 @@ package com.azure.developer.devcenter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -60,7 +59,6 @@ public final class PowerState extends ExpandableStringEnum<PowerState> {
      * @return the corresponding PowerState.
      */
     @Generated
-    @JsonCreator
     public static PowerState fromString(String name) {
         return fromString(name, PowerState.class);
     }

@@ -5,48 +5,47 @@ package com.azure.developer.devcenter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Specifies information about the image used.
  */
 @Immutable
-public final class DevBoxImageReference {
+public final class DevBoxImageReference implements JsonSerializable<DevBoxImageReference> {
 
     /*
      * The name of the image used.
      */
     @Generated
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The version of the image.
      */
     @Generated
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
      * The operating system of the image.
      */
     @Generated
-    @JsonProperty(value = "operatingSystem", access = JsonProperty.Access.WRITE_ONLY)
     private String operatingSystem;
 
     /*
      * The operating system build number of the image.
      */
     @Generated
-    @JsonProperty(value = "osBuildNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String osBuildNumber;
 
     /*
      * The datetime that the backing image version was published.
      */
     @Generated
-    @JsonProperty(value = "publishedDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime publishedDate;
 
     /**
@@ -104,5 +103,49 @@ public final class DevBoxImageReference {
     @Generated
     public OffsetDateTime getPublishedDate() {
         return this.publishedDate;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DevBoxImageReference from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DevBoxImageReference if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DevBoxImageReference.
+     */
+    @Generated
+    public static DevBoxImageReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DevBoxImageReference deserializedDevBoxImageReference = new DevBoxImageReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    deserializedDevBoxImageReference.name = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedDevBoxImageReference.version = reader.getString();
+                } else if ("operatingSystem".equals(fieldName)) {
+                    deserializedDevBoxImageReference.operatingSystem = reader.getString();
+                } else if ("osBuildNumber".equals(fieldName)) {
+                    deserializedDevBoxImageReference.osBuildNumber = reader.getString();
+                } else if ("publishedDate".equals(fieldName)) {
+                    deserializedDevBoxImageReference.publishedDate
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedDevBoxImageReference;
+        });
     }
 }

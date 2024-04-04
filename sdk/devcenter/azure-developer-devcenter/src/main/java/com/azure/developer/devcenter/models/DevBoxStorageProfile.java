@@ -5,19 +5,22 @@ package com.azure.developer.devcenter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Storage settings for the Dev Box's disks.
  */
 @Immutable
-public final class DevBoxStorageProfile {
+public final class DevBoxStorageProfile implements JsonSerializable<DevBoxStorageProfile> {
 
     /*
      * Settings for the operating system disk.
      */
     @Generated
-    @JsonProperty(value = "osDisk")
     private OsDisk osDisk;
 
     /**
@@ -35,5 +38,41 @@ public final class DevBoxStorageProfile {
     @Generated
     public OsDisk getOsDisk() {
         return this.osDisk;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("osDisk", this.osDisk);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DevBoxStorageProfile from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DevBoxStorageProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DevBoxStorageProfile.
+     */
+    @Generated
+    public static DevBoxStorageProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DevBoxStorageProfile deserializedDevBoxStorageProfile = new DevBoxStorageProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("osDisk".equals(fieldName)) {
+                    deserializedDevBoxStorageProfile.osDisk = OsDisk.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedDevBoxStorageProfile;
+        });
     }
 }

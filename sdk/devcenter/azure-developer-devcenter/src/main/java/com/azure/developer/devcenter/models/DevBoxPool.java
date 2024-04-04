@@ -5,62 +5,58 @@ package com.azure.developer.devcenter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A pool of Dev Boxes.
  */
 @Immutable
-public final class DevBoxPool {
+public final class DevBoxPool implements JsonSerializable<DevBoxPool> {
 
     /*
      * Pool name
      */
     @Generated
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Azure region where Dev Boxes in the pool are located
      */
     @Generated
-    @JsonProperty(value = "location")
-    private String location;
+    private final String location;
 
     /*
      * The operating system type of Dev Boxes in this pool
      */
     @Generated
-    @JsonProperty(value = "osType")
     private DevBoxOsType osType;
 
     /*
      * Hardware settings for the Dev Boxes created in this pool
      */
     @Generated
-    @JsonProperty(value = "hardwareProfile")
     private DevBoxHardwareProfile hardwareProfile;
 
     /*
      * Indicates whether hibernate is enabled/disabled or unknown.
      */
     @Generated
-    @JsonProperty(value = "hibernateSupport")
     private HibernateSupport hibernateSupport;
 
     /*
      * Storage settings for Dev Box created in this pool
      */
     @Generated
-    @JsonProperty(value = "storageProfile")
     private DevBoxStorageProfile storageProfile;
 
     /*
      * Image settings for Dev Boxes create in this pool
      */
     @Generated
-    @JsonProperty(value = "imageReference")
     private DevBoxImageReference imageReference;
 
     /*
@@ -68,14 +64,12 @@ public final class DevBoxPool {
      * the Dev Boxes.
      */
     @Generated
-    @JsonProperty(value = "localAdministrator")
     private LocalAdministratorStatus localAdministratorStatus;
 
     /*
      * Stop on disconnect configuration settings for Dev Boxes created in this pool.
      */
     @Generated
-    @JsonProperty(value = "stopOnDisconnect")
     private StopOnDisconnectConfiguration stopOnDisconnect;
 
     /*
@@ -83,8 +77,7 @@ public final class DevBoxPool {
      * available to create Dev Boxes.
      */
     @Generated
-    @JsonProperty(value = "healthStatus")
-    private PoolHealthStatus healthStatus;
+    private final PoolHealthStatus healthStatus;
 
     /**
      * Creates an instance of DevBoxPool class.
@@ -93,9 +86,7 @@ public final class DevBoxPool {
      * @param healthStatus the healthStatus value to set.
      */
     @Generated
-    @JsonCreator
-    private DevBoxPool(@JsonProperty(value = "location") String location,
-        @JsonProperty(value = "healthStatus") PoolHealthStatus healthStatus) {
+    private DevBoxPool(String location, PoolHealthStatus healthStatus) {
         this.location = location;
         this.healthStatus = healthStatus;
     }
@@ -201,5 +192,88 @@ public final class DevBoxPool {
     @Generated
     public PoolHealthStatus getHealthStatus() {
         return this.healthStatus;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeStringField("healthStatus", this.healthStatus == null ? null : this.healthStatus.toString());
+        jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
+        jsonWriter.writeJsonField("hardwareProfile", this.hardwareProfile);
+        jsonWriter.writeStringField("hibernateSupport",
+            this.hibernateSupport == null ? null : this.hibernateSupport.toString());
+        jsonWriter.writeJsonField("storageProfile", this.storageProfile);
+        jsonWriter.writeJsonField("imageReference", this.imageReference);
+        jsonWriter.writeStringField("localAdministrator",
+            this.localAdministratorStatus == null ? null : this.localAdministratorStatus.toString());
+        jsonWriter.writeJsonField("stopOnDisconnect", this.stopOnDisconnect);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DevBoxPool from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DevBoxPool if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DevBoxPool.
+     */
+    @Generated
+    public static DevBoxPool fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            String location = null;
+            PoolHealthStatus healthStatus = null;
+            DevBoxOsType osType = null;
+            DevBoxHardwareProfile hardwareProfile = null;
+            HibernateSupport hibernateSupport = null;
+            DevBoxStorageProfile storageProfile = null;
+            DevBoxImageReference imageReference = null;
+            LocalAdministratorStatus localAdministratorStatus = null;
+            StopOnDisconnectConfiguration stopOnDisconnect = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    location = reader.getString();
+                } else if ("healthStatus".equals(fieldName)) {
+                    healthStatus = PoolHealthStatus.fromString(reader.getString());
+                } else if ("osType".equals(fieldName)) {
+                    osType = DevBoxOsType.fromString(reader.getString());
+                } else if ("hardwareProfile".equals(fieldName)) {
+                    hardwareProfile = DevBoxHardwareProfile.fromJson(reader);
+                } else if ("hibernateSupport".equals(fieldName)) {
+                    hibernateSupport = HibernateSupport.fromString(reader.getString());
+                } else if ("storageProfile".equals(fieldName)) {
+                    storageProfile = DevBoxStorageProfile.fromJson(reader);
+                } else if ("imageReference".equals(fieldName)) {
+                    imageReference = DevBoxImageReference.fromJson(reader);
+                } else if ("localAdministrator".equals(fieldName)) {
+                    localAdministratorStatus = LocalAdministratorStatus.fromString(reader.getString());
+                } else if ("stopOnDisconnect".equals(fieldName)) {
+                    stopOnDisconnect = StopOnDisconnectConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            DevBoxPool deserializedDevBoxPool = new DevBoxPool(location, healthStatus);
+            deserializedDevBoxPool.name = name;
+            deserializedDevBoxPool.osType = osType;
+            deserializedDevBoxPool.hardwareProfile = hardwareProfile;
+            deserializedDevBoxPool.hibernateSupport = hibernateSupport;
+            deserializedDevBoxPool.storageProfile = storageProfile;
+            deserializedDevBoxPool.imageReference = imageReference;
+            deserializedDevBoxPool.localAdministratorStatus = localAdministratorStatus;
+            deserializedDevBoxPool.stopOnDisconnect = stopOnDisconnect;
+            return deserializedDevBoxPool;
+        });
     }
 }

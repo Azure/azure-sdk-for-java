@@ -5,21 +5,23 @@ package com.azure.developer.devcenter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of an environment type.
  */
 @Immutable
-public final class DevCenterEnvironmentType {
+public final class DevCenterEnvironmentType implements JsonSerializable<DevCenterEnvironmentType> {
 
     /*
      * Name of the environment type
      */
     @Generated
-    @JsonProperty(value = "name")
-    private String name;
+    private final String name;
 
     /*
      * Id of a subscription or management group that the environment type will be
@@ -27,15 +29,13 @@ public final class DevCenterEnvironmentType {
      * or management group.
      */
     @Generated
-    @JsonProperty(value = "deploymentTargetId")
-    private String deploymentTargetId;
+    private final String deploymentTargetId;
 
     /*
      * Indicates whether this environment type is enabled for use in this project.
      */
     @Generated
-    @JsonProperty(value = "status")
-    private EnvironmentTypeStatus status;
+    private final EnvironmentTypeStatus status;
 
     /**
      * Creates an instance of DevCenterEnvironmentType class.
@@ -45,10 +45,7 @@ public final class DevCenterEnvironmentType {
      * @param status the status value to set.
      */
     @Generated
-    @JsonCreator
-    private DevCenterEnvironmentType(@JsonProperty(value = "name") String name,
-        @JsonProperty(value = "deploymentTargetId") String deploymentTargetId,
-        @JsonProperty(value = "status") EnvironmentTypeStatus status) {
+    private DevCenterEnvironmentType(String name, String deploymentTargetId, EnvironmentTypeStatus status) {
         this.name = name;
         this.deploymentTargetId = deploymentTargetId;
         this.status = status;
@@ -84,5 +81,50 @@ public final class DevCenterEnvironmentType {
     @Generated
     public EnvironmentTypeStatus getStatus() {
         return this.status;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("deploymentTargetId", this.deploymentTargetId);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DevCenterEnvironmentType from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DevCenterEnvironmentType if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DevCenterEnvironmentType.
+     */
+    @Generated
+    public static DevCenterEnvironmentType fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            String deploymentTargetId = null;
+            EnvironmentTypeStatus status = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("deploymentTargetId".equals(fieldName)) {
+                    deploymentTargetId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    status = EnvironmentTypeStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new DevCenterEnvironmentType(name, deploymentTargetId, status);
+        });
     }
 }

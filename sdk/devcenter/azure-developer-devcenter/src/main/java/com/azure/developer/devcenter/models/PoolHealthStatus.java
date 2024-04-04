@@ -5,7 +5,6 @@ package com.azure.developer.devcenter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -60,7 +59,6 @@ public final class PoolHealthStatus extends ExpandableStringEnum<PoolHealthStatu
      * @return the corresponding PoolHealthStatus.
      */
     @Generated
-    @JsonCreator
     public static PoolHealthStatus fromString(String name) {
         return fromString(name, PoolHealthStatus.class);
     }

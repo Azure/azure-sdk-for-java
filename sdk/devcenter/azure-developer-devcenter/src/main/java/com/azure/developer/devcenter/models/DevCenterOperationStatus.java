@@ -5,7 +5,6 @@ package com.azure.developer.devcenter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -54,7 +53,6 @@ public final class DevCenterOperationStatus extends ExpandableStringEnum<DevCent
      * @return the corresponding DevCenterOperationStatus.
      */
     @Generated
-    @JsonCreator
     public static DevCenterOperationStatus fromString(String name) {
         return fromString(name, DevCenterOperationStatus.class);
     }

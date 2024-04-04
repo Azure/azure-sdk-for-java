@@ -5,7 +5,6 @@ package com.azure.developer.devcenter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -36,7 +35,6 @@ public final class DevBoxOsType extends ExpandableStringEnum<DevBoxOsType> {
      * @return the corresponding DevBoxOsType.
      */
     @Generated
-    @JsonCreator
     public static DevBoxOsType fromString(String name) {
         return fromString(name, DevBoxOsType.class);
     }

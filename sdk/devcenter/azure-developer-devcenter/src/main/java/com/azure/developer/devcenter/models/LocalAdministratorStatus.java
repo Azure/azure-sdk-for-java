@@ -5,7 +5,6 @@ package com.azure.developer.devcenter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class LocalAdministratorStatus extends ExpandableStringEnum<LocalAd
      * @return the corresponding LocalAdministratorStatus.
      */
     @Generated
-    @JsonCreator
     public static LocalAdministratorStatus fromString(String name) {
         return fromString(name, LocalAdministratorStatus.class);
     }

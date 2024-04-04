@@ -6,77 +6,72 @@ package com.azure.developer.devcenter.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.models.ResponseError;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The current status of an async operation.
  */
 @Immutable
-public final class DevCenterOperationDetails {
+public final class DevCenterOperationDetails implements JsonSerializable<DevCenterOperationDetails> {
 
     /*
      * Fully qualified ID for the operation status.
      */
     @Generated
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The operation id name
      */
     @Generated
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Provisioning state of the resource.
      */
     @Generated
-    @JsonProperty(value = "status")
-    private DevCenterOperationStatus status;
+    private final DevCenterOperationStatus status;
 
     /*
      * The id of the resource.
      */
     @Generated
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * The start time of the operation
      */
     @Generated
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * The end time of the operation
      */
     @Generated
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * Percent of the operation that is complete
      */
     @Generated
-    @JsonProperty(value = "percentComplete")
     private Double percentComplete;
 
     /*
      * Custom operation properties, populated only for a successful operation.
      */
     @Generated
-    @JsonProperty(value = "properties")
     private Object properties;
 
     /*
      * Operation Error message
      */
     @Generated
-    @JsonProperty(value = "error")
     private ResponseError error;
 
     /**
@@ -85,8 +80,7 @@ public final class DevCenterOperationDetails {
      * @param status the status value to set.
      */
     @Generated
-    @JsonCreator
-    private DevCenterOperationDetails(@JsonProperty(value = "status") DevCenterOperationStatus status) {
+    private DevCenterOperationDetails(DevCenterOperationStatus status) {
         this.status = status;
     }
 
@@ -178,5 +172,84 @@ public final class DevCenterOperationDetails {
     @Generated
     public ResponseError getError() {
         return this.error;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeNumberField("percentComplete", this.percentComplete);
+        jsonWriter.writeUntypedField("properties", this.properties);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DevCenterOperationDetails from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DevCenterOperationDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DevCenterOperationDetails.
+     */
+    @Generated
+    public static DevCenterOperationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            DevCenterOperationStatus status = null;
+            String name = null;
+            String resourceId = null;
+            OffsetDateTime startTime = null;
+            OffsetDateTime endTime = null;
+            Double percentComplete = null;
+            Object properties = null;
+            ResponseError error = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    status = DevCenterOperationStatus.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    resourceId = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    startTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    endTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("percentComplete".equals(fieldName)) {
+                    percentComplete = reader.getNullable(JsonReader::getDouble);
+                } else if ("properties".equals(fieldName)) {
+                    properties = reader.readUntyped();
+                } else if ("error".equals(fieldName)) {
+                    error = ResponseError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            DevCenterOperationDetails deserializedDevCenterOperationDetails = new DevCenterOperationDetails(status);
+            deserializedDevCenterOperationDetails.id = id;
+            deserializedDevCenterOperationDetails.name = name;
+            deserializedDevCenterOperationDetails.resourceId = resourceId;
+            deserializedDevCenterOperationDetails.startTime = startTime;
+            deserializedDevCenterOperationDetails.endTime = endTime;
+            deserializedDevCenterOperationDetails.percentComplete = percentComplete;
+            deserializedDevCenterOperationDetails.properties = properties;
+            deserializedDevCenterOperationDetails.error = error;
+            return deserializedDevCenterOperationDetails;
+        });
     }
 }

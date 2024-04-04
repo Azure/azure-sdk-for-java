@@ -5,7 +5,6 @@ package com.azure.developer.devcenter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -49,7 +48,6 @@ public final class HibernateSupport extends ExpandableStringEnum<HibernateSuppor
      * @return the corresponding HibernateSupport.
      */
     @Generated
-    @JsonCreator
     public static HibernateSupport fromString(String name) {
         return fromString(name, HibernateSupport.class);
     }

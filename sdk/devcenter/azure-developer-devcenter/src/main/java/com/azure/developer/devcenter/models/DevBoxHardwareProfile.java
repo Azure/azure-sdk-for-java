@@ -5,33 +5,34 @@ package com.azure.developer.devcenter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Hardware specifications for the Dev Box.
  */
 @Immutable
-public final class DevBoxHardwareProfile {
+public final class DevBoxHardwareProfile implements JsonSerializable<DevBoxHardwareProfile> {
 
     /*
      * The name of the SKU
      */
     @Generated
-    @JsonProperty(value = "skuName", access = JsonProperty.Access.WRITE_ONLY)
     private SkuName skuName;
 
     /*
      * The number of vCPUs available for the Dev Box.
      */
     @Generated
-    @JsonProperty(value = "vCPUs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer vCpus;
 
     /*
      * The amount of memory available for the Dev Box.
      */
     @Generated
-    @JsonProperty(value = "memoryGB", access = JsonProperty.Access.WRITE_ONLY)
     private Integer memoryGb;
 
     /**
@@ -69,5 +70,44 @@ public final class DevBoxHardwareProfile {
     @Generated
     public Integer getMemoryGb() {
         return this.memoryGb;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DevBoxHardwareProfile from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DevBoxHardwareProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DevBoxHardwareProfile.
+     */
+    @Generated
+    public static DevBoxHardwareProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DevBoxHardwareProfile deserializedDevBoxHardwareProfile = new DevBoxHardwareProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("skuName".equals(fieldName)) {
+                    deserializedDevBoxHardwareProfile.skuName = SkuName.fromString(reader.getString());
+                } else if ("vCPUs".equals(fieldName)) {
+                    deserializedDevBoxHardwareProfile.vCpus = reader.getNullable(JsonReader::getInt);
+                } else if ("memoryGB".equals(fieldName)) {
+                    deserializedDevBoxHardwareProfile.memoryGb = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedDevBoxHardwareProfile;
+        });
     }
 }

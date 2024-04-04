@@ -5,63 +5,59 @@ package com.azure.developer.devcenter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * An environment definition.
  */
 @Immutable
-public final class EnvironmentDefinition {
+public final class EnvironmentDefinition implements JsonSerializable<EnvironmentDefinition> {
 
     /*
      * The ID of the environment definition.
      */
     @Generated
-    @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     /*
      * Name of the environment definition.
      */
     @Generated
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Name of the catalog.
      */
     @Generated
-    @JsonProperty(value = "catalogName")
-    private String catalogName;
+    private final String catalogName;
 
     /*
      * A short description of the environment definition.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Input parameters passed to an environment.
      */
     @Generated
-    @JsonProperty(value = "parameters")
     private List<EnvironmentDefinitionParameter> parameters;
 
     /*
      * JSON schema defining the parameters object passed to an environment.
      */
     @Generated
-    @JsonProperty(value = "parametersSchema")
     private String parametersSchema;
 
     /*
      * Path to the Environment Definition entrypoint file.
      */
     @Generated
-    @JsonProperty(value = "templatePath")
     private String templatePath;
 
     /**
@@ -71,9 +67,7 @@ public final class EnvironmentDefinition {
      * @param catalogName the catalogName value to set.
      */
     @Generated
-    @JsonCreator
-    private EnvironmentDefinition(@JsonProperty(value = "id") String id,
-        @JsonProperty(value = "catalogName") String catalogName) {
+    private EnvironmentDefinition(String id, String catalogName) {
         this.id = id;
         this.catalogName = catalogName;
     }
@@ -146,5 +140,71 @@ public final class EnvironmentDefinition {
     @Generated
     public String getTemplatePath() {
         return this.templatePath;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("catalogName", this.catalogName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("parametersSchema", this.parametersSchema);
+        jsonWriter.writeStringField("templatePath", this.templatePath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnvironmentDefinition from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnvironmentDefinition if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EnvironmentDefinition.
+     */
+    @Generated
+    public static EnvironmentDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            String name = null;
+            String catalogName = null;
+            String description = null;
+            List<EnvironmentDefinitionParameter> parameters = null;
+            String parametersSchema = null;
+            String templatePath = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("catalogName".equals(fieldName)) {
+                    catalogName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    parameters = reader.readArray(reader1 -> EnvironmentDefinitionParameter.fromJson(reader1));
+                } else if ("parametersSchema".equals(fieldName)) {
+                    parametersSchema = reader.getString();
+                } else if ("templatePath".equals(fieldName)) {
+                    templatePath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            EnvironmentDefinition deserializedEnvironmentDefinition = new EnvironmentDefinition(id, catalogName);
+            deserializedEnvironmentDefinition.name = name;
+            deserializedEnvironmentDefinition.description = description;
+            deserializedEnvironmentDefinition.parameters = parameters;
+            deserializedEnvironmentDefinition.parametersSchema = parametersSchema;
+            deserializedEnvironmentDefinition.templatePath = templatePath;
+            return deserializedEnvironmentDefinition;
+        });
     }
 }

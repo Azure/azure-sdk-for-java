@@ -5,22 +5,25 @@ package com.azure.developer.devcenter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Details about the next run of an action.
  */
 @Immutable
-public final class DevBoxNextAction {
+public final class DevBoxNextAction implements JsonSerializable<DevBoxNextAction> {
 
     /*
      * The time the action will be triggered (UTC).
      */
     @Generated
-    @JsonProperty(value = "scheduledTime")
-    private OffsetDateTime scheduledTime;
+    private final OffsetDateTime scheduledTime;
 
     /**
      * Creates an instance of DevBoxNextAction class.
@@ -28,8 +31,7 @@ public final class DevBoxNextAction {
      * @param scheduledTime the scheduledTime value to set.
      */
     @Generated
-    @JsonCreator
-    private DevBoxNextAction(@JsonProperty(value = "scheduledTime") OffsetDateTime scheduledTime) {
+    private DevBoxNextAction(OffsetDateTime scheduledTime) {
         this.scheduledTime = scheduledTime;
     }
 
@@ -41,5 +43,44 @@ public final class DevBoxNextAction {
     @Generated
     public OffsetDateTime getScheduledTime() {
         return this.scheduledTime;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("scheduledTime",
+            this.scheduledTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.scheduledTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DevBoxNextAction from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DevBoxNextAction if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DevBoxNextAction.
+     */
+    @Generated
+    public static DevBoxNextAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OffsetDateTime scheduledTime = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("scheduledTime".equals(fieldName)) {
+                    scheduledTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new DevBoxNextAction(scheduledTime);
+        });
     }
 }

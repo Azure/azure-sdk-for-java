@@ -7,5 +7,5 @@ module com.azure.developer.devcenter {
     requires transitive com.azure.json;
     exports com.azure.developer.devcenter;
     exports com.azure.developer.devcenter.models;
-    opens com.azure.developer.devcenter.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.developer.devcenter.models to com.azure.core;
 }

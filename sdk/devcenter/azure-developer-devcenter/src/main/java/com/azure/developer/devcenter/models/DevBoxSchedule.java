@@ -5,49 +5,47 @@ package com.azure.developer.devcenter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A Schedule to execute action.
  */
 @Immutable
-public final class DevBoxSchedule {
+public final class DevBoxSchedule implements JsonSerializable<DevBoxSchedule> {
 
     /*
      * Display name for the Schedule
      */
     @Generated
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Supported type this scheduled task represents.
      */
     @Generated
-    @JsonProperty(value = "type")
-    private ScheduleType scheduleType;
+    private final ScheduleType scheduleType;
 
     /*
      * The frequency of this scheduled task.
      */
     @Generated
-    @JsonProperty(value = "frequency")
-    private ScheduleFrequency scheduleFrequency;
+    private final ScheduleFrequency scheduleFrequency;
 
     /*
      * The target time to trigger the action. The format is HH:MM.
      */
     @Generated
-    @JsonProperty(value = "time")
-    private String time;
+    private final String time;
 
     /*
      * The IANA timezone id at which the schedule should execute.
      */
     @Generated
-    @JsonProperty(value = "timeZone")
-    private String timeZone;
+    private final String timeZone;
 
     /**
      * Creates an instance of DevBoxSchedule class.
@@ -58,10 +56,8 @@ public final class DevBoxSchedule {
      * @param timeZone the timeZone value to set.
      */
     @Generated
-    @JsonCreator
-    private DevBoxSchedule(@JsonProperty(value = "type") ScheduleType scheduleType,
-        @JsonProperty(value = "frequency") ScheduleFrequency scheduleFrequency,
-        @JsonProperty(value = "time") String time, @JsonProperty(value = "timeZone") String timeZone) {
+    private DevBoxSchedule(ScheduleType scheduleType, ScheduleFrequency scheduleFrequency, String time,
+        String timeZone) {
         this.scheduleType = scheduleType;
         this.scheduleFrequency = scheduleFrequency;
         this.time = time;
@@ -116,5 +112,61 @@ public final class DevBoxSchedule {
     @Generated
     public String getTimeZone() {
         return this.timeZone;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.scheduleType == null ? null : this.scheduleType.toString());
+        jsonWriter.writeStringField("frequency",
+            this.scheduleFrequency == null ? null : this.scheduleFrequency.toString());
+        jsonWriter.writeStringField("time", this.time);
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DevBoxSchedule from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DevBoxSchedule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DevBoxSchedule.
+     */
+    @Generated
+    public static DevBoxSchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            ScheduleType scheduleType = null;
+            ScheduleFrequency scheduleFrequency = null;
+            String time = null;
+            String timeZone = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    scheduleType = ScheduleType.fromString(reader.getString());
+                } else if ("frequency".equals(fieldName)) {
+                    scheduleFrequency = ScheduleFrequency.fromString(reader.getString());
+                } else if ("time".equals(fieldName)) {
+                    time = reader.getString();
+                } else if ("timeZone".equals(fieldName)) {
+                    timeZone = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            DevBoxSchedule deserializedDevBoxSchedule
+                = new DevBoxSchedule(scheduleType, scheduleFrequency, time, timeZone);
+            deserializedDevBoxSchedule.name = name;
+            return deserializedDevBoxSchedule;
+        });
     }
 }
