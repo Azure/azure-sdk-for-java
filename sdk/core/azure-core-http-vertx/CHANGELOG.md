@@ -1,14 +1,20 @@
 # Release History
 
-## 1.0.0-beta.17 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.0.0-beta.17 (2024-04-04)
 
 ### Bugs Fixed
 
+- Fixed a bug where memory from a shared pool wasn't copied on use, leading to potential memory corruption issues if
+  it wasn't consumed before the pool reclaimed it.
+- Standardized errors returned by `VertxAsyncHttpClient` to use `IOException` when issues happened in the underlying
+  `Vertx` client, instead of the `RuntimeException` used by `Vertx` itself.
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to `1.48.0`.
+- Upgraded Vertx from `4.5.4` to `4.5.7`.
 
 ## 1.0.0-beta.16 (2024-03-01)
 
