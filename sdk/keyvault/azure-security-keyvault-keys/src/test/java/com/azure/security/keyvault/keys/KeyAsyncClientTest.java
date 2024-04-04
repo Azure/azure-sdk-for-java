@@ -71,7 +71,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             StepVerifier.create(keyAsyncClient.createKey(keyToCreate))
                 .assertNext(createdKey -> {
                     assertKeyEquals(keyToCreate, createdKey);
-                    assertNotNull(createdKey.getProperties().getHsmPlatform());
+                    assertEquals("0", createdKey.getProperties().getHsmPlatform());
                 })
                 .verifyComplete());
     }
@@ -210,14 +210,14 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             StepVerifier.create(keyAsyncClient.createKey(keyToSetAndGet))
                 .assertNext(createdKey -> {
                     assertKeyEquals(keyToSetAndGet, createdKey);
-                    assertNotNull(createdKey.getProperties().getHsmPlatform());
+                    assertEquals("0", createdKey.getProperties().getHsmPlatform());
                 })
                 .verifyComplete();
 
             StepVerifier.create(keyAsyncClient.getKey(keyToSetAndGet.getName()))
                 .assertNext(retrievedKey -> {
                     assertKeyEquals(keyToSetAndGet, retrievedKey);
-                    assertNotNull(retrievedKey.getProperties().getHsmPlatform());
+                    assertEquals("0", retrievedKey.getProperties().getHsmPlatform());
                 })
                 .verifyComplete();
         });
