@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * An {@link InternalContext} that holds a single key-value pair.
  */
-final class InternalContext1 implements InternalContext {
+final class InternalContext1 extends InternalContext {
     final Object key;
     final Object value;
 
@@ -37,7 +37,7 @@ final class InternalContext1 implements InternalContext {
     }
 
     @Override
-    public Object get(Object key) {
-        return Objects.equals(this.key, key) ? value : null;
+    Object getInternal(Object key) {
+        return Objects.equals(this.key, key) ? value : SENTINEL;
     }
 }

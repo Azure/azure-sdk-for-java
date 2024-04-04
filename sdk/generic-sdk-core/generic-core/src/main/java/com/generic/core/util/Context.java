@@ -141,23 +141,7 @@ public final class Context {
      * @throws NullPointerException If {@code map} is null or if any key in the map is null.
      */
     public static Context of(Map<Object, Object> map) {
-        if (map == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("map cannot be null"));
-        }
-
-        // Naive implementation that will create a new context for each key-value pair.
-        // In the future this could be optimized to create contexts based on the size of the key-value pairs.
-        // For example, if the key-values had 10 entries this could be optimized to create two InternalContext4 and
-        // one InternalContext2 then combine them into a single InternalContextN.
-        // But this method isn't called from anywhere within SDK code, so this won't be prioritized.
-        InternalContext context = InternalContext.empty();
-        int entryCount = 0;
-        for (Map.Entry<Object, Object> entry : map.entrySet()) {
-            context = context.put(validateKey(entry.getKey(), "key" + entryCount), entry.getValue());
-            entryCount++;
-        }
-
-        return new Context(context);
+        return new Context(InternalContext.of(map, LOGGER));
     }
 
     private static Object validateKey(Object key, String keyName) {

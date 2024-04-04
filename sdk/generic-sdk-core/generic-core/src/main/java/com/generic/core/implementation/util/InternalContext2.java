@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * An {@link InternalContext} implementation that holds two key-value pairs.
  */
-final class InternalContext2 implements InternalContext {
+final class InternalContext2 extends InternalContext {
     final Object key1;
     final Object value1;
     final Object key2;
@@ -41,13 +41,13 @@ final class InternalContext2 implements InternalContext {
     }
 
     @Override
-    public Object get(Object key) {
+    Object getInternal(Object key) {
         if (Objects.equals(key, key2)) {
             return value2;
         } else if (Objects.equals(key, key1)) {
             return value1;
         }
 
-        return null;
+        return SENTINEL;
     }
 }
