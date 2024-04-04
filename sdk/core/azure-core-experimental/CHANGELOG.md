@@ -6,8 +6,6 @@
 
 - Removed dependency on Jackson Dataformat XML.
 
-### Bugs Fixed
-
 ### Other Changes
 
 #### Dependency Updates
