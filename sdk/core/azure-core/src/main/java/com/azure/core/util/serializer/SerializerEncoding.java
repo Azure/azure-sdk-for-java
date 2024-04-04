@@ -95,24 +95,24 @@ public enum SerializerEncoding {
 
         if ("text/".regionMatches(true, 0, contentType, 0, 5)) {
             if (length == 8) {
-                if ("xml".regionMatches(true, 5, contentType, 5, 3)) {
+                if ("xml".regionMatches(true, 0, contentType, 5, 3)) {
                     return XML;
-                } else if ("csv".regionMatches(true, 5, contentType, 5, 3)) {
+                } else if ("csv".regionMatches(true, 0, contentType, 5, 3)) {
                     return TEXT;
-                } else if ("css".regionMatches(true, 5, contentType, 5, 3)) {
+                } else if ("css".regionMatches(true, 0, contentType, 5, 3)) {
                     return TEXT;
                 }
-            } else if (length == 9 && "html".regionMatches(true, 5, contentType, 5, 4)) {
+            } else if (length == 9 && "html".regionMatches(true, 0, contentType, 5, 4)) {
                 return TEXT;
-            } else if (length == 10 && "plain".regionMatches(true, 5, contentType, 5, 5)) {
+            } else if (length == 10 && "plain".regionMatches(true, 0, contentType, 5, 5)) {
                 return TEXT;
-            } else if (length == 15 && "javascript".regionMatches(true, 5, contentType, 5, 10)) {
+            } else if (length == 15 && "javascript".regionMatches(true, 0, contentType, 5, 10)) {
                 return TEXT;
             }
         } else if ("application/".regionMatches(true, 0, contentType, 0, 12)) {
-            if (length == 16 && "json".regionMatches(true, 12, contentType, 12, 4)) {
+            if (length == 16 && "json".regionMatches(true, 0, contentType, 12, 4)) {
                 return JSON;
-            } else if (length == 15 && "xml".regionMatches(true, 12, contentType, 12, 3)) {
+            } else if (length == 15 && "xml".regionMatches(true, 0, contentType, 12, 3)) {
                 return XML;
             }
         }
