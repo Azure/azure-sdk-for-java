@@ -36,7 +36,7 @@ import java.util.function.Function;
  */
 public final class IdentityClientOptions implements Cloneable {
     private static final ClientLogger LOGGER = new ClientLogger(IdentityClientOptions.class);
-    private static final int MAX_RETRY_DEFAULT_LIMIT = 3;
+    private static final int MAX_RETRY_DEFAULT_LIMIT = 5;
     public static final String AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH = "AZURE_IDENTITY_DISABLE_MULTITENANTAUTH";
     public static final String AZURE_POD_IDENTITY_AUTHORITY_HOST = "AZURE_POD_IDENTITY_AUTHORITY_HOST";
 
@@ -90,13 +90,31 @@ public final class IdentityClientOptions implements Cloneable {
         identityLogOptionsImpl = new IdentityLogOptionsImpl();
         browserCustomizationOptions = new BrowserCustomizationOptions();
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
-        retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
+        retryTimeout = getIMDSretryTimeoutFunction();
         perCallPolicies = new ArrayList<>();
         perRetryPolicies = new ArrayList<>();
         additionallyAllowedTenants = new HashSet<>();
         regionalAuthority = RegionalAuthority.fromString(
             configuration.get(Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME));
         instanceDiscovery = true;
+    }
+
+    private static Function<Duration, Duration> getIMDSretryTimeoutFunction() {
+        return inputDuration -> {
+            // Assuming each retry adds 1 second to inputDuration for tracking
+            long retries = inputDuration.getSeconds();
+
+            if (retries <= 1) {
+                // First retry: 0.8 seconds
+                return Duration.ofMillis(800);
+            } else if (retries == 2) {
+                // Second retry: 1.6 seconds
+                return Duration.ofMillis(1600);
+            } else {
+                // Third retry onwards: 3.2 seconds
+                return Duration.ofMillis(3200);
+            }
+        };
     }
 
     /**

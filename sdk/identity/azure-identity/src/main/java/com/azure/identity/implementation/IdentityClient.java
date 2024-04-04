@@ -1236,8 +1236,8 @@ public class IdentityClient extends IdentityClientBase {
                             || responseCode == 429
                             || responseCode == 404
                             || (responseCode >= 500 && responseCode <= 599)) {
-                        int retryTimeoutInMs = options.getRetryTimeout()
-                                .apply(Duration.ofSeconds(ThreadLocalRandom.current().nextInt(retry))).getNano() / 1000;
+                        int retryTimeoutInMs = (int) options.getRetryTimeout()
+                                .apply(Duration.ofSeconds(retry)).toMillis();
                         // Error code 410 indicates IMDS upgrade is in progress, which can take up to 70s
                         //
                         retryTimeoutInMs =
