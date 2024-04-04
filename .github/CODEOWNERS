@@ -454,10 +454,10 @@
 # ServiceLabel: %Functions
 # ServiceOwners:                                     @ahmedelnably @fabiocav
 
-# PRLabel: %core
+# PRLabel: %generic-core
 /sdk/client-core/                               @samvaity @vcolin7 @jonathangiles @srnagar @alzimmermsft
 
-# ServiceLabel: %client-core
+# ServiceLabel: %generic-core
 # AzureSdkOwners:                                    @samvaity @vcolin7 @jonathangiles @srnagar @alzimmermsft
 
 # ServiceLabel: %Graph.Microsoft
