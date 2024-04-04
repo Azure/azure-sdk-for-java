@@ -5,6 +5,8 @@
 ### Features Added
 
 ### Breaking Changes
+#### Behavioral Breaking Change
+- The timeout interval for IMDS probing has been adjusted from 0.5 seconds to 1 second. This update is designed to enhance the system's reliability without affecting user applications. [#38345](https://github.com/Azure/azure-sdk-for-java/issues/38345)
 
 ### Bugs Fixed
 - Changed log level of an informational message in token acquisition. [#39063](https://github.com/Azure/azure-sdk-for-java/issues/39063)
