@@ -3,6 +3,11 @@
 
 package com.azure.health.insights.radiologyinsights;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -11,11 +16,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.test.TestMode;
-import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.models.CustomMatcher;
-import com.azure.core.util.Configuration;
+import org.junit.jupiter.api.Test;
+
 import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentType;
 import com.azure.health.insights.radiologyinsights.models.DocumentAdministrativeMetadata;
 import com.azure.health.insights.radiologyinsights.models.DocumentAuthor;
@@ -27,7 +29,6 @@ import com.azure.health.insights.radiologyinsights.models.EncounterClass;
 import com.azure.health.insights.radiologyinsights.models.FhirR4CodeableConcept;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Extendible;
-import com.azure.health.insights.radiologyinsights.models.FhirR4Extension;
 import com.azure.health.insights.radiologyinsights.models.FindingOptions;
 import com.azure.health.insights.radiologyinsights.models.FollowupRecommendationOptions;
 import com.azure.health.insights.radiologyinsights.models.PatientDetails;
@@ -42,12 +43,108 @@ import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
 import com.azure.health.insights.radiologyinsights.models.TimePeriod;
 
 /**
- * Base class for Radiology Insights clients test.
+ * Unit tests for {@link RadiologyInsightsClient}.
  */
+public class RadiologyInsightsInputDataTest {
 
-abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
+    @Test
+    public void test() {
+        setDocumentContent("Test");
+        setInferenceType(RadiologyInsightsInferenceType.AGE_MISMATCH);
+        setOrderCode("MVLW");
+        setOrderDescription("IH Hip 1 View Left");
+        RadiologyInsightsData radiologyInsightsRequest = createRadiologyInsightsRequest();
+        
+        RadiologyInsightsModelConfiguration configuration = radiologyInsightsRequest.getConfiguration();
+        
+        assertTrue(configuration.isIncludeEvidence());
+        assertFalse(configuration.isVerbose());
+        assertEquals("en-US", configuration.getLocale());
+        
+        RadiologyInsightsInferenceOptions inferenceOptions = configuration.getInferenceOptions();
+        
+        FindingOptions findingOptions = inferenceOptions.getFindingOptions();
+        assertFalse(findingOptions.isProvideFocusedSentenceEvidence());
+        
+        FollowupRecommendationOptions followupRecommendationOptions = inferenceOptions.getFollowupRecommendationOptions();
+        assertFalse(followupRecommendationOptions.isIncludeRecommendationsInReferences());
+        assertFalse(followupRecommendationOptions.isIncludeRecommendationsWithNoSpecifiedModality());
+        assertFalse(followupRecommendationOptions.isProvideFocusedSentenceEvidence());
+        
+        List<RadiologyInsightsInferenceType> inferenceTypes = configuration.getInferenceTypes();
+        assertEquals(1, inferenceTypes.size());
+        RadiologyInsightsInferenceType inferenceType = inferenceTypes.get(0);
+        assertEquals(RadiologyInsightsInferenceType.AGE_MISMATCH, inferenceType);
+        
+        List<PatientRecord> patients = radiologyInsightsRequest.getPatients();
+        assertEquals(1, patients.size());
+        PatientRecord patientRecord = patients.get(0);
+        
+        assertEquals("Sharona", patientRecord.getId());
+        
+        PatientDetails info = patientRecord.getInfo();
+        assertEquals(PatientSex.FEMALE, info.getSex());
+        assertNull(info.getClinicalInfo());
+        assertEquals(LocalDate.of(1959, 11, 11), info.getBirthDate());
+        
+        List<Encounter> encounters = patientRecord.getEncounters();
+        assertEquals(1, encounters.size());
+        
+        Encounter encounter = encounters.get(0);
+        assertEquals(EncounterClass.IN_PATIENT, encounter.getClassProperty());
+        assertEquals("encounterid1", encounter.getId());
+        assertEquals(OffsetDateTime.parse("2021-08-28T00:00:00Z"), encounter.getPeriod().getStart());
+        assertEquals(OffsetDateTime.parse("2021-08-28T00:00:00Z"), encounter.getPeriod().getEnd());
+        
+        List<PatientDocument> patientDocuments = patientRecord.getPatientDocuments();
+        assertEquals(1, patientDocuments.size());
+        
+        PatientDocument patientDocument = patientDocuments.get(0);
+        DocumentAdministrativeMetadata administrativeMetadata = patientDocument.getAdministrativeMetadata();
+        assertEquals("encounterid1", administrativeMetadata.getEncounterId());
+        
+        List<FhirR4Extendible> orderedProcedures = administrativeMetadata.getOrderedProcedures();
+        assertEquals(1, orderedProcedures.size());
+        
+        FhirR4Extendible procedure = orderedProcedures.get(0);
+        assertEquals("IH Hip 1 View Left", procedure.getDescription());
+        assertNull(procedure.getExtension());
+        
+        FhirR4CodeableConcept code = procedure.getCode();
+        assertNull(code.getExtension());
+        assertNull(code.getId());
+        assertNull(code.getText());
+        
+        List<FhirR4Coding> codingList = code.getCoding();
+        assertEquals(1, codingList.size());
+        
+        FhirR4Coding coding = codingList.get(0);
+        assertEquals("MVLW", coding.getCode());
+        assertEquals("IH Hip 1 View Left", coding.getDisplay());
+        assertNull(coding.getExtension());
+        assertNull(coding.getId());
+        assertEquals("Http://hl7.org/fhir/ValueSet/cpt-all", coding.getSystem());
+        assertNull(coding.getVersion());
+        
+        List<DocumentAuthor> authors = patientDocument.getAuthors();
+        assertEquals(1, authors.size());
+        
+        DocumentAuthor documentAuthor = authors.get(0);
+        assertEquals("authorname1", documentAuthor.getFullName());
+        assertEquals("authorid1", documentAuthor.getId());
+        
+        assertEquals(ClinicalDocumentType.RADIOLOGY_REPORT, patientDocument.getClinicalType());
+        assertEquals(DocumentContentSourceType.INLINE, patientDocument.getContent().getSourceType());
+        assertEquals("Test", patientDocument.getContent().getValue());
+        
+        assertEquals(OffsetDateTime.parse("2021-06-01T00:00:00.000" + "+00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")), patientDocument.getCreatedDateTime());
+        
+        assertEquals("docid1", patientDocument.getId());
+        assertEquals("EN", patientDocument.getLanguage());
+        assertEquals(SpecialtyType.RADIOLOGY, patientDocument.getSpecialtyType());
+        assertEquals(DocumentType.NOTE, patientDocument.getType());
+    }
     
-    private static final String FAKE_API_KEY = "fakeKeyPlaceholder";
     private String documentContent;
     private RadiologyInsightsInferenceType inferenceType;
     private String orderCode;
@@ -55,25 +152,6 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
 
     void testRadiologyInsightsWithResponse(Consumer<RadiologyInsightsData> testRunner) {
         testRunner.accept(createRadiologyInsightsRequest());
-    }
-
-    RadiologyInsightsClientBuilder getClientBuilder() {
-        String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_API_KEY", FAKE_API_KEY);
-        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_ENDPOINT", "https://localhost:8080");
-
-        RadiologyInsightsClientBuilder builder = new RadiologyInsightsClientBuilder()
-            .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey));
-
-        System.out.println("Test mode: " + getTestMode());
-        if (getTestMode() == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        } else if (getTestMode() == TestMode.PLAYBACK) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
-                .setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent", "repeatability-request-id"))));
-        }
-        return builder;
     }
 
     private RadiologyInsightsData createRadiologyInsightsRequest() {
@@ -179,52 +257,7 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         inferenceOptions.setFindingOptions(findingOptions);
         return inferenceOptions;
     }
-    
-    public String extractEvidence(List<FhirR4Extension> extensions) {
-        String evidence = "";
-        for (FhirR4Extension extension : extensions) {
-            List<FhirR4Extension> subExtensions = extension.getExtension();
-            if (subExtensions != null) {
-                evidence += extractEvidenceToken(subExtensions) + " ";
-            }
-        }
-        return evidence;
-    }
 
-    public String extractEvidenceToken(List<FhirR4Extension> subExtensions) {
-        String evidence = "";
-        int offset = -1;
-        int length = -1;
-        for (FhirR4Extension iExtension : subExtensions) {
-            if (iExtension.getUrl().equals("offset")) {
-                offset = iExtension.getValueInteger();
-            }
-            if (iExtension.getUrl().equals("length")) {
-                length = iExtension.getValueInteger();
-            }
-        }
-        if (offset > 0 && length > 0) {
-            //System.out.println("Offset: " + offset + ", length: " + length);
-            evidence = this.getDocumentContent().substring(offset, Math.min(offset + length, this.getDocumentContent().length()));
-        }
-        return evidence; 
-    }
-
-    public void displayCodes(FhirR4CodeableConcept codeableConcept, int indentation) {
-        String initialBlank = "";
-        for (int i = 0; i < indentation; i++) {
-            initialBlank += "   ";
-        }
-        if (codeableConcept != null) {
-            List<FhirR4Coding> codingList = codeableConcept.getCoding();
-            if (codingList != null) {
-                for (FhirR4Coding fhirR4Coding : codingList) {
-                    System.out.println(initialBlank + "Coding: " + fhirR4Coding.getCode() + ", " + fhirR4Coding.getDisplay() + " (" + fhirR4Coding.getSystem() + ")");
-                }
-            }
-        }
-    }
-    
     public String getDocumentContent() {
         return documentContent;
     }
@@ -256,6 +289,5 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
     public void setOrderDescription(String orderDescription) {
         this.orderDescription = orderDescription;
     }
-    
 
 }
