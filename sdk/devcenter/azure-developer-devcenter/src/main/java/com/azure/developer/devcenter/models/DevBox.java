@@ -13,7 +13,6 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A Dev Box.
@@ -133,7 +132,7 @@ public final class DevBox implements JsonSerializable<DevBox> {
      * @param poolName the pool name value to set.
      */
     @JsonCreator
-    public DevBox(@JsonProperty(value = "name") String devBoxName, @JsonProperty(value = "poolName") String poolName) {
+    public DevBox(String devBoxName, String poolName) {
         this.name = devBoxName;
         this.poolName = poolName;
     }
@@ -345,7 +344,6 @@ public final class DevBox implements JsonSerializable<DevBox> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DevBox.
      */
-    @Generated
     public static DevBox fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
@@ -406,8 +404,7 @@ public final class DevBox implements JsonSerializable<DevBox> {
                     reader.skipChildren();
                 }
             }
-            DevBox deserializedDevBox = new DevBox(poolName);
-            deserializedDevBox.name = name;
+            DevBox deserializedDevBox = new DevBox(name, poolName);
             deserializedDevBox.projectName = projectName;
             deserializedDevBox.hibernateSupport = hibernateSupport;
             deserializedDevBox.provisioningState = provisioningState;

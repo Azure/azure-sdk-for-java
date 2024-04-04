@@ -13,7 +13,6 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Properties of an environment.
@@ -84,10 +83,8 @@ public final class DevCenterEnvironment implements JsonSerializable<DevCenterEnv
      * @param environmentDefinitionName the environmentDefinitionName value to set.
      */
     @JsonCreator
-    public DevCenterEnvironment(@JsonProperty(value = "name") String environmentName,
-        @JsonProperty(value = "environmentType") String environmentTypeName,
-        @JsonProperty(value = "catalogName") String catalogName,
-        @JsonProperty(value = "environmentDefinitionName") String environmentDefinitionName) {
+    public DevCenterEnvironment(String environmentName, String environmentTypeName, String catalogName,
+        String environmentDefinitionName) {
         this.name = environmentName;
         this.environmentTypeName = environmentTypeName;
         this.catalogName = catalogName;
@@ -219,7 +216,6 @@ public final class DevCenterEnvironment implements JsonSerializable<DevCenterEnv
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DevCenterEnvironment.
      */
-    @Generated
     public static DevCenterEnvironment fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
@@ -257,8 +253,7 @@ public final class DevCenterEnvironment implements JsonSerializable<DevCenterEnv
                 }
             }
             DevCenterEnvironment deserializedDevCenterEnvironment
-                = new DevCenterEnvironment(environmentTypeName, catalogName, environmentDefinitionName);
-            deserializedDevCenterEnvironment.name = name;
+                = new DevCenterEnvironment(name, environmentTypeName, catalogName, environmentDefinitionName);
             deserializedDevCenterEnvironment.parameters = parameters;
             deserializedDevCenterEnvironment.userId = userId;
             deserializedDevCenterEnvironment.provisioningState = provisioningState;
