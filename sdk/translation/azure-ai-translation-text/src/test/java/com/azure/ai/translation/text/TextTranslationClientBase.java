@@ -86,7 +86,7 @@ public class TextTranslationClientBase extends TestProxyTestBase {
             : Configuration.getGlobalConfiguration().get("TEXT_TRANSLATION_AAD_REGION");
     }
 
-    private String getAzureResourceId() {
+    private String getResourceId() {
         return interceptorManager.isPlaybackMode()
             ? "fakeResourceId"
             : Configuration.getGlobalConfiguration().get("TEXT_TRANSLATION_AAD_RESOURCE_ID");
@@ -117,7 +117,7 @@ public class TextTranslationClientBase extends TestProxyTestBase {
         TextTranslationClientBuilder textTranslationClientbuilder = new TextTranslationClientBuilder()
             .credential(getAadUserToken())
             .region(getAadRegion())
-            .azureResourceId(getAzureResourceId())
+            .resourceId(getResourceId())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (getTestMode() == TestMode.PLAYBACK) {

@@ -69,7 +69,7 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
 
     private String region;
 
-    private String azureResourceId;
+    private String resourceId;
 
     private KeyCredential credential;
 
@@ -283,13 +283,13 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
     /**
      * Sets the Azure Resource Id used to authorize requests sent to the service.
      *
-     * @param azureResourceId Id of the Translator Resource.
+     * @param resourceId Id of the Translator Resource.
      * @return The updated {@link TextTranslationClientBuilder} object.
-     * @throws NullPointerException If {@code azureResourceId} is null.
+     * @throws NullPointerException If {@code resourceId} is null.
      */
-    public TextTranslationClientBuilder azureResourceId(String azureResourceId) {
-        Objects.requireNonNull(azureResourceId, "'azureResourceId' cannot be null.");
-        this.azureResourceId = azureResourceId;
+    public TextTranslationClientBuilder resourceId(String resourceId) {
+        Objects.requireNonNull(resourceId, "'resourceId' cannot be null.");
+        this.resourceId = resourceId;
         return this;
     }
 
@@ -361,9 +361,9 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         policies.add(new AddDatePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
-            if (this.region != null && this.azureResourceId != null) {
+            if (this.region != null && this.resourceId != null) {
                 HttpHeaders aadHeaders = new HttpHeaders();
-                aadHeaders.put(OCP_APIM_RESOURCE_ID_KEY, this.azureResourceId);
+                aadHeaders.put(OCP_APIM_RESOURCE_ID_KEY, this.resourceId);
                 aadHeaders.put(OCP_APIM_SUBSCRIPTION_REGION, this.region);
                 policies.add(new AddHeadersPolicy(aadHeaders));
             }

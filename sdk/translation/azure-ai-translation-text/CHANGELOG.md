@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added support for AAD authentication.
+- Added support for AAD authentication for Text Translation endpoints.
 
 ### Breaking Changes
 
