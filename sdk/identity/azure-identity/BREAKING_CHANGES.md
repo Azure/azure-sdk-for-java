@@ -1,3 +1,9 @@
+## 1.12.0
+
+### Behavioral change to IMDS probing logic 
+- The timeout interval for IMDS probing has been adjusted from 0.5 seconds to 1 second. This update is designed to enhance the system's reliability without affecting user applications. [#38345](https://github.com/Azure/azure-sdk-for-java/issues/38345)
+
+
 ## 1.6.0
 
 ### Behavioral change to credential types supporting multi-tenant authentication
