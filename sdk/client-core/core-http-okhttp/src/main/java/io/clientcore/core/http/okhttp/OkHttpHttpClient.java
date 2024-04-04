@@ -67,7 +67,7 @@ class OkHttpHttpClient implements HttpClient {
      *
      * @param request the core request.
      *
-     * @return Th eOkHttp request.
+     * @return The OkHttp request.
      */
     private okhttp3.Request toOkHttpRequest(HttpRequest request) {
         Request.Builder requestBuilder = new Request.Builder()
