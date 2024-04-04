@@ -64,7 +64,7 @@ final class InternalContext4 implements InternalContext {
             return value1;
         }
 
-        return null;
+        return SENTINEL;
     }
 
     @Override
@@ -77,7 +77,9 @@ final class InternalContext4 implements InternalContext {
 
     @Override
     public Context putIntoReactorContext(Context reactorContext) {
-        return reactorContext.putNonNull(key1, value1).putNonNull(key2, value2).putNonNull(key3, value3)
+        return reactorContext.putNonNull(key1, value1)
+            .putNonNull(key2, value2)
+            .putNonNull(key3, value3)
             .putNonNull(key4, value4);
     }
 

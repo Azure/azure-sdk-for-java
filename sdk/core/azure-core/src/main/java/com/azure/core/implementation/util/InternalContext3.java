@@ -57,7 +57,7 @@ final class InternalContext3 implements InternalContext {
             return value1;
         }
 
-        return null;
+        return SENTINEL;
     }
 
     @Override

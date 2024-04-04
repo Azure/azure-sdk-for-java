@@ -37,7 +37,7 @@ final class InternalContext0 implements InternalContext {
 
     @Override
     public Object getData(Object key) {
-        return null;
+        return SENTINEL;
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -184,7 +185,9 @@ public class Context {
      * @throws IllegalArgumentException If {@code key} is null.
      */
     public Optional<Object> getData(Object key) {
-        return Optional.ofNullable(internal.getData(validateKey(key)));
+        Object value = internal.getData(validateKey(key));
+
+        return Objects.equals(value, InternalContext.SENTINEL) ? Optional.empty() : Optional.ofNullable(value);
     }
 
     /**

@@ -12,8 +12,6 @@ import java.util.Objects;
  * An {@link InternalContext} implementation that holds N key-value pairs.
  */
 final class InternalContextN implements InternalContext {
-    private static final Object SENTINEL = new Object();
-
     private final InternalContext[] contexts;
     private final int count;
 
@@ -87,7 +85,7 @@ final class InternalContextN implements InternalContext {
             }
         }
 
-        return null;
+        return data;
     }
 
     @Override

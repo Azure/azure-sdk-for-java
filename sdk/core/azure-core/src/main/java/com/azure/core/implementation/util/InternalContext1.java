@@ -41,7 +41,7 @@ final class InternalContext1 implements InternalContext {
 
     @Override
     public Object getData(Object key) {
-        return Objects.equals(this.key, key) ? value : null;
+        return Objects.equals(this.key, key) ? value : SENTINEL;
     }
 
     @Override

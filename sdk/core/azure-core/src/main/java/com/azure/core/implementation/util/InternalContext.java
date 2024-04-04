@@ -7,12 +7,16 @@ import com.azure.core.util.CoreUtils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Internal representation of {@link Context}.
  */
 public interface InternalContext {
+    /**
+     * Sentinel object representing that the context didn't find the value.
+     */
+    Object SENTINEL = new Object();
+
     /**
      * Get the key for the internal context.
      * <p>
@@ -52,11 +56,9 @@ public interface InternalContext {
 
     /**
      * Get the value for the given key.
-     * <p>
-     * If the key is not found in the internal context an empty {@link Optional} will be returned.
      *
      * @param key The key to get the value for.
-     * @return The value for the given key, or an empty {@link Optional} if the key is not found.
+     * @return The value for the given key, or {@link #SENTINEL} if the key is not found.
      */
     Object getData(Object key);
 
