@@ -102,7 +102,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             return startSuppressedSpan(context);
         }
         context = unsuppress(context);
-        if (spanKind == SpanKind.INTERNAL && !context.getData(CLIENT_METHOD_CALL_FLAG).isPresent()) {
+        if (isInternalOrClientSpan(spanKind) && !context.getData(CLIENT_METHOD_CALL_FLAG).isPresent()) {
             context = context.addData(CLIENT_METHOD_CALL_FLAG, true);
         }
 
@@ -184,6 +184,9 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         return spanBuilder;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void injectContext(BiConsumer<String, String> headerSetter, Context context) {
         io.opentelemetry.context.Context otelContext = getTraceContextOrDefault(context, null);
@@ -192,6 +195,9 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setAttribute(String key, long value, Context context) {
         Objects.requireNonNull(context, "'context' cannot be null");
@@ -239,6 +245,28 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * {@inheritDoc}
      */
     @Override
+    public void setAttribute(String key, Object value, Context context) {
+        Objects.requireNonNull(value, "'value' cannot be null");
+        Objects.requireNonNull(context, "'context' cannot be null");
+
+        if (!isEnabled) {
+            return;
+        }
+
+        final Span span = getSpanOrNull(context);
+        if (span == null) {
+            return;
+        }
+
+        if (span.isRecording()) {
+            OpenTelemetryUtils.addAttribute(span, key, value);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void end(String errorMessage, Throwable throwable, Context context) {
         if (!isEnabled) {
             return;
@@ -265,6 +293,24 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             = TRACE_CONTEXT_FORMAT.extract(io.opentelemetry.context.Context.root(), headerGetter, Getter.INSTANCE);
 
         return new Context(SPAN_CONTEXT_KEY, Span.fromContext(traceContext).getSpanContext());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isRecording(Context context) {
+        Objects.requireNonNull(context, "'context' cannot be null");
+        if (!isEnabled) {
+            return false;
+        }
+
+        Span span = getSpanOrNull(context);
+        if (span != null) {
+            return span.isRecording();
+        }
+
+        return false;
     }
 
     private static class Getter implements TextMapGetter<Function<String, String>> {
@@ -419,5 +465,9 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         }
 
         return GlobalOpenTelemetry.getTracerProvider();
+    }
+
+    private static boolean isInternalOrClientSpan(SpanKind kind) {
+        return kind == SpanKind.INTERNAL || kind == SpanKind.CLIENT;
     }
 }

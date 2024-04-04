@@ -4,17 +4,23 @@
 package com.azure.communication.jobrouter.implementation.models;
 
 import com.azure.communication.jobrouter.models.LabelOperator;
+import com.azure.communication.jobrouter.models.QueueSelectorAttachmentKind;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Attaches a queue selector where the value is passed through from a job's label with the same key.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = PassThroughQueueSelectorAttachmentInternal.class,
+    visible = true)
 @JsonTypeName("passThrough")
 @Immutable
 public final class PassThroughQueueSelectorAttachmentInternal extends QueueSelectorAttachmentInternal {
@@ -24,14 +30,14 @@ public final class PassThroughQueueSelectorAttachmentInternal extends QueueSelec
      */
     @Generated
     @JsonProperty(value = "key")
-    private String key;
+    private final String key;
 
     /*
      * Describes how the value of the label is compared to the value pass through.
      */
     @Generated
     @JsonProperty(value = "labelOperator")
-    private LabelOperator labelOperator;
+    private final LabelOperator labelOperator;
 
     /**
      * Creates an instance of PassThroughQueueSelectorAttachmentInternal class.
@@ -65,5 +71,24 @@ public final class PassThroughQueueSelectorAttachmentInternal extends QueueSelec
     @Generated
     public LabelOperator getLabelOperator() {
         return this.labelOperator;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of QueueSelectorAttachment.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private QueueSelectorAttachmentKind kind = QueueSelectorAttachmentKind.PASS_THROUGH;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of QueueSelectorAttachment.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public QueueSelectorAttachmentKind getKind() {
+        return this.kind;
     }
 }

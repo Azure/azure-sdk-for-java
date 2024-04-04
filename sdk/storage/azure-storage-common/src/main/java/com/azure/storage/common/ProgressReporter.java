@@ -16,6 +16,11 @@ import java.util.concurrent.locks.Lock;
  */
 @Deprecated
 public final class ProgressReporter {
+    /**
+     * Creates a new instance of {@link ProgressReporter}.
+     */
+    public ProgressReporter() {
+    }
 
     private abstract static class ProgressReporterImpl implements ProgressReceiver {
         long blockProgress;

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ClusterComponentsItem model. */
+/**
+ * The ClusterComponentsItem model.
+ */
 @Fluent
 public final class ClusterComponentsItem {
     /*
@@ -22,13 +24,15 @@ public final class ClusterComponentsItem {
     @JsonProperty(value = "version")
     private String version;
 
-    /** Creates an instance of ClusterComponentsItem class. */
+    /**
+     * Creates an instance of ClusterComponentsItem class.
+     */
     public ClusterComponentsItem() {
     }
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class ClusterComponentsItem {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the ClusterComponentsItem object itself.
      */
@@ -48,7 +52,7 @@ public final class ClusterComponentsItem {
 
     /**
      * Get the version property: The version property.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -57,7 +61,7 @@ public final class ClusterComponentsItem {
 
     /**
      * Set the version property: The version property.
-     *
+     * 
      * @param version the version value to set.
      * @return the ClusterComponentsItem object itself.
      */
@@ -68,7 +72,7 @@ public final class ClusterComponentsItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

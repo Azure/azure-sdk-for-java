@@ -53,6 +53,27 @@ public class KafkaCosmosTestConfigurations {
                 StringUtils.defaultString(
                     Strings.emptyToNull(System.getenv().get("ACCOUNT_HOST")), COSMOS_EMULATOR_HOST));
 
+    public final static String ACCOUNT_TENANT_ID =
+        properties
+            .getProperty(
+                "ACCOUNT_TENANT_ID",
+                StringUtils.defaultString(
+                    Strings.emptyToNull(System.getenv().get("ACCOUNT_TENANT_ID")), StringUtils.EMPTY));
+
+    public final static String ACCOUNT_AAD_CLIENT_ID =
+        properties
+            .getProperty(
+                "ACCOUNT_AAD_CLIENT_ID",
+                StringUtils.defaultString(
+                    Strings.emptyToNull(System.getenv().get("ACCOUNT_AAD_CLIENT_ID")), StringUtils.EMPTY));
+
+    public final static String ACCOUNT_AAD_CLIENT_SECRET =
+        properties
+            .getProperty(
+                "ACCOUNT_AAD_CLIENT_SECRET",
+                StringUtils.defaultString(
+                    Strings.emptyToNull(System.getenv().get("ACCOUNT_AAD_CLIENT_SECRET")), StringUtils.EMPTY));
+
     public final static String KAFKA_CLUSTER_KEY =
         properties
             .getProperty(

@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported setting `DeleteOptions` for public IP addresses associated with `NetworkInterface`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

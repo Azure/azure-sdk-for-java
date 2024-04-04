@@ -7,6 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.Region;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
@@ -176,7 +177,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
             ResourceManagerUtils.sleep(Duration.ofSeconds(10));
             ResourceManager resourceManager =
                 ResourceManager
-                    .authenticate(credentialFromFile(), profile())
+                    .authenticate(new DefaultAzureCredentialBuilder().build(), profile())
                     .withSubscription(subscription);
             ResourceGroup group = resourceManager.resourceGroups().define(rgName).withRegion(Region.US_WEST).create();
 

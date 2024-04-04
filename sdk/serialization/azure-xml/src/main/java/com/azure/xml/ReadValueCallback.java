@@ -4,7 +4,6 @@
 package com.azure.xml;
 
 import javax.xml.stream.XMLStreamException;
-import java.io.IOException;
 
 /**
  * A callback used when reading an XML value, such as {@link XmlReader#getNullableElement(ReadValueCallback)}.
@@ -20,9 +19,6 @@ public interface ReadValueCallback<T, R> {
      * @param input Input to the callback.
      * @return The output of the callback.
      * @throws XMLStreamException If an XML stream error occurs during application of the callback.
-     * @throws IOException If an I/O error occurs during application of the callback, {@link XmlReader} and
-     * {@link XmlWriter} APIs will catch {@link IOException IOExceptions} and wrap them in an
-     * {@link XMLStreamException}.
      */
-    R read(T input) throws XMLStreamException, IOException;
+    R read(T input) throws XMLStreamException;
 }

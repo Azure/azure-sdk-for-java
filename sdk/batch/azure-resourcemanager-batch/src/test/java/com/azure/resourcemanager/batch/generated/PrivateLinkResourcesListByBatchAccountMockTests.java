@@ -31,7 +31,7 @@ public final class PrivateLinkResourcesListByBatchAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"oookkqfq\",\"requiredMembers\":[\"leorfmluiqtqz\"],\"requiredZoneNames\":[\"yvnqqybaryeuay\",\"kq\"]},\"etag\":\"qgzsles\",\"id\":\"cbhernntiewdj\",\"name\":\"vbquwr\",\"type\":\"ehwagoh\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"ifmviklbydvk\",\"requiredMembers\":[\"jdz\"],\"requiredZoneNames\":[\"vdsrhnjiv\",\"lvtno\"]},\"etag\":\"fzg\",\"id\":\"mjdftu\",\"name\":\"jltduceam\",\"type\":\"mczuo\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -48,8 +48,8 @@ public final class PrivateLinkResourcesListByBatchAccountMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<PrivateLinkResource> response = manager.privateLinkResources().listByBatchAccount("a",
-            "coezbrhubskh", 547871572, com.azure.core.util.Context.NONE);
+        PagedIterable<PrivateLinkResource> response = manager.privateLinkResources().listByBatchAccount("ztsfmznbaeqp",
+            "chqnrnrpxehuwry", 1484203808, com.azure.core.util.Context.NONE);
 
     }
 }
