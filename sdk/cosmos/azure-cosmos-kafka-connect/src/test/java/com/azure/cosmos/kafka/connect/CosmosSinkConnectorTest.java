@@ -10,6 +10,7 @@ import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
 import com.azure.cosmos.kafka.connect.implementation.sink.IdStrategy;
 import com.azure.cosmos.kafka.connect.implementation.sink.ItemWriteStrategy;
+import com.azure.cosmos.kafka.connect.implementation.sink.patch.KafkaCosmosPatchOperationType;
 import org.apache.kafka.common.config.Config;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigValue;
@@ -253,14 +254,14 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         CosmosSinkConnector sinkConnector = new CosmosSinkConnector();
         Map<String, String> sinkConfigMap = this.getValidSinkConfig();
         sinkConfigMap.put("kafka.connect.cosmos.sink.write.strategy", ItemWriteStrategy.ITEM_PATCH.getName());
-        sinkConfigMap.put("kafka.connect.cosmos.sink.write.patch.json.property.configs", patchPropertyConfig);
+        sinkConfigMap.put("kafka.connect.cosmos.sink.write.patch.property.configs", patchPropertyConfig);
         Config config = sinkConnector.validate(sinkConfigMap);
         Map<String, List<String>> errorMessages = config.configValues().stream()
             .collect(Collectors.toMap(ConfigValue::name, ConfigValue::errorMessages));
         if (isValid) {
-            assertThat(errorMessages.get("kafka.connect.cosmos.sink.write.patch.json.property.configs").size()).isEqualTo(0);
+            assertThat(errorMessages.get("kafka.connect.cosmos.sink.write.patch.property.configs").size()).isEqualTo(0);
         } else {
-            assertThat(errorMessages.get("kafka.connect.cosmos.sink.write.patch.json.property.configs").size()).isGreaterThan(0);
+            assertThat(errorMessages.get("kafka.connect.cosmos.sink.write.patch.property.configs").size()).isGreaterThan(0);
         }
     }
 
@@ -310,6 +311,18 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
             new KafkaCosmosConfigEntry<String>(
                 "kafka.connect.cosmos.sink.write.strategy",
                 ItemWriteStrategy.ITEM_OVERWRITE.getName(),
+                true),
+            new KafkaCosmosConfigEntry<String>(
+                "kafka.connect.cosmos.sink.write.patch.defaultOperationType",
+                KafkaCosmosPatchOperationType.SET.getName(),
+                true),
+            new KafkaCosmosConfigEntry<String>(
+                "kafka.connect.cosmos.sink.write.patch.property.configs",
+                Strings.Emtpy,
+                true),
+            new KafkaCosmosConfigEntry<String>(
+                "kafka.connect.cosmos.sink.write.patch.filter",
+                Strings.Emtpy,
                 true),
             new KafkaCosmosConfigEntry<Integer>("kafka.connect.cosmos.sink.maxRetryCount", 10, true),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.sink.database.name", null, false),

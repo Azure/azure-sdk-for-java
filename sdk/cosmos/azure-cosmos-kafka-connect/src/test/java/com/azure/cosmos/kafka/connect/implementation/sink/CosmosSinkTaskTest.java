@@ -526,7 +526,7 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
             "kafka.connect.cosmos.sink.write.patch.property.configs",
             "property(intProperty).op(increment),"
                 + " property(doubleProperty).op(add),"
-                + " property(arrayProperty).path(/listProperty/0).op(set),"
+                + " property(arrayProperty).path(/listProperty/0).op(replace),"
                 + " property(toBeRemovedProperty).op(remove)");
 
         CosmosSinkTask sinkTask = new CosmosSinkTask();

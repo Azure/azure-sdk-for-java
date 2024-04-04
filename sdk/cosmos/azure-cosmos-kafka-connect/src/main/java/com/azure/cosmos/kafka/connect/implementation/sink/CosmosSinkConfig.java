@@ -77,7 +77,7 @@ public class CosmosSinkConfig extends KafkaCosmosConfig {
         + " Supported ones include none, add, set, replace, remove, increment."
         + " Choose none for no-op, for others please reference [here](https://docs.microsoft.com/azure/cosmos-db/partial-document-update#supported-operations) for full context.";
     private static final String PATCH_DEFAULT_OPERATION_TYPE_DISPLAY = "Default Cosmos DB patch operation type.";
-    private static final String DEFAULT_PATCH_DEFAULT_OPERATION_TYPE = KafkaCosmosPatchOperationType.REPLACE.getName();
+    private static final String DEFAULT_PATCH_DEFAULT_OPERATION_TYPE = KafkaCosmosPatchOperationType.SET.getName();
 
     public static final String PATCH_PROPERTY_CONFIGS = SINK_CONFIG_PREFIX + "write.patch.property.configs";
     private static final String PATCH_PROPERTY_CONFIGS_DOC = "Cosmos DB patch json property configs."
