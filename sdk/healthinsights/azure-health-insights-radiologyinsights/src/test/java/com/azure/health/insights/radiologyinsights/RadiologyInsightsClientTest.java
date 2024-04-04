@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatientResult;
 
 import org.junit.jupiter.api.Assertions;
@@ -26,8 +27,12 @@ public class RadiologyInsightsClientTest extends RadiologyInsightsClientTestBase
 
     @Test
     public void test() {
+        setDocumentContent("Findings: There is a total hip prosthesis.");
+        setInferenceType(RadiologyInsightsInferenceType.LATERALITY_DISCREPANCY);
+        setOrderCode("MVLW");
+        setOrderDescription("IH Hip 1 View Left");
         try {
-            testRadiologyInsightsgWithResponse(request -> {
+            testRadiologyInsightsWithResponse(request -> {
 
                 RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
                         getClient().beginInferRadiologyInsights(request)).getFinalResult();
