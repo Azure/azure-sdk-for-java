@@ -216,7 +216,7 @@ jobs:
             -TargetDirectory $(Build.ArtifactStagingDirectory)
             -Artifacts ('${{ replace(convertToJson(parameters.ReleaseArtifacts), '''', '`''') }}' | ConvertFrom-Json | Where-Object -Not skipPublishPackage )
             -InformationAction Continue
-        condition: ne('${{parameters.ServiceDirectory}}','generic-sdk-core')
+        condition: ne('${{parameters.ServiceDirectory}}','client-core')
 
       - template: /eng/common/pipelines/templates/steps/create-apireview.yml
         parameters:
@@ -228,7 +228,7 @@ jobs:
 
       - template: /eng/common/pipelines/templates/steps/validate-all-packages.yml
         parameters:
-          Artifacts: ${{ parameters.Artifacts }} 
+          Artifacts: ${{ parameters.Artifacts }}
 
       - template: /eng/pipelines/templates/steps/clean-maven-local-cache.yml
 

@@ -6,18 +6,18 @@ package com.azure.sdk.template.stress;
 
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.sdk.template.stress.util.TelemetryHelper;
-import com.generic.core.http.Response;
-import com.generic.core.http.models.HttpLogOptions;
-import com.generic.core.http.models.HttpMethod;
-import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.okhttp.OkHttpHttpClientProvider;
-import com.generic.core.http.pipeline.HttpPipeline;
-import com.generic.core.http.pipeline.HttpPipelineBuilder;
-import com.generic.core.http.pipeline.HttpPipelinePolicy;
-import com.generic.core.http.policy.HttpLoggingPolicy;
-import com.generic.core.http.policy.RetryPolicy;
-import com.generic.core.models.HeaderName;
-import com.generic.core.util.ClientLogger;
+import io.clientcore.core.http.models.HttpLogOptions;
+import io.clientcore.core.http.models.HttpMethod;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
+import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
+import io.clientcore.core.http.pipeline.HttpLoggingPolicy;
+import io.clientcore.core.http.pipeline.HttpRetryPolicy;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.util.ClientLogger;
+import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -77,8 +77,8 @@ public class HttpGet extends ScenarioBase<StressOptions> {
 
     private HttpRequest createRequest() {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.getHeaders().set(HeaderName.USER_AGENT, "azsdk-java-stress");
-        request.getHeaders().set(HeaderName.fromString("x-client-id"), String.valueOf(clientRequestId.incrementAndGet()));
+        request.getHeaders().set(HttpHeaderName.USER_AGENT, "azsdk-java-stress");
+        request.getHeaders().set(HttpHeaderName.fromString("x-client-id"), String.valueOf(clientRequestId.incrementAndGet()));
         return request;
     }
 
@@ -88,13 +88,13 @@ public class HttpGet extends ScenarioBase<StressOptions> {
 
         ArrayList<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new RetryPolicy());
+        policies.add(new HttpRetryPolicy());
         policies.add(new HttpLoggingPolicy(logOptions));
 
         HttpPipelineBuilder builder = new HttpPipelineBuilder()
                 .policies(policies.toArray(new HttpPipelinePolicy[0]));
         if (options.getHttpClient() == PerfStressOptions.HttpClientType.OKHTTP) {
-            builder.httpClient(new OkHttpHttpClientProvider().createInstance());
+            builder.httpClient(new OkHttpHttpClientProvider().getNewInstance());
         }
         return builder;
     }

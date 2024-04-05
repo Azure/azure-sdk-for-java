@@ -486,13 +486,13 @@ the main ServiceBusClientBuilder. -->
   <!-- Suppress checks for defender Easm -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.analytics.defender.easm.models.CountPagedResponse"/>
 
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.generic.json.*" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.generic.core.http.policy.HttpLoggingPolicy" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.generic.core.http.client.DefaultHttpClientBuilder" />
-  <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" files="com.generic.core.http.policy.RetryPolicy" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="io.clientcore.core.json.*" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="io.clientcore.core.http.pipeline.HttpLoggingPolicy" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="io.clientcore.core.http.client.DefaultHttpClientBuilder" />
+  <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" files="io.clientcore.core.http.pipeline.HttpRetryPolicy" />
 
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.generic.core.http.okhttp.OkHttpHttpClientBuilder" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.generic.core.http.okhttp.OkHttpHttpClientBuilder" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="io.clientcore.http.okhttp3.OkHttpHttpClientBuilder" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="io.clientcore.http.okhttp3.OkHttpHttpClientBuilder" />
 
   <!-- Exceptions thrown here are caught in the calling method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
