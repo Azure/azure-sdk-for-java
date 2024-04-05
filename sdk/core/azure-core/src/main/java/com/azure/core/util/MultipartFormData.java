@@ -9,11 +9,11 @@ public final class MultipartFormData {
     private final String contentType;
 
     @JsonProperty(value = "request_body")
-    private final BinaryData requestBody;
+    private final byte[] requestBody;
 
     @JsonCreator
     public MultipartFormData(@JsonProperty(value = "content_type") String contentType,
-        @JsonProperty(value = "request_body") BinaryData requestBody) {
+        @JsonProperty(value = "request_body") byte[] requestBody) {
         this.contentType = contentType;
         this.requestBody = requestBody;
     }
@@ -22,7 +22,7 @@ public final class MultipartFormData {
         return contentType;
     }
 
-    public BinaryData getRequestBody() {
+    public byte[] getRequestBody() {
         return requestBody;
     }
 

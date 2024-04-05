@@ -152,7 +152,7 @@ public final class MultipartFormDataBuilder {
 
         BinaryData binaryData = BinaryData.fromStream(requestDataStream);
 
-        return new MultipartFormData("multipart/form-data; boundary=" + this.boundary, binaryData);
+        return new MultipartFormData("multipart/form-data; boundary=" + this.boundary, binaryData.toBytes());
     }
 
     private void writeFileField(String fieldName, BinaryData file, String contentType, String filename) {

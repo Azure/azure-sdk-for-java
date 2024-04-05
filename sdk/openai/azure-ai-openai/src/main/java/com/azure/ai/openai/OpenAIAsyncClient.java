@@ -931,7 +931,7 @@ public final class OpenAIAsyncClient {
         }
 
         MultipartFormData formData = formDataContentBuilder.build();
-        BinaryData data = formData.getRequestBody();
+        BinaryData data = BinaryData.fromBytes(formData.getRequestBody());
 
         Mono<Response<BinaryData>> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(deploymentOrModelName,
@@ -1030,7 +1030,7 @@ public final class OpenAIAsyncClient {
         }
 
         MultipartFormData formData = formDataContentBuilder.build();
-        BinaryData data = formData.getRequestBody();
+        BinaryData data = BinaryData.fromBytes(formData.getRequestBody());
 
         Mono<Response<BinaryData>> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponseAsync(deploymentOrModelName, data,
@@ -1124,7 +1124,7 @@ public final class OpenAIAsyncClient {
         }
 
         MultipartFormData formData = formDataContentBuilder.build();
-        BinaryData data = formData.getRequestBody();
+        BinaryData data = BinaryData.fromBytes(formData.getRequestBody());
 
         Mono<Response<BinaryData>> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranslationAsResponseObjectWithResponseAsync(deploymentOrModelName, data,
@@ -1220,7 +1220,7 @@ public final class OpenAIAsyncClient {
 
         MultipartFormData formData = multipartFormDataHelper.build();
 
-        BinaryData data = formData.getRequestBody();
+        BinaryData data = BinaryData.fromBytes(formData.getRequestBody());
         String contentType = formData.getContentType();
 
         Mono<Response<BinaryData>> response = openAIServiceClient != null

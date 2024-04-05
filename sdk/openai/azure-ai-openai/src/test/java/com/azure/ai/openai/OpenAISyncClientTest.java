@@ -471,6 +471,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
 
             String transcription = client.getAudioTranscriptionText(deploymentName, transcriptionOptions.getFilename(), transcriptionOptions);
+
+            System.out.println(transcription);
             // A plain/text request adds a line break as an artifact. Also observed for translations
             assertEquals(BATMAN_TRANSCRIPTION + "\n", transcription);
         });

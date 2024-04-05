@@ -962,10 +962,10 @@ public final class OpenAIClient {
         }
 
         MultipartFormData formData = formDataContentBuilder.build();
-        BinaryData data = formData.getRequestBody();
+        byte[] dataByteArray = formData.getRequestBody();
         String contentType = formData.getContentType();
 
-
+        BinaryData data = BinaryData.fromBytes(dataByteArray);
 
         Response<BinaryData> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, data,
@@ -1056,7 +1056,7 @@ public final class OpenAIClient {
 
         MultipartFormData formData = formDataContentBuilder.build();
 
-        BinaryData data = formData.getRequestBody();
+        BinaryData data = BinaryData.fromBytes(formData.getRequestBody());
         String contentType = formData.getContentType();
 
         Response<BinaryData> response = openAIServiceClient != null
@@ -1146,7 +1146,7 @@ public final class OpenAIClient {
         }
         MultipartFormData formData = formDataContentBuilder.build();
 
-        BinaryData data = formData.getRequestBody();
+        BinaryData data = BinaryData.fromBytes(formData.getRequestBody());
         String contentType = formData.getContentType();
 
         Response<BinaryData> response = openAIServiceClient != null
