@@ -21,6 +21,7 @@ import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
 import io.opentelemetry.context.propagation.TextMapGetter;
 import io.opentelemetry.context.propagation.TextMapPropagator;
 
+import java.lang.reflect.Method;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Map;
@@ -51,6 +52,38 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     private final boolean isEnabled;
 
     private final String azNamespace;
+    private static Method convertAppToAgentContextMethod = null;
+    private static Class<?> applicationContextClass = null;
+
+    static {
+        // OTel and ApplicationInsights agents include this plugin out-of-the-box.
+        // but when running in agent, the io.opentelemetry.context.Context is relocated.
+        // OTel agent bridges two representations of the io.opentelemetry.context.Context,
+        // but it has a hard time with our explicit context propagation.
+        //
+        // As a result, we sometimes get parent context in the form of io.opentelemetry.context.Context
+        // and sometimes in the form of io.opentelemetry.javaagent.shaded.io.opentelemetry.context.Context.
+        //
+        // io.opentelemetry.context.Context comes from the application - this is explicit context provided by user
+        // io.opentelemetry.javaagent.shaded.io.opentelemetry.context.Context comes from higher layers of our own instrumentations.
+        // So we need to be prepared to handle both.
+        //
+        // Let's detect if we're running in agent and get the method to convert application context to agent context.
+        // See https://github.com/open-telemetry/opentelemetry-java-instrumentation/issues/11042 for the full context (pun intended)
+        try {
+            Class<?> agentCtxStorageClass = Class
+                .forName("io.opentelemetry.javaagent.instrumentation.opentelemetryapi.context.AgentContextStorage");
+
+            // Shading plugins rewrite string literals that look like package name, so we have to trick it
+            // to resolve the actual io.opentelemetry.context.Context.
+            // (If we're running in agent, this code was rewritten to use io.opentelemetry.javaagent.shaded.io.opentelemetry.context.Context)
+            applicationContextClass = Class.forName("#io.opentelemetry.context.Context".substring(1));
+            convertAppToAgentContextMethod = agentCtxStorageClass.getMethod("getAgentContext", applicationContextClass);
+        } catch (Throwable t) {
+            // it's expected if we're not running in the agent
+            LOGGER.verbose("Failed to resolve agent context storage", t);
+        }
+    }
 
     /**
      * Creates new {@link OpenTelemetryTracer} using default global tracer -
@@ -410,27 +443,47 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
     /**
      * Returns OpenTelemetry trace context from given com.azure.core.Context under PARENT_TRACE_CONTEXT_KEY
-     * or PARENT_SPAN_KEY (for backward-compatibility) or default value.
+     * or default value.
      */
     private static io.opentelemetry.context.Context getTraceContextOrDefault(Context azContext,
         io.opentelemetry.context.Context defaultContext) {
-        io.opentelemetry.context.Context traceContext
-            = getOrNull(azContext, PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.class);
+        final Object data = azContext.getData(PARENT_TRACE_CONTEXT_KEY).orElse(null);
+        if (data == null) {
+            return defaultContext;
+        }
 
-        return traceContext == null ? defaultContext : traceContext;
+        if (data instanceof io.opentelemetry.context.Context) {
+            return (io.opentelemetry.context.Context) data;
+        }
+
+        // If tracing plugin is running in the agent, we would get a relocated shaded context or the original context here
+        // this code below converts the original context coming from user application to the shaded context
+        // using stable public API that's always present in the agent
+        // (see note on the static block initializing convertAppToAgentContextMethod)
+        if (convertAppToAgentContextMethod != null
+            && applicationContextClass != null
+            && applicationContextClass.isAssignableFrom(data.getClass())) {
+            try {
+                return (io.opentelemetry.context.Context) convertAppToAgentContextMethod.invoke(null, data);
+            } catch (Throwable t) {
+                convertAppToAgentContextMethod = null;
+                LOGGER.warning(
+                    "Failed to convert application context to agent context. Will not attempt to convert again.", t);
+            }
+        }
+
+        return defaultContext;
     }
 
     /**
-     * Returns OpenTelemetry trace context from given com.azure.core.Context under PARENT_TRACE_CONTEXT_KEY
-     * or PARENT_SPAN_KEY (for backward-compatibility)
+     * Returns OpenTelemetry trace context from given com.azure.core.Context under PARENT_TRACE_CONTEXT_KEY.
      */
     private Span getSpanOrNull(Context azContext) {
         if (getBoolean(SUPPRESSED_SPAN_FLAG, azContext)) {
             return null;
         }
 
-        io.opentelemetry.context.Context traceContext
-            = getOrNull(azContext, PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.class);
+        io.opentelemetry.context.Context traceContext = getTraceContextOrDefault(azContext, null);
 
         return traceContext == null ? null : Span.fromContext(traceContext);
     }
