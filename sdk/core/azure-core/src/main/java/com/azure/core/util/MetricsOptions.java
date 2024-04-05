@@ -58,7 +58,6 @@ public class MetricsOptions {
 
     /**
      * Attempts to load metrics options from the configuration.
-     * <p>
      *
      * @param configuration The {@link Configuration} instance containing metrics options. If
      * {@code null} is passed then {@link Configuration#getGlobalConfiguration()} will be used.
