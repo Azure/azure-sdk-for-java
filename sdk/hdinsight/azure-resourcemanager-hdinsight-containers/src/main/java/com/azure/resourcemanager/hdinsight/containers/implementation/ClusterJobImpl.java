@@ -14,8 +14,7 @@ public final class ClusterJobImpl implements ClusterJob {
 
     private final com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager serviceManager;
 
-    ClusterJobImpl(
-        ClusterJobInner innerObject,
+    ClusterJobImpl(ClusterJobInner innerObject,
         com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

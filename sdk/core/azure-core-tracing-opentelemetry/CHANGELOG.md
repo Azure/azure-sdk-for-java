@@ -1,16 +1,17 @@
 # Release History
 
-## 1.0.0-beta.45 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.0.0-beta.45 (2024-04-04)
 
 ### Bugs Fixed
 
 - Fixed unreliable HTTP span reporting when response is not closed.
  
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to `1.48.0`.
+- Upgraded OpenTelemetry from `1.35.0` to `1.36.0`.
 
 ## 1.0.0-beta.44 (2024-03-01)
 
