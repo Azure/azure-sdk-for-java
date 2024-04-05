@@ -20,32 +20,32 @@ import java.time.format.DateTimeFormatter;
 public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessageEventData {
 
     /*
-     * The The messaged received content
+     * The received message content
      */
     private String content;
 
     /*
-     * The The messaged received channel Kind
+     * The received message channel Kind
      */
     private AcsMessageChannelKind channelKind;
 
     /*
-     * The messaged received media content
+     * The received message media content
      */
     private AcsAdvancedMessageMediaContent mediaContent;
 
     /*
-     * The The messaged received context
+     * The received message context
      */
     private AcsAdvancedMessageContext context;
 
     /*
-     * The The messaged received button content
+     * The received message button content
      */
     private AcsAdvancedMessageButtonContent button;
 
     /*
-     * The The messaged received interactive content
+     * The received message interactive content
      */
     private AcsAdvancedMessageInteractiveContent interactiveContent;
 
@@ -56,7 +56,7 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
     }
 
     /**
-     * Get the content property: The The messaged received content.
+     * Get the content property: The received message content.
      *
      * @return the content value.
      */
@@ -65,7 +65,7 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
     }
 
     /**
-     * Set the content property: The The messaged received content.
+     * Set the content property: The received message content.
      *
      * @param content the content value to set.
      * @return the AcsAdvancedMessageReceivedEventData object itself.
@@ -76,7 +76,7 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
     }
 
     /**
-     * Get the channelKind property: The The messaged received channel Kind.
+     * Get the channelKind property: The received message channel Kind.
      *
      * @return the channelKind value.
      */
@@ -85,7 +85,7 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
     }
 
     /**
-     * Set the channelKind property: The The messaged received channel Kind.
+     * Set the channelKind property: The received message channel Kind.
      *
      * @param channelKind the channelKind value to set.
      * @return the AcsAdvancedMessageReceivedEventData object itself.
@@ -96,7 +96,7 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
     }
 
     /**
-     * Get the mediaContent property: The messaged received media content.
+     * Get the mediaContent property: The received message media content.
      *
      * @return the mediaContent value.
      */
@@ -105,7 +105,7 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
     }
 
     /**
-     * Set the mediaContent property: The messaged received media content.
+     * Set the mediaContent property: The received message media content.
      *
      * @param mediaContent the mediaContent value to set.
      * @return the AcsAdvancedMessageReceivedEventData object itself.
@@ -116,7 +116,7 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
     }
 
     /**
-     * Get the context property: The The messaged received context.
+     * Get the context property: The received message context.
      *
      * @return the context value.
      */
@@ -125,7 +125,7 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
     }
 
     /**
-     * Set the context property: The The messaged received context.
+     * Set the context property: The received message context.
      *
      * @param context the context value to set.
      * @return the AcsAdvancedMessageReceivedEventData object itself.
@@ -136,7 +136,7 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
     }
 
     /**
-     * Get the button property: The The messaged received button content.
+     * Get the button property: The received message button content.
      *
      * @return the button value.
      */
@@ -145,7 +145,7 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
     }
 
     /**
-     * Set the button property: The The messaged received button content.
+     * Set the button property: The received message button content.
      *
      * @param button the button value to set.
      * @return the AcsAdvancedMessageReceivedEventData object itself.
@@ -156,7 +156,7 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
     }
 
     /**
-     * Get the interactiveContent property: The The messaged received interactive content.
+     * Get the interactiveContent property: The received message interactive content.
      *
      * @return the interactiveContent value.
      */
@@ -165,7 +165,7 @@ public final class AcsAdvancedMessageReceivedEventData extends AcsAdvancedMessag
     }
 
     /**
-     * Set the interactiveContent property: The The messaged received interactive content.
+     * Set the interactiveContent property: The received message interactive content.
      *
      * @param interactiveContent the interactiveContent value to set.
      * @return the AcsAdvancedMessageReceivedEventData object itself.

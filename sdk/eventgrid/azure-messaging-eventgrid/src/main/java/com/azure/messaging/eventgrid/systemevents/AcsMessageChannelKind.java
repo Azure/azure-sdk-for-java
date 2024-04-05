@@ -8,11 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The The messaged received channel Kind.
+ * The received message channel Kind.
  */
 public final class AcsMessageChannelKind extends ExpandableStringEnum<AcsMessageChannelKind> {
     /**
-     * Updated messaged channel type is Whatsapp.
+     * Updated message channel type is Whatsapp.
      */
     public static final AcsMessageChannelKind WHATSAPP = fromString("whatsapp");
 

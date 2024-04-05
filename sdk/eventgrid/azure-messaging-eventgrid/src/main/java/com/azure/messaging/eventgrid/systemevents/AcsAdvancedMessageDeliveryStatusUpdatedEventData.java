@@ -28,7 +28,7 @@ public final class AcsAdvancedMessageDeliveryStatusUpdatedEventData extends AcsA
     /*
      * The updated message status
      */
-    private AcsAdvanceMessageDeliveryStatus status;
+    private AcsAdvancedMessageDeliveryStatus status;
 
     /*
      * The updated message channel type
@@ -66,7 +66,7 @@ public final class AcsAdvancedMessageDeliveryStatusUpdatedEventData extends AcsA
      *
      * @return the status value.
      */
-    public AcsAdvanceMessageDeliveryStatus getStatus() {
+    public AcsAdvancedMessageDeliveryStatus getStatus() {
         return this.status;
     }
 
@@ -76,7 +76,7 @@ public final class AcsAdvancedMessageDeliveryStatusUpdatedEventData extends AcsA
      * @param status the status value to set.
      * @return the AcsAdvancedMessageDeliveryStatusUpdatedEventData object itself.
      */
-    public AcsAdvancedMessageDeliveryStatusUpdatedEventData setStatus(AcsAdvanceMessageDeliveryStatus status) {
+    public AcsAdvancedMessageDeliveryStatusUpdatedEventData setStatus(AcsAdvancedMessageDeliveryStatus status) {
         this.status = status;
         return this;
     }
@@ -171,7 +171,7 @@ public final class AcsAdvancedMessageDeliveryStatusUpdatedEventData extends AcsA
                     deserializedAcsAdvancedMessageDeliveryStatusUpdatedEventData.messageId = reader.getString();
                 } else if ("status".equals(fieldName)) {
                     deserializedAcsAdvancedMessageDeliveryStatusUpdatedEventData.status
-                        = AcsAdvanceMessageDeliveryStatus.fromString(reader.getString());
+                        = AcsAdvancedMessageDeliveryStatus.fromString(reader.getString());
                 } else if ("channelType".equals(fieldName)) {
                     deserializedAcsAdvancedMessageDeliveryStatusUpdatedEventData.channelKind
                         = AcsMessageChannelKind.fromString(reader.getString());
