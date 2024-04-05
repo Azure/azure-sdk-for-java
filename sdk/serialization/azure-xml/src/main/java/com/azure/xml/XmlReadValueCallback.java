@@ -6,13 +6,13 @@ package com.azure.xml;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * A callback used when reading an XML value, such as {@link XmlReader#getNullableElement(ReadValueCallback)}.
+ * A callback used when reading an XML value, such as {@link XmlReader#getNullableElement(XmlReadValueCallback)}.
  *
  * @param <T> Input type of the callback.
  * @param <R> Output type of the callback.
  */
 @FunctionalInterface
-public interface ReadValueCallback<T, R> {
+public interface XmlReadValueCallback<T, R> {
     /**
      * Applies the read callback to the {@code input}.
      *
