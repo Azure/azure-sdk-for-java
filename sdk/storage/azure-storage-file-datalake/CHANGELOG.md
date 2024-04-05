@@ -3,6 +3,7 @@
 ## 12.19.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for owner, group and acl/permission via put APIs for object replication.
 
 ### Breaking Changes
 - When creating a `DataLakeFileClient` or `DataLakeDirectoryClient` via `DataLakeFileSystemClient.getDirectoryClient(String directoryName)`,
