@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.5
+
+### Features Added
+- Bump OpenTelemetry to OpenTelemetry 1.36.0: https://github.com/open-telemetry/opentelemetry-java/releases/tag/v1.36.0
+- Bump OpenTelemetry Java instrumentation to 2.2.0: https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/tag/v2.2.0
 
 ## 1.0.0-beta.4
 
