@@ -43,6 +43,8 @@ public final class MultipartFormDataBuilder {
 
     private InputStream requestDataStream = new ByteArrayInputStream(new byte[0]);
 
+    private long contentLength;
+
     /**
      * Default constructor used in the code. The boundary is a random value.
      *
@@ -150,9 +152,8 @@ public final class MultipartFormDataBuilder {
         byte[] data = boundaryCloseDelimiter.getBytes(encoderCharset);
         appendBytes(data);
 
-        BinaryData binaryData = BinaryData.fromStream(requestDataStream);
-
-        return new MultipartFormData("multipart/form-data; boundary=" + this.boundary, binaryData.toBytes());
+        return new MultipartFormData("multipart/form-data; boundary=" + this.boundary, requestDataStream,
+            contentLength);
     }
 
     private void writeFileField(String fieldName, BinaryData file, String contentType, String filename) {
@@ -170,6 +171,7 @@ public final class MultipartFormDataBuilder {
 
         // Writing the file into the request as a byte stream
         requestDataStream = new SequenceInputStream(requestDataStream, file.toStream());
+        contentLength += file.getLength();
 
         // CRLF
         data = CR_LF.getBytes(encoderCharset);
@@ -178,6 +180,7 @@ public final class MultipartFormDataBuilder {
 
     private void appendBytes(byte[] bytes) {
         requestDataStream = new SequenceInputStream(requestDataStream, new ByteArrayInputStream(bytes));
+        contentLength += bytes.length;
     }
 
     private static String escapeName(String name) {

@@ -40,6 +40,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import reactor.core.publisher.Flux;
 
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 import static com.azure.ai.openai.implementation.AudioTranscriptionValidator.validateAudioResponseFormatForTranscription;
@@ -962,10 +963,13 @@ public final class OpenAIClient {
         }
 
         MultipartFormData formData = formDataContentBuilder.build();
-        byte[] dataByteArray = formData.getRequestBody();
+        InputStream dataInputStream = formData.getRequestBody();
         String contentType = formData.getContentType();
 
-        BinaryData data = BinaryData.fromBytes(dataByteArray);
+        BinaryData data = BinaryData.fromStream(dataInputStream);
+
+        requestOptions.setHeader("Content-Length", Long.valueOf(formData.getContentLength()).toString());
+
 
         Response<BinaryData> response = openAIServiceClient != null
             ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, data,
@@ -1056,7 +1060,7 @@ public final class OpenAIClient {
 
         MultipartFormData formData = formDataContentBuilder.build();
 
-        BinaryData data = BinaryData.fromBytes(formData.getRequestBody());
+        BinaryData data = BinaryData.fromStream(formData.getRequestBody());
         String contentType = formData.getContentType();
 
         Response<BinaryData> response = openAIServiceClient != null
@@ -1146,7 +1150,7 @@ public final class OpenAIClient {
         }
         MultipartFormData formData = formDataContentBuilder.build();
 
-        BinaryData data = BinaryData.fromBytes(formData.getRequestBody());
+        BinaryData data = BinaryData.fromStream(formData.getRequestBody());
         String contentType = formData.getContentType();
 
         Response<BinaryData> response = openAIServiceClient != null
