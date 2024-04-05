@@ -7,6 +7,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Map;
 
@@ -28,6 +30,8 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
      * in key-value pairs
      */
     @JsonProperty(value = "labelsToUpsert")
+    @JsonDeserialize(using = RouterValueMapDeserializer.class)
+    @JsonSerialize(using = RouterValueMapSerializer.class)
     private Map<String, RouterValue> labelsToUpsert;
 
     /** Creates an instance of ReclassifyExceptionAction class. */

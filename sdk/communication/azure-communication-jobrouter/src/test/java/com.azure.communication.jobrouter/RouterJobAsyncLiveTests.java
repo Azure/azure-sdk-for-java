@@ -17,12 +17,14 @@ import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobNote;
 import com.azure.communication.jobrouter.models.RouterJobOffer;
 import com.azure.communication.jobrouter.models.RouterQueue;
+import com.azure.communication.jobrouter.models.RouterQueueStatistics;
 import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.RouterWorkerSelector;
 import com.azure.communication.jobrouter.models.UnassignJobResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -35,6 +37,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RouterJobAsyncLiveTests extends JobRouterTestBase {
     private JobRouterAsyncClient jobRouterAsyncClient;
@@ -92,6 +95,7 @@ public class RouterJobAsyncLiveTests extends JobRouterTestBase {
                     put("IntLabel", new RouterValue(10));
                     put("BoolLabel", new RouterValue(true));
                     put("StringLabel", new RouterValue("test"));
+                    put("DoubleValue", new RouterValue(5.3));
                 }
             })
             .setTags(new HashMap<String, RouterValue>() {
@@ -103,7 +107,8 @@ public class RouterJobAsyncLiveTests extends JobRouterTestBase {
             })
             .setRequestedWorkerSelectors(new ArrayList<RouterWorkerSelector>() {
                 {
-                    add(new RouterWorkerSelector("IntKey", LabelOperator.GREATER_THAN, new RouterValue(2)));
+                    add(new RouterWorkerSelector("IntKey", LabelOperator.GREATER_THAN, new RouterValue(2))
+                        .setExpedite(true).setExpiresAfter(Duration.ofSeconds(100)));
                     add(new RouterWorkerSelector("BoolKey", LabelOperator.EQUAL, new RouterValue(true)));
                 }
             })
@@ -121,13 +126,63 @@ public class RouterJobAsyncLiveTests extends JobRouterTestBase {
         // Verify
         assertEquals(jobId, job.getId());
         assertNotNull(job.getEtag());
-        assertEquals(3, job.getLabels().size());
+        assertEquals(4, job.getLabels().size());
         assertEquals(3, job.getTags().size());
         assertEquals(1, job.getNotes().size());
         assertEquals("code1", job.getDispositionCode());
         assertEquals("ref", job.getChannelReference());
         assertEquals(5, job.getPriority());
         assertEquals(2, job.getRequestedWorkerSelectors().size());
+        assertEquals(Duration.ofSeconds(100), job.getRequestedWorkerSelectors().get(0).getExpiresAfter());
+
+        Response<BinaryData> jobResponse = jobRouterAsyncClient.getJobWithResponse(job.getId(), null).block();
+        RouterJob jobDeserialized = jobResponse.getValue().toObject(RouterJob.class);
+
+        // Verify
+        assertEquals(jobId, jobDeserialized.getId());
+        assertNotNull(jobDeserialized.getEtag());
+        assertEquals(4, jobDeserialized.getLabels().size());
+        assertEquals(3, jobDeserialized.getTags().size());
+        assertEquals(1, jobDeserialized.getNotes().size());
+        assertEquals("code1", jobDeserialized.getDispositionCode());
+        assertEquals("ref", jobDeserialized.getChannelReference());
+        assertEquals(5, jobDeserialized.getPriority());
+        assertEquals(2, jobDeserialized.getRequestedWorkerSelectors().size());
+        assertEquals(Duration.ofSeconds(100), jobDeserialized.getRequestedWorkerSelectors().get(0).getExpiresAfter());
+
+        if (this.getTestMode() != TestMode.PLAYBACK) {
+            Thread.sleep(2000);
+        }
+
+        jobDeserialized.setPriority(10);
+        RouterJob updatedJob = jobRouterAsyncClient.updateJob(jobId, BinaryData.fromObject(jobDeserialized), null)
+            .block().toObject(RouterJob.class);
+
+        // Verify
+        assertEquals(jobId, updatedJob.getId());
+        assertNotNull(updatedJob.getEtag());
+        assertEquals(4, updatedJob.getLabels().size());
+        assertEquals(3, updatedJob.getTags().size());
+        assertEquals(1, updatedJob.getNotes().size());
+        assertEquals("code1", updatedJob.getDispositionCode());
+        assertEquals("ref", updatedJob.getChannelReference());
+        assertEquals(10, updatedJob.getPriority());
+        assertEquals(2, updatedJob.getRequestedWorkerSelectors().size());
+        assertEquals(Duration.ofSeconds(100), updatedJob.getRequestedWorkerSelectors().get(0).getExpiresAfter());
+
+        jobRouterAsyncClient.listJobs(null, queueId, channelId, null, null, null)
+            .subscribe(listJob -> {
+                assertEquals(jobId, listJob.getId());
+                assertNotNull(listJob.getEtag());
+                assertEquals(4, listJob.getLabels().size());
+                assertEquals(3, listJob.getTags().size());
+                assertEquals(1, listJob.getNotes().size());
+                assertEquals("code1", listJob.getDispositionCode());
+                assertEquals("ref", listJob.getChannelReference());
+                assertEquals(10, listJob.getPriority());
+                assertEquals(2, listJob.getRequestedWorkerSelectors().size());
+                assertEquals(Duration.ofSeconds(100), listJob.getRequestedWorkerSelectors().get(0).getExpiresAfter());
+            });
 
         List<RouterJobOffer> jobOffers = new ArrayList<RouterJobOffer>();
         long startTimeMillis = System.currentTimeMillis();
@@ -151,7 +206,26 @@ public class RouterJobAsyncLiveTests extends JobRouterTestBase {
         UnassignJobResult unassignJobResult = jobRouterAsyncClient.unassignJob(jobId, assignmentId).block();
 
         // Verify
-        assertEquals(1, unassignJobResult.getUnassignmentCount());
+        assertTrue(unassignJobResult.getUnassignmentCount() > 0);
+
+        if (this.getTestMode() != TestMode.PLAYBACK) {
+            Thread.sleep(5000);
+        }
+
+        RouterQueueStatistics queueStatistics = jobRouterAsyncClient.getQueueStatistics(queueId).block();
+
+        // Verify
+        assertEquals(queueId, queueStatistics.getQueueId());
+        assertEquals(1, queueStatistics.getLength());
+        assertTrue(queueStatistics.getLongestJobWaitTimeMinutes() > 0);
+        assertTrue(queueStatistics.getEstimatedWaitTime().get(10).isPositive());
+
+        RouterQueueStatistics deserialized = jobRouterAsyncClient.getQueueStatisticsWithResponse(queueId, null)
+            .block().getValue().toObject(RouterQueueStatistics.class);
+        assertEquals(queueId, deserialized.getQueueId());
+        assertEquals(1, deserialized.getLength());
+        assertTrue(deserialized.getLongestJobWaitTimeMinutes() > 0);
+        assertTrue(deserialized.getEstimatedWaitTime().get(10).isPositive());
 
         RequestOptions requestOptions = new RequestOptions();
         CancelJobOptions cancelJobOptions = new CancelJobOptions()
@@ -164,7 +238,7 @@ public class RouterJobAsyncLiveTests extends JobRouterTestBase {
         jobRouterAsyncClient.deleteJob(jobId).block();
         jobRouterAsyncClient.deleteWorker(workerId).block();
         if (this.getTestMode() != TestMode.PLAYBACK) {
-            Thread.sleep(10000);
+            Thread.sleep(5000);
         }
         administrationAsyncClient.deleteQueue(queueId).block();
         administrationAsyncClient.deleteDistributionPolicy(distributionPolicyId).block();

@@ -11,13 +11,10 @@ import com.azure.communication.jobrouter.implementation.models.ScheduleAndSuspen
 import com.azure.communication.jobrouter.implementation.models.SuspendModeInternal;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions;
-import com.azure.communication.jobrouter.models.JobMatchingMode;
-import com.azure.communication.jobrouter.models.QueueAndMatchMode;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobNote;
 import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.communication.jobrouter.models.ScheduleAndSuspendMode;
-import com.azure.communication.jobrouter.models.SuspendMode;
 
 import java.util.List;
 import java.util.Map;
@@ -35,11 +32,11 @@ public class JobAdapter {
      * @param createJobOptions Container with options to create {@link RouterJob}
      * @return RouterJob
      */
-    public static RouterJobInternal convertCreateJobOptionsToRouterJob(CreateJobOptions createJobOptions) {
+    public static RouterJobInternal convertCreateJobWithClassificationPolicyOptionsToRouterJob(CreateJobOptions createJobOptions) {
         Map<String, RouterValue> labelValueMap = createJobOptions.getLabels();
         Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
             .collect(Collectors.toMap(entry -> entry.getKey(), entry -> getValue(entry.getValue()))) : null;
-        Map<String, RouterValue> tagValueMap = createJobOptions.getLabels();
+        Map<String, RouterValue> tagValueMap = createJobOptions.getTags();
         Map<String, Object> tags = tagValueMap != null ? tagValueMap.entrySet().stream()
             .collect(Collectors.toMap(entry -> entry.getKey(), entry -> getValue(entry.getValue()))) : null;
         List<RouterJobNote> jobNotes = createJobOptions.getNotes();
@@ -94,11 +91,11 @@ public class JobAdapter {
      * @param createJobOptions Container with options to create {@link RouterJob}
      * @return RouterJob
      */
-    public static RouterJobInternal convertCreateJobOptionsToRouterJob(CreateJobWithClassificationPolicyOptions createJobOptions) {
+    public static RouterJobInternal convertCreateJobWithClassificationPolicyOptionsToRouterJob(CreateJobWithClassificationPolicyOptions createJobOptions) {
         Map<String, RouterValue> labelValueMap = createJobOptions.getLabels();
         Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
             .collect(Collectors.toMap(entry -> entry.getKey(), entry -> getValue(entry.getValue()))) : null;
-        Map<String, RouterValue> tagValueMap = createJobOptions.getLabels();
+        Map<String, RouterValue> tagValueMap = createJobOptions.getTags();
         Map<String, Object> tags = tagValueMap != null ? tagValueMap.entrySet().stream()
             .collect(Collectors.toMap(entry -> entry.getKey(), entry -> getValue(entry.getValue()))) : null;
         List<RouterJobNote> jobNotes = createJobOptions.getNotes();
@@ -147,23 +144,5 @@ public class JobAdapter {
             .setRequestedWorkerSelectors(workerSelectors)
             .setTags(tags)
             .setMatchingMode(jobMatchingModeInternal);
-    }
-
-    /**
-     * Converts jobMatchingMode internal to external
-     * @param jobMatchingModeInternal internal model.
-     * @return JobMatchingMode.
-     */
-    public static JobMatchingMode convertJobMatchingModeToPublic(JobMatchingModeInternal jobMatchingModeInternal) {
-        if (jobMatchingModeInternal.getClass() == ScheduleAndSuspendModeInternal.class) {
-            ScheduleAndSuspendModeInternal scheduleAndSuspendModeInternal =
-                (ScheduleAndSuspendModeInternal) jobMatchingModeInternal;
-            return new ScheduleAndSuspendMode(scheduleAndSuspendModeInternal.getScheduleAt());
-        } else if (jobMatchingModeInternal.getClass() == QueueAndMatchModeInternal.class) {
-            return new QueueAndMatchMode();
-        } else if (jobMatchingModeInternal.getClass() == SuspendModeInternal.class) {
-            return new SuspendMode();
-        }
-        throw new IllegalStateException(String.format("Unknown type of jobMatchingMode %s", jobMatchingModeInternal.getClass().getTypeName()));
     }
 }

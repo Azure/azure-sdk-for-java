@@ -4,10 +4,6 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterAdministrationClientImpl;
-import com.azure.communication.jobrouter.implementation.accesshelpers.ClassificationPolicyConstructorProxy;
-import com.azure.communication.jobrouter.implementation.accesshelpers.DistributionPolicyConstructorProxy;
-import com.azure.communication.jobrouter.implementation.accesshelpers.ExceptionPolicyConstructorProxy;
-import com.azure.communication.jobrouter.implementation.accesshelpers.RouterQueueConstructorProxy;
 import com.azure.communication.jobrouter.implementation.converters.ClassificationPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
@@ -314,9 +310,8 @@ public final class JobRouterAdministrationAsyncClient {
             = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
         return upsertDistributionPolicyWithResponse(createDistributionPolicyOptions.getDistributionPolicyId(),
             BinaryData.fromObject(distributionPolicy), requestOptions)
-            .map(response -> new SimpleResponse<DistributionPolicy>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), DistributionPolicyConstructorProxy
-                    .create(response.getValue().toObject(DistributionPolicyInternal.class))));
+            .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), response.getValue().toObject(DistributionPolicy.class)));
     }
 
     /**
@@ -717,9 +712,8 @@ public final class JobRouterAdministrationAsyncClient {
             .convertCreateOptionsToClassificationPolicyInternal(createClassificationPolicyOptions);
         return upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.getClassificationPolicyId(),
             BinaryData.fromObject(classificationPolicy), requestOptions)
-            .map(response -> new SimpleResponse<ClassificationPolicy>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), ClassificationPolicyConstructorProxy
-                    .create(response.getValue().toObject(ClassificationPolicyInternal.class))));
+            .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), response.getValue().toObject(ClassificationPolicy.class)));
     }
 
     /**
@@ -1129,9 +1123,8 @@ public final class JobRouterAdministrationAsyncClient {
             = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
         return upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getExceptionPolicyId(),
             BinaryData.fromObject(exceptionPolicy), requestOptions)
-            .map(response -> new SimpleResponse<ExceptionPolicy>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(),
-                ExceptionPolicyConstructorProxy.create(response.getValue().toObject(ExceptionPolicyInternal.class))));
+            .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), response.getValue().toObject(ExceptionPolicy.class)));
     }
 
     /**
@@ -1498,8 +1491,7 @@ public final class JobRouterAdministrationAsyncClient {
         RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueueInternal(createQueueOptions);
         return upsertQueueWithResponse(createQueueOptions.getQueueId(), BinaryData.fromObject(queue), requestOptions)
             .map(response -> new SimpleResponse<RouterQueue>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(),
-                RouterQueueConstructorProxy.create(response.getValue().toObject(RouterQueueInternal.class))));
+                response.getHeaders(), response.getValue().toObject(RouterQueue.class)));
     }
 
     /**
@@ -1516,8 +1508,7 @@ public final class JobRouterAdministrationAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueueInternal(createQueueOptions);
         return upsertQueueWithResponse(createQueueOptions.getQueueId(), BinaryData.fromObject(queue), requestOptions)
-            .map(response -> response.getValue().toObject(RouterQueueInternal.class))
-            .map(internal -> RouterQueueConstructorProxy.create(internal));
+            .map(response -> response.getValue().toObject(RouterQueue.class));
     }
 
     /**

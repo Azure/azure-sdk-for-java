@@ -3,7 +3,6 @@
 
 package com.azure.communication.jobrouter.implementation.converters;
 
-import com.azure.communication.jobrouter.implementation.accesshelpers.RouterValueConstructorProxy;
 import com.azure.communication.jobrouter.implementation.models.DirectMapRouterRuleInternal;
 import com.azure.communication.jobrouter.implementation.models.ExpressionRouterRuleInternal;
 import com.azure.communication.jobrouter.implementation.models.FunctionRouterRuleInternal;
@@ -57,34 +56,6 @@ public class RouterRuleAdapter {
         }
 
         return prioritizationRuleInternal;
-    }
-
-    public static RouterRule convertRouterRuleToPublic(RouterRuleInternal rule) {
-        if (rule instanceof DirectMapRouterRuleInternal) {
-            return new DirectMapRouterRule();
-        } else if (rule instanceof ExpressionRouterRuleInternal) {
-            return new ExpressionRouterRule(((ExpressionRouterRuleInternal) rule).getExpression());
-        } else if (rule instanceof FunctionRouterRuleInternal) {
-            FunctionRouterRuleInternal functionRouterRule = (FunctionRouterRuleInternal) rule;
-            return new FunctionRouterRule(functionRouterRule.getFunctionUri())
-                    .setCredential(new FunctionRouterRuleCredential()
-                    .setFunctionKey(functionRouterRule.getCredential().getFunctionKey())
-                    .setAppKey(functionRouterRule.getCredential().getAppKey())
-                    .setClientId(functionRouterRule.getCredential().getClientId()));
-        } else if (rule instanceof StaticRouterRuleInternal) {
-            return new StaticRouterRule()
-                .setValue(RouterValueConstructorProxy.create(((StaticRouterRuleInternal) rule).getValue()));
-        } else if (rule instanceof WebhookRouterRuleInternal) {
-            WebhookRouterRuleInternal webhookRouterRule = (WebhookRouterRuleInternal) rule;
-            return new WebhookRouterRule()
-                .setWebhookUri(webhookRouterRule.getWebhookUri())
-                .setClientCredential(new OAuth2WebhookClientCredential()
-                        .setClientId(webhookRouterRule.getClientCredential().getClientId())
-                        .setClientSecret(webhookRouterRule.getClientCredential().getClientSecret()))
-                        .setAuthorizationServerUri(webhookRouterRule.getAuthorizationServerUri());
-        }
-
-        return null;
     }
 
     public static RouterRuleInternal convertRouterRuleToInternal(RouterRule rule) {

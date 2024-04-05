@@ -6,6 +6,8 @@ package com.azure.communication.jobrouter.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.time.Duration;
 import java.util.Map;
@@ -31,6 +33,8 @@ public final class RouterQueueStatistics {
      * by job priority
      */
     @JsonProperty(value = "estimatedWaitTimeMinutes")
+    @JsonDeserialize(using = DurationMapDeserializer.class)
+    @JsonSerialize(using = DurationMapSerializer.class)
     private Map<Integer, Duration> estimatedWaitTimes;
 
     /*
