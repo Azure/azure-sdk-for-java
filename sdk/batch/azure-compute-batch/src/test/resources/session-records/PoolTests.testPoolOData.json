@@ -6,19 +6,19 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "9a180852-0996-4ba5-9e4e-7d607d85dd73",
+        "client-request-id": "c24fb871-0852-4505-8594-f4233c4077bb",
         "Content-Length": "0",
-        "Date": "Wed, 27 Mar 2024 00:46:36 GMT",
+        "Date": "Fri, 05 Apr 2024 11:23:53 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "DataServiceVersion": "3.0",
-        "Date": "Wed, 27 Mar 2024 00:46:38 GMT",
-        "ETag": "0x8DBC52C54B88553",
-        "Last-Modified": "Wed, 04 Oct 2023 22:50:39 GMT",
-        "request-id": "602d4774-aa51-4812-a760-1591e51ff09f",
+        "Date": "Fri, 05 Apr 2024 11:23:56 GMT",
+        "ETag": "0x8DC4EE4E4A30236",
+        "Last-Modified": "Thu, 28 Mar 2024 05:06:57 GMT",
+        "request-id": "b0bf16cb-dcd6-4e1e-8ae9-b97983d6fa31",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -32,9 +32,9 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "2c40e68c-1503-4f7a-a95c-7c612828929a",
+        "client-request-id": "79501e1d-e8ac-4751-aa7a-6a1bfe01f8c7",
         "Content-Length": "0",
-        "Date": "Wed, 27 Mar 2024 00:46:38 GMT",
+        "Date": "Fri, 05 Apr 2024 11:23:56 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": null,
@@ -42,10 +42,10 @@
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Wed, 27 Mar 2024 00:46:38 GMT",
-        "ETag": "0x8DBC52C54B88553",
-        "Last-Modified": "Wed, 04 Oct 2023 22:50:39 GMT",
-        "request-id": "e7cc1ada-4922-42b5-ae8e-686808c6a432",
+        "Date": "Fri, 05 Apr 2024 11:23:57 GMT",
+        "ETag": "0x8DC4EE4E4A30236",
+        "Last-Modified": "Thu, 28 Mar 2024 05:06:57 GMT",
+        "request-id": "a7f96f31-2079-4c87-9378-5af731b9c413",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -55,13 +55,13 @@
         "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element",
         "id": "BatchUser-testpool",
         "url": "REDACTED",
-        "eTag": "0x8DBC52C54B88553",
-        "lastModified": "2023-10-04T22:50:39.3668947Z",
-        "creationTime": "2023-10-04T22:50:39.3668947Z",
+        "eTag": "0x8DC4EE4E4A30236",
+        "lastModified": "2024-03-28T05:06:57.5166006Z",
+        "creationTime": "2024-03-28T05:06:57.5165994Z",
         "state": "active",
-        "stateTransitionTime": "2023-10-04T22:50:39.3668947Z",
+        "stateTransitionTime": "2024-03-28T05:06:57.5165994Z",
         "allocationState": "steady",
-        "allocationStateTransitionTime": "2023-10-04T22:53:03.9460184Z",
+        "allocationStateTransitionTime": "2024-03-28T05:09:13.50471Z",
         "vmSize": "standard_d1_v2",
         "resizeTimeout": "PT15M",
         "currentDedicatedNodes": 1,
@@ -107,9 +107,9 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "db6bcfc7-a16f-46cf-9b1e-c862b2cdd15f",
+        "client-request-id": "73313d74-1c0d-43eb-a34c-79d63471d6c3",
         "Content-Length": "0",
-        "Date": "Wed, 27 Mar 2024 00:46:41 GMT",
+        "Date": "Fri, 05 Apr 2024 11:24:03 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": null,
@@ -117,8 +117,8 @@
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Wed, 27 Mar 2024 00:46:41 GMT",
-        "request-id": "f54e2665-cf09-46de-b8c9-7e632d3c7453",
+        "Date": "Fri, 05 Apr 2024 11:24:02 GMT",
+        "request-id": "7b3c47b9-8e8a-4596-b137-ba602780ebc7",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -128,7 +128,7 @@
         "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#pools",
         "value": [
           {
-            "id": "319B950E-4BFD-409B-9BE0-78A0845236D2",
+            "id": "A5CF56DD-95AA-45C9-A553-366B958296C6",
             "state": "active"
           },
           {
