@@ -14,10 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class AutoUserSpecification {
 
     /*
-     * The scope for the auto user. The default value is pool. If the pool is running Windows a value of Task should be
-     * specified if stricter isolation between tasks is required. For example, if the task mutates the registry in a
-     * way which could impact other tasks, or if certificates have been specified on the pool which should not be
-     * accessible by normal tasks but should be accessible by StartTasks.
+     * The scope for the auto user. The default value is pool. If the pool is running Windows a value of Task should be specified if stricter isolation between tasks is required. For example, if the task mutates the registry in a way which could impact other tasks, or if certificates have been specified on the pool which should not be accessible by normal tasks but should be accessible by StartTasks.
      */
     @Generated
     @JsonProperty(value = "scope")

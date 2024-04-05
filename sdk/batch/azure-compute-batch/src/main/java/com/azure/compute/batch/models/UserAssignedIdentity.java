@@ -19,7 +19,7 @@ public final class UserAssignedIdentity {
      */
     @Generated
     @JsonProperty(value = "resourceId")
-    private String resourceId;
+    private final String resourceId;
 
     /*
      * The client id of the user assigned identity.

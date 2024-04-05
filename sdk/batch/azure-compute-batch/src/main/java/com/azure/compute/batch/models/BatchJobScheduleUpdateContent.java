@@ -15,24 +15,21 @@ import java.util.List;
 public final class BatchJobScheduleUpdateContent {
 
     /*
-     * The schedule according to which Jobs will be created. All times are fixed respective to UTC and are not impacted
-     * by daylight saving time. If you do not specify this element, the existing schedule is left unchanged.
+     * The schedule according to which Jobs will be created. All times are fixed respective to UTC and are not impacted by daylight saving time. If you do not specify this element, the existing schedule is left unchanged.
      */
     @Generated
     @JsonProperty(value = "schedule")
     private BatchJobScheduleConfiguration schedule;
 
     /*
-     * The details of the Jobs to be created on this schedule. Updates affect only Jobs that are started after the
-     * update has taken place. Any currently active Job continues with the older specification.
+     * The details of the Jobs to be created on this schedule. Updates affect only Jobs that are started after the update has taken place. Any currently active Job continues with the older specification.
      */
     @Generated
     @JsonProperty(value = "jobSpecification")
     private BatchJobSpecification jobSpecification;
 
     /*
-     * A list of name-value pairs associated with the Job Schedule as metadata. If you do not specify this element,
-     * existing metadata is left unchanged.
+     * A list of name-value pairs associated with the Job Schedule as metadata. If you do not specify this element, existing metadata is left unchanged.
      */
     @Generated
     @JsonProperty(value = "metadata")
@@ -47,8 +44,8 @@ public final class BatchJobScheduleUpdateContent {
 
     /**
      * Get the schedule property: The schedule according to which Jobs will be created. All times are fixed respective
-     * to UTC and are not impacted by daylight saving time. If you do not specify this element, the existing schedule
-     * is left unchanged.
+     * to UTC and are not impacted by daylight saving time. If you do not specify this element, the existing schedule is
+     * left unchanged.
      *
      * @return the schedule value.
      */
@@ -59,8 +56,8 @@ public final class BatchJobScheduleUpdateContent {
 
     /**
      * Set the schedule property: The schedule according to which Jobs will be created. All times are fixed respective
-     * to UTC and are not impacted by daylight saving time. If you do not specify this element, the existing schedule
-     * is left unchanged.
+     * to UTC and are not impacted by daylight saving time. If you do not specify this element, the existing schedule is
+     * left unchanged.
      *
      * @param schedule the schedule value to set.
      * @return the BatchJobScheduleUpdateContent object itself.
@@ -98,8 +95,8 @@ public final class BatchJobScheduleUpdateContent {
     }
 
     /**
-     * Get the metadata property: A list of name-value pairs associated with the Job Schedule as metadata. If you do
-     * not specify this element, existing metadata is left unchanged.
+     * Get the metadata property: A list of name-value pairs associated with the Job Schedule as metadata. If you do not
+     * specify this element, existing metadata is left unchanged.
      *
      * @return the metadata value.
      */
@@ -109,8 +106,8 @@ public final class BatchJobScheduleUpdateContent {
     }
 
     /**
-     * Set the metadata property: A list of name-value pairs associated with the Job Schedule as metadata. If you do
-     * not specify this element, existing metadata is left unchanged.
+     * Set the metadata property: A list of name-value pairs associated with the Job Schedule as metadata. If you do not
+     * specify this element, existing metadata is left unchanged.
      *
      * @param metadata the metadata value to set.
      * @return the BatchJobScheduleUpdateContent object itself.

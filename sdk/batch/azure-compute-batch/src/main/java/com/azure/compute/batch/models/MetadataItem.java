@@ -20,14 +20,14 @@ public final class MetadataItem {
      */
     @Generated
     @JsonProperty(value = "name")
-    private String name;
+    private final String name;
 
     /*
      * The value of the metadata item.
      */
     @Generated
     @JsonProperty(value = "value")
-    private String value;
+    private final String value;
 
     /**
      * Creates an instance of MetadataItem class.

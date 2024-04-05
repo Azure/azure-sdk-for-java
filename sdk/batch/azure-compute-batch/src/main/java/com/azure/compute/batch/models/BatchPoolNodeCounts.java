@@ -19,7 +19,7 @@ public final class BatchPoolNodeCounts {
      */
     @Generated
     @JsonProperty(value = "poolId")
-    private String poolId;
+    private final String poolId;
 
     /*
      * The number of dedicated Compute Nodes in each state.

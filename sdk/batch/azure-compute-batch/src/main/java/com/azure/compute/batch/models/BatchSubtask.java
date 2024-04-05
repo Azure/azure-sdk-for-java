@@ -29,8 +29,7 @@ public final class BatchSubtask {
     private BatchNodeInfo nodeInfo;
 
     /*
-     * The time at which the subtask started running. If the subtask has been restarted or retried, this is the most
-     * recent time at which the subtask started running.
+     * The time at which the subtask started running. If the subtask has been restarted or retried, this is the most recent time at which the subtask started running.
      */
     @Generated
     @JsonProperty(value = "startTime")
@@ -44,28 +43,21 @@ public final class BatchSubtask {
     private OffsetDateTime endTime;
 
     /*
-     * The exit code of the program specified on the subtask command line. This property is set only if the subtask is
-     * in the completed state. In general, the exit code for a process reflects the specific convention implemented by
-     * the application developer for that process. If you use the exit code value to make decisions in your code, be
-     * sure that you know the exit code convention used by the application process. However, if the Batch service
-     * terminates the subtask (due to timeout, or user termination via the API) you may see an operating system-defined
-     * exit code.
+     * The exit code of the program specified on the subtask command line. This property is set only if the subtask is in the completed state. In general, the exit code for a process reflects the specific convention implemented by the application developer for that process. If you use the exit code value to make decisions in your code, be sure that you know the exit code convention used by the application process. However, if the Batch service terminates the subtask (due to timeout, or user termination via the API) you may see an operating system-defined exit code.
      */
     @Generated
     @JsonProperty(value = "exitCode")
     private Integer exitCode;
 
     /*
-     * Information about the container under which the Task is executing. This property is set only if the Task runs in
-     * a container context.
+     * Information about the container under which the Task is executing. This property is set only if the Task runs in a container context.
      */
     @Generated
     @JsonProperty(value = "containerInfo")
     private BatchTaskContainerExecutionInfo containerInfo;
 
     /*
-     * Information describing the Task failure, if any. This property is set only if the Task is in the completed state
-     * and encountered a failure.
+     * Information describing the Task failure, if any. This property is set only if the Task is in the completed state and encountered a failure.
      */
     @Generated
     @JsonProperty(value = "failureInfo")
@@ -93,16 +85,14 @@ public final class BatchSubtask {
     private BatchSubtaskState previousState;
 
     /*
-     * The time at which the subtask entered its previous state. This property is not set if the subtask is in its
-     * initial running state.
+     * The time at which the subtask entered its previous state. This property is not set if the subtask is in its initial running state.
      */
     @Generated
     @JsonProperty(value = "previousStateTransitionTime")
     private OffsetDateTime previousStateTransitionTime;
 
     /*
-     * The result of the Task execution. If the value is 'failed', then the details of the failure can be found in the
-     * failureInfo property.
+     * The result of the Task execution. If the value is 'failed', then the details of the failure can be found in the failureInfo property.
      */
     @Generated
     @JsonProperty(value = "result")
@@ -147,8 +137,8 @@ public final class BatchSubtask {
     }
 
     /**
-     * Get the endTime property: The time at which the subtask completed. This property is set only if the subtask is
-     * in the Completed state.
+     * Get the endTime property: The time at which the subtask completed. This property is set only if the subtask is in
+     * the Completed state.
      *
      * @return the endTime value.
      */

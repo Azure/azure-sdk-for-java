@@ -21,21 +21,21 @@ public final class VMExtension {
      */
     @Generated
     @JsonProperty(value = "name")
-    private String name;
+    private final String name;
 
     /*
      * The name of the extension handler publisher.
      */
     @Generated
     @JsonProperty(value = "publisher")
-    private String publisher;
+    private final String publisher;
 
     /*
      * The type of the extension.
      */
     @Generated
     @JsonProperty(value = "type")
-    private String type;
+    private final String type;
 
     /*
      * The version of script handler.
@@ -45,17 +45,14 @@ public final class VMExtension {
     private String typeHandlerVersion;
 
     /*
-     * Indicates whether the extension should use a newer minor version if one is available at deployment time. Once
-     * deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set
-     * to true.
+     * Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true.
      */
     @Generated
     @JsonProperty(value = "autoUpgradeMinorVersion")
     private Boolean autoUpgradeMinorVersion;
 
     /*
-     * Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of
-     * the extension available.
+     * Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of the extension available.
      */
     @Generated
     @JsonProperty(value = "enableAutomaticUpgrade")
@@ -69,16 +66,14 @@ public final class VMExtension {
     private Map<String, String> settings;
 
     /*
-     * The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at
-     * all.
+     * The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
      */
     @Generated
     @JsonProperty(value = "protectedSettings")
     private Map<String, String> protectedSettings;
 
     /*
-     * The collection of extension names. Collection of extension names after which this extension needs to be
-     * provisioned.
+     * The collection of extension names. Collection of extension names after which this extension needs to be provisioned.
      */
     @Generated
     @JsonProperty(value = "provisionAfterExtensions")
@@ -153,9 +148,9 @@ public final class VMExtension {
     }
 
     /**
-     * Get the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if
-     * one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions
-     * unless redeployed, even with this property set to true.
+     * Get the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
+     * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
+     * redeployed, even with this property set to true.
      *
      * @return the autoUpgradeMinorVersion value.
      */
@@ -165,9 +160,9 @@ public final class VMExtension {
     }
 
     /**
-     * Set the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if
-     * one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions
-     * unless redeployed, even with this property set to true.
+     * Set the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
+     * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
+     * redeployed, even with this property set to true.
      *
      * @param autoUpgradeMinorVersion the autoUpgradeMinorVersion value to set.
      * @return the VMExtension object itself.
@@ -249,8 +244,8 @@ public final class VMExtension {
     }
 
     /**
-     * Get the provisionAfterExtensions property: The collection of extension names. Collection of extension names
-     * after which this extension needs to be provisioned.
+     * Get the provisionAfterExtensions property: The collection of extension names. Collection of extension names after
+     * which this extension needs to be provisioned.
      *
      * @return the provisionAfterExtensions value.
      */
@@ -260,8 +255,8 @@ public final class VMExtension {
     }
 
     /**
-     * Set the provisionAfterExtensions property: The collection of extension names. Collection of extension names
-     * after which this extension needs to be provisioned.
+     * Set the provisionAfterExtensions property: The collection of extension names. Collection of extension names after
+     * which this extension needs to be provisioned.
      *
      * @param provisionAfterExtensions the provisionAfterExtensions value to set.
      * @return the VMExtension object itself.

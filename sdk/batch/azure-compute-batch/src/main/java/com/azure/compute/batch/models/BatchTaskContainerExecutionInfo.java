@@ -21,16 +21,14 @@ public final class BatchTaskContainerExecutionInfo {
     private String containerId;
 
     /*
-     * The state of the container. This is the state of the container according to the Docker service. It is equivalent
-     * to the status field returned by "docker inspect".
+     * The state of the container. This is the state of the container according to the Docker service. It is equivalent to the status field returned by "docker inspect".
      */
     @Generated
     @JsonProperty(value = "state")
     private String state;
 
     /*
-     * Detailed error information about the container. This is the detailed error string from the Docker service, if
-     * available. It is equivalent to the error field returned by "docker inspect".
+     * Detailed error information about the container. This is the detailed error string from the Docker service, if available. It is equivalent to the error field returned by "docker inspect".
      */
     @Generated
     @JsonProperty(value = "error")

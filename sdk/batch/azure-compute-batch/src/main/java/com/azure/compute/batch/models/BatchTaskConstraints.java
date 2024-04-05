@@ -15,32 +15,21 @@ import java.time.Duration;
 public final class BatchTaskConstraints {
 
     /*
-     * The maximum elapsed time that the Task may run, measured from the time the Task starts. If the Task does not
-     * complete within the time limit, the Batch service terminates it. If this is not specified, there is no time
-     * limit on how long the Task may run.
+     * The maximum elapsed time that the Task may run, measured from the time the Task starts. If the Task does not complete within the time limit, the Batch service terminates it. If this is not specified, there is no time limit on how long the Task may run.
      */
     @Generated
     @JsonProperty(value = "maxWallClockTime")
     private Duration maxWallClockTime;
 
     /*
-     * The minimum time to retain the Task directory on the Compute Node where it ran, from the time it completes
-     * execution. After this time, the Batch service may delete the Task directory and all its contents. The default is
-     * 7 days, i.e. the Task directory will be retained for 7 days unless the Compute Node is removed or the Job is
-     * deleted.
+     * The minimum time to retain the Task directory on the Compute Node where it ran, from the time it completes execution. After this time, the Batch service may delete the Task directory and all its contents. The default is 7 days, i.e. the Task directory will be retained for 7 days unless the Compute Node is removed or the Job is deleted.
      */
     @Generated
     @JsonProperty(value = "retentionTime")
     private Duration retentionTime;
 
     /*
-     * The maximum number of times the Task may be retried. The Batch service retries a Task if its exit code is
-     * nonzero. Note that this value specifically controls the number of retries for the Task executable due to a
-     * nonzero exit code. The Batch service will try the Task once, and may then retry up to this limit. For example,
-     * if the maximum retry count is 3, Batch tries the Task up to 4 times (one initial try and 3 retries). If the
-     * maximum retry count is 0, the Batch service does not retry the Task after the first attempt. If the maximum
-     * retry count is -1, the Batch service retries the Task without limit, however this is not recommended for a start
-     * task or any task. The default value is 0 (no retries).
+     * The maximum number of times the Task may be retried. The Batch service retries a Task if its exit code is nonzero. Note that this value specifically controls the number of retries for the Task executable due to a nonzero exit code. The Batch service will try the Task once, and may then retry up to this limit. For example, if the maximum retry count is 3, Batch tries the Task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0, the Batch service does not retry the Task after the first attempt. If the maximum retry count is -1, the Batch service retries the Task without limit, however this is not recommended for a start task or any task. The default value is 0 (no retries).
      */
     @Generated
     @JsonProperty(value = "maxTaskRetryCount")
@@ -55,8 +44,8 @@ public final class BatchTaskConstraints {
 
     /**
      * Get the maxWallClockTime property: The maximum elapsed time that the Task may run, measured from the time the
-     * Task starts. If the Task does not complete within the time limit, the Batch service terminates it. If this is
-     * not specified, there is no time limit on how long the Task may run.
+     * Task starts. If the Task does not complete within the time limit, the Batch service terminates it. If this is not
+     * specified, there is no time limit on how long the Task may run.
      *
      * @return the maxWallClockTime value.
      */
@@ -67,8 +56,8 @@ public final class BatchTaskConstraints {
 
     /**
      * Set the maxWallClockTime property: The maximum elapsed time that the Task may run, measured from the time the
-     * Task starts. If the Task does not complete within the time limit, the Batch service terminates it. If this is
-     * not specified, there is no time limit on how long the Task may run.
+     * Task starts. If the Task does not complete within the time limit, the Batch service terminates it. If this is not
+     * specified, there is no time limit on how long the Task may run.
      *
      * @param maxWallClockTime the maxWallClockTime value to set.
      * @return the BatchTaskConstraints object itself.

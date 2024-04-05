@@ -20,92 +20,91 @@ public final class BatchPoolResourceStatistics {
      */
     @Generated
     @JsonProperty(value = "startTime")
-    private OffsetDateTime startTime;
+    private final OffsetDateTime startTime;
 
     /*
-     * The time at which the statistics were last updated. All statistics are limited to the range between startTime
-     * and lastUpdateTime.
+     * The time at which the statistics were last updated. All statistics are limited to the range between startTime and lastUpdateTime.
      */
     @Generated
     @JsonProperty(value = "lastUpdateTime")
-    private OffsetDateTime lastUpdateTime;
+    private final OffsetDateTime lastUpdateTime;
 
     /*
      * The average CPU usage across all Compute Nodes in the Pool (percentage per node).
      */
     @Generated
     @JsonProperty(value = "avgCPUPercentage")
-    private double avgCpuPercentage;
+    private final double avgCpuPercentage;
 
     /*
      * The average memory usage in GiB across all Compute Nodes in the Pool.
      */
     @Generated
     @JsonProperty(value = "avgMemoryGiB")
-    private double avgMemoryGiB;
+    private final double avgMemoryGiB;
 
     /*
      * The peak memory usage in GiB across all Compute Nodes in the Pool.
      */
     @Generated
     @JsonProperty(value = "peakMemoryGiB")
-    private double peakMemoryGiB;
+    private final double peakMemoryGiB;
 
     /*
      * The average used disk space in GiB across all Compute Nodes in the Pool.
      */
     @Generated
     @JsonProperty(value = "avgDiskGiB")
-    private double avgDiskGiB;
+    private final double avgDiskGiB;
 
     /*
      * The peak used disk space in GiB across all Compute Nodes in the Pool.
      */
     @Generated
     @JsonProperty(value = "peakDiskGiB")
-    private double peakDiskGiB;
+    private final double peakDiskGiB;
 
     /*
      * The total number of disk read operations across all Compute Nodes in the Pool.
      */
     @Generated
     @JsonProperty(value = "diskReadIOps")
-    private long diskReadIOps;
+    private final long diskReadIOps;
 
     /*
      * The total number of disk write operations across all Compute Nodes in the Pool.
      */
     @Generated
     @JsonProperty(value = "diskWriteIOps")
-    private long diskWriteIOps;
+    private final long diskWriteIOps;
 
     /*
      * The total amount of data in GiB of disk reads across all Compute Nodes in the Pool.
      */
     @Generated
     @JsonProperty(value = "diskReadGiB")
-    private double diskReadGiB;
+    private final double diskReadGiB;
 
     /*
      * The total amount of data in GiB of disk writes across all Compute Nodes in the Pool.
      */
     @Generated
     @JsonProperty(value = "diskWriteGiB")
-    private double diskWriteGiB;
+    private final double diskWriteGiB;
 
     /*
      * The total amount of data in GiB of network reads across all Compute Nodes in the Pool.
      */
     @Generated
     @JsonProperty(value = "networkReadGiB")
-    private double networkReadGiB;
+    private final double networkReadGiB;
 
     /*
      * The total amount of data in GiB of network writes across all Compute Nodes in the Pool.
      */
     @Generated
     @JsonProperty(value = "networkWriteGiB")
-    private double networkWriteGiB;
+    private final double networkWriteGiB;
 
     /**
      * Get the startTime property: The start time of the time range covered by the statistics.
@@ -200,8 +199,7 @@ public final class BatchPoolResourceStatistics {
     }
 
     /**
-     * Get the diskReadGiB property: The total amount of data in GiB of disk reads across all Compute Nodes in the
-     * Pool.
+     * Get the diskReadGiB property: The total amount of data in GiB of disk reads across all Compute Nodes in the Pool.
      *
      * @return the diskReadGiB value.
      */
@@ -222,8 +220,8 @@ public final class BatchPoolResourceStatistics {
     }
 
     /**
-     * Get the networkReadGiB property: The total amount of data in GiB of network reads across all Compute Nodes in
-     * the Pool.
+     * Get the networkReadGiB property: The total amount of data in GiB of network reads across all Compute Nodes in the
+     * Pool.
      *
      * @return the networkReadGiB value.
      */

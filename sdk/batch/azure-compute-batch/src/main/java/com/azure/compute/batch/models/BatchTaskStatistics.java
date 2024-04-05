@@ -21,68 +21,63 @@ public final class BatchTaskStatistics {
      */
     @Generated
     @JsonProperty(value = "url")
-    private String url;
+    private final String url;
 
     /*
      * The start time of the time range covered by the statistics.
      */
     @Generated
     @JsonProperty(value = "startTime")
-    private OffsetDateTime startTime;
+    private final OffsetDateTime startTime;
 
     /*
-     * The time at which the statistics were last updated. All statistics are limited to the range between startTime
-     * and lastUpdateTime.
+     * The time at which the statistics were last updated. All statistics are limited to the range between startTime and lastUpdateTime.
      */
     @Generated
     @JsonProperty(value = "lastUpdateTime")
-    private OffsetDateTime lastUpdateTime;
+    private final OffsetDateTime lastUpdateTime;
 
     /*
-     * The total wall clock time of the Task. The wall clock time is the elapsed time from when the Task started
-     * running on a Compute Node to when it finished (or to the last time the statistics were updated, if the Task had
-     * not finished by then). If the Task was retried, this includes the wall clock time of all the Task retries.
+     * The total wall clock time of the Task. The wall clock time is the elapsed time from when the Task started running on a Compute Node to when it finished (or to the last time the statistics were updated, if the Task had not finished by then). If the Task was retried, this includes the wall clock time of all the Task retries.
      */
     @Generated
     @JsonProperty(value = "wallClockTime")
-    private Duration wallClockTime;
+    private final Duration wallClockTime;
 
     /*
      * The total number of disk read operations made by the Task.
      */
     @Generated
     @JsonProperty(value = "readIOps")
-    private long readIOps;
+    private final long readIOps;
 
     /*
      * The total number of disk write operations made by the Task.
      */
     @Generated
     @JsonProperty(value = "writeIOps")
-    private long writeIOps;
+    private final long writeIOps;
 
     /*
      * The total gibibytes read from disk by the Task.
      */
     @Generated
     @JsonProperty(value = "readIOGiB")
-    private double readIOGiB;
+    private final double readIOGiB;
 
     /*
      * The total gibibytes written to disk by the Task.
      */
     @Generated
     @JsonProperty(value = "writeIOGiB")
-    private double writeIOGiB;
+    private final double writeIOGiB;
 
     /*
-     * The total wait time of the Task. The wait time for a Task is defined as the elapsed time between the creation of
-     * the Task and the start of Task execution. (If the Task is retried due to failures, the wait time is the time to
-     * the most recent Task execution.).
+     * The total wait time of the Task. The wait time for a Task is defined as the elapsed time between the creation of the Task and the start of Task execution. (If the Task is retried due to failures, the wait time is the time to the most recent Task execution.).
      */
     @Generated
     @JsonProperty(value = "waitTime")
-    private Duration waitTime;
+    private final Duration waitTime;
 
     /**
      * Get the url property: The URL of the statistics.
@@ -117,9 +112,9 @@ public final class BatchTaskStatistics {
 
     /**
      * Get the wallClockTime property: The total wall clock time of the Task. The wall clock time is the elapsed time
-     * from when the Task started running on a Compute Node to when it finished (or to the last time the statistics
-     * were updated, if the Task had not finished by then). If the Task was retried, this includes the wall clock time
-     * of all the Task retries.
+     * from when the Task started running on a Compute Node to when it finished (or to the last time the statistics were
+     * updated, if the Task had not finished by then). If the Task was retried, this includes the wall clock time of all
+     * the Task retries.
      *
      * @return the wallClockTime value.
      */
@@ -185,7 +180,7 @@ public final class BatchTaskStatistics {
      */
     @Generated
     @JsonProperty(value = "kernelCPUTime")
-    private Duration kernelCpuTime;
+    private final Duration kernelCpuTime;
 
     /**
      * Get the kernelCpuTime property: The total kernel mode CPU time (summed across all cores and all Compute Nodes)
@@ -203,7 +198,7 @@ public final class BatchTaskStatistics {
      */
     @Generated
     @JsonProperty(value = "userCPUTime")
-    private Duration userCpuTime;
+    private final Duration userCpuTime;
 
     /**
      * Get the userCpuTime property: The total user mode CPU time (summed across all cores and all Compute Nodes)

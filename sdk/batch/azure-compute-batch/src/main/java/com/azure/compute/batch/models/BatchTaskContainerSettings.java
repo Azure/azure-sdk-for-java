@@ -15,25 +15,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class BatchTaskContainerSettings {
 
     /*
-     * Additional options to the container create command. These additional options are supplied as arguments to the
-     * "docker create" command, in addition to those controlled by the Batch Service.
+     * Additional options to the container create command. These additional options are supplied as arguments to the "docker create" command, in addition to those controlled by the Batch Service.
      */
     @Generated
     @JsonProperty(value = "containerRunOptions")
     private String containerRunOptions;
 
     /*
-     * The Image to use to create the container in which the Task will run. This is the full Image reference, as would
-     * be specified to "docker pull". If no tag is provided as part of the Image name, the tag ":latest" is used as a
-     * default.
+     * The Image to use to create the container in which the Task will run. This is the full Image reference, as would be specified to "docker pull". If no tag is provided as part of the Image name, the tag ":latest" is used as a default.
      */
     @Generated
     @JsonProperty(value = "imageName")
-    private String imageName;
+    private final String imageName;
 
     /*
-     * The private registry which contains the container Image. This setting can be omitted if was already provided at
-     * Pool creation.
+     * The private registry which contains the container Image. This setting can be omitted if was already provided at Pool creation.
      */
     @Generated
     @JsonProperty(value = "registry")
@@ -84,9 +80,9 @@ public final class BatchTaskContainerSettings {
     }
 
     /**
-     * Get the imageName property: The Image to use to create the container in which the Task will run. This is the
-     * full Image reference, as would be specified to "docker pull". If no tag is provided as part of the Image name,
-     * the tag ":latest" is used as a default.
+     * Get the imageName property: The Image to use to create the container in which the Task will run. This is the full
+     * Image reference, as would be specified to "docker pull". If no tag is provided as part of the Image name, the tag
+     * ":latest" is used as a default.
      *
      * @return the imageName value.
      */

@@ -38,8 +38,7 @@ public final class VirtualMachineInfo {
     }
 
     /*
-     * The resource ID of the Compute Node's current Virtual Machine Scale Set VM. Only defined if the Batch Account
-     * was created with its poolAllocationMode property set to 'UserSubscription'.
+     * The resource ID of the Compute Node's current Virtual Machine Scale Set VM. Only defined if the Batch Account was created with its poolAllocationMode property set to 'UserSubscription'.
      */
     @Generated
     @JsonProperty(value = "scaleSetVmResourceId")
@@ -47,8 +46,7 @@ public final class VirtualMachineInfo {
 
     /**
      * Get the scaleSetVmResourceId property: The resource ID of the Compute Node's current Virtual Machine Scale Set
-     * VM. Only defined if the Batch Account was created with its poolAllocationMode property set to
-     * 'UserSubscription'.
+     * VM. Only defined if the Batch Account was created with its poolAllocationMode property set to 'UserSubscription'.
      *
      * @return the scaleSetVmResourceId value.
      */

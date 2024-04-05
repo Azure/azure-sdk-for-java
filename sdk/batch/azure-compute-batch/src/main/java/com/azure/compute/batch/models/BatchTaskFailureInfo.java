@@ -20,7 +20,7 @@ public final class BatchTaskFailureInfo {
      */
     @Generated
     @JsonProperty(value = "category")
-    private ErrorCategory category;
+    private final ErrorCategory category;
 
     /*
      * An identifier for the Task error. Codes are invariant and are intended to be consumed programmatically.

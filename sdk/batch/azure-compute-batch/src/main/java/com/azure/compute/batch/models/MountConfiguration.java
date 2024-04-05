@@ -14,8 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class MountConfiguration {
 
     /*
-     * The Azure Storage Container to mount using blob FUSE on each node. This property is mutually exclusive with all
-     * other properties.
+     * The Azure Storage Container to mount using blob FUSE on each node. This property is mutually exclusive with all other properties.
      */
     @Generated
     @JsonProperty(value = "azureBlobFileSystemConfiguration")

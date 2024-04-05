@@ -16,13 +16,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class ServiceArtifactReference {
 
     /*
-     * The service artifact reference id of ServiceArtifactReference. The service artifact reference id in the form of
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName
-     * }/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}
+     * The service artifact reference id of ServiceArtifactReference. The service artifact reference id in the form of /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}
      */
     @Generated
     @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     /**
      * Creates an instance of ServiceArtifactReference class.

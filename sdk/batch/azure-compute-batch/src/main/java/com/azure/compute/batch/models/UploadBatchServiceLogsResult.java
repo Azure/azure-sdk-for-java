@@ -15,20 +15,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class UploadBatchServiceLogsResult {
 
     /*
-     * The virtual directory within Azure Blob Storage container to which the Batch Service log file(s) will be
-     * uploaded. The virtual directory name is part of the blob name for each log file uploaded, and it is built based
-     * poolId, nodeId and a unique identifier.
+     * The virtual directory within Azure Blob Storage container to which the Batch Service log file(s) will be uploaded. The virtual directory name is part of the blob name for each log file uploaded, and it is built based poolId, nodeId and a unique identifier.
      */
     @Generated
     @JsonProperty(value = "virtualDirectoryName")
-    private String virtualDirectoryName;
+    private final String virtualDirectoryName;
 
     /*
      * The number of log files which will be uploaded.
      */
     @Generated
     @JsonProperty(value = "numberOfFilesUploaded")
-    private int numberOfFilesUploaded;
+    private final int numberOfFilesUploaded;
 
     /**
      * Creates an instance of UploadBatchServiceLogsResult class.
@@ -46,8 +44,8 @@ public final class UploadBatchServiceLogsResult {
 
     /**
      * Get the virtualDirectoryName property: The virtual directory within Azure Blob Storage container to which the
-     * Batch Service log file(s) will be uploaded. The virtual directory name is part of the blob name for each log
-     * file uploaded, and it is built based poolId, nodeId and a unique identifier.
+     * Batch Service log file(s) will be uploaded. The virtual directory name is part of the blob name for each log file
+     * uploaded, and it is built based poolId, nodeId and a unique identifier.
      *
      * @return the virtualDirectoryName value.
      */

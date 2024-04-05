@@ -19,7 +19,7 @@ public final class BatchTaskSchedulingPolicy {
      */
     @Generated
     @JsonProperty(value = "nodeFillType")
-    private BatchNodeFillType nodeFillType;
+    private final BatchNodeFillType nodeFillType;
 
     /**
      * Creates an instance of BatchTaskSchedulingPolicy class.

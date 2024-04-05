@@ -17,9 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class DataDisk {
 
     /*
-     * The type of caching to be enabled for the data disks. The default value for caching is readwrite. For
-     * information about the caching options see:
-     * https://blogs.msdn.microsoft.com/windowsazurestorage/2012/06/27/exploring-windows-azure-drives-disks-and-images/.
+     * The type of caching to be enabled for the data disks. The default value for caching is readwrite. For information about the caching options see: https://blogs.msdn.microsoft.com/windowsazurestorage/2012/06/27/exploring-windows-azure-drives-disks-and-images/.
      */
     @Generated
     @JsonProperty(value = "caching")
@@ -30,7 +28,7 @@ public final class DataDisk {
      */
     @Generated
     @JsonProperty(value = "diskSizeGB")
-    private int diskSizeGb;
+    private final int diskSizeGb;
 
     /*
      * The storage Account type to be used for the data disk. If omitted, the default is "standard_lrs".
@@ -114,12 +112,11 @@ public final class DataDisk {
     }
 
     /*
-     * The logical unit number. The logicalUnitNumber is used to uniquely identify each data disk. If attaching
-     * multiple disks, each should have a distinct logicalUnitNumber. The value must be between 0 and 63, inclusive.
+     * The logical unit number. The logicalUnitNumber is used to uniquely identify each data disk. If attaching multiple disks, each should have a distinct logicalUnitNumber. The value must be between 0 and 63, inclusive.
      */
     @Generated
     @JsonProperty(value = "lun")
-    private int logicalUnitNumber;
+    private final int logicalUnitNumber;
 
     /**
      * Get the logicalUnitNumber property: The logical unit number. The logicalUnitNumber is used to uniquely identify

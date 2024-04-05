@@ -20,21 +20,21 @@ public final class BatchApplication {
      */
     @Generated
     @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     /*
      * The display name for the application.
      */
     @Generated
     @JsonProperty(value = "displayName")
-    private String displayName;
+    private final String displayName;
 
     /*
      * The list of available versions of the application.
      */
     @Generated
     @JsonProperty(value = "versions")
-    private List<String> versions;
+    private final List<String> versions;
 
     /**
      * Creates an instance of BatchApplication class.

@@ -14,20 +14,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class ExitOptions {
 
     /*
-     * An action to take on the Job containing the Task, if the Task completes with the given exit condition and the
-     * Job's onTaskFailed property is 'performExitOptionsJobAction'. The default is none for exit code 0 and terminate
-     * for all other exit conditions. If the Job's onTaskFailed property is noaction, then specifying this property
-     * returns an error and the add Task request fails with an invalid property value error; if you are calling the
-     * REST API directly, the HTTP status code is 400 (Bad Request).
+     * An action to take on the Job containing the Task, if the Task completes with the given exit condition and the Job's onTaskFailed property is 'performExitOptionsJobAction'. The default is none for exit code 0 and terminate for all other exit conditions. If the Job's onTaskFailed property is noaction, then specifying this property returns an error and the add Task request fails with an invalid property value error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
      */
     @Generated
     @JsonProperty(value = "jobAction")
     private BatchJobAction jobAction;
 
     /*
-     * An action that the Batch service performs on Tasks that depend on this Task. Possible values are 'satisfy'
-     * (allowing dependent tasks to progress) and 'block' (dependent tasks continue to wait). Batch does not yet
-     * support cancellation of dependent tasks.
+     * An action that the Batch service performs on Tasks that depend on this Task. Possible values are 'satisfy' (allowing dependent tasks to progress) and 'block' (dependent tasks continue to wait). Batch does not yet support cancellation of dependent tasks.
      */
     @Generated
     @JsonProperty(value = "dependencyAction")
@@ -43,9 +37,9 @@ public final class ExitOptions {
     /**
      * Get the jobAction property: An action to take on the Job containing the Task, if the Task completes with the
      * given exit condition and the Job's onTaskFailed property is 'performExitOptionsJobAction'. The default is none
-     * for exit code 0 and terminate for all other exit conditions. If the Job's onTaskFailed property is noaction,
-     * then specifying this property returns an error and the add Task request fails with an invalid property value
-     * error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * for exit code 0 and terminate for all other exit conditions. If the Job's onTaskFailed property is noaction, then
+     * specifying this property returns an error and the add Task request fails with an invalid property value error; if
+     * you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
      *
      * @return the jobAction value.
      */
@@ -57,9 +51,9 @@ public final class ExitOptions {
     /**
      * Set the jobAction property: An action to take on the Job containing the Task, if the Task completes with the
      * given exit condition and the Job's onTaskFailed property is 'performExitOptionsJobAction'. The default is none
-     * for exit code 0 and terminate for all other exit conditions. If the Job's onTaskFailed property is noaction,
-     * then specifying this property returns an error and the add Task request fails with an invalid property value
-     * error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * for exit code 0 and terminate for all other exit conditions. If the Job's onTaskFailed property is noaction, then
+     * specifying this property returns an error and the add Task request fails with an invalid property value error; if
+     * you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
      *
      * @param jobAction the jobAction value to set.
      * @return the ExitOptions object itself.

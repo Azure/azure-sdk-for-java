@@ -39,18 +39,14 @@ public final class BatchJobSchedule {
     private String url;
 
     /*
-     * The ETag of the Job Schedule. This is an opaque string. You can use it to detect whether the Job Schedule has
-     * changed between requests. In particular, you can be pass the ETag with an Update Job Schedule request to specify
-     * that your changes should take effect only if nobody else has modified the schedule in the meantime.
+     * The ETag of the Job Schedule. This is an opaque string. You can use it to detect whether the Job Schedule has changed between requests. In particular, you can be pass the ETag with an Update Job Schedule request to specify that your changes should take effect only if nobody else has modified the schedule in the meantime.
      */
     @Generated
     @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String eTag;
 
     /*
-     * The last modified time of the Job Schedule. This is the last time at which the schedule level data, such as the
-     * Job specification or recurrence information, changed. It does not factor in job-level changes such as new Jobs
-     * being created or Jobs changing state.
+     * The last modified time of the Job Schedule. This is the last time at which the schedule level data, such as the Job specification or recurrence information, changed. It does not factor in job-level changes such as new Jobs being created or Jobs changing state.
      */
     @Generated
     @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
@@ -78,24 +74,21 @@ public final class BatchJobSchedule {
     private OffsetDateTime stateTransitionTime;
 
     /*
-     * The previous state of the Job Schedule. This property is not present if the Job Schedule is in its initial
-     * active state.
+     * The previous state of the Job Schedule. This property is not present if the Job Schedule is in its initial active state.
      */
     @Generated
     @JsonProperty(value = "previousState", access = JsonProperty.Access.WRITE_ONLY)
     private BatchJobScheduleState previousState;
 
     /*
-     * The time at which the Job Schedule entered its previous state. This property is not present if the Job Schedule
-     * is in its initial active state.
+     * The time at which the Job Schedule entered its previous state. This property is not present if the Job Schedule is in its initial active state.
      */
     @Generated
     @JsonProperty(value = "previousStateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime previousStateTransitionTime;
 
     /*
-     * The schedule according to which Jobs will be created. All times are fixed respective to UTC and are not impacted
-     * by daylight saving time.
+     * The schedule according to which Jobs will be created. All times are fixed respective to UTC and are not impacted by daylight saving time.
      */
     @Generated
     @JsonProperty(value = "schedule")
@@ -106,7 +99,7 @@ public final class BatchJobSchedule {
      */
     @Generated
     @JsonProperty(value = "jobSpecification")
-    private BatchJobSpecification jobSpecification;
+    private final BatchJobSpecification jobSpecification;
 
     /*
      * Information about Jobs that have been and will be run under this schedule.
@@ -116,16 +109,14 @@ public final class BatchJobSchedule {
     private BatchJobScheduleExecutionInfo executionInfo;
 
     /*
-     * A list of name-value pairs associated with the schedule as metadata. The Batch service does not assign any
-     * meaning to metadata; it is solely for the use of user code.
+     * A list of name-value pairs associated with the schedule as metadata. The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
      */
     @Generated
     @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
     /*
-     * The lifetime resource usage statistics for the Job Schedule. The statistics may not be immediately available.
-     * The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
+     * The lifetime resource usage statistics for the Job Schedule. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
      */
     @Generated
     @JsonProperty(value = "stats", access = JsonProperty.Access.WRITE_ONLY)
@@ -164,8 +155,8 @@ public final class BatchJobSchedule {
     /**
      * Get the eTag property: The ETag of the Job Schedule. This is an opaque string. You can use it to detect whether
      * the Job Schedule has changed between requests. In particular, you can be pass the ETag with an Update Job
-     * Schedule request to specify that your changes should take effect only if nobody else has modified the schedule
-     * in the meantime.
+     * Schedule request to specify that your changes should take effect only if nobody else has modified the schedule in
+     * the meantime.
      *
      * @return the eTag value.
      */
@@ -228,8 +219,8 @@ public final class BatchJobSchedule {
     }
 
     /**
-     * Get the previousStateTransitionTime property: The time at which the Job Schedule entered its previous state.
-     * This property is not present if the Job Schedule is in its initial active state.
+     * Get the previousStateTransitionTime property: The time at which the Job Schedule entered its previous state. This
+     * property is not present if the Job Schedule is in its initial active state.
      *
      * @return the previousStateTransitionTime value.
      */
@@ -270,8 +261,8 @@ public final class BatchJobSchedule {
     }
 
     /**
-     * Get the metadata property: A list of name-value pairs associated with the schedule as metadata. The Batch
-     * service does not assign any meaning to metadata; it is solely for the use of user code.
+     * Get the metadata property: A list of name-value pairs associated with the schedule as metadata. The Batch service
+     * does not assign any meaning to metadata; it is solely for the use of user code.
      *
      * @return the metadata value.
      */
@@ -281,8 +272,8 @@ public final class BatchJobSchedule {
     }
 
     /**
-     * Set the metadata property: A list of name-value pairs associated with the schedule as metadata. The Batch
-     * service does not assign any meaning to metadata; it is solely for the use of user code.
+     * Set the metadata property: A list of name-value pairs associated with the schedule as metadata. The Batch service
+     * does not assign any meaning to metadata; it is solely for the use of user code.
      *
      * @param metadata the metadata value to set.
      * @return the BatchJobSchedule object itself.

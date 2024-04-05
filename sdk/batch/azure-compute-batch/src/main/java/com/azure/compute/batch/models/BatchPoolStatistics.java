@@ -20,22 +20,21 @@ public final class BatchPoolStatistics {
      */
     @Generated
     @JsonProperty(value = "url")
-    private String url;
+    private final String url;
 
     /*
      * The start time of the time range covered by the statistics.
      */
     @Generated
     @JsonProperty(value = "startTime")
-    private OffsetDateTime startTime;
+    private final OffsetDateTime startTime;
 
     /*
-     * The time at which the statistics were last updated. All statistics are limited to the range between startTime
-     * and lastUpdateTime.
+     * The time at which the statistics were last updated. All statistics are limited to the range between startTime and lastUpdateTime.
      */
     @Generated
     @JsonProperty(value = "lastUpdateTime")
-    private OffsetDateTime lastUpdateTime;
+    private final OffsetDateTime lastUpdateTime;
 
     /*
      * Statistics related to Pool usage, such as the amount of core-time used.

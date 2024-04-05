@@ -14,8 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class BatchNodeDisableSchedulingContent {
 
     /*
-     * What to do with currently running Tasks when disabling Task scheduling on the Compute Node. The default value is
-     * requeue.
+     * What to do with currently running Tasks when disabling Task scheduling on the Compute Node. The default value is requeue.
      */
     @Generated
     @JsonProperty(value = "nodeDisableSchedulingOption")

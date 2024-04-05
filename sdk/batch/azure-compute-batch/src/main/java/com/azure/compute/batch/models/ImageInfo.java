@@ -22,26 +22,24 @@ public final class ImageInfo {
      */
     @Generated
     @JsonProperty(value = "nodeAgentSKUId")
-    private String nodeAgentSkuId;
+    private final String nodeAgentSkuId;
 
     /*
      * The reference to the Azure Virtual Machine's Marketplace Image.
      */
     @Generated
     @JsonProperty(value = "imageReference")
-    private ImageReference imageReference;
+    private final ImageReference imageReference;
 
     /*
      * The type of operating system (e.g. Windows or Linux) of the Image.
      */
     @Generated
     @JsonProperty(value = "osType")
-    private OSType osType;
+    private final OSType osType;
 
     /*
-     * The capabilities or features which the Image supports. Not every capability of the Image is listed. Capabilities
-     * in this list are considered of special interest and are generally related to integration with other features in
-     * the Azure Batch service.
+     * The capabilities or features which the Image supports. Not every capability of the Image is listed. Capabilities in this list are considered of special interest and are generally related to integration with other features in the Azure Batch service.
      */
     @Generated
     @JsonProperty(value = "capabilities")
@@ -55,12 +53,11 @@ public final class ImageInfo {
     private OffsetDateTime batchSupportEndOfLife;
 
     /*
-     * Whether the Azure Batch service actively verifies that the Image is compatible with the associated Compute Node
-     * agent SKU.
+     * Whether the Azure Batch service actively verifies that the Image is compatible with the associated Compute Node agent SKU.
      */
     @Generated
     @JsonProperty(value = "verificationType")
-    private ImageVerificationType verificationType;
+    private final ImageVerificationType verificationType;
 
     /**
      * Creates an instance of ImageInfo class.
@@ -113,8 +110,8 @@ public final class ImageInfo {
     }
 
     /**
-     * Get the capabilities property: The capabilities or features which the Image supports. Not every capability of
-     * the Image is listed. Capabilities in this list are considered of special interest and are generally related to
+     * Get the capabilities property: The capabilities or features which the Image supports. Not every capability of the
+     * Image is listed. Capabilities in this list are considered of special interest and are generally related to
      * integration with other features in the Azure Batch service.
      *
      * @return the capabilities value.
@@ -136,8 +133,8 @@ public final class ImageInfo {
     }
 
     /**
-     * Get the verificationType property: Whether the Azure Batch service actively verifies that the Image is
-     * compatible with the associated Compute Node agent SKU.
+     * Get the verificationType property: Whether the Azure Batch service actively verifies that the Image is compatible
+     * with the associated Compute Node agent SKU.
      *
      * @return the verificationType value.
      */

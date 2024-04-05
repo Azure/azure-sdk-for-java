@@ -19,7 +19,7 @@ public final class ManagedDisk {
      */
     @Generated
     @JsonProperty(value = "storageAccountType")
-    private StorageAccountType storageAccountType;
+    private final StorageAccountType storageAccountType;
 
     /**
      * Creates an instance of ManagedDisk class.

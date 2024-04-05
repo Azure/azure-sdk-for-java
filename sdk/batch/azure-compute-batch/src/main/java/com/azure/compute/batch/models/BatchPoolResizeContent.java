@@ -29,17 +29,14 @@ public final class BatchPoolResizeContent {
     private Integer targetLowPriorityNodes;
 
     /*
-     * The timeout for allocation of Nodes to the Pool or removal of Compute Nodes from the Pool. The default value is
-     * 15 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service
-     * returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * The timeout for allocation of Nodes to the Pool or removal of Compute Nodes from the Pool. The default value is 15 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
      */
     @Generated
     @JsonProperty(value = "resizeTimeout")
     private Duration resizeTimeout;
 
     /*
-     * Determines what to do with a Compute Node and its running task(s) if the Pool size is decreasing. The default
-     * value is requeue.
+     * Determines what to do with a Compute Node and its running task(s) if the Pool size is decreasing. The default value is requeue.
      */
     @Generated
     @JsonProperty(value = "nodeDeallocationOption")
@@ -125,8 +122,8 @@ public final class BatchPoolResizeContent {
     }
 
     /**
-     * Get the nodeDeallocationOption property: Determines what to do with a Compute Node and its running task(s) if
-     * the Pool size is decreasing. The default value is requeue.
+     * Get the nodeDeallocationOption property: Determines what to do with a Compute Node and its running task(s) if the
+     * Pool size is decreasing. The default value is requeue.
      *
      * @return the nodeDeallocationOption value.
      */
@@ -136,8 +133,8 @@ public final class BatchPoolResizeContent {
     }
 
     /**
-     * Set the nodeDeallocationOption property: Determines what to do with a Compute Node and its running task(s) if
-     * the Pool size is decreasing. The default value is requeue.
+     * Set the nodeDeallocationOption property: Determines what to do with a Compute Node and its running task(s) if the
+     * Pool size is decreasing. The default value is requeue.
      *
      * @param nodeDeallocationOption the nodeDeallocationOption value to set.
      * @return the BatchPoolResizeContent object itself.

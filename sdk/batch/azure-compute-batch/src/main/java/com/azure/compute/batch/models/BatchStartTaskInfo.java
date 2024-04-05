@@ -20,75 +20,59 @@ public final class BatchStartTaskInfo {
      */
     @Generated
     @JsonProperty(value = "state")
-    private BatchStartTaskState state;
+    private final BatchStartTaskState state;
 
     /*
-     * The time at which the StartTask started running. This value is reset every time the Task is restarted or retried
-     * (that is, this is the most recent time at which the StartTask started running).
+     * The time at which the StartTask started running. This value is reset every time the Task is restarted or retried (that is, this is the most recent time at which the StartTask started running).
      */
     @Generated
     @JsonProperty(value = "startTime")
-    private OffsetDateTime startTime;
+    private final OffsetDateTime startTime;
 
     /*
-     * The time at which the StartTask stopped running. This is the end time of the most recent run of the StartTask,
-     * if that run has completed (even if that run failed and a retry is pending). This element is not present if the
-     * StartTask is currently running.
+     * The time at which the StartTask stopped running. This is the end time of the most recent run of the StartTask, if that run has completed (even if that run failed and a retry is pending). This element is not present if the StartTask is currently running.
      */
     @Generated
     @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
-     * The exit code of the program specified on the StartTask command line. This property is set only if the StartTask
-     * is in the completed state. In general, the exit code for a process reflects the specific convention implemented
-     * by the application developer for that process. If you use the exit code value to make decisions in your code, be
-     * sure that you know the exit code convention used by the application process. However, if the Batch service
-     * terminates the StartTask (due to timeout, or user termination via the API) you may see an operating
-     * system-defined exit code.
+     * The exit code of the program specified on the StartTask command line. This property is set only if the StartTask is in the completed state. In general, the exit code for a process reflects the specific convention implemented by the application developer for that process. If you use the exit code value to make decisions in your code, be sure that you know the exit code convention used by the application process. However, if the Batch service terminates the StartTask (due to timeout, or user termination via the API) you may see an operating system-defined exit code.
      */
     @Generated
     @JsonProperty(value = "exitCode")
     private Integer exitCode;
 
     /*
-     * Information about the container under which the Task is executing. This property is set only if the Task runs in
-     * a container context.
+     * Information about the container under which the Task is executing. This property is set only if the Task runs in a container context.
      */
     @Generated
     @JsonProperty(value = "containerInfo")
     private BatchTaskContainerExecutionInfo containerInfo;
 
     /*
-     * Information describing the Task failure, if any. This property is set only if the Task is in the completed state
-     * and encountered a failure.
+     * Information describing the Task failure, if any. This property is set only if the Task is in the completed state and encountered a failure.
      */
     @Generated
     @JsonProperty(value = "failureInfo")
     private BatchTaskFailureInfo failureInfo;
 
     /*
-     * The number of times the Task has been retried by the Batch service. Task application failures (non-zero exit
-     * code) are retried, pre-processing errors (the Task could not be run) and file upload errors are not retried. The
-     * Batch service will retry the Task up to the limit specified by the constraints.
+     * The number of times the Task has been retried by the Batch service. Task application failures (non-zero exit code) are retried, pre-processing errors (the Task could not be run) and file upload errors are not retried. The Batch service will retry the Task up to the limit specified by the constraints.
      */
     @Generated
     @JsonProperty(value = "retryCount")
-    private int retryCount;
+    private final int retryCount;
 
     /*
-     * The most recent time at which a retry of the Task started running. This element is present only if the Task was
-     * retried (i.e. retryCount is nonzero). If present, this is typically the same as startTime, but may be different
-     * if the Task has been restarted for reasons other than retry; for example, if the Compute Node was rebooted
-     * during a retry, then the startTime is updated but the lastRetryTime is not.
+     * The most recent time at which a retry of the Task started running. This element is present only if the Task was retried (i.e. retryCount is nonzero). If present, this is typically the same as startTime, but may be different if the Task has been restarted for reasons other than retry; for example, if the Compute Node was rebooted during a retry, then the startTime is updated but the lastRetryTime is not.
      */
     @Generated
     @JsonProperty(value = "lastRetryTime")
     private OffsetDateTime lastRetryTime;
 
     /*
-     * The result of the Task execution. If the value is 'failed', then the details of the failure can be found in the
-     * failureInfo property.
+     * The result of the Task execution. If the value is 'failed', then the details of the failure can be found in the failureInfo property.
      */
     @Generated
     @JsonProperty(value = "result")
@@ -145,8 +129,8 @@ public final class BatchStartTaskInfo {
     }
 
     /**
-     * Get the exitCode property: The exit code of the program specified on the StartTask command line. This property
-     * is set only if the StartTask is in the completed state. In general, the exit code for a process reflects the
+     * Get the exitCode property: The exit code of the program specified on the StartTask command line. This property is
+     * set only if the StartTask is in the completed state. In general, the exit code for a process reflects the
      * specific convention implemented by the application developer for that process. If you use the exit code value to
      * make decisions in your code, be sure that you know the exit code convention used by the application process.
      * However, if the Batch service terminates the StartTask (due to timeout, or user termination via the API) you may
@@ -182,10 +166,9 @@ public final class BatchStartTaskInfo {
     }
 
     /**
-     * Get the retryCount property: The number of times the Task has been retried by the Batch service. Task
-     * application failures (non-zero exit code) are retried, pre-processing errors (the Task could not be run) and
-     * file upload errors are not retried. The Batch service will retry the Task up to the limit specified by the
-     * constraints.
+     * Get the retryCount property: The number of times the Task has been retried by the Batch service. Task application
+     * failures (non-zero exit code) are retried, pre-processing errors (the Task could not be run) and file upload
+     * errors are not retried. The Batch service will retry the Task up to the limit specified by the constraints.
      *
      * @return the retryCount value.
      */

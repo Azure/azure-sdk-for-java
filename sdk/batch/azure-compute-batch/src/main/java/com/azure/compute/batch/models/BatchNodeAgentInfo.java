@@ -17,21 +17,18 @@ import java.time.OffsetDateTime;
 public final class BatchNodeAgentInfo {
 
     /*
-     * The version of the Batch Compute Node agent running on the Compute Node. This version number can be checked
-     * against the Compute Node agent release notes located at
-     * https://github.com/Azure/Batch/blob/master/changelogs/nodeagent/CHANGELOG.md.
+     * The version of the Batch Compute Node agent running on the Compute Node. This version number can be checked against the Compute Node agent release notes located at https://github.com/Azure/Batch/blob/master/changelogs/nodeagent/CHANGELOG.md.
      */
     @Generated
     @JsonProperty(value = "version")
-    private String version;
+    private final String version;
 
     /*
-     * The time when the Compute Node agent was updated on the Compute Node. This is the most recent time that the
-     * Compute Node agent was updated to a new version.
+     * The time when the Compute Node agent was updated on the Compute Node. This is the most recent time that the Compute Node agent was updated to a new version.
      */
     @Generated
     @JsonProperty(value = "lastUpdateTime")
-    private OffsetDateTime lastUpdateTime;
+    private final OffsetDateTime lastUpdateTime;
 
     /**
      * Creates an instance of BatchNodeAgentInfo class.

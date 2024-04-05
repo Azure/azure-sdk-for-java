@@ -20,19 +20,17 @@ public final class AutoScaleRun {
      */
     @Generated
     @JsonProperty(value = "timestamp")
-    private OffsetDateTime timestamp;
+    private final OffsetDateTime timestamp;
 
     /*
-     * The final values of all variables used in the evaluation of the autoscale formula. Each variable value is
-     * returned in the form $variable=value, and variables are separated by semicolons.
+     * The final values of all variables used in the evaluation of the autoscale formula. Each variable value is returned in the form $variable=value, and variables are separated by semicolons.
      */
     @Generated
     @JsonProperty(value = "results")
     private String results;
 
     /*
-     * Details of the error encountered evaluating the autoscale formula on the Pool, if the evaluation was
-     * unsuccessful.
+     * Details of the error encountered evaluating the autoscale formula on the Pool, if the evaluation was unsuccessful.
      */
     @Generated
     @JsonProperty(value = "error")
@@ -60,8 +58,8 @@ public final class AutoScaleRun {
     }
 
     /**
-     * Get the results property: The final values of all variables used in the evaluation of the autoscale formula.
-     * Each variable value is returned in the form $variable=value, and variables are separated by semicolons.
+     * Get the results property: The final values of all variables used in the evaluation of the autoscale formula. Each
+     * variable value is returned in the form $variable=value, and variables are separated by semicolons.
      *
      * @return the results value.
      */

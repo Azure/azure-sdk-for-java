@@ -43,8 +43,8 @@ public final class AutoScaleRunError {
     }
 
     /**
-     * Get the code property: An identifier for the autoscale error. Codes are invariant and are intended to be
-     * consumed programmatically.
+     * Get the code property: An identifier for the autoscale error. Codes are invariant and are intended to be consumed
+     * programmatically.
      *
      * @return the code value.
      */
@@ -54,8 +54,8 @@ public final class AutoScaleRunError {
     }
 
     /**
-     * Get the message property: A message describing the autoscale error, intended to be suitable for display in a
-     * user interface.
+     * Get the message property: A message describing the autoscale error, intended to be suitable for display in a user
+     * interface.
      *
      * @return the message value.
      */

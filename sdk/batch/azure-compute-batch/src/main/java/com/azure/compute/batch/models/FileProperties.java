@@ -27,14 +27,14 @@ public final class FileProperties {
      */
     @Generated
     @JsonProperty(value = "lastModified")
-    private OffsetDateTime lastModified;
+    private final OffsetDateTime lastModified;
 
     /*
      * The length of the file.
      */
     @Generated
     @JsonProperty(value = "contentLength")
-    private long contentLength;
+    private final long contentLength;
 
     /*
      * The content type of the file.

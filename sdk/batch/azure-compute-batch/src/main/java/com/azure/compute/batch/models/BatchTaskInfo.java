@@ -47,7 +47,7 @@ public final class BatchTaskInfo {
      */
     @Generated
     @JsonProperty(value = "taskState")
-    private BatchTaskState taskState;
+    private final BatchTaskState taskState;
 
     /*
      * Information about the execution of the Task.

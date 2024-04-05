@@ -20,7 +20,7 @@ public final class BatchNodeEndpointConfiguration {
      */
     @Generated
     @JsonProperty(value = "inboundEndpoints")
-    private List<InboundEndpoint> inboundEndpoints;
+    private final List<InboundEndpoint> inboundEndpoints;
 
     /**
      * Creates an instance of BatchNodeEndpointConfiguration class.

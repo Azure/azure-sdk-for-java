@@ -35,8 +35,7 @@ public final class ContainerRegistry {
     private String registryServer;
 
     /*
-     * The reference to the user assigned identity to use to access an Azure Container Registry instead of username and
-     * password.
+     * The reference to the user assigned identity to use to access an Azure Container Registry instead of username and password.
      */
     @Generated
     @JsonProperty(value = "identityReference")

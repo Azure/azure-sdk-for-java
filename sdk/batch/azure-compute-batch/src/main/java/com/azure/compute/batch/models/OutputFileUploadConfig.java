@@ -16,12 +16,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class OutputFileUploadConfig {
 
     /*
-     * The conditions under which the Task output file or set of files should be uploaded. The default is
-     * taskcompletion.
+     * The conditions under which the Task output file or set of files should be uploaded. The default is taskcompletion.
      */
     @Generated
     @JsonProperty(value = "uploadCondition")
-    private OutputFileUploadCondition uploadCondition;
+    private final OutputFileUploadCondition uploadCondition;
 
     /**
      * Creates an instance of OutputFileUploadConfig class.

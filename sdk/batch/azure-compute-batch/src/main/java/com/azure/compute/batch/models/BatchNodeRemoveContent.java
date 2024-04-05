@@ -17,25 +17,21 @@ import java.util.List;
 public final class BatchNodeRemoveContent {
 
     /*
-     * A list containing the IDs of the Compute Nodes to be removed from the specified Pool. A maximum of 100 nodes may
-     * be removed per request.
+     * A list containing the IDs of the Compute Nodes to be removed from the specified Pool. A maximum of 100 nodes may be removed per request.
      */
     @Generated
     @JsonProperty(value = "nodeList")
-    private List<String> nodeList;
+    private final List<String> nodeList;
 
     /*
-     * The timeout for removal of Compute Nodes to the Pool. The default value is 15 minutes. The minimum value is 5
-     * minutes. If you specify a value less than 5 minutes, the Batch service returns an error; if you are calling the
-     * REST API directly, the HTTP status code is 400 (Bad Request).
+     * The timeout for removal of Compute Nodes to the Pool. The default value is 15 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
      */
     @Generated
     @JsonProperty(value = "resizeTimeout")
     private Duration resizeTimeout;
 
     /*
-     * Determines what to do with a Compute Node and its running task(s) after it has been selected for deallocation.
-     * The default value is requeue.
+     * Determines what to do with a Compute Node and its running task(s) after it has been selected for deallocation. The default value is requeue.
      */
     @Generated
     @JsonProperty(value = "nodeDeallocationOption")
@@ -65,8 +61,8 @@ public final class BatchNodeRemoveContent {
 
     /**
      * Get the resizeTimeout property: The timeout for removal of Compute Nodes to the Pool. The default value is 15
-     * minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service returns
-     * an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service returns an
+     * error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
      *
      * @return the resizeTimeout value.
      */
@@ -77,8 +73,8 @@ public final class BatchNodeRemoveContent {
 
     /**
      * Set the resizeTimeout property: The timeout for removal of Compute Nodes to the Pool. The default value is 15
-     * minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service returns
-     * an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service returns an
+     * error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
      *
      * @param resizeTimeout the resizeTimeout value to set.
      * @return the BatchNodeRemoveContent object itself.

@@ -15,27 +15,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class UpgradePolicy {
 
     /*
-     * Specifies the mode of an upgrade to virtual machines in the scale set.<br /><br /> Possible values are:<br /><br
-     * /> **Manual** - You control the application of updates to virtual machines in the scale set. You do this by
-     * using the manualUpgrade action.<br /><br /> **Automatic** - All virtual machines in the scale set are
-     * automatically updated at the same time.<br /><br /> **Rolling** - Scale set performs updates in batches with an
-     * optional pause time in between.
+     * Specifies the mode of an upgrade to virtual machines in the scale set.<br /><br /> Possible values are:<br /><br /> **Manual** - You  control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade action.<br /><br /> **Automatic** - All virtual machines in the scale set are automatically updated at the same time.<br /><br /> **Rolling** - Scale set performs updates in batches with an optional pause time in between.
      */
     @Generated
     @JsonProperty(value = "mode")
-    private UpgradeMode mode;
+    private final UpgradeMode mode;
 
     /*
-     * Configuration parameters used for performing automatic OS Upgrade. The configuration parameters used for
-     * performing automatic OS upgrade.
+     * Configuration parameters used for performing automatic OS Upgrade. The configuration parameters used for performing automatic OS upgrade.
      */
     @Generated
     @JsonProperty(value = "automaticOsUpgradePolicy")
     private AutomaticOsUpgradePolicy automaticOSUpgradePolicy;
 
     /*
-     * The configuration parameters used while performing a rolling upgrade. This property is only supported on Pools
-     * with the virtualMachineConfiguration property.
+     * The configuration parameters used while performing a rolling upgrade. This property is only supported on Pools with the virtualMachineConfiguration property.
      */
     @Generated
     @JsonProperty(value = "rollingUpgradePolicy")
@@ -54,10 +48,10 @@ public final class UpgradePolicy {
 
     /**
      * Get the mode property: Specifies the mode of an upgrade to virtual machines in the scale set.&lt;br /&gt;&lt;br
-     * /&gt; Possible values are:&lt;br /&gt;&lt;br /&gt; **Manual** - You control the application of updates to
-     * virtual machines in the scale set. You do this by using the manualUpgrade action.&lt;br /&gt;&lt;br /&gt;
-     * **Automatic** - All virtual machines in the scale set are automatically updated at the same time.&lt;br
-     * /&gt;&lt;br /&gt; **Rolling** - Scale set performs updates in batches with an optional pause time in between.
+     * /&gt; Possible values are:&lt;br /&gt;&lt;br /&gt; **Manual** - You control the application of updates to virtual
+     * machines in the scale set. You do this by using the manualUpgrade action.&lt;br /&gt;&lt;br /&gt; **Automatic** -
+     * All virtual machines in the scale set are automatically updated at the same time.&lt;br /&gt;&lt;br /&gt;
+     * **Rolling** - Scale set performs updates in batches with an optional pause time in between.
      *
      * @return the mode value.
      */
@@ -67,8 +61,8 @@ public final class UpgradePolicy {
     }
 
     /**
-     * Get the automaticOSUpgradePolicy property: Configuration parameters used for performing automatic OS Upgrade.
-     * The configuration parameters used for performing automatic OS upgrade.
+     * Get the automaticOSUpgradePolicy property: Configuration parameters used for performing automatic OS Upgrade. The
+     * configuration parameters used for performing automatic OS upgrade.
      *
      * @return the automaticOSUpgradePolicy value.
      */
@@ -78,8 +72,8 @@ public final class UpgradePolicy {
     }
 
     /**
-     * Set the automaticOSUpgradePolicy property: Configuration parameters used for performing automatic OS Upgrade.
-     * The configuration parameters used for performing automatic OS upgrade.
+     * Set the automaticOSUpgradePolicy property: Configuration parameters used for performing automatic OS Upgrade. The
+     * configuration parameters used for performing automatic OS upgrade.
      *
      * @param automaticOSUpgradePolicy the automaticOSUpgradePolicy value to set.
      * @return the UpgradePolicy object itself.
@@ -91,8 +85,8 @@ public final class UpgradePolicy {
     }
 
     /**
-     * Get the rollingUpgradePolicy property: The configuration parameters used while performing a rolling upgrade.
-     * This property is only supported on Pools with the virtualMachineConfiguration property.
+     * Get the rollingUpgradePolicy property: The configuration parameters used while performing a rolling upgrade. This
+     * property is only supported on Pools with the virtualMachineConfiguration property.
      *
      * @return the rollingUpgradePolicy value.
      */
@@ -102,8 +96,8 @@ public final class UpgradePolicy {
     }
 
     /**
-     * Set the rollingUpgradePolicy property: The configuration parameters used while performing a rolling upgrade.
-     * This property is only supported on Pools with the virtualMachineConfiguration property.
+     * Set the rollingUpgradePolicy property: The configuration parameters used while performing a rolling upgrade. This
+     * property is only supported on Pools with the virtualMachineConfiguration property.
      *
      * @param rollingUpgradePolicy the rollingUpgradePolicy value to set.
      * @return the UpgradePolicy object itself.

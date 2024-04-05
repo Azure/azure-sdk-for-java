@@ -16,9 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class BatchAutoPoolSpecification {
 
     /*
-     * A prefix to be added to the unique identifier when a Pool is automatically created. The Batch service assigns
-     * each auto Pool a unique identifier on creation. To distinguish between Pools created for different purposes, you
-     * can specify this element to add a prefix to the ID that is assigned. The prefix can be up to 20 characters long.
+     * A prefix to be added to the unique identifier when a Pool is automatically created. The Batch service assigns each auto Pool a unique identifier on creation. To distinguish between Pools created for different purposes, you can specify this element to add a prefix to the ID that is assigned. The prefix can be up to 20 characters long.
      */
     @Generated
     @JsonProperty(value = "autoPoolIdPrefix")
@@ -29,13 +27,10 @@ public final class BatchAutoPoolSpecification {
      */
     @Generated
     @JsonProperty(value = "poolLifetimeOption")
-    private BatchPoolLifetimeOption poolLifetimeOption;
+    private final BatchPoolLifetimeOption poolLifetimeOption;
 
     /*
-     * Whether to keep an auto Pool alive after its lifetime expires. If false, the Batch service deletes the Pool once
-     * its lifetime (as determined by the poolLifetimeOption setting) expires; that is, when the Job or Job Schedule
-     * completes. If true, the Batch service does not delete the Pool automatically. It is up to the user to delete
-     * auto Pools created with this option.
+     * Whether to keep an auto Pool alive after its lifetime expires. If false, the Batch service deletes the Pool once its lifetime (as determined by the poolLifetimeOption setting) expires; that is, when the Job or Job Schedule completes. If true, the Batch service does not delete the Pool automatically. It is up to the user to delete auto Pools created with this option.
      */
     @Generated
     @JsonProperty(value = "keepAlive")

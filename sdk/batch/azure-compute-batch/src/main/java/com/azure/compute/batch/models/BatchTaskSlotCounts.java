@@ -19,35 +19,35 @@ public final class BatchTaskSlotCounts {
      */
     @Generated
     @JsonProperty(value = "active")
-    private int active;
+    private final int active;
 
     /*
      * The number of TaskSlots for running Tasks.
      */
     @Generated
     @JsonProperty(value = "running")
-    private int running;
+    private final int running;
 
     /*
      * The number of TaskSlots for completed Tasks.
      */
     @Generated
     @JsonProperty(value = "completed")
-    private int completed;
+    private final int completed;
 
     /*
      * The number of TaskSlots for succeeded Tasks.
      */
     @Generated
     @JsonProperty(value = "succeeded")
-    private int succeeded;
+    private final int succeeded;
 
     /*
      * The number of TaskSlots for failed Tasks.
      */
     @Generated
     @JsonProperty(value = "failed")
-    private int failed;
+    private final int failed;
 
     /**
      * Creates an instance of BatchTaskSlotCounts class.

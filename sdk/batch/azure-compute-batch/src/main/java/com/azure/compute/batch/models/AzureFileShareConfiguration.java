@@ -19,33 +19,31 @@ public final class AzureFileShareConfiguration {
      */
     @Generated
     @JsonProperty(value = "accountName")
-    private String accountName;
+    private final String accountName;
 
     /*
      * The Azure Files URL. This is of the form 'https://{account}.file.core.windows.net/'.
      */
     @Generated
     @JsonProperty(value = "azureFileUrl")
-    private String azureFileUrl;
+    private final String azureFileUrl;
 
     /*
      * The Azure Storage account key.
      */
     @Generated
     @JsonProperty(value = "accountKey")
-    private String accountKey;
+    private final String accountKey;
 
     /*
-     * The relative path on the compute node where the file system will be mounted. All file systems are mounted
-     * relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment variable.
+     * The relative path on the compute node where the file system will be mounted. All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment variable.
      */
     @Generated
     @JsonProperty(value = "relativeMountPath")
-    private String relativeMountPath;
+    private final String relativeMountPath;
 
     /*
-     * Additional command line options to pass to the mount command. These are 'net use' options in Windows and 'mount'
-     * options in Linux.
+     * Additional command line options to pass to the mount command. These are 'net use' options in Windows and 'mount' options in Linux.
      */
     @Generated
     @JsonProperty(value = "mountOptions")

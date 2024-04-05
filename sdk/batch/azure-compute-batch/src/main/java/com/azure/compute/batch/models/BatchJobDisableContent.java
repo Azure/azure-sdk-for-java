@@ -19,7 +19,7 @@ public final class BatchJobDisableContent {
      */
     @Generated
     @JsonProperty(value = "disableTasks")
-    private DisableBatchJobOption disableTasks;
+    private final DisableBatchJobOption disableTasks;
 
     /**
      * Creates an instance of BatchJobDisableContent class.

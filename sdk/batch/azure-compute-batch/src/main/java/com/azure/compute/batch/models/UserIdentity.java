@@ -15,16 +15,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class UserIdentity {
 
     /*
-     * The name of the user identity under which the Task is run. The userName and autoUser properties are mutually
-     * exclusive; you must specify one but not both.
+     * The name of the user identity under which the Task is run. The userName and autoUser properties are mutually exclusive; you must specify one but not both.
      */
     @Generated
     @JsonProperty(value = "username")
     private String username;
 
     /*
-     * The auto user under which the Task is run. The userName and autoUser properties are mutually exclusive; you must
-     * specify one but not both.
+     * The auto user under which the Task is run. The userName and autoUser properties are mutually exclusive; you must specify one but not both.
      */
     @Generated
     @JsonProperty(value = "autoUser")

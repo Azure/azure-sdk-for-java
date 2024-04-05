@@ -20,37 +20,35 @@ public final class BatchPoolUsageMetrics {
      */
     @Generated
     @JsonProperty(value = "poolId")
-    private String poolId;
+    private final String poolId;
 
     /*
      * The start time of the aggregation interval covered by this entry.
      */
     @Generated
     @JsonProperty(value = "startTime")
-    private OffsetDateTime startTime;
+    private final OffsetDateTime startTime;
 
     /*
      * The end time of the aggregation interval covered by this entry.
      */
     @Generated
     @JsonProperty(value = "endTime")
-    private OffsetDateTime endTime;
+    private final OffsetDateTime endTime;
 
     /*
-     * The size of virtual machines in the Pool. All VMs in a Pool are the same size. For information about available
-     * sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool
-     * (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
+     * The size of virtual machines in the Pool. All VMs in a Pool are the same size. For information about available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
      */
     @Generated
     @JsonProperty(value = "vmSize")
-    private String vmSize;
+    private final String vmSize;
 
     /*
      * The total core hours used in the Pool during this aggregation interval.
      */
     @Generated
     @JsonProperty(value = "totalCoreHours")
-    private double totalCoreHours;
+    private final double totalCoreHours;
 
     /**
      * Creates an instance of BatchPoolUsageMetrics class.

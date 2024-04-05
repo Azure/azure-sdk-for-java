@@ -16,14 +16,11 @@ import java.util.List;
 public final class BatchPoolEndpointConfiguration {
 
     /*
-     * A list of inbound NAT Pools that can be used to address specific ports on an individual Compute Node externally.
-     * The maximum number of inbound NAT Pools per Batch Pool is 5. If the maximum number of inbound NAT Pools is
-     * exceeded the request fails with HTTP status code 400. This cannot be specified if the IPAddressProvisioningType
-     * is NoPublicIPAddresses.
+     * A list of inbound NAT Pools that can be used to address specific ports on an individual Compute Node externally. The maximum number of inbound NAT Pools per Batch Pool is 5. If the maximum number of inbound NAT Pools is exceeded the request fails with HTTP status code 400. This cannot be specified if the IPAddressProvisioningType is NoPublicIPAddresses.
      */
     @Generated
     @JsonProperty(value = "inboundNATPools")
-    private List<InboundNATPool> inboundNatPools;
+    private final List<InboundNATPool> inboundNatPools;
 
     /**
      * Creates an instance of BatchPoolEndpointConfiguration class.

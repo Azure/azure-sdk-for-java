@@ -20,7 +20,7 @@ public final class BatchError {
      */
     @Generated
     @JsonProperty(value = "code")
-    private String code;
+    private final String code;
 
     /*
      * A message describing the error, intended to be suitable for display in a user interface.

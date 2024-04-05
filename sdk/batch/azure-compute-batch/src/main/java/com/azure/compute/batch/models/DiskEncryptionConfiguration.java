@@ -17,9 +17,7 @@ import java.util.List;
 public final class DiskEncryptionConfiguration {
 
     /*
-     * The list of disk targets Batch Service will encrypt on the compute node. If omitted, no disks on the compute
-     * nodes in the pool will be encrypted. On Linux pool, only "TemporaryDisk" is supported; on Windows pool, "OsDisk"
-     * and "TemporaryDisk" must be specified.
+     * The list of disk targets Batch Service will encrypt on the compute node. If omitted, no disks on the compute nodes in the pool will be encrypted. On Linux pool, only "TemporaryDisk" is supported; on Windows pool, "OsDisk" and "TemporaryDisk" must be specified.
      */
     @Generated
     @JsonProperty(value = "targets")
@@ -33,9 +31,9 @@ public final class DiskEncryptionConfiguration {
     }
 
     /**
-     * Get the targets property: The list of disk targets Batch Service will encrypt on the compute node. If omitted,
-     * no disks on the compute nodes in the pool will be encrypted. On Linux pool, only "TemporaryDisk" is supported;
-     * on Windows pool, "OsDisk" and "TemporaryDisk" must be specified.
+     * Get the targets property: The list of disk targets Batch Service will encrypt on the compute node. If omitted, no
+     * disks on the compute nodes in the pool will be encrypted. On Linux pool, only "TemporaryDisk" is supported; on
+     * Windows pool, "OsDisk" and "TemporaryDisk" must be specified.
      *
      * @return the targets value.
      */
@@ -45,9 +43,9 @@ public final class DiskEncryptionConfiguration {
     }
 
     /**
-     * Set the targets property: The list of disk targets Batch Service will encrypt on the compute node. If omitted,
-     * no disks on the compute nodes in the pool will be encrypted. On Linux pool, only "TemporaryDisk" is supported;
-     * on Windows pool, "OsDisk" and "TemporaryDisk" must be specified.
+     * Set the targets property: The list of disk targets Batch Service will encrypt on the compute node. If omitted, no
+     * disks on the compute nodes in the pool will be encrypted. On Linux pool, only "TemporaryDisk" is supported; on
+     * Windows pool, "OsDisk" and "TemporaryDisk" must be specified.
      *
      * @param targets the targets value to set.
      * @return the DiskEncryptionConfiguration object itself.

@@ -19,14 +19,14 @@ public final class BatchNodeRemoteLoginSettings {
      */
     @Generated
     @JsonProperty(value = "remoteLoginIPAddress")
-    private String remoteLoginIpAddress;
+    private final String remoteLoginIpAddress;
 
     /*
      * The port used for remote login to the Compute Node.
      */
     @Generated
     @JsonProperty(value = "remoteLoginPort")
-    private int remoteLoginPort;
+    private final int remoteLoginPort;
 
     /**
      * Creates an instance of BatchNodeRemoteLoginSettings class.

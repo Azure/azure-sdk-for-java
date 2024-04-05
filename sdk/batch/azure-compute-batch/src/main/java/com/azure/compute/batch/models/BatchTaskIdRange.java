@@ -20,14 +20,14 @@ public final class BatchTaskIdRange {
      */
     @Generated
     @JsonProperty(value = "start")
-    private int start;
+    private final int start;
 
     /*
      * The last Task ID in the range.
      */
     @Generated
     @JsonProperty(value = "end")
-    private int end;
+    private final int end;
 
     /**
      * Creates an instance of BatchTaskIdRange class.

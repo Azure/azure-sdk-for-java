@@ -19,14 +19,14 @@ public final class BatchTaskCountsResult {
      */
     @Generated
     @JsonProperty(value = "taskCounts")
-    private BatchTaskCounts taskCounts;
+    private final BatchTaskCounts taskCounts;
 
     /*
      * The number of TaskSlots required by Tasks per state.
      */
     @Generated
     @JsonProperty(value = "taskSlotCounts")
-    private BatchTaskSlotCounts taskSlotCounts;
+    private final BatchTaskSlotCounts taskSlotCounts;
 
     /**
      * Creates an instance of BatchTaskCountsResult class.

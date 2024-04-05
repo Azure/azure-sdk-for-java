@@ -37,35 +37,21 @@ public final class ImageReference {
     private String sku;
 
     /*
-     * The version of the Azure Virtual Machines Marketplace Image. A value of 'latest' can be specified to select the
-     * latest version of an Image. If omitted, the default is 'latest'.
+     * The version of the Azure Virtual Machines Marketplace Image. A value of 'latest' can be specified to select the latest version of an Image. If omitted, the default is 'latest'.
      */
     @Generated
     @JsonProperty(value = "version")
     private String version;
 
     /*
-     * The ARM resource identifier of the Azure Compute Gallery Image. Compute Nodes in the Pool will be created using
-     * this Image Id. This is of the form
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName
-     * }/images/{imageDefinitionName}/versions/{VersionId}
-     * or
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName
-     * }/images/{imageDefinitionName}
-     * for always defaulting to the latest image version. This property is mutually exclusive with other ImageReference
-     * properties. The Azure Compute Gallery Image must have replicas in the same region and must be in the same
-     * subscription as the Azure Batch account. If the image version is not specified in the imageId, the latest
-     * version will be used. For information about the firewall settings for the Batch Compute Node agent to
-     * communicate with the Batch service see
-     * https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
+     * The ARM resource identifier of the Azure Compute Gallery Image. Compute Nodes in the Pool will be created using this Image Id. This is of the form /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageDefinitionName}/versions/{VersionId} or /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageDefinitionName} for always defaulting to the latest image version. This property is mutually exclusive with other ImageReference properties. The Azure Compute Gallery Image must have replicas in the same region and must be in the same subscription as the Azure Batch account. If the image version is not specified in the imageId, the latest version will be used. For information about the firewall settings for the Batch Compute Node agent to communicate with the Batch service see https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
      */
     @Generated
     @JsonProperty(value = "virtualMachineImageId")
     private String virtualMachineImageId;
 
     /*
-     * The specific version of the platform image or marketplace image used to create the node. This read-only field
-     * differs from 'version' only if the value specified for 'version' when the pool was created was 'latest'.
+     * The specific version of the platform image or marketplace image used to create the node. This read-only field differs from 'version' only if the value specified for 'version' when the pool was created was 'latest'.
      */
     @Generated
     @JsonProperty(value = "exactVersion", access = JsonProperty.Access.WRITE_ONLY)
@@ -79,8 +65,8 @@ public final class ImageReference {
     }
 
     /**
-     * Get the publisher property: The publisher of the Azure Virtual Machines Marketplace Image. For example,
-     * Canonical or MicrosoftWindowsServer.
+     * Get the publisher property: The publisher of the Azure Virtual Machines Marketplace Image. For example, Canonical
+     * or MicrosoftWindowsServer.
      *
      * @return the publisher value.
      */
@@ -90,8 +76,8 @@ public final class ImageReference {
     }
 
     /**
-     * Set the publisher property: The publisher of the Azure Virtual Machines Marketplace Image. For example,
-     * Canonical or MicrosoftWindowsServer.
+     * Set the publisher property: The publisher of the Azure Virtual Machines Marketplace Image. For example, Canonical
+     * or MicrosoftWindowsServer.
      *
      * @param publisher the publisher value to set.
      * @return the ImageReference object itself.
@@ -103,8 +89,8 @@ public final class ImageReference {
     }
 
     /**
-     * Get the offer property: The offer type of the Azure Virtual Machines Marketplace Image. For example,
-     * UbuntuServer or WindowsServer.
+     * Get the offer property: The offer type of the Azure Virtual Machines Marketplace Image. For example, UbuntuServer
+     * or WindowsServer.
      *
      * @return the offer value.
      */
@@ -114,8 +100,8 @@ public final class ImageReference {
     }
 
     /**
-     * Set the offer property: The offer type of the Azure Virtual Machines Marketplace Image. For example,
-     * UbuntuServer or WindowsServer.
+     * Set the offer property: The offer type of the Azure Virtual Machines Marketplace Image. For example, UbuntuServer
+     * or WindowsServer.
      *
      * @param offer the offer value to set.
      * @return the ImageReference object itself.
@@ -151,8 +137,8 @@ public final class ImageReference {
     }
 
     /**
-     * Get the version property: The version of the Azure Virtual Machines Marketplace Image. A value of 'latest' can
-     * be specified to select the latest version of an Image. If omitted, the default is 'latest'.
+     * Get the version property: The version of the Azure Virtual Machines Marketplace Image. A value of 'latest' can be
+     * specified to select the latest version of an Image. If omitted, the default is 'latest'.
      *
      * @return the version value.
      */
@@ -162,8 +148,8 @@ public final class ImageReference {
     }
 
     /**
-     * Set the version property: The version of the Azure Virtual Machines Marketplace Image. A value of 'latest' can
-     * be specified to select the latest version of an Image. If omitted, the default is 'latest'.
+     * Set the version property: The version of the Azure Virtual Machines Marketplace Image. A value of 'latest' can be
+     * specified to select the latest version of an Image. If omitted, the default is 'latest'.
      *
      * @param version the version value to set.
      * @return the ImageReference object itself.
@@ -182,9 +168,9 @@ public final class ImageReference {
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageDefinitionName}
      * for always defaulting to the latest image version. This property is mutually exclusive with other ImageReference
      * properties. The Azure Compute Gallery Image must have replicas in the same region and must be in the same
-     * subscription as the Azure Batch account. If the image version is not specified in the imageId, the latest
-     * version will be used. For information about the firewall settings for the Batch Compute Node agent to
-     * communicate with the Batch service see
+     * subscription as the Azure Batch account. If the image version is not specified in the imageId, the latest version
+     * will be used. For information about the firewall settings for the Batch Compute Node agent to communicate with
+     * the Batch service see
      * https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
      *
      * @return the virtualMachineImageId value.
@@ -202,9 +188,9 @@ public final class ImageReference {
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageDefinitionName}
      * for always defaulting to the latest image version. This property is mutually exclusive with other ImageReference
      * properties. The Azure Compute Gallery Image must have replicas in the same region and must be in the same
-     * subscription as the Azure Batch account. If the image version is not specified in the imageId, the latest
-     * version will be used. For information about the firewall settings for the Batch Compute Node agent to
-     * communicate with the Batch service see
+     * subscription as the Azure Batch account. If the image version is not specified in the imageId, the latest version
+     * will be used. For information about the firewall settings for the Batch Compute Node agent to communicate with
+     * the Batch service see
      * https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
      *
      * @param virtualMachineImageId the virtualMachineImageId value to set.
@@ -217,9 +203,9 @@ public final class ImageReference {
     }
 
     /**
-     * Get the exactVersion property: The specific version of the platform image or marketplace image used to create
-     * the node. This read-only field differs from 'version' only if the value specified for 'version' when the pool
-     * was created was 'latest'.
+     * Get the exactVersion property: The specific version of the platform image or marketplace image used to create the
+     * node. This read-only field differs from 'version' only if the value specified for 'version' when the pool was
+     * created was 'latest'.
      *
      * @return the exactVersion value.
      */

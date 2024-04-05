@@ -20,21 +20,21 @@ public final class ExitCodeRangeMapping {
      */
     @Generated
     @JsonProperty(value = "start")
-    private int start;
+    private final int start;
 
     /*
      * The last exit code in the range.
      */
     @Generated
     @JsonProperty(value = "end")
-    private int end;
+    private final int end;
 
     /*
      * How the Batch service should respond if the Task exits with an exit code in the range start to end (inclusive).
      */
     @Generated
     @JsonProperty(value = "exitOptions")
-    private ExitOptions exitOptions;
+    private final ExitOptions exitOptions;
 
     /**
      * Creates an instance of ExitCodeRangeMapping class.

@@ -16,9 +16,7 @@ import java.util.List;
 public final class BatchNode {
 
     /*
-     * The ID of the Compute Node. Every Compute Node that is added to a Pool is assigned a unique ID. Whenever a
-     * Compute Node is removed from a Pool, all of its local files are deleted, and the ID is reclaimed and could be
-     * reused for new Compute Nodes.
+     * The ID of the Compute Node. Every Compute Node that is added to a Pool is assigned a unique ID. Whenever a Compute Node is removed from a Pool, all of its local files are deleted, and the ID is reclaimed and could be reused for new Compute Nodes.
      */
     @Generated
     @JsonProperty(value = "id")
@@ -32,9 +30,7 @@ public final class BatchNode {
     private String url;
 
     /*
-     * The current state of the Compute Node. The Spot/Low-priority Compute Node has been preempted. Tasks which were
-     * running on the Compute Node when it was preempted will be rescheduled when another Compute Node becomes
-     * available.
+     * The current state of the Compute Node. The Spot/Low-priority Compute Node has been preempted. Tasks which were running on the Compute Node when it was preempted will be rescheduled when another Compute Node becomes available.
      */
     @Generated
     @JsonProperty(value = "state")
@@ -55,84 +51,70 @@ public final class BatchNode {
     private OffsetDateTime stateTransitionTime;
 
     /*
-     * The last time at which the Compute Node was started. This property may not be present if the Compute Node state
-     * is unusable.
+     * The last time at which the Compute Node was started. This property may not be present if the Compute Node state is unusable.
      */
     @Generated
     @JsonProperty(value = "lastBootTime")
     private OffsetDateTime lastBootTime;
 
     /*
-     * The time at which this Compute Node was allocated to the Pool. This is the time when the Compute Node was
-     * initially allocated and doesn't change once set. It is not updated when the Compute Node is service healed or
-     * preempted.
+     * The time at which this Compute Node was allocated to the Pool. This is the time when the Compute Node was initially allocated and doesn't change once set. It is not updated when the Compute Node is service healed or preempted.
      */
     @Generated
     @JsonProperty(value = "allocationTime")
     private OffsetDateTime allocationTime;
 
     /*
-     * The IP address that other Nodes can use to communicate with this Compute Node. Every Compute Node that is added
-     * to a Pool is assigned a unique IP address. Whenever a Compute Node is removed from a Pool, all of its local
-     * files are deleted, and the IP address is reclaimed and could be reused for new Compute Nodes.
+     * The IP address that other Nodes can use to communicate with this Compute Node. Every Compute Node that is added to a Pool is assigned a unique IP address. Whenever a Compute Node is removed from a Pool, all of its local files are deleted, and the IP address is reclaimed and could be reused for new Compute Nodes.
      */
     @Generated
     @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /*
-     * An identifier which can be passed when adding a Task to request that the Task be scheduled on this Compute Node.
-     * Note that this is just a soft affinity. If the target Compute Node is busy or unavailable at the time the Task
-     * is scheduled, then the Task will be scheduled elsewhere.
+     * An identifier which can be passed when adding a Task to request that the Task be scheduled on this Compute Node. Note that this is just a soft affinity. If the target Compute Node is busy or unavailable at the time the Task is scheduled, then the Task will be scheduled elsewhere.
      */
     @Generated
     @JsonProperty(value = "affinityId")
     private String affinityId;
 
     /*
-     * The size of the virtual machine hosting the Compute Node. For information about available sizes of virtual
-     * machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool
-     * (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
+     * The size of the virtual machine hosting the Compute Node. For information about available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
      */
     @Generated
     @JsonProperty(value = "vmSize")
     private String vmSize;
 
     /*
-     * The total number of Job Tasks completed on the Compute Node. This includes Job Manager Tasks and normal Tasks,
-     * but not Job Preparation, Job Release or Start Tasks.
+     * The total number of Job Tasks completed on the Compute Node. This includes Job Manager Tasks and normal Tasks, but not Job Preparation, Job Release or Start Tasks.
      */
     @Generated
     @JsonProperty(value = "totalTasksRun")
     private Integer totalTasksRun;
 
     /*
-     * The total number of currently running Job Tasks on the Compute Node. This includes Job Manager Tasks and normal
-     * Tasks, but not Job Preparation, Job Release or Start Tasks.
+     * The total number of currently running Job Tasks on the Compute Node. This includes Job Manager Tasks and normal Tasks, but not Job Preparation, Job Release or Start Tasks.
      */
     @Generated
     @JsonProperty(value = "runningTasksCount")
     private Integer runningTasksCount;
 
     /*
-     * The total number of scheduling slots used by currently running Job Tasks on the Compute Node. This includes Job
-     * Manager Tasks and normal Tasks, but not Job Preparation, Job Release or Start Tasks.
+     * The total number of scheduling slots used by currently running Job Tasks on the Compute Node. This includes Job Manager Tasks and normal Tasks, but not Job Preparation, Job Release or Start Tasks.
      */
     @Generated
     @JsonProperty(value = "runningTaskSlotsCount")
     private Integer runningTaskSlotsCount;
 
     /*
-     * The total number of Job Tasks which completed successfully (with exitCode 0) on the Compute Node. This includes
-     * Job Manager Tasks and normal Tasks, but not Job Preparation, Job Release or Start Tasks.
+     * The total number of Job Tasks which completed successfully (with exitCode 0) on the Compute Node. This includes Job Manager Tasks and normal Tasks, but not Job Preparation, Job Release or Start Tasks.
      */
     @Generated
     @JsonProperty(value = "totalTasksSucceeded")
     private Integer totalTasksSucceeded;
 
     /*
-     * A list of Tasks whose state has recently changed. This property is present only if at least one Task has run on
-     * this Compute Node since it was assigned to the Pool.
+     * A list of Tasks whose state has recently changed. This property is present only if at least one Task has run on this Compute Node since it was assigned to the Pool.
      */
     @Generated
     @JsonProperty(value = "recentTasks")
@@ -154,12 +136,9 @@ public final class BatchNode {
 
     /*
      * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
-     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
-     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
-     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
-     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
-     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
-     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      */
     @Generated
     @JsonProperty(value = "certificateReferences")
@@ -173,8 +152,7 @@ public final class BatchNode {
     private List<BatchNodeError> errors;
 
     /*
-     * Whether this Compute Node is a dedicated Compute Node. If false, the Compute Node is a Spot/Low-priority Compute
-     * Node.
+     * Whether this Compute Node is a dedicated Compute Node. If false, the Compute Node is a Spot/Low-priority Compute Node.
      */
     @Generated
     @JsonProperty(value = "isDedicated")
@@ -358,8 +336,8 @@ public final class BatchNode {
 
     /**
      * Get the totalTasksSucceeded property: The total number of Job Tasks which completed successfully (with exitCode
-     * 0) on the Compute Node. This includes Job Manager Tasks and normal Tasks, but not Job Preparation, Job Release
-     * or Start Tasks.
+     * 0) on the Compute Node. This includes Job Manager Tasks and normal Tasks, but not Job Preparation, Job Release or
+     * Start Tasks.
      *
      * @return the totalTasksSucceeded value.
      */

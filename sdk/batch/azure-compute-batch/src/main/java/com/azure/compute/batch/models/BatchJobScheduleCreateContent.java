@@ -16,41 +16,35 @@ import java.util.List;
 public final class BatchJobScheduleCreateContent {
 
     /*
-     * A string that uniquely identifies the schedule within the Account. The ID can contain any combination of
-     * alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is
-     * case-preserving and case-insensitive (that is, you may not have two IDs within an Account that differ only by
-     * case).
+     * A string that uniquely identifies the schedule within the Account. The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within an Account that differ only by case).
      */
     @Generated
     @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     /*
-     * The display name for the schedule. The display name need not be unique and can contain any Unicode characters up
-     * to a maximum length of 1024.
+     * The display name for the schedule. The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
      */
     @Generated
     @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
-     * The schedule according to which Jobs will be created. All times are fixed respective to UTC and are not impacted
-     * by daylight saving time.
+     * The schedule according to which Jobs will be created. All times are fixed respective to UTC and are not impacted by daylight saving time.
      */
     @Generated
     @JsonProperty(value = "schedule")
-    private BatchJobScheduleConfiguration schedule;
+    private final BatchJobScheduleConfiguration schedule;
 
     /*
      * The details of the Jobs to be created on this schedule.
      */
     @Generated
     @JsonProperty(value = "jobSpecification")
-    private BatchJobSpecification jobSpecification;
+    private final BatchJobSpecification jobSpecification;
 
     /*
-     * A list of name-value pairs associated with the schedule as metadata. The Batch service does not assign any
-     * meaning to metadata; it is solely for the use of user code.
+     * A list of name-value pairs associated with the schedule as metadata. The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
      */
     @Generated
     @JsonProperty(value = "metadata")
@@ -132,8 +126,8 @@ public final class BatchJobScheduleCreateContent {
     }
 
     /**
-     * Get the metadata property: A list of name-value pairs associated with the schedule as metadata. The Batch
-     * service does not assign any meaning to metadata; it is solely for the use of user code.
+     * Get the metadata property: A list of name-value pairs associated with the schedule as metadata. The Batch service
+     * does not assign any meaning to metadata; it is solely for the use of user code.
      *
      * @return the metadata value.
      */
@@ -143,8 +137,8 @@ public final class BatchJobScheduleCreateContent {
     }
 
     /**
-     * Set the metadata property: A list of name-value pairs associated with the schedule as metadata. The Batch
-     * service does not assign any meaning to metadata; it is solely for the use of user code.
+     * Set the metadata property: A list of name-value pairs associated with the schedule as metadata. The Batch service
+     * does not assign any meaning to metadata; it is solely for the use of user code.
      *
      * @param metadata the metadata value to set.
      * @return the BatchJobScheduleCreateContent object itself.

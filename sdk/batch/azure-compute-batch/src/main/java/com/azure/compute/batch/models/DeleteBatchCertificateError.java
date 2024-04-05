@@ -15,8 +15,7 @@ import java.util.List;
 public final class DeleteBatchCertificateError {
 
     /*
-     * An identifier for the Certificate deletion error. Codes are invariant and are intended to be consumed
-     * programmatically.
+     * An identifier for the Certificate deletion error. Codes are invariant and are intended to be consumed programmatically.
      */
     @Generated
     @JsonProperty(value = "code")
@@ -30,9 +29,7 @@ public final class DeleteBatchCertificateError {
     private String message;
 
     /*
-     * A list of additional error details related to the Certificate deletion error. This list includes details such as
-     * the active Pools and Compute Nodes referencing this Certificate. However, if a large number of resources
-     * reference the Certificate, the list contains only about the first hundred.
+     * A list of additional error details related to the Certificate deletion error. This list includes details such as the active Pools and Compute Nodes referencing this Certificate. However, if a large number of resources reference the Certificate, the list contains only about the first hundred.
      */
     @Generated
     @JsonProperty(value = "values")

@@ -20,14 +20,14 @@ public final class ExitCodeMapping {
      */
     @Generated
     @JsonProperty(value = "code")
-    private int code;
+    private final int code;
 
     /*
      * How the Batch service should respond if the Task exits with this exit code.
      */
     @Generated
     @JsonProperty(value = "exitOptions")
-    private ExitOptions exitOptions;
+    private final ExitOptions exitOptions;
 
     /**
      * Creates an instance of ExitCodeMapping class.

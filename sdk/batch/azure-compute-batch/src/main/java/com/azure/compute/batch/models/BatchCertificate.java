@@ -17,19 +17,18 @@ import java.time.OffsetDateTime;
 public final class BatchCertificate {
 
     /*
-     * The X.509 thumbprint of the Certificate. This is a sequence of up to 40 hex digits (it may include spaces but
-     * these are removed).
+     * The X.509 thumbprint of the Certificate. This is a sequence of up to 40 hex digits (it may include spaces but these are removed).
      */
     @Generated
     @JsonProperty(value = "thumbprint")
-    private String thumbprint;
+    private final String thumbprint;
 
     /*
      * The algorithm used to derive the thumbprint. This must be sha1.
      */
     @Generated
     @JsonProperty(value = "thumbprintAlgorithm")
-    private String thumbprintAlgorithm;
+    private final String thumbprintAlgorithm;
 
     /*
      * The URL of the Certificate.
@@ -53,16 +52,14 @@ public final class BatchCertificate {
     private OffsetDateTime stateTransitionTime;
 
     /*
-     * The previous state of the Certificate. This property is not set if the Certificate is in its initial active
-     * state.
+     * The previous state of the Certificate. This property is not set if the Certificate is in its initial active state.
      */
     @Generated
     @JsonProperty(value = "previousState", access = JsonProperty.Access.WRITE_ONLY)
     private BatchCertificateState previousState;
 
     /*
-     * The time at which the Certificate entered its previous state. This property is not set if the Certificate is in
-     * its initial Active state.
+     * The time at which the Certificate entered its previous state. This property is not set if the Certificate is in its initial Active state.
      */
     @Generated
     @JsonProperty(value = "previousStateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
@@ -76,8 +73,7 @@ public final class BatchCertificate {
     private String publicData;
 
     /*
-     * The error that occurred on the last attempt to delete this Certificate. This property is set only if the
-     * Certificate is in the DeleteFailed state.
+     * The error that occurred on the last attempt to delete this Certificate. This property is set only if the Certificate is in the DeleteFailed state.
      */
     @Generated
     @JsonProperty(value = "deleteCertificateError", access = JsonProperty.Access.WRITE_ONLY)
@@ -88,7 +84,7 @@ public final class BatchCertificate {
      */
     @Generated
     @JsonProperty(value = "data")
-    private String data;
+    private final String data;
 
     /*
      * The format of the Certificate data.

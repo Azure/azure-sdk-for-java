@@ -16,14 +16,11 @@ import java.util.List;
 public final class BatchTaskGroup {
 
     /*
-     * The collection of Tasks to add. The maximum count of Tasks is 100. The total serialized size of this collection
-     * must be less than 1MB. If it is greater than 1MB (for example if each Task has 100's of resource files or
-     * environment variables), the request will fail with code 'RequestBodyTooLarge' and should be retried again with
-     * fewer Tasks.
+     * The collection of Tasks to add. The maximum count of Tasks is 100. The total serialized size of this collection must be less than 1MB. If it is greater than 1MB (for example if each Task has 100's of resource files or environment variables), the request will fail with code 'RequestBodyTooLarge' and should be retried again with fewer Tasks.
      */
     @Generated
     @JsonProperty(value = "value")
-    private List<BatchTaskCreateContent> value;
+    private final List<BatchTaskCreateContent> value;
 
     /**
      * Creates an instance of BatchTaskGroup class.

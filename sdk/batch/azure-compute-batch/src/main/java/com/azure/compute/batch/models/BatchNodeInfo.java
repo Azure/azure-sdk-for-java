@@ -14,8 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class BatchNodeInfo {
 
     /*
-     * An identifier for the Node on which the Task ran, which can be passed when adding a Task to request that the
-     * Task be scheduled on this Compute Node.
+     * An identifier for the Node on which the Task ran, which can be passed when adding a Task to request that the Task be scheduled on this Compute Node.
      */
     @Generated
     @JsonProperty(value = "affinityId")

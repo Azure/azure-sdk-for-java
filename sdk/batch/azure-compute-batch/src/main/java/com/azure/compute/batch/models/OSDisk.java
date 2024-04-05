@@ -52,8 +52,7 @@ public final class OSDisk {
     }
 
     /*
-     * Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The default values are: None
-     * for Standard storage. ReadOnly for Premium storage.
+     * Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The default values are: None for Standard storage. ReadOnly for Premium storage.
      */
     @Generated
     @JsonProperty(value = "caching")
@@ -81,8 +80,8 @@ public final class OSDisk {
     private Boolean writeAcceleratorEnabled;
 
     /**
-     * Get the caching property: Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite.
-     * The default values are: None for Standard storage. ReadOnly for Premium storage.
+     * Get the caching property: Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The
+     * default values are: None for Standard storage. ReadOnly for Premium storage.
      *
      * @return the caching value.
      */
@@ -92,8 +91,8 @@ public final class OSDisk {
     }
 
     /**
-     * Set the caching property: Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite.
-     * The default values are: None for Standard storage. ReadOnly for Premium storage.
+     * Set the caching property: Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The
+     * default values are: None for Standard storage. ReadOnly for Premium storage.
      *
      * @param caching the caching value to set.
      * @return the OSDisk object itself.
@@ -149,8 +148,8 @@ public final class OSDisk {
     }
 
     /**
-     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
-     * the disk.
+     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
      *
      * @return the writeAcceleratorEnabled value.
      */
@@ -160,8 +159,8 @@ public final class OSDisk {
     }
 
     /**
-     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
-     * the disk.
+     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
      *
      * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set.
      * @return the OSDisk object itself.

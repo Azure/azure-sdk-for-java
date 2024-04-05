@@ -20,19 +20,17 @@ public final class BatchTaskAddResult {
      */
     @Generated
     @JsonProperty(value = "status")
-    private BatchTaskAddStatus status;
+    private final BatchTaskAddStatus status;
 
     /*
      * The ID of the Task for which this is the result.
      */
     @Generated
     @JsonProperty(value = "taskId")
-    private String taskId;
+    private final String taskId;
 
     /*
-     * The ETag of the Task, if the Task was successfully added. You can use this to detect whether the Task has
-     * changed between requests. In particular, you can be pass the ETag with an Update Task request to specify that
-     * your changes should take effect only if nobody else has modified the Job in the meantime.
+     * The ETag of the Task, if the Task was successfully added. You can use this to detect whether the Task has changed between requests. In particular, you can be pass the ETag with an Update Task request to specify that your changes should take effect only if nobody else has modified the Job in the meantime.
      */
     @Generated
     @JsonProperty(value = "eTag")
@@ -96,8 +94,7 @@ public final class BatchTaskAddResult {
     /**
      * Get the eTag property: The ETag of the Task, if the Task was successfully added. You can use this to detect
      * whether the Task has changed between requests. In particular, you can be pass the ETag with an Update Task
-     * request to specify that your changes should take effect only if nobody else has modified the Job in the
-     * meantime.
+     * request to specify that your changes should take effect only if nobody else has modified the Job in the meantime.
      *
      * @return the eTag value.
      */

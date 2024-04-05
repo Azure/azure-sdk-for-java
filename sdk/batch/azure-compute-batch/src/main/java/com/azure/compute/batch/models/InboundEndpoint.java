@@ -19,42 +19,42 @@ public final class InboundEndpoint {
      */
     @Generated
     @JsonProperty(value = "name")
-    private String name;
+    private final String name;
 
     /*
      * The protocol of the endpoint.
      */
     @Generated
     @JsonProperty(value = "protocol")
-    private InboundEndpointProtocol protocol;
+    private final InboundEndpointProtocol protocol;
 
     /*
      * The public IP address of the Compute Node.
      */
     @Generated
     @JsonProperty(value = "publicIPAddress")
-    private String publicIpAddress;
+    private final String publicIpAddress;
 
     /*
      * The public fully qualified domain name for the Compute Node.
      */
     @Generated
     @JsonProperty(value = "publicFQDN")
-    private String publicFQDN;
+    private final String publicFQDN;
 
     /*
      * The public port number of the endpoint.
      */
     @Generated
     @JsonProperty(value = "frontendPort")
-    private int frontendPort;
+    private final int frontendPort;
 
     /*
      * The backend port number of the endpoint.
      */
     @Generated
     @JsonProperty(value = "backendPort")
-    private int backendPort;
+    private final int backendPort;
 
     /**
      * Creates an instance of InboundEndpoint class.

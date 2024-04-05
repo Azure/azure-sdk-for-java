@@ -19,98 +19,98 @@ public final class BatchNodeCounts {
      */
     @Generated
     @JsonProperty(value = "creating")
-    private int creating;
+    private final int creating;
 
     /*
      * The number of Compute Nodes in the idle state.
      */
     @Generated
     @JsonProperty(value = "idle")
-    private int idle;
+    private final int idle;
 
     /*
      * The number of Compute Nodes in the offline state.
      */
     @Generated
     @JsonProperty(value = "offline")
-    private int offline;
+    private final int offline;
 
     /*
      * The number of Compute Nodes in the preempted state.
      */
     @Generated
     @JsonProperty(value = "preempted")
-    private int preempted;
+    private final int preempted;
 
     /*
      * The count of Compute Nodes in the rebooting state.
      */
     @Generated
     @JsonProperty(value = "rebooting")
-    private int rebooting;
+    private final int rebooting;
 
     /*
      * The number of Compute Nodes in the reimaging state.
      */
     @Generated
     @JsonProperty(value = "reimaging")
-    private int reimaging;
+    private final int reimaging;
 
     /*
      * The number of Compute Nodes in the running state.
      */
     @Generated
     @JsonProperty(value = "running")
-    private int running;
+    private final int running;
 
     /*
      * The number of Compute Nodes in the starting state.
      */
     @Generated
     @JsonProperty(value = "starting")
-    private int starting;
+    private final int starting;
 
     /*
      * The number of Compute Nodes in the startTaskFailed state.
      */
     @Generated
     @JsonProperty(value = "startTaskFailed")
-    private int startTaskFailed;
+    private final int startTaskFailed;
 
     /*
      * The number of Compute Nodes in the leavingPool state.
      */
     @Generated
     @JsonProperty(value = "leavingPool")
-    private int leavingPool;
+    private final int leavingPool;
 
     /*
      * The number of Compute Nodes in the unknown state.
      */
     @Generated
     @JsonProperty(value = "unknown")
-    private int unknown;
+    private final int unknown;
 
     /*
      * The number of Compute Nodes in the unusable state.
      */
     @Generated
     @JsonProperty(value = "unusable")
-    private int unusable;
+    private final int unusable;
 
     /*
      * The number of Compute Nodes in the waitingForStartTask state.
      */
     @Generated
     @JsonProperty(value = "waitingForStartTask")
-    private int waitingForStartTask;
+    private final int waitingForStartTask;
 
     /*
      * The total number of Compute Nodes.
      */
     @Generated
     @JsonProperty(value = "total")
-    private int total;
+    private final int total;
 
     /**
      * Get the creating property: The number of Compute Nodes in the creating state.
@@ -257,7 +257,7 @@ public final class BatchNodeCounts {
      */
     @Generated
     @JsonProperty(value = "upgradingOs")
-    private int upgradingOS;
+    private final int upgradingOS;
 
     /**
      * Creates an instance of BatchNodeCounts class.

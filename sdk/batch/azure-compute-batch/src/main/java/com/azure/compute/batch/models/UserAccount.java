@@ -20,14 +20,14 @@ public final class UserAccount {
      */
     @Generated
     @JsonProperty(value = "name")
-    private String name;
+    private final String name;
 
     /*
      * The password for the user Account.
      */
     @Generated
     @JsonProperty(value = "password")
-    private String password;
+    private final String password;
 
     /*
      * The elevation level of the user Account. The default value is nonAdmin.
@@ -37,16 +37,14 @@ public final class UserAccount {
     private ElevationLevel elevationLevel;
 
     /*
-     * The Linux-specific user configuration for the user Account. This property is ignored if specified on a Windows
-     * Pool. If not specified, the user is created with the default options.
+     * The Linux-specific user configuration for the user Account. This property is ignored if specified on a Windows Pool. If not specified, the user is created with the default options.
      */
     @Generated
     @JsonProperty(value = "linuxUserConfiguration")
     private LinuxUserConfiguration linuxUserConfiguration;
 
     /*
-     * The Windows-specific user configuration for the user Account. This property can only be specified if the user is
-     * on a Windows Pool. If not specified and on a Windows Pool, the user is created with the default options.
+     * The Windows-specific user configuration for the user Account. This property can only be specified if the user is on a Windows Pool. If not specified and on a Windows Pool, the user is created with the default options.
      */
     @Generated
     @JsonProperty(value = "windowsUserConfiguration")
@@ -136,8 +134,8 @@ public final class UserAccount {
 
     /**
      * Get the windowsUserConfiguration property: The Windows-specific user configuration for the user Account. This
-     * property can only be specified if the user is on a Windows Pool. If not specified and on a Windows Pool, the
-     * user is created with the default options.
+     * property can only be specified if the user is on a Windows Pool. If not specified and on a Windows Pool, the user
+     * is created with the default options.
      *
      * @return the windowsUserConfiguration value.
      */
@@ -148,8 +146,8 @@ public final class UserAccount {
 
     /**
      * Set the windowsUserConfiguration property: The Windows-specific user configuration for the user Account. This
-     * property can only be specified if the user is on a Windows Pool. If not specified and on a Windows Pool, the
-     * user is created with the default options.
+     * property can only be specified if the user is on a Windows Pool. If not specified and on a Windows Pool, the user
+     * is created with the default options.
      *
      * @param windowsUserConfiguration the windowsUserConfiguration value to set.
      * @return the UserAccount object itself.

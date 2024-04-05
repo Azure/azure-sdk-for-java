@@ -20,11 +20,10 @@ public final class BatchJobSchedulingError {
      */
     @Generated
     @JsonProperty(value = "category")
-    private ErrorCategory category;
+    private final ErrorCategory category;
 
     /*
-     * An identifier for the Job scheduling error. Codes are invariant and are intended to be consumed
-     * programmatically.
+     * An identifier for the Job scheduling error. Codes are invariant and are intended to be consumed programmatically.
      */
     @Generated
     @JsonProperty(value = "code")
@@ -77,8 +76,8 @@ public final class BatchJobSchedulingError {
     }
 
     /**
-     * Get the message property: A message describing the Job scheduling error, intended to be suitable for display in
-     * a user interface.
+     * Get the message property: A message describing the Job scheduling error, intended to be suitable for display in a
+     * user interface.
      *
      * @return the message value.
      */

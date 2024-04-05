@@ -21,22 +21,21 @@ public final class BatchPoolUsageStatistics {
      */
     @Generated
     @JsonProperty(value = "startTime")
-    private OffsetDateTime startTime;
+    private final OffsetDateTime startTime;
 
     /*
-     * The time at which the statistics were last updated. All statistics are limited to the range between startTime
-     * and lastUpdateTime.
+     * The time at which the statistics were last updated. All statistics are limited to the range between startTime and lastUpdateTime.
      */
     @Generated
     @JsonProperty(value = "lastUpdateTime")
-    private OffsetDateTime lastUpdateTime;
+    private final OffsetDateTime lastUpdateTime;
 
     /*
      * The aggregated wall-clock time of the dedicated Compute Node cores being part of the Pool.
      */
     @Generated
     @JsonProperty(value = "dedicatedCoreTime")
-    private Duration dedicatedCoreTime;
+    private final Duration dedicatedCoreTime;
 
     /**
      * Creates an instance of BatchPoolUsageStatistics class.
@@ -77,8 +76,8 @@ public final class BatchPoolUsageStatistics {
     }
 
     /**
-     * Get the dedicatedCoreTime property: The aggregated wall-clock time of the dedicated Compute Node cores being
-     * part of the Pool.
+     * Get the dedicatedCoreTime property: The aggregated wall-clock time of the dedicated Compute Node cores being part
+     * of the Pool.
      *
      * @return the dedicatedCoreTime value.
      */

@@ -19,36 +19,35 @@ public final class BatchTaskCounts {
      */
     @Generated
     @JsonProperty(value = "active")
-    private int active;
+    private final int active;
 
     /*
      * The number of Tasks in the running or preparing state.
      */
     @Generated
     @JsonProperty(value = "running")
-    private int running;
+    private final int running;
 
     /*
      * The number of Tasks in the completed state.
      */
     @Generated
     @JsonProperty(value = "completed")
-    private int completed;
+    private final int completed;
 
     /*
-     * The number of Tasks which succeeded. A Task succeeds if its result (found in the executionInfo property) is
-     * 'success'.
+     * The number of Tasks which succeeded. A Task succeeds if its result (found in the executionInfo property) is 'success'.
      */
     @Generated
     @JsonProperty(value = "succeeded")
-    private int succeeded;
+    private final int succeeded;
 
     /*
      * The number of Tasks which failed. A Task fails if its result (found in the executionInfo property) is 'failure'.
      */
     @Generated
     @JsonProperty(value = "failed")
-    private int failed;
+    private final int failed;
 
     /**
      * Creates an instance of BatchTaskCounts class.
@@ -113,8 +112,8 @@ public final class BatchTaskCounts {
     }
 
     /**
-     * Get the failed property: The number of Tasks which failed. A Task fails if its result (found in the
-     * executionInfo property) is 'failure'.
+     * Get the failed property: The number of Tasks which failed. A Task fails if its result (found in the executionInfo
+     * property) is 'failure'.
      *
      * @return the failed value.
      */

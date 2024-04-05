@@ -4,20 +4,15 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.implementation.BatchesImpl;
-import com.azure.compute.batch.implementation.task.SyncTaskSubmitter;
-import com.azure.compute.batch.implementation.task.TaskManager;
-import com.azure.compute.batch.implementation.task.TaskSubmitter;
 import com.azure.compute.batch.models.AutoScaleRun;
 import com.azure.compute.batch.models.BatchApplication;
 import com.azure.compute.batch.models.BatchCertificate;
-import com.azure.compute.batch.models.BatchClientParallelOptions;
 import com.azure.compute.batch.models.BatchJob;
 import com.azure.compute.batch.models.BatchJobCreateContent;
 import com.azure.compute.batch.models.BatchJobDisableContent;
 import com.azure.compute.batch.models.BatchJobPreparationAndReleaseTaskStatus;
 import com.azure.compute.batch.models.BatchJobSchedule;
 import com.azure.compute.batch.models.BatchJobScheduleCreateContent;
-import com.azure.compute.batch.models.BatchJobScheduleExistsOptions;
 import com.azure.compute.batch.models.BatchJobScheduleUpdateContent;
 import com.azure.compute.batch.models.BatchJobTerminateContent;
 import com.azure.compute.batch.models.BatchJobUpdateContent;
@@ -34,7 +29,6 @@ import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolCreateContent;
 import com.azure.compute.batch.models.BatchPoolEnableAutoScaleContent;
 import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleContent;
-import com.azure.compute.batch.models.BatchPoolExistsOptions;
 import com.azure.compute.batch.models.BatchPoolNodeCounts;
 import com.azure.compute.batch.models.BatchPoolReplaceContent;
 import com.azure.compute.batch.models.BatchPoolResizeContent;
@@ -46,6 +40,35 @@ import com.azure.compute.batch.models.BatchTaskAddCollectionResult;
 import com.azure.compute.batch.models.BatchTaskCountsResult;
 import com.azure.compute.batch.models.BatchTaskCreateContent;
 import com.azure.compute.batch.models.BatchTaskGroup;
+import com.azure.compute.batch.models.ImageInfo;
+import com.azure.compute.batch.models.UploadBatchServiceLogsContent;
+import com.azure.compute.batch.models.UploadBatchServiceLogsResult;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.RequestConditions;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.DateTimeRfc1123;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import com.azure.compute.batch.implementation.task.SyncTaskSubmitter;
+import com.azure.compute.batch.implementation.task.TaskManager;
+import com.azure.compute.batch.implementation.task.TaskSubmitter;
+import com.azure.compute.batch.models.BatchClientParallelOptions;
+import com.azure.compute.batch.models.BatchJobScheduleExistsOptions;
+import com.azure.compute.batch.models.BatchPoolExistsOptions;
 import com.azure.compute.batch.models.CancelBatchCertificateDeletionOptions;
 import com.azure.compute.batch.models.CreateBatchCertificateOptions;
 import com.azure.compute.batch.models.CreateBatchJobOptions;
@@ -86,7 +109,6 @@ import com.azure.compute.batch.models.GetBatchPoolOptions;
 import com.azure.compute.batch.models.GetBatchTaskFileOptions;
 import com.azure.compute.batch.models.GetBatchTaskFilePropertiesOptions;
 import com.azure.compute.batch.models.GetBatchTaskOptions;
-import com.azure.compute.batch.models.ImageInfo;
 import com.azure.compute.batch.models.ListBatchApplicationsOptions;
 import com.azure.compute.batch.models.ListBatchCertificatesOptions;
 import com.azure.compute.batch.models.ListBatchJobPreparationAndReleaseTaskStatusOptions;
@@ -120,28 +142,6 @@ import com.azure.compute.batch.models.UpdateBatchJobOptions;
 import com.azure.compute.batch.models.UpdateBatchJobScheduleOptions;
 import com.azure.compute.batch.models.UpdateBatchPoolOptions;
 import com.azure.compute.batch.models.UploadBatchNodeLogsOptions;
-import com.azure.compute.batch.models.UploadBatchServiceLogsContent;
-import com.azure.compute.batch.models.UploadBatchServiceLogsResult;
-import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceModifiedException;
-import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.RequestConditions;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
-import com.azure.core.util.BinaryData;
-import com.azure.core.util.DateTimeRfc1123;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Initializes a new instance of the synchronous BatchClient type.
@@ -2527,7 +2527,8 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return The {@link FileResponseHeaderProperties} object containing the properties retrieved from the response headers.
+     * @return The {@link FileResponseHeaderProperties} object containing the properties retrieved from the response
+     * headers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileResponseHeaderProperties getTaskFileProperties(String jobId, String taskId, String filePath,
@@ -2562,7 +2563,8 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return The {@link FileResponseHeaderProperties} object containing the properties retrieved from the response headers.
+     * @return The {@link FileResponseHeaderProperties} object containing the properties retrieved from the response
+     * headers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileResponseHeaderProperties getTaskFileProperties(String jobId, String taskId, String filePath) {
@@ -3217,7 +3219,8 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return The {@link FileResponseHeaderProperties} object containing the properties retrieved from the response headers.
+     * @return The {@link FileResponseHeaderProperties} object containing the properties retrieved from the response
+     * headers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileResponseHeaderProperties getNodeFileProperties(String poolId, String nodeId, String filePath,
@@ -3252,7 +3255,8 @@ public final class BatchClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return The {@link FileResponseHeaderProperties} object containing the properties retrieved from the response headers.
+     * @return The {@link FileResponseHeaderProperties} object containing the properties retrieved from the response
+     * headers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileResponseHeaderProperties getNodeFileProperties(String poolId, String nodeId, String filePath) {
@@ -3308,36 +3312,20 @@ public final class BatchClient {
      * administrator information about applications and versions that are not yet
      * available to Compute Nodes, use the Azure portal or the Azure Resource Manager
      * API.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>maxresults</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3400,6 +3388,7 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3431,29 +3420,17 @@ public final class BatchClient {
      * administrator information about Applications and versions that are not yet
      * available to Compute Nodes, use the Azure portal or the Azure Resource Manager
      * API.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3544,59 +3521,31 @@ public final class BatchClient {
      * including a startTime or endTime these filters default to the start and end
      * times of the last aggregation interval currently available; that is, only the
      * last aggregation interval is returned.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>maxresults</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td>
-     * </tr>
-     * <tr>
-     * <td>startTime</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>The earliest time from which to include metrics. This must be at least two and
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>startTime</td><td>OffsetDateTime</td><td>No</td><td>The earliest time from which to include metrics. This
+     * must be at least two and
      * a half hours before the current time. If not specified this defaults to the
-     * start time of the last aggregation interval currently available.</td>
-     * </tr>
-     * <tr>
-     * <td>endtime</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>The latest time from which to include metrics. This must be at least two hours
+     * start time of the last aggregation interval currently available.</td></tr>
+     * <tr><td>endtime</td><td>OffsetDateTime</td><td>No</td><td>The latest time from which to include metrics. This
+     * must be at least two hours
      * before the current time. If not specified this defaults to the end time of the
-     * last aggregation interval currently available.</td>
-     * </tr>
-     * <tr>
-     * <td>$filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td>
-     * </tr>
+     * last aggregation interval currently available.</td></tr>
+     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
+     * this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     poolId: String (Required)
@@ -3684,6 +3633,7 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
+     * 
      * <pre>{@code
      * {
      *     poolId: String (Required)
@@ -3713,29 +3663,17 @@ public final class BatchClient {
      * When naming Pools, avoid including sensitive information such as user names or
      * secret project names. This information may appear in telemetry logs accessible
      * to Microsoft Support engineers.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -4298,55 +4236,27 @@ public final class BatchClient {
 
     /**
      * Lists all of the Pools in the specified Account.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>maxresults</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td>
-     * </tr>
-     * <tr>
-     * <td>$filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.</td>
-     * </tr>
-     * <tr>
-     * <td>$select</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $select clause. In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>$expand</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $expand clause. In the form of "," separated string.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
+     * this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
+     * separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -4746,6 +4656,7 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -5108,69 +5019,35 @@ public final class BatchClient {
      * zero size before deleting the Pool. If you call an Update, Patch or Delete API
      * on a Pool in the deleting state, it will fail with HTTP status code 409 with
      * error code PoolBeingDeleted.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
@@ -5285,74 +5162,39 @@ public final class BatchClient {
 
     /**
      * Gets basic properties of a Pool.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * boolean
      * }</pre>
@@ -5463,86 +5305,43 @@ public final class BatchClient {
 
     /**
      * Gets information about the specified Pool.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>$select</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $select clause. In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>$expand</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $expand clause. In the form of "," separated string.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
+     * separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -6302,74 +6101,39 @@ public final class BatchClient {
      * This only replaces the Pool properties specified in the request. For example,
      * if the Pool has a StartTask associated with it, and a request does not specify
      * a StartTask element, then the Pool keeps the existing StartTask.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     startTask (Optional): {
@@ -6623,24 +6387,13 @@ public final class BatchClient {
 
     /**
      * Disables automatic scaling for a Pool.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
@@ -6705,74 +6458,39 @@ public final class BatchClient {
      * scaling of the Pool is already enabled, you may specify a new autoscale formula
      * and/or a new evaluation interval. You cannot call this API for the same Pool
      * more than once every 30 seconds.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     autoScaleFormula: String (Optional)
@@ -6905,37 +6623,25 @@ public final class BatchClient {
      * This API is primarily for validating an autoscale formula, as it simply returns
      * the result without applying the formula to the Pool. The Pool must have auto
      * scaling enabled in order to evaluate a formula.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     autoScaleFormula: String (Required)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     timestamp: OffsetDateTime (Required)
@@ -7052,74 +6758,39 @@ public final class BatchClient {
      * the Batch service returns an error 409. If you resize a Pool downwards, the
      * Batch service chooses which Compute Nodes to remove. To remove specific Compute
      * Nodes, use the Pool remove Compute Nodes API instead.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     targetDedicatedNodes: Integer (Optional)
@@ -7259,69 +6930,35 @@ public final class BatchClient {
      * the Pool allocation state changes first to stopping and then to steady. A
      * resize operation need not be an explicit resize Pool request; this API can also
      * be used to halt the initial sizing of the Pool when it is created.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
@@ -7437,29 +7074,17 @@ public final class BatchClient {
      * This fully replaces all the updatable properties of the Pool. For example, if
      * the Pool has a StartTask associated with it and if StartTask is not specified
      * with this request, then the Batch service will remove the existing StartTask.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     startTask (Optional): {
@@ -7672,74 +7297,39 @@ public final class BatchClient {
      * This operation can only run when the allocation state of the Pool is steady.
      * When this operation runs, the allocation state changes from steady to resizing.
      * Each request may remove up to 100 nodes.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     nodeList (Required): [
@@ -7870,43 +7460,23 @@ public final class BatchClient {
 
     /**
      * Lists all Virtual Machine Images supported by the Azure Batch service.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>maxresults</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td>
-     * </tr>
-     * <tr>
-     * <td>$filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
+     * this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     nodeAgentSKUId: String (Required)
@@ -7980,6 +7550,7 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
+     * 
      * <pre>{@code
      * {
      *     nodeAgentSKUId: String (Required)
@@ -8017,43 +7588,23 @@ public final class BatchClient {
      * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the
      * numbers returned may not always be up to date. If you need exact node counts,
      * use a list query.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>maxresults</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td>
-     * </tr>
-     * <tr>
-     * <td>$filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
+     * this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     poolId: String (Required)
@@ -8133,6 +7684,7 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
+     * 
      * <pre>{@code
      * {
      *     poolId: String (Required)
@@ -8181,69 +7733,35 @@ public final class BatchClient {
      * deleting state. All update operations on a Job that is in deleting state will
      * fail with status code 409 (Conflict), with additional information indicating
      * that the Job is being deleted.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
@@ -8356,86 +7874,43 @@ public final class BatchClient {
 
     /**
      * Gets information about the specified Job.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>$select</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $select clause. In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>$expand</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $expand clause. In the form of "," separated string.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
+     * separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -9357,74 +8832,39 @@ public final class BatchClient {
      * This replaces only the Job properties specified in the request. For example, if
      * the Job has constraints, and a request does not specify the constraints
      * element, then the Job keeps the existing constraints.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     priority: Integer (Optional)
@@ -10078,74 +9518,39 @@ public final class BatchClient {
      * This fully replaces all the updatable properties of the Job. For example, if
      * the Job has constraints associated with it and if constraints is not specified
      * with this request, then the Batch service will remove the existing constraints.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -11067,74 +10472,39 @@ public final class BatchClient {
      * are started under the Job until it moves back to active state. If you try to
      * disable a Job that is in any state other than active, disabling, or disabled,
      * the request fails with status code 409.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     disableTasks: String(requeue/terminate/wait) (Required)
@@ -11268,69 +10638,35 @@ public final class BatchClient {
      * does not allow a Task to remain in the active state for more than 180 days.
      * Therefore, if you enable a Job containing active Tasks which were added more
      * than 180 days ago, those Tasks will not run.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
@@ -11451,29 +10787,17 @@ public final class BatchClient {
      * including sensitive information such as user names or secret project names.
      * This information may appear in telemetry logs accessible to Microsoft Support
      * engineers.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -12258,55 +11582,27 @@ public final class BatchClient {
 
     /**
      * Lists all of the Jobs in the specified Account.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>maxresults</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td>
-     * </tr>
-     * <tr>
-     * <td>$filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td>
-     * </tr>
-     * <tr>
-     * <td>$select</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $select clause. In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>$expand</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $expand clause. In the form of "," separated string.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
+     * this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
+     * separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -12786,6 +12082,7 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -13215,55 +12512,27 @@ public final class BatchClient {
 
     /**
      * Lists the Jobs that have been created under the specified Job Schedule.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>maxresults</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td>
-     * </tr>
-     * <tr>
-     * <td>$filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td>
-     * </tr>
-     * <tr>
-     * <td>$select</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $select clause. In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>$expand</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $expand clause. In the form of "," separated string.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
+     * this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
+     * separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -13744,6 +13013,7 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -14182,49 +13452,25 @@ public final class BatchClient {
      * invoked on a Job which has no Job Preparation or Job Release Task, the Batch
      * service returns HTTP status code 409 (Conflict) with an error code of
      * JobPreparationTaskNotSpecified.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>maxresults</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td>
-     * </tr>
-     * <tr>
-     * <td>$filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td>
-     * </tr>
-     * <tr>
-     * <td>$select</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $select clause. In the form of "," separated string.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
+     * this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     poolId: String (Optional)
@@ -14340,6 +13586,7 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
+     * 
      * <pre>{@code
      * {
      *     poolId: String (Optional)
@@ -14396,8 +13643,7 @@ public final class BatchClient {
      * for a Job as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BinaryData> listJobPreparationAndReleaseTaskStatus(String jobId,
-        RequestOptions requestOptions) {
+    PagedIterable<BinaryData> listJobPreparationAndReleaseTaskStatus(String jobId, RequestOptions requestOptions) {
         return this.listJobPreparationAndReleaseTaskStatusInternal(jobId, requestOptions);
     }
 
@@ -14408,29 +13654,17 @@ public final class BatchClient {
      * state, and a count of Tasks which succeeded or failed. Tasks in the preparing
      * state are counted as running. Note that the numbers returned may not always be
      * up to date. If you need exact task counts, use a list query.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     taskCounts (Required): {
@@ -14531,29 +13765,17 @@ public final class BatchClient {
 
     /**
      * Creates a Certificate to the specified Account.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     thumbprint: String (Required)
@@ -14663,49 +13885,25 @@ public final class BatchClient {
 
     /**
      * Lists all of the Certificates that have been added to the specified Account.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>maxresults</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td>
-     * </tr>
-     * <tr>
-     * <td>$filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.</td>
-     * </tr>
-     * <tr>
-     * <td>$select</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $select clause. In the form of "," separated string.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
+     * this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     thumbprint: String (Required)
@@ -14790,6 +13988,7 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
+     * 
      * <pre>{@code
      * {
      *     thumbprint: String (Required)
@@ -14838,24 +14037,13 @@ public final class BatchClient {
      * Certificate, you do not need to run this operation after the deletion failed.
      * You must make sure that the Certificate is not being used by any resources, and
      * then you can try again to delete the Certificate.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
@@ -14935,24 +14123,13 @@ public final class BatchClient {
      * that is in use, the deletion fails. The Certificate status changes to
      * deleteFailed. You can use Cancel Delete Certificate to set the status back to
      * active if you decide that you want to continue using the Certificate.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
@@ -15024,35 +14201,19 @@ public final class BatchClient {
 
     /**
      * Gets information about the specified Certificate.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>$select</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $select clause. In the form of "," separated string.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     thumbprint: String (Required)
@@ -15172,74 +14333,39 @@ public final class BatchClient {
 
     /**
      * Checks the specified Job Schedule exists.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * boolean
      * }</pre>
@@ -15356,69 +14482,35 @@ public final class BatchClient {
      * the Compute Nodes are also deleted (the retention period is ignored). The Job
      * Schedule statistics are no longer accessible once the Job Schedule is deleted,
      * though they are still counted towards Account lifetime statistics.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
@@ -15529,86 +14621,43 @@ public final class BatchClient {
 
     /**
      * Gets information about the specified Job Schedule.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>$select</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $select clause. In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>$expand</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $expand clause. In the form of "," separated string.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
+     * separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -16538,74 +15587,39 @@ public final class BatchClient {
      * Batch service will keep the existing schedule. Changes to a Job Schedule only
      * impact Jobs created by the schedule after the update has taken place; currently
      * running Jobs are unaffected.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     schedule (Optional): {
@@ -17465,74 +16479,39 @@ public final class BatchClient {
      * Batch service will remove the existing schedule. Changes to a Job Schedule only
      * impact Jobs created by the schedule after the update has taken place; currently
      * running Jobs are unaffected.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -18456,69 +17435,35 @@ public final class BatchClient {
      * Disables a Job Schedule.
      *
      * No new Jobs will be created until the Job Schedule is enabled again.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
@@ -18626,69 +17571,35 @@ public final class BatchClient {
 
     /**
      * Enables a Job Schedule.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
@@ -18793,69 +17704,35 @@ public final class BatchClient {
 
     /**
      * Terminates a Job Schedule.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
@@ -18960,29 +17837,17 @@ public final class BatchClient {
 
     /**
      * Creates a Job Schedule to the specified Account.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -19783,55 +18648,27 @@ public final class BatchClient {
 
     /**
      * Lists all of the Job Schedules in the specified Account.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>maxresults</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td>
-     * </tr>
-     * <tr>
-     * <td>$filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td>
-     * </tr>
-     * <tr>
-     * <td>$select</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $select clause. In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>$expand</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $expand clause. In the form of "," separated string.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
+     * this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
+     * separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -20314,6 +19151,7 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -20750,29 +19588,17 @@ public final class BatchClient {
      * The maximum lifetime of a Task from addition to completion is 180 days. If a
      * Task has not completed within 180 days of being added it will be terminated by
      * the Batch service and left in whatever state it was in at that time.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -21090,55 +19916,27 @@ public final class BatchClient {
      * For multi-instance Tasks, information such as affinityId, executionInfo and
      * nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
      * information about subtasks.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>maxresults</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td>
-     * </tr>
-     * <tr>
-     * <td>$filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td>
-     * </tr>
-     * <tr>
-     * <td>$select</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $select clause. In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>$expand</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $expand clause. In the form of "," separated string.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
+     * this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
+     * separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -21388,6 +20186,7 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -21598,29 +20397,17 @@ public final class BatchClient {
      * lifetime of a Task from addition to completion is 180 days. If a Task has not
      * completed within 180 days of being added it will be terminated by the Batch
      * service and left in whatever state it was in at that time.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     value (Required): [
@@ -21749,9 +20536,9 @@ public final class BatchClient {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     value (Optional): [
@@ -22017,69 +20804,35 @@ public final class BatchClient {
      * multi-instance Tasks, the delete Task operation applies synchronously to the
      * primary task; subtasks and their files are then deleted asynchronously in the
      * background.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
@@ -22195,86 +20948,43 @@ public final class BatchClient {
      * For multi-instance Tasks, information such as affinityId, executionInfo and
      * nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
      * information about subtasks.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>$select</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $select clause. In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>$expand</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $expand clause. In the form of "," separated string.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
+     * separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -22764,74 +21474,39 @@ public final class BatchClient {
 
     /**
      * Updates the properties of the specified Task.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -23306,69 +21981,35 @@ public final class BatchClient {
      * When the Task has been terminated, it moves to the completed state. For
      * multi-instance Tasks, the terminate Task operation applies synchronously to the
      * primary task; subtasks are then terminated asynchronously in the background.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
@@ -23489,69 +22130,35 @@ public final class BatchClient {
      * is reset to 0. Reactivation will fail for Tasks that are not completed or that
      * previously completed successfully (with an exit code of 0). Additionally, it
      * will fail if the Job has completed (or is terminating or deleting).
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
@@ -23665,33 +22272,18 @@ public final class BatchClient {
 
     /**
      * Deletes the specified Task file from the Compute Node where the Task ran.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>recursive</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether to delete children of a directory. If the filePath parameter represents
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to delete children of a directory. If the filePath
+     * parameter represents
      * a directory instead of a file, you can set recursive to true to delete the
      * directory and all of the files and subdirectories in it. If recursive is false
-     * then the directory must be empty or deletion will fail.</td>
-     * </tr>
+     * then the directory must be empty or deletion will fail.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
@@ -23764,65 +22356,34 @@ public final class BatchClient {
 
     /**
      * Returns the content of the specified Task file.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>ocp-range</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The byte range to be retrieved. The default is to retrieve the entire file. The
-     * format is bytes=startRange-endRange.</td>
-     * </tr>
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>ocp-range</td><td>String</td><td>No</td><td>The byte range to be retrieved. The default is to retrieve
+     * the entire file. The
+     * format is bytes=startRange-endRange.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * BinaryData
      * }</pre>
@@ -23932,53 +22493,27 @@ public final class BatchClient {
 
     /**
      * Gets the properties of the specified Task file.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
+     * not been modified since the specified time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
@@ -24073,50 +22608,26 @@ public final class BatchClient {
 
     /**
      * Lists the files in a Task's directory on its Compute Node.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>maxresults</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td>
-     * </tr>
-     * <tr>
-     * <td>$filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td>
-     * </tr>
-     * <tr>
-     * <td>recursive</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether to list children of the Task directory. This parameter can be used in
-     * combination with the filter parameter to list specific type of files.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
+     * this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
+     * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of the Task directory. This
+     * parameter can be used in
+     * combination with the filter parameter to list specific type of files.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Optional)
@@ -24194,6 +22705,7 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Optional)
@@ -24229,29 +22741,17 @@ public final class BatchClient {
      *
      * You can add a user Account to a Compute Node only when it is in the idle or
      * running state.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Required)
@@ -24341,24 +22841,13 @@ public final class BatchClient {
      *
      * You can delete a user Account to a Compute Node only when it is in the idle or
      * running state.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
@@ -24430,29 +22919,17 @@ public final class BatchClient {
      * example, if the expiryTime element is not specified, the current value is
      * replaced with the default value, not left unmodified. You can update a user
      * Account on a Compute Node only when it is in the idle or running state.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     password: String (Optional)
@@ -24540,35 +23017,19 @@ public final class BatchClient {
 
     /**
      * Gets information about the specified Compute Node.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>$select</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $select clause. In the form of "," separated string.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -24946,24 +23407,13 @@ public final class BatchClient {
      *
      * You can enable Task scheduling on a Compute Node only if its current scheduling
      * state is disabled.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
@@ -25032,29 +23482,17 @@ public final class BatchClient {
      * Before you can remotely login to a Compute Node using the remote login
      * settings, you must create a user Account on the Compute Node. This API can be
      * invoked only on Pools created with the virtual machine configuration property.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     remoteLoginIPAddress: String (Required)
@@ -25141,29 +23579,17 @@ public final class BatchClient {
      * from Compute Nodes if you are experiencing an error and wish to escalate to
      * Azure support. The Azure Batch service log files should be shared with Azure
      * support to aid in debugging issues with the Batch service.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     containerUrl: String (Required)
@@ -25174,9 +23600,9 @@ public final class BatchClient {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     virtualDirectoryName: String (Required)
@@ -25274,49 +23700,25 @@ public final class BatchClient {
 
     /**
      * Lists the Compute Nodes in the specified Pool.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>maxresults</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td>
-     * </tr>
-     * <tr>
-     * <td>$filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td>
-     * </tr>
-     * <tr>
-     * <td>$select</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $select clause. In the form of "," separated string.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
+     * this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -25531,6 +23933,7 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -25701,35 +24104,19 @@ public final class BatchClient {
 
     /**
      * Gets information about the specified Compute Node Extension.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>$select</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $select clause. In the form of "," separated string.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     provisioningState: String (Optional)
@@ -25875,42 +24262,22 @@ public final class BatchClient {
 
     /**
      * Lists the Compute Nodes Extensions in the specified Pool.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>maxresults</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td>
-     * </tr>
-     * <tr>
-     * <td>$select</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $select clause. In the form of "," separated string.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     provisioningState: String (Optional)
@@ -26003,6 +24370,7 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
+     * 
      * <pre>{@code
      * {
      *     provisioningState: String (Optional)
@@ -26058,33 +24426,18 @@ public final class BatchClient {
 
     /**
      * Deletes the specified file from the Compute Node.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>recursive</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether to delete children of a directory. If the filePath parameter represents
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to delete children of a directory. If the filePath
+     * parameter represents
      * a directory instead of a file, you can set recursive to true to delete the
      * directory and all of the files and subdirectories in it. If recursive is false
-     * then the directory must be empty or deletion will fail.</td>
-     * </tr>
+     * then the directory must be empty or deletion will fail.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
@@ -26157,65 +24510,34 @@ public final class BatchClient {
 
     /**
      * Returns the content of the specified Compute Node file.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>ocp-range</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The byte range to be retrieved. The default is to retrieve the entire file. The
-     * format is bytes=startRange-endRange.</td>
-     * </tr>
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>ocp-range</td><td>String</td><td>No</td><td>The byte range to be retrieved. The default is to retrieve
+     * the entire file. The
+     * format is bytes=startRange-endRange.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * BinaryData
      * }</pre>
@@ -26325,53 +24647,27 @@ public final class BatchClient {
 
     /**
      * Gets the properties of the specified Compute Node file.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
+     * not been modified since the specified time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
@@ -26466,49 +24762,24 @@ public final class BatchClient {
 
     /**
      * Lists all of the files in Task directories on the specified Compute Node.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>maxresults</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td>
-     * </tr>
-     * <tr>
-     * <td>$filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td>
-     * </tr>
-     * <tr>
-     * <td>recursive</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether to list children of a directory.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
+     * this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
+     * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of a directory.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Optional)
@@ -26585,6 +24856,7 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Optional)
@@ -26928,12 +25200,18 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$expand",
+                expand.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -27246,12 +25524,18 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$expand",
+                expand.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -27780,8 +26064,11 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         return getCertificateInternalWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).getValue()
             .toObject(BatchCertificate.class);
@@ -27978,12 +26265,18 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$expand",
+                expand.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -28457,12 +26750,18 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$expand",
+                expand.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -28606,8 +26905,11 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         return serviceClient.listSubTasksInternal(jobId, taskId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchSubtask.class));
@@ -29081,8 +27383,11 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         return getNodeInternalWithResponse(poolId, nodeId, requestOptions).getValue().toObject(BatchNode.class);
     }
@@ -29265,8 +27570,11 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         return getNodeExtensionInternalWithResponse(poolId, nodeId, extensionName, requestOptions).getValue()
             .toObject(BatchNodeVMExtension.class);
@@ -29536,74 +27844,39 @@ public final class BatchClient {
      * moves into the completed state. If there are any Tasks in the Job in the active
      * state, they will remain in the active state. Once a Job is terminated, new
      * Tasks cannot be added and any remaining active Tasks will not be scheduled.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Modified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time
+     * of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>A timestamp indicating the last modified time of the resource known to the
+     * been modified since the specified time.</td></tr>
+     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified
+     * time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * not been modified since the specified time.</td></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service exactly matches the value specified by the client.</td>
-     * </tr>
-     * <tr>
-     * <td>If-None-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An ETag value associated with the version of the resource known to the client.
+     * service exactly matches the value specified by the client.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource
+     * known to the client.
      * The operation will be performed only if the resource's current ETag on the
-     * service does not match the value specified by the client.</td>
-     * </tr>
+     * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     terminateReason: String (Optional)
@@ -29729,29 +28002,17 @@ public final class BatchClient {
      * Restarts the specified Compute Node.
      *
      * You can restart a Compute Node only if it is in an idle or running state.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     nodeRebootOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
@@ -29829,29 +28090,17 @@ public final class BatchClient {
      *
      * You can disable Task scheduling on a Compute Node only if its current
      * scheduling state is enabled.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     nodeDisableSchedulingOption: String(requeue/terminate/taskcompletion) (Optional)
@@ -30002,35 +28251,19 @@ public final class BatchClient {
      * Task.
      *
      * If the Task is not a multi-instance Task then this returns an empty collection.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>timeOut</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
-     * the value is larger than 30, the default will be used instead.".</td>
-     * </tr>
-     * <tr>
-     * <td>$select</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>An OData $select clause. In the form of "," separated string.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: Integer (Optional)
@@ -30118,6 +28351,7 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
+     * 
      * <pre>{@code
      * {
      *     id: Integer (Optional)
@@ -30284,12 +28518,18 @@ public final class BatchClient {
             requestOptions.addQueryParam("$filter", filter, false);
         }
         if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$expand",
+                expand.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         return serviceClient.listPoolsInternal(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchPool.class));
@@ -30389,12 +28629,18 @@ public final class BatchClient {
             requestOptions.addQueryParam("$filter", filter, false);
         }
         if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$expand",
+                expand.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         return serviceClient.listJobsInternal(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJob.class));
@@ -30431,12 +28677,18 @@ public final class BatchClient {
             requestOptions.addQueryParam("$filter", filter, false);
         }
         if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$expand",
+                expand.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         return serviceClient.listJobsFromScheduleInternal(jobScheduleId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJob.class));
@@ -30481,8 +28733,11 @@ public final class BatchClient {
             requestOptions.addQueryParam("$filter", filter, false);
         }
         if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         return serviceClient.listJobPreparationAndReleaseTaskStatusInternal(jobId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJobPreparationAndReleaseTaskStatus.class));
@@ -30517,8 +28772,11 @@ public final class BatchClient {
             requestOptions.addQueryParam("$filter", filter, false);
         }
         if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         return serviceClient.listCertificatesInternal(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchCertificate.class));
@@ -30554,12 +28812,18 @@ public final class BatchClient {
             requestOptions.addQueryParam("$filter", filter, false);
         }
         if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$expand",
+                expand.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         return serviceClient.listJobSchedulesInternal(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJobSchedule.class));
@@ -30600,12 +28864,18 @@ public final class BatchClient {
             requestOptions.addQueryParam("$filter", filter, false);
         }
         if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$expand",
+                expand.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         return serviceClient.listTasksInternal(jobId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchTask.class));
@@ -30680,8 +28950,11 @@ public final class BatchClient {
             requestOptions.addQueryParam("$filter", filter, false);
         }
         if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         return serviceClient.listNodesInternal(poolId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchNode.class));
@@ -30714,8 +28987,11 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         if (select != null) {
-            requestOptions.addQueryParam("$select", select.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         return serviceClient.listNodeExtensionsInternal(poolId, nodeId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchNodeVMExtension.class));
@@ -30991,7 +29267,8 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         return evaluatePoolAutoScaleInternalWithResponse(poolId, BinaryData.fromObject(content), requestOptions)
-            .getValue().toObject(AutoScaleRun.class);
+            .getValue()
+            .toObject(AutoScaleRun.class);
     }
 
     /**
@@ -31017,7 +29294,8 @@ public final class BatchClient {
         // Generated convenience method for evaluatePoolAutoScaleInternalWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return evaluatePoolAutoScaleInternalWithResponse(poolId, BinaryData.fromObject(content), requestOptions)
-            .getValue().toObject(AutoScaleRun.class);
+            .getValue()
+            .toObject(AutoScaleRun.class);
     }
 
     /**
@@ -31716,7 +29994,8 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         return createTaskCollectionInternalWithResponse(jobId, BinaryData.fromObject(taskCollection), requestOptions)
-            .getValue().toObject(BatchTaskAddCollectionResult.class);
+            .getValue()
+            .toObject(BatchTaskAddCollectionResult.class);
     }
 
     /**
@@ -31753,7 +30032,8 @@ public final class BatchClient {
         // Generated convenience method for createTaskCollectionInternalWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return createTaskCollectionInternalWithResponse(jobId, BinaryData.fromObject(taskCollection), requestOptions)
-            .getValue().toObject(BatchTaskAddCollectionResult.class);
+            .getValue()
+            .toObject(BatchTaskAddCollectionResult.class);
     }
 
     /**
@@ -31969,7 +30249,8 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         return uploadNodeLogsInternalWithResponse(poolId, nodeId, BinaryData.fromObject(content), requestOptions)
-            .getValue().toObject(UploadBatchServiceLogsResult.class);
+            .getValue()
+            .toObject(UploadBatchServiceLogsResult.class);
     }
 
     /**
@@ -32000,7 +30281,8 @@ public final class BatchClient {
         // Generated convenience method for uploadNodeLogsInternalWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return uploadNodeLogsInternalWithResponse(poolId, nodeId, BinaryData.fromObject(content), requestOptions)
-            .getValue().toObject(UploadBatchServiceLogsResult.class);
+            .getValue()
+            .toObject(UploadBatchServiceLogsResult.class);
     }
 
     /**

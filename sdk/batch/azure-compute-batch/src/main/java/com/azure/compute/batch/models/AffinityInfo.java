@@ -16,14 +16,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class AffinityInfo {
 
     /*
-     * An opaque string representing the location of a Compute Node or a Task that has run previously. You can pass the
-     * affinityId of a Node to indicate that this Task needs to run on that Compute Node. Note that this is just a soft
-     * affinity. If the target Compute Node is busy or unavailable at the time the Task is scheduled, then the Task
-     * will be scheduled elsewhere.
+     * An opaque string representing the location of a Compute Node or a Task that has run previously. You can pass the affinityId of a Node to indicate that this Task needs to run on that Compute Node. Note that this is just a soft affinity. If the target Compute Node is busy or unavailable at the time the Task is scheduled, then the Task will be scheduled elsewhere.
      */
     @Generated
     @JsonProperty(value = "affinityId")
-    private String affinityId;
+    private final String affinityId;
 
     /**
      * Creates an instance of AffinityInfo class.
@@ -39,8 +36,8 @@ public final class AffinityInfo {
     /**
      * Get the affinityId property: An opaque string representing the location of a Compute Node or a Task that has run
      * previously. You can pass the affinityId of a Node to indicate that this Task needs to run on that Compute Node.
-     * Note that this is just a soft affinity. If the target Compute Node is busy or unavailable at the time the Task
-     * is scheduled, then the Task will be scheduled elsewhere.
+     * Note that this is just a soft affinity. If the target Compute Node is busy or unavailable at the time the Task is
+     * scheduled, then the Task will be scheduled elsewhere.
      *
      * @return the affinityId value.
      */

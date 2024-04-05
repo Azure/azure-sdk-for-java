@@ -15,9 +15,7 @@ import java.util.List;
 public final class BatchPoolUpdateContent {
 
     /*
-     * A Task to run on each Compute Node as it joins the Pool. The Task runs when the Compute Node is added to the
-     * Pool or when the Compute Node is restarted. If this element is present, it overwrites any existing StartTask. If
-     * omitted, any existing StartTask is left unchanged.
+     * A Task to run on each Compute Node as it joins the Pool. The Task runs when the Compute Node is added to the Pool or when the Compute Node is restarted. If this element is present, it overwrites any existing StartTask. If omitted, any existing StartTask is left unchanged.
      */
     @Generated
     @JsonProperty(value = "startTask")
@@ -27,40 +25,30 @@ public final class BatchPoolUpdateContent {
      * If this element is present, it replaces any existing Certificate references configured on the Pool.
      * If omitted, any existing Certificate references are left unchanged.
      * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
-     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
-     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
-     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
-     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
-     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
-     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      */
     @Generated
     @JsonProperty(value = "certificateReferences")
     private List<BatchCertificateReference> certificateReferences;
 
     /*
-     * A list of Packages to be installed on each Compute Node in the Pool. Changes to Package references affect all
-     * new Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted
-     * or reimaged. If this element is present, it replaces any existing Package references. If you specify an empty
-     * collection, then all Package references are removed from the Pool. If omitted, any existing Package references
-     * are left unchanged.
+     * A list of Packages to be installed on each Compute Node in the Pool. Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. If this element is present, it replaces any existing Package references. If you specify an empty collection, then all Package references are removed from the Pool. If omitted, any existing Package references are left unchanged.
      */
     @Generated
     @JsonProperty(value = "applicationPackageReferences")
     private List<BatchApplicationPackageReference> applicationPackageReferences;
 
     /*
-     * A list of name-value pairs associated with the Pool as metadata. If this element is present, it replaces any
-     * existing metadata configured on the Pool. If you specify an empty collection, any metadata is removed from the
-     * Pool. If omitted, any existing metadata is left unchanged.
+     * A list of name-value pairs associated with the Pool as metadata. If this element is present, it replaces any existing metadata configured on the Pool. If you specify an empty collection, any metadata is removed from the Pool. If omitted, any existing metadata is left unchanged.
      */
     @Generated
     @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
     /*
-     * The desired node communication mode for the pool. If this element is present, it replaces the existing
-     * targetNodeCommunicationMode configured on the Pool. If omitted, any existing metadata is left unchanged.
+     * The desired node communication mode for the pool. If this element is present, it replaces the existing targetNodeCommunicationMode configured on the Pool. If omitted, any existing metadata is left unchanged.
      */
     @Generated
     @JsonProperty(value = "targetNodeCommunicationMode")
@@ -142,9 +130,9 @@ public final class BatchPoolUpdateContent {
     /**
      * Get the applicationPackageReferences property: A list of Packages to be installed on each Compute Node in the
      * Pool. Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that
-     * are already in the Pool until they are rebooted or reimaged. If this element is present, it replaces any
-     * existing Package references. If you specify an empty collection, then all Package references are removed from
-     * the Pool. If omitted, any existing Package references are left unchanged.
+     * are already in the Pool until they are rebooted or reimaged. If this element is present, it replaces any existing
+     * Package references. If you specify an empty collection, then all Package references are removed from the Pool. If
+     * omitted, any existing Package references are left unchanged.
      *
      * @return the applicationPackageReferences value.
      */
@@ -156,9 +144,9 @@ public final class BatchPoolUpdateContent {
     /**
      * Set the applicationPackageReferences property: A list of Packages to be installed on each Compute Node in the
      * Pool. Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that
-     * are already in the Pool until they are rebooted or reimaged. If this element is present, it replaces any
-     * existing Package references. If you specify an empty collection, then all Package references are removed from
-     * the Pool. If omitted, any existing Package references are left unchanged.
+     * are already in the Pool until they are rebooted or reimaged. If this element is present, it replaces any existing
+     * Package references. If you specify an empty collection, then all Package references are removed from the Pool. If
+     * omitted, any existing Package references are left unchanged.
      *
      * @param applicationPackageReferences the applicationPackageReferences value to set.
      * @return the BatchPoolUpdateContent object itself.
@@ -198,8 +186,8 @@ public final class BatchPoolUpdateContent {
 
     /**
      * Get the targetNodeCommunicationMode property: The desired node communication mode for the pool. If this element
-     * is present, it replaces the existing targetNodeCommunicationMode configured on the Pool. If omitted, any
-     * existing metadata is left unchanged.
+     * is present, it replaces the existing targetNodeCommunicationMode configured on the Pool. If omitted, any existing
+     * metadata is left unchanged.
      *
      * @return the targetNodeCommunicationMode value.
      */
@@ -210,8 +198,8 @@ public final class BatchPoolUpdateContent {
 
     /**
      * Set the targetNodeCommunicationMode property: The desired node communication mode for the pool. If this element
-     * is present, it replaces the existing targetNodeCommunicationMode configured on the Pool. If omitted, any
-     * existing metadata is left unchanged.
+     * is present, it replaces the existing targetNodeCommunicationMode configured on the Pool. If omitted, any existing
+     * metadata is left unchanged.
      *
      * @param targetNodeCommunicationMode the targetNodeCommunicationMode value to set.
      * @return the BatchPoolUpdateContent object itself.

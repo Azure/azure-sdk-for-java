@@ -19,7 +19,7 @@ public final class EnvironmentSetting {
      */
     @Generated
     @JsonProperty(value = "name")
-    private String name;
+    private final String name;
 
     /*
      * The value of the environment variable.

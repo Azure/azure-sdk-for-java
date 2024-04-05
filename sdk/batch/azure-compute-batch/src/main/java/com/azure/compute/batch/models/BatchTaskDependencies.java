@@ -17,18 +17,14 @@ import java.util.List;
 public final class BatchTaskDependencies {
 
     /*
-     * The list of Task IDs that this Task depends on. All Tasks in this list must complete successfully before the
-     * dependent Task can be scheduled. The taskIds collection is limited to 64000 characters total (i.e. the combined
-     * length of all Task IDs). If the taskIds collection exceeds the maximum length, the Add Task request fails with
-     * error code TaskDependencyListTooLong. In this case consider using Task ID ranges instead.
+     * The list of Task IDs that this Task depends on. All Tasks in this list must complete successfully before the dependent Task can be scheduled. The taskIds collection is limited to 64000 characters total (i.e. the combined length of all Task IDs). If the taskIds collection exceeds the maximum length, the Add Task request fails with error code TaskDependencyListTooLong. In this case consider using Task ID ranges instead.
      */
     @Generated
     @JsonProperty(value = "taskIds")
     private List<String> taskIds;
 
     /*
-     * The list of Task ID ranges that this Task depends on. All Tasks in all ranges must complete successfully before
-     * the dependent Task can be scheduled.
+     * The list of Task ID ranges that this Task depends on. All Tasks in all ranges must complete successfully before the dependent Task can be scheduled.
      */
     @Generated
     @JsonProperty(value = "taskIdRanges")
@@ -45,8 +41,7 @@ public final class BatchTaskDependencies {
      * Get the taskIds property: The list of Task IDs that this Task depends on. All Tasks in this list must complete
      * successfully before the dependent Task can be scheduled. The taskIds collection is limited to 64000 characters
      * total (i.e. the combined length of all Task IDs). If the taskIds collection exceeds the maximum length, the Add
-     * Task request fails with error code TaskDependencyListTooLong. In this case consider using Task ID ranges
-     * instead.
+     * Task request fails with error code TaskDependencyListTooLong. In this case consider using Task ID ranges instead.
      *
      * @return the taskIds value.
      */
@@ -59,8 +54,7 @@ public final class BatchTaskDependencies {
      * Set the taskIds property: The list of Task IDs that this Task depends on. All Tasks in this list must complete
      * successfully before the dependent Task can be scheduled. The taskIds collection is limited to 64000 characters
      * total (i.e. the combined length of all Task IDs). If the taskIds collection exceeds the maximum length, the Add
-     * Task request fails with error code TaskDependencyListTooLong. In this case consider using Task ID ranges
-     * instead.
+     * Task request fails with error code TaskDependencyListTooLong. In this case consider using Task ID ranges instead.
      *
      * @param taskIds the taskIds value to set.
      * @return the BatchTaskDependencies object itself.
@@ -72,8 +66,8 @@ public final class BatchTaskDependencies {
     }
 
     /**
-     * Get the taskIdRanges property: The list of Task ID ranges that this Task depends on. All Tasks in all ranges
-     * must complete successfully before the dependent Task can be scheduled.
+     * Get the taskIdRanges property: The list of Task ID ranges that this Task depends on. All Tasks in all ranges must
+     * complete successfully before the dependent Task can be scheduled.
      *
      * @return the taskIdRanges value.
      */
@@ -83,8 +77,8 @@ public final class BatchTaskDependencies {
     }
 
     /**
-     * Set the taskIdRanges property: The list of Task ID ranges that this Task depends on. All Tasks in all ranges
-     * must complete successfully before the dependent Task can be scheduled.
+     * Set the taskIdRanges property: The list of Task ID ranges that this Task depends on. All Tasks in all ranges must
+     * complete successfully before the dependent Task can be scheduled.
      *
      * @param taskIdRanges the taskIdRanges value to set.
      * @return the BatchTaskDependencies object itself.

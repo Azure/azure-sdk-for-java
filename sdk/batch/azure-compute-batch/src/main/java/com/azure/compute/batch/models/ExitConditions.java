@@ -36,20 +36,14 @@ public final class ExitConditions {
     private ExitOptions preProcessingError;
 
     /*
-     * How the Batch service should respond if a file upload error occurs. If the Task exited with an exit code that
-     * was specified via exitCodes or exitCodeRanges, and then encountered a file upload error, then the action
-     * specified by the exit code takes precedence.
+     * How the Batch service should respond if a file upload error occurs. If the Task exited with an exit code that was specified via exitCodes or exitCodeRanges, and then encountered a file upload error, then the action specified by the exit code takes precedence.
      */
     @Generated
     @JsonProperty(value = "fileUploadError")
     private ExitOptions fileUploadError;
 
     /*
-     * How the Batch service should respond if the Task fails with an exit condition not covered by any of the other
-     * properties. This value is used if the Task exits with any nonzero exit code not listed in the exitCodes or
-     * exitCodeRanges collection, with a pre-processing error if the preProcessingError property is not present, or
-     * with a file upload error if the fileUploadError property is not present. If you want non-default behavior on
-     * exit code 0, you must list it explicitly using the exitCodes or exitCodeRanges collection.
+     * How the Batch service should respond if the Task fails with an exit condition not covered by any of the other properties. This value is used if the Task exits with any nonzero exit code not listed in the exitCodes or exitCodeRanges collection, with a pre-processing error if the preProcessingError property is not present, or with a file upload error if the fileUploadError property is not present. If you want non-default behavior on exit code 0, you must list it explicitly using the exitCodes or exitCodeRanges collection.
      */
     @Generated
     @JsonProperty(value = "default")
@@ -135,9 +129,9 @@ public final class ExitConditions {
     }
 
     /**
-     * Get the fileUploadError property: How the Batch service should respond if a file upload error occurs. If the
-     * Task exited with an exit code that was specified via exitCodes or exitCodeRanges, and then encountered a file
-     * upload error, then the action specified by the exit code takes precedence.
+     * Get the fileUploadError property: How the Batch service should respond if a file upload error occurs. If the Task
+     * exited with an exit code that was specified via exitCodes or exitCodeRanges, and then encountered a file upload
+     * error, then the action specified by the exit code takes precedence.
      *
      * @return the fileUploadError value.
      */
@@ -147,9 +141,9 @@ public final class ExitConditions {
     }
 
     /**
-     * Set the fileUploadError property: How the Batch service should respond if a file upload error occurs. If the
-     * Task exited with an exit code that was specified via exitCodes or exitCodeRanges, and then encountered a file
-     * upload error, then the action specified by the exit code takes precedence.
+     * Set the fileUploadError property: How the Batch service should respond if a file upload error occurs. If the Task
+     * exited with an exit code that was specified via exitCodes or exitCodeRanges, and then encountered a file upload
+     * error, then the action specified by the exit code takes precedence.
      *
      * @param fileUploadError the fileUploadError value to set.
      * @return the ExitConditions object itself.

@@ -16,8 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class BatchNodePlacementConfiguration {
 
     /*
-     * Node placement Policy type on Batch Pools. Allocation policy used by Batch Service to provision the nodes. If
-     * not specified, Batch will use the regional policy.
+     * Node placement Policy type on Batch Pools. Allocation policy used by Batch Service to provision the nodes. If not specified, Batch will use the regional policy.
      */
     @Generated
     @JsonProperty(value = "policy")
