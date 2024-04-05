@@ -188,7 +188,6 @@
     "sdk/servicebus/azure-messaging-servicebus-stress/templates/**",
     "sdk/servicebus/azure-messaging-servicebus-stress/workbooks/**",
     "sdk/servicebus/azure-messaging-servicebus-stress/Dockerfile",
-    "sdk/search/azure-search-documents/**",
     "sdk/storage/azure-storage-internal-avro/**",
     "sdk/storage/azure-storage-queue/**",
     "sdk/synapse/azure-analytics-synapse-accesscontrol/**",
@@ -196,7 +195,6 @@
     "sdk/synapse/azure-analytics-synapse-monitoring/**",
     "sdk/synapse/azure-analytics-synapse-spark/**",
     "sdk/storage/azure-storage-blob-nio/**",
-    "sdk/tables/.idea/**",
     "sdk/template/azure-sdk-template/**",
     "sdk/template/azure-sdk-template-three/**",
     "sdk/template/azure-sdk-template-two/**",
@@ -207,18 +205,23 @@
     "sdk/videoanalyzer/azure-media-videoanalyzer-edge/**",
     "sdk/synapse/azure-analytics-synapse-artifacts/**",
     "sdk/webpubsub/azure-messaging-webpubsub/**",
-    "sdk/tables/azure-data-tables/**",
     "sdk/textanalytics/azure-ai-textanalytics/**",
     "sdk/storage/azure-storage-file-datalake/**",
     "sdk/maps/azure-maps-elevation/**",
     "sdk/maps/azure-maps-geolocation/**",
     "sdk/maps/azure-maps-timezone/**",
-    "sdk/search/.idea/**",
     "sdk/devcenter/azure-developer-devcenter/**",
     "sdk/loadtesting/azure-developer-loadtesting/**",
     "sdk/serialization/azure-json-gson/**",
     "sdk/serialization/azure-json/**",
-    "sdk/serialization/azure-xml/**"
+    "sdk/serialization/azure-xml/**",
+    "sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/HotelsData.json",
+    "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/OcrSkillLanguage.java",
+    "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/PhoneticEncoder.java",
+    "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/StemmerTokenFilterLanguage.java",
+    "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/SnowballTokenFilterLanguage.java",
+    "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/TextTranslationSkillLanguage.java",
+    "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/TokenFilterName.java"
   ],
   "words": [
     "adal",
@@ -422,6 +425,41 @@
     "XLint"
   ],
   "overrides": [
+    {
+      "filename": "sdk/search/azure-search-documents/**",
+      "words": [
+        "ADLS",
+        "mysearch",
+        "TFIDF",
+        "Decompounder",
+        "NGRAM",
+        "Bangla",
+        "Rslp",
+        "vectorizer",
+        "vectorizable",
+        "vectorizers",
+        "hnsw",
+        "rerank",
+        "reranker",
+        "mytext",
+        "myocr",
+        "econo",
+        "azsearch",
+        "bokmaal",
+        "bokmal",
+        "adlsgen",
+        "sorani",
+        "mylocation",
+        "myloc",
+        "dari"
+      ]
+    },
+    {
+      "filename": "sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/HotelsData.json",
+      "words": [
+        "*"
+      ]
+    },
     {
       "filename": "sdk/identity/cgmanifest.json",
       "words":[

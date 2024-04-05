@@ -119,7 +119,7 @@ used for semantic reranking, semantic captions and semantic answers.
 
 - `SearchQueryVector` model has been replaced by `VectorQuery`.
 - `SearchOptions` instance method `SearchOptions setVectors(List<SearchQueryVector>)` has been replaced by `SearchOptions setVectorQueries(List<VectorQuery>)`.
-- `SearchOptions` instance method `SearchOptions setVectors(SearchQueryVector...)` has been replaced by `SearchOptions setVetorQueries(VectorQuery...)`.
+- `SearchOptions` instance method `SearchOptions setVectors(SearchQueryVector...)` has been replaced by `SearchOptions setVectorQueries(VectorQuery...)`.
 - `SearchOptions` instance method `List<SearchQueryVector> getVectors()` has been replaced by `List<VectorQuery> getVectorQueries()`.
 - `VectorSearch` instance property `List<VectorSearchAlgorithmConfiguration> algorithmConfigurations` has been replaced by properties `List<VectorSearchProfile> profiles`, 
 `List<VectorSearchAlgorithmConfiguration> algorithms`, and `List<VectorSearchVectorizer> vectorizers`.
@@ -910,7 +910,7 @@ used for semantic reranking, semantic captions and semantic answers.
 
 - Added `buildSearchFields` API to `SearchIndexClient` and `SearchIndexAsyncClient` to aid in creating `SearchField`s from the passed `Class`.
 - Added `SearchableFieldProperty`, `SimpleFieldProperty`, and `FieldBuilderIgnore` to annotate `Class`es passed into `buildSearchFields`.
-- Added `getDefaultLogOptions` to `SearchClientBuilder`, `SearchIndexCleintBuilder`, and `SearchIndexerClientBuilder`. Updated client construction to use default log options by default.
+- Added `getDefaultLogOptions` to `SearchClientBuilder`, `SearchIndexClientBuilder`, and `SearchIndexerClientBuilder`. Updated client construction to use default log options by default.
 - Added the ability for clients to accept a `JsonSerializer` to specify a custom JSON serialization layer when dealing with Search documents.
 
 ## 11.0.0 (2020-07-13)

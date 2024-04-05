@@ -70,7 +70,7 @@ public class SearchSuggestionExample {
             .setUseFuzzyMatching(true);
 
         PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResult =
-            searchClient.suggest("hitel", "sg", suggestOptions, Context.NONE);
+            searchClient.suggest("hotel", "sg", suggestOptions, Context.NONE);
         Iterator<SuggestPagedResponse> iterator = suggestResult.iterableByPage().iterator();
 
         List<SuggestResult> response = iterator.next().getValue();
