@@ -140,7 +140,7 @@ public class CosmosConfig {
      * @param maxBufferedItemCount must not be {@literal null}
      * @param responseContinuationTokenLimitInKb must not be {@literal null}
      */
-    @ConstructorProperties({"responseDiagnosticsProcessor", "databaseThroughputConfig", "queryMetricsEnabled", "maxDegreeOfParallelism", "maxBufferedItemCount", "responseContinuationTokenLimitInKb"})
+    @ConstructorProperties({"responseDiagnosticsProcessor", "databaseThroughputConfig", "queryMetricsEnabled", "indexMetricsEnabled", "maxDegreeOfParallelism", "maxBufferedItemCount", "responseContinuationTokenLimitInKb"})
     CosmosConfig(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
                  DatabaseThroughputConfig databaseThroughputConfig,
                  boolean queryMetricsEnabled,
