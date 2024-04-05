@@ -1,12 +1,13 @@
 # Release History
 
-## 1.48.0-beta.1 (Unreleased)
+## 1.48.0 (2024-04-04)
 
 ### Features Added
 
+- Added dependency on `azure-xml` to support `XmlSerializable`, removing the need for Jackson Databind XML to handle
+  XML types generated and used by the SDKs.
 - Added new methods on `com.azure.core.util.tracing.Tracer` - `isRecording` and `addAttribute(String, Object, Context)`.
-
-### Breaking Changes
+- Added `CoreUtils.parseBestOffsetDateTime` which can handle cases when the `dateString` doesn't include a time zone.
 
 ### Bugs Fixed
 
@@ -14,6 +15,12 @@
   Replaced content type exact match `equals` by `startsWith`. ([#39128](https://github.com/Azure/azure-sdk-for-java/issues/39128))
 
 ### Other Changes
+
+- Made `azure-json` `requires transitive` in `module-info.java`.
+
+#### Dependency Updates
+
+- Upgraded Reactor Core from `3.4.34` to `3.4.36`.
 
 ## 1.47.0 (2024-03-01)
 
