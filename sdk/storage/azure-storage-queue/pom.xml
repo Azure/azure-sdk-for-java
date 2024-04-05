@@ -130,7 +130,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-vertx</artifactId>
-      <version>1.0.0-beta.17</version> <!-- {x-version-update;unreleased_com.azure:azure-core-http-vertx;dependency} -->
+      <version>1.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -231,7 +231,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-http-jdk-httpclient</artifactId>
-          <version>1.0.0-beta.12</version> <!-- {x-version-update;unreleased_com.azure:azure-core-http-jdk-httpclient;dependency} -->
+          <version>1.0.0-beta.12</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
           <scope>test</scope>
         </dependency>
       </dependencies>
