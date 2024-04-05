@@ -71,6 +71,7 @@ import com.azure.compute.batch.models.EnableBatchJobScheduleOptions;
 import com.azure.compute.batch.models.EnableBatchNodeSchedulingOptions;
 import com.azure.compute.batch.models.EnableBatchPoolAutoScaleOptions;
 import com.azure.compute.batch.models.EvaluateBatchPoolAutoScaleOptions;
+import com.azure.compute.batch.models.FileResponseHeaderProperties;
 import com.azure.compute.batch.models.GetApplicationOptions;
 import com.azure.compute.batch.models.GetBatchCertificateOptions;
 import com.azure.compute.batch.models.GetBatchJobOptions;
@@ -102,7 +103,6 @@ import com.azure.compute.batch.models.ListBatchSubTasksOptions;
 import com.azure.compute.batch.models.ListBatchTaskFilesOptions;
 import com.azure.compute.batch.models.ListBatchTasksOptions;
 import com.azure.compute.batch.models.ListSupportedBatchImagesOptions;
-import com.azure.compute.batch.models.NodeFileProperties;
 import com.azure.compute.batch.models.ReactivateBatchTaskOptions;
 import com.azure.compute.batch.models.RebootBatchNodeOptions;
 import com.azure.compute.batch.models.RemoveBatchNodesOptions;
@@ -2675,10 +2675,24 @@ public final class BatchAsyncClient {
      * @return the properties of the specified Task file on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getTaskFileProperties(String jobId, String taskId, String filePath,
+    public Mono<FileResponseHeaderProperties> getTaskFileProperties(String jobId, String taskId, String filePath,
         GetBatchTaskFilePropertiesOptions options) {
-        return getTaskFilePropertiesInternal(jobId, taskId, filePath, options.getTimeOutInSeconds(),
-            options.getIfModifiedSince(), options.getIfUnmodifiedSince());
+        // Set query and header parameters based on options provided
+        RequestOptions requestOptions = new RequestOptions();
+        if (options.getTimeOutInSeconds() != null) {
+            requestOptions.addQueryParam("timeOut", options.getTimeOutInSeconds().toString());
+        }
+        if (options.getIfModifiedSince() != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                options.getIfModifiedSince().format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        }
+        if (options.getIfUnmodifiedSince() != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                options.getIfUnmodifiedSince().format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        }
+        // Map the response headers of getTaskFilePropertiesWithResponse to FileResponseHeaderProperties
+        return getTaskFilePropertiesWithResponse(jobId, taskId, filePath, requestOptions)
+            .map(response -> new FileResponseHeaderProperties(response.getHeaders()));
     }
 
     /**
@@ -2696,8 +2710,9 @@ public final class BatchAsyncClient {
      * @return the properties of the specified Task file on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getTaskFileProperties(String jobId, String taskId, String filePath) {
-        return getTaskFilePropertiesInternal(jobId, taskId, filePath);
+    public Mono<FileResponseHeaderProperties> getTaskFileProperties(String jobId, String taskId, String filePath) {
+        return getTaskFilePropertiesWithResponse(jobId, taskId, filePath, new RequestOptions())
+            .map(response -> new FileResponseHeaderProperties(response.getHeaders()));
     }
 
     /**
@@ -3368,10 +3383,10 @@ public final class BatchAsyncClient {
      * @return the properties of the specified Compute Node file on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NodeFileProperties> getNodeFileProperties(String poolId, String nodeId, String filePath,
+    public Mono<FileResponseHeaderProperties> getNodeFileProperties(String poolId, String nodeId, String filePath,
         GetBatchNodeFilePropertiesOptions options) {
-        RequestOptions requestOptions = new RequestOptions();
         // Set query and header parameters based on options provided
+        RequestOptions requestOptions = new RequestOptions();
         if (options.getTimeOutInSeconds() != null) {
             requestOptions.addQueryParam("timeOut", options.getTimeOutInSeconds().toString());
         }
@@ -3385,7 +3400,7 @@ public final class BatchAsyncClient {
         }
         // Map the response headers of getNodeFilePropertiesWithResponse to NodeFileProperties
         return getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, requestOptions)
-            .map(response -> new NodeFileProperties(response.getHeaders()));
+            .map(response -> new FileResponseHeaderProperties(response.getHeaders()));
     }
 
     /**
@@ -3403,9 +3418,9 @@ public final class BatchAsyncClient {
      * @return the properties of the specified Compute Node file on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NodeFileProperties> getNodeFileProperties(String poolId, String nodeId, String filePath) {
+    public Mono<FileResponseHeaderProperties> getNodeFileProperties(String poolId, String nodeId, String filePath) {
         return getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, new RequestOptions())
-            .map(response -> new NodeFileProperties(response.getHeaders()));
+            .map(response -> new FileResponseHeaderProperties(response.getHeaders()));
     }
 
     /**

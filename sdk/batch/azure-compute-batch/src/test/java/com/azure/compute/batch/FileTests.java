@@ -123,7 +123,7 @@ public class FileTests extends BatchClientTestBase {
                 binaryData = batchClientBuilder.buildAsyncClient().getNodeFileWithResponse(poolId, nodeId, fileName, null).block().getValue();
                 Assertions.assertEquals("hello\n", binaryData.toString());
 
-                NodeFileProperties fileProperties = batchClient.getNodeFileProperties(poolId, nodeId, fileName);
+                FileResponseHeaderProperties fileProperties = batchClient.getNodeFileProperties(poolId, nodeId, fileName);
                 Assertions.assertEquals(6, fileProperties.getContentLength());
 
             } else {
