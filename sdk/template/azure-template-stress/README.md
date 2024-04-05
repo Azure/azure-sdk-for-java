@@ -157,11 +157,15 @@ The telemetry is sent to Application Insights where it's useful to:
 - monitor and compare throughput and latency across runs
 - investigate issues and find bottlenecks
 
-Application Insights is available for local runs (as long as you provide `APPLICATIONINSIGHTS_CONNECTION_STRING` environment variable).
-
 You may choose to use [ApplicationInsights Java agent](https://learn.microsoft.com/azure/azure-monitor/app/opentelemetry-enable?tabs=java#install-the-client-library) if
 your test throughput (and amount of telemetry it generates) is relatively low.
-Since agent does a lot og things, it might create some noise during performance analysis and micro-optimizations.   
+Since agent does a lot of things, it might create some noise during performance analysis and micro-optimizations.
+
+Execute the perf test with Application Insights enabled:
+`$env:APPLICATIONINSIGHTS_CONNECTION_STRING="value"; java -jar "/path to/your file.jar" <options-for-the-test>`
+
+>Note: If you're running tests locally, you need to provide `APPLICATIONINSIGHTS_CONNECTION_STRING` environment variable,
+skip setting the `javaagent` explicitly to send telemetry to Application Insights.
 
 ### Logging
 
