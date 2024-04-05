@@ -20,6 +20,7 @@ import org.apache.kafka.connect.sink.SinkRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ public class KafkaCosmosPatchHelper {
     private static final String SELF_ATTRIBUTE_NAME = "_self";
     private static final String RESOURCE_ID_ATTRIBUTE_NAME = "_rid";
     private static final String ATTACHMENT_ATTRIBUTE_NAME = "_attachments";
-    private static final List<String> SYSTEM_PROPERTIES = List.of(
+    private static final List<String> SYSTEM_PROPERTIES = Arrays.asList(
         TIMESTAMP_ATTRIBUTE_NAME,
         ETAG_ATTRIBUTE_NAME,
         SELF_ATTRIBUTE_NAME,
