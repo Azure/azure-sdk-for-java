@@ -2,14 +2,21 @@
 // Licensed under the MIT License.
 package com.generic.core.implementation.util;
 
+import com.generic.core.util.ClientLogger;
 import com.generic.core.util.Context;
 
-import java.util.Optional;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Internal representation of {@link Context}.
  */
-public interface InternalContext {
+public abstract class InternalContext {
+    /**
+     * Sentinel object representing that the context didn't find a value for the given key.
+     */
+    static final Object SENTINEL = new Object();
+
     /**
      * Get the key for the internal context.
      * <p>
@@ -17,7 +24,7 @@ public interface InternalContext {
      *
      * @return The key for the internal context.
      */
-    Object getKey();
+    public abstract Object getKey();
 
     /**
      * Get the value for the internal context.
@@ -26,14 +33,14 @@ public interface InternalContext {
      *
      * @return The value for the internal context.
      */
-    Object getValue();
+    public abstract Object getValue();
 
     /**
      * Get the number of key-value pairs in the internal context.
      *
      * @return The number of key-value pairs in the internal context.
      */
-    int size();
+    public abstract int size();
 
     /**
      * Adds a new key-value pair to the internal context.
@@ -45,24 +52,34 @@ public interface InternalContext {
      * @param value The value to add.
      * @return A new instance of the internal context with the new key-value pair added.
      */
-    InternalContext put(Object key, Object value);
+    public abstract InternalContext put(Object key, Object value);
 
     /**
      * Get the value for the given key.
-     * <p>
-     * If the key is not found in the internal context an empty {@link Optional} will be returned.
      *
      * @param key The key to get the value for.
-     * @return The value for the given key, or an empty {@link Optional} if the key is not found.
+     * @return The value for the given key, or null if the key is not found.
      */
-    Object get(Object key);
+    public final Object get(Object key) {
+        Object value = getInternal(key);
+
+        return Objects.equals(SENTINEL, value) ? null : value;
+    }
+
+    /**
+     * Get the value for the given key.
+     *
+     * @param key The key to get the value for.
+     * @return The value for the given key, or {@link #SENTINEL} if the key is not found.
+     */
+    abstract Object getInternal(Object key);
 
     /**
      * Creates an empty {@link InternalContext}.
      *
      * @return An empty {@link InternalContext}.
      */
-    static InternalContext empty() {
+    public static InternalContext empty() {
         return InternalContext0.INSTANCE;
     }
 
@@ -73,7 +90,7 @@ public interface InternalContext {
      * @param value The value for the internal context.
      * @return The created internal context.
      */
-    static InternalContext of(Object key, Object value) {
+    public static InternalContext of(Object key, Object value) {
         return new InternalContext1(key, value);
     }
 
@@ -86,7 +103,7 @@ public interface InternalContext {
      * @param value2 The value for the second key-value pair.
      * @return The created internal context.
      */
-    static InternalContext of(Object key1, Object value1, Object key2, Object value2) {
+    public static InternalContext of(Object key1, Object value1, Object key2, Object value2) {
         return new InternalContext2(key1, value1, key2, value2);
     }
 
@@ -101,7 +118,8 @@ public interface InternalContext {
      * @param value3 The value for the third key-value pair.
      * @return The created internal context.
      */
-    static InternalContext of(Object key1, Object value1, Object key2, Object value2, Object key3, Object value3) {
+    public static InternalContext of(Object key1, Object value1, Object key2, Object value2, Object key3,
+        Object value3) {
         return new InternalContext3(key1, value1, key2, value2, key3, value3);
     }
 
@@ -118,8 +136,43 @@ public interface InternalContext {
      * @param value4 The value for the fourth key-value pair.
      * @return The created internal context.
      */
-    static InternalContext of(Object key1, Object value1, Object key2, Object value2, Object key3, Object value3,
+    public static InternalContext of(Object key1, Object value1, Object key2, Object value2, Object key3, Object value3,
         Object key4, Object value4) {
         return new InternalContext4(key1, value1, key2, value2, key3, value3, key4, value4);
+    }
+
+    /**
+     * Creates a new context from the given map.
+     *
+     * @param map The map to create the context from.
+     * @return A new context with the given map.
+     * @throws NullPointerException If {@code map} is null or if any key in the map is null.
+     */
+    public static InternalContext of(Map<Object, Object> map, ClientLogger logger) {
+        if (map == null) {
+            throw logger.logThrowableAsError(new NullPointerException("map cannot be null"));
+        }
+
+        // Naive implementation that will create a new context for each key-value pair.
+        // In the future this could be optimized to create contexts based on the size of the key-value pairs.
+        // For example, if the key-values had 10 entries this could be optimized to create two InternalContext4 and
+        // one InternalContext2 then combine them into a single InternalContextN.
+        // But this method isn't called from anywhere within SDK code, so this won't be prioritized.
+        InternalContext context = InternalContext.empty();
+        int entryCount = 0;
+        for (Map.Entry<Object, Object> entry : map.entrySet()) {
+            context = context.put(validateKey(entry.getKey(), "key" + entryCount, logger), entry.getValue());
+            entryCount++;
+        }
+
+        return context;
+    }
+
+    private static Object validateKey(Object key, String keyName, ClientLogger logger) {
+        if (key == null) {
+            throw logger.logThrowableAsError(new NullPointerException(keyName + " cannot be null"));
+        }
+
+        return key;
     }
 }

@@ -8,9 +8,7 @@ import java.util.Objects;
 /**
  * An {@link InternalContext} implementation that holds N key-value pairs.
  */
-final class InternalContextN implements InternalContext {
-    private static final Object SENTINEL = new Object();
-
+final class InternalContextN extends InternalContext {
     private final InternalContext[] contexts;
     private final int count;
 
@@ -73,12 +71,12 @@ final class InternalContextN implements InternalContext {
     }
 
     @Override
-    public Object get(Object key) {
+    Object getInternal(Object key) {
         Object data = SENTINEL;
 
         // Iterate in reverse order to get the most recent data first.
         for (int i = contexts.length - 1; i >= 0; i--) {
-            data = contexts[i].get(key);
+            data = contexts[i].getInternal(key);
             if (!Objects.equals(SENTINEL, data)) {
                 return data;
             }

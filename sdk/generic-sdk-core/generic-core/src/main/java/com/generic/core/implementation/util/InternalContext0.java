@@ -5,7 +5,7 @@ package com.generic.core.implementation.util;
 /**
  * An {@link InternalContext} implementation that holds no data.
  */
-final class InternalContext0 implements InternalContext {
+final class InternalContext0 extends InternalContext {
     static final InternalContext INSTANCE = new InternalContext0();
 
     private InternalContext0() {
@@ -32,7 +32,7 @@ final class InternalContext0 implements InternalContext {
     }
 
     @Override
-    public Object get(Object key) {
-        return null;
+    Object getInternal(Object key) {
+        return SENTINEL;
     }
 }
