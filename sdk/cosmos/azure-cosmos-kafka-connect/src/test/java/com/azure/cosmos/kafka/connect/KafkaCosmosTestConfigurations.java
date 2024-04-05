@@ -102,7 +102,7 @@ public class KafkaCosmosTestConfigurations {
                 StringUtils.defaultString(
                     Strings.emptyToNull(System.getenv().get("SCHEMA_REGISTRY_SECRET")), ""));
 
-    public final static String SCHEMA_REGISTRY_BASIC_AUTH_USER_INFO = SCHEMA_REGISTRY_KEY + ":" + SCHEMA_REGISTRY_KEY;
+    public final static String SCHEMA_REGISTRY_BASIC_AUTH_USER_INFO = SCHEMA_REGISTRY_KEY + ":" + SCHEMA_REGISTRY_SECRET;
 
     public final static String SCHEMA_REGISTRY_URL =
         properties

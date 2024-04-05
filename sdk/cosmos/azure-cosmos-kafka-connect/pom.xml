@@ -259,19 +259,6 @@ Licensed under the MIT License.
       <version>1.11.3</version><!-- {x-version-update;cosmos_org.apache.avro:avro;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/io.confluent/kafka-protobuf-serializer -->
-    <dependency>
-      <groupId>io.confluent</groupId>
-      <artifactId>kafka-protobuf-serializer</artifactId>
-      <version>7.6.0</version><!-- {x-version-update;cosmos_io.confluent:kafka-protobuf-serializer;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.protobuf</groupId>
-      <artifactId>protobuf-java</artifactId>
-      <version>3.21.12</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>
@@ -305,48 +292,6 @@ Licensed under the MIT License.
           </properties>
         </configuration>
       </plugin>
-<!--      <plugin>-->
-<!--        <groupId>org.apache.avro</groupId>-->
-<!--        <artifactId>avro-maven-plugin</artifactId>-->
-<!--        <version>1.7.5</version>-->
-<!--        <executions>-->
-<!--          <execution>-->
-<!--            <phase>generate-sources</phase>-->
-<!--            <goals>-->
-<!--              <goal>schema</goal>-->
-<!--            </goals>-->
-<!--            <configuration>-->
-<!--              <sourceDirectory>${project.basedir}/src/test/java/com/azure/cosmos/kafka/connect/avro/</sourceDirectory>-->
-<!--              <outputDirectory>${project.basedir}/src/test/java/</outputDirectory>-->
-<!--            </configuration>-->
-<!--          </execution>-->
-<!--        </executions>-->
-<!--      </plugin>-->
-<!--      <plugin>-->
-<!--        <groupId>com.github.os72</groupId>-->
-<!--        <artifactId>protoc-jar-maven-plugin</artifactId>-->
-<!--        <version>3.11.4</version>-->
-<!--        <executions>-->
-<!--          <execution>-->
-<!--            <phase>generate-sources</phase>-->
-<!--            <goals>-->
-<!--              <goal>run</goal>-->
-<!--            </goals>-->
-<!--            <configuration>-->
-<!--              <inputDirectories>-->
-<!--                <include>${project.basedir}/src/test/java/com/azure/cosmos/kafka/connect/proto/</include>-->
-<!--              </inputDirectories>-->
-<!--              <outputTargets>-->
-<!--                <outputTarget>-->
-<!--                  <type>java</type>-->
-<!--                  <addSources>main</addSources>-->
-<!--                  <outputDirectory>${project.basedir}/src/test/java/</outputDirectory>-->
-<!--                </outputTarget>-->
-<!--              </outputTargets>-->
-<!--            </configuration>-->
-<!--          </execution>-->
-<!--        </executions>-->
-<!--      </plugin>-->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -360,7 +305,6 @@ Licensed under the MIT License.
                 <include>io.confluent:kafka-connect-maven-plugin:[0.12.0]</include> <!-- {x-include-update;cosmos_io.confluent:kafka-connect-maven-plugin;external_dependency} -->
                 <include>com.jayway.jsonpath:json-path:[2.9.0]</include> <!-- {x-include-update;cosmos_com.jayway.jsonpath:json-path;external_dependency} -->
                 <include>org.sourcelab:kafka-connect-client:[4.0.4]</include> <!-- {x-include-update;cosmos_org.sourcelab:kafka-connect-client;external_dependency} -->
-                <include>com.google.protobuf:protobuf-java:[4.26.0]</include> <!-- {x-include-update;cosmos_com.google.protobuf:protobuf-java;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

@@ -32,6 +32,8 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
     public KafkaCosmosConnectContainer(final DockerImageName dockerImageName) {
         super(dockerImageName);
         defaultConfig();
+        this.producerProperties = defaultProducerConfig();
+        this.consumerProperties = defaultConsumerConfig();
     }
 
     private void defaultConfig() {
@@ -74,13 +76,6 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
         return kafkaProducerProperties;
     }
 
-    public KafkaCosmosConnectContainer withLocalKafkaContainer(final KafkaContainer kafkaContainer) {
-        withNetwork(kafkaContainer.getNetwork());
-
-        withEnv("CONNECT_BOOTSTRAP_SERVERS", kafkaContainer.getNetworkAliases().get(0) + ":9092");
-        return self();
-    }
-
     public KafkaCosmosConnectContainer withCloudKafkaContainer() {
         withEnv("CONNECT_BOOTSTRAP_SERVERS", KafkaCosmosTestConfigurations.BOOTSTRAP_SERVER);
         withEnv("CONNECT_SECURITY_PROTOCOL", "SASL_SSL");
@@ -94,57 +89,65 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
         withEnv("CONNECT_CONSUMER_SECURITY_PROTOCOL", "SASL_SSL");
         withEnv("CONNECT_CONSUMER_SASL_JAAS_CONFIG", KafkaCosmosTestConfigurations.SASL_JAAS);
         withEnv("CONNECT_CONSUMER_SASL_MECHANISM", "PLAIN");
+
+        this.consumerProperties.put("bootstrap.servers", KafkaCosmosTestConfigurations.BOOTSTRAP_SERVER);
+        this.consumerProperties.put("sasl.jaas.config", KafkaCosmosTestConfigurations.SASL_JAAS);
+        this.consumerProperties.put("security.protocol", "SASL_SSL");
+        this.consumerProperties.put("sasl.mechanism", "PLAIN");
+
+        this.producerProperties.put("bootstrap.servers", KafkaCosmosTestConfigurations.BOOTSTRAP_SERVER);
+        this.producerProperties.put("sasl.jaas.config", KafkaCosmosTestConfigurations.SASL_JAAS);
+        this.producerProperties.put("security.protocol", "SASL_SSL");
+        this.producerProperties.put("sasl.mechanism", "PLAIN");
+
+        Properties adminProperties = new Properties();
+        adminProperties.put("bootstrap.servers", KafkaCosmosTestConfigurations.BOOTSTRAP_SERVER);
+        adminProperties.put("ssl.endpoint.identification.algorithm", "https");
+        adminProperties.put("sasl.jaas.config", KafkaCosmosTestConfigurations.SASL_JAAS);
+        adminProperties.put("sasl.mechanism", "PLAIN");
+        adminProperties.put("security.protocol", "SASL_SSL");
+        this.adminClient = AdminClient.create(adminProperties);
+
+        this.replicationFactor = 3;
         return self();
     }
 
     public KafkaCosmosConnectContainer withCloudSchemaRegistryContainer() {
         withEnv("CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_URL);
         withEnv("CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_URL);
+
+        this.consumerProperties.put("schema.registry.url", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_URL);
+        this.consumerProperties.put("basic.auth.credentials.source", "USER_INFO");
+        this.consumerProperties.put("basic.auth.user.info", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_BASIC_AUTH_USER_INFO);
+
+        this.producerProperties.put("schema.registry.url", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_URL);
+        this.producerProperties.put("basic.auth.credentials.source", "USER_INFO");
+        this.producerProperties.put("basic.auth.user.info", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_BASIC_AUTH_USER_INFO);
+
         return self();
     }
 
-    public KafkaCosmosConnectContainer withLocalBootstrapServer(String localBootstrapServer, String schemaRegistryUrl) {
-        withEnv("CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL", schemaRegistryUrl);
-        withEnv("CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL", schemaRegistryUrl);
+    public KafkaCosmosConnectContainer withLocalKafkaContainer(final KafkaContainer kafkaContainer) {
+        withNetwork(kafkaContainer.getNetwork());
 
-        Properties consumerProperties = defaultConsumerConfig();
-        consumerProperties.put("bootstrap.servers", localBootstrapServer);
-        consumerProperties.put("schema.registry.url", schemaRegistryUrl);
-        this.consumerProperties = consumerProperties;
+        withEnv("CONNECT_BOOTSTRAP_SERVERS", kafkaContainer.getNetworkAliases().get(0) + ":9092");
+        this.consumerProperties.put("bootstrap.servers", kafkaContainer.getBootstrapServers());
+        this.producerProperties.put("bootstrap.servers", kafkaContainer.getBootstrapServers());
 
-        Properties producerProperties = defaultProducerConfig();
-        producerProperties.put("bootstrap.servers", localBootstrapServer);
-        producerProperties.put("schema.registry.url", schemaRegistryUrl);
-        this.producerProperties = producerProperties;
+        Properties adminProperties = new Properties();
+        adminProperties.put("bootstrap.servers", kafkaContainer.getBootstrapServers());
+        this.adminClient = AdminClient.create(adminProperties);
 
-        this.adminClient = this.getAdminClient(localBootstrapServer);
         return self();
     }
 
-    public KafkaCosmosConnectContainer withCloudBootstrapServer() {
-        Properties consumerProperties = defaultConsumerConfig();
-        consumerProperties.put("bootstrap.servers", KafkaCosmosTestConfigurations.BOOTSTRAP_SERVER);
-        consumerProperties.put("sasl.jaas.config", KafkaCosmosTestConfigurations.SASL_JAAS);
-        consumerProperties.put("security.protocol", "SASL_SSL");
-        consumerProperties.put("sasl.mechanism", "PLAIN");
-        consumerProperties.put("schema.registry.url", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_URL);
-        consumerProperties.put("basic.auth.credentials.source", "USER_INFO");
-        consumerProperties.put("basic.auth.user.info", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_BASIC_AUTH_USER_INFO);
+    public KafkaCosmosConnectContainer withLocalSchemaRegistryContainer(KafkaSchemaRegistryContainer schemaRegistryContainer) {
 
-        this.consumerProperties = consumerProperties;
+        withEnv("CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL", schemaRegistryContainer.getSchemaRegistryUrl());
+        withEnv("CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL", schemaRegistryContainer.getSchemaRegistryUrl());
 
-        Properties producerProperties = defaultProducerConfig();
-        producerProperties.put("bootstrap.servers", KafkaCosmosTestConfigurations.BOOTSTRAP_SERVER);
-        producerProperties.put("sasl.jaas.config", KafkaCosmosTestConfigurations.SASL_JAAS);
-        producerProperties.put("security.protocol", "SASL_SSL");
-        producerProperties.put("sasl.mechanism", "PLAIN");
-        producerProperties.put("schema.registry.url", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_URL);
-        producerProperties.put("basic.auth.credentials.source", "USER_INFO");
-        producerProperties.put("basic.auth.user.info", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_BASIC_AUTH_USER_INFO);
-        this.producerProperties = producerProperties;
-
-        this.adminClient = this.getAdminClient(KafkaCosmosTestConfigurations.BOOTSTRAP_SERVER);
-        this.replicationFactor = 3;
+        this.consumerProperties.put("schema.registry.url", schemaRegistryContainer.getSchemaRegistryUrl());
+        this.producerProperties.put("schema.registry.url", schemaRegistryContainer.getSchemaRegistryUrl());
         return self();
     }
 
@@ -182,11 +185,11 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
     }
 
     public Properties getProducerProperties() {
-        return producerProperties;
+        return (Properties) producerProperties.clone();
     }
 
     public Properties getConsumerProperties() {
-        return consumerProperties;
+        return (Properties) consumerProperties.clone();
     }
 
     public void createTopic(String topicName, int numPartitions) {
@@ -194,9 +197,7 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
             Arrays.asList(new NewTopic(topicName, numPartitions, (short) replicationFactor)));
     }
 
-    private AdminClient getAdminClient(String bootstrapServer) {
-        Properties properties = new Properties();
-        properties.put("bootstrap.servers", bootstrapServer);
-        return AdminClient.create(properties);
+    public void deleteTopic(String topicName) {
+        this.adminClient.deleteTopics(Arrays.asList(topicName));
     }
 }
