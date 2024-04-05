@@ -71,6 +71,7 @@ public class IdentityClientOptionsTest {
             } else {
                 Assertions.fail("Unexpected timeout: " + timeout);
             }
+            retry++;
         }
     }
 }
