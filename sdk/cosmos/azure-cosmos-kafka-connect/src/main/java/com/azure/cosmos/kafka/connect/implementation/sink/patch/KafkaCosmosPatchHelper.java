@@ -44,6 +44,7 @@ public class KafkaCosmosPatchHelper {
         RESOURCE_ID_ATTRIBUTE_NAME,
         ATTACHMENT_ATTRIBUTE_NAME);
 
+    @SuppressWarnings("unchecked")
     public static CosmosPatchOperations createCosmosPatchOperations(
         String itemId,
         PartitionKeyDefinition partitionKeyDefinition,
