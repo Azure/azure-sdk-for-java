@@ -228,7 +228,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> reclassifyJob(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> reclassify(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -238,7 +238,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> reclassifyJobSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> reclassifySync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -248,7 +248,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> cancelJob(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> cancel(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -258,7 +258,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> cancelJobSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> cancelSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -268,7 +268,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> completeJob(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> complete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("assignmentId") String assignmentId, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -279,7 +279,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> completeJobSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> completeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("assignmentId") String assignmentId, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -290,7 +290,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> closeJob(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> close(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("assignmentId") String assignmentId, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -301,7 +301,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> closeJobSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> closeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("assignmentId") String assignmentId, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -352,7 +352,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> unassignJob(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> unassign(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("assignmentId") String assignmentId, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -363,7 +363,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> unassignJobSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> unassignSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("assignmentId") String assignmentId, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -374,7 +374,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> acceptJobOffer(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> accept(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
             @PathParam("offerId") String offerId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -385,7 +385,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> acceptJobOfferSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> acceptSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
             @PathParam("offerId") String offerId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -396,7 +396,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> declineJobOffer(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> decline(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
             @PathParam("offerId") String offerId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -407,7 +407,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> declineJobOfferSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> declineSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
             @PathParam("offerId") String offerId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1047,7 +1047,7 @@ public final class JobRouterClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> reclassifyJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> reclassifyWithResponseAsync(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -1055,7 +1055,7 @@ public final class JobRouterClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return FluxUtil.withContext(context -> service.reclassifyJob(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.reclassify(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobId, accept, requestOptionsLocal, context));
     }
 
@@ -1082,7 +1082,7 @@ public final class JobRouterClientImpl {
      * @return response payload from reclassifying a job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> reclassifyJobWithResponse(String jobId, RequestOptions requestOptions) {
+    public Response<BinaryData> reclassifyWithResponse(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -1090,7 +1090,7 @@ public final class JobRouterClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return service.reclassifyJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept,
+        return service.reclassifySync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept,
             requestOptionsLocal, Context.NONE);
     }
 
@@ -1121,7 +1121,7 @@ public final class JobRouterClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> cancelJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> cancelWithResponseAsync(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -1129,8 +1129,8 @@ public final class JobRouterClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return FluxUtil.withContext(context -> service.cancelJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, accept, requestOptionsLocal, context));
+        return FluxUtil.withContext(context -> service.cancel(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            jobId, accept, requestOptionsLocal, context));
     }
 
     /**
@@ -1159,7 +1159,7 @@ public final class JobRouterClientImpl {
      * @return response payload from cancelling a job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> cancelJobWithResponse(String jobId, RequestOptions requestOptions) {
+    public Response<BinaryData> cancelWithResponse(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -1167,7 +1167,7 @@ public final class JobRouterClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return service.cancelJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept,
+        return service.cancelSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept,
             requestOptionsLocal, Context.NONE);
     }
 
@@ -1198,7 +1198,7 @@ public final class JobRouterClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> completeJobWithResponseAsync(String jobId, String assignmentId,
+    public Mono<Response<BinaryData>> completeWithResponseAsync(String jobId, String assignmentId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -1207,7 +1207,7 @@ public final class JobRouterClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return FluxUtil.withContext(context -> service.completeJob(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.complete(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobId, assignmentId, accept, requestOptionsLocal, context));
     }
 
@@ -1237,8 +1237,7 @@ public final class JobRouterClientImpl {
      * @return response payload from completing a job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> completeJobWithResponse(String jobId, String assignmentId,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> completeWithResponse(String jobId, String assignmentId, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -1246,7 +1245,7 @@ public final class JobRouterClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return service.completeJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, assignmentId,
+        return service.completeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, assignmentId,
             accept, requestOptionsLocal, Context.NONE);
     }
 
@@ -1278,7 +1277,7 @@ public final class JobRouterClientImpl {
      * @return response payload from closing a job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> closeJobWithResponseAsync(String jobId, String assignmentId,
+    public Mono<Response<BinaryData>> closeWithResponseAsync(String jobId, String assignmentId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -1287,8 +1286,8 @@ public final class JobRouterClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return FluxUtil.withContext(context -> service.closeJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, assignmentId, accept, requestOptionsLocal, context));
+        return FluxUtil.withContext(context -> service.close(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            jobId, assignmentId, accept, requestOptionsLocal, context));
     }
 
     /**
@@ -1319,7 +1318,7 @@ public final class JobRouterClientImpl {
      * @return response payload from closing a job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> closeJobWithResponse(String jobId, String assignmentId, RequestOptions requestOptions) {
+    public Response<BinaryData> closeWithResponse(String jobId, String assignmentId, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -1327,8 +1326,8 @@ public final class JobRouterClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return service.closeJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, assignmentId,
-            accept, requestOptionsLocal, Context.NONE);
+        return service.closeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, assignmentId, accept,
+            requestOptionsLocal, Context.NONE);
     }
 
     /**
@@ -1829,7 +1828,7 @@ public final class JobRouterClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> unassignJobWithResponseAsync(String jobId, String assignmentId,
+    public Mono<Response<BinaryData>> unassignWithResponseAsync(String jobId, String assignmentId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -1838,7 +1837,7 @@ public final class JobRouterClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return FluxUtil.withContext(context -> service.unassignJob(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.unassign(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobId, assignmentId, accept, requestOptionsLocal, context));
     }
 
@@ -1871,8 +1870,7 @@ public final class JobRouterClientImpl {
      * @return response payload after a job has been successfully unassigned along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> unassignJobWithResponse(String jobId, String assignmentId,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> unassignWithResponse(String jobId, String assignmentId, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -1880,7 +1878,7 @@ public final class JobRouterClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return service.unassignJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, assignmentId,
+        return service.unassignSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, assignmentId,
             accept, requestOptionsLocal, Context.NONE);
     }
 
@@ -1907,11 +1905,11 @@ public final class JobRouterClientImpl {
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> acceptJobOfferWithResponseAsync(String workerId, String offerId,
+    public Mono<Response<BinaryData>> acceptWithResponseAsync(String workerId, String offerId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.acceptJobOffer(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), workerId, offerId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.accept(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            workerId, offerId, accept, requestOptions, context));
     }
 
     /**
@@ -1937,11 +1935,10 @@ public final class JobRouterClientImpl {
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> acceptJobOfferWithResponse(String workerId, String offerId,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> acceptWithResponse(String workerId, String offerId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.acceptJobOfferSync(this.getEndpoint(), this.getServiceVersion().getVersion(), workerId, offerId,
-            accept, requestOptions, Context.NONE);
+        return service.acceptSync(this.getEndpoint(), this.getServiceVersion().getVersion(), workerId, offerId, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -1971,7 +1968,7 @@ public final class JobRouterClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> declineJobOfferWithResponseAsync(String workerId, String offerId,
+    public Mono<Response<BinaryData>> declineWithResponseAsync(String workerId, String offerId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -1980,7 +1977,7 @@ public final class JobRouterClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return FluxUtil.withContext(context -> service.declineJobOffer(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.decline(this.getEndpoint(),
             this.getServiceVersion().getVersion(), workerId, offerId, accept, requestOptionsLocal, context));
     }
 
@@ -2010,8 +2007,7 @@ public final class JobRouterClientImpl {
      * @return response payload from declining a job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> declineJobOfferWithResponse(String workerId, String offerId,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> declineWithResponse(String workerId, String offerId, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -2019,8 +2015,8 @@ public final class JobRouterClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return service.declineJobOfferSync(this.getEndpoint(), this.getServiceVersion().getVersion(), workerId, offerId,
-            accept, requestOptionsLocal, Context.NONE);
+        return service.declineSync(this.getEndpoint(), this.getServiceVersion().getVersion(), workerId, offerId, accept,
+            requestOptionsLocal, Context.NONE);
     }
 
     /**

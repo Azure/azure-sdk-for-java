@@ -23,7 +23,7 @@ import java.util.List;
     visible = true)
 @JsonTypeName("completeOrderDiscrepancy")
 @Immutable
-public final class CompleteOrderDiscrepancyInference extends FhirR4Extendible1 {
+public final class CompleteOrderDiscrepancyInference extends RadiologyInsightsInference {
 
     /*
      * Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or breast.

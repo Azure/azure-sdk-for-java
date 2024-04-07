@@ -23,7 +23,7 @@ import java.util.List;
     visible = true)
 @JsonTypeName("radiologyProcedure")
 @Immutable
-public final class RadiologyProcedureInference extends FhirR4Extendible1 {
+public final class RadiologyProcedureInference extends RadiologyInsightsInference {
 
     /*
      * LOINC codes for the procedure.
@@ -44,22 +44,7 @@ public final class RadiologyProcedureInference extends FhirR4Extendible1 {
      */
     @Generated
     @JsonProperty(value = "orderedProcedure")
-    private final FhirR4Extendible orderedProcedure;
-
-    /**
-     * Creates an instance of RadiologyProcedureInference class.
-     *
-     * @param imagingProcedures the imagingProcedures value to set.
-     * @param orderedProcedure the orderedProcedure value to set.
-     */
-    @Generated
-    @JsonCreator
-    private RadiologyProcedureInference(
-        @JsonProperty(value = "imagingProcedures") List<ImagingProcedure> imagingProcedures,
-        @JsonProperty(value = "orderedProcedure") FhirR4Extendible orderedProcedure) {
-        this.imagingProcedures = imagingProcedures;
-        this.orderedProcedure = orderedProcedure;
-    }
+    private final OrderedProcedure orderedProcedure;
 
     /**
      * Get the procedureCodes property: LOINC codes for the procedure.
@@ -87,7 +72,7 @@ public final class RadiologyProcedureInference extends FhirR4Extendible1 {
      * @return the orderedProcedure value.
      */
     @Generated
-    public FhirR4Extendible getOrderedProcedure() {
+    public OrderedProcedure getOrderedProcedure() {
         return this.orderedProcedure;
     }
 
@@ -108,5 +93,20 @@ public final class RadiologyProcedureInference extends FhirR4Extendible1 {
     @Override
     public RadiologyInsightsInferenceType getKind() {
         return this.kind;
+    }
+
+    /**
+     * Creates an instance of RadiologyProcedureInference class.
+     *
+     * @param imagingProcedures the imagingProcedures value to set.
+     * @param orderedProcedure the orderedProcedure value to set.
+     */
+    @Generated
+    @JsonCreator
+    private RadiologyProcedureInference(
+        @JsonProperty(value = "imagingProcedures") List<ImagingProcedure> imagingProcedures,
+        @JsonProperty(value = "orderedProcedure") OrderedProcedure orderedProcedure) {
+        this.imagingProcedures = imagingProcedures;
+        this.orderedProcedure = orderedProcedure;
     }
 }
