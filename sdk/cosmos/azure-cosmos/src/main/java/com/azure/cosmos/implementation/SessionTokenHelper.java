@@ -163,6 +163,7 @@ public class SessionTokenHelper {
                 if (canUseBloomFilter) {
                     partitionKeyPossibleRegions = partitionKeyBasedBloomFilter
                         .tryGetPossibleRegionsLogicalPartitionResolvedTo(
+                            request,
                             collectionRid,
                             partitionKey,
                             partitionKeyDefinition);
@@ -187,6 +188,7 @@ public class SessionTokenHelper {
                 if (canUseBloomFilter) {
                     partitionKeyPossibleRegions = partitionKeyBasedBloomFilter
                         .tryGetPossibleRegionsLogicalPartitionResolvedTo(
+                            request,
                             collectionRid,
                             partitionKey,
                             partitionKeyDefinition);

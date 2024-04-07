@@ -350,6 +350,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
     }
 
     private void recordPartitionKeyInBloomFilter(
+        RxDocumentServiceRequest request,
         Long collectionRid,
         String regionRoutedTo,
         PartitionKeyInternal partitionKeyInternal,
@@ -360,6 +361,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         }
 
         this.partitionKeyBasedBloomFilter.tryRecordPartitionKey(
+            request,
             collectionRid,
             this.firstPreferredReadableRegionCached.get(),
             regionRoutedTo,
@@ -410,6 +412,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
                 partitionKeyDefinition)) {
 
                 this.recordPartitionKeyInBloomFilter(
+                    request,
                     collectionResourceId,
                     regionRoutedTo,
                     partitionKeyInternal.v,
@@ -455,6 +458,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
                 partitionKeyDefinition)) {
 
                 this.recordPartitionKeyInBloomFilter(
+                    request,
                     collectionResourceId,
                     regionRoutedTo,
                     partitionKeyInternal.v,

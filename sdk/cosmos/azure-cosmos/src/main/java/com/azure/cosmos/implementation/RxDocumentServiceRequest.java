@@ -62,7 +62,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     // has the non serialized value of the partition-key
     private PartitionKeyInternal partitionKeyInternal;
     private PartitionKeyDefinition partitionKeyDefinition;
-
+    private String effectivePartitionKey;
     private FeedRangeInternal feedRange;
     private Range<String> effectiveRange;
     private int numberOfItemsInBatchRequest;
@@ -1188,5 +1188,13 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     public void setResponseTimeout(Duration responseTimeout) {
         this.responseTimeout = responseTimeout;
+    }
+
+    public String getEffectivePartitionKey() {
+        return effectivePartitionKey;
+    }
+
+    public void setEffectivePartitionKey(String effectivePartitionKey) {
+        this.effectivePartitionKey = effectivePartitionKey;
     }
 }

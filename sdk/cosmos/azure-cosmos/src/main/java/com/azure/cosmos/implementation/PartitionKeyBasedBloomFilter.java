@@ -40,6 +40,7 @@ public class PartitionKeyBasedBloomFilter {
     }
 
     public void tryRecordPartitionKey(
+        RxDocumentServiceRequest request,
         Long collectionRid,
         String firstPreferredWritableRegion,
         String regionRoutedTo,
@@ -59,7 +60,8 @@ public class PartitionKeyBasedBloomFilter {
                 return;
             }
 
-            String effectivePartitionKeyString = PartitionKeyInternalHelper
+
+            String effectivePartitionKeyString = request.getEffectivePartitionKey() != null ? request.getEffectivePartitionKey() : PartitionKeyInternalHelper
                 .getEffectivePartitionKeyString(partitionKeyInternal, partitionKeyDefinition);
 
             String normalizedRegionRoutedTo = regionRoutedTo.toLowerCase(Locale.ROOT).replace(" ", "");;
@@ -85,11 +87,16 @@ public class PartitionKeyBasedBloomFilter {
 
     // resolve which regions was a given EPK possibly saw requests resolved in (processed by the replica in that region)
     public Set<String> tryGetPossibleRegionsLogicalPartitionResolvedTo(
-        Long collectionRid, PartitionKeyInternal partitionKey, PartitionKeyDefinition partitionKeyDefinition) {
+        RxDocumentServiceRequest request,
+        Long collectionRid,
+        PartitionKeyInternal partitionKey,
+        PartitionKeyDefinition partitionKeyDefinition) {
 
         try {
             Set<String> regionsPartitionKeyHasProbablySeen = new HashSet<>();
-            String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKey, partitionKeyDefinition);
+
+            String effectivePartitionKeyString = request.getEffectivePartitionKey() != null ? request.getEffectivePartitionKey() : PartitionKeyInternalHelper
+                .getEffectivePartitionKeyString(partitionKey, partitionKeyDefinition);
 
             for (String region : this.recordedRegions) {
                 if (this.pkBasedBloomFilter.mightContain(new PartitionKeyBasedBloomFilterType(effectivePartitionKeyString, region, collectionRid))) {
