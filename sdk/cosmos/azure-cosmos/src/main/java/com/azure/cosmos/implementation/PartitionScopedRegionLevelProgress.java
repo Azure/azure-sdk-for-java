@@ -155,6 +155,10 @@ public class PartitionScopedRegionLevelProgress {
 
             VectorSessionToken baseSessionToken = baseLevelProgress.vectorSessionToken;
 
+            if (lesserPreferredRegionsPkProbablyRequestedFrom.isEmpty()) {
+                return baseSessionToken;
+            }
+
             long globalLsn = -1;
             UnmodifiableMap<Integer, Long> localLsnByRegion = globalSessionToken.getLocalLsnByRegion();
             long version = globalSessionToken.getVersion();
