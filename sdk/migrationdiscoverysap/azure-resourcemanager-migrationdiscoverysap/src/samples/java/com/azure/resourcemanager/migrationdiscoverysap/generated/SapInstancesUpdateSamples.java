@@ -13,9 +13,7 @@ import java.util.Map;
  */
 public final class SapInstancesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPDiscoverySites/preview/2023-10-01-preview/
-     * examples/SAPInstances_Update.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/SAPDiscoverySites/preview/2023-10-01-preview/examples/SAPInstances_Update.json
      */
     /**
      * Sample code: Updates the SAP Instance resource.
@@ -25,7 +23,8 @@ public final class SapInstancesUpdateSamples {
     public static void updatesTheSAPInstanceResource(
         com.azure.resourcemanager.migrationdiscoverysap.MigrationDiscoverySapManager manager) {
         SapInstance resource = manager.sapInstances()
-            .getWithResponse("test-rg", "SampleSite", "MPP_MPP", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("test-rg", "SampleSite", "MPP_MPP", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1")).apply();
     }
 

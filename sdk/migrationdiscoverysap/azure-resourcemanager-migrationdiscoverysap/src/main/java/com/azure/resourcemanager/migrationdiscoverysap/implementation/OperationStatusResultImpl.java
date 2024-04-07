@@ -51,7 +51,8 @@ public final class OperationStatusResultImpl implements OperationStatusResult {
         List<OperationStatusResultInner> inner = this.innerModel().operations();
         if (inner != null) {
             return Collections.unmodifiableList(inner.stream()
-                .map(inner1 -> new OperationStatusResultImpl(inner1, this.manager())).collect(Collectors.toList()));
+                .map(inner1 -> new OperationStatusResultImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

@@ -5,20 +5,43 @@
 package com.azure.resourcemanager.migrationdiscoverysap.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The SAP instance specific performance data for native discovery.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataSource")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "dataSource",
+    defaultImpl = NativePerformanceData.class,
+    visible = true)
 @JsonTypeName("Native")
 @Immutable
 public final class NativePerformanceData extends PerformanceData {
+    /*
+     * The data source of the performance data.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "dataSource", required = true)
+    private DataSource dataSource = DataSource.NATIVE;
+
     /**
      * Creates an instance of NativePerformanceData class.
      */
     public NativePerformanceData() {
+    }
+
+    /**
+     * Get the dataSource property: The data source of the performance data.
+     * 
+     * @return the dataSource value.
+     */
+    @Override
+    public DataSource dataSource() {
+        return this.dataSource;
     }
 
     /**

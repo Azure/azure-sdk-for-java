@@ -9,9 +9,7 @@ package com.azure.resourcemanager.migrationdiscoverysap.generated;
  */
 public final class SapDiscoverySitesImportEntitiesSamples {
     /*
-     * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPDiscoverySites/preview/2023-10-01-preview/
-     * examples/SAPDiscoverySites_ImportEntities.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/SAPDiscoverySites/preview/2023-10-01-preview/examples/SAPDiscoverySites_ImportEntities.json
      */
     /**
      * Sample code: Import a SAP Migration discovery site resource and it's child resources.

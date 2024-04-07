@@ -9,9 +9,7 @@ package com.azure.resourcemanager.migrationdiscoverysap.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/operations/preview/2023-10-01-preview/examples/
-     * Operations_List.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/operations/preview/2023-10-01-preview/examples/Operations_List.json
      */
     /**
      * Sample code: List the operations for the provider.

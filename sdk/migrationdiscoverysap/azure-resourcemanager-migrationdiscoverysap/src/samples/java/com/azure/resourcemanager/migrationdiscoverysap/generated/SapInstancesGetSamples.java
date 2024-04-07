@@ -9,9 +9,7 @@ package com.azure.resourcemanager.migrationdiscoverysap.generated;
  */
 public final class SapInstancesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPDiscoverySites/preview/2023-10-01-preview/
-     * examples/SAPInstances_Get.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/SAPDiscoverySites/preview/2023-10-01-preview/examples/SAPInstances_Get.json
      */
     /**
      * Sample code: GET a SAP Instance resource.

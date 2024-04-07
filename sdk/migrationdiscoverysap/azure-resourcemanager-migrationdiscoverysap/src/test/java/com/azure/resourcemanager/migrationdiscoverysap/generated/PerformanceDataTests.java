@@ -5,18 +5,18 @@
 package com.azure.resourcemanager.migrationdiscoverysap.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.migrationdiscoverysap.models.ExcelPerformanceData;
 import com.azure.resourcemanager.migrationdiscoverysap.models.PerformanceData;
 
 public final class PerformanceDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PerformanceData model
-            = BinaryData.fromString("{\"dataSource\":\"PerformanceData\"}").toObject(PerformanceData.class);
+        PerformanceData model = BinaryData.fromString("{\"dataSource\":\"Excel\"}").toObject(PerformanceData.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PerformanceData model = new PerformanceData();
+        PerformanceData model = new ExcelPerformanceData();
         model = BinaryData.fromObject(model).toObject(PerformanceData.class);
     }
 }

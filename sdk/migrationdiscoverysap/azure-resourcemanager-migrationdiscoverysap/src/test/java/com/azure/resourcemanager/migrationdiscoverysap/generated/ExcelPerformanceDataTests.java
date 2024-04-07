@@ -11,7 +11,7 @@ public final class ExcelPerformanceDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExcelPerformanceData model = BinaryData
-            .fromString("{\"dataSource\":\"Excel\",\"maxCpuLoad\":1111118193,\"totalSourceDbSizeGB\":1242878165}")
+            .fromString("{\"dataSource\":\"Excel\",\"maxCpuLoad\":2024300309,\"totalSourceDbSizeGB\":1928966847}")
             .toObject(ExcelPerformanceData.class);
     }
 

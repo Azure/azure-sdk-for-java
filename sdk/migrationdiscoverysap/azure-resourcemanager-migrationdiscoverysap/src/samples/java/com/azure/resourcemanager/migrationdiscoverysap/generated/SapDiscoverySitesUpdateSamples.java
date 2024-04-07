@@ -13,9 +13,7 @@ import java.util.Map;
  */
 public final class SapDiscoverySitesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPDiscoverySites/preview/2023-10-01-preview/
-     * examples/SAPDiscoverySites_Update.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/SAPDiscoverySites/preview/2023-10-01-preview/examples/SAPDiscoverySites_Update.json
      */
     /**
      * Sample code: Updates a SAP Migration discovery site resource.
@@ -25,7 +23,8 @@ public final class SapDiscoverySitesUpdateSamples {
     public static void updatesASAPMigrationDiscoverySiteResource(
         com.azure.resourcemanager.migrationdiscoverysap.MigrationDiscoverySapManager manager) {
         SapDiscoverySite resource = manager.sapDiscoverySites()
-            .getByResourceGroupWithResponse("test-rg", "SampleSite", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("test-rg", "SampleSite", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1")).apply();
     }
 

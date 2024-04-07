@@ -13,9 +13,7 @@ import java.util.Map;
  */
 public final class SapDiscoverySitesCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPDiscoverySites/preview/2023-10-01-preview/
-     * examples/SAPDiscoverySites_Create.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/SAPDiscoverySites/preview/2023-10-01-preview/examples/SAPDiscoverySites_Create.json
      */
     /**
      * Sample code: Create resource for Import based input.
@@ -24,7 +22,10 @@ public final class SapDiscoverySitesCreateSamples {
      */
     public static void createResourceForImportBasedInput(
         com.azure.resourcemanager.migrationdiscoverysap.MigrationDiscoverySapManager manager) {
-        manager.sapDiscoverySites().define("SampleSite").withRegion("eastus").withExistingResourceGroup("test-rg")
+        manager.sapDiscoverySites()
+            .define("SampleSite")
+            .withRegion("eastus")
+            .withExistingResourceGroup("test-rg")
             .withTags(mapOf("property1", "value1", "property2", "value2"))
             .withProperties(new SapDiscoverySiteProperties().withMasterSiteId("MasterSiteIdResourceId")
                 .withMigrateProjectId("MigrateProjectId"))

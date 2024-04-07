@@ -9,9 +9,7 @@ package com.azure.resourcemanager.migrationdiscoverysap.generated;
  */
 public final class SapDiscoverySitesListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPDiscoverySites/preview/2023-10-01-preview/
-     * examples/SAPDiscoverySites_ListByResourceGroup.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/SAPDiscoverySites/preview/2023-10-01-preview/examples/SAPDiscoverySites_ListByResourceGroup.json
      */
     /**
      * Sample code: List SAP Migration discovery site resources by Resource group.

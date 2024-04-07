@@ -9,9 +9,7 @@ package com.azure.resourcemanager.migrationdiscoverysap.generated;
  */
 public final class SapDiscoverySitesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPDiscoverySites/preview/2023-10-01-preview/
-     * examples/SAPDiscoverySites_Get.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/SAPDiscoverySites/preview/2023-10-01-preview/examples/SAPDiscoverySites_Get.json
      */
     /**
      * Sample code: GET a SAP Migration discovery site resource.
@@ -20,7 +18,7 @@ public final class SapDiscoverySitesGetByResourceGroupSamples {
      */
     public static void gETASAPMigrationDiscoverySiteResource(
         com.azure.resourcemanager.migrationdiscoverysap.MigrationDiscoverySapManager manager) {
-        manager.sapDiscoverySites().getByResourceGroupWithResponse("test-rg", "SampleSite",
-            com.azure.core.util.Context.NONE);
+        manager.sapDiscoverySites()
+            .getByResourceGroupWithResponse("test-rg", "SampleSite", com.azure.core.util.Context.NONE);
     }
 }

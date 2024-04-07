@@ -11,7 +11,7 @@ public final class NativePerformanceDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NativePerformanceData model
-            = BinaryData.fromString("{\"dataSource\":\"Native\"}").toObject(NativePerformanceData.class);
+            = BinaryData.fromString("{\"dataSource\":\"Excel\"}").toObject(NativePerformanceData.class);
     }
 
     @org.junit.jupiter.api.Test

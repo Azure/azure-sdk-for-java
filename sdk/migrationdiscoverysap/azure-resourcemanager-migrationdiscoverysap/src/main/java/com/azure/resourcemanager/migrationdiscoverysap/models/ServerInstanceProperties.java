@@ -13,9 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class ServerInstanceProperties {
     /*
-     * This is the Virtual Machine Name of the SAP system. Add all the virtual machines attached to an SAP system which
-     * you wish to migrate to Azure. Keeping this not equal to ID as for single tier all InstanceTypes would be on same
-     * server, leading to multiple resources with same servername.
+     * This is the Virtual Machine Name of the SAP system. Add all the virtual machines attached to an SAP system which you wish to migrate to Azure. Keeping this not equal to ID as for single tier all InstanceTypes would be on same server, leading to multiple resources with same servername.
      */
     @JsonProperty(value = "serverName", access = JsonProperty.Access.WRITE_ONLY)
     private String serverName;
@@ -27,8 +25,7 @@ public final class ServerInstanceProperties {
     private SapInstanceType sapInstanceType;
 
     /*
-     * This is the Instance SID for ASCS/AP/DB instance. An SAP system with HANA database for example could have a
-     * different SID for database Instance than that of ASCS instance.
+     * This is the Instance SID for ASCS/AP/DB instance.  An SAP system with HANA database for example could have a different SID for database Instance than that of ASCS instance.
      */
     @JsonProperty(value = "instanceSid", access = JsonProperty.Access.WRITE_ONLY)
     private String instanceSid;
@@ -83,8 +80,8 @@ public final class ServerInstanceProperties {
 
     /**
      * Get the serverName property: This is the Virtual Machine Name of the SAP system. Add all the virtual machines
-     * attached to an SAP system which you wish to migrate to Azure. Keeping this not equal to ID as for single tier
-     * all InstanceTypes would be on same server, leading to multiple resources with same servername.
+     * attached to an SAP system which you wish to migrate to Azure. Keeping this not equal to ID as for single tier all
+     * InstanceTypes would be on same server, leading to multiple resources with same servername.
      * 
      * @return the serverName value.
      */
@@ -102,8 +99,8 @@ public final class ServerInstanceProperties {
     }
 
     /**
-     * Get the instanceSid property: This is the Instance SID for ASCS/AP/DB instance. An SAP system with HANA
-     * database for example could have a different SID for database Instance than that of ASCS instance.
+     * Get the instanceSid property: This is the Instance SID for ASCS/AP/DB instance. An SAP system with HANA database
+     * for example could have a different SID for database Instance than that of ASCS instance.
      * 
      * @return the instanceSid value.
      */

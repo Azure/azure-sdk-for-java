@@ -5,28 +5,43 @@
 package com.azure.resourcemanager.migrationdiscoverysap.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The SAP instance specific performance data.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "dataSource",
-    defaultImpl = PerformanceData.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "dataSource", defaultImpl = PerformanceData.class, visible = true)
 @JsonTypeName("PerformanceData")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Excel", value = ExcelPerformanceData.class),
     @JsonSubTypes.Type(name = "Native", value = NativePerformanceData.class) })
 @Immutable
 public class PerformanceData {
+    /*
+     * The data source of the performance data.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "dataSource", required = true)
+    private DataSource dataSource;
+
     /**
      * Creates an instance of PerformanceData class.
      */
     public PerformanceData() {
+        this.dataSource = DataSource.fromString("PerformanceData");
+    }
+
+    /**
+     * Get the dataSource property: The data source of the performance data.
+     * 
+     * @return the dataSource value.
+     */
+    public DataSource dataSource() {
+        return this.dataSource;
     }
 
     /**

@@ -13,23 +13,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class SapInstanceProperties {
     /*
-     * This is the SID of SAP System. Keeping this not equal to ID as different landscapes can have repeated System SID
-     * IDs.
+     * This is the SID of SAP System. Keeping this not equal to ID as different landscapes can have repeated System SID IDs.
      */
     @JsonProperty(value = "systemSid", access = JsonProperty.Access.WRITE_ONLY)
     private String systemSid;
 
     /*
-     * The Environment; PRD, QA, DEV, etc to which SAP system belongs to. Select from the list of available dropdown
-     * values.
+     * The Environment; PRD, QA, DEV, etc to which SAP system belongs to. Select from the list of available dropdown values.
      */
     @JsonProperty(value = "environment", access = JsonProperty.Access.WRITE_ONLY)
     private SapInstanceEnvironment environment;
 
     /*
-     * This is the SID of the production system in a landscape. An SAP system could itself be a production SID or a
-     * part of a landscape with a different Production SID. This field can be used to relate non-prod SIDs, other
-     * components, SID (WEBDISP) to the prod SID. Enter the value of Production SID.
+     * This is the SID of the production system in a landscape.  An SAP system could itself be a production SID or a part of a landscape with a different Production SID. This field can be used to relate non-prod SIDs, other components, SID (WEBDISP) to the prod SID. Enter the value of Production SID.
      */
     @JsonProperty(value = "landscapeSid", access = JsonProperty.Access.WRITE_ONLY)
     private String landscapeSid;

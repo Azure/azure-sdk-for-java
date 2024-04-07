@@ -6,16 +6,28 @@ package com.azure.resourcemanager.migrationdiscoverysap.models;
 
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The SAP instance specific performance data for Excel import.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataSource")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "dataSource",
+    defaultImpl = ExcelPerformanceData.class,
+    visible = true)
 @JsonTypeName("Excel")
 @Immutable
 public final class ExcelPerformanceData extends PerformanceData {
+    /*
+     * The data source of the performance data.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "dataSource", required = true)
+    private DataSource dataSource = DataSource.EXCEL;
+
     /*
      * Provide the max CPU percentage load on the server. Omit the percentage symbol while filling this value.
      */
@@ -32,6 +44,16 @@ public final class ExcelPerformanceData extends PerformanceData {
      * Creates an instance of ExcelPerformanceData class.
      */
     public ExcelPerformanceData() {
+    }
+
+    /**
+     * Get the dataSource property: The data source of the performance data.
+     * 
+     * @return the dataSource value.
+     */
+    @Override
+    public DataSource dataSource() {
+        return this.dataSource;
     }
 
     /**

@@ -12,9 +12,7 @@ import com.azure.resourcemanager.migrationdiscoverysap.models.ServerInstanceProp
  */
 public final class ServerInstancesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPDiscoverySites/preview/2023-10-01-preview/
-     * examples/ServerInstances_Update.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/SAPDiscoverySites/preview/2023-10-01-preview/examples/ServerInstances_Update.json
      */
     /**
      * Sample code: Updates the Server Instance resource.

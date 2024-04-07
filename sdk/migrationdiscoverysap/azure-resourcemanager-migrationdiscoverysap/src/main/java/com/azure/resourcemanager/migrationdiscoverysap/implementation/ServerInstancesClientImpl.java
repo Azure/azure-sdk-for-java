@@ -656,8 +656,10 @@ public final class ServerInstancesClientImpl implements ServerInstancesClient {
     public SyncPoller<PollResult<ServerInstanceInner>, ServerInstanceInner> beginCreate(String resourceGroupName,
         String sapDiscoverySiteName, String sapInstanceName, String serverInstanceName, ServerInstanceInner resource,
         Context context) {
-        return this.beginCreateAsync(resourceGroupName, sapDiscoverySiteName, sapInstanceName, serverInstanceName,
-            resource, context).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceGroupName, sapDiscoverySiteName, sapInstanceName, serverInstanceName, resource,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -678,7 +680,8 @@ public final class ServerInstancesClientImpl implements ServerInstancesClient {
     private Mono<ServerInstanceInner> createAsync(String resourceGroupName, String sapDiscoverySiteName,
         String sapInstanceName, String serverInstanceName, ServerInstanceInner resource) {
         return beginCreateAsync(resourceGroupName, sapDiscoverySiteName, sapInstanceName, serverInstanceName, resource)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1143,7 +1146,8 @@ public final class ServerInstancesClientImpl implements ServerInstancesClient {
     private Mono<Void> deleteAsync(String resourceGroupName, String sapDiscoverySiteName, String sapInstanceName,
         String serverInstanceName, Context context) {
         return beginDeleteAsync(resourceGroupName, sapDiscoverySiteName, sapInstanceName, serverInstanceName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

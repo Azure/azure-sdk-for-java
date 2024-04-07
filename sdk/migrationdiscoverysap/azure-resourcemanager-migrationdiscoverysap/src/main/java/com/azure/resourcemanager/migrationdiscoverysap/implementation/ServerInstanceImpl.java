@@ -67,14 +67,18 @@ public final class ServerInstanceImpl implements ServerInstance, ServerInstance.
     }
 
     public ServerInstance create() {
-        this.innerObject = serviceManager.serviceClient().getServerInstances().create(resourceGroupName,
-            sapDiscoverySiteName, sapInstanceName, serverInstanceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getServerInstances()
+            .create(resourceGroupName, sapDiscoverySiteName, sapInstanceName, serverInstanceName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public ServerInstance create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getServerInstances().create(resourceGroupName,
-            sapDiscoverySiteName, sapInstanceName, serverInstanceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getServerInstances()
+            .create(resourceGroupName, sapDiscoverySiteName, sapInstanceName, serverInstanceName, this.innerModel(),
+                context);
         return this;
     }
 
@@ -91,14 +95,20 @@ public final class ServerInstanceImpl implements ServerInstance, ServerInstance.
     }
 
     public ServerInstance apply() {
-        this.innerObject = serviceManager.serviceClient().getServerInstances().updateWithResponse(resourceGroupName,
-            sapDiscoverySiteName, sapInstanceName, serverInstanceName, updateProperties, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServerInstances()
+            .updateWithResponse(resourceGroupName, sapDiscoverySiteName, sapInstanceName, serverInstanceName,
+                updateProperties, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ServerInstance apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getServerInstances().updateWithResponse(resourceGroupName,
-            sapDiscoverySiteName, sapInstanceName, serverInstanceName, updateProperties, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServerInstances()
+            .updateWithResponse(resourceGroupName, sapDiscoverySiteName, sapInstanceName, serverInstanceName,
+                updateProperties, context)
+            .getValue();
         return this;
     }
 
@@ -113,14 +123,16 @@ public final class ServerInstanceImpl implements ServerInstance, ServerInstance.
     }
 
     public ServerInstance refresh() {
-        this.innerObject = serviceManager.serviceClient().getServerInstances()
+        this.innerObject = serviceManager.serviceClient()
+            .getServerInstances()
             .getWithResponse(resourceGroupName, sapDiscoverySiteName, sapInstanceName, serverInstanceName, Context.NONE)
             .getValue();
         return this;
     }
 
     public ServerInstance refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getServerInstances()
+        this.innerObject = serviceManager.serviceClient()
+            .getServerInstances()
             .getWithResponse(resourceGroupName, sapDiscoverySiteName, sapInstanceName, serverInstanceName, context)
             .getValue();
         return this;

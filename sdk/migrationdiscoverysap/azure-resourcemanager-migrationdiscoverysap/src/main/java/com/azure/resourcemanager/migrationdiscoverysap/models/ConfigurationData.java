@@ -43,7 +43,7 @@ public final class ConfigurationData {
     private Integer ram;
 
     /*
-     * Provide the HW manufacturer company of the server. For example, Microsoft Corporation.
+     * Provide the HW manufacturer company of the server.  For example, Microsoft Corporation.
      */
     @JsonProperty(value = "hardwareManufacturer", access = JsonProperty.Access.WRITE_ONLY)
     private String hardwareManufacturer;
@@ -55,29 +55,25 @@ public final class ConfigurationData {
     private String model;
 
     /*
-     * Provide the total disk volume capacity in GB. Add the disk volume for each individual disks and provide the
-     * total sum in this field.
+     * Provide the total disk volume capacity in GB. Add the disk volume for each individual disks and provide the total sum in this field.
      */
     @JsonProperty(value = "totalDiskSizeGB", access = JsonProperty.Access.WRITE_ONLY)
     private Integer totalDiskSizeGB;
 
     /*
-     * Provide the total disk IOPS capacity. Add the disk volume for each individual disk and provide the sum total in
-     * this field.
+     * Provide the total disk IOPS capacity. Add the disk volume for each individual disk and provide the sum total in this field.
      */
     @JsonProperty(value = "totalDiskIops", access = JsonProperty.Access.WRITE_ONLY)
     private Integer totalDiskIops;
 
     /*
-     * The database of this is a server instance. Applicable only if SAP instance type for this server instance is
-     * 'DB'.
+     * The database of this is a server instance. Applicable only if SAP instance type for this server instance is 'DB'.
      */
     @JsonProperty(value = "databaseType", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseType databaseType;
 
     /*
-     * Provide the target HANA database size you need. Applicable only if SAP instance type for this server instance is
-     * 'DB' and you are migrating an AnyDb database to SAP S/4HANA.
+     * Provide the target HANA database size you need. Applicable only if SAP instance type for this server instance is 'DB' and you are migrating an AnyDb database to SAP S/4HANA.
      */
     @JsonProperty(value = "targetHanaRamSizeGB", access = JsonProperty.Access.WRITE_ONLY)
     private Integer targetHanaRamSizeGB;
@@ -108,8 +104,8 @@ public final class ConfigurationData {
     }
 
     /**
-     * Get the cpuType property: Provide the CPU architecture type of the server. For example, Xeon Platinum 8171M,
-     * Xeon E5-2673 v3.
+     * Get the cpuType property: Provide the CPU architecture type of the server. For example, Xeon Platinum 8171M, Xeon
+     * E5-2673 v3.
      * 
      * @return the cpuType value.
      */
@@ -118,8 +114,8 @@ public final class ConfigurationData {
     }
 
     /**
-     * Get the cpuInMhz property: Provide the CPU clock speed of the server in MHz. This should be a non-zero value.
-     * For example, 2100.
+     * Get the cpuInMhz property: Provide the CPU clock speed of the server in MHz. This should be a non-zero value. For
+     * example, 2100.
      * 
      * @return the cpuInMhz value.
      */
@@ -137,8 +133,8 @@ public final class ConfigurationData {
     }
 
     /**
-     * Get the hardwareManufacturer property: Provide the HW manufacturer company of the server. For example,
-     * Microsoft Corporation.
+     * Get the hardwareManufacturer property: Provide the HW manufacturer company of the server. For example, Microsoft
+     * Corporation.
      * 
      * @return the hardwareManufacturer value.
      */
