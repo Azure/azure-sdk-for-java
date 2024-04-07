@@ -81,12 +81,11 @@ public final class DateSpan {
      */
     public void validate() {
         if (start() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property start in model DateSpan"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property start in model DateSpan"));
         }
         if (end() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property end in model DateSpan"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property end in model DateSpan"));
         }
     }
 

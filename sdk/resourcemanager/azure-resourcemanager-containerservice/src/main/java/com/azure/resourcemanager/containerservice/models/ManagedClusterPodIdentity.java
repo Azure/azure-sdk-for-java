@@ -160,16 +160,18 @@ public final class ManagedClusterPodIdentity {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model ManagedClusterPodIdentity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model ManagedClusterPodIdentity"));
         }
         if (namespace() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property namespace in model ManagedClusterPodIdentity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property namespace in model ManagedClusterPodIdentity"));
         }
         if (identity() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property identity in model ManagedClusterPodIdentity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property identity in model ManagedClusterPodIdentity"));
         } else {
             identity().validate();
         }

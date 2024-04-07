@@ -15,10 +15,7 @@ public final class AgentPoolUpgradeSettings {
     /*
      * The maximum number or percentage of nodes that are surged during upgrade.
      * 
-     * This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it
-     * is the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are
-     * rounded up. If not specified, the default is 1. For more information, including best practices, see:
-     * https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade
+     * This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are rounded up. If not specified, the default is 1. For more information, including best practices, see: https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade
      */
     @JsonProperty(value = "maxSurge")
     private String maxSurge;
@@ -26,9 +23,7 @@ public final class AgentPoolUpgradeSettings {
     /*
      * The drain timeout for a node
      * 
-     * The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction
-     * wait time honors waiting on pod disruption budgets. If this time is exceeded, the upgrade fails. If not
-     * specified, the default is 30 minutes.
+     * The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction wait time honors waiting on pod disruption budgets. If this time is exceeded, the upgrade fails. If not specified, the default is 30 minutes.
      */
     @JsonProperty(value = "drainTimeoutInMinutes")
     private Integer drainTimeoutInMinutes;
@@ -36,8 +31,7 @@ public final class AgentPoolUpgradeSettings {
     /*
      * The soak duration for a node
      * 
-     * The amount of time (in minutes) to wait after draining a node and before reimaging it and moving on to next
-     * node. If not specified, the default is 0 minutes.
+     * The amount of time (in minutes) to wait after draining a node and before reimaging it and moving on to next node. If not specified, the default is 0 minutes.
      */
     @JsonProperty(value = "nodeSoakDurationInMinutes")
     private Integer nodeSoakDurationInMinutes;
@@ -51,8 +45,8 @@ public final class AgentPoolUpgradeSettings {
     /**
      * Get the maxSurge property: The maximum number or percentage of nodes that are surged during upgrade.
      * 
-     * This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it
-     * is the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are
+     * This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is
+     * the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are
      * rounded up. If not specified, the default is 1. For more information, including best practices, see:
      * https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade.
      * 
@@ -65,8 +59,8 @@ public final class AgentPoolUpgradeSettings {
     /**
      * Set the maxSurge property: The maximum number or percentage of nodes that are surged during upgrade.
      * 
-     * This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it
-     * is the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are
+     * This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is
+     * the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are
      * rounded up. If not specified, the default is 1. For more information, including best practices, see:
      * https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade.
      * 
@@ -81,9 +75,9 @@ public final class AgentPoolUpgradeSettings {
     /**
      * Get the drainTimeoutInMinutes property: The drain timeout for a node
      * 
-     * The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction
-     * wait time honors waiting on pod disruption budgets. If this time is exceeded, the upgrade fails. If not
-     * specified, the default is 30 minutes.
+     * The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction wait
+     * time honors waiting on pod disruption budgets. If this time is exceeded, the upgrade fails. If not specified, the
+     * default is 30 minutes.
      * 
      * @return the drainTimeoutInMinutes value.
      */
@@ -94,9 +88,9 @@ public final class AgentPoolUpgradeSettings {
     /**
      * Set the drainTimeoutInMinutes property: The drain timeout for a node
      * 
-     * The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction
-     * wait time honors waiting on pod disruption budgets. If this time is exceeded, the upgrade fails. If not
-     * specified, the default is 30 minutes.
+     * The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction wait
+     * time honors waiting on pod disruption budgets. If this time is exceeded, the upgrade fails. If not specified, the
+     * default is 30 minutes.
      * 
      * @param drainTimeoutInMinutes the drainTimeoutInMinutes value to set.
      * @return the AgentPoolUpgradeSettings object itself.
@@ -109,8 +103,8 @@ public final class AgentPoolUpgradeSettings {
     /**
      * Get the nodeSoakDurationInMinutes property: The soak duration for a node
      * 
-     * The amount of time (in minutes) to wait after draining a node and before reimaging it and moving on to next
-     * node. If not specified, the default is 0 minutes.
+     * The amount of time (in minutes) to wait after draining a node and before reimaging it and moving on to next node.
+     * If not specified, the default is 0 minutes.
      * 
      * @return the nodeSoakDurationInMinutes value.
      */
@@ -121,8 +115,8 @@ public final class AgentPoolUpgradeSettings {
     /**
      * Set the nodeSoakDurationInMinutes property: The soak duration for a node
      * 
-     * The amount of time (in minutes) to wait after draining a node and before reimaging it and moving on to next
-     * node. If not specified, the default is 0 minutes.
+     * The amount of time (in minutes) to wait after draining a node and before reimaging it and moving on to next node.
+     * If not specified, the default is 0 minutes.
      * 
      * @param nodeSoakDurationInMinutes the nodeSoakDurationInMinutes value to set.
      * @return the AgentPoolUpgradeSettings object itself.

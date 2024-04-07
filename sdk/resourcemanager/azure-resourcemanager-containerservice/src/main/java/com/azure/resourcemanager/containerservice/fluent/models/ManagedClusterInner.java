@@ -247,8 +247,8 @@ public final class ManagedClusterInner extends Resource {
     /**
      * Get the currentKubernetesVersion property: The version of Kubernetes the Managed Cluster is running.
      * 
-     * If kubernetesVersion was a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal
-     * to it. If kubernetesVersion was &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
+     * If kubernetesVersion was a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal to
+     * it. If kubernetesVersion was &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
      * version being used.
      * 
      * @return the currentKubernetesVersion value.
@@ -586,8 +586,8 @@ public final class ManagedClusterInner extends Resource {
 
     /**
      * Get the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
-     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn
-     * more at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
+     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more
+     * at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
      * 
      * @return the enablePodSecurityPolicy value.
      */
@@ -597,8 +597,8 @@ public final class ManagedClusterInner extends Resource {
 
     /**
      * Set the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
-     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn
-     * more at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
+     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more
+     * at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
      * 
      * @param enablePodSecurityPolicy the enablePodSecurityPolicy value to set.
      * @return the ManagedClusterInner object itself.

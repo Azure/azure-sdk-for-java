@@ -13,9 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ManagedClusterAzureMonitorProfile {
     /*
-     * Metrics profile for the Azure Monitor managed service for Prometheus addon. Collect out-of-the-box Kubernetes
-     * infrastructure metrics to send to an Azure Monitor Workspace and configure additional scraping for custom
-     * targets. See aka.ms/AzureManagedPrometheus for an overview.
+     * Metrics profile for the Azure Monitor managed service for Prometheus addon. Collect out-of-the-box Kubernetes infrastructure metrics to send to an Azure Monitor Workspace and configure additional scraping for custom targets. See aka.ms/AzureManagedPrometheus for an overview.
      */
     @JsonProperty(value = "metrics")
     private ManagedClusterAzureMonitorProfileMetrics metrics;

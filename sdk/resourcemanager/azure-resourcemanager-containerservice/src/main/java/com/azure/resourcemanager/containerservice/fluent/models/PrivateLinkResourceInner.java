@@ -156,8 +156,8 @@ public final class PrivateLinkResourceInner {
     }
 
     /**
-     * Get the privateLinkServiceId property: The private link service ID of the resource, this field is exposed only
-     * to NRP internally.
+     * Get the privateLinkServiceId property: The private link service ID of the resource, this field is exposed only to
+     * NRP internally.
      * 
      * @return the privateLinkServiceId value.
      */

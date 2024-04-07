@@ -10,8 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * OS configurations of Linux agent nodes.
  * 
- * See [AKS custom node configuration](https://docs.microsoft.com/azure/aks/custom-node-configuration) for more
- * details.
+ * See [AKS custom node configuration](https://docs.microsoft.com/azure/aks/custom-node-configuration) for more details.
  */
 @Fluent
 public final class LinuxOSConfig {
@@ -24,9 +23,7 @@ public final class LinuxOSConfig {
     /*
      * Whether transparent hugepages are enabled.
      * 
-     * Valid values are 'always', 'madvise', and 'never'. The default is 'always'. For more information see
-     * [Transparent
-     * Hugepages](https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html#admin-guide-transhuge).
+     * Valid values are 'always', 'madvise', and 'never'. The default is 'always'. For more information see [Transparent Hugepages](https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html#admin-guide-transhuge).
      */
     @JsonProperty(value = "transparentHugePageEnabled")
     private String transparentHugePageEnabled;
@@ -34,9 +31,7 @@ public final class LinuxOSConfig {
     /*
      * Whether the kernel should make aggressive use of memory compaction to make more hugepages available.
      * 
-     * Valid values are 'always', 'defer', 'defer+madvise', 'madvise' and 'never'. The default is 'madvise'. For more
-     * information see [Transparent
-     * Hugepages](https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html#admin-guide-transhuge).
+     * Valid values are 'always', 'defer', 'defer+madvise', 'madvise' and 'never'. The default is 'madvise'. For more information see [Transparent Hugepages](https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html#admin-guide-transhuge).
      */
     @JsonProperty(value = "transparentHugePageDefrag")
     private String transparentHugePageDefrag;
@@ -76,8 +71,7 @@ public final class LinuxOSConfig {
     /**
      * Get the transparentHugePageEnabled property: Whether transparent hugepages are enabled.
      * 
-     * Valid values are 'always', 'madvise', and 'never'. The default is 'always'. For more information see
-     * [Transparent
+     * Valid values are 'always', 'madvise', and 'never'. The default is 'always'. For more information see [Transparent
      * Hugepages](https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html#admin-guide-transhuge).
      * 
      * @return the transparentHugePageEnabled value.
@@ -89,8 +83,7 @@ public final class LinuxOSConfig {
     /**
      * Set the transparentHugePageEnabled property: Whether transparent hugepages are enabled.
      * 
-     * Valid values are 'always', 'madvise', and 'never'. The default is 'always'. For more information see
-     * [Transparent
+     * Valid values are 'always', 'madvise', and 'never'. The default is 'always'. For more information see [Transparent
      * Hugepages](https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html#admin-guide-transhuge).
      * 
      * @param transparentHugePageEnabled the transparentHugePageEnabled value to set.
@@ -102,8 +95,8 @@ public final class LinuxOSConfig {
     }
 
     /**
-     * Get the transparentHugePageDefrag property: Whether the kernel should make aggressive use of memory compaction
-     * to make more hugepages available.
+     * Get the transparentHugePageDefrag property: Whether the kernel should make aggressive use of memory compaction to
+     * make more hugepages available.
      * 
      * Valid values are 'always', 'defer', 'defer+madvise', 'madvise' and 'never'. The default is 'madvise'. For more
      * information see [Transparent
@@ -116,8 +109,8 @@ public final class LinuxOSConfig {
     }
 
     /**
-     * Set the transparentHugePageDefrag property: Whether the kernel should make aggressive use of memory compaction
-     * to make more hugepages available.
+     * Set the transparentHugePageDefrag property: Whether the kernel should make aggressive use of memory compaction to
+     * make more hugepages available.
      * 
      * Valid values are 'always', 'defer', 'defer+madvise', 'madvise' and 'never'. The default is 'madvise'. For more
      * information see [Transparent

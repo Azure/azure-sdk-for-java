@@ -27,8 +27,7 @@ public final class TrustedAccessRoleInner {
     private String name;
 
     /*
-     * List of rules for the role. This maps to 'rules' property of [Kubernetes Cluster
-     * Role](https://kubernetes.io/docs/reference/kubernetes-api/authorization-resources/cluster-role-v1/#ClusterRole).
+     * List of rules for the role. This maps to 'rules' property of [Kubernetes Cluster Role](https://kubernetes.io/docs/reference/kubernetes-api/authorization-resources/cluster-role-v1/#ClusterRole).
      */
     @JsonProperty(value = "rules", access = JsonProperty.Access.WRITE_ONLY)
     private List<TrustedAccessRoleRule> rules;

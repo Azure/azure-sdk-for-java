@@ -28,8 +28,7 @@ public final class TrustedAccessRoleBindingProperties {
     private String sourceResourceId;
 
     /*
-     * A list of roles to bind, each item is a resource type qualified role name. For example:
-     * 'Microsoft.MachineLearningServices/workspaces/reader'.
+     * A list of roles to bind, each item is a resource type qualified role name. For example: 'Microsoft.MachineLearningServices/workspaces/reader'.
      */
     @JsonProperty(value = "roles", required = true)
     private List<String> roles;
@@ -98,12 +97,14 @@ public final class TrustedAccessRoleBindingProperties {
      */
     public void validate() {
         if (sourceResourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sourceResourceId in model TrustedAccessRoleBindingProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceResourceId in model TrustedAccessRoleBindingProperties"));
         }
         if (roles() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property roles in model TrustedAccessRoleBindingProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property roles in model TrustedAccessRoleBindingProperties"));
         }
     }
 

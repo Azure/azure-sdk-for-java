@@ -251,8 +251,9 @@ public final class OpenShiftManagedClusterProperties {
      */
     public void validate() {
         if (openShiftVersion() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property openShiftVersion in model OpenShiftManagedClusterProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property openShiftVersion in model OpenShiftManagedClusterProperties"));
         }
         if (networkProfile() != null) {
             networkProfile().validate();

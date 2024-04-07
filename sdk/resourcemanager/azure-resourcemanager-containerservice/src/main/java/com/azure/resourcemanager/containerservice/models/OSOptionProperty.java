@@ -78,8 +78,8 @@ public final class OSOptionProperty {
      */
     public void validate() {
         if (osType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property osType in model OSOptionProperty"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property osType in model OSOptionProperty"));
         }
     }
 

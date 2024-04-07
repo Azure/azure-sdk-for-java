@@ -157,12 +157,14 @@ public final class OrchestratorVersionProfile {
      */
     public void validate() {
         if (orchestratorType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property orchestratorType in model OrchestratorVersionProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property orchestratorType in model OrchestratorVersionProfile"));
         }
         if (orchestratorVersion() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property orchestratorVersion in model OrchestratorVersionProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property orchestratorVersion in model OrchestratorVersionProfile"));
         }
         if (upgrades() != null) {
             upgrades().forEach(e -> e.validate());

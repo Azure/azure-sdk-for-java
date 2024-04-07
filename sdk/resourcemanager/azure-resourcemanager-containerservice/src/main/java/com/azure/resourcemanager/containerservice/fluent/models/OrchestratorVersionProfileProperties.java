@@ -54,8 +54,9 @@ public final class OrchestratorVersionProfileProperties {
      */
     public void validate() {
         if (orchestrators() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property orchestrators in model OrchestratorVersionProfileProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property orchestrators in model OrchestratorVersionProfileProperties"));
         } else {
             orchestrators().forEach(e -> e.validate());
         }

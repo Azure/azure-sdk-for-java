@@ -82,14 +82,16 @@ public final class ManagedClusterUpgradeProfileProperties {
      */
     public void validate() {
         if (controlPlaneProfile() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property controlPlaneProfile in model ManagedClusterUpgradeProfileProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property controlPlaneProfile in model ManagedClusterUpgradeProfileProperties"));
         } else {
             controlPlaneProfile().validate();
         }
         if (agentPoolProfiles() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property agentPoolProfiles in model ManagedClusterUpgradeProfileProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property agentPoolProfiles in model ManagedClusterUpgradeProfileProperties"));
         } else {
             agentPoolProfiles().forEach(e -> e.validate());
         }

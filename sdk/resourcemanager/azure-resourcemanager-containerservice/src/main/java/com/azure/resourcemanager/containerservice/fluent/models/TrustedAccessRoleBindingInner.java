@@ -117,8 +117,9 @@ public final class TrustedAccessRoleBindingInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model TrustedAccessRoleBindingInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model TrustedAccessRoleBindingInner"));
         } else {
             innerProperties().validate();
         }

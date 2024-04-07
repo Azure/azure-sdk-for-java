@@ -38,15 +38,13 @@ public final class ManagedClusterLoadBalancerProfile {
     private List<ResourceReference> effectiveOutboundIPs;
 
     /*
-     * The desired number of allocated SNAT ports per VM. Allowed values are in the range of 0 to 64000 (inclusive).
-     * The default value is 0 which results in Azure dynamically allocating ports.
+     * The desired number of allocated SNAT ports per VM. Allowed values are in the range of 0 to 64000 (inclusive). The default value is 0 which results in Azure dynamically allocating ports.
      */
     @JsonProperty(value = "allocatedOutboundPorts")
     private Integer allocatedOutboundPorts;
 
     /*
-     * Desired outbound flow idle timeout in minutes. Allowed values are in the range of 4 to 120 (inclusive). The
-     * default value is 30 minutes.
+     * Desired outbound flow idle timeout in minutes. Allowed values are in the range of 4 to 120 (inclusive). The default value is 30 minutes.
      */
     @JsonProperty(value = "idleTimeoutInMinutes")
     private Integer idleTimeoutInMinutes;
@@ -152,9 +150,8 @@ public final class ManagedClusterLoadBalancerProfile {
     }
 
     /**
-     * Get the allocatedOutboundPorts property: The desired number of allocated SNAT ports per VM. Allowed values are
-     * in the range of 0 to 64000 (inclusive). The default value is 0 which results in Azure dynamically allocating
-     * ports.
+     * Get the allocatedOutboundPorts property: The desired number of allocated SNAT ports per VM. Allowed values are in
+     * the range of 0 to 64000 (inclusive). The default value is 0 which results in Azure dynamically allocating ports.
      * 
      * @return the allocatedOutboundPorts value.
      */
@@ -163,9 +160,8 @@ public final class ManagedClusterLoadBalancerProfile {
     }
 
     /**
-     * Set the allocatedOutboundPorts property: The desired number of allocated SNAT ports per VM. Allowed values are
-     * in the range of 0 to 64000 (inclusive). The default value is 0 which results in Azure dynamically allocating
-     * ports.
+     * Set the allocatedOutboundPorts property: The desired number of allocated SNAT ports per VM. Allowed values are in
+     * the range of 0 to 64000 (inclusive). The default value is 0 which results in Azure dynamically allocating ports.
      * 
      * @param allocatedOutboundPorts the allocatedOutboundPorts value to set.
      * @return the ManagedClusterLoadBalancerProfile object itself.

@@ -52,15 +52,13 @@ public final class ContainerServiceNetworkProfile {
     private String podCidr;
 
     /*
-     * A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP
-     * ranges.
+     * A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP ranges.
      */
     @JsonProperty(value = "serviceCidr")
     private String serviceCidr;
 
     /*
-     * An IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range
-     * specified in serviceCidr.
+     * An IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr.
      */
     @JsonProperty(value = "dnsServiceIP")
     private String dnsServiceIp;
@@ -68,8 +66,7 @@ public final class ContainerServiceNetworkProfile {
     /*
      * The outbound (egress) routing method.
      * 
-     * This can only be set at cluster creation time and cannot be changed later. For more information see [egress
-     * outbound type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
+     * This can only be set at cluster creation time and cannot be changed later. For more information see [egress outbound type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
      */
     @JsonProperty(value = "outboundType")
     private OutboundType outboundType;
@@ -77,8 +74,7 @@ public final class ContainerServiceNetworkProfile {
     /*
      * The load balancer sku for the managed cluster.
      * 
-     * The default is 'standard'. See [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus)
-     * for more information about the differences between load balancer SKUs.
+     * The default is 'standard'. See [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus) for more information about the differences between load balancer SKUs.
      */
     @JsonProperty(value = "loadBalancerSku")
     private LoadBalancerSku loadBalancerSku;
@@ -98,8 +94,7 @@ public final class ContainerServiceNetworkProfile {
     /*
      * The CIDR notation IP ranges from which to assign pod IPs.
      * 
-     * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is
-     * expected for dual-stack networking.
+     * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack networking.
      */
     @JsonProperty(value = "podCidrs")
     private List<String> podCidrs;
@@ -107,8 +102,7 @@ public final class ContainerServiceNetworkProfile {
     /*
      * The CIDR notation IP ranges from which to assign service cluster IPs.
      * 
-     * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is
-     * expected for dual-stack networking. They must not overlap with any Subnet IP ranges.
+     * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack networking. They must not overlap with any Subnet IP ranges.
      */
     @JsonProperty(value = "serviceCidrs")
     private List<String> serviceCidrs;
@@ -116,8 +110,7 @@ public final class ContainerServiceNetworkProfile {
     /*
      * The IP families used to specify IP versions available to the cluster.
      * 
-     * IP families are used to determine single-stack or dual-stack clusters. For single-stack, the expected value is
-     * IPv4. For dual-stack, the expected values are IPv4 and IPv6.
+     * IP families are used to determine single-stack or dual-stack clusters. For single-stack, the expected value is IPv4. For dual-stack, the expected values are IPv4 and IPv6.
      */
     @JsonProperty(value = "ipFamilies")
     private List<IpFamily> ipFamilies;
@@ -392,8 +385,8 @@ public final class ContainerServiceNetworkProfile {
     /**
      * Get the podCidrs property: The CIDR notation IP ranges from which to assign pod IPs.
      * 
-     * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is
-     * expected for dual-stack networking.
+     * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected
+     * for dual-stack networking.
      * 
      * @return the podCidrs value.
      */
@@ -404,8 +397,8 @@ public final class ContainerServiceNetworkProfile {
     /**
      * Set the podCidrs property: The CIDR notation IP ranges from which to assign pod IPs.
      * 
-     * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is
-     * expected for dual-stack networking.
+     * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected
+     * for dual-stack networking.
      * 
      * @param podCidrs the podCidrs value to set.
      * @return the ContainerServiceNetworkProfile object itself.
@@ -418,8 +411,8 @@ public final class ContainerServiceNetworkProfile {
     /**
      * Get the serviceCidrs property: The CIDR notation IP ranges from which to assign service cluster IPs.
      * 
-     * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is
-     * expected for dual-stack networking. They must not overlap with any Subnet IP ranges.
+     * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected
+     * for dual-stack networking. They must not overlap with any Subnet IP ranges.
      * 
      * @return the serviceCidrs value.
      */
@@ -430,8 +423,8 @@ public final class ContainerServiceNetworkProfile {
     /**
      * Set the serviceCidrs property: The CIDR notation IP ranges from which to assign service cluster IPs.
      * 
-     * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is
-     * expected for dual-stack networking. They must not overlap with any Subnet IP ranges.
+     * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected
+     * for dual-stack networking. They must not overlap with any Subnet IP ranges.
      * 
      * @param serviceCidrs the serviceCidrs value to set.
      * @return the ContainerServiceNetworkProfile object itself.

@@ -15,16 +15,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ManagedClusterAzureMonitorProfileMetrics {
     /*
-     * Whether to enable or disable the Azure Managed Prometheus addon for Prometheus monitoring. See
-     * aka.ms/AzureManagedPrometheus-aks-enable for details on enabling and disabling.
+     * Whether to enable or disable the Azure Managed Prometheus addon for Prometheus monitoring. See aka.ms/AzureManagedPrometheus-aks-enable for details on enabling and disabling.
      */
     @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /*
-     * Kube State Metrics profile for the Azure Managed Prometheus addon. These optional settings are for the
-     * kube-state-metrics pod that is deployed with the addon. See aka.ms/AzureManagedPrometheus-optional-parameters
-     * for details.
+     * Kube State Metrics profile for the Azure Managed Prometheus addon. These optional settings are for the kube-state-metrics pod that is deployed with the addon. See aka.ms/AzureManagedPrometheus-optional-parameters for details.
      */
     @JsonProperty(value = "kubeStateMetrics")
     private ManagedClusterAzureMonitorProfileKubeStateMetrics kubeStateMetrics;

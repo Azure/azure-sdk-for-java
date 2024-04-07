@@ -6,16 +6,28 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Defines the Identity provider for MS AAD.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = OpenShiftManagedClusterAadIdentityProvider.class,
+    visible = true)
 @JsonTypeName("AADIdentityProvider")
 @Fluent
 public final class OpenShiftManagedClusterAadIdentityProvider extends OpenShiftManagedClusterBaseIdentityProvider {
+    /*
+     * The kind of the provider.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "kind", required = true)
+    private String kind = "AADIdentityProvider";
+
     /*
      * The clientId password associated with the provider.
      */
@@ -44,6 +56,16 @@ public final class OpenShiftManagedClusterAadIdentityProvider extends OpenShiftM
      * Creates an instance of OpenShiftManagedClusterAadIdentityProvider class.
      */
     public OpenShiftManagedClusterAadIdentityProvider() {
+    }
+
+    /**
+     * Get the kind property: The kind of the provider.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public String kind() {
+        return this.kind;
     }
 
     /**

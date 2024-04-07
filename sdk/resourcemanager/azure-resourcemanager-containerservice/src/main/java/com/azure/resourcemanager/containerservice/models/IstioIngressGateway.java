@@ -79,8 +79,8 @@ public final class IstioIngressGateway {
      */
     public void validate() {
         if (mode() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property mode in model IstioIngressGateway"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property mode in model IstioIngressGateway"));
         }
     }
 

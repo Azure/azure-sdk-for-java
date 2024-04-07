@@ -690,8 +690,8 @@ public final class AgentPoolInner extends SubResource {
      * Get the enableNodePublicIp property: Whether each node is allocated its own public IP.
      * 
      * Some scenarios may require nodes in a node pool to receive their own dedicated public IP addresses. A common
-     * scenario is for gaming workloads, where a console needs to make a direct connection to a cloud virtual machine
-     * to minimize hops. For more information see [assigning a public IP per
+     * scenario is for gaming workloads, where a console needs to make a direct connection to a cloud virtual machine to
+     * minimize hops. For more information see [assigning a public IP per
      * node](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools).
      * The default is false.
      * 
@@ -705,8 +705,8 @@ public final class AgentPoolInner extends SubResource {
      * Set the enableNodePublicIp property: Whether each node is allocated its own public IP.
      * 
      * Some scenarios may require nodes in a node pool to receive their own dedicated public IP addresses. A common
-     * scenario is for gaming workloads, where a console needs to make a direct connection to a cloud virtual machine
-     * to minimize hops. For more information see [assigning a public IP per
+     * scenario is for gaming workloads, where a console needs to make a direct connection to a cloud virtual machine to
+     * minimize hops. For more information see [assigning a public IP per
      * node](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools).
      * The default is false.
      * 
@@ -1039,8 +1039,8 @@ public final class AgentPoolInner extends SubResource {
      * Get the enableFips property: Whether to use a FIPS-enabled OS.
      * 
      * See [Add a FIPS-enabled node
-     * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for
-     * more details.
+     * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for more
+     * details.
      * 
      * @return the enableFips value.
      */
@@ -1052,8 +1052,8 @@ public final class AgentPoolInner extends SubResource {
      * Set the enableFips property: Whether to use a FIPS-enabled OS.
      * 
      * See [Add a FIPS-enabled node
-     * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for
-     * more details.
+     * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for more
+     * details.
      * 
      * @param enableFips the enableFips value to set.
      * @return the AgentPoolInner object itself.
@@ -1092,8 +1092,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the creationData property: CreationData to be used to specify the source Snapshot ID if the node pool will
-     * be created/upgraded using a snapshot.
+     * Get the creationData property: CreationData to be used to specify the source Snapshot ID if the node pool will be
+     * created/upgraded using a snapshot.
      * 
      * @return the creationData value.
      */
@@ -1102,8 +1102,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the creationData property: CreationData to be used to specify the source Snapshot ID if the node pool will
-     * be created/upgraded using a snapshot.
+     * Set the creationData property: CreationData to be used to specify the source Snapshot ID if the node pool will be
+     * created/upgraded using a snapshot.
      * 
      * @param creationData the creationData value to set.
      * @return the AgentPoolInner object itself.
@@ -1117,8 +1117,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the capacityReservationGroupId property: The fully qualified resource ID of the Capacity Reservation Group
-     * to provide virtual machines from a reserved group of Virtual Machines.
+     * Get the capacityReservationGroupId property: The fully qualified resource ID of the Capacity Reservation Group to
+     * provide virtual machines from a reserved group of Virtual Machines.
      * 
      * AKS will associate the specified agent pool with the Capacity Reservation Group.
      * 
@@ -1129,8 +1129,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the capacityReservationGroupId property: The fully qualified resource ID of the Capacity Reservation Group
-     * to provide virtual machines from a reserved group of Virtual Machines.
+     * Set the capacityReservationGroupId property: The fully qualified resource ID of the Capacity Reservation Group to
+     * provide virtual machines from a reserved group of Virtual Machines.
      * 
      * AKS will associate the specified agent pool with the Capacity Reservation Group.
      * 

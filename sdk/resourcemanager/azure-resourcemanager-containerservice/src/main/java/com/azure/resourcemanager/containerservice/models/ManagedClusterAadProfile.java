@@ -52,8 +52,7 @@ public final class ManagedClusterAadProfile {
     private String serverAppSecret;
 
     /*
-     * The AAD tenant ID to use for authentication. If not specified, will use the tenant of the deployment
-     * subscription.
+     * The AAD tenant ID to use for authentication. If not specified, will use the tenant of the deployment subscription.
      */
     @JsonProperty(value = "tenantID")
     private String tenantId;

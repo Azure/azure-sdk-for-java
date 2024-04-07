@@ -9,9 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class PrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-02-01/examples/
-     * PrivateLinkResourcesList.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-02-01/examples/PrivateLinkResourcesList.json
      */
     /**
      * Sample code: List Private Link Resources by Managed Cluster.
@@ -19,7 +17,10 @@ public final class PrivateLinkResourcesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listPrivateLinkResourcesByManagedCluster(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getPrivateLinkResources().listWithResponse("rg1",
-            "clustername1", com.azure.core.util.Context.NONE);
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getPrivateLinkResources()
+            .listWithResponse("rg1", "clustername1", com.azure.core.util.Context.NONE);
     }
 }

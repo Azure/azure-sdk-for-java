@@ -9,9 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ContainerServicesListOrchestratorsSamples {
     /*
-     * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2019-08-01/examples/
-     * ContainerServiceListOrchestrators.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2019-08-01/examples/ContainerServiceListOrchestrators.json
      */
     /**
      * Sample code: List Container Service Orchestrators.
@@ -19,7 +17,10 @@ public final class ContainerServicesListOrchestratorsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listContainerServiceOrchestrators(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getContainerServices()
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getContainerServices()
             .listOrchestratorsWithResponse("location1", null, com.azure.core.util.Context.NONE);
     }
 }

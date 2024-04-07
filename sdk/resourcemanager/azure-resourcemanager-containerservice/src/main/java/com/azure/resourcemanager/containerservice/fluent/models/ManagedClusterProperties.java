@@ -61,13 +61,7 @@ public final class ManagedClusterProperties {
     /*
      * The version of Kubernetes specified by the user.
      * 
-     * Both patch version <major.minor.patch> (e.g. 1.20.13) and <major.minor> (e.g. 1.20) are supported. When
-     * <major.minor> is specified, the latest supported GA patch version is chosen automatically. Updating the cluster
-     * with the same <major.minor> once it has been created (e.g. 1.14.x -> 1.14) will not trigger an upgrade, even if
-     * a newer patch version is available. When you upgrade a supported AKS cluster, Kubernetes minor versions cannot
-     * be skipped. All upgrades must be performed sequentially by major version number. For example, upgrades between
-     * 1.14.x -> 1.15.x or 1.15.x -> 1.16.x are allowed, however 1.14.x -> 1.16.x is not allowed. See [upgrading an AKS
-     * cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.
+     * Both patch version <major.minor.patch> (e.g. 1.20.13) and <major.minor> (e.g. 1.20) are supported. When <major.minor> is specified, the latest supported GA patch version is chosen automatically. Updating the cluster with the same <major.minor> once it has been created (e.g. 1.14.x -> 1.14) will not trigger an upgrade, even if a newer patch version is available. When you upgrade a supported AKS cluster, Kubernetes minor versions cannot be skipped. All upgrades must be performed sequentially by major version number. For example, upgrades between 1.14.x -> 1.15.x or 1.15.x -> 1.16.x are allowed, however 1.14.x -> 1.16.x is not allowed. See [upgrading an AKS cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.
      */
     @JsonProperty(value = "kubernetesVersion")
     private String kubernetesVersion;
@@ -75,8 +69,7 @@ public final class ManagedClusterProperties {
     /*
      * The version of Kubernetes the Managed Cluster is running.
      * 
-     * If kubernetesVersion was a fully specified version <major.minor.patch>, this field will be exactly equal to it.
-     * If kubernetesVersion was <major.minor>, this field will contain the full <major.minor.patch> version being used.
+     * If kubernetesVersion was a fully specified version <major.minor.patch>, this field will be exactly equal to it. If kubernetesVersion was <major.minor>, this field will contain the full <major.minor.patch> version being used.
      */
     @JsonProperty(value = "currentKubernetesVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String currentKubernetesVersion;
@@ -110,12 +103,9 @@ public final class ManagedClusterProperties {
     private String privateFqdn;
 
     /*
-     * The special FQDN used by the Azure Portal to access the Managed Cluster. This FQDN is for use only by the Azure
-     * Portal and should not be used by other clients.
+     * The special FQDN used by the Azure Portal to access the Managed Cluster. This FQDN is for use only by the Azure Portal and should not be used by other clients.
      * 
-     * The Azure Portal requires certain Cross-Origin Resource Sharing (CORS) headers to be sent in some responses,
-     * which Kubernetes APIServer doesn't handle by default. This special FQDN supports CORS, allowing the Azure Portal
-     * to function properly.
+     * The Azure Portal requires certain Cross-Origin Resource Sharing (CORS) headers to be sent in some responses, which Kubernetes APIServer doesn't handle by default. This special FQDN supports CORS, allowing the Azure Portal to function properly.
      */
     @JsonProperty(value = "azurePortalFQDN", access = JsonProperty.Access.WRITE_ONLY)
     private String azurePortalFqdn;
@@ -154,8 +144,7 @@ public final class ManagedClusterProperties {
     /*
      * The pod identity profile of the Managed Cluster.
      * 
-     * See [use AAD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on
-     * AAD pod identity integration.
+     * See [use AAD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on AAD pod identity integration.
      */
     @JsonProperty(value = "podIdentityProfile")
     private ManagedClusterPodIdentityProfile podIdentityProfile;
@@ -185,9 +174,7 @@ public final class ManagedClusterProperties {
     private KubernetesSupportPlan supportPlan;
 
     /*
-     * (DEPRECATED) Whether to enable Kubernetes pod security policy (preview). PodSecurityPolicy was deprecated in
-     * Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more at https://aka.ms/k8s/psp and
-     * https://aka.ms/aks/psp.
+     * (DEPRECATED) Whether to enable Kubernetes pod security policy (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
      */
     @JsonProperty(value = "enablePodSecurityPolicy")
     private Boolean enablePodSecurityPolicy;
@@ -233,9 +220,7 @@ public final class ManagedClusterProperties {
     /*
      * The Resource ID of the disk encryption set to use for enabling encryption at rest.
      * 
-     * This is of the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/
-     * diskEncryptionSets/{encryptionSetName}'
+     * This is of the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{encryptionSetName}'
      */
     @JsonProperty(value = "diskEncryptionSetID")
     private String diskEncryptionSetId;
@@ -256,9 +241,7 @@ public final class ManagedClusterProperties {
     /*
      * If local accounts should be disabled on the Managed Cluster.
      * 
-     * If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed
-     * Clusters that are AAD enabled. For more details see [disable local
-     * accounts](https://docs.microsoft.com/azure/aks/managed-aad#disable-local-accounts-preview).
+     * If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed Clusters that are AAD enabled. For more details see [disable local accounts](https://docs.microsoft.com/azure/aks/managed-aad#disable-local-accounts-preview).
      */
     @JsonProperty(value = "disableLocalAccounts")
     private Boolean disableLocalAccounts;
@@ -314,8 +297,7 @@ public final class ManagedClusterProperties {
     private ServiceMeshProfile serviceMeshProfile;
 
     /*
-     * The resourceUID uniquely identifies ManagedClusters that reuse ARM ResourceIds (i.e: create, delete, create
-     * sequence)
+     * The resourceUID uniquely identifies ManagedClusters that reuse ARM ResourceIds (i.e: create, delete, create sequence)
      */
     @JsonProperty(value = "resourceUID", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceUid;
@@ -400,8 +382,8 @@ public final class ManagedClusterProperties {
     /**
      * Get the currentKubernetesVersion property: The version of Kubernetes the Managed Cluster is running.
      * 
-     * If kubernetesVersion was a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal
-     * to it. If kubernetesVersion was &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
+     * If kubernetesVersion was a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal to
+     * it. If kubernetesVersion was &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
      * version being used.
      * 
      * @return the currentKubernetesVersion value.
@@ -703,8 +685,8 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
-     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn
-     * more at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
+     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more
+     * at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
      * 
      * @return the enablePodSecurityPolicy value.
      */
@@ -714,8 +696,8 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
-     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn
-     * more at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
+     * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more
+     * at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
      * 
      * @param enablePodSecurityPolicy the enablePodSecurityPolicy value to set.
      * @return the ManagedClusterProperties object itself.

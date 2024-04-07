@@ -55,8 +55,9 @@ public final class ContainerServiceSshConfiguration {
      */
     public void validate() {
         if (publicKeys() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property publicKeys in model ContainerServiceSshConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property publicKeys in model ContainerServiceSshConfiguration"));
         } else {
             publicKeys().forEach(e -> e.validate());
         }

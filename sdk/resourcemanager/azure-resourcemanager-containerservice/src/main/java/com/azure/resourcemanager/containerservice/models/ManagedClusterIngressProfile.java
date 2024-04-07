@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ManagedClusterIngressProfile {
     /*
-     * App Routing settings for the ingress profile. You can find an overview and onboarding guide for this feature at
-     * https://learn.microsoft.com/en-us/azure/aks/app-routing?tabs=default%2Cdeploy-app-default.
+     * App Routing settings for the ingress profile. You can find an overview and onboarding guide for this feature at https://learn.microsoft.com/en-us/azure/aks/app-routing?tabs=default%2Cdeploy-app-default.
      */
     @JsonProperty(value = "webAppRouting")
     private ManagedClusterIngressProfileWebAppRouting webAppRouting;

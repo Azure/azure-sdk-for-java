@@ -9,9 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedClustersGetAccessProfileSamples {
     /*
-     * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-02-01/examples/
-     * ManagedClustersGetAccessProfile.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-02-01/examples/ManagedClustersGetAccessProfile.json
      */
     /**
      * Sample code: Get Managed Cluster.
@@ -19,7 +17,10 @@ public final class ManagedClustersGetAccessProfileSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getManagedCluster(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getManagedClusters().getAccessProfileWithResponse("rg1",
-            "clustername1", "clusterUser", com.azure.core.util.Context.NONE);
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getManagedClusters()
+            .getAccessProfileWithResponse("rg1", "clustername1", "clusterUser", com.azure.core.util.Context.NONE);
     }
 }

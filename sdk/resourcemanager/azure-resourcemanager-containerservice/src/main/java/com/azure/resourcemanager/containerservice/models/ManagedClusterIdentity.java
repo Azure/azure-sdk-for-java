@@ -29,24 +29,20 @@ public final class ManagedClusterIdentity {
     /*
      * The type of identity used for the managed cluster.
      * 
-     * For more information see [use managed identities in
-     * AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
+     * For more information see [use managed identities in AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
      */
     @JsonProperty(value = "type")
     private ResourceIdentityType type;
 
     /*
-     * The delegated identity resources assigned to this managed cluster. This can only be set by another Azure
-     * Resource Provider, and managed cluster only accept one delegated identity resource. Internal use only.
+     * The delegated identity resources assigned to this managed cluster. This can only be set by another Azure Resource Provider, and managed cluster only accept one delegated identity resource. Internal use only.
      */
     @JsonProperty(value = "delegatedResources")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, DelegatedResource> delegatedResources;
 
     /*
-     * The keys must be ARM resource IDs in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
-     * userAssignedIdentities/{identityName}'.
+     * The keys must be ARM resource IDs in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)

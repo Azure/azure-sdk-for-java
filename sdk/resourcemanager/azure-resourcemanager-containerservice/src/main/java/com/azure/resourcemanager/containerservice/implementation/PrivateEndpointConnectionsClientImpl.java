@@ -60,8 +60,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * The interface defining all the services for ContainerServiceManagementClientPrivateEndpointConnections to be
-     * used by the proxy service to perform REST calls.
+     * The interface defining all the services for ContainerServiceManagementClientPrivateEndpointConnections to be used
+     * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceMana")

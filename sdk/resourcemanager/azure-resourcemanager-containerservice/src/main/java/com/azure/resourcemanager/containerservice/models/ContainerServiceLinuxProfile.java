@@ -78,12 +78,14 @@ public final class ContainerServiceLinuxProfile {
      */
     public void validate() {
         if (adminUsername() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property adminUsername in model ContainerServiceLinuxProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property adminUsername in model ContainerServiceLinuxProfile"));
         }
         if (ssh() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ssh in model ContainerServiceLinuxProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ssh in model ContainerServiceLinuxProfile"));
         } else {
             ssh().validate();
         }

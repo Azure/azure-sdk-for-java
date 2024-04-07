@@ -21,8 +21,7 @@ public final class ManagedClusterSku {
     /*
      * The tier of a managed cluster SKU.
      * 
-     * If not specified, the default is 'Free'. See [AKS Pricing
-     * Tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) for more details.
+     * If not specified, the default is 'Free'. See [AKS Pricing Tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) for more details.
      */
     @JsonProperty(value = "tier")
     private ManagedClusterSkuTier tier;

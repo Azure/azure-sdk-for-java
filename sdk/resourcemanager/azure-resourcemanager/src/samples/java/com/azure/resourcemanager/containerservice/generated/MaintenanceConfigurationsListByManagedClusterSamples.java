@@ -9,9 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class MaintenanceConfigurationsListByManagedClusterSamples {
     /*
-     * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-02-01/examples/
-     * MaintenanceConfigurationsList_MaintenanceWindow.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-02-01/examples/MaintenanceConfigurationsList_MaintenanceWindow.json
      */
     /**
      * Sample code: List maintenance configurations configured with maintenance window by Managed Cluster.
@@ -20,14 +18,15 @@ public final class MaintenanceConfigurationsListByManagedClusterSamples {
      */
     public static void listMaintenanceConfigurationsConfiguredWithMaintenanceWindowByManagedCluster(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getMaintenanceConfigurations().listByManagedCluster("rg1",
-            "clustername1", com.azure.core.util.Context.NONE);
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getMaintenanceConfigurations()
+            .listByManagedCluster("rg1", "clustername1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-02-01/examples/
-     * MaintenanceConfigurationsList.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-02-01/examples/MaintenanceConfigurationsList.json
      */
     /**
      * Sample code: List maintenance configurations by Managed Cluster.
@@ -36,7 +35,10 @@ public final class MaintenanceConfigurationsListByManagedClusterSamples {
      */
     public static void
         listMaintenanceConfigurationsByManagedCluster(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getMaintenanceConfigurations().listByManagedCluster("rg1",
-            "clustername1", com.azure.core.util.Context.NONE);
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getMaintenanceConfigurations()
+            .listByManagedCluster("rg1", "clustername1", com.azure.core.util.Context.NONE);
     }
 }

@@ -11,17 +11,14 @@ import java.util.List;
 /**
  * Kubelet configurations of agent nodes.
  * 
- * See [AKS custom node configuration](https://docs.microsoft.com/azure/aks/custom-node-configuration) for more
- * details.
+ * See [AKS custom node configuration](https://docs.microsoft.com/azure/aks/custom-node-configuration) for more details.
  */
 @Fluent
 public final class KubeletConfig {
     /*
      * The CPU Manager policy to use.
      * 
-     * The default is 'none'. See [Kubernetes CPU management
-     * policies](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#cpu-management-policies)
-     * for more information. Allowed values are 'none' and 'static'.
+     * The default is 'none'. See [Kubernetes CPU management policies](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#cpu-management-policies) for more information. Allowed values are 'none' and 'static'.
      */
     @JsonProperty(value = "cpuManagerPolicy")
     private String cpuManagerPolicy;
@@ -37,8 +34,7 @@ public final class KubeletConfig {
     /*
      * The CPU CFS quota period value.
      * 
-     * The default is '100ms.' Valid values are a sequence of decimal numbers with an optional fraction and a unit
-     * suffix. For example: '300ms', '2h45m'. Supported units are 'ns', 'us', 'ms', 's', 'm', and 'h'.
+     * The default is '100ms.' Valid values are a sequence of decimal numbers with an optional fraction and a unit suffix. For example: '300ms', '2h45m'. Supported units are 'ns', 'us', 'ms', 's', 'm', and 'h'.
      */
     @JsonProperty(value = "cpuCfsQuotaPeriod")
     private String cpuCfsQuotaPeriod;
@@ -62,9 +58,7 @@ public final class KubeletConfig {
     /*
      * The Topology Manager policy to use.
      * 
-     * For more information see [Kubernetes Topology
-     * Manager](https://kubernetes.io/docs/tasks/administer-cluster/topology-manager). The default is 'none'. Allowed
-     * values are 'none', 'best-effort', 'restricted', and 'single-numa-node'.
+     * For more information see [Kubernetes Topology Manager](https://kubernetes.io/docs/tasks/administer-cluster/topology-manager). The default is 'none'. Allowed values are 'none', 'best-effort', 'restricted', and 'single-numa-node'.
      */
     @JsonProperty(value = "topologyManagerPolicy")
     private String topologyManagerPolicy;

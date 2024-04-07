@@ -131,12 +131,14 @@ public final class ManagedClusterPoolUpgradeProfile {
      */
     public void validate() {
         if (kubernetesVersion() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property kubernetesVersion in model ManagedClusterPoolUpgradeProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property kubernetesVersion in model ManagedClusterPoolUpgradeProfile"));
         }
         if (osType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property osType in model ManagedClusterPoolUpgradeProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property osType in model ManagedClusterPoolUpgradeProfile"));
         }
         if (upgrades() != null) {
             upgrades().forEach(e -> e.validate());

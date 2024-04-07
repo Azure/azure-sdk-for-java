@@ -78,8 +78,8 @@ public final class ServiceMeshProfile {
      */
     public void validate() {
         if (mode() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property mode in model ServiceMeshProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property mode in model ServiceMeshProfile"));
         }
         if (istio() != null) {
             istio().validate();

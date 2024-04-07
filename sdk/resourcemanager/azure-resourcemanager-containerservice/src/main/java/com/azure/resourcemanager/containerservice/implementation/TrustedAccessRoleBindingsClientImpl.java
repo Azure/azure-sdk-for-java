@@ -564,8 +564,10 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
     public SyncPoller<PollResult<TrustedAccessRoleBindingInner>, TrustedAccessRoleBindingInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String trustedAccessRoleBindingName,
         TrustedAccessRoleBindingInner trustedAccessRoleBinding) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName,
-            trustedAccessRoleBinding).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName,
+                trustedAccessRoleBinding)
+            .getSyncPoller();
     }
 
     /**
@@ -585,8 +587,10 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
     public SyncPoller<PollResult<TrustedAccessRoleBindingInner>, TrustedAccessRoleBindingInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String trustedAccessRoleBindingName,
         TrustedAccessRoleBindingInner trustedAccessRoleBinding, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName,
-            trustedAccessRoleBinding, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName,
+                trustedAccessRoleBinding, context)
+            .getSyncPoller();
     }
 
     /**

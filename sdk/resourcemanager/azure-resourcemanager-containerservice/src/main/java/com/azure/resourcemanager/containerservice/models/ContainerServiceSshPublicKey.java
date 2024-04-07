@@ -14,8 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ContainerServiceSshPublicKey {
     /*
-     * Certificate public key used to authenticate with VMs through SSH. The certificate must be in PEM format with or
-     * without headers.
+     * Certificate public key used to authenticate with VMs through SSH. The certificate must be in PEM format with or without headers.
      */
     @JsonProperty(value = "keyData", required = true)
     private String keyData;
@@ -55,8 +54,9 @@ public final class ContainerServiceSshPublicKey {
      */
     public void validate() {
         if (keyData() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property keyData in model ContainerServiceSshPublicKey"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyData in model ContainerServiceSshPublicKey"));
         }
     }
 

@@ -111,16 +111,19 @@ public final class ManagedClusterPodIdentityException {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property name in model ManagedClusterPodIdentityException"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model ManagedClusterPodIdentityException"));
         }
         if (namespace() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property namespace in model ManagedClusterPodIdentityException"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property namespace in model ManagedClusterPodIdentityException"));
         }
         if (podLabels() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property podLabels in model ManagedClusterPodIdentityException"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property podLabels in model ManagedClusterPodIdentityException"));
         }
     }
 
