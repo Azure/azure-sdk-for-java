@@ -9,9 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachinesConvertToManagedDisksSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * virtualMachineExamples/VirtualMachine_ConvertToManagedDisks_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/virtualMachineExamples/VirtualMachine_ConvertToManagedDisks_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachine_ConvertToManagedDisks_MinimumSet_Gen.
@@ -20,14 +18,15 @@ public final class VirtualMachinesConvertToManagedDisksSamples {
      */
     public static void
         virtualMachineConvertToManagedDisksMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().convertToManagedDisks("rgcompute",
-            "aaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .convertToManagedDisks("rgcompute", "aaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * virtualMachineExamples/VirtualMachine_ConvertToManagedDisks_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/virtualMachineExamples/VirtualMachine_ConvertToManagedDisks_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachine_ConvertToManagedDisks_MaximumSet_Gen.
@@ -36,7 +35,10 @@ public final class VirtualMachinesConvertToManagedDisksSamples {
      */
     public static void
         virtualMachineConvertToManagedDisksMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().convertToManagedDisks("rgcompute",
-            "aaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .convertToManagedDisks("rgcompute", "aaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

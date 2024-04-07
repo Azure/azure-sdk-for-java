@@ -18,22 +18,19 @@ import java.util.List;
 @Immutable
 public final class VirtualMachineAssessPatchesResultInner {
     /*
-     * The overall success or failure status of the operation. It remains "InProgress" until the operation completes.
-     * At that point it will become "Unknown", "Failed", "Succeeded", or "CompletedWithWarnings."
+     * The overall success or failure status of the operation. It remains "InProgress" until the operation completes. At that point it will become "Unknown", "Failed", "Succeeded", or "CompletedWithWarnings."
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private PatchOperationStatus status;
 
     /*
-     * The activity ID of the operation that produced this result. It is used to correlate across CRP and extension
-     * logs.
+     * The activity ID of the operation that produced this result. It is used to correlate across CRP and extension logs.
      */
     @JsonProperty(value = "assessmentActivityId", access = JsonProperty.Access.WRITE_ONLY)
     private String assessmentActivityId;
 
     /*
-     * The overall reboot status of the VM. It will be true when partially installed patches require a reboot to
-     * complete installation but the reboot has not yet occurred.
+     * The overall reboot status of the VM. It will be true when partially installed patches require a reboot to complete installation but the reboot has not yet occurred.
      */
     @JsonProperty(value = "rebootPending", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean rebootPending;

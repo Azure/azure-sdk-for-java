@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class LoadBalancerFrontendIpConfiguration {
     /*
-     * The name of the resource that is unique within the set of frontend IP configurations used by the load balancer.
-     * This name can be used to access the resource.
+     * The name of the resource that is unique within the set of frontend IP configurations used by the load balancer. This name can be used to access the resource.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -83,12 +82,14 @@ public final class LoadBalancerFrontendIpConfiguration {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property name in model LoadBalancerFrontendIpConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model LoadBalancerFrontendIpConfiguration"));
         }
         if (properties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property properties in model LoadBalancerFrontendIpConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model LoadBalancerFrontendIpConfiguration"));
         } else {
             properties().validate();
         }

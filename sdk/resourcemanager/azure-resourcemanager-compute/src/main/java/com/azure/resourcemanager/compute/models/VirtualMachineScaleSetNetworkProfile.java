@@ -14,10 +14,7 @@ import java.util.List;
 @Fluent
 public final class VirtualMachineScaleSetNetworkProfile {
     /*
-     * A reference to a load balancer probe used to determine the health of an instance in the virtual machine scale
-     * set. The reference will be in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{
-     * loadBalancerName}/probes/{probeName}'.
+     * A reference to a load balancer probe used to determine the health of an instance in the virtual machine scale set. The reference will be in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}'.
      */
     @JsonProperty(value = "healthProbe")
     private ApiEntityReference healthProbe;
@@ -29,8 +26,7 @@ public final class VirtualMachineScaleSetNetworkProfile {
     private List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations;
 
     /*
-     * specifies the Microsoft.Network API version used when creating networking resources in the Network Interface
-     * Configurations for Virtual Machine Scale Set with orchestration mode 'Flexible'
+     * specifies the Microsoft.Network API version used when creating networking resources in the Network Interface Configurations for Virtual Machine Scale Set with orchestration mode 'Flexible'
      */
     @JsonProperty(value = "networkApiVersion")
     private NetworkApiVersion networkApiVersion;
@@ -42,8 +38,8 @@ public final class VirtualMachineScaleSetNetworkProfile {
     }
 
     /**
-     * Get the healthProbe property: A reference to a load balancer probe used to determine the health of an instance
-     * in the virtual machine scale set. The reference will be in the form:
+     * Get the healthProbe property: A reference to a load balancer probe used to determine the health of an instance in
+     * the virtual machine scale set. The reference will be in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}'.
      * 
      * @return the healthProbe value.
@@ -53,8 +49,8 @@ public final class VirtualMachineScaleSetNetworkProfile {
     }
 
     /**
-     * Set the healthProbe property: A reference to a load balancer probe used to determine the health of an instance
-     * in the virtual machine scale set. The reference will be in the form:
+     * Set the healthProbe property: A reference to a load balancer probe used to determine the health of an instance in
+     * the virtual machine scale set. The reference will be in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}'.
      * 
      * @param healthProbe the healthProbe value to set.

@@ -522,7 +522,8 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     private Mono<Void> reimageAsync(String resourceGroupName, String vmScaleSetName, String instanceId,
         VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput, Context context) {
         return beginReimageAsync(resourceGroupName, vmScaleSetName, instanceId, vmScaleSetVMReimageInput, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -4049,7 +4050,8 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     private Mono<StorageProfile> attachDetachDataDisksAsync(String resourceGroupName, String vmScaleSetName,
         String instanceId, AttachDetachDataDisksRequest parameters, Context context) {
         return beginAttachDetachDataDisksAsync(resourceGroupName, vmScaleSetName, instanceId, parameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

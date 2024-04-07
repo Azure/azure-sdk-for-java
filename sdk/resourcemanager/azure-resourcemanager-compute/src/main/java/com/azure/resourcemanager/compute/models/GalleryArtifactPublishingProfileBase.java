@@ -21,15 +21,13 @@ public class GalleryArtifactPublishingProfileBase {
     private List<TargetRegion> targetRegions;
 
     /*
-     * The number of replicas of the Image Version to be created per region. This property would take effect for a
-     * region when regionalReplicaCount is not specified. This property is updatable.
+     * The number of replicas of the Image Version to be created per region. This property would take effect for a region when regionalReplicaCount is not specified. This property is updatable.
      */
     @JsonProperty(value = "replicaCount")
     private Integer replicaCount;
 
     /*
-     * If set to true, Virtual Machines deployed from the latest version of the Image Definition won't use this Image
-     * Version.
+     * If set to true, Virtual Machines deployed from the latest version of the Image Definition won't use this Image Version.
      */
     @JsonProperty(value = "excludeFromLatest")
     private Boolean excludeFromLatest;
@@ -41,8 +39,7 @@ public class GalleryArtifactPublishingProfileBase {
     private OffsetDateTime publishedDate;
 
     /*
-     * The end of life date of the gallery image version. This property can be used for decommissioning purposes. This
-     * property is updatable.
+     * The end of life date of the gallery image version. This property can be used for decommissioning purposes. This property is updatable.
      */
     @JsonProperty(value = "endOfLifeDate")
     private OffsetDateTime endOfLifeDate;

@@ -9,9 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class CloudServicesListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/
-     * CloudService_List_ByResourceGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/CloudService_List_ByResourceGroup.json
      */
     /**
      * Sample code: List Cloud Services in a Resource Group.
@@ -19,7 +17,10 @@ public final class CloudServicesListByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listCloudServicesInAResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCloudServices().listByResourceGroup("ConstosoRG",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCloudServices()
+            .listByResourceGroup("ConstosoRG", com.azure.core.util.Context.NONE);
     }
 }

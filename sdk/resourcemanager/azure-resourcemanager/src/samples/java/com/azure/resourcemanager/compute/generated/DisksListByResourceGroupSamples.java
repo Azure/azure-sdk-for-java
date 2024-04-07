@@ -9,9 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class DisksListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
-     * Disk_ListByResourceGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/Disk_ListByResourceGroup.json
      */
     /**
      * Sample code: List all managed disks in a resource group.
@@ -19,7 +17,10 @@ public final class DisksListByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAllManagedDisksInAResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().listByResourceGroup("myResourceGroup",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

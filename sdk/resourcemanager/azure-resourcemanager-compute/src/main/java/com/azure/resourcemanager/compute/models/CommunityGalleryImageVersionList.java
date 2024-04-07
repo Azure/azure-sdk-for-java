@@ -22,8 +22,7 @@ public final class CommunityGalleryImageVersionList {
     private List<CommunityGalleryImageVersionInner> value;
 
     /*
-     * The URI to fetch the next page of community gallery image versions. Call ListNext() with this to fetch the next
-     * page of community gallery image versions.
+     * The URI to fetch the next page of community gallery image versions. Call ListNext() with this to fetch the next page of community gallery image versions.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -83,8 +82,9 @@ public final class CommunityGalleryImageVersionList {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property value in model CommunityGalleryImageVersionList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model CommunityGalleryImageVersionList"));
         } else {
             value().forEach(e -> e.validate());
         }

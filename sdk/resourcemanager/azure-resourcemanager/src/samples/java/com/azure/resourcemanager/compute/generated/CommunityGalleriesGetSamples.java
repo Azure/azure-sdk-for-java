@@ -9,9 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class CommunityGalleriesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/
-     * communityGalleryExamples/CommunityGallery_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/communityGalleryExamples/CommunityGallery_Get.json
      */
     /**
      * Sample code: Get a community gallery.
@@ -19,7 +17,10 @@ public final class CommunityGalleriesGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getACommunityGallery(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCommunityGalleries().getWithResponse("myLocation",
-            "publicGalleryName", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCommunityGalleries()
+            .getWithResponse("myLocation", "publicGalleryName", com.azure.core.util.Context.NONE);
     }
 }

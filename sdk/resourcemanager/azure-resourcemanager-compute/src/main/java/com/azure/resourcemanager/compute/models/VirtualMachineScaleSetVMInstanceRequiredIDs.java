@@ -53,8 +53,9 @@ public final class VirtualMachineScaleSetVMInstanceRequiredIDs {
      */
     public void validate() {
         if (instanceIds() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property instanceIds in model VirtualMachineScaleSetVMInstanceRequiredIDs"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property instanceIds in model VirtualMachineScaleSetVMInstanceRequiredIDs"));
         }
     }
 

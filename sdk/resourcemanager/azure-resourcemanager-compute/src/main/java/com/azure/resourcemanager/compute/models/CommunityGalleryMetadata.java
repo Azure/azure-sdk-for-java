@@ -159,12 +159,14 @@ public final class CommunityGalleryMetadata {
      */
     public void validate() {
         if (publisherContact() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property publisherContact in model CommunityGalleryMetadata"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property publisherContact in model CommunityGalleryMetadata"));
         }
         if (publicNames() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property publicNames in model CommunityGalleryMetadata"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property publicNames in model CommunityGalleryMetadata"));
         }
     }
 

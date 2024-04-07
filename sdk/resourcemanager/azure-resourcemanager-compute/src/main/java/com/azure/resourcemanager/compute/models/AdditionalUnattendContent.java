@@ -26,16 +26,13 @@ public final class AdditionalUnattendContent {
     private ComponentNames componentName;
 
     /*
-     * Specifies the name of the setting to which the content applies. Possible values are: FirstLogonCommands and
-     * AutoLogon.
+     * Specifies the name of the setting to which the content applies. Possible values are: FirstLogonCommands and AutoLogon.
      */
     @JsonProperty(value = "settingName")
     private SettingNames settingName;
 
     /*
-     * Specifies the XML formatted content that is added to the unattend.xml file for the specified path and component.
-     * The XML must be less than 4KB and must include the root element for the setting or feature that is being
-     * inserted.
+     * Specifies the XML formatted content that is added to the unattend.xml file for the specified path and component. The XML must be less than 4KB and must include the root element for the setting or feature that is being inserted.
      */
     @JsonProperty(value = "content")
     private String content;

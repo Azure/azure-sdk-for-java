@@ -9,9 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class GalleriesListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
-     * Gallery_ListByResourceGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/Gallery_ListByResourceGroup.json
      */
     /**
      * Sample code: List galleries in a resource group.
@@ -19,7 +17,10 @@ public final class GalleriesListByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listGalleriesInAResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleries().listByResourceGroup("myResourceGroup",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleries()
+            .listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

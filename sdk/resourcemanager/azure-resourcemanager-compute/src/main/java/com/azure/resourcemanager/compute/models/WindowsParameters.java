@@ -136,8 +136,8 @@ public final class WindowsParameters {
     }
 
     /**
-     * Get the maxPatchPublishDate property: This is used to install patches that were published on or before this
-     * given max published date.
+     * Get the maxPatchPublishDate property: This is used to install patches that were published on or before this given
+     * max published date.
      * 
      * @return the maxPatchPublishDate value.
      */
@@ -146,8 +146,8 @@ public final class WindowsParameters {
     }
 
     /**
-     * Set the maxPatchPublishDate property: This is used to install patches that were published on or before this
-     * given max published date.
+     * Set the maxPatchPublishDate property: This is used to install patches that were published on or before this given
+     * max published date.
      * 
      * @param maxPatchPublishDate the maxPatchPublishDate value to set.
      * @return the WindowsParameters object itself.

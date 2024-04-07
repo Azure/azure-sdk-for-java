@@ -9,9 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class DiskAccessesGetPrivateLinkResourcesSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskAccessExamples/
-     * DiskAccessPrivateLinkResources_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskAccessExamples/DiskAccessPrivateLinkResources_Get.json
      */
     /**
      * Sample code: List all possible private link resources under disk access resource.
@@ -20,7 +18,10 @@ public final class DiskAccessesGetPrivateLinkResourcesSamples {
      */
     public static void listAllPossiblePrivateLinkResourcesUnderDiskAccessResource(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskAccesses()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskAccesses()
             .getPrivateLinkResourcesWithResponse("myResourceGroup", "myDiskAccess", com.azure.core.util.Context.NONE);
     }
 }

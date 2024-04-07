@@ -37,8 +37,7 @@ public final class GalleryTargetExtendedLocation {
     private StorageAccountType storageAccountType;
 
     /*
-     * Optional. Allows users to provide customer managed keys for encrypting the OS and data disks in the gallery
-     * artifact.
+     * Optional. Allows users to provide customer managed keys for encrypting the OS and data disks in the gallery artifact.
      */
     @JsonProperty(value = "encryption")
     private EncryptionImages encryption;

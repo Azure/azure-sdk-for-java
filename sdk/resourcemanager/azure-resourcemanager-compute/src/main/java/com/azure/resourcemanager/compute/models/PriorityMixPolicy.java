@@ -21,8 +21,7 @@ public final class PriorityMixPolicy {
     private Integer baseRegularPriorityCount;
 
     /*
-     * The percentage of VM instances, after the base regular priority count has been reached, that are expected to use
-     * regular priority.
+     * The percentage of VM instances, after the base regular priority count has been reached, that are expected to use regular priority.
      */
     @JsonProperty(value = "regularPriorityPercentageAboveBase")
     private Integer regularPriorityPercentageAboveBase;

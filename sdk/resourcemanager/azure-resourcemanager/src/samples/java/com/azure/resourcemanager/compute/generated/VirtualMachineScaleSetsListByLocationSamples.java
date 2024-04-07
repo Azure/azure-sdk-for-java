@@ -9,9 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachineScaleSetsListByLocationSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListBySubscription_ByLocation.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListBySubscription_ByLocation.json
      */
     /**
      * Sample code: Lists all the VM scale sets under the specified subscription for the specified location.
@@ -20,7 +18,10 @@ public final class VirtualMachineScaleSetsListByLocationSamples {
      */
     public static void listsAllTheVMScaleSetsUnderTheSpecifiedSubscriptionForTheSpecifiedLocation(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().listByLocation("eastus",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .listByLocation("eastus", com.azure.core.util.Context.NONE);
     }
 }

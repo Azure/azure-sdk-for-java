@@ -127,8 +127,9 @@ public final class RequestRateByIntervalInput extends LogAnalyticsInputBase {
     public void validate() {
         super.validate();
         if (intervalLength() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property intervalLength in model RequestRateByIntervalInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property intervalLength in model RequestRateByIntervalInput"));
         }
     }
 

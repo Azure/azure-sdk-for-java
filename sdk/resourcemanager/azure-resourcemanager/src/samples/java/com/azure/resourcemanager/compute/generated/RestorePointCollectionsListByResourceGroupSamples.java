@@ -9,9 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class RestorePointCollectionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * restorePointExamples/RestorePointCollection_ListByResourceGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/restorePointExamples/RestorePointCollection_ListByResourceGroup.json
      */
     /**
      * Sample code: Gets the list of restore point collections in a resource group.
@@ -20,7 +18,10 @@ public final class RestorePointCollectionsListByResourceGroupSamples {
      */
     public static void
         getsTheListOfRestorePointCollectionsInAResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getRestorePointCollections()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getRestorePointCollections()
             .listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

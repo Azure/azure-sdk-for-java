@@ -13,9 +13,7 @@ import com.azure.resourcemanager.compute.models.PrivateLinkServiceConnectionStat
  */
 public final class DiskAccessesUpdateAPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskAccessExamples/
-     * DiskAccessPrivateEndpointConnection_Approve.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskAccessExamples/DiskAccessPrivateEndpointConnection_Approve.json
      */
     /**
      * Sample code: Approve a Private Endpoint Connection under a disk access resource.
@@ -24,11 +22,14 @@ public final class DiskAccessesUpdateAPrivateEndpointConnectionSamples {
      */
     public static void approveAPrivateEndpointConnectionUnderADiskAccessResource(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskAccesses().updateAPrivateEndpointConnection(
-            "myResourceGroup", "myDiskAccess", "myPrivateEndpointConnection",
-            new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                    .withDescription("Approving myPrivateEndpointConnection")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskAccesses()
+            .updateAPrivateEndpointConnection("myResourceGroup", "myDiskAccess", "myPrivateEndpointConnection",
+                new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                    new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                        .withDescription("Approving myPrivateEndpointConnection")),
+                com.azure.core.util.Context.NONE);
     }
 }

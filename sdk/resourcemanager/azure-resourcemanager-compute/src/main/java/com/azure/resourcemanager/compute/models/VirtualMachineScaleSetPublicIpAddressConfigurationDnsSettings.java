@@ -14,16 +14,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings {
     /*
-     * The Domain name label.The concatenation of the domain name label and vm index will be the domain name labels of
-     * the PublicIPAddress resources that will be created
+     * The Domain name label.The concatenation of the domain name label and vm index will be the domain name labels of the PublicIPAddress resources that will be created
      */
     @JsonProperty(value = "domainNameLabel", required = true)
     private String domainNameLabel;
 
     /*
-     * The Domain name label scope.The concatenation of the hashed domain name label that generated according to the
-     * policy from domain name label scope and vm index will be the domain name labels of the PublicIPAddress resources
-     * that will be created
+     * The Domain name label scope.The concatenation of the hashed domain name label that generated according to the policy from domain name label scope and vm index will be the domain name labels of the PublicIPAddress resources that will be created
      */
     @JsonProperty(value = "domainNameLabelScope")
     private DomainNameLabelScopeTypes domainNameLabelScope;
@@ -88,8 +85,9 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings
      */
     public void validate() {
         if (domainNameLabel() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property domainNameLabel in model VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property domainNameLabel in model VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings"));
         }
     }
 

@@ -13,9 +13,7 @@ import com.azure.resourcemanager.compute.models.GrantAccessData;
  */
 public final class DisksGrantAccessSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
-     * Disk_BeginGetAccess.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/Disk_BeginGetAccess.json
      */
     /**
      * Sample code: Get a sas on a managed disk.
@@ -23,16 +21,19 @@ public final class DisksGrantAccessSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getASasOnAManagedDisk(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().grantAccess("myResourceGroup", "myDisk",
-            new GrantAccessData().withAccess(AccessLevel.READ).withDurationInSeconds(300)
-                .withFileFormat(FileFormat.VHD),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .grantAccess("myResourceGroup", "myDisk",
+                new GrantAccessData().withAccess(AccessLevel.READ)
+                    .withDurationInSeconds(300)
+                    .withFileFormat(FileFormat.VHD),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/
-     * Disk_BeginGetAccess_WithVMGuestState.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskExamples/Disk_BeginGetAccess_WithVMGuestState.json
      */
     /**
      * Sample code: Get sas on managed disk and VM guest state.
@@ -40,9 +41,14 @@ public final class DisksGrantAccessSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getSasOnManagedDiskAndVMGuestState(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDisks().grantAccess("myResourceGroup", "myDisk",
-            new GrantAccessData().withAccess(AccessLevel.READ).withDurationInSeconds(300)
-                .withGetSecureVMGuestStateSas(true),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .grantAccess("myResourceGroup", "myDisk",
+                new GrantAccessData().withAccess(AccessLevel.READ)
+                    .withDurationInSeconds(300)
+                    .withGetSecureVMGuestStateSas(true),
+                com.azure.core.util.Context.NONE);
     }
 }

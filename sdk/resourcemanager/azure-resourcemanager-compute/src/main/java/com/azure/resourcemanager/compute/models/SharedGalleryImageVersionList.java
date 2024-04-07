@@ -22,8 +22,7 @@ public final class SharedGalleryImageVersionList {
     private List<SharedGalleryImageVersionInner> value;
 
     /*
-     * The uri to fetch the next page of shared gallery image versions. Call ListNext() with this to fetch the next
-     * page of shared gallery image versions.
+     * The uri to fetch the next page of shared gallery image versions. Call ListNext() with this to fetch the next page of shared gallery image versions.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -83,8 +82,9 @@ public final class SharedGalleryImageVersionList {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model SharedGalleryImageVersionList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model SharedGalleryImageVersionList"));
         } else {
             value().forEach(e -> e.validate());
         }

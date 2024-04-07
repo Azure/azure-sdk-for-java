@@ -55,8 +55,8 @@ public final class RoleInstances {
      */
     public void validate() {
         if (roleInstances() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property roleInstances in model RoleInstances"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property roleInstances in model RoleInstances"));
         }
     }
 

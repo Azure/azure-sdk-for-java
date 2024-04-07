@@ -15,9 +15,7 @@ import java.util.Map;
  */
 public final class DedicatedHostsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * dedicatedHostExamples/DedicatedHost_Update_Resize.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/dedicatedHostExamples/DedicatedHost_Update_Resize.json
      */
     /**
      * Sample code: DedicatedHost_Update_Resize.
@@ -25,15 +23,16 @@ public final class DedicatedHostsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void dedicatedHostUpdateResize(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHosts().update("rgcompute", "aaaaaaaaa",
-            "aaaaaaaaaaaaaaaaaaaaa", new DedicatedHostUpdate().withSku(new Sku().withName("DSv3-Type1")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHosts()
+            .update("rgcompute", "aaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaa",
+                new DedicatedHostUpdate().withSku(new Sku().withName("DSv3-Type1")), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * dedicatedHostExamples/DedicatedHost_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/dedicatedHostExamples/DedicatedHost_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHost_Update_MaximumSet_Gen.
@@ -41,17 +40,20 @@ public final class DedicatedHostsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void dedicatedHostUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHosts().update("rgcompute", "aaaaaaaaa",
-            "aaaaaaaaaaaaaaaaaaaaa",
-            new DedicatedHostUpdate().withTags(mapOf("key8813", "fakeTokenPlaceholder")).withPlatformFaultDomain(1)
-                .withAutoReplaceOnFailure(true).withLicenseType(DedicatedHostLicenseTypes.WINDOWS_SERVER_HYBRID),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHosts()
+            .update("rgcompute", "aaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaa",
+                new DedicatedHostUpdate().withTags(mapOf("key8813", "fakeTokenPlaceholder"))
+                    .withPlatformFaultDomain(1)
+                    .withAutoReplaceOnFailure(true)
+                    .withLicenseType(DedicatedHostLicenseTypes.WINDOWS_SERVER_HYBRID),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * dedicatedHostExamples/DedicatedHost_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/dedicatedHostExamples/DedicatedHost_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHost_Update_MinimumSet_Gen.
@@ -59,8 +61,12 @@ public final class DedicatedHostsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void dedicatedHostUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHosts().update("rgcompute", "aa",
-            "aaaaaaaaaaaaaaaaaaaaaaaaaa", new DedicatedHostUpdate(), com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHosts()
+            .update("rgcompute", "aa", "aaaaaaaaaaaaaaaaaaaaaaaaaa", new DedicatedHostUpdate(),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

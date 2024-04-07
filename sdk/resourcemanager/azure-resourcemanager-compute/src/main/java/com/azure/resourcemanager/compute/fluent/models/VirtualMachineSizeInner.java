@@ -19,10 +19,7 @@ public final class VirtualMachineSizeInner {
     private String name;
 
     /*
-     * The number of cores supported by the virtual machine size. For Constrained vCPU capable VM sizes, this number
-     * represents the total vCPUs of quota that the VM uses. For accurate vCPU count, please refer to
-     * https://docs.microsoft.com/azure/virtual-machines/constrained-vcpu or
-     * https://docs.microsoft.com/rest/api/compute/resourceskus/list
+     * The number of cores supported by the virtual machine size. For Constrained vCPU capable VM sizes, this number represents the total vCPUs of quota that the VM uses. For accurate vCPU count, please refer to https://docs.microsoft.com/azure/virtual-machines/constrained-vcpu or https://docs.microsoft.com/rest/api/compute/resourceskus/list
      */
     @JsonProperty(value = "numberOfCores")
     private Integer numberOfCores;

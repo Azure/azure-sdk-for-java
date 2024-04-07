@@ -12,9 +12,7 @@ import java.util.Arrays;
  */
 public final class CloudServicesRestartSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/
-     * CloudServiceRoleInstance_Restart_ByCloudService.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/CloudServiceRoleInstance_Restart_ByCloudService.json
      */
     /**
      * Sample code: Restart Cloud Service Role Instances in a Cloud Service.
@@ -23,8 +21,12 @@ public final class CloudServicesRestartSamples {
      */
     public static void
         restartCloudServiceRoleInstancesInACloudService(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCloudServices().restart("ConstosoRG", "{cs-name}",
-            new RoleInstances().withRoleInstances(Arrays.asList("ContosoFrontend_IN_0", "ContosoBackend_IN_1")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCloudServices()
+            .restart("ConstosoRG", "{cs-name}",
+                new RoleInstances().withRoleInstances(Arrays.asList("ContosoFrontend_IN_0", "ContosoBackend_IN_1")),
+                com.azure.core.util.Context.NONE);
     }
 }

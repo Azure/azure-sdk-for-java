@@ -9,9 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachinesPerformMaintenanceSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * virtualMachineExamples/VirtualMachine_PerformMaintenance_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/virtualMachineExamples/VirtualMachine_PerformMaintenance_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachine_PerformMaintenance_MaximumSet_Gen.
@@ -20,14 +18,15 @@ public final class VirtualMachinesPerformMaintenanceSamples {
      */
     public static void
         virtualMachinePerformMaintenanceMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().performMaintenance("rgcompute",
-            "aaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .performMaintenance("rgcompute", "aaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * virtualMachineExamples/VirtualMachine_PerformMaintenance_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/virtualMachineExamples/VirtualMachine_PerformMaintenance_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachine_PerformMaintenance_MinimumSet_Gen.
@@ -36,7 +35,10 @@ public final class VirtualMachinesPerformMaintenanceSamples {
      */
     public static void
         virtualMachinePerformMaintenanceMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().performMaintenance("rgcompute",
-            "aaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .performMaintenance("rgcompute", "aaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

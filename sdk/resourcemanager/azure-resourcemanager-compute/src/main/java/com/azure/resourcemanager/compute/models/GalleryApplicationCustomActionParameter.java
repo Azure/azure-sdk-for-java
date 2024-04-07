@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class GalleryApplicationCustomActionParameter {
     /*
-     * The name of the custom action. Must be unique within the Gallery Application Version.
+     * The name of the custom action.  Must be unique within the Gallery Application Version.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -26,14 +26,13 @@ public final class GalleryApplicationCustomActionParameter {
     private Boolean required;
 
     /*
-     * Specifies the type of the custom action parameter. Possible values are: String, ConfigurationDataBlob or
-     * LogOutputBlob
+     * Specifies the type of the custom action parameter. Possible values are: String, ConfigurationDataBlob or LogOutputBlob
      */
     @JsonProperty(value = "type")
     private GalleryApplicationCustomActionParameterType type;
 
     /*
-     * The default value of the parameter. Only applies to string types
+     * The default value of the parameter.  Only applies to string types
      */
     @JsonProperty(value = "defaultValue")
     private String defaultValue;
@@ -159,8 +158,9 @@ public final class GalleryApplicationCustomActionParameter {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property name in model GalleryApplicationCustomActionParameter"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model GalleryApplicationCustomActionParameter"));
         }
     }
 

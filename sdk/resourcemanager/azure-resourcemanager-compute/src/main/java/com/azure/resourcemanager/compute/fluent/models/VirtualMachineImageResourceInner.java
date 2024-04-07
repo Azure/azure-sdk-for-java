@@ -30,9 +30,7 @@ public class VirtualMachineImageResourceInner extends SubResource {
     private String location;
 
     /*
-     * Specifies the tags that are assigned to the virtual machine. For more information about using tags, see [Using
-     * tags to organize your Azure
-     * resources](https://docs.microsoft.com/azure/azure-resource-manager/resource-group-using-tags.md).
+     * Specifies the tags that are assigned to the virtual machine. For more information about using tags, see [Using tags to organize your Azure resources](https://docs.microsoft.com/azure/azure-resource-manager/resource-group-using-tags.md).
      */
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -150,12 +148,14 @@ public class VirtualMachineImageResourceInner extends SubResource {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property name in model VirtualMachineImageResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model VirtualMachineImageResourceInner"));
         }
         if (location() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property location in model VirtualMachineImageResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model VirtualMachineImageResourceInner"));
         }
         if (extendedLocation() != null) {
             extendedLocation().validate();

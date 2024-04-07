@@ -14,43 +14,25 @@ import java.util.List;
 @Fluent
 public final class VirtualMachineScaleSetOSProfile {
     /*
-     * Specifies the computer name prefix for all of the virtual machines in the scale set. Computer name prefixes must
-     * be 1 to 15 characters long.
+     * Specifies the computer name prefix for all of the virtual machines in the scale set. Computer name prefixes must be 1 to 15 characters long.
      */
     @JsonProperty(value = "computerNamePrefix")
     private String computerNamePrefix;
 
     /*
-     * Specifies the name of the administrator account. <br><br> **Windows-only restriction:** Cannot end in "."
-     * <br><br> **Disallowed values:** "administrator", "admin", "user", "user1", "test", "user2", "test1", "user3",
-     * "admin1", "1", "123", "a", "actuser", "adm", "admin2", "aspnet", "backup", "console", "david", "guest", "john",
-     * "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2", "test3", "user4", "user5".
-     * <br><br> **Minimum-length (Linux):** 1 character <br><br> **Max-length (Linux):** 64 characters <br><br>
-     * **Max-length (Windows):** 20 characters
+     * Specifies the name of the administrator account. <br><br> **Windows-only restriction:** Cannot end in "." <br><br> **Disallowed values:** "administrator", "admin", "user", "user1", "test", "user2", "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2", "aspnet", "backup", "console", "david", "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2", "test3", "user4", "user5". <br><br> **Minimum-length (Linux):** 1  character <br><br> **Max-length (Linux):** 64 characters <br><br> **Max-length (Windows):** 20 characters
      */
     @JsonProperty(value = "adminUsername")
     private String adminUsername;
 
     /*
-     * Specifies the password of the administrator account. <br><br> **Minimum-length (Windows):** 8 characters
-     * <br><br> **Minimum-length (Linux):** 6 characters <br><br> **Max-length (Windows):** 123 characters <br><br>
-     * **Max-length (Linux):** 72 characters <br><br> **Complexity requirements:** 3 out of 4 conditions below need to
-     * be fulfilled <br> Has lower characters <br>Has upper characters <br> Has a digit <br> Has a special character
-     * (Regex match [\W_]) <br><br> **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123",
-     * "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!" <br><br> For resetting the
-     * password, see [How to reset the Remote Desktop service or its login password in a Windows
-     * VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp) <br><br> For resetting root
-     * password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess
-     * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection)
+     * Specifies the password of the administrator account. <br><br> **Minimum-length (Windows):** 8 characters <br><br> **Minimum-length (Linux):** 6 characters <br><br> **Max-length (Windows):** 123 characters <br><br> **Max-length (Linux):** 72 characters <br><br> **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled <br> Has lower characters <br>Has upper characters <br> Has a digit <br> Has a special character (Regex match [\W_]) <br><br> **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!" <br><br> For resetting the password, see [How to reset the Remote Desktop service or its login password in a Windows VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp) <br><br> For resetting root password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection)
      */
     @JsonProperty(value = "adminPassword")
     private String adminPassword;
 
     /*
-     * Specifies a base-64 encoded string of custom data. The base-64 encoded string is decoded to a binary array that
-     * is saved as a file on the Virtual Machine. The maximum length of the binary array is 65535 bytes. For using
-     * cloud-init for your VM, see [Using cloud-init to customize a Linux VM during
-     * creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init)
+     * Specifies a base-64 encoded string of custom data. The base-64 encoded string is decoded to a binary array that is saved as a file on the Virtual Machine. The maximum length of the binary array is 65535 bytes. For using cloud-init for your VM, see [Using cloud-init to customize a Linux VM during creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init)
      */
     @JsonProperty(value = "customData")
     private String customData;
@@ -62,26 +44,19 @@ public final class VirtualMachineScaleSetOSProfile {
     private WindowsConfiguration windowsConfiguration;
 
     /*
-     * Specifies the Linux operating system settings on the virtual machine. For a list of supported Linux
-     * distributions, see [Linux on Azure-Endorsed
-     * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
+     * Specifies the Linux operating system settings on the virtual machine. For a list of supported Linux distributions, see [Linux on Azure-Endorsed Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
      */
     @JsonProperty(value = "linuxConfiguration")
     private LinuxConfiguration linuxConfiguration;
 
     /*
-     * Specifies set of certificates that should be installed onto the virtual machines in the scale set. To install
-     * certificates on a virtual machine it is recommended to use the [Azure Key Vault virtual machine extension for
-     * Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the [Azure Key Vault
-     * virtual machine extension for
-     * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
+     * Specifies set of certificates that should be installed onto the virtual machines in the scale set. To install certificates on a virtual machine it is recommended to use the [Azure Key Vault virtual machine extension for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the [Azure Key Vault virtual machine extension for Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      */
     @JsonProperty(value = "secrets")
     private List<VaultSecretGroup> secrets;
 
     /*
-     * Specifies whether extension operations should be allowed on the virtual machine scale set. This may only be set
-     * to False when no extensions are present on the virtual machine scale set.
+     * Specifies whether extension operations should be allowed on the virtual machine scale set. This may only be set to False when no extensions are present on the virtual machine scale set.
      */
     @JsonProperty(value = "allowExtensionOperations")
     private Boolean allowExtensionOperations;
@@ -125,8 +100,8 @@ public final class VirtualMachineScaleSetOSProfile {
      * **Windows-only restriction:** Cannot end in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator",
      * "admin", "user", "user1", "test", "user2", "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm",
      * "admin2", "aspnet", "backup", "console", "david", "guest", "john", "owner", "root", "server", "sql", "support",
-     * "support_388945a0", "sys", "test2", "test3", "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length (Linux):**
-     * 1 character &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 64 characters &lt;br&gt;&lt;br&gt; **Max-length
+     * "support_388945a0", "sys", "test2", "test3", "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length (Linux):** 1
+     * character &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 64 characters &lt;br&gt;&lt;br&gt; **Max-length
      * (Windows):** 20 characters.
      * 
      * @return the adminUsername value.
@@ -140,8 +115,8 @@ public final class VirtualMachineScaleSetOSProfile {
      * **Windows-only restriction:** Cannot end in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator",
      * "admin", "user", "user1", "test", "user2", "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm",
      * "admin2", "aspnet", "backup", "console", "david", "guest", "john", "owner", "root", "server", "sql", "support",
-     * "support_388945a0", "sys", "test2", "test3", "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length (Linux):**
-     * 1 character &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 64 characters &lt;br&gt;&lt;br&gt; **Max-length
+     * "support_388945a0", "sys", "test2", "test3", "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length (Linux):** 1
+     * character &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 64 characters &lt;br&gt;&lt;br&gt; **Max-length
      * (Windows):** 20 characters.
      * 
      * @param adminUsername the adminUsername value to set.
@@ -158,10 +133,10 @@ public final class VirtualMachineScaleSetOSProfile {
      * &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 123 characters &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 72
      * characters &lt;br&gt;&lt;br&gt; **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled
      * &lt;br&gt; Has lower characters &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special
-     * character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd",
-     * "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!"
-     * &lt;br&gt;&lt;br&gt; For resetting the password, see [How to reset the Remote Desktop service or its login
-     * password in a Windows VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
+     * character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc&#064;123", "P&#064;$$w0rd",
+     * "P&#064;ssw0rd", "P&#064;ssword123", "Pa$$word", "pass&#064;word1", "Password!", "Password1", "Password22",
+     * "iloveyou!" &lt;br&gt;&lt;br&gt; For resetting the password, see [How to reset the Remote Desktop service or its
+     * login password in a Windows VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
      * &lt;br&gt;&lt;br&gt; For resetting root password, see [Manage users, SSH, and check or repair disks on Azure
      * Linux VMs using the VMAccess
      * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection).
@@ -178,10 +153,10 @@ public final class VirtualMachineScaleSetOSProfile {
      * &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 123 characters &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 72
      * characters &lt;br&gt;&lt;br&gt; **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled
      * &lt;br&gt; Has lower characters &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special
-     * character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd",
-     * "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!"
-     * &lt;br&gt;&lt;br&gt; For resetting the password, see [How to reset the Remote Desktop service or its login
-     * password in a Windows VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
+     * character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc&#064;123", "P&#064;$$w0rd",
+     * "P&#064;ssw0rd", "P&#064;ssword123", "Pa$$word", "pass&#064;word1", "Password!", "Password1", "Password22",
+     * "iloveyou!" &lt;br&gt;&lt;br&gt; For resetting the password, see [How to reset the Remote Desktop service or its
+     * login password in a Windows VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
      * &lt;br&gt;&lt;br&gt; For resetting root password, see [Manage users, SSH, and check or repair disks on Azure
      * Linux VMs using the VMAccess
      * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection).
@@ -265,11 +240,10 @@ public final class VirtualMachineScaleSetOSProfile {
     }
 
     /**
-     * Get the secrets property: Specifies set of certificates that should be installed onto the virtual machines in
-     * the scale set. To install certificates on a virtual machine it is recommended to use the [Azure Key Vault
-     * virtual machine extension for
-     * Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the [Azure Key Vault
-     * virtual machine extension for
+     * Get the secrets property: Specifies set of certificates that should be installed onto the virtual machines in the
+     * scale set. To install certificates on a virtual machine it is recommended to use the [Azure Key Vault virtual
+     * machine extension for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the
+     * [Azure Key Vault virtual machine extension for
      * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      * 
      * @return the secrets value.
@@ -279,11 +253,10 @@ public final class VirtualMachineScaleSetOSProfile {
     }
 
     /**
-     * Set the secrets property: Specifies set of certificates that should be installed onto the virtual machines in
-     * the scale set. To install certificates on a virtual machine it is recommended to use the [Azure Key Vault
-     * virtual machine extension for
-     * Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the [Azure Key Vault
-     * virtual machine extension for
+     * Set the secrets property: Specifies set of certificates that should be installed onto the virtual machines in the
+     * scale set. To install certificates on a virtual machine it is recommended to use the [Azure Key Vault virtual
+     * machine extension for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the
+     * [Azure Key Vault virtual machine extension for
      * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      * 
      * @param secrets the secrets value to set.

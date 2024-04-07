@@ -9,9 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachineImagesListByEdgeZoneSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListByEdgeZone_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListByEdgeZone_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineImagesEdgeZone_ListByEdgeZone_MaximumSet_Gen.
@@ -20,14 +18,15 @@ public final class VirtualMachineImagesListByEdgeZoneSamples {
      */
     public static void
         virtualMachineImagesEdgeZoneListByEdgeZoneMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineImages().listByEdgeZoneWithResponse("WestUS",
-            "microsoftlosangeles1", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineImages()
+            .listByEdgeZoneWithResponse("WestUS", "microsoftlosangeles1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListByEdgeZone_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_ListByEdgeZone_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineImagesEdgeZone_ListByEdgeZone_MinimumSet_Gen.
@@ -36,7 +35,10 @@ public final class VirtualMachineImagesListByEdgeZoneSamples {
      */
     public static void
         virtualMachineImagesEdgeZoneListByEdgeZoneMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineImages().listByEdgeZoneWithResponse("WestUS",
-            "microsoftlosangeles1", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineImages()
+            .listByEdgeZoneWithResponse("WestUS", "microsoftlosangeles1", com.azure.core.util.Context.NONE);
     }
 }

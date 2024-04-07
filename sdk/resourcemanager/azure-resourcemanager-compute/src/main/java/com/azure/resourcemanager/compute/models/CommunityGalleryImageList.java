@@ -22,8 +22,7 @@ public final class CommunityGalleryImageList {
     private List<CommunityGalleryImageInner> value;
 
     /*
-     * The URI to fetch the next page of community gallery images. Call ListNext() with this to fetch the next page of
-     * community gallery images.
+     * The URI to fetch the next page of community gallery images. Call ListNext() with this to fetch the next page of community gallery images.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -83,8 +82,9 @@ public final class CommunityGalleryImageList {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model CommunityGalleryImageList"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property value in model CommunityGalleryImageList"));
         } else {
             value().forEach(e -> e.validate());
         }

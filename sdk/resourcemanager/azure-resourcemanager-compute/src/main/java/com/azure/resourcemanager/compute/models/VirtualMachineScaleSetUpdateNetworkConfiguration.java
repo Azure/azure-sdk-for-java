@@ -22,8 +22,7 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration {
     private String name;
 
     /*
-     * Describes a virtual machine scale set updatable network profile's IP configuration.Use this object for updating
-     * network profile's IP Configuration.
+     * Describes a virtual machine scale set updatable network profile's IP configuration.Use this object for updating network profile's IP Configuration.
      */
     @JsonProperty(value = "properties")
     private VirtualMachineScaleSetUpdateNetworkConfigurationProperties innerProperties;
@@ -306,8 +305,7 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration {
     }
 
     /**
-     * Get the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface
-     * resource.
+     * Get the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
      * 
      * @return the auxiliarySku value.
      */
@@ -316,8 +314,7 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration {
     }
 
     /**
-     * Set the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface
-     * resource.
+     * Set the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
      * 
      * @param auxiliarySku the auxiliarySku value to set.
      * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.

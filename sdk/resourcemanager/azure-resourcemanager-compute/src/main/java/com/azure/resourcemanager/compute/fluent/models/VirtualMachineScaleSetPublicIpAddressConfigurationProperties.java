@@ -43,8 +43,7 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationProperties 
     private SubResource publicIpPrefix;
 
     /*
-     * Available from Api-Version 2019-07-01 onwards, it represents whether the specific ipconfiguration is IPv4 or
-     * IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
+     * Available from Api-Version 2019-07-01 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
      */
     @JsonProperty(value = "publicIPAddressVersion")
     private IpVersion publicIpAddressVersion;
@@ -145,8 +144,8 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationProperties 
     }
 
     /**
-     * Get the publicIpAddressVersion property: Available from Api-Version 2019-07-01 onwards, it represents whether
-     * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
+     * Get the publicIpAddressVersion property: Available from Api-Version 2019-07-01 onwards, it represents whether the
+     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
      * 
      * @return the publicIpAddressVersion value.
      */
@@ -155,8 +154,8 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationProperties 
     }
 
     /**
-     * Set the publicIpAddressVersion property: Available from Api-Version 2019-07-01 onwards, it represents whether
-     * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
+     * Set the publicIpAddressVersion property: Available from Api-Version 2019-07-01 onwards, it represents whether the
+     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
      * 
      * @param publicIpAddressVersion the publicIpAddressVersion value to set.
      * @return the VirtualMachineScaleSetPublicIpAddressConfigurationProperties object itself.

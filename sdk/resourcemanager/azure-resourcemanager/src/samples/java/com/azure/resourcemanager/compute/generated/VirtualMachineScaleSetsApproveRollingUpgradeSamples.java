@@ -12,9 +12,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachineScaleSetsApproveRollingUpgradeSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * virtualMachineScaleSetExamples/VirtualMachineScaleSet_ApproveRollingUpgrade.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ApproveRollingUpgrade.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_ApproveRollingUpgrade.
@@ -23,9 +21,12 @@ public final class VirtualMachineScaleSetsApproveRollingUpgradeSamples {
      */
     public static void
         virtualMachineScaleSetApproveRollingUpgrade(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().approveRollingUpgrade(
-            "rgcompute", "vmssToApproveRollingUpgradeOn",
-            new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(Arrays.asList("0", "1", "2")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .approveRollingUpgrade("rgcompute", "vmssToApproveRollingUpgradeOn",
+                new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(Arrays.asList("0", "1", "2")),
+                com.azure.core.util.Context.NONE);
     }
 }

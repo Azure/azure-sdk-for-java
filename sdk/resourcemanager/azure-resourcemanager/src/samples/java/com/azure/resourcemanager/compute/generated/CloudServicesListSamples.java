@@ -9,9 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class CloudServicesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/
-     * CloudService_List_BySubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/CloudService_List_BySubscription.json
      */
     /**
      * Sample code: List Cloud Services in a Subscription.

@@ -22,8 +22,7 @@ public final class AvailabilitySetListResult {
     private List<AvailabilitySetInner> value;
 
     /*
-     * The URI to fetch the next page of AvailabilitySets. Call ListNext() with this URI to fetch the next page of
-     * AvailabilitySets.
+     * The URI to fetch the next page of AvailabilitySets. Call ListNext() with this URI to fetch the next page of AvailabilitySets.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -83,8 +82,9 @@ public final class AvailabilitySetListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model AvailabilitySetListResult"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property value in model AvailabilitySetListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

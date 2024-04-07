@@ -78,12 +78,14 @@ public final class OrchestrationServiceStateInput {
      */
     public void validate() {
         if (serviceName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property serviceName in model OrchestrationServiceStateInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serviceName in model OrchestrationServiceStateInput"));
         }
         if (action() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property action in model OrchestrationServiceStateInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property action in model OrchestrationServiceStateInput"));
         }
     }
 

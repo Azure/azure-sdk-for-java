@@ -95,17 +95,13 @@ public final class VirtualMachineInstanceViewInner {
     private VirtualMachineHealthStatus vmHealth;
 
     /*
-     * Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM
-     * status. You can easily view the output of your console log. Azure also enables you to see a screenshot of the VM
-     * from the hypervisor.
+     * Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. You can easily view the output of your console log. Azure also enables you to see a screenshot of the VM from the hypervisor.
      */
     @JsonProperty(value = "bootDiagnostics")
     private BootDiagnosticsInstanceView bootDiagnostics;
 
     /*
-     * Resource id of the dedicated host, on which the virtual machine is allocated through automatic placement, when
-     * the virtual machine is associated with a dedicated host group that has automatic placement enabled. Minimum
-     * api-version: 2020-06-01.
+     * Resource id of the dedicated host, on which the virtual machine is allocated through automatic placement, when the virtual machine is associated with a dedicated host group that has automatic placement enabled. Minimum api-version: 2020-06-01.
      */
     @JsonProperty(value = "assignedHost", access = JsonProperty.Access.WRITE_ONLY)
     private String assignedHost;
@@ -365,9 +361,9 @@ public final class VirtualMachineInstanceViewInner {
     }
 
     /**
-     * Get the bootDiagnostics property: Boot Diagnostics is a debugging feature which allows you to view Console
-     * Output and Screenshot to diagnose VM status. You can easily view the output of your console log. Azure also
-     * enables you to see a screenshot of the VM from the hypervisor.
+     * Get the bootDiagnostics property: Boot Diagnostics is a debugging feature which allows you to view Console Output
+     * and Screenshot to diagnose VM status. You can easily view the output of your console log. Azure also enables you
+     * to see a screenshot of the VM from the hypervisor.
      * 
      * @return the bootDiagnostics value.
      */
@@ -376,9 +372,9 @@ public final class VirtualMachineInstanceViewInner {
     }
 
     /**
-     * Set the bootDiagnostics property: Boot Diagnostics is a debugging feature which allows you to view Console
-     * Output and Screenshot to diagnose VM status. You can easily view the output of your console log. Azure also
-     * enables you to see a screenshot of the VM from the hypervisor.
+     * Set the bootDiagnostics property: Boot Diagnostics is a debugging feature which allows you to view Console Output
+     * and Screenshot to diagnose VM status. You can easily view the output of your console log. Azure also enables you
+     * to see a screenshot of the VM from the hypervisor.
      * 
      * @param bootDiagnostics the bootDiagnostics value to set.
      * @return the VirtualMachineInstanceViewInner object itself.

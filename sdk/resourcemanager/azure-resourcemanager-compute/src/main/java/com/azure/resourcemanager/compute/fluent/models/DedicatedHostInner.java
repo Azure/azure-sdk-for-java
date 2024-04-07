@@ -28,8 +28,7 @@ public final class DedicatedHostInner extends Resource {
     private DedicatedHostProperties innerProperties;
 
     /*
-     * SKU of the dedicated host for Hardware Generation and VM family. Only name is required to be set. List
-     * Microsoft.Compute SKUs for a list of possible values.
+     * SKU of the dedicated host for Hardware Generation and VM family. Only name is required to be set. List Microsoft.Compute SKUs for a list of possible values.
      */
     @JsonProperty(value = "sku", required = true)
     private Sku sku;
@@ -157,8 +156,8 @@ public final class DedicatedHostInner extends Resource {
     }
 
     /**
-     * Get the licenseType property: Specifies the software license type that will be applied to the VMs deployed on
-     * the dedicated host. Possible values are: **None,** **Windows_Server_Hybrid,** **Windows_Server_Perpetual.** The
+     * Get the licenseType property: Specifies the software license type that will be applied to the VMs deployed on the
+     * dedicated host. Possible values are: **None,** **Windows_Server_Hybrid,** **Windows_Server_Perpetual.** The
      * default value is: **None.**.
      * 
      * @return the licenseType value.
@@ -168,8 +167,8 @@ public final class DedicatedHostInner extends Resource {
     }
 
     /**
-     * Set the licenseType property: Specifies the software license type that will be applied to the VMs deployed on
-     * the dedicated host. Possible values are: **None,** **Windows_Server_Hybrid,** **Windows_Server_Perpetual.** The
+     * Set the licenseType property: Specifies the software license type that will be applied to the VMs deployed on the
+     * dedicated host. Possible values are: **None,** **Windows_Server_Hybrid,** **Windows_Server_Perpetual.** The
      * default value is: **None.**.
      * 
      * @param licenseType the licenseType value to set.
@@ -230,8 +229,8 @@ public final class DedicatedHostInner extends Resource {
             innerProperties().validate();
         }
         if (sku() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sku in model DedicatedHostInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model DedicatedHostInner"));
         } else {
             sku().validate();
         }

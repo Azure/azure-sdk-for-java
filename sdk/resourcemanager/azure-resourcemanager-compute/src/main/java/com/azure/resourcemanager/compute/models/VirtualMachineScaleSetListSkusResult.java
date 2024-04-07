@@ -22,8 +22,7 @@ public final class VirtualMachineScaleSetListSkusResult {
     private List<VirtualMachineScaleSetSkuInner> value;
 
     /*
-     * The uri to fetch the next page of Virtual Machine Scale Set Skus. Call ListNext() with this to fetch the next
-     * page of VMSS Skus.
+     * The uri to fetch the next page of Virtual Machine Scale Set Skus. Call ListNext() with this to fetch the next page of VMSS Skus.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -55,8 +54,8 @@ public final class VirtualMachineScaleSetListSkusResult {
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of Virtual Machine Scale Set Skus. Call ListNext()
-     * with this to fetch the next page of VMSS Skus.
+     * Get the nextLink property: The uri to fetch the next page of Virtual Machine Scale Set Skus. Call ListNext() with
+     * this to fetch the next page of VMSS Skus.
      * 
      * @return the nextLink value.
      */
@@ -65,8 +64,8 @@ public final class VirtualMachineScaleSetListSkusResult {
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of Virtual Machine Scale Set Skus. Call ListNext()
-     * with this to fetch the next page of VMSS Skus.
+     * Set the nextLink property: The uri to fetch the next page of Virtual Machine Scale Set Skus. Call ListNext() with
+     * this to fetch the next page of VMSS Skus.
      * 
      * @param nextLink the nextLink value to set.
      * @return the VirtualMachineScaleSetListSkusResult object itself.
@@ -83,8 +82,9 @@ public final class VirtualMachineScaleSetListSkusResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property value in model VirtualMachineScaleSetListSkusResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model VirtualMachineScaleSetListSkusResult"));
         } else {
             value().forEach(e -> e.validate());
         }

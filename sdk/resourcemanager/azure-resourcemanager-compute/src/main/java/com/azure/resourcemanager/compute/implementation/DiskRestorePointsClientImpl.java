@@ -626,8 +626,10 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
     public SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(String resourceGroupName,
         String restorePointCollectionName, String vmRestorePointName, String diskRestorePointName,
         GrantAccessData grantAccessData) {
-        return this.beginGrantAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
-            diskRestorePointName, grantAccessData).getSyncPoller();
+        return this
+            .beginGrantAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
+                diskRestorePointName, grantAccessData)
+            .getSyncPoller();
     }
 
     /**
@@ -648,8 +650,10 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
     public SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(String resourceGroupName,
         String restorePointCollectionName, String vmRestorePointName, String diskRestorePointName,
         GrantAccessData grantAccessData, Context context) {
-        return this.beginGrantAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
-            diskRestorePointName, grantAccessData, context).getSyncPoller();
+        return this
+            .beginGrantAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
+                diskRestorePointName, grantAccessData, context)
+            .getSyncPoller();
     }
 
     /**
@@ -888,8 +892,10 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevokeAccess(String resourceGroupName,
         String restorePointCollectionName, String vmRestorePointName, String diskRestorePointName) {
-        return this.beginRevokeAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
-            diskRestorePointName).getSyncPoller();
+        return this
+            .beginRevokeAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
+                diskRestorePointName)
+            .getSyncPoller();
     }
 
     /**
@@ -908,8 +914,10 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevokeAccess(String resourceGroupName,
         String restorePointCollectionName, String vmRestorePointName, String diskRestorePointName, Context context) {
-        return this.beginRevokeAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
-            diskRestorePointName, context).getSyncPoller();
+        return this
+            .beginRevokeAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
+                diskRestorePointName, context)
+            .getSyncPoller();
     }
 
     /**

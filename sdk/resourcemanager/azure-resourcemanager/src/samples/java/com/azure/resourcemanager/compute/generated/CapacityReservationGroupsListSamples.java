@@ -12,9 +12,7 @@ import com.azure.resourcemanager.compute.models.ResourceIdOptionsForGetCapacityR
  */
 public final class CapacityReservationGroupsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * capacityReservationExamples/CapacityReservationGroup_ListBySubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/capacityReservationExamples/CapacityReservationGroup_ListBySubscription.json
      */
     /**
      * Sample code: List capacity reservation groups in subscription.
@@ -23,14 +21,16 @@ public final class CapacityReservationGroupsListSamples {
      */
     public static void
         listCapacityReservationGroupsInSubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCapacityReservationGroups().list(
-            ExpandTypesForGetCapacityReservationGroups.VIRTUAL_MACHINES_REF, null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCapacityReservationGroups()
+            .list(ExpandTypesForGetCapacityReservationGroups.VIRTUAL_MACHINES_REF, null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * capacityReservationExamples/CapacityReservationGroup_ListBySubscriptionWithResourceIdsQuery.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/capacityReservationExamples/CapacityReservationGroup_ListBySubscriptionWithResourceIdsQuery.json
      */
     /**
      * Sample code: List capacity reservation groups with resource Ids only in subscription.
@@ -39,7 +39,10 @@ public final class CapacityReservationGroupsListSamples {
      */
     public static void listCapacityReservationGroupsWithResourceIdsOnlyInSubscription(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCapacityReservationGroups().list(null,
-            ResourceIdOptionsForGetCapacityReservationGroups.ALL, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCapacityReservationGroups()
+            .list(null, ResourceIdOptionsForGetCapacityReservationGroups.ALL, com.azure.core.util.Context.NONE);
     }
 }

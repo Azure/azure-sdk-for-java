@@ -26,26 +26,19 @@ public final class CloudServiceExtensionProperties {
     private String type;
 
     /*
-     * Specifies the version of the extension. Specifies the version of the extension. If this element is not specified
-     * or an asterisk (*) is used as the value, the latest version of the extension is used. If the value is specified
-     * with a major version number and an asterisk as the minor version number (X.), the latest minor version of the
-     * specified major version is selected. If a major version number and a minor version number are specified (X.Y),
-     * the specific extension version is selected. If a version is specified, an auto-upgrade is performed on the role
-     * instance.
+     * Specifies the version of the extension. Specifies the version of the extension. If this element is not specified or an asterisk (*) is used as the value, the latest version of the extension is used. If the value is specified with a major version number and an asterisk as the minor version number (X.), the latest minor version of the specified major version is selected. If a major version number and a minor version number are specified (X.Y), the specific extension version is selected. If a version is specified, an auto-upgrade is performed on the role instance.
      */
     @JsonProperty(value = "typeHandlerVersion")
     private String typeHandlerVersion;
 
     /*
-     * Explicitly specify whether platform can automatically upgrade typeHandlerVersion to higher minor versions when
-     * they become available.
+     * Explicitly specify whether platform can automatically upgrade typeHandlerVersion to higher minor versions when they become available.
      */
     @JsonProperty(value = "autoUpgradeMinorVersion")
     private Boolean autoUpgradeMinorVersion;
 
     /*
-     * Public settings for the extension. For JSON extensions, this is the JSON settings for the extension. For XML
-     * Extension (like RDP), this is the XML setting for the extension.
+     * Public settings for the extension. For JSON extensions, this is the JSON settings for the extension. For XML Extension (like RDP), this is the XML setting for the extension.
      */
     @JsonProperty(value = "settings")
     private Object settings;
@@ -57,19 +50,16 @@ public final class CloudServiceExtensionProperties {
     private Object protectedSettings;
 
     /*
-     * Protected settings for the extension, referenced using KeyVault which are encrypted before sent to the role
-     * instance.
+     * Protected settings for the extension, referenced using KeyVault which are encrypted before sent to the role instance.
      */
     @JsonProperty(value = "protectedSettingsFromKeyVault")
     private CloudServiceVaultAndSecretReference protectedSettingsFromKeyVault;
 
     /*
      * Tag to force apply the provided public and protected settings.
-     * Changing the tag value allows for re-running the extension without changing any of the public or protected
-     * settings.
+     * Changing the tag value allows for re-running the extension without changing any of the public or protected settings.
      * If forceUpdateTag is not changed, updates to public or protected settings would still be applied by the handler.
-     * If neither forceUpdateTag nor any of public or protected settings change, extension would flow to the role
-     * instance with the same sequence-number, and
+     * If neither forceUpdateTag nor any of public or protected settings change, extension would flow to the role instance with the same sequence-number, and
      * it is up to handler implementation whether to re-run it or not
      */
     @JsonProperty(value = "forceUpdateTag")
@@ -82,8 +72,7 @@ public final class CloudServiceExtensionProperties {
     private String provisioningState;
 
     /*
-     * Optional list of roles to apply this extension. If property is not specified or '*' is specified, extension is
-     * applied to all roles in the cloud service.
+     * Optional list of roles to apply this extension. If property is not specified or '*' is specified, extension is applied to all roles in the cloud service.
      */
     @JsonProperty(value = "rolesAppliedTo")
     private List<String> rolesAppliedTo;
@@ -138,9 +127,9 @@ public final class CloudServiceExtensionProperties {
      * Get the typeHandlerVersion property: Specifies the version of the extension. Specifies the version of the
      * extension. If this element is not specified or an asterisk (*) is used as the value, the latest version of the
      * extension is used. If the value is specified with a major version number and an asterisk as the minor version
-     * number (X.), the latest minor version of the specified major version is selected. If a major version number and
-     * a minor version number are specified (X.Y), the specific extension version is selected. If a version is
-     * specified, an auto-upgrade is performed on the role instance.
+     * number (X.), the latest minor version of the specified major version is selected. If a major version number and a
+     * minor version number are specified (X.Y), the specific extension version is selected. If a version is specified,
+     * an auto-upgrade is performed on the role instance.
      * 
      * @return the typeHandlerVersion value.
      */
@@ -152,9 +141,9 @@ public final class CloudServiceExtensionProperties {
      * Set the typeHandlerVersion property: Specifies the version of the extension. Specifies the version of the
      * extension. If this element is not specified or an asterisk (*) is used as the value, the latest version of the
      * extension is used. If the value is specified with a major version number and an asterisk as the minor version
-     * number (X.), the latest minor version of the specified major version is selected. If a major version number and
-     * a minor version number are specified (X.Y), the specific extension version is selected. If a version is
-     * specified, an auto-upgrade is performed on the role instance.
+     * number (X.), the latest minor version of the specified major version is selected. If a major version number and a
+     * minor version number are specified (X.Y), the specific extension version is selected. If a version is specified,
+     * an auto-upgrade is performed on the role instance.
      * 
      * @param typeHandlerVersion the typeHandlerVersion value to set.
      * @return the CloudServiceExtensionProperties object itself.

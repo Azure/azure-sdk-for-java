@@ -9,9 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class DedicatedHostGroupsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * dedicatedHostExamples/DedicatedHostGroup_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/dedicatedHostExamples/DedicatedHostGroup_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHostGroup_Delete_MaximumSet_Gen.
@@ -19,14 +17,15 @@ public final class DedicatedHostGroupsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void dedicatedHostGroupDeleteMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHostGroups().deleteWithResponse("rgcompute", "a",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHostGroups()
+            .deleteWithResponse("rgcompute", "a", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * dedicatedHostExamples/DedicatedHostGroup_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/dedicatedHostExamples/DedicatedHostGroup_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHostGroup_Delete_MinimumSet_Gen.
@@ -34,7 +33,10 @@ public final class DedicatedHostGroupsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void dedicatedHostGroupDeleteMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHostGroups().deleteWithResponse("rgcompute",
-            "aaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHostGroups()
+            .deleteWithResponse("rgcompute", "aaaa", com.azure.core.util.Context.NONE);
     }
 }

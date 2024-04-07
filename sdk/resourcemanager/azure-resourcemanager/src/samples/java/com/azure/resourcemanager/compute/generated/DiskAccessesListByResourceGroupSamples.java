@@ -9,9 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class DiskAccessesListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskAccessExamples/
-     * DiskAccess_ListByResourceGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskAccessExamples/DiskAccess_ListByResourceGroup.json
      */
     /**
      * Sample code: List all disk access resources in a resource group.
@@ -20,7 +18,10 @@ public final class DiskAccessesListByResourceGroupSamples {
      */
     public static void
         listAllDiskAccessResourcesInAResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskAccesses().listByResourceGroup("myResourceGroup",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskAccesses()
+            .listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

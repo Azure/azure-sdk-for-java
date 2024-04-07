@@ -15,9 +15,7 @@ import java.util.Map;
  */
 public final class DedicatedHostGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a dedicated host group.
@@ -25,17 +23,21 @@ public final class DedicatedHostGroupsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateADedicatedHostGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHostGroups().createOrUpdateWithResponse(
-            "myResourceGroup", "myDedicatedHostGroup",
-            new DedicatedHostGroupInner().withLocation("westus").withTags(mapOf("department", "finance"))
-                .withZones(Arrays.asList("1")).withPlatformFaultDomainCount(3).withSupportAutomaticPlacement(true),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHostGroups()
+            .createOrUpdateWithResponse("myResourceGroup", "myDedicatedHostGroup",
+                new DedicatedHostGroupInner().withLocation("westus")
+                    .withTags(mapOf("department", "finance"))
+                    .withZones(Arrays.asList("1"))
+                    .withPlatformFaultDomainCount(3)
+                    .withSupportAutomaticPlacement(true),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate_WithUltraSSD.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate_WithUltraSSD.json
      */
     /**
      * Sample code: Create or update a dedicated host group with Ultra SSD support.
@@ -44,13 +46,19 @@ public final class DedicatedHostGroupsCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateADedicatedHostGroupWithUltraSSDSupport(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHostGroups().createOrUpdateWithResponse(
-            "myResourceGroup", "myDedicatedHostGroup",
-            new DedicatedHostGroupInner().withLocation("westus").withTags(mapOf("department", "finance"))
-                .withZones(Arrays.asList("1")).withPlatformFaultDomainCount(3).withSupportAutomaticPlacement(true)
-                .withAdditionalCapabilities(
-                    new DedicatedHostGroupPropertiesAdditionalCapabilities().withUltraSsdEnabled(true)),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHostGroups()
+            .createOrUpdateWithResponse("myResourceGroup", "myDedicatedHostGroup",
+                new DedicatedHostGroupInner().withLocation("westus")
+                    .withTags(mapOf("department", "finance"))
+                    .withZones(Arrays.asList("1"))
+                    .withPlatformFaultDomainCount(3)
+                    .withSupportAutomaticPlacement(true)
+                    .withAdditionalCapabilities(
+                        new DedicatedHostGroupPropertiesAdditionalCapabilities().withUltraSsdEnabled(true)),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

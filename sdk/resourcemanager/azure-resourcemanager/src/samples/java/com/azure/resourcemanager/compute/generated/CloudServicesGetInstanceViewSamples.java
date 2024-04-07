@@ -9,9 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class CloudServicesGetInstanceViewSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/
-     * CloudService_Get_InstanceViewWithMultiRole.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/CloudService_Get_InstanceViewWithMultiRole.json
      */
     /**
      * Sample code: Get Cloud Service Instance View with Multiple Roles.
@@ -20,7 +18,10 @@ public final class CloudServicesGetInstanceViewSamples {
      */
     public static void
         getCloudServiceInstanceViewWithMultipleRoles(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCloudServices().getInstanceViewWithResponse("ConstosoRG",
-            "{cs-name}", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCloudServices()
+            .getInstanceViewWithResponse("ConstosoRG", "{cs-name}", com.azure.core.util.Context.NONE);
     }
 }

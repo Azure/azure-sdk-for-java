@@ -34,15 +34,14 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMRunCommandsClient;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineRunCommandInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
-import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandUpdate;
 import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandsListResult;
+import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * VirtualMachineScaleSetVMRunCommandsClient.
+ * An instance of this class provides access to all the operations defined in VirtualMachineScaleSetVMRunCommandsClient.
  */
 public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements VirtualMachineScaleSetVMRunCommandsClient {
     /**
@@ -67,8 +66,8 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
     }
 
     /**
-     * The interface defining all the services for ComputeManagementClientVirtualMachineScaleSetVMRunCommands to be
-     * used by the proxy service to perform REST calls.
+     * The interface defining all the services for ComputeManagementClientVirtualMachineScaleSetVMRunCommands to be used
+     * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
@@ -329,8 +328,10 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
     public SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdate(
         String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName,
         VirtualMachineRunCommandInner runCommand, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand,
-            context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -350,7 +351,8 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
     public Mono<VirtualMachineRunCommandInner> createOrUpdateAsync(String resourceGroupName, String vmScaleSetName,
         String instanceId, String runCommandName, VirtualMachineRunCommandInner runCommand) {
         return beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -647,7 +649,8 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
     private Mono<VirtualMachineRunCommandInner> updateAsync(String resourceGroupName, String vmScaleSetName,
         String instanceId, String runCommandName, VirtualMachineRunCommandUpdate runCommand, Context context) {
         return beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, runCommand, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

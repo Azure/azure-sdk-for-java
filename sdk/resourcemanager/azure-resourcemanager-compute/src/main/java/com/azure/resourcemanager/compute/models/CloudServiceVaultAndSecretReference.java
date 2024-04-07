@@ -9,8 +9,7 @@ import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Protected settings for the extension, referenced using KeyVault which are encrypted before sent to the role
- * instance.
+ * Protected settings for the extension, referenced using KeyVault which are encrypted before sent to the role instance.
  */
 @Fluent
 public final class CloudServiceVaultAndSecretReference {

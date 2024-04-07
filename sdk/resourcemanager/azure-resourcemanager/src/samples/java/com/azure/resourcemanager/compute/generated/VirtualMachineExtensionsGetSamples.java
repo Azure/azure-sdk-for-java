@@ -9,9 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachineExtensionsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * virtualMachineExamples/VirtualMachineExtension_Get_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/virtualMachineExamples/VirtualMachineExtension_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineExtension_Get_MaximumSet_Gen.
@@ -19,14 +17,16 @@ public final class VirtualMachineExtensionsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineExtensionGetMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineExtensions().getWithResponse("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaa", "aaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineExtensions()
+            .getWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaa", "aaaaaa",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * virtualMachineExamples/VirtualMachineExtension_Get_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/virtualMachineExamples/VirtualMachineExtension_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineExtension_Get_MinimumSet_Gen.
@@ -34,7 +34,10 @@ public final class VirtualMachineExtensionsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineExtensionGetMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineExtensions().getWithResponse("rgcompute",
-            "myVM", "myVMExtension", null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineExtensions()
+            .getWithResponse("rgcompute", "myVM", "myVMExtension", null, com.azure.core.util.Context.NONE);
     }
 }

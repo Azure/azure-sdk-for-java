@@ -9,9 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachineSizesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * computeRPCommonExamples/VirtualMachineSizes_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/computeRPCommonExamples/VirtualMachineSizes_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineSizes_List_MinimumSet_Gen.
@@ -19,14 +17,15 @@ public final class VirtualMachineSizesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineSizesListMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineSizes().list("._..",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineSizes()
+            .list("._..", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * computeRPCommonExamples/VirtualMachineSizes_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/computeRPCommonExamples/VirtualMachineSizes_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineSizes_List_MaximumSet_Gen.
@@ -34,7 +33,10 @@ public final class VirtualMachineSizesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineSizesListMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineSizes().list("-e",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineSizes()
+            .list("-e", com.azure.core.util.Context.NONE);
     }
 }

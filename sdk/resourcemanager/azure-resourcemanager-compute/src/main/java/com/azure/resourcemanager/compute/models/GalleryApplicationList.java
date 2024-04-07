@@ -22,8 +22,7 @@ public final class GalleryApplicationList {
     private List<GalleryApplicationInner> value;
 
     /*
-     * The uri to fetch the next page of Application Definitions in the Application Gallery. Call ListNext() with this
-     * to fetch the next page of gallery Application Definitions.
+     * The uri to fetch the next page of Application Definitions in the Application Gallery. Call ListNext() with this to fetch the next page of gallery Application Definitions.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -83,8 +82,8 @@ public final class GalleryApplicationList {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model GalleryApplicationList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model GalleryApplicationList"));
         } else {
             value().forEach(e -> e.validate());
         }

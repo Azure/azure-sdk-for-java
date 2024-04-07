@@ -39,15 +39,13 @@ public final class DiskInner extends Resource {
     private String managedBy;
 
     /*
-     * List of relative URIs containing the IDs of the VMs that have the disk attached. maxShares should be set to a
-     * value greater than one for disks to allow attaching them to multiple VMs.
+     * List of relative URIs containing the IDs of the VMs that have the disk attached. maxShares should be set to a value greater than one for disks to allow attaching them to multiple VMs.
      */
     @JsonProperty(value = "managedByExtended", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> managedByExtended;
 
     /*
-     * The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS, UltraSSD_LRS, Premium_ZRS,
-     * StandardSSD_ZRS, or PremiumV2_LRS.
+     * The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS, UltraSSD_LRS, Premium_ZRS, StandardSSD_ZRS, or PremiumV2_LRS.
      */
     @JsonProperty(value = "sku")
     private DiskSku sku;
@@ -138,8 +136,8 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Get the extendedLocation property: The extended location where the disk will be created. Extended location
-     * cannot be changed.
+     * Get the extendedLocation property: The extended location where the disk will be created. Extended location cannot
+     * be changed.
      * 
      * @return the extendedLocation value.
      */
@@ -148,8 +146,8 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Set the extendedLocation property: The extended location where the disk will be created. Extended location
-     * cannot be changed.
+     * Set the extendedLocation property: The extended location where the disk will be created. Extended location cannot
+     * be changed.
      * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the DiskInner object itself.
@@ -219,8 +217,7 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      * 
      * @return the hyperVGeneration value.
      */
@@ -229,8 +226,7 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      * 
      * @param hyperVGeneration the hyperVGeneration value to set.
      * @return the DiskInner object itself.
@@ -294,8 +290,8 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Get the creationData property: Disk source information. CreationData information cannot be changed after the
-     * disk has been created.
+     * Get the creationData property: Disk source information. CreationData information cannot be changed after the disk
+     * has been created.
      * 
      * @return the creationData value.
      */
@@ -304,8 +300,8 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Set the creationData property: Disk source information. CreationData information cannot be changed after the
-     * disk has been created.
+     * Set the creationData property: Disk source information. CreationData information cannot be changed after the disk
+     * has been created.
      * 
      * @param creationData the creationData value to set.
      * @return the DiskInner object itself.
@@ -366,8 +362,8 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Get the encryptionSettingsCollection property: Encryption settings collection used for Azure Disk Encryption,
-     * can contain multiple encryption settings per disk or snapshot.
+     * Get the encryptionSettingsCollection property: Encryption settings collection used for Azure Disk Encryption, can
+     * contain multiple encryption settings per disk or snapshot.
      * 
      * @return the encryptionSettingsCollection value.
      */
@@ -376,8 +372,8 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Set the encryptionSettingsCollection property: Encryption settings collection used for Azure Disk Encryption,
-     * can contain multiple encryption settings per disk or snapshot.
+     * Set the encryptionSettingsCollection property: Encryption settings collection used for Azure Disk Encryption, can
+     * contain multiple encryption settings per disk or snapshot.
      * 
      * @param encryptionSettingsCollection the encryptionSettingsCollection value to set.
      * @return the DiskInner object itself.
@@ -536,8 +532,8 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Get the maxShares property: The maximum number of VMs that can attach to the disk at the same time. Value
-     * greater than one indicates a disk that can be mounted on multiple VMs at the same time.
+     * Get the maxShares property: The maximum number of VMs that can attach to the disk at the same time. Value greater
+     * than one indicates a disk that can be mounted on multiple VMs at the same time.
      * 
      * @return the maxShares value.
      */
@@ -546,8 +542,8 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Set the maxShares property: The maximum number of VMs that can attach to the disk at the same time. Value
-     * greater than one indicates a disk that can be mounted on multiple VMs at the same time.
+     * Set the maxShares property: The maximum number of VMs that can attach to the disk at the same time. Value greater
+     * than one indicates a disk that can be mounted on multiple VMs at the same time.
      * 
      * @param maxShares the maxShares value to set.
      * @return the DiskInner object itself.
@@ -651,8 +647,8 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Get the burstingEnabled property: Set to true to enable bursting beyond the provisioned performance target of
-     * the disk. Bursting is disabled by default. Does not apply to Ultra disks.
+     * Get the burstingEnabled property: Set to true to enable bursting beyond the provisioned performance target of the
+     * disk. Bursting is disabled by default. Does not apply to Ultra disks.
      * 
      * @return the burstingEnabled value.
      */
@@ -661,8 +657,8 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Set the burstingEnabled property: Set to true to enable bursting beyond the provisioned performance target of
-     * the disk. Bursting is disabled by default. Does not apply to Ultra disks.
+     * Set the burstingEnabled property: Set to true to enable bursting beyond the provisioned performance target of the
+     * disk. Bursting is disabled by default. Does not apply to Ultra disks.
      * 
      * @param burstingEnabled the burstingEnabled value to set.
      * @return the DiskInner object itself.
@@ -779,8 +775,8 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a
-     * disk or snapshot.
+     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
      * 
      * @return the dataAccessAuthMode value.
      */
@@ -789,8 +785,8 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a
-     * disk or snapshot.
+     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
      * 
      * @param dataAccessAuthMode the dataAccessAuthMode value to set.
      * @return the DiskInner object itself.
@@ -806,8 +802,8 @@ public final class DiskInner extends Resource {
     /**
      * Get the optimizedForFrequentAttach property: Setting this property to true improves reliability and performance
      * of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to
-     * another. This property should not be set for disks that are not detached and attached frequently as it causes
-     * the disks to not align with the fault domain of the virtual machine.
+     * another. This property should not be set for disks that are not detached and attached frequently as it causes the
+     * disks to not align with the fault domain of the virtual machine.
      * 
      * @return the optimizedForFrequentAttach value.
      */
@@ -818,8 +814,8 @@ public final class DiskInner extends Resource {
     /**
      * Set the optimizedForFrequentAttach property: Setting this property to true improves reliability and performance
      * of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to
-     * another. This property should not be set for disks that are not detached and attached frequently as it causes
-     * the disks to not align with the fault domain of the virtual machine.
+     * another. This property should not be set for disks that are not detached and attached frequently as it causes the
+     * disks to not align with the fault domain of the virtual machine.
      * 
      * @param optimizedForFrequentAttach the optimizedForFrequentAttach value to set.
      * @return the DiskInner object itself.

@@ -12,9 +12,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachineScaleSetsDeallocateSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Deallocate_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Deallocate_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_Deallocate_MaximumSet_Gen.
@@ -23,16 +21,17 @@ public final class VirtualMachineScaleSetsDeallocateSamples {
      */
     public static void
         virtualMachineScaleSetDeallocateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().deallocate("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", true,
-            new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaa")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .deallocate("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", true,
+                new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaa")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Deallocate_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Deallocate_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_Deallocate_MinimumSet_Gen.
@@ -41,7 +40,10 @@ public final class VirtualMachineScaleSetsDeallocateSamples {
      */
     public static void
         virtualMachineScaleSetDeallocateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().deallocate("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaaaa", null, null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .deallocate("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaa", null, null, com.azure.core.util.Context.NONE);
     }
 }

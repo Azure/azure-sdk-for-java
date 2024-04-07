@@ -41,7 +41,6 @@ import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetSku
 import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.ExpandTypesForGetVMScaleSets;
 import com.azure.resourcemanager.compute.models.OrchestrationServiceStateInput;
-import com.azure.resourcemanager.compute.models.VMScaleSetConvertToSinglePlacementGroupInput;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetListOSUpgradeHistory;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetListResult;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetListSkusResult;
@@ -50,6 +49,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetReimagePar
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdate;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMInstanceIDs;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMInstanceRequiredIDs;
+import com.azure.resourcemanager.compute.models.VMScaleSetConvertToSinglePlacementGroupInput;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -802,7 +802,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     private Mono<VirtualMachineScaleSetInner> createOrUpdateAsync(String resourceGroupName, String vmScaleSetName,
         VirtualMachineScaleSetInner parameters, String ifMatch, String ifNoneMatch, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, parameters, ifMatch, ifNoneMatch, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2100,7 +2101,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     private Mono<Void> deleteInstancesAsync(String resourceGroupName, String vmScaleSetName,
         VirtualMachineScaleSetVMInstanceRequiredIDs vmInstanceIDs, Boolean forceDeletion, Context context) {
         return beginDeleteInstancesAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs, forceDeletion, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

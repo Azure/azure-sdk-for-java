@@ -106,12 +106,14 @@ public final class VirtualMachineCaptureParameters {
      */
     public void validate() {
         if (vhdPrefix() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property vhdPrefix in model VirtualMachineCaptureParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property vhdPrefix in model VirtualMachineCaptureParameters"));
         }
         if (destinationContainerName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property destinationContainerName in model VirtualMachineCaptureParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property destinationContainerName in model VirtualMachineCaptureParameters"));
         }
     }
 

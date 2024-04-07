@@ -9,9 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class GalleriesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
-     * Gallery_ListBySubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/Gallery_ListBySubscription.json
      */
     /**
      * Sample code: List galleries in a subscription.

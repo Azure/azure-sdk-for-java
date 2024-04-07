@@ -9,8 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Optional. Allows users to provide customer managed keys for encrypting the OS and data disks in the gallery
- * artifact.
+ * Optional. Allows users to provide customer managed keys for encrypting the OS and data disks in the gallery artifact.
  */
 @Fluent
 public final class EncryptionImages {

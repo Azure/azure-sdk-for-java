@@ -13,9 +13,7 @@ import java.util.Map;
  */
 public final class CapacityReservationGroupsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * capacityReservationExamples/CapacityReservationGroup_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/capacityReservationExamples/CapacityReservationGroup_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: CapacityReservationGroup_Update_MinimumSet_Gen.
@@ -24,14 +22,16 @@ public final class CapacityReservationGroupsUpdateSamples {
      */
     public static void
         capacityReservationGroupUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCapacityReservationGroups().updateWithResponse("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaa", new CapacityReservationGroupUpdate(), com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCapacityReservationGroups()
+            .updateWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaaaa", new CapacityReservationGroupUpdate(),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * capacityReservationExamples/CapacityReservationGroup_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/capacityReservationExamples/CapacityReservationGroup_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: CapacityReservationGroup_Update_MaximumSet_Gen.
@@ -40,10 +40,13 @@ public final class CapacityReservationGroupsUpdateSamples {
      */
     public static void
         capacityReservationGroupUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCapacityReservationGroups().updateWithResponse("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaa",
-            new CapacityReservationGroupUpdate().withTags(mapOf("key5355", "fakeTokenPlaceholder")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCapacityReservationGroups()
+            .updateWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaaaa",
+                new CapacityReservationGroupUpdate().withTags(mapOf("key5355", "fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

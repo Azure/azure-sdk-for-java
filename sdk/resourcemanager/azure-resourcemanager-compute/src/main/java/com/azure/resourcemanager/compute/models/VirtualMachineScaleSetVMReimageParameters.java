@@ -25,8 +25,8 @@ public class VirtualMachineScaleSetVMReimageParameters extends VirtualMachineRei
     }
 
     /**
-     * Get the forceUpdateOSDiskForEphemeral property: Parameter to force update ephemeral OS disk for a virtual
-     * machine scale set VM.
+     * Get the forceUpdateOSDiskForEphemeral property: Parameter to force update ephemeral OS disk for a virtual machine
+     * scale set VM.
      * 
      * @return the forceUpdateOSDiskForEphemeral value.
      */
@@ -35,8 +35,8 @@ public class VirtualMachineScaleSetVMReimageParameters extends VirtualMachineRei
     }
 
     /**
-     * Set the forceUpdateOSDiskForEphemeral property: Parameter to force update ephemeral OS disk for a virtual
-     * machine scale set VM.
+     * Set the forceUpdateOSDiskForEphemeral property: Parameter to force update ephemeral OS disk for a virtual machine
+     * scale set VM.
      * 
      * @param forceUpdateOSDiskForEphemeral the forceUpdateOSDiskForEphemeral value to set.
      * @return the VirtualMachineScaleSetVMReimageParameters object itself.

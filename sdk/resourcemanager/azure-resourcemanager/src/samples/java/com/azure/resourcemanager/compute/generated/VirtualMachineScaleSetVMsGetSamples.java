@@ -9,9 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachineScaleSetVMsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithVMSizeProperties.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithVMSizeProperties.json
      */
     /**
      * Sample code: Get VM scale set VM with VMSizeProperties.
@@ -19,14 +17,15 @@ public final class VirtualMachineScaleSetVMsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getVMScaleSetVMWithVMSizeProperties(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetVMs()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetVMs()
             .getWithResponse("myResourceGroup", "{vmss-name}", "0", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithUserData.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithUserData.json
      */
     /**
      * Sample code: Get VM scale set VM with UserData.
@@ -34,7 +33,10 @@ public final class VirtualMachineScaleSetVMsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getVMScaleSetVMWithUserData(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetVMs()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetVMs()
             .getWithResponse("myResourceGroup", "{vmss-name}", "0", null, com.azure.core.util.Context.NONE);
     }
 }

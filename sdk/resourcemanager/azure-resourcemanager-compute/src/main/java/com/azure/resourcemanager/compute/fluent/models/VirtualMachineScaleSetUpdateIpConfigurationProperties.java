@@ -36,8 +36,7 @@ public final class VirtualMachineScaleSetUpdateIpConfigurationProperties {
     private VirtualMachineScaleSetUpdatePublicIpAddressConfiguration publicIpAddressConfiguration;
 
     /*
-     * Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or
-     * IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
+     * Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.  Possible values are: 'IPv4' and 'IPv6'.
      */
     @JsonProperty(value = "privateIPAddressVersion")
     private IpVersion privateIpAddressVersion;

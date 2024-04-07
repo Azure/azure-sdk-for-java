@@ -9,9 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachineExtensionsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * virtualMachineExamples/VirtualMachineExtension_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/virtualMachineExamples/VirtualMachineExtension_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineExtension_Delete_MaximumSet_Gen.
@@ -20,14 +18,15 @@ public final class VirtualMachineExtensionsDeleteSamples {
      */
     public static void
         virtualMachineExtensionDeleteMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineExtensions().delete("rgcompute",
-            "aaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineExtensions()
+            .delete("rgcompute", "aaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * virtualMachineExamples/VirtualMachineExtension_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/virtualMachineExamples/VirtualMachineExtension_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineExtension_Delete_MinimumSet_Gen.
@@ -36,7 +35,10 @@ public final class VirtualMachineExtensionsDeleteSamples {
      */
     public static void
         virtualMachineExtensionDeleteMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineExtensions().delete("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaaaaa", "aa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineExtensions()
+            .delete("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaa", "aa", com.azure.core.util.Context.NONE);
     }
 }

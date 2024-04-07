@@ -51,8 +51,7 @@ public final class VirtualMachineSoftwarePatchProperties {
     private VMGuestPatchRebootBehavior rebootBehavior;
 
     /*
-     * The activity ID of the operation that produced this result. It is used to correlate across CRP and extension
-     * logs.
+     * The activity ID of the operation that produced this result. It is used to correlate across CRP and extension logs.
      */
     @JsonProperty(value = "activityId", access = JsonProperty.Access.WRITE_ONLY)
     private String activityId;

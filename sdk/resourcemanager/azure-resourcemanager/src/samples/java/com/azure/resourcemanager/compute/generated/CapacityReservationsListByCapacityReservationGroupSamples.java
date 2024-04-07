@@ -9,9 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class CapacityReservationsListByCapacityReservationGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * capacityReservationExamples/CapacityReservation_ListByReservationGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/capacityReservationExamples/CapacityReservation_ListByReservationGroup.json
      */
     /**
      * Sample code: List capacity reservations in reservation group.
@@ -20,7 +18,11 @@ public final class CapacityReservationsListByCapacityReservationGroupSamples {
      */
     public static void
         listCapacityReservationsInReservationGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCapacityReservations().listByCapacityReservationGroup(
-            "myResourceGroup", "myCapacityReservationGroup", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCapacityReservations()
+            .listByCapacityReservationGroup("myResourceGroup", "myCapacityReservationGroup",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -19,8 +19,7 @@ import java.util.List;
 @Fluent
 public final class RestorePointProperties {
     /*
-     * List of disk resource ids that the customer wishes to exclude from the restore point. If no disks are specified,
-     * all disks will be included.
+     * List of disk resource ids that the customer wishes to exclude from the restore point. If no disks are specified, all disks will be included.
      */
     @JsonProperty(value = "excludeDisks")
     private List<ApiEntityReference> excludeDisks;
@@ -38,8 +37,7 @@ public final class RestorePointProperties {
     private String provisioningState;
 
     /*
-     * ConsistencyMode of the RestorePoint. Can be specified in the input while creating a restore point. For now, only
-     * CrashConsistent is accepted as a valid input. Please refer to https://aka.ms/RestorePoints for more details.
+     * ConsistencyMode of the RestorePoint. Can be specified in the input while creating a restore point. For now, only CrashConsistent is accepted as a valid input. Please refer to https://aka.ms/RestorePoints for more details.
      */
     @JsonProperty(value = "consistencyMode")
     private ConsistencyModeTypes consistencyMode;

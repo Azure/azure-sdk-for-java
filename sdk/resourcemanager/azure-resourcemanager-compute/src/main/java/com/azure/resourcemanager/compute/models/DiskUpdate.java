@@ -29,8 +29,7 @@ public final class DiskUpdate {
     private Map<String, String> tags;
 
     /*
-     * The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS, UltraSSD_LRS, Premium_ZRS,
-     * StandardSSD_ZRS, or PremiumV2_LRS.
+     * The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS, UltraSSD_LRS, Premium_ZRS, StandardSSD_ZRS, or PremiumV2_LRS.
      */
     @JsonProperty(value = "sku")
     private DiskSku sku;
@@ -272,8 +271,8 @@ public final class DiskUpdate {
     }
 
     /**
-     * Get the maxShares property: The maximum number of VMs that can attach to the disk at the same time. Value
-     * greater than one indicates a disk that can be mounted on multiple VMs at the same time.
+     * Get the maxShares property: The maximum number of VMs that can attach to the disk at the same time. Value greater
+     * than one indicates a disk that can be mounted on multiple VMs at the same time.
      * 
      * @return the maxShares value.
      */
@@ -282,8 +281,8 @@ public final class DiskUpdate {
     }
 
     /**
-     * Set the maxShares property: The maximum number of VMs that can attach to the disk at the same time. Value
-     * greater than one indicates a disk that can be mounted on multiple VMs at the same time.
+     * Set the maxShares property: The maximum number of VMs that can attach to the disk at the same time. Value greater
+     * than one indicates a disk that can be mounted on multiple VMs at the same time.
      * 
      * @param maxShares the maxShares value to set.
      * @return the DiskUpdate object itself.
@@ -393,8 +392,8 @@ public final class DiskUpdate {
     }
 
     /**
-     * Get the burstingEnabled property: Set to true to enable bursting beyond the provisioned performance target of
-     * the disk. Bursting is disabled by default. Does not apply to Ultra disks.
+     * Get the burstingEnabled property: Set to true to enable bursting beyond the provisioned performance target of the
+     * disk. Bursting is disabled by default. Does not apply to Ultra disks.
      * 
      * @return the burstingEnabled value.
      */
@@ -403,8 +402,8 @@ public final class DiskUpdate {
     }
 
     /**
-     * Set the burstingEnabled property: Set to true to enable bursting beyond the provisioned performance target of
-     * the disk. Bursting is disabled by default. Does not apply to Ultra disks.
+     * Set the burstingEnabled property: Set to true to enable bursting beyond the provisioned performance target of the
+     * disk. Bursting is disabled by default. Does not apply to Ultra disks.
      * 
      * @param burstingEnabled the burstingEnabled value to set.
      * @return the DiskUpdate object itself.
@@ -519,8 +518,8 @@ public final class DiskUpdate {
     }
 
     /**
-     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a
-     * disk or snapshot.
+     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
      * 
      * @return the dataAccessAuthMode value.
      */
@@ -529,8 +528,8 @@ public final class DiskUpdate {
     }
 
     /**
-     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a
-     * disk or snapshot.
+     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
      * 
      * @param dataAccessAuthMode the dataAccessAuthMode value to set.
      * @return the DiskUpdate object itself.
@@ -546,8 +545,8 @@ public final class DiskUpdate {
     /**
      * Get the optimizedForFrequentAttach property: Setting this property to true improves reliability and performance
      * of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to
-     * another. This property should not be set for disks that are not detached and attached frequently as it causes
-     * the disks to not align with the fault domain of the virtual machine.
+     * another. This property should not be set for disks that are not detached and attached frequently as it causes the
+     * disks to not align with the fault domain of the virtual machine.
      * 
      * @return the optimizedForFrequentAttach value.
      */
@@ -558,8 +557,8 @@ public final class DiskUpdate {
     /**
      * Set the optimizedForFrequentAttach property: Setting this property to true improves reliability and performance
      * of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to
-     * another. This property should not be set for disks that are not detached and attached frequently as it causes
-     * the disks to not align with the fault domain of the virtual machine.
+     * another. This property should not be set for disks that are not detached and attached frequently as it causes the
+     * disks to not align with the fault domain of the virtual machine.
      * 
      * @param optimizedForFrequentAttach the optimizedForFrequentAttach value to set.
      * @return the DiskUpdate object itself.

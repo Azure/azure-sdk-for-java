@@ -15,9 +15,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachineScaleSetExtensionsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetExtension_Update_MinimumSet_Gen.
@@ -26,15 +24,16 @@ public final class VirtualMachineScaleSetExtensionsUpdateSamples {
      */
     public static void
         virtualMachineScaleSetExtensionUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetExtensions().update("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaaaaaa", "aa", new VirtualMachineScaleSetExtensionUpdate(),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetExtensions()
+            .update("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaa", "aa", new VirtualMachineScaleSetExtensionUpdate(),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetExtension_Update_MaximumSet_Gen.
@@ -43,17 +42,23 @@ public final class VirtualMachineScaleSetExtensionsUpdateSamples {
      */
     public static void virtualMachineScaleSetExtensionUpdateMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) throws IOException {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetExtensions().update("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaa",
-            new VirtualMachineScaleSetExtensionUpdate().withForceUpdateTag("aaaaaaaaa")
-                .withPublisher("{extension-Publisher}").withTypePropertiesType("{extension-Type}")
-                .withTypeHandlerVersion("{handler-version}").withAutoUpgradeMinorVersion(true)
-                .withEnableAutomaticUpgrade(true)
-                .withSettings(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize("{}",
-                    Object.class, SerializerEncoding.JSON))
-                .withProtectedSettings(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize("{}",
-                    Object.class, SerializerEncoding.JSON))
-                .withProvisionAfterExtensions(Arrays.asList("aa")).withSuppressFailures(true),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetExtensions()
+            .update("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaa",
+                new VirtualMachineScaleSetExtensionUpdate().withForceUpdateTag("aaaaaaaaa")
+                    .withPublisher("{extension-Publisher}")
+                    .withTypePropertiesType("{extension-Type}")
+                    .withTypeHandlerVersion("{handler-version}")
+                    .withAutoUpgradeMinorVersion(true)
+                    .withEnableAutomaticUpgrade(true)
+                    .withSettings(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{}", Object.class, SerializerEncoding.JSON))
+                    .withProtectedSettings(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{}", Object.class, SerializerEncoding.JSON))
+                    .withProvisionAfterExtensions(Arrays.asList("aa"))
+                    .withSuppressFailures(true),
+                com.azure.core.util.Context.NONE);
     }
 }

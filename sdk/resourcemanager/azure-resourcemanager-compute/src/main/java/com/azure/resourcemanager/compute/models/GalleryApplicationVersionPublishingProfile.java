@@ -30,8 +30,7 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
     private UserArtifactManage manageActions;
 
     /*
-     * Additional settings for the VM app that contains the target package and config file name when it is deployed to
-     * target VM or VM scale set.
+     * Additional settings for the VM app that contains the target package and config file name when it is deployed to target VM or VM scale set.
      */
     @JsonProperty(value = "settings")
     private UserArtifactSettings settings;
@@ -124,8 +123,8 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
     }
 
     /**
-     * Get the advancedSettings property: Optional. Additional settings to pass to the vm-application-manager
-     * extension. For advanced use only.
+     * Get the advancedSettings property: Optional. Additional settings to pass to the vm-application-manager extension.
+     * For advanced use only.
      * 
      * @return the advancedSettings value.
      */
@@ -134,8 +133,8 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
     }
 
     /**
-     * Set the advancedSettings property: Optional. Additional settings to pass to the vm-application-manager
-     * extension. For advanced use only.
+     * Set the advancedSettings property: Optional. Additional settings to pass to the vm-application-manager extension.
+     * For advanced use only.
      * 
      * @param advancedSettings the advancedSettings value to set.
      * @return the GalleryApplicationVersionPublishingProfile object itself.
@@ -261,8 +260,9 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
     public void validate() {
         super.validate();
         if (source() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property source in model GalleryApplicationVersionPublishingProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property source in model GalleryApplicationVersionPublishingProfile"));
         } else {
             source().validate();
         }

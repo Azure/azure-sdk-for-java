@@ -28,8 +28,7 @@ public final class CloudServiceInstanceViewInner {
     private String sdkVersion;
 
     /*
-     * Specifies a list of unique identifiers generated internally for the cloud service. <br /><br /> NOTE: If you are
-     * using Azure Diagnostics extension, this property can be used as 'DeploymentId' for querying details.
+     * Specifies a list of unique identifiers generated internally for the cloud service. <br /><br /> NOTE: If you are using Azure Diagnostics extension, this property can be used as 'DeploymentId' for querying details.
      */
     @JsonProperty(value = "privateIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> privateIds;

@@ -42,22 +42,19 @@ public final class GalleryApplicationProperties {
     private String releaseNoteUri;
 
     /*
-     * The end of life date of the gallery Application Definition. This property can be used for decommissioning
-     * purposes. This property is updatable.
+     * The end of life date of the gallery Application Definition. This property can be used for decommissioning purposes. This property is updatable.
      */
     @JsonProperty(value = "endOfLifeDate")
     private OffsetDateTime endOfLifeDate;
 
     /*
-     * This property allows you to specify the supported type of the OS that application is built for. Possible values
-     * are: **Windows,** **Linux.**
+     * This property allows you to specify the supported type of the OS that application is built for. Possible values are: **Windows,** **Linux.**
      */
     @JsonProperty(value = "supportedOSType", required = true)
     private OperatingSystemTypes supportedOSType;
 
     /*
-     * A list of custom actions that can be performed with all of the Gallery Application Versions within this Gallery
-     * Application.
+     * A list of custom actions that can be performed with all of the Gallery Application Versions within this Gallery Application.
      */
     @JsonProperty(value = "customActions")
     private List<GalleryApplicationCustomAction> customActions;
@@ -223,8 +220,9 @@ public final class GalleryApplicationProperties {
      */
     public void validate() {
         if (supportedOSType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property supportedOSType in model GalleryApplicationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property supportedOSType in model GalleryApplicationProperties"));
         }
         if (customActions() != null) {
             customActions().forEach(e -> e.validate());

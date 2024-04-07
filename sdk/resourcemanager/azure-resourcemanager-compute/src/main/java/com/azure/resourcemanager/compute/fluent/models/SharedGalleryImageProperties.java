@@ -27,22 +27,19 @@ import java.util.Map;
 @Fluent
 public final class SharedGalleryImageProperties {
     /*
-     * This property allows you to specify the type of the OS that is included in the disk when creating a VM from a
-     * managed image. Possible values are: **Windows,** **Linux.**
+     * This property allows you to specify the type of the OS that is included in the disk when creating a VM from a managed image. Possible values are: **Windows,** **Linux.**
      */
     @JsonProperty(value = "osType", required = true)
     private OperatingSystemTypes osType;
 
     /*
-     * This property allows the user to specify whether the virtual machines created under this image are 'Generalized'
-     * or 'Specialized'.
+     * This property allows the user to specify whether the virtual machines created under this image are 'Generalized' or 'Specialized'.
      */
     @JsonProperty(value = "osState", required = true)
     private OperatingSystemStateTypes osState;
 
     /*
-     * The end of life date of the gallery image definition. This property can be used for decommissioning purposes.
-     * This property is updatable.
+     * The end of life date of the gallery image definition. This property can be used for decommissioning purposes. This property is updatable.
      */
     @JsonProperty(value = "endOfLifeDate")
     private OffsetDateTime endOfLifeDate;
@@ -54,8 +51,7 @@ public final class SharedGalleryImageProperties {
     private GalleryImageIdentifier identifier;
 
     /*
-     * The properties describe the recommended machine configuration for this Image Definition. These properties are
-     * updatable.
+     * The properties describe the recommended machine configuration for this Image Definition. These properties are updatable.
      */
     @JsonProperty(value = "recommended")
     private RecommendedMachineConfiguration recommended;
@@ -116,8 +112,8 @@ public final class SharedGalleryImageProperties {
     }
 
     /**
-     * Get the osType property: This property allows you to specify the type of the OS that is included in the disk
-     * when creating a VM from a managed image. Possible values are: **Windows,** **Linux.**.
+     * Get the osType property: This property allows you to specify the type of the OS that is included in the disk when
+     * creating a VM from a managed image. Possible values are: **Windows,** **Linux.**.
      * 
      * @return the osType value.
      */
@@ -126,8 +122,8 @@ public final class SharedGalleryImageProperties {
     }
 
     /**
-     * Set the osType property: This property allows you to specify the type of the OS that is included in the disk
-     * when creating a VM from a managed image. Possible values are: **Windows,** **Linux.**.
+     * Set the osType property: This property allows you to specify the type of the OS that is included in the disk when
+     * creating a VM from a managed image. Possible values are: **Windows,** **Linux.**.
      * 
      * @param osType the osType value to set.
      * @return the SharedGalleryImageProperties object itself.
@@ -244,8 +240,7 @@ public final class SharedGalleryImageProperties {
     }
 
     /**
-     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      * 
      * @return the hyperVGeneration value.
      */
@@ -254,8 +249,7 @@ public final class SharedGalleryImageProperties {
     }
 
     /**
-     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      * 
      * @param hyperVGeneration the hyperVGeneration value to set.
      * @return the SharedGalleryImageProperties object itself.
@@ -394,16 +388,19 @@ public final class SharedGalleryImageProperties {
      */
     public void validate() {
         if (osType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property osType in model SharedGalleryImageProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property osType in model SharedGalleryImageProperties"));
         }
         if (osState() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property osState in model SharedGalleryImageProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property osState in model SharedGalleryImageProperties"));
         }
         if (identifier() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property identifier in model SharedGalleryImageProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property identifier in model SharedGalleryImageProperties"));
         } else {
             identifier().validate();
         }

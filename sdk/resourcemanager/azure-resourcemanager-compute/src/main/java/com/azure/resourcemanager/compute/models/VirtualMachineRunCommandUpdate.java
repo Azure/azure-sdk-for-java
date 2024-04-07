@@ -209,9 +209,9 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
     }
 
     /**
-     * Get the outputBlobUri property: Specifies the Azure storage blob where script output stream will be uploaded.
-     * Use a SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the
-     * blob. Refer outputBlobManagedIdentity parameter.
+     * Get the outputBlobUri property: Specifies the Azure storage blob where script output stream will be uploaded. Use
+     * a SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the blob.
+     * Refer outputBlobManagedIdentity parameter.
      * 
      * @return the outputBlobUri value.
      */
@@ -220,9 +220,9 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
     }
 
     /**
-     * Set the outputBlobUri property: Specifies the Azure storage blob where script output stream will be uploaded.
-     * Use a SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the
-     * blob. Refer outputBlobManagedIdentity parameter.
+     * Set the outputBlobUri property: Specifies the Azure storage blob where script output stream will be uploaded. Use
+     * a SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the blob.
+     * Refer outputBlobManagedIdentity parameter.
      * 
      * @param outputBlobUri the outputBlobUri value to set.
      * @return the VirtualMachineRunCommandUpdate object itself.
@@ -236,8 +236,8 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
     }
 
     /**
-     * Get the errorBlobUri property: Specifies the Azure storage blob where script error stream will be uploaded. Use
-     * a SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the blob.
+     * Get the errorBlobUri property: Specifies the Azure storage blob where script error stream will be uploaded. Use a
+     * SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the blob.
      * Refer errorBlobManagedIdentity parameter.
      * 
      * @return the errorBlobUri value.
@@ -247,8 +247,8 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
     }
 
     /**
-     * Set the errorBlobUri property: Specifies the Azure storage blob where script error stream will be uploaded. Use
-     * a SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the blob.
+     * Set the errorBlobUri property: Specifies the Azure storage blob where script error stream will be uploaded. Use a
+     * SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the blob.
      * Refer errorBlobManagedIdentity parameter.
      * 
      * @param errorBlobUri the errorBlobUri value to set.
@@ -295,10 +295,10 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
     }
 
     /**
-     * Get the errorBlobManagedIdentity property: User-assigned managed identity that has access to errorBlobUri
-     * storage blob. Use an empty object in case of system-assigned identity. Make sure managed identity has been given
-     * access to blob's container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned
-     * identity, make sure you add it under VM's identity. For more info on managed identity and Run Command, refer
+     * Get the errorBlobManagedIdentity property: User-assigned managed identity that has access to errorBlobUri storage
+     * blob. Use an empty object in case of system-assigned identity. Make sure managed identity has been given access
+     * to blob's container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned identity, make
+     * sure you add it under VM's identity. For more info on managed identity and Run Command, refer
      * https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged.
      * 
      * @return the errorBlobManagedIdentity value.
@@ -308,10 +308,10 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
     }
 
     /**
-     * Set the errorBlobManagedIdentity property: User-assigned managed identity that has access to errorBlobUri
-     * storage blob. Use an empty object in case of system-assigned identity. Make sure managed identity has been given
-     * access to blob's container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned
-     * identity, make sure you add it under VM's identity. For more info on managed identity and Run Command, refer
+     * Set the errorBlobManagedIdentity property: User-assigned managed identity that has access to errorBlobUri storage
+     * blob. Use an empty object in case of system-assigned identity. Make sure managed identity has been given access
+     * to blob's container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned identity, make
+     * sure you add it under VM's identity. For more info on managed identity and Run Command, refer
      * https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged.
      * 
      * @param errorBlobManagedIdentity the errorBlobManagedIdentity value to set.

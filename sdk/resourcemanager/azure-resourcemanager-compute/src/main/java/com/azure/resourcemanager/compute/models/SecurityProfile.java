@@ -13,24 +13,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SecurityProfile {
     /*
-     * Specifies the security settings like secure boot and vTPM used while creating the virtual machine. Minimum
-     * api-version: 2020-12-01.
+     * Specifies the security settings like secure boot and vTPM used while creating the virtual machine. Minimum api-version: 2020-12-01.
      */
     @JsonProperty(value = "uefiSettings")
     private UefiSettings uefiSettings;
 
     /*
-     * This property can be used by user in the request to enable or disable the Host Encryption for the virtual
-     * machine or virtual machine scale set. This will enable the encryption for all the disks including Resource/Temp
-     * disk at host itself. The default behavior is: The Encryption at host will be disabled unless this property is
-     * set to true for the resource.
+     * This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine or virtual machine scale set. This will enable the encryption for all the disks including Resource/Temp disk at host itself. The default behavior is: The Encryption at host will be disabled unless this property is set to true for the resource.
      */
     @JsonProperty(value = "encryptionAtHost")
     private Boolean encryptionAtHost;
 
     /*
-     * Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable
-     * UefiSettings. The default behavior is: UefiSettings will not be enabled unless this property is set.
+     * Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings. The default behavior is: UefiSettings will not be enabled unless this property is set.
      */
     @JsonProperty(value = "securityType")
     private SecurityTypes securityType;
@@ -76,9 +71,9 @@ public final class SecurityProfile {
     }
 
     /**
-     * Get the encryptionAtHost property: This property can be used by user in the request to enable or disable the
-     * Host Encryption for the virtual machine or virtual machine scale set. This will enable the encryption for all
-     * the disks including Resource/Temp disk at host itself. The default behavior is: The Encryption at host will be
+     * Get the encryptionAtHost property: This property can be used by user in the request to enable or disable the Host
+     * Encryption for the virtual machine or virtual machine scale set. This will enable the encryption for all the
+     * disks including Resource/Temp disk at host itself. The default behavior is: The Encryption at host will be
      * disabled unless this property is set to true for the resource.
      * 
      * @return the encryptionAtHost value.
@@ -88,9 +83,9 @@ public final class SecurityProfile {
     }
 
     /**
-     * Set the encryptionAtHost property: This property can be used by user in the request to enable or disable the
-     * Host Encryption for the virtual machine or virtual machine scale set. This will enable the encryption for all
-     * the disks including Resource/Temp disk at host itself. The default behavior is: The Encryption at host will be
+     * Set the encryptionAtHost property: This property can be used by user in the request to enable or disable the Host
+     * Encryption for the virtual machine or virtual machine scale set. This will enable the encryption for all the
+     * disks including Resource/Temp disk at host itself. The default behavior is: The Encryption at host will be
      * disabled unless this property is set to true for the resource.
      * 
      * @param encryptionAtHost the encryptionAtHost value to set.

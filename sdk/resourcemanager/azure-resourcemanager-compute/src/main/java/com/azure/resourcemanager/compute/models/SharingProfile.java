@@ -14,8 +14,7 @@ import java.util.List;
 @Fluent
 public final class SharingProfile {
     /*
-     * This property allows you to specify the permission of sharing gallery. Possible values are: **Private,**
-     * **Groups,** **Community.**
+     * This property allows you to specify the permission of sharing gallery. Possible values are: **Private,** **Groups,** **Community.**
      */
     @JsonProperty(value = "permissions")
     private GallerySharingPermissionTypes permissions;

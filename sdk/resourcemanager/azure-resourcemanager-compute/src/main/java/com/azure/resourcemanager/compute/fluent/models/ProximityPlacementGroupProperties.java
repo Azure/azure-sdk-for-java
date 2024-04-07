@@ -18,8 +18,7 @@ import java.util.List;
 @Fluent
 public final class ProximityPlacementGroupProperties {
     /*
-     * Specifies the type of the proximity placement group. Possible values are: **Standard** : Co-locate resources
-     * within an Azure region or Availability Zone. **Ultra** : For future use.
+     * Specifies the type of the proximity placement group. Possible values are: **Standard** : Co-locate resources within an Azure region or Availability Zone. **Ultra** : For future use.
      */
     @JsonProperty(value = "proximityPlacementGroupType")
     private ProximityPlacementGroupType proximityPlacementGroupType;
@@ -95,8 +94,8 @@ public final class ProximityPlacementGroupProperties {
     }
 
     /**
-     * Get the virtualMachineScaleSets property: A list of references to all virtual machine scale sets in the
-     * proximity placement group.
+     * Get the virtualMachineScaleSets property: A list of references to all virtual machine scale sets in the proximity
+     * placement group.
      * 
      * @return the virtualMachineScaleSets value.
      */

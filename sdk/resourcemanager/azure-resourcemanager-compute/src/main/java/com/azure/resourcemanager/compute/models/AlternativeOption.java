@@ -19,8 +19,7 @@ public final class AlternativeOption {
     private AlternativeType type;
 
     /*
-     * Indicates the alternative option value specified by the Publisher. This is the Offer name when the type is Offer
-     * or the Plan name when the type is Plan.
+     * Indicates the alternative option value specified by the Publisher. This is the Offer name when the type is Offer or the Plan name when the type is Plan.
      */
     @JsonProperty(value = "value")
     private String value;
@@ -52,8 +51,8 @@ public final class AlternativeOption {
     }
 
     /**
-     * Get the value property: Indicates the alternative option value specified by the Publisher. This is the Offer
-     * name when the type is Offer or the Plan name when the type is Plan.
+     * Get the value property: Indicates the alternative option value specified by the Publisher. This is the Offer name
+     * when the type is Offer or the Plan name when the type is Plan.
      * 
      * @return the value value.
      */
@@ -62,8 +61,8 @@ public final class AlternativeOption {
     }
 
     /**
-     * Set the value property: Indicates the alternative option value specified by the Publisher. This is the Offer
-     * name when the type is Offer or the Plan name when the type is Plan.
+     * Set the value property: Indicates the alternative option value specified by the Publisher. This is the Offer name
+     * when the type is Offer or the Plan name when the type is Plan.
      * 
      * @param value the value value to set.
      * @return the AlternativeOption object itself.

@@ -331,8 +331,10 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     public SyncPoller<PollResult<GalleryImageVersionInner>, GalleryImageVersionInner> beginCreateOrUpdate(
         String resourceGroupName, String galleryName, String galleryImageName, String galleryImageVersionName,
         GalleryImageVersionInner galleryImageVersion) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName,
-            galleryImageVersion).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName,
+                galleryImageVersion)
+            .getSyncPoller();
     }
 
     /**
@@ -356,8 +358,10 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     public SyncPoller<PollResult<GalleryImageVersionInner>, GalleryImageVersionInner> beginCreateOrUpdate(
         String resourceGroupName, String galleryName, String galleryImageName, String galleryImageVersionName,
         GalleryImageVersionInner galleryImageVersion, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName,
-            galleryImageVersion, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName,
+                galleryImageVersion, context)
+            .getSyncPoller();
     }
 
     /**
@@ -643,8 +647,10 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     public SyncPoller<PollResult<GalleryImageVersionInner>, GalleryImageVersionInner> beginUpdate(
         String resourceGroupName, String galleryName, String galleryImageName, String galleryImageVersionName,
         GalleryImageVersionUpdate galleryImageVersion) {
-        return this.beginUpdateAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName,
-            galleryImageVersion).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName,
+                galleryImageVersion)
+            .getSyncPoller();
     }
 
     /**
@@ -668,8 +674,10 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     public SyncPoller<PollResult<GalleryImageVersionInner>, GalleryImageVersionInner> beginUpdate(
         String resourceGroupName, String galleryName, String galleryImageName, String galleryImageVersionName,
         GalleryImageVersionUpdate galleryImageVersion, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName,
-            galleryImageVersion, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName,
+                galleryImageVersion, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1136,7 +1144,8 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     private Mono<Void> deleteAsync(String resourceGroupName, String galleryName, String galleryImageName,
         String galleryImageVersionName, Context context) {
         return beginDeleteAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

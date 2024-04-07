@@ -17,16 +17,13 @@ import java.util.List;
 @Immutable
 public final class CapacityReservationProperties {
     /*
-     * A unique id generated and assigned to the capacity reservation by the platform which does not change throughout
-     * the lifetime of the resource.
+     * A unique id generated and assigned to the capacity reservation by the platform which does not change throughout the lifetime of the resource.
      */
     @JsonProperty(value = "reservationId", access = JsonProperty.Access.WRITE_ONLY)
     private String reservationId;
 
     /*
-     * Specifies the value of fault domain count that Capacity Reservation supports for requested VM size. **Note:**
-     * The fault domain count specified for a resource (like virtual machines scale set) must be less than or equal to
-     * this value if it deploys using capacity reservation. Minimum api-version: 2022-08-01.
+     * Specifies the value of fault domain count that Capacity Reservation supports for requested VM size. **Note:** The fault domain count specified for a resource (like virtual machines scale set) must be less than or equal to this value if it deploys using capacity reservation. Minimum api-version: 2022-08-01.
      */
     @JsonProperty(value = "platformFaultDomainCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer platformFaultDomainCount;

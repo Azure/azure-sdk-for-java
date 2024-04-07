@@ -38,16 +38,13 @@ public final class VirtualMachineExtensionUpdateProperties {
     private String typeHandlerVersion;
 
     /*
-     * Indicates whether the extension should use a newer minor version if one is available at deployment time. Once
-     * deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set
-     * to true.
+     * Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true.
      */
     @JsonProperty(value = "autoUpgradeMinorVersion")
     private Boolean autoUpgradeMinorVersion;
 
     /*
-     * Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of
-     * the extension available.
+     * Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of the extension available.
      */
     @JsonProperty(value = "enableAutomaticUpgrade")
     private Boolean enableAutomaticUpgrade;
@@ -59,15 +56,13 @@ public final class VirtualMachineExtensionUpdateProperties {
     private Object settings;
 
     /*
-     * The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at
-     * all.
+     * The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
      */
     @JsonProperty(value = "protectedSettings")
     private Object protectedSettings;
 
     /*
-     * Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not
-     * connecting to the VM will not be suppressed regardless of this value). The default is false.
+     * Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The default is false.
      */
     @JsonProperty(value = "suppressFailures")
     private Boolean suppressFailures;
@@ -167,9 +162,9 @@ public final class VirtualMachineExtensionUpdateProperties {
     }
 
     /**
-     * Get the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if
-     * one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions
-     * unless redeployed, even with this property set to true.
+     * Get the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
+     * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
+     * redeployed, even with this property set to true.
      * 
      * @return the autoUpgradeMinorVersion value.
      */
@@ -178,9 +173,9 @@ public final class VirtualMachineExtensionUpdateProperties {
     }
 
     /**
-     * Set the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if
-     * one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions
-     * unless redeployed, even with this property set to true.
+     * Set the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
+     * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
+     * redeployed, even with this property set to true.
      * 
      * @param autoUpgradeMinorVersion the autoUpgradeMinorVersion value to set.
      * @return the VirtualMachineExtensionUpdateProperties object itself.

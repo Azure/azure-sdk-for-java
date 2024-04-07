@@ -52,8 +52,8 @@ public final class OSDiskImage {
      */
     public void validate() {
         if (operatingSystem() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property operatingSystem in model OSDiskImage"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property operatingSystem in model OSDiskImage"));
         }
     }
 

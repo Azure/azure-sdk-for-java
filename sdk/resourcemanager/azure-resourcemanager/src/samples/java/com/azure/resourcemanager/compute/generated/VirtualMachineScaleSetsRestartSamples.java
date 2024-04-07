@@ -12,9 +12,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachineScaleSetsRestartSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Restart_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Restart_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_Restart_MaximumSet_Gen.
@@ -23,16 +21,17 @@ public final class VirtualMachineScaleSetsRestartSamples {
      */
     public static void
         virtualMachineScaleSetRestartMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().restart("rgcompute",
-            "aaaaaaaaaaaaaaaaaaa",
-            new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaa")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .restart("rgcompute", "aaaaaaaaaaaaaaaaaaa",
+                new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaa")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Restart_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Restart_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_Restart_MinimumSet_Gen.
@@ -41,7 +40,10 @@ public final class VirtualMachineScaleSetsRestartSamples {
      */
     public static void
         virtualMachineScaleSetRestartMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().restart("rgcompute", "aaaa",
-            null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .restart("rgcompute", "aaaa", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -9,8 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class DiskEncryptionSetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/
-     * diskEncryptionSetExamples/DiskEncryptionSet_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Get.json
      */
     /**
      * Sample code: Get information about a disk encryption set.
@@ -18,13 +17,15 @@ public final class DiskEncryptionSetsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getInformationAboutADiskEncryptionSet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskEncryptionSets()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskEncryptionSets()
             .getByResourceGroupWithResponse("myResourceGroup", "myDiskEncryptionSet", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/
-     * diskEncryptionSetExamples/DiskEncryptionSet_Get_WithAutoKeyRotationError.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Get_WithAutoKeyRotationError.json
      */
     /**
      * Sample code: Get information about a disk encryption set when auto-key rotation failed.
@@ -33,7 +34,10 @@ public final class DiskEncryptionSetsGetByResourceGroupSamples {
      */
     public static void getInformationAboutADiskEncryptionSetWhenAutoKeyRotationFailed(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskEncryptionSets()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskEncryptionSets()
             .getByResourceGroupWithResponse("myResourceGroup", "myDiskEncryptionSet", com.azure.core.util.Context.NONE);
     }
 }

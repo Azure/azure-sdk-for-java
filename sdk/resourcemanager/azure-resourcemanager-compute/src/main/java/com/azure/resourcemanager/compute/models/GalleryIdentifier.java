@@ -25,8 +25,8 @@ public final class GalleryIdentifier {
     }
 
     /**
-     * Get the uniqueName property: The unique name of the Shared Image Gallery. This name is generated automatically
-     * by Azure.
+     * Get the uniqueName property: The unique name of the Shared Image Gallery. This name is generated automatically by
+     * Azure.
      * 
      * @return the uniqueName value.
      */

@@ -22,8 +22,7 @@ public final class CapacityReservationGroupListResult {
     private List<CapacityReservationGroupInner> value;
 
     /*
-     * The URI to fetch the next page of capacity reservation groups. Call ListNext() with this URI to fetch the next
-     * page of capacity reservation groups.
+     * The URI to fetch the next page of capacity reservation groups. Call ListNext() with this URI to fetch the next page of capacity reservation groups.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -83,8 +82,9 @@ public final class CapacityReservationGroupListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property value in model CapacityReservationGroupListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model CapacityReservationGroupListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

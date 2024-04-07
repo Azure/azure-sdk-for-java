@@ -22,8 +22,7 @@ public final class DiskEncryptionSetList {
     private List<DiskEncryptionSetInner> value;
 
     /*
-     * The uri to fetch the next page of disk encryption sets. Call ListNext() with this to fetch the next page of disk
-     * encryption sets.
+     * The uri to fetch the next page of disk encryption sets. Call ListNext() with this to fetch the next page of disk encryption sets.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -83,8 +82,8 @@ public final class DiskEncryptionSetList {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model DiskEncryptionSetList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model DiskEncryptionSetList"));
         } else {
             value().forEach(e -> e.validate());
         }

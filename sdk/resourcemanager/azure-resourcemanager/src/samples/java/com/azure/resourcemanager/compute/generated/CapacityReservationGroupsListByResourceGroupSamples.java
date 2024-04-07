@@ -11,9 +11,7 @@ import com.azure.resourcemanager.compute.models.ExpandTypesForGetCapacityReserva
  */
 public final class CapacityReservationGroupsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * capacityReservationExamples/CapacityReservationGroup_ListByResourceGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/capacityReservationExamples/CapacityReservationGroup_ListByResourceGroup.json
      */
     /**
      * Sample code: List capacity reservation groups in resource group.
@@ -22,8 +20,11 @@ public final class CapacityReservationGroupsListByResourceGroupSamples {
      */
     public static void
         listCapacityReservationGroupsInResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCapacityReservationGroups().listByResourceGroup(
-            "myResourceGroup", ExpandTypesForGetCapacityReservationGroups.VIRTUAL_MACHINES_REF,
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCapacityReservationGroups()
+            .listByResourceGroup("myResourceGroup", ExpandTypesForGetCapacityReservationGroups.VIRTUAL_MACHINES_REF,
+                com.azure.core.util.Context.NONE);
     }
 }

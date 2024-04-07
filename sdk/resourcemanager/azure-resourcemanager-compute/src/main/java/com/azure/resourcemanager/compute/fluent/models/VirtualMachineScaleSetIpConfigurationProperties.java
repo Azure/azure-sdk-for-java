@@ -36,16 +36,13 @@ public final class VirtualMachineScaleSetIpConfigurationProperties {
     private VirtualMachineScaleSetPublicIpAddressConfiguration publicIpAddressConfiguration;
 
     /*
-     * Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or
-     * IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
+     * Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.  Possible values are: 'IPv4' and 'IPv6'.
      */
     @JsonProperty(value = "privateIPAddressVersion")
     private IpVersion privateIpAddressVersion;
 
     /*
-     * Specifies an array of references to backend address pools of application gateways. A scale set can reference
-     * backend address pools of multiple application gateways. Multiple scale sets cannot use the same application
-     * gateway.
+     * Specifies an array of references to backend address pools of application gateways. A scale set can reference backend address pools of multiple application gateways. Multiple scale sets cannot use the same application gateway.
      */
     @JsonProperty(value = "applicationGatewayBackendAddressPools")
     private List<SubResource> applicationGatewayBackendAddressPools;
@@ -57,17 +54,13 @@ public final class VirtualMachineScaleSetIpConfigurationProperties {
     private List<SubResource> applicationSecurityGroups;
 
     /*
-     * Specifies an array of references to backend address pools of load balancers. A scale set can reference backend
-     * address pools of one public and one internal load balancer. Multiple scale sets cannot use the same basic sku
-     * load balancer.
+     * Specifies an array of references to backend address pools of load balancers. A scale set can reference backend address pools of one public and one internal load balancer. Multiple scale sets cannot use the same basic sku load balancer.
      */
     @JsonProperty(value = "loadBalancerBackendAddressPools")
     private List<SubResource> loadBalancerBackendAddressPools;
 
     /*
-     * Specifies an array of references to inbound Nat pools of the load balancers. A scale set can reference inbound
-     * nat pools of one public and one internal load balancer. Multiple scale sets cannot use the same basic sku load
-     * balancer.
+     * Specifies an array of references to inbound Nat pools of the load balancers. A scale set can reference inbound nat pools of one public and one internal load balancer. Multiple scale sets cannot use the same basic sku load balancer.
      */
     @JsonProperty(value = "loadBalancerInboundNatPools")
     private List<SubResource> loadBalancerInboundNatPools;
@@ -165,8 +158,8 @@ public final class VirtualMachineScaleSetIpConfigurationProperties {
     }
 
     /**
-     * Get the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address
-     * pools of application gateways. A scale set can reference backend address pools of multiple application gateways.
+     * Get the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address pools
+     * of application gateways. A scale set can reference backend address pools of multiple application gateways.
      * Multiple scale sets cannot use the same application gateway.
      * 
      * @return the applicationGatewayBackendAddressPools value.
@@ -176,8 +169,8 @@ public final class VirtualMachineScaleSetIpConfigurationProperties {
     }
 
     /**
-     * Set the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address
-     * pools of application gateways. A scale set can reference backend address pools of multiple application gateways.
+     * Set the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address pools
+     * of application gateways. A scale set can reference backend address pools of multiple application gateways.
      * Multiple scale sets cannot use the same application gateway.
      * 
      * @param applicationGatewayBackendAddressPools the applicationGatewayBackendAddressPools value to set.

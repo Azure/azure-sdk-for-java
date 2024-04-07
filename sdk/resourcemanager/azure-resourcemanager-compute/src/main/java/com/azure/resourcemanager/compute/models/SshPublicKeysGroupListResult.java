@@ -22,8 +22,7 @@ public final class SshPublicKeysGroupListResult {
     private List<SshPublicKeyResourceInner> value;
 
     /*
-     * The URI to fetch the next page of SSH public keys. Call ListNext() with this URI to fetch the next page of SSH
-     * public keys.
+     * The URI to fetch the next page of SSH public keys. Call ListNext() with this URI to fetch the next page of SSH public keys.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -83,8 +82,9 @@ public final class SshPublicKeysGroupListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model SshPublicKeysGroupListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model SshPublicKeysGroupListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

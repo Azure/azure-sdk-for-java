@@ -9,9 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class DedicatedHostsRedeploySamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * dedicatedHostExamples/DedicatedHost_Redeploy.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/dedicatedHostExamples/DedicatedHost_Redeploy.json
      */
     /**
      * Sample code: Redeploy Dedicated Host.
@@ -19,7 +17,10 @@ public final class DedicatedHostsRedeploySamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void redeployDedicatedHost(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHosts().redeploy("myResourceGroup",
-            "myDedicatedHostGroup", "myHost", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHosts()
+            .redeploy("myResourceGroup", "myDedicatedHostGroup", "myHost", com.azure.core.util.Context.NONE);
     }
 }

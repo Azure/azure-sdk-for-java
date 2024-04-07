@@ -340,8 +340,10 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     public SyncPoller<PollResult<GalleryApplicationInner>, GalleryApplicationInner> beginCreateOrUpdate(
         String resourceGroupName, String galleryName, String galleryApplicationName,
         GalleryApplicationInner galleryApplication, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication,
-            context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -364,7 +366,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     public Mono<GalleryApplicationInner> createOrUpdateAsync(String resourceGroupName, String galleryName,
         String galleryApplicationName, GalleryApplicationInner galleryApplication) {
         return beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -689,7 +692,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     private Mono<GalleryApplicationInner> updateAsync(String resourceGroupName, String galleryName,
         String galleryApplicationName, GalleryApplicationUpdate galleryApplication, Context context) {
         return beginUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

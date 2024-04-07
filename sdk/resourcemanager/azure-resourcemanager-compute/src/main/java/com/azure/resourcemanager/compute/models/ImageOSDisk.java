@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ImageOSDisk extends ImageDisk {
     /*
-     * This property allows you to specify the type of the OS that is included in the disk if creating a VM from a
-     * custom image. Possible values are: **Windows,** **Linux.**
+     * This property allows you to specify the type of the OS that is included in the disk if creating a VM from a custom image. Possible values are: **Windows,** **Linux.**
      */
     @JsonProperty(value = "osType", required = true)
     private OperatingSystemTypes osType;
@@ -147,12 +146,12 @@ public final class ImageOSDisk extends ImageDisk {
     public void validate() {
         super.validate();
         if (osType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property osType in model ImageOSDisk"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property osType in model ImageOSDisk"));
         }
         if (osState() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property osState in model ImageOSDisk"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property osState in model ImageOSDisk"));
         }
     }
 

@@ -23,10 +23,7 @@ public final class CapacityReservationUpdate extends UpdateResource {
     private CapacityReservationProperties innerProperties;
 
     /*
-     * SKU of the resource for which capacity needs be reserved. The SKU name and capacity is required to be set.
-     * Currently VM Skus with the capability called 'CapacityReservationSupported' set to true are supported. Refer to
-     * List Microsoft.Compute SKUs in a region (https://docs.microsoft.com/rest/api/compute/resourceskus/list) for
-     * supported values.
+     * SKU of the resource for which capacity needs be reserved. The SKU name and capacity is required to be set. Currently VM Skus with the capability called 'CapacityReservationSupported' set to true are supported. Refer to List Microsoft.Compute SKUs in a region (https://docs.microsoft.com/rest/api/compute/resourceskus/list) for supported values.
      */
     @JsonProperty(value = "sku")
     private Sku sku;

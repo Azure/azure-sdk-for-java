@@ -78,12 +78,12 @@ public final class RunCommandInputParameter {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model RunCommandInputParameter"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model RunCommandInputParameter"));
         }
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model RunCommandInputParameter"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model RunCommandInputParameter"));
         }
     }
 

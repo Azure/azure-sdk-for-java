@@ -32,8 +32,7 @@ public final class TargetRegion {
     private StorageAccountType storageAccountType;
 
     /*
-     * Optional. Allows users to provide customer managed keys for encrypting the OS and data disks in the gallery
-     * artifact.
+     * Optional. Allows users to provide customer managed keys for encrypting the OS and data disks in the gallery artifact.
      */
     @JsonProperty(value = "encryption")
     private EncryptionImages encryption;
@@ -71,8 +70,8 @@ public final class TargetRegion {
     }
 
     /**
-     * Get the regionalReplicaCount property: The number of replicas of the Image Version to be created per region.
-     * This property is updatable.
+     * Get the regionalReplicaCount property: The number of replicas of the Image Version to be created per region. This
+     * property is updatable.
      * 
      * @return the regionalReplicaCount value.
      */
@@ -81,8 +80,8 @@ public final class TargetRegion {
     }
 
     /**
-     * Set the regionalReplicaCount property: The number of replicas of the Image Version to be created per region.
-     * This property is updatable.
+     * Set the regionalReplicaCount property: The number of replicas of the Image Version to be created per region. This
+     * property is updatable.
      * 
      * @param regionalReplicaCount the regionalReplicaCount value to set.
      * @return the TargetRegion object itself.
@@ -165,8 +164,8 @@ public final class TargetRegion {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model TargetRegion"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model TargetRegion"));
         }
         if (encryption() != null) {
             encryption().validate();

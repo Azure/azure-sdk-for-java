@@ -132,8 +132,8 @@ public final class GrantAccessData {
      */
     public void validate() {
         if (access() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property access in model GrantAccessData"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property access in model GrantAccessData"));
         }
     }
 

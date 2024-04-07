@@ -9,9 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachineScaleSetsGetInstanceViewSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * virtualMachineScaleSetExamples/VirtualMachineScaleSet_GetInstanceView_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_GetInstanceView_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_GetInstanceView_MaximumSet_Gen.
@@ -20,14 +18,15 @@ public final class VirtualMachineScaleSetsGetInstanceViewSamples {
      */
     public static void
         virtualMachineScaleSetGetInstanceViewMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
             .getInstanceViewWithResponse("rgcompute", "aaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
-     * virtualMachineScaleSetExamples/VirtualMachineScaleSet_GetInstanceView_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_GetInstanceView_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_GetInstanceView_MinimumSet_Gen.
@@ -36,7 +35,10 @@ public final class VirtualMachineScaleSetsGetInstanceViewSamples {
      */
     public static void
         virtualMachineScaleSetGetInstanceViewMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
             .getInstanceViewWithResponse("rgcompute", "aaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

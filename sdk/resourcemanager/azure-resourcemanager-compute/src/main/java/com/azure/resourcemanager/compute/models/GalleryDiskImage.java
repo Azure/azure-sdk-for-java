@@ -46,8 +46,7 @@ public class GalleryDiskImage {
     }
 
     /**
-     * Get the hostCaching property: The host caching of the disk. Valid values are 'None', 'ReadOnly', and
-     * 'ReadWrite'.
+     * Get the hostCaching property: The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'.
      * 
      * @return the hostCaching value.
      */
@@ -56,8 +55,7 @@ public class GalleryDiskImage {
     }
 
     /**
-     * Set the hostCaching property: The host caching of the disk. Valid values are 'None', 'ReadOnly', and
-     * 'ReadWrite'.
+     * Set the hostCaching property: The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'.
      * 
      * @param hostCaching the hostCaching value to set.
      * @return the GalleryDiskImage object itself.

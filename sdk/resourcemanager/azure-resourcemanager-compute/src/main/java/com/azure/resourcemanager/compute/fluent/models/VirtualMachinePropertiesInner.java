@@ -35,8 +35,7 @@ public final class VirtualMachinePropertiesInner {
     private HardwareProfile hardwareProfile;
 
     /*
-     * Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets Scheduled Event related configurations
-     * for the virtual machine.
+     * Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets Scheduled Event related configurations for the virtual machine.
      */
     @JsonProperty(value = "scheduledEventsPolicy")
     private ScheduledEventsPolicy scheduledEventsPolicy;
@@ -54,8 +53,7 @@ public final class VirtualMachinePropertiesInner {
     private AdditionalCapabilities additionalCapabilities;
 
     /*
-     * Specifies the operating system settings used while creating the virtual machine. Some of the settings cannot be
-     * changed once VM is provisioned.
+     * Specifies the operating system settings used while creating the virtual machine. Some of the settings cannot be changed once VM is provisioned.
      */
     @JsonProperty(value = "osProfile")
     private OSProfile osProfile;
@@ -79,32 +77,19 @@ public final class VirtualMachinePropertiesInner {
     private DiagnosticsProfile diagnosticsProfile;
 
     /*
-     * Specifies information about the availability set that the virtual machine should be assigned to. Virtual
-     * machines specified in the same availability set are allocated to different nodes to maximize availability. For
-     * more information about availability sets, see [Availability sets
-     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). For more information on
-     * Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates). Currently, a VM can only be
-     * added to availability set at creation time. The availability set to which the VM is being added should be under
-     * the same resource group as the availability set resource. An existing VM cannot be added to an availability set.
-     * This property cannot exist along with a non-null properties.virtualMachineScaleSet reference.
+     * Specifies information about the availability set that the virtual machine should be assigned to. Virtual machines specified in the same availability set are allocated to different nodes to maximize availability. For more information about availability sets, see [Availability sets overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). For more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates). Currently, a VM can only be added to availability set at creation time. The availability set to which the VM is being added should be under the same resource group as the availability set resource. An existing VM cannot be added to an availability set. This property cannot exist along with a non-null properties.virtualMachineScaleSet reference.
      */
     @JsonProperty(value = "availabilitySet")
     private SubResource availabilitySet;
 
     /*
-     * Specifies information about the virtual machine scale set that the virtual machine should be assigned to.
-     * Virtual machines specified in the same virtual machine scale set are allocated to different nodes to maximize
-     * availability. Currently, a VM can only be added to virtual machine scale set at creation time. An existing VM
-     * cannot be added to a virtual machine scale set. This property cannot exist along with a non-null
-     * properties.availabilitySet reference. Minimum api‐version: 2019‐03‐01.
+     * Specifies information about the virtual machine scale set that the virtual machine should be assigned to. Virtual machines specified in the same virtual machine scale set are allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine scale set at creation time. An existing VM cannot be added to a virtual machine scale set. This property cannot exist along with a non-null properties.availabilitySet reference. Minimum api‐version: 2019‐03‐01.
      */
     @JsonProperty(value = "virtualMachineScaleSet")
     private SubResource virtualMachineScaleSet;
 
     /*
-     * Specifies information about the proximity placement group that the virtual machine should be assigned to.
-     * Minimum api-version: 2018-04-01.
+     * Specifies information about the proximity placement group that the virtual machine should be assigned to. Minimum api-version: 2018-04-01.
      */
     @JsonProperty(value = "proximityPlacementGroup")
     private SubResource proximityPlacementGroup;
@@ -116,10 +101,7 @@ public final class VirtualMachinePropertiesInner {
     private VirtualMachinePriorityTypes priority;
 
     /*
-     * Specifies the eviction policy for the Azure Spot virtual machine and Azure Spot scale set. For Azure Spot
-     * virtual machines, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2019-03-01. For
-     * Azure Spot scale sets, both 'Deallocate' and 'Delete' are supported and the minimum api-version is
-     * 2017-10-30-preview.
+     * Specifies the eviction policy for the Azure Spot virtual machine and Azure Spot scale set. For Azure Spot virtual machines, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2019-03-01. For Azure Spot scale sets, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2017-10-30-preview.
      */
     @JsonProperty(value = "evictionPolicy")
     private VirtualMachineEvictionPolicyTypes evictionPolicy;
@@ -131,15 +113,13 @@ public final class VirtualMachinePropertiesInner {
     private BillingProfile billingProfile;
 
     /*
-     * Specifies information about the dedicated host that the virtual machine resides in. Minimum api-version:
-     * 2018-10-01.
+     * Specifies information about the dedicated host that the virtual machine resides in. Minimum api-version: 2018-10-01.
      */
     @JsonProperty(value = "host")
     private SubResource host;
 
     /*
-     * Specifies information about the dedicated host group that the virtual machine resides in. **Note:** User cannot
-     * specify both host and hostGroup properties. Minimum api-version: 2020-06-01.
+     * Specifies information about the dedicated host group that the virtual machine resides in. **Note:** User cannot specify both host and hostGroup properties. Minimum api-version: 2020-06-01.
      */
     @JsonProperty(value = "hostGroup")
     private SubResource hostGroup;
@@ -157,40 +137,25 @@ public final class VirtualMachinePropertiesInner {
     private VirtualMachineInstanceViewInner instanceView;
 
     /*
-     * Specifies that the image or disk that is being used was licensed on-premises. <br><br> Possible values for
-     * Windows Server operating system are: <br><br> Windows_Client <br><br> Windows_Server <br><br> Possible values
-     * for Linux Server operating system are: <br><br> RHEL_BYOS (for RHEL) <br><br> SLES_BYOS (for SUSE) <br><br> For
-     * more information, see [Azure Hybrid Use Benefit for Windows
-     * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing) <br><br> [Azure
-     * Hybrid Use Benefit for Linux
-     * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) <br><br> Minimum
-     * api-version: 2015-06-15
+     * Specifies that the image or disk that is being used was licensed on-premises. <br><br> Possible values for Windows Server operating system are: <br><br> Windows_Client <br><br> Windows_Server <br><br> Possible values for Linux Server operating system are: <br><br> RHEL_BYOS (for RHEL) <br><br> SLES_BYOS (for SUSE) <br><br> For more information, see [Azure Hybrid Use Benefit for Windows Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing) <br><br> [Azure Hybrid Use Benefit for Linux Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) <br><br> Minimum api-version: 2015-06-15
      */
     @JsonProperty(value = "licenseType")
     private String licenseType;
 
     /*
-     * Specifies the VM unique ID which is a 128-bits identifier that is encoded and stored in all Azure IaaS VMs
-     * SMBIOS and can be read using platform BIOS commands.
+     * Specifies the VM unique ID which is a 128-bits identifier that is encoded and stored in all Azure IaaS VMs SMBIOS and can be read using platform BIOS commands.
      */
     @JsonProperty(value = "vmId", access = JsonProperty.Access.WRITE_ONLY)
     private String vmId;
 
     /*
-     * Specifies the time alloted for all extensions to start. The time duration should be between 15 minutes and 120
-     * minutes (inclusive) and should be specified in ISO 8601 format. The default value is 90 minutes (PT1H30M).
-     * Minimum api-version: 2020-06-01.
+     * Specifies the time alloted for all extensions to start. The time duration should be between 15 minutes and 120 minutes (inclusive) and should be specified in ISO 8601 format. The default value is 90 minutes (PT1H30M). Minimum api-version: 2020-06-01.
      */
     @JsonProperty(value = "extensionsTimeBudget")
     private String extensionsTimeBudget;
 
     /*
-     * Specifies the scale set logical fault domain into which the Virtual Machine will be created. By default, the
-     * Virtual Machine will by automatically assigned to a fault domain that best maintains balance across available
-     * fault domains. This is applicable only if the 'virtualMachineScaleSet' property of this Virtual Machine is set.
-     * The Virtual Machine Scale Set that is referenced, must have 'platformFaultDomainCount' greater than 1. This
-     * property cannot be updated once the Virtual Machine is created. Fault domain assignment can be viewed in the
-     * Virtual Machine Instance View. Minimum api‐version: 2020‐12‐01.
+     * Specifies the scale set logical fault domain into which the Virtual Machine will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that best maintains balance across available fault domains. This is applicable only if the 'virtualMachineScaleSet' property of this Virtual Machine is set. The Virtual Machine Scale Set that is referenced, must have 'platformFaultDomainCount' greater than 1. This property cannot be updated once the Virtual Machine is created. Fault domain assignment can be viewed in the Virtual Machine Instance View. Minimum api‐version: 2020‐12‐01.
      */
     @JsonProperty(value = "platformFaultDomain")
     private Integer platformFaultDomain;
@@ -202,15 +167,13 @@ public final class VirtualMachinePropertiesInner {
     private ScheduledEventsProfile scheduledEventsProfile;
 
     /*
-     * UserData for the VM, which must be base-64 encoded. Customer should not pass any secrets in here. Minimum
-     * api-version: 2021-03-01.
+     * UserData for the VM, which must be base-64 encoded. Customer should not pass any secrets in here. Minimum api-version: 2021-03-01.
      */
     @JsonProperty(value = "userData")
     private String userData;
 
     /*
-     * Specifies information about the capacity reservation that is used to allocate virtual machine. Minimum
-     * api-version: 2021-04-01.
+     * Specifies information about the capacity reservation that is used to allocate virtual machine. Minimum api-version: 2021-04-01.
      */
     @JsonProperty(value = "capacityReservation")
     private CapacityReservationProfile capacityReservation;
@@ -254,8 +217,8 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the scheduledEventsPolicy property: Specifies Redeploy, Reboot and
-     * ScheduledEventsAdditionalPublishingTargets Scheduled Event related configurations for the virtual machine.
+     * Get the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the virtual machine.
      * 
      * @return the scheduledEventsPolicy value.
      */
@@ -264,8 +227,8 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the scheduledEventsPolicy property: Specifies Redeploy, Reboot and
-     * ScheduledEventsAdditionalPublishingTargets Scheduled Event related configurations for the virtual machine.
+     * Set the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the virtual machine.
      * 
      * @param scheduledEventsPolicy the scheduledEventsPolicy value to set.
      * @return the VirtualMachinePropertiesInner object itself.
@@ -318,8 +281,8 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the osProfile property: Specifies the operating system settings used while creating the virtual machine.
-     * Some of the settings cannot be changed once VM is provisioned.
+     * Get the osProfile property: Specifies the operating system settings used while creating the virtual machine. Some
+     * of the settings cannot be changed once VM is provisioned.
      * 
      * @return the osProfile value.
      */
@@ -328,8 +291,8 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the osProfile property: Specifies the operating system settings used while creating the virtual machine.
-     * Some of the settings cannot be changed once VM is provisioned.
+     * Set the osProfile property: Specifies the operating system settings used while creating the virtual machine. Some
+     * of the settings cannot be changed once VM is provisioned.
      * 
      * @param osProfile the osProfile value to set.
      * @return the VirtualMachinePropertiesInner object itself.
@@ -440,9 +403,9 @@ public final class VirtualMachinePropertiesInner {
     /**
      * Get the virtualMachineScaleSet property: Specifies information about the virtual machine scale set that the
      * virtual machine should be assigned to. Virtual machines specified in the same virtual machine scale set are
-     * allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine
-     * scale set at creation time. An existing VM cannot be added to a virtual machine scale set. This property cannot
-     * exist along with a non-null properties.availabilitySet reference. Minimum api‐version: 2019‐03‐01.
+     * allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine scale
+     * set at creation time. An existing VM cannot be added to a virtual machine scale set. This property cannot exist
+     * along with a non-null properties.availabilitySet reference. Minimum api‐version: 2019‐03‐01.
      * 
      * @return the virtualMachineScaleSet value.
      */
@@ -453,9 +416,9 @@ public final class VirtualMachinePropertiesInner {
     /**
      * Set the virtualMachineScaleSet property: Specifies information about the virtual machine scale set that the
      * virtual machine should be assigned to. Virtual machines specified in the same virtual machine scale set are
-     * allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine
-     * scale set at creation time. An existing VM cannot be added to a virtual machine scale set. This property cannot
-     * exist along with a non-null properties.availabilitySet reference. Minimum api‐version: 2019‐03‐01.
+     * allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine scale
+     * set at creation time. An existing VM cannot be added to a virtual machine scale set. This property cannot exist
+     * along with a non-null properties.availabilitySet reference. Minimum api‐version: 2019‐03‐01.
      * 
      * @param virtualMachineScaleSet the virtualMachineScaleSet value to set.
      * @return the VirtualMachinePropertiesInner object itself.
@@ -578,8 +541,8 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the hostGroup property: Specifies information about the dedicated host group that the virtual machine
-     * resides in. **Note:** User cannot specify both host and hostGroup properties. Minimum api-version: 2020-06-01.
+     * Get the hostGroup property: Specifies information about the dedicated host group that the virtual machine resides
+     * in. **Note:** User cannot specify both host and hostGroup properties. Minimum api-version: 2020-06-01.
      * 
      * @return the hostGroup value.
      */
@@ -588,8 +551,8 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the hostGroup property: Specifies information about the dedicated host group that the virtual machine
-     * resides in. **Note:** User cannot specify both host and hostGroup properties. Minimum api-version: 2020-06-01.
+     * Set the hostGroup property: Specifies information about the dedicated host group that the virtual machine resides
+     * in. **Note:** User cannot specify both host and hostGroup properties. Minimum api-version: 2020-06-01.
      * 
      * @param hostGroup the hostGroup value to set.
      * @return the VirtualMachinePropertiesInner object itself.
@@ -619,10 +582,10 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the licenseType property: Specifies that the image or disk that is being used was licensed on-premises.
-     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt;
-     * Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server
-     * operating system are: &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE)
-     * &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows
+     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client
+     * &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are:
+     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more
+     * information, see [Azure Hybrid Use Benefit for Windows
      * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
@@ -636,10 +599,10 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Set the licenseType property: Specifies that the image or disk that is being used was licensed on-premises.
-     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt;
-     * Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server
-     * operating system are: &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE)
-     * &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows
+     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client
+     * &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are:
+     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more
+     * information, see [Azure Hybrid Use Benefit for Windows
      * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
@@ -688,9 +651,9 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual
-     * Machine will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that
-     * best maintains balance across available fault domains. This is applicable only if the 'virtualMachineScaleSet'
+     * Get the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual Machine
+     * will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that best
+     * maintains balance across available fault domains. This is applicable only if the 'virtualMachineScaleSet'
      * property of this Virtual Machine is set. The Virtual Machine Scale Set that is referenced, must have
      * 'platformFaultDomainCount' greater than 1. This property cannot be updated once the Virtual Machine is created.
      * Fault domain assignment can be viewed in the Virtual Machine Instance View. Minimum api‐version: 2020‐12‐01.
@@ -702,9 +665,9 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual
-     * Machine will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that
-     * best maintains balance across available fault domains. This is applicable only if the 'virtualMachineScaleSet'
+     * Set the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual Machine
+     * will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that best
+     * maintains balance across available fault domains. This is applicable only if the 'virtualMachineScaleSet'
      * property of this Virtual Machine is set. The Virtual Machine Scale Set that is referenced, must have
      * 'platformFaultDomainCount' greater than 1. This property cannot be updated once the Virtual Machine is created.
      * Fault domain assignment can be viewed in the Virtual Machine Instance View. Minimum api‐version: 2020‐12‐01.

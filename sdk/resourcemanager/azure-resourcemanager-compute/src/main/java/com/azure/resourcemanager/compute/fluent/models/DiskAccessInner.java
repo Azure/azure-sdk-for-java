@@ -45,8 +45,8 @@ public final class DiskAccessInner extends Resource {
     }
 
     /**
-     * Get the extendedLocation property: The extended location where the disk access will be created. Extended
-     * location cannot be changed.
+     * Get the extendedLocation property: The extended location where the disk access will be created. Extended location
+     * cannot be changed.
      * 
      * @return the extendedLocation value.
      */
@@ -55,8 +55,8 @@ public final class DiskAccessInner extends Resource {
     }
 
     /**
-     * Set the extendedLocation property: The extended location where the disk access will be created. Extended
-     * location cannot be changed.
+     * Set the extendedLocation property: The extended location where the disk access will be created. Extended location
+     * cannot be changed.
      * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the DiskAccessInner object itself.
@@ -85,8 +85,8 @@ public final class DiskAccessInner extends Resource {
     }
 
     /**
-     * Get the privateEndpointConnections property: A readonly collection of private endpoint connections created on
-     * the disk. Currently only one endpoint connection is supported.
+     * Get the privateEndpointConnections property: A readonly collection of private endpoint connections created on the
+     * disk. Currently only one endpoint connection is supported.
      * 
      * @return the privateEndpointConnections value.
      */

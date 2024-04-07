@@ -22,8 +22,7 @@ public final class DedicatedHostListResult {
     private List<DedicatedHostInner> value;
 
     /*
-     * The URI to fetch the next page of dedicated hosts. Call ListNext() with this URI to fetch the next page of
-     * dedicated hosts.
+     * The URI to fetch the next page of dedicated hosts. Call ListNext() with this URI to fetch the next page of dedicated hosts.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -83,8 +82,8 @@ public final class DedicatedHostListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model DedicatedHostListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model DedicatedHostListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

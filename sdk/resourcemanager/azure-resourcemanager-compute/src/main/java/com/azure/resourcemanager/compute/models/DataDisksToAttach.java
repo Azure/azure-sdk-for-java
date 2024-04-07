@@ -20,23 +20,19 @@ public final class DataDisksToAttach {
     private String diskId;
 
     /*
-     * The logical unit number of the data disk. This value is used to identify data disks within the VM and therefore
-     * must be unique for each data disk attached to a VM. If not specified, lun would be auto assigned.
+     * The logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM. If not specified, lun would be auto assigned.
      */
     @JsonProperty(value = "lun")
     private Integer lun;
 
     /*
-     * Specifies the caching requirements. Possible values are: **None,** **ReadOnly,** **ReadWrite.** The defaulting
-     * behavior is: **None for Standard storage. ReadOnly for Premium storage.**
+     * Specifies the caching requirements. Possible values are: **None,** **ReadOnly,** **ReadWrite.** The defaulting behavior is: **None for Standard storage. ReadOnly for Premium storage.**
      */
     @JsonProperty(value = "caching")
     private CachingTypes caching;
 
     /*
-     * Specifies whether data disk should be deleted or detached upon VM deletion. Possible values are: **Delete.** If
-     * this value is used, the data disk is deleted when VM is deleted. **Detach.** If this value is used, the data
-     * disk is retained after VM is deleted. The default value is set to **Detach**.
+     * Specifies whether data disk should be deleted or detached upon VM deletion. Possible values are: **Delete.** If this value is used, the data disk is deleted when VM is deleted. **Detach.** If this value is used, the data disk is retained after VM is deleted. The default value is set to **Detach**.
      */
     @JsonProperty(value = "deleteOption")
     private DiskDeleteOptionTypes deleteOption;
@@ -172,8 +168,8 @@ public final class DataDisksToAttach {
     }
 
     /**
-     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
-     * the disk.
+     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
      * 
      * @return the writeAcceleratorEnabled value.
      */
@@ -182,8 +178,8 @@ public final class DataDisksToAttach {
     }
 
     /**
-     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
-     * the disk.
+     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
      * 
      * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set.
      * @return the DataDisksToAttach object itself.
@@ -200,8 +196,8 @@ public final class DataDisksToAttach {
      */
     public void validate() {
         if (diskId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property diskId in model DataDisksToAttach"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property diskId in model DataDisksToAttach"));
         }
         if (diskEncryptionSet() != null) {
             diskEncryptionSet().validate();

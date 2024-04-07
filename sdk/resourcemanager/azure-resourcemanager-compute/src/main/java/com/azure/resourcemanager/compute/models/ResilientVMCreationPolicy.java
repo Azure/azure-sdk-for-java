@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ResilientVMCreationPolicy {
     /*
-     * Specifies whether resilient VM creation should be enabled on the virtual machine scale set. The default value is
-     * false.
+     * Specifies whether resilient VM creation should be enabled on the virtual machine scale set. The default value is false.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;

@@ -26,16 +26,13 @@ public final class VMGalleryApplication {
     private Integer order;
 
     /*
-     * Specifies the GalleryApplicationVersion resource id on the form of
-     * /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/galleries/{
-     * galleryName}/applications/{application}/versions/{version}
+     * Specifies the GalleryApplicationVersion resource id on the form of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{application}/versions/{version}
      */
     @JsonProperty(value = "packageReferenceId", required = true)
     private String packageReferenceId;
 
     /*
-     * Optional, Specifies the uri to an azure blob that will replace the default configuration for the package if
-     * provided
+     * Optional, Specifies the uri to an azure blob that will replace the default configuration for the package if provided
      */
     @JsonProperty(value = "configurationReference")
     private String configurationReference;
@@ -47,8 +44,7 @@ public final class VMGalleryApplication {
     private Boolean treatFailureAsDeploymentFailure;
 
     /*
-     * If set to true, when a new Gallery Application version is available in PIR/SIG, it will be automatically updated
-     * for the VM/VMSS
+     * If set to true, when a new Gallery Application version is available in PIR/SIG, it will be automatically updated for the VM/VMSS
      */
     @JsonProperty(value = "enableAutomaticUpgrade")
     private Boolean enableAutomaticUpgrade;
@@ -194,8 +190,9 @@ public final class VMGalleryApplication {
      */
     public void validate() {
         if (packageReferenceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property packageReferenceId in model VMGalleryApplication"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property packageReferenceId in model VMGalleryApplication"));
         }
     }
 

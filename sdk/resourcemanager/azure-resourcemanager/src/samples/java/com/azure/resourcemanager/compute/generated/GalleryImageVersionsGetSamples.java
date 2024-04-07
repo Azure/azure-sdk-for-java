@@ -11,9 +11,7 @@ import com.azure.resourcemanager.compute.models.ReplicationStatusTypes;
  */
 public final class GalleryImageVersionsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
-     * GalleryImageVersion_Get_WithVhdAsSource.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/GalleryImageVersion_Get_WithVhdAsSource.json
      */
     /**
      * Sample code: Get a gallery image version with vhd as a source.
@@ -21,14 +19,16 @@ public final class GalleryImageVersionsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAGalleryImageVersionWithVhdAsASource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImageVersions().getWithResponse("myResourceGroup",
-            "myGalleryName", "myGalleryImageName", "1.0.0", null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .getWithResponse("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0", null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
-     * GalleryImageVersion_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/GalleryImageVersion_Get.json
      */
     /**
      * Sample code: Get a gallery image version.
@@ -36,14 +36,16 @@ public final class GalleryImageVersionsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAGalleryImageVersion(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImageVersions().getWithResponse("myResourceGroup",
-            "myGalleryName", "myGalleryImageName", "1.0.0", null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .getWithResponse("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0", null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
-     * GalleryImageVersion_Get_WithReplicationStatus.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/GalleryImageVersion_Get_WithReplicationStatus.json
      */
     /**
      * Sample code: Get a gallery image version with replication status.
@@ -52,15 +54,16 @@ public final class GalleryImageVersionsGetSamples {
      */
     public static void
         getAGalleryImageVersionWithReplicationStatus(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImageVersions().getWithResponse("myResourceGroup",
-            "myGalleryName", "myGalleryImageName", "1.0.0", ReplicationStatusTypes.REPLICATION_STATUS,
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .getWithResponse("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0",
+                ReplicationStatusTypes.REPLICATION_STATUS, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
-     * GalleryImageVersion_Get_WithSnapshotsAsSource.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/GalleryImageVersion_Get_WithSnapshotsAsSource.json
      */
     /**
      * Sample code: Get a gallery image version with snapshots as a source.
@@ -69,7 +72,11 @@ public final class GalleryImageVersionsGetSamples {
      */
     public static void
         getAGalleryImageVersionWithSnapshotsAsASource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImageVersions().getWithResponse("myResourceGroup",
-            "myGalleryName", "myGalleryImageName", "1.0.0", null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .getWithResponse("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0", null,
+                com.azure.core.util.Context.NONE);
     }
 }

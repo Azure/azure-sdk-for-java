@@ -13,10 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SshPublicKeyResourceProperties {
     /*
-     * SSH public key used to authenticate to a virtual machine through ssh. If this property is not initially provided
-     * when the resource is created, the publicKey property will be populated when generateKeyPair is called. If the
-     * public key is provided upon resource creation, the provided public key needs to be at least 2048-bit and in
-     * ssh-rsa format.
+     * SSH public key used to authenticate to a virtual machine through ssh. If this property is not initially provided when the resource is created, the publicKey property will be populated when generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs to be at least 2048-bit and in ssh-rsa format.
      */
     @JsonProperty(value = "publicKey")
     private String publicKey;
@@ -30,8 +27,8 @@ public final class SshPublicKeyResourceProperties {
     /**
      * Get the publicKey property: SSH public key used to authenticate to a virtual machine through ssh. If this
      * property is not initially provided when the resource is created, the publicKey property will be populated when
-     * generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs
-     * to be at least 2048-bit and in ssh-rsa format.
+     * generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs to
+     * be at least 2048-bit and in ssh-rsa format.
      * 
      * @return the publicKey value.
      */
@@ -42,8 +39,8 @@ public final class SshPublicKeyResourceProperties {
     /**
      * Set the publicKey property: SSH public key used to authenticate to a virtual machine through ssh. If this
      * property is not initially provided when the resource is created, the publicKey property will be populated when
-     * generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs
-     * to be at least 2048-bit and in ssh-rsa format.
+     * generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs to
+     * be at least 2048-bit and in ssh-rsa format.
      * 
      * @param publicKey the publicKey value to set.
      * @return the SshPublicKeyResourceProperties object itself.

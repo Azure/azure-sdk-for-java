@@ -157,24 +157,28 @@ public class RunCommandDocumentBaseInner {
      */
     public void validate() {
         if (schema() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property schema in model RunCommandDocumentBaseInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property schema in model RunCommandDocumentBaseInner"));
         }
         if (id() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property id in model RunCommandDocumentBaseInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model RunCommandDocumentBaseInner"));
         }
         if (osType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property osType in model RunCommandDocumentBaseInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property osType in model RunCommandDocumentBaseInner"));
         }
         if (label() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property label in model RunCommandDocumentBaseInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property label in model RunCommandDocumentBaseInner"));
         }
         if (description() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property description in model RunCommandDocumentBaseInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property description in model RunCommandDocumentBaseInner"));
         }
     }
 

@@ -1634,8 +1634,10 @@ public final class DiskAccessesClientImpl implements InnerSupportsGet<DiskAccess
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
         beginUpdateAPrivateEndpointConnection(String resourceGroupName, String diskAccessName,
             String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
-        return this.beginUpdateAPrivateEndpointConnectionAsync(resourceGroupName, diskAccessName,
-            privateEndpointConnectionName, privateEndpointConnection).getSyncPoller();
+        return this
+            .beginUpdateAPrivateEndpointConnectionAsync(resourceGroupName, diskAccessName,
+                privateEndpointConnectionName, privateEndpointConnection)
+            .getSyncPoller();
     }
 
     /**
@@ -1660,8 +1662,10 @@ public final class DiskAccessesClientImpl implements InnerSupportsGet<DiskAccess
         beginUpdateAPrivateEndpointConnection(String resourceGroupName, String diskAccessName,
             String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection,
             Context context) {
-        return this.beginUpdateAPrivateEndpointConnectionAsync(resourceGroupName, diskAccessName,
-            privateEndpointConnectionName, privateEndpointConnection, context).getSyncPoller();
+        return this
+            .beginUpdateAPrivateEndpointConnectionAsync(resourceGroupName, diskAccessName,
+                privateEndpointConnectionName, privateEndpointConnection, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2064,8 +2068,10 @@ public final class DiskAccessesClientImpl implements InnerSupportsGet<DiskAccess
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAPrivateEndpointConnection(String resourceGroupName,
         String diskAccessName, String privateEndpointConnectionName) {
-        return this.beginDeleteAPrivateEndpointConnectionAsync(resourceGroupName, diskAccessName,
-            privateEndpointConnectionName).getSyncPoller();
+        return this
+            .beginDeleteAPrivateEndpointConnectionAsync(resourceGroupName, diskAccessName,
+                privateEndpointConnectionName)
+            .getSyncPoller();
     }
 
     /**
@@ -2085,8 +2091,10 @@ public final class DiskAccessesClientImpl implements InnerSupportsGet<DiskAccess
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAPrivateEndpointConnection(String resourceGroupName,
         String diskAccessName, String privateEndpointConnectionName, Context context) {
-        return this.beginDeleteAPrivateEndpointConnectionAsync(resourceGroupName, diskAccessName,
-            privateEndpointConnectionName, context).getSyncPoller();
+        return this
+            .beginDeleteAPrivateEndpointConnectionAsync(resourceGroupName, diskAccessName,
+                privateEndpointConnectionName, context)
+            .getSyncPoller();
     }
 
     /**
