@@ -38,21 +38,30 @@ public final class MetricSpecificationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricSpecification model = new MetricSpecification().withName("vdkfwynwcvtbvk").withDisplayName("hmtnvy")
-            .withDisplayDescription("atkzwpcnpw").withUnit("jaesgvvsccya").withCategory("uq")
+        MetricSpecification model = new MetricSpecification().withName("vdkfwynwcvtbvk")
+            .withDisplayName("hmtnvy")
+            .withDisplayDescription("atkzwpcnpw")
+            .withUnit("jaesgvvsccya")
+            .withCategory("uq")
             .withAggregationType("wygzlvdnkfxusem")
             .withSupportedAggregationTypes(Arrays.asList("rmuhapfcq", "psqxq", "psvuoymgc", "elvezrypq"))
-            .withSupportedTimeGrainTypes(Arrays.asList("eokerqwkyhkobopg")).withFillGapWithZero(false)
+            .withSupportedTimeGrainTypes(Arrays.asList("eokerqwkyhkobopg"))
+            .withFillGapWithZero(false)
             .withMetricFilterPattern("owepbqpcrfkb")
             .withDimensions(Arrays.asList(
                 new MetricDimension().withName("njv").withDisplayName("wxlp").withToBeExportedForShoebox(true),
                 new MetricDimension().withName("tn").withDisplayName("tjsyin").withToBeExportedForShoebox(false),
-                new MetricDimension().withName("atmtdhtmdvy").withDisplayName("ikdgszywkbir")
+                new MetricDimension().withName("atmtdhtmdvy")
+                    .withDisplayName("ikdgszywkbir")
                     .withToBeExportedForShoebox(true),
-                new MetricDimension().withName("hlhkjoqrvqqaatj").withDisplayName("rv")
+                new MetricDimension().withName("hlhkjoqrvqqaatj")
+                    .withDisplayName("rv")
                     .withToBeExportedForShoebox(true)))
-            .withIsInternal(true).withSourceMdmAccount("iibfggj").withSourceMdmNamespace("olvrw")
-            .withEnableRegionalMdmAccount(false).withResourceIdDimensionNameOverride("kkgll");
+            .withIsInternal(true)
+            .withSourceMdmAccount("iibfggj")
+            .withSourceMdmNamespace("olvrw")
+            .withEnableRegionalMdmAccount(false)
+            .withResourceIdDimensionNameOverride("kkgll");
         model = BinaryData.fromObject(model).toObject(MetricSpecification.class);
         Assertions.assertEquals("vdkfwynwcvtbvk", model.name());
         Assertions.assertEquals("hmtnvy", model.displayName());

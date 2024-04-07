@@ -76,13 +76,16 @@ public final class PrivateEndpointConnectionDescriptionImpl implements PrivateEn
     }
 
     public PrivateEndpointConnectionDescription create() {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections().createOrUpdate(
-            resourceGroupName, resourceName, privateEndpointConnectionName, createProperties, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .createOrUpdate(resourceGroupName, resourceName, privateEndpointConnectionName, createProperties,
+                Context.NONE);
         return this;
     }
 
     public PrivateEndpointConnectionDescription create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections()
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
             .createOrUpdate(resourceGroupName, resourceName, privateEndpointConnectionName, createProperties, context);
         return this;
     }
@@ -101,13 +104,16 @@ public final class PrivateEndpointConnectionDescriptionImpl implements PrivateEn
     }
 
     public PrivateEndpointConnectionDescription apply() {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections().createOrUpdate(
-            resourceGroupName, resourceName, privateEndpointConnectionName, updateProperties, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .createOrUpdate(resourceGroupName, resourceName, privateEndpointConnectionName, updateProperties,
+                Context.NONE);
         return this;
     }
 
     public PrivateEndpointConnectionDescription apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections()
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
             .createOrUpdate(resourceGroupName, resourceName, privateEndpointConnectionName, updateProperties, context);
         return this;
     }
@@ -123,14 +129,18 @@ public final class PrivateEndpointConnectionDescriptionImpl implements PrivateEn
     }
 
     public PrivateEndpointConnectionDescription refresh() {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections()
-            .getWithResponse(resourceGroupName, resourceName, privateEndpointConnectionName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .getWithResponse(resourceGroupName, resourceName, privateEndpointConnectionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PrivateEndpointConnectionDescription refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections()
-            .getWithResponse(resourceGroupName, resourceName, privateEndpointConnectionName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .getWithResponse(resourceGroupName, resourceName, privateEndpointConnectionName, context)
+            .getValue();
         return this;
     }
 

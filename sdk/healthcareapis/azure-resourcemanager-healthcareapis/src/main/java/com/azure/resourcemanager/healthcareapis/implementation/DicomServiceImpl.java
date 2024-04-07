@@ -145,14 +145,16 @@ public final class DicomServiceImpl implements DicomService, DicomService.Defini
     }
 
     public DicomService create() {
-        this.innerObject = serviceManager.serviceClient().getDicomServices().createOrUpdate(resourceGroupName,
-            workspaceName, dicomServiceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDicomServices()
+            .createOrUpdate(resourceGroupName, workspaceName, dicomServiceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DicomService create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDicomServices().createOrUpdate(resourceGroupName,
-            workspaceName, dicomServiceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDicomServices()
+            .createOrUpdate(resourceGroupName, workspaceName, dicomServiceName, this.innerModel(), context);
         return this;
     }
 
@@ -168,14 +170,16 @@ public final class DicomServiceImpl implements DicomService, DicomService.Defini
     }
 
     public DicomService apply() {
-        this.innerObject = serviceManager.serviceClient().getDicomServices().update(resourceGroupName, dicomServiceName,
-            workspaceName, updateDicomservicePatchResource, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDicomServices()
+            .update(resourceGroupName, dicomServiceName, workspaceName, updateDicomservicePatchResource, Context.NONE);
         return this;
     }
 
     public DicomService apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDicomServices().update(resourceGroupName, dicomServiceName,
-            workspaceName, updateDicomservicePatchResource, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDicomServices()
+            .update(resourceGroupName, dicomServiceName, workspaceName, updateDicomservicePatchResource, context);
         return this;
     }
 
@@ -189,14 +193,18 @@ public final class DicomServiceImpl implements DicomService, DicomService.Defini
     }
 
     public DicomService refresh() {
-        this.innerObject = serviceManager.serviceClient().getDicomServices()
-            .getWithResponse(resourceGroupName, workspaceName, dicomServiceName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDicomServices()
+            .getWithResponse(resourceGroupName, workspaceName, dicomServiceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DicomService refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDicomServices()
-            .getWithResponse(resourceGroupName, workspaceName, dicomServiceName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDicomServices()
+            .getWithResponse(resourceGroupName, workspaceName, dicomServiceName, context)
+            .getValue();
         return this;
     }
 

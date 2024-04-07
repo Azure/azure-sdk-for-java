@@ -30,15 +30,18 @@ public final class IotFhirDestinationCollectionTests {
     public void testSerialize() throws Exception {
         IotFhirDestinationCollection model = new IotFhirDestinationCollection().withNextLink("hfxobbcswsrtj")
             .withValue(Arrays.asList(
-                new IotFhirDestinationInner().withEtag("rtzju").withLocation("ebwwaloayqc")
+                new IotFhirDestinationInner().withEtag("rtzju")
+                    .withLocation("ebwwaloayqc")
                     .withResourceIdentityResolutionType(IotIdentityResolutionType.LOOKUP)
                     .withFhirServiceResourceId("rbpbewtghfgblcg")
                     .withFhirMapping(new IotMappingProperties().withContent("datazvlvqhjkbegib")),
-                new IotFhirDestinationInner().withEtag("xrmcqibycnojvk").withLocation("oyq")
+                new IotFhirDestinationInner().withEtag("xrmcqibycnojvk")
+                    .withLocation("oyq")
                     .withResourceIdentityResolutionType(IotIdentityResolutionType.LOOKUP)
                     .withFhirServiceResourceId("knftguvriuh")
                     .withFhirMapping(new IotMappingProperties().withContent("datawmdyvxqtay")),
-                new IotFhirDestinationInner().withEtag("mv").withLocation("kzbbtd")
+                new IotFhirDestinationInner().withEtag("mv")
+                    .withLocation("kzbbtd")
                     .withResourceIdentityResolutionType(IotIdentityResolutionType.LOOKUP)
                     .withFhirServiceResourceId("awjvzunluthnnp")
                     .withFhirMapping(new IotMappingProperties().withContent("dataxipeilpjzuaejx"))));

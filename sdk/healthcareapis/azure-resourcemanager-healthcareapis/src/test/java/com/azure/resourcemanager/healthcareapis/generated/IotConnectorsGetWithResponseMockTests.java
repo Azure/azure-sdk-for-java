@@ -6,51 +6,34 @@ package com.azure.resourcemanager.healthcareapis.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.healthcareapis.HealthcareApisManager;
 import com.azure.resourcemanager.healthcareapis.models.IotConnector;
 import com.azure.resourcemanager.healthcareapis.models.ServiceManagedIdentityType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IotConnectorsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Warned\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"obfirclnpk\",\"consumerGroup\":\"ayzri\",\"fullyQualifiedEventHubNamespace\":\"hya\"},\"deviceMapping\":{\"content\":\"datajlb\"}},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"665ac348-19fa-40e2-a711-00609461c559\",\"tenantId\":\"b277e4fd-69af-4ea8-82d7-b695d5ac6cf3\",\"userAssignedIdentities\":{\"omdynhdwdigum\":{\"principalId\":\"1960d7f7-c875-4152-8eef-4052e4fc69a4\",\"clientId\":\"d27b265a-5b98-4d3a-b3b2-84df24ebe7ff\"}}},\"tags\":{\"hezwwvaiq\":\"aauzzptjazysd\",\"hqyikvy\":\"uvvfonkp\"},\"location\":\"uyav\",\"etag\":\"wmn\",\"id\":\"sttijfybvp\",\"name\":\"ekrsgs\",\"type\":\"b\"}";
+            = "{\"properties\":{\"provisioningState\":\"Warned\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"obfirclnpk\",\"consumerGroup\":\"ayzri\",\"fullyQualifiedEventHubNamespace\":\"hya\"},\"deviceMapping\":{\"content\":\"datajlb\"}},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"53bfceb5-8634-4846-a8e1-8ed5d161de84\",\"tenantId\":\"7524e189-7ad5-4854-b0e4-f28529520953\",\"userAssignedIdentities\":{\"omdynhdwdigum\":{\"principalId\":\"b7d668b4-9665-4882-8127-aa1cb73f7151\",\"clientId\":\"c23ecc9c-e4c9-419a-b524-074443580c6e\"}}},\"tags\":{\"hezwwvaiq\":\"aauzzptjazysd\",\"hqyikvy\":\"uvvfonkp\"},\"location\":\"uyav\",\"etag\":\"wmn\",\"id\":\"sttijfybvp\",\"name\":\"ekrsgs\",\"type\":\"b\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        HealthcareApisManager manager = HealthcareApisManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HealthcareApisManager manager = HealthcareApisManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IotConnector response = manager.iotConnectors()
-            .getWithResponse("riglaec", "ndtic", "kpvzmlq", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("riglaec", "ndtic", "kpvzmlq", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("wmn", response.etag());
         Assertions.assertEquals("uyav", response.location());

@@ -6,49 +6,31 @@ package com.azure.resourcemanager.healthcareapis.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.healthcareapis.HealthcareApisManager;
 import com.azure.resourcemanager.healthcareapis.models.IotConnector;
 import com.azure.resourcemanager.healthcareapis.models.ServiceManagedIdentityType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IotConnectorsListByWorkspaceMockTests {
     @Test
     public void testListByWorkspace() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Moving\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"wiivwzjbhyzsx\",\"consumerGroup\":\"kambtrnegvmnvuqe\",\"fullyQualifiedEventHubNamespace\":\"lds\"},\"deviceMapping\":{\"content\":\"datatjb\"}},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"43983bea-aeea-46a1-930d-d1a4d26a8948\",\"tenantId\":\"0de1f4ec-0ce5-4621-9dd4-5015239fe30a\",\"userAssignedIdentities\":{\"mjlxrrilozapeewc\":{\"principalId\":\"b96adb80-86cb-4b34-9296-1c8716c8c35a\",\"clientId\":\"43e7aca6-9c31-4256-939a-b786b5688c38\"}}},\"tags\":{\"f\":\"lktwkuziycslev\",\"tqedcgzulwm\":\"ztcktyh\",\"rjvpglydzgkrvqee\":\"rqzz\"},\"location\":\"oepry\",\"etag\":\"nwy\",\"id\":\"pzdm\",\"name\":\"vzvfvaawzqadfl\",\"type\":\"z\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Moving\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"wiivwzjbhyzsx\",\"consumerGroup\":\"kambtrnegvmnvuqe\",\"fullyQualifiedEventHubNamespace\":\"lds\"},\"deviceMapping\":{\"content\":\"datatjb\"}},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"c7cd14e6-139d-473b-88ab-822be03a4d0c\",\"tenantId\":\"f682a67b-52d1-4207-af0b-308ff3385ab0\",\"userAssignedIdentities\":{\"mjlxrrilozapeewc\":{\"principalId\":\"99867d1f-371d-4394-92c0-36e3d3ab8db5\",\"clientId\":\"5522c85c-29d8-46ee-b056-4cbee8e8c9b7\"}}},\"tags\":{\"f\":\"lktwkuziycslev\",\"tqedcgzulwm\":\"ztcktyh\",\"rjvpglydzgkrvqee\":\"rqzz\"},\"location\":\"oepry\",\"etag\":\"nwy\",\"id\":\"pzdm\",\"name\":\"vzvfvaawzqadfl\",\"type\":\"z\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        HealthcareApisManager manager = HealthcareApisManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HealthcareApisManager manager = HealthcareApisManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<IotConnector> response
             = manager.iotConnectors().listByWorkspace("fmo", "uxrkjp", com.azure.core.util.Context.NONE);

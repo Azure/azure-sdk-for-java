@@ -14,8 +14,7 @@ import java.util.List;
 @Fluent
 public final class SmartIdentityProviderApplication {
     /*
-     * The application client id defined in the identity provider. This value will be used to validate bearer tokens
-     * against the given authority.
+     * The application client id defined in the identity provider. This value will be used to validate bearer tokens against the given authority.
      */
     @JsonProperty(value = "clientId")
     private String clientId;
@@ -39,8 +38,8 @@ public final class SmartIdentityProviderApplication {
     }
 
     /**
-     * Get the clientId property: The application client id defined in the identity provider. This value will be used
-     * to validate bearer tokens against the given authority.
+     * Get the clientId property: The application client id defined in the identity provider. This value will be used to
+     * validate bearer tokens against the given authority.
      * 
      * @return the clientId value.
      */
@@ -49,8 +48,8 @@ public final class SmartIdentityProviderApplication {
     }
 
     /**
-     * Set the clientId property: The application client id defined in the identity provider. This value will be used
-     * to validate bearer tokens against the given authority.
+     * Set the clientId property: The application client id defined in the identity provider. This value will be used to
+     * validate bearer tokens against the given authority.
      * 
      * @param clientId the clientId value to set.
      * @return the SmartIdentityProviderApplication object itself.

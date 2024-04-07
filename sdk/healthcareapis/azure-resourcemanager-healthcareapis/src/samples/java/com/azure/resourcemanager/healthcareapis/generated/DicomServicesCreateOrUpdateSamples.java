@@ -11,9 +11,7 @@ import com.azure.resourcemanager.healthcareapis.models.StorageConfiguration;
  */
 public final class DicomServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/dicomservices/
-     * DicomServices_Create.json
+     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/dicomservices/DicomServices_Create.json
      */
     /**
      * Sample code: Create or update a Dicom Service.
@@ -22,10 +20,14 @@ public final class DicomServicesCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateADicomService(com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
-        manager.dicomServices().define("blue").withExistingWorkspace("testRG", "workspace1").withRegion("westus")
+        manager.dicomServices()
+            .define("blue")
+            .withExistingWorkspace("testRG", "workspace1")
+            .withRegion("westus")
             .withStorageConfiguration(new StorageConfiguration().withStorageResourceId(
                 "/subscriptions/ab309d4e-4c2e-4241-be2e-08e1c8dd4246/resourceGroups/rgname/providers/Microsoft.Storage/storageAccounts/accountname")
                 .withFileSystemName("fileSystemName"))
-            .withEnableDataPartitions(false).create();
+            .withEnableDataPartitions(false)
+            .create();
     }
 }

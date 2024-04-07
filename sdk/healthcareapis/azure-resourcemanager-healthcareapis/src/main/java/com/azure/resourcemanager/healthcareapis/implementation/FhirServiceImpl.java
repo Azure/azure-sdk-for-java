@@ -162,14 +162,16 @@ public final class FhirServiceImpl implements FhirService, FhirService.Definitio
     }
 
     public FhirService create() {
-        this.innerObject = serviceManager.serviceClient().getFhirServices().createOrUpdate(resourceGroupName,
-            workspaceName, fhirServiceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFhirServices()
+            .createOrUpdate(resourceGroupName, workspaceName, fhirServiceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public FhirService create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFhirServices().createOrUpdate(resourceGroupName,
-            workspaceName, fhirServiceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFhirServices()
+            .createOrUpdate(resourceGroupName, workspaceName, fhirServiceName, this.innerModel(), context);
         return this;
     }
 
@@ -185,14 +187,16 @@ public final class FhirServiceImpl implements FhirService, FhirService.Definitio
     }
 
     public FhirService apply() {
-        this.innerObject = serviceManager.serviceClient().getFhirServices().update(resourceGroupName, fhirServiceName,
-            workspaceName, updateFhirservicePatchResource, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFhirServices()
+            .update(resourceGroupName, fhirServiceName, workspaceName, updateFhirservicePatchResource, Context.NONE);
         return this;
     }
 
     public FhirService apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFhirServices().update(resourceGroupName, fhirServiceName,
-            workspaceName, updateFhirservicePatchResource, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFhirServices()
+            .update(resourceGroupName, fhirServiceName, workspaceName, updateFhirservicePatchResource, context);
         return this;
     }
 
@@ -206,14 +210,18 @@ public final class FhirServiceImpl implements FhirService, FhirService.Definitio
     }
 
     public FhirService refresh() {
-        this.innerObject = serviceManager.serviceClient().getFhirServices()
-            .getWithResponse(resourceGroupName, workspaceName, fhirServiceName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFhirServices()
+            .getWithResponse(resourceGroupName, workspaceName, fhirServiceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FhirService refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFhirServices()
-            .getWithResponse(resourceGroupName, workspaceName, fhirServiceName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFhirServices()
+            .getWithResponse(resourceGroupName, workspaceName, fhirServiceName, context)
+            .getValue();
         return this;
     }
 

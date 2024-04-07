@@ -23,7 +23,8 @@ public final class IotEventHubIngestionEndpointConfigurationTests {
     public void testSerialize() throws Exception {
         IotEventHubIngestionEndpointConfiguration model
             = new IotEventHubIngestionEndpointConfiguration().withEventHubName("ugicjooxdjebw")
-                .withConsumerGroup("cwwfvovbvme").withFullyQualifiedEventHubNamespace("civyhzceuo");
+                .withConsumerGroup("cwwfvovbvme")
+                .withFullyQualifiedEventHubNamespace("civyhzceuo");
         model = BinaryData.fromObject(model).toObject(IotEventHubIngestionEndpointConfiguration.class);
         Assertions.assertEquals("ugicjooxdjebw", model.eventHubName());
         Assertions.assertEquals("cwwfvovbvme", model.consumerGroup());

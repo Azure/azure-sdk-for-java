@@ -61,42 +61,47 @@ public final class OperationDetailInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OperationDetailInner model
-            = new OperationDetailInner()
-                .withDisplay(
-                    new OperationDisplay())
-                .withProperties(
-                    new OperationProperties()
-                        .withServiceSpecification(
-                            new ServiceSpecification()
-                                .withLogSpecifications(
-                                    Arrays
-                                        .asList(
-                                            new LogSpecification()
-                                                .withName("xrtfudxep").withDisplayName("yqagvrvm").withBlobDuration(
-                                                    "k")))
-                                .withMetricSpecifications(Arrays.asList(
-                                    new MetricSpecification().withName("i").withDisplayName("blxgwimf")
-                                        .withDisplayDescription("hfjx").withUnit("szkkfoqre")
-                                        .withCategory("kzikfjawneaivxwc").withAggregationType("lpcirelsf")
+            = new OperationDetailInner().withDisplay(new OperationDisplay())
+                .withProperties(new OperationProperties()
+                    .withServiceSpecification(new ServiceSpecification().withLogSpecifications(Arrays.asList(
+                        new LogSpecification().withName("xrtfudxep").withDisplayName("yqagvrvm").withBlobDuration("k")))
+                        .withMetricSpecifications(
+                            Arrays
+                                .asList(
+                                    new MetricSpecification().withName("i")
+                                        .withDisplayName("blxgwimf")
+                                        .withDisplayDescription("hfjx")
+                                        .withUnit("szkkfoqre")
+                                        .withCategory("kzikfjawneaivxwc")
+                                        .withAggregationType("lpcirelsf")
                                         .withSupportedAggregationTypes(
                                             Arrays.asList("nwabfatkldd", "bjhwuaan", "zjosp"))
                                         .withSupportedTimeGrainTypes(Arrays.asList("ulpjr", "xagl"))
-                                        .withFillGapWithZero(false).withMetricFilterPattern("jwosytxitcskfck")
+                                        .withFillGapWithZero(false)
+                                        .withMetricFilterPattern("jwosytxitcskfck")
                                         .withDimensions(Arrays.asList(new MetricDimension(), new MetricDimension(),
                                             new MetricDimension()))
-                                        .withIsInternal(false).withSourceMdmAccount("kkezzikhlyfjhdgq")
-                                        .withSourceMdmNamespace("ebdunyg").withEnableRegionalMdmAccount(true)
+                                        .withIsInternal(false)
+                                        .withSourceMdmAccount("kkezzikhlyfjhdgq")
+                                        .withSourceMdmNamespace("ebdunyg")
+                                        .withEnableRegionalMdmAccount(true)
                                         .withResourceIdDimensionNameOverride("db"),
-                                    new MetricSpecification().withName("atpxl").withDisplayName("xcyjmoadsuvarmy")
-                                        .withDisplayDescription("mjsjqb").withUnit("hyxxrwlycoduhpk")
-                                        .withCategory("gymare").withAggregationType("ajxq")
+                                    new MetricSpecification().withName("atpxl")
+                                        .withDisplayName("xcyjmoadsuvarmy")
+                                        .withDisplayDescription("mjsjqb")
+                                        .withUnit("hyxxrwlycoduhpk")
+                                        .withCategory("gymare")
+                                        .withAggregationType("ajxq")
                                         .withSupportedAggregationTypes(Arrays.asList("hky", "ubeddg"))
                                         .withSupportedTimeGrainTypes(Arrays.asList("fwqmzqalkrmn"))
-                                        .withFillGapWithZero(false).withMetricFilterPattern("xacqqudfnbyx")
+                                        .withFillGapWithZero(false)
+                                        .withMetricFilterPattern("xacqqudfnbyx")
                                         .withDimensions(Arrays.asList(new MetricDimension(), new MetricDimension(),
                                             new MetricDimension(), new MetricDimension()))
-                                        .withIsInternal(false).withSourceMdmAccount("yvayffimrzr")
-                                        .withSourceMdmNamespace("zqogse").withEnableRegionalMdmAccount(true)
+                                        .withIsInternal(false)
+                                        .withSourceMdmAccount("yvayffimrzr")
+                                        .withSourceMdmNamespace("zqogse")
+                                        .withEnableRegionalMdmAccount(true)
                                         .withResourceIdDimensionNameOverride("fdnw")))));
         model = BinaryData.fromObject(model).toObject(OperationDetailInner.class);
         Assertions.assertEquals("xrtfudxep",

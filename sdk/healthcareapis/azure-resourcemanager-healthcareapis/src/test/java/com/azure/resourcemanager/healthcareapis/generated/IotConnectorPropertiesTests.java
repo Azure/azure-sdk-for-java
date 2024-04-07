@@ -26,7 +26,8 @@ public final class IotConnectorPropertiesTests {
     public void testSerialize() throws Exception {
         IotConnectorProperties model = new IotConnectorProperties()
             .withIngestionEndpointConfiguration(new IotEventHubIngestionEndpointConfiguration().withEventHubName("gwb")
-                .withConsumerGroup("beldawkzbaliourq").withFullyQualifiedEventHubNamespace("kauhashsfwxo"))
+                .withConsumerGroup("beldawkzbaliourq")
+                .withFullyQualifiedEventHubNamespace("kauhashsfwxo"))
             .withDeviceMapping(new IotMappingProperties().withContent("dataz"));
         model = BinaryData.fromObject(model).toObject(IotConnectorProperties.class);
         Assertions.assertEquals("gwb", model.ingestionEndpointConfiguration().eventHubName());

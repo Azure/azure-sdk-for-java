@@ -26,8 +26,9 @@ public final class SmartIdentityProviderConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SmartIdentityProviderConfiguration model
-            = new SmartIdentityProviderConfiguration().withAuthority("pomgkopkwhojvp").withApplications(
-                Arrays.asList(new SmartIdentityProviderApplication().withClientId("xysmoc").withAudience("qfqvmkc")
+            = new SmartIdentityProviderConfiguration().withAuthority("pomgkopkwhojvp")
+                .withApplications(Arrays.asList(new SmartIdentityProviderApplication().withClientId("xysmoc")
+                    .withAudience("qfqvmkc")
                     .withAllowedDataActions(Arrays.asList(SmartDataActions.READ, SmartDataActions.READ))));
         model = BinaryData.fromObject(model).toObject(SmartIdentityProviderConfiguration.class);
         Assertions.assertEquals("pomgkopkwhojvp", model.authority());

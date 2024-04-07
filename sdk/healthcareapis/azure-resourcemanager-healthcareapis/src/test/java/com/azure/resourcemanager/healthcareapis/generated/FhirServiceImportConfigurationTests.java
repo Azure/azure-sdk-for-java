@@ -22,7 +22,8 @@ public final class FhirServiceImportConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FhirServiceImportConfiguration model = new FhirServiceImportConfiguration().withIntegrationDataStore("pqlpq")
-            .withInitialImportMode(false).withEnabled(true);
+            .withInitialImportMode(false)
+            .withEnabled(true);
         model = BinaryData.fromObject(model).toObject(FhirServiceImportConfiguration.class);
         Assertions.assertEquals("pqlpq", model.integrationDataStore());
         Assertions.assertEquals(false, model.initialImportMode());

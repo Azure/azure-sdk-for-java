@@ -21,7 +21,8 @@ public final class MetricDimensionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricDimension model = new MetricDimension().withName("jygvjayvbl").withDisplayName("vkzuhbxvvyhgso")
+        MetricDimension model = new MetricDimension().withName("jygvjayvbl")
+            .withDisplayName("vkzuhbxvvyhgso")
             .withToBeExportedForShoebox(true);
         model = BinaryData.fromObject(model).toObject(MetricDimension.class);
         Assertions.assertEquals("jygvjayvbl", model.name());

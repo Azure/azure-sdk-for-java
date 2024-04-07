@@ -19,7 +19,7 @@ public final class IotConnectorInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IotConnectorInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Accepted\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"cmgyud\",\"consumerGroup\":\"tlmoyrx\",\"fullyQualifiedEventHubNamespace\":\"fudwpznt\"},\"deviceMapping\":{\"content\":\"datazhlrqjb\"}},\"identity\":{\"type\":\"None\",\"principalId\":\"a53d7004-5aef-4469-985e-d1b8eb662695\",\"tenantId\":\"27e2d8d4-db58-41f7-a20d-666e635876b4\",\"userAssignedIdentities\":{\"bkyvp\":{\"principalId\":\"4d0d25bf-ba2e-4e33-b4bd-3e09beed54f9\",\"clientId\":\"634e36e6-31ac-4788-af0e-93b93618e6d0\"},\"n\":{\"principalId\":\"99104f5d-e544-4807-85d6-475e0b962a2c\",\"clientId\":\"37af4fda-bd3d-47e7-a4ac-9ee68bfe7541\"}}},\"tags\":{\"kafkuwbcrnwbm\":\"p\",\"us\":\"hhseyv\",\"ofmxagkvtmelmqkr\":\"tslhspkdeem\"},\"location\":\"hvljuahaquh\",\"etag\":\"hmdua\",\"id\":\"aex\",\"name\":\"pvfadmwsrcr\",\"type\":\"vxpvgomz\"}")
+            "{\"properties\":{\"provisioningState\":\"Accepted\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"cmgyud\",\"consumerGroup\":\"tlmoyrx\",\"fullyQualifiedEventHubNamespace\":\"fudwpznt\"},\"deviceMapping\":{\"content\":\"datazhlrqjb\"}},\"identity\":{\"type\":\"None\",\"principalId\":\"507bec27-b24c-46f4-b954-7285b04bf4cd\",\"tenantId\":\"8e21020a-cbe6-4484-bb68-754761ce72fd\",\"userAssignedIdentities\":{\"bkyvp\":{\"principalId\":\"6fb85e9f-9896-4a16-8e34-ac97b1e702c8\",\"clientId\":\"4ea66fc3-17a8-484e-b938-f794341153ab\"},\"n\":{\"principalId\":\"0e4a4a99-bcba-4d76-9dbf-457f9ee3bcb9\",\"clientId\":\"194ccb98-c19c-43d1-8838-d2820eda3593\"}}},\"tags\":{\"kafkuwbcrnwbm\":\"p\",\"us\":\"hhseyv\",\"ofmxagkvtmelmqkr\":\"tslhspkdeem\"},\"location\":\"hvljuahaquh\",\"etag\":\"hmdua\",\"id\":\"aex\",\"name\":\"pvfadmwsrcr\",\"type\":\"vxpvgomz\"}")
             .toObject(IotConnectorInner.class);
         Assertions.assertEquals("hmdua", model.etag());
         Assertions.assertEquals("hvljuahaquh", model.location());
@@ -32,13 +32,15 @@ public final class IotConnectorInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IotConnectorInner model = new IotConnectorInner().withEtag("hmdua").withLocation("hvljuahaquh")
+        IotConnectorInner model = new IotConnectorInner().withEtag("hmdua")
+            .withLocation("hvljuahaquh")
             .withTags(mapOf("kafkuwbcrnwbm", "p", "us", "hhseyv", "ofmxagkvtmelmqkr", "tslhspkdeem"))
             .withIdentity(new ServiceManagedIdentityIdentity().withType(ServiceManagedIdentityType.NONE)
                 .withUserAssignedIdentities(
                     mapOf("bkyvp", new UserAssignedIdentity(), "n", new UserAssignedIdentity())))
             .withIngestionEndpointConfiguration(
-                new IotEventHubIngestionEndpointConfiguration().withEventHubName("cmgyud").withConsumerGroup("tlmoyrx")
+                new IotEventHubIngestionEndpointConfiguration().withEventHubName("cmgyud")
+                    .withConsumerGroup("tlmoyrx")
                     .withFullyQualifiedEventHubNamespace("fudwpznt"))
             .withDeviceMapping(new IotMappingProperties().withContent("datazhlrqjb"));
         model = BinaryData.fromObject(model).toObject(IotConnectorInner.class);

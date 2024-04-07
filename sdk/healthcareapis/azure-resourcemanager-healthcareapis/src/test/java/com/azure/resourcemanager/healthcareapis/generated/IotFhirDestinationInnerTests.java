@@ -24,8 +24,10 @@ public final class IotFhirDestinationInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IotFhirDestinationInner model = new IotFhirDestinationInner().withEtag("yjsflhhcaalnji").withLocation("mvb")
-            .withResourceIdentityResolutionType(IotIdentityResolutionType.LOOKUP).withFhirServiceResourceId("us")
+        IotFhirDestinationInner model = new IotFhirDestinationInner().withEtag("yjsflhhcaalnji")
+            .withLocation("mvb")
+            .withResourceIdentityResolutionType(IotIdentityResolutionType.LOOKUP)
+            .withFhirServiceResourceId("us")
             .withFhirMapping(new IotMappingProperties().withContent("datatouwaboekqv"));
         model = BinaryData.fromObject(model).toObject(IotFhirDestinationInner.class);
         Assertions.assertEquals("yjsflhhcaalnji", model.etag());

@@ -6,11 +6,9 @@ package com.azure.resourcemanager.healthcareapis.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.healthcareapis.HealthcareApisManager;
 import com.azure.resourcemanager.healthcareapis.models.IotConnector;
 import com.azure.resourcemanager.healthcareapis.models.IotEventHubIngestionEndpointConfiguration;
@@ -18,52 +16,41 @@ import com.azure.resourcemanager.healthcareapis.models.IotMappingProperties;
 import com.azure.resourcemanager.healthcareapis.models.ServiceManagedIdentityIdentity;
 import com.azure.resourcemanager.healthcareapis.models.ServiceManagedIdentityType;
 import com.azure.resourcemanager.healthcareapis.models.UserAssignedIdentity;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IotConnectorsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"mieknlraria\",\"consumerGroup\":\"iuagydwqfbylyrfg\",\"fullyQualifiedEventHubNamespace\":\"gtcojocqwo\"},\"deviceMapping\":{\"content\":\"datazjvusfzldmo\"}},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"adc67837-5200-44f6-9e2c-f509b019f67e\",\"tenantId\":\"c273ba6d-96b3-43dd-9b7e-ed2eb6f35432\",\"userAssignedIdentities\":{\"adpysownbt\":{\"principalId\":\"5b1ebe5f-9f28-4970-a932-14440b6a2efa\",\"clientId\":\"32a0b94b-2410-4f96-9f63-a5bbf5fc96e6\"},\"u\":{\"principalId\":\"beb95204-0e27-48ac-a5e9-7fd20a2e831f\",\"clientId\":\"f50f09b7-cb25-4428-95b6-f45655f932ba\"},\"qctojcmisof\":{\"principalId\":\"5d1fa6a3-da7f-4a7f-9f47-ca014e43a503\",\"clientId\":\"d94b4a67-06bc-49f6-bba2-fd139d1ac035\"},\"pe\":{\"principalId\":\"837a71ca-5834-4bb7-8b58-457c71d7d45c\",\"clientId\":\"b1c69d94-2575-4d48-89f0-63c5dabc2b05\"}}},\"tags\":{\"hihihlhzdsqtzbsr\":\"yqdhcuplcplcw\"},\"location\":\"o\",\"etag\":\"jhf\",\"id\":\"mvec\",\"name\":\"ctxmwoteyowcluq\",\"type\":\"vekqvgqo\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"mieknlraria\",\"consumerGroup\":\"iuagydwqfbylyrfg\",\"fullyQualifiedEventHubNamespace\":\"gtcojocqwo\"},\"deviceMapping\":{\"content\":\"datazjvusfzldmo\"}},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"2d5ed349-b9ff-4741-bfa0-0275ac5f018a\",\"tenantId\":\"396af023-7671-430c-90ef-b909bcf7c4e9\",\"userAssignedIdentities\":{\"adpysownbt\":{\"principalId\":\"50c7d43d-eef9-4ed9-8b00-b42c954ffb2f\",\"clientId\":\"a25ee620-2401-4a57-93a9-ed1399e5ed60\"},\"u\":{\"principalId\":\"88d7f921-c49a-401a-b73b-7cae79cde79c\",\"clientId\":\"fa9e1c30-701c-4e9a-ac99-2361780945dc\"},\"qctojcmisof\":{\"principalId\":\"d7d2e186-0e84-4cc7-bab6-9b53be7954cf\",\"clientId\":\"5b6b7492-4b2c-4c8d-bc90-f89a5f0b1f58\"},\"pe\":{\"principalId\":\"0e24e990-1cd9-4592-939d-44c18aa5fb88\",\"clientId\":\"8abb66fb-ca69-4b3b-8fe9-6660a47a8baf\"}}},\"tags\":{\"hihihlhzdsqtzbsr\":\"yqdhcuplcplcw\"},\"location\":\"o\",\"etag\":\"jhf\",\"id\":\"mvec\",\"name\":\"ctxmwoteyowcluq\",\"type\":\"vekqvgqo\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HealthcareApisManager manager = HealthcareApisManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        HealthcareApisManager manager = HealthcareApisManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        IotConnector response = manager.iotConnectors().define("frbbc").withExistingWorkspace("tppn", "dxzxhi")
+        IotConnector response = manager.iotConnectors()
+            .define("frbbc")
+            .withExistingWorkspace("tppn", "dxzxhi")
             .withRegion("kiscvwmzhwpl")
-            .withTags(mapOf("ud", "unzo", "hmfdnbzydvfvfcj", "cxgkmoyxcdyui", "gorf", "aeoisrvh")).withEtag("a")
+            .withTags(mapOf("ud", "unzo", "hmfdnbzydvfvfcj", "cxgkmoyxcdyui", "gorf", "aeoisrvh"))
+            .withEtag("a")
             .withIdentity(new ServiceManagedIdentityIdentity().withType(ServiceManagedIdentityType.NONE)
                 .withUserAssignedIdentities(mapOf("ckh", new UserAssignedIdentity(), "vdff", new UserAssignedIdentity(),
                     "fqroudas", new UserAssignedIdentity(), "ehhr", new UserAssignedIdentity())))
             .withIngestionEndpointConfiguration(new IotEventHubIngestionEndpointConfiguration().withEventHubName("ltd")
-                .withConsumerGroup("fkqojpy").withFullyQualifiedEventHubNamespace("gtrd"))
-            .withDeviceMapping(new IotMappingProperties().withContent("datafmzzsdymbrny")).create();
+                .withConsumerGroup("fkqojpy")
+                .withFullyQualifiedEventHubNamespace("gtrd"))
+            .withDeviceMapping(new IotMappingProperties().withContent("datafmzzsdymbrny"))
+            .create();
 
         Assertions.assertEquals("jhf", response.etag());
         Assertions.assertEquals("o", response.location());

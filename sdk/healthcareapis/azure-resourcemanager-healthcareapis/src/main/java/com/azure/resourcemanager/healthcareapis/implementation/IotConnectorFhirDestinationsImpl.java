@@ -28,8 +28,8 @@ public final class IotConnectorFhirDestinationsImpl implements IotConnectorFhirD
 
     public Response<IotFhirDestination> getWithResponse(String resourceGroupName, String workspaceName,
         String iotConnectorName, String fhirDestinationName, Context context) {
-        Response<IotFhirDestinationInner> inner = this.serviceClient().getWithResponse(resourceGroupName, workspaceName,
-            iotConnectorName, fhirDestinationName, context);
+        Response<IotFhirDestinationInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new IotFhirDestinationImpl(inner.getValue(), this.manager()));

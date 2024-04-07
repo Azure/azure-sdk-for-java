@@ -17,7 +17,7 @@ public final class IotConnectorPatchResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IotConnectorPatchResource model = BinaryData.fromString(
-            "{\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"d05e4284-9301-4e05-ac4e-d1556dc80c12\",\"tenantId\":\"f1cf5c5e-0106-4e77-b9f0-d6682fc000fd\",\"userAssignedIdentities\":{\"xnrj\":{\"principalId\":\"c969dcb3-ed24-4952-bf50-6a9d3a49902b\",\"clientId\":\"fdcca290-234b-41e4-a361-d7f4036f3997\"}}},\"tags\":{\"bkpyc\":\"qwgxhniskx\",\"l\":\"klwndnhjdauwhv\",\"xujznbmpowu\":\"zbtd\",\"lupj\":\"przqlveu\"}}")
+            "{\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"61a9c54c-f34f-4bdf-bf82-e3c815e877e0\",\"tenantId\":\"595ed01d-0b91-4f10-81fe-276d69ebac5a\",\"userAssignedIdentities\":{\"xnrj\":{\"principalId\":\"c62e6c35-1dd7-4d79-985c-7ead8eb2808d\",\"clientId\":\"ac483187-32b7-47d6-b3a3-77af62a20402\"}}},\"tags\":{\"bkpyc\":\"qwgxhniskx\",\"l\":\"klwndnhjdauwhv\",\"xujznbmpowu\":\"zbtd\",\"lupj\":\"przqlveu\"}}")
             .toObject(IotConnectorPatchResource.class);
         Assertions.assertEquals("qwgxhniskx", model.tags().get("bkpyc"));
         Assertions.assertEquals(ServiceManagedIdentityType.SYSTEM_ASSIGNED, model.identity().type());

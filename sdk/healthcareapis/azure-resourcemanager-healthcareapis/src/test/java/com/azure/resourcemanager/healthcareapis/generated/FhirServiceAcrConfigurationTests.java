@@ -27,11 +27,14 @@ public final class FhirServiceAcrConfigurationTests {
         FhirServiceAcrConfiguration model
             = new FhirServiceAcrConfiguration().withLoginServers(Arrays.asList("tiiswacffg", "k", "zewk"))
                 .withOciArtifacts(Arrays.asList(
-                    new ServiceOciArtifactEntry().withLoginServer("crailvpn").withImageName("fuflrwdmhdlx")
+                    new ServiceOciArtifactEntry().withLoginServer("crailvpn")
+                        .withImageName("fuflrwdmhdlx")
                         .withDigest("rxsagafcnihgwqa"),
-                    new ServiceOciArtifactEntry().withLoginServer("edgfbcvkcvq").withImageName("keqdcvdrhvoods")
+                    new ServiceOciArtifactEntry().withLoginServer("edgfbcvkcvq")
+                        .withImageName("keqdcvdrhvoods")
                         .withDigest("bobzdopcjwvnhd"),
-                    new ServiceOciArtifactEntry().withLoginServer("wmgxcxrsl").withImageName("utwu")
+                    new ServiceOciArtifactEntry().withLoginServer("wmgxcxrsl")
+                        .withImageName("utwu")
                         .withDigest("grpkhjwniyqs")));
         model = BinaryData.fromObject(model).toObject(FhirServiceAcrConfiguration.class);
         Assertions.assertEquals("tiiswacffg", model.loginServers().get(0));

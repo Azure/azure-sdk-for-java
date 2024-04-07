@@ -31,14 +31,17 @@ public final class FhirServiceAuthenticationConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FhirServiceAuthenticationConfiguration model
-            = new FhirServiceAuthenticationConfiguration().withAuthority("i").withAudience("dggkzzlvmbmpa")
+            = new FhirServiceAuthenticationConfiguration().withAuthority("i")
+                .withAudience("dggkzzlvmbmpa")
                 .withSmartProxyEnabled(true)
                 .withSmartIdentityProviders(Arrays.asList(new SmartIdentityProviderConfiguration()
                     .withAuthority("uefywsbpfvmwy")
                     .withApplications(Arrays.asList(
-                        new SmartIdentityProviderApplication().withClientId("uyfta").withAudience("cpwi")
+                        new SmartIdentityProviderApplication().withClientId("uyfta")
+                            .withAudience("cpwi")
                             .withAllowedDataActions(Arrays.asList(SmartDataActions.READ, SmartDataActions.READ)),
-                        new SmartIdentityProviderApplication().withClientId("nubexk").withAudience("ksmond")
+                        new SmartIdentityProviderApplication().withClientId("nubexk")
+                            .withAudience("ksmond")
                             .withAllowedDataActions(
                                 Arrays.asList(SmartDataActions.READ, SmartDataActions.READ, SmartDataActions.READ))))));
         model = BinaryData.fromObject(model).toObject(FhirServiceAuthenticationConfiguration.class);
