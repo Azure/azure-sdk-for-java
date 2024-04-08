@@ -756,7 +756,8 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
 
     static protected void safeDeleteAllCollectionsWithPrefix(CosmosDatabase database, String prefix) {
         if (database != null) {
-            List<CosmosContainerProperties> collections = database.readAllContainers().stream().toList();
+            List<CosmosContainerProperties> collections =
+                database.readAllContainers().stream().collect(Collectors.toList());
 
             for (CosmosContainerProperties collection : collections) {
                 if (!collection.getId().startsWith(prefix)) {
