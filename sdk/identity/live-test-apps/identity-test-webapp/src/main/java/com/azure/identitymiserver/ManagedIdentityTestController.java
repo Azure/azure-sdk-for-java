@@ -1,9 +1,10 @@
 package com.azure.identitymiserver;
 
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,10 +23,18 @@ public class ManagedIdentityTestController {
         ManagedIdentityCredential credential1 = new ManagedIdentityCredentialBuilder().build();
         ManagedIdentityCredential credential2 = new ManagedIdentityCredentialBuilder().resourceId(resourceId).build();
 
+        BlobServiceClient systemAssignedBlobClient = new BlobServiceClientBuilder()
+            .endpoint("https://" + account1 + ".blob.core.windows.net")
+            .credential(credential1)
+            .buildClient();
+        BlobServiceClient userAssignedBlobClient = new BlobServiceClientBuilder()
+            .endpoint("https://" + account2 + ".blob.core.windows.net")
+            .credential(credential2)
+            .buildClient();
 
         try {
-            credential1.getTokenSync(new TokenRequestContext().addScopes("https://management.azure.com/.default"));
-            credential2.getTokenSync(new TokenRequestContext().addScopes("https://management.azure.com/.default"));
+            systemAssignedBlobClient.listBlobContainers().forEach(container -> container.getName());
+            userAssignedBlobClient.listBlobContainers().forEach(container -> container.getName());
             return "Successfully acquired a token from ManagedIdentityCredential";
         } catch (Exception ex) {
             return "Failed to acquire a token from ManagedIdentityCredential";
