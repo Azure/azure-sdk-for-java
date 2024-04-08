@@ -229,3 +229,7 @@ steps:
       goals: 'clean'
     env: ${{ parameters.TestEnvVars }}
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
+
+  - pwsh: |
+      Remove-Item -Path .assets -Recurse -Force
+    displayName: 'Remove assets'
