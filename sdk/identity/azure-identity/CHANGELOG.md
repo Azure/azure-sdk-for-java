@@ -3,7 +3,7 @@
 ## 1.12.0 (2024-04-08)
 
 ### Features Added
-- Added default sign-in experience for brokered authentication. [#39284](https://github.com/Azure/azure-sdk-for-java/pull/39284) 
+- Added default sign-in experience for brokered authentication. See the documentation in the `azure-identity-broker` package for more information. [#39284](https://github.com/Azure/azure-sdk-for-java/pull/39284) 
 
 ### Breaking Changes
 #### Behavioral Breaking Changes
