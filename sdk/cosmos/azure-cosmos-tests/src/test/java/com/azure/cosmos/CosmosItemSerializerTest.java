@@ -6,15 +6,12 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.CosmosBatch;
-import com.azure.cosmos.models.CosmosBatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
-import com.azure.cosmos.models.CosmosBulkItemRequestOptions;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
