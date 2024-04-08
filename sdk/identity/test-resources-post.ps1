@@ -44,6 +44,7 @@ az account set --subscription $(getVariable('IDENTITY_SUBSCRIPTION_ID'))
 
 mvn clean install -DskipTests "-Drevapi.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" -f $azBuildToolsRootPom | Write-Host
 mvn clean install -DskipTests "-Drevapi.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" -f "$azSerRootPom/azure-json/pom.xml" | Write-Host
+mvn clean install -DskipTests "-Drevapi.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" -f "$azSerRootPom/azure-xml/pom.xml" | Write-Host
 mvn clean install -DskipTests "-Drevapi.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" -f "$azCoreRootPom/azure-core/pom.xml" | Write-Host
 mvn clean install -DskipTests "-Drevapi.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" -f "$azCoreRootPom/azure-core-test/pom.xml" | Write-Host
 mvn clean install -DskipTests "-Drevapi.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" -f "$azCoreRootPom/azure-core-http-netty/pom.xml" | Write-Host
