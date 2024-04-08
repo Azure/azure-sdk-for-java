@@ -178,6 +178,8 @@
     "sdk/parents/azure-client-sdk-parent/**",
     "sdk/parents/azure-sdk-parent/**",
     "sdk/parents/azure-data-sdk-parent/**",
+    "sdk/parents/clientcore-io-client-parent/**",
+    "sdk/parents/clientcore-io-parent/**",
     "sdk/personalizer/azure-ai-personalizer/**",
     "sdk/personalizer/test-resources.json",
     "sdk/purview/azure-analytics-purview-administration/**",

@@ -38,3 +38,9 @@ extends:
       - name: azure-perf-test-parent
         groupId: com.azure
         safeName: azureperftestparent
+      - name: clientcore-io-client-parent
+        groupId: io.clientcore
+        safeName: clientcoreclientparent
+      - name: clientcore-io-parent
+        groupId: io.clientcore
+        safeName: clientcoreioparent
