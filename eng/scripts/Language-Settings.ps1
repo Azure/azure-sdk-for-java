@@ -164,6 +164,7 @@ function Get-java-DocsMsDevLanguageSpecificPackageInfo($packageInfo, $packageSou
       $tempNamespaces += $packageInfo.Name
       $packageInfo | Add-Member -Type NoteProperty -Name "Namespaces" -Value $tempNamespaces
     }
+  }
 }
 
 # Stage and Upload Docs to blob Storage
