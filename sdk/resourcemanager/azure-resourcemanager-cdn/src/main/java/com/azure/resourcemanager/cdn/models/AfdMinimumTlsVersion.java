@@ -7,15 +7,23 @@ package com.azure.resourcemanager.cdn.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** TLS protocol version that will be used for Https. */
+/**
+ * TLS protocol version that will be used for Https.
+ */
 public enum AfdMinimumTlsVersion {
-    /** Enum value TLS10. */
+    /**
+     * Enum value TLS10.
+     */
     TLS10("TLS10"),
 
-    /** Enum value TLS12. */
+    /**
+     * Enum value TLS12.
+     */
     TLS12("TLS12");
 
-    /** The actual serialized value for a AfdMinimumTlsVersion instance. */
+    /**
+     * The actual serialized value for a AfdMinimumTlsVersion instance.
+     */
     private final String value;
 
     AfdMinimumTlsVersion(String value) {
@@ -24,7 +32,7 @@ public enum AfdMinimumTlsVersion {
 
     /**
      * Parses a serialized value to a AfdMinimumTlsVersion instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AfdMinimumTlsVersion object, or null if unable to parse.
      */
@@ -42,7 +50,9 @@ public enum AfdMinimumTlsVersion {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

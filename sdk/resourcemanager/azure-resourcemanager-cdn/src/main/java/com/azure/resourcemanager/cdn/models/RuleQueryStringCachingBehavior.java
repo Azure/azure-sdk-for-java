@@ -13,23 +13,31 @@ import java.util.Collection;
  * ignore specific query strings, cache every request with a unique URL, or cache specific query strings.
  */
 public final class RuleQueryStringCachingBehavior extends ExpandableStringEnum<RuleQueryStringCachingBehavior> {
-    /** Static value IgnoreQueryString for RuleQueryStringCachingBehavior. */
+    /**
+     * Static value IgnoreQueryString for RuleQueryStringCachingBehavior.
+     */
     public static final RuleQueryStringCachingBehavior IGNORE_QUERY_STRING = fromString("IgnoreQueryString");
 
-    /** Static value UseQueryString for RuleQueryStringCachingBehavior. */
+    /**
+     * Static value UseQueryString for RuleQueryStringCachingBehavior.
+     */
     public static final RuleQueryStringCachingBehavior USE_QUERY_STRING = fromString("UseQueryString");
 
-    /** Static value IgnoreSpecifiedQueryStrings for RuleQueryStringCachingBehavior. */
-    public static final RuleQueryStringCachingBehavior IGNORE_SPECIFIED_QUERY_STRINGS =
-        fromString("IgnoreSpecifiedQueryStrings");
+    /**
+     * Static value IgnoreSpecifiedQueryStrings for RuleQueryStringCachingBehavior.
+     */
+    public static final RuleQueryStringCachingBehavior IGNORE_SPECIFIED_QUERY_STRINGS
+        = fromString("IgnoreSpecifiedQueryStrings");
 
-    /** Static value IncludeSpecifiedQueryStrings for RuleQueryStringCachingBehavior. */
-    public static final RuleQueryStringCachingBehavior INCLUDE_SPECIFIED_QUERY_STRINGS =
-        fromString("IncludeSpecifiedQueryStrings");
+    /**
+     * Static value IncludeSpecifiedQueryStrings for RuleQueryStringCachingBehavior.
+     */
+    public static final RuleQueryStringCachingBehavior INCLUDE_SPECIFIED_QUERY_STRINGS
+        = fromString("IncludeSpecifiedQueryStrings");
 
     /**
      * Creates a new instance of RuleQueryStringCachingBehavior value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -38,7 +46,7 @@ public final class RuleQueryStringCachingBehavior extends ExpandableStringEnum<R
 
     /**
      * Creates or finds a RuleQueryStringCachingBehavior from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RuleQueryStringCachingBehavior.
      */
@@ -49,7 +57,7 @@ public final class RuleQueryStringCachingBehavior extends ExpandableStringEnum<R
 
     /**
      * Gets known RuleQueryStringCachingBehavior values.
-     *
+     * 
      * @return known RuleQueryStringCachingBehavior values.
      */
     public static Collection<RuleQueryStringCachingBehavior> values() {

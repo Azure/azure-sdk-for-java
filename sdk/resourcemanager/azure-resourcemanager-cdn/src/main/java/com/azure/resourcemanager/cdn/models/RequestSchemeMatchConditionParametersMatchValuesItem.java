@@ -8,18 +8,24 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RequestSchemeMatchConditionParametersMatchValuesItem. */
+/**
+ * Defines values for RequestSchemeMatchConditionParametersMatchValuesItem.
+ */
 public final class RequestSchemeMatchConditionParametersMatchValuesItem
     extends ExpandableStringEnum<RequestSchemeMatchConditionParametersMatchValuesItem> {
-    /** Static value HTTP for RequestSchemeMatchConditionParametersMatchValuesItem. */
+    /**
+     * Static value HTTP for RequestSchemeMatchConditionParametersMatchValuesItem.
+     */
     public static final RequestSchemeMatchConditionParametersMatchValuesItem HTTP = fromString("HTTP");
 
-    /** Static value HTTPS for RequestSchemeMatchConditionParametersMatchValuesItem. */
+    /**
+     * Static value HTTPS for RequestSchemeMatchConditionParametersMatchValuesItem.
+     */
     public static final RequestSchemeMatchConditionParametersMatchValuesItem HTTPS = fromString("HTTPS");
 
     /**
      * Creates a new instance of RequestSchemeMatchConditionParametersMatchValuesItem value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -28,7 +34,7 @@ public final class RequestSchemeMatchConditionParametersMatchValuesItem
 
     /**
      * Creates or finds a RequestSchemeMatchConditionParametersMatchValuesItem from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RequestSchemeMatchConditionParametersMatchValuesItem.
      */
@@ -39,7 +45,7 @@ public final class RequestSchemeMatchConditionParametersMatchValuesItem
 
     /**
      * Gets known RequestSchemeMatchConditionParametersMatchValuesItem values.
-     *
+     * 
      * @return known RequestSchemeMatchConditionParametersMatchValuesItem values.
      */
     public static Collection<RequestSchemeMatchConditionParametersMatchValuesItem> values() {

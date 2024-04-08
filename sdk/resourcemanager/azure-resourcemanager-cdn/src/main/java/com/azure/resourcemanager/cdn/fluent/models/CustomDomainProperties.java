@@ -12,7 +12,9 @@ import com.azure.resourcemanager.cdn.models.CustomHttpsProvisioningState;
 import com.azure.resourcemanager.cdn.models.CustomHttpsProvisioningSubstate;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The JSON object that contains the properties of the custom domain to create. */
+/**
+ * The JSON object that contains the properties of the custom domain to create.
+ */
 @Fluent
 public final class CustomDomainProperties {
     /*
@@ -58,13 +60,15 @@ public final class CustomDomainProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private CustomHttpsProvisioningState provisioningState;
 
-    /** Creates an instance of CustomDomainProperties class. */
+    /**
+     * Creates an instance of CustomDomainProperties class.
+     */
     public CustomDomainProperties() {
     }
 
     /**
      * Get the hostname property: The host name of the custom domain. Must be a domain name.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -73,7 +77,7 @@ public final class CustomDomainProperties {
 
     /**
      * Set the hostname property: The host name of the custom domain. Must be a domain name.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the CustomDomainProperties object itself.
      */
@@ -84,7 +88,7 @@ public final class CustomDomainProperties {
 
     /**
      * Get the resourceState property: Resource status of the custom domain.
-     *
+     * 
      * @return the resourceState value.
      */
     public CustomDomainResourceState resourceState() {
@@ -93,7 +97,7 @@ public final class CustomDomainProperties {
 
     /**
      * Get the customHttpsProvisioningState property: Provisioning status of the custom domain.
-     *
+     * 
      * @return the customHttpsProvisioningState value.
      */
     public CustomHttpsProvisioningState customHttpsProvisioningState() {
@@ -103,7 +107,7 @@ public final class CustomDomainProperties {
     /**
      * Get the customHttpsProvisioningSubstate property: Provisioning substate shows the progress of custom HTTPS
      * enabling/disabling process step by step.
-     *
+     * 
      * @return the customHttpsProvisioningSubstate value.
      */
     public CustomHttpsProvisioningSubstate customHttpsProvisioningSubstate() {
@@ -112,7 +116,7 @@ public final class CustomDomainProperties {
 
     /**
      * Get the customHttpsParameters property: Certificate parameters for securing custom HTTPS.
-     *
+     * 
      * @return the customHttpsParameters value.
      */
     public CustomDomainHttpsParameters customHttpsParameters() {
@@ -121,7 +125,7 @@ public final class CustomDomainProperties {
 
     /**
      * Set the customHttpsParameters property: Certificate parameters for securing custom HTTPS.
-     *
+     * 
      * @param customHttpsParameters the customHttpsParameters value to set.
      * @return the CustomDomainProperties object itself.
      */
@@ -134,7 +138,7 @@ public final class CustomDomainProperties {
      * Get the validationData property: Special validation or data may be required when delivering CDN to some regions
      * due to local compliance reasons. E.g. ICP license number of a custom domain is required to deliver content in
      * China.
-     *
+     * 
      * @return the validationData value.
      */
     public String validationData() {
@@ -145,7 +149,7 @@ public final class CustomDomainProperties {
      * Set the validationData property: Special validation or data may be required when delivering CDN to some regions
      * due to local compliance reasons. E.g. ICP license number of a custom domain is required to deliver content in
      * China.
-     *
+     * 
      * @param validationData the validationData value to set.
      * @return the CustomDomainProperties object itself.
      */
@@ -156,7 +160,7 @@ public final class CustomDomainProperties {
 
     /**
      * Get the provisioningState property: Provisioning status of Custom Https of the custom domain.
-     *
+     * 
      * @return the provisioningState value.
      */
     public CustomHttpsProvisioningState provisioningState() {
@@ -165,14 +169,13 @@ public final class CustomDomainProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (hostname() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property hostname in model CustomDomainProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property hostname in model CustomDomainProperties"));
         }
         if (customHttpsParameters() != null) {
             customHttpsParameters().validate();
