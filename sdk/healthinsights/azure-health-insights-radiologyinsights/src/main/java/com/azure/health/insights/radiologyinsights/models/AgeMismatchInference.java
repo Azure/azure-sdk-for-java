@@ -19,13 +19,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Immutable
 public final class AgeMismatchInference extends RadiologyInsightsInference {
 
-    /**
-     * Creates an instance of AgeMismatchInference class.
-     */
-    @Generated
-    private AgeMismatchInference() {
-    }
-
     /*
      * Inference type.
      */
@@ -33,6 +26,13 @@ public final class AgeMismatchInference extends RadiologyInsightsInference {
     @JsonTypeId
     @JsonProperty(value = "kind")
     private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.AGE_MISMATCH;
+
+    /**
+     * Creates an instance of AgeMismatchInference class.
+     */
+    @Generated
+    private AgeMismatchInference() {
+    }
 
     /**
      * Get the kind property: Inference type.

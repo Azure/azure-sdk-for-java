@@ -26,6 +26,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class LateralityDiscrepancyInference extends RadiologyInsightsInference {
 
     /*
+     * Inference type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.LATERALITY_DISCREPANCY;
+
+    /*
      * Laterality indication : SNOMED CT code for laterality qualifier value.
      */
     @Generated
@@ -52,6 +60,17 @@ public final class LateralityDiscrepancyInference extends RadiologyInsightsInfer
     }
 
     /**
+     * Get the kind property: Inference type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RadiologyInsightsInferenceType getKind() {
+        return this.kind;
+    }
+
+    /**
      * Get the lateralityIndication property: Laterality indication : SNOMED CT code for laterality qualifier value.
      *
      * @return the lateralityIndication value.
@@ -70,24 +89,5 @@ public final class LateralityDiscrepancyInference extends RadiologyInsightsInfer
     @Generated
     public LateralityDiscrepancyType getDiscrepancyType() {
         return this.discrepancyType;
-    }
-
-    /*
-     * Inference type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.LATERALITY_DISCREPANCY;
-
-    /**
-     * Get the kind property: Inference type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public RadiologyInsightsInferenceType getKind() {
-        return this.kind;
     }
 }

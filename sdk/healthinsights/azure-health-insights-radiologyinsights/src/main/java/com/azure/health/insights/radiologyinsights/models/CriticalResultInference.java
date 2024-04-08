@@ -25,6 +25,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class CriticalResultInference extends RadiologyInsightsInference {
 
     /*
+     * Inference type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.CRITICAL_RESULT;
+
+    /*
      * The complete Critical Result, as outlined below, will be reused for the recommendation.
      */
     @Generated
@@ -43,24 +51,6 @@ public final class CriticalResultInference extends RadiologyInsightsInference {
     }
 
     /**
-     * Get the result property: The complete Critical Result, as outlined below, will be reused for the recommendation.
-     *
-     * @return the result value.
-     */
-    @Generated
-    public CriticalResult getResult() {
-        return this.result;
-    }
-
-    /*
-     * Inference type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.CRITICAL_RESULT;
-
-    /**
      * Get the kind property: Inference type.
      *
      * @return the kind value.
@@ -69,5 +59,15 @@ public final class CriticalResultInference extends RadiologyInsightsInference {
     @Override
     public RadiologyInsightsInferenceType getKind() {
         return this.kind;
+    }
+
+    /**
+     * Get the result property: The complete Critical Result, as outlined below, will be reused for the recommendation.
+     *
+     * @return the result value.
+     */
+    @Generated
+    public CriticalResult getResult() {
+        return this.result;
     }
 }

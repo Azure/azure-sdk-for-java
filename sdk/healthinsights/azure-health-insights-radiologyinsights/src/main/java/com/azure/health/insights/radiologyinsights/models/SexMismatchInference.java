@@ -22,6 +22,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class SexMismatchInference extends RadiologyInsightsInference {
 
     /*
+     * Inference type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.SEX_MISMATCH;
+
+    /*
      * Sex indication : SNOMED CT code for gender finding.
      */
     @Generated
@@ -40,24 +48,6 @@ public final class SexMismatchInference extends RadiologyInsightsInference {
     }
 
     /**
-     * Get the sexIndication property: Sex indication : SNOMED CT code for gender finding.
-     *
-     * @return the sexIndication value.
-     */
-    @Generated
-    public FhirR4CodeableConcept getSexIndication() {
-        return this.sexIndication;
-    }
-
-    /*
-     * Inference type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.SEX_MISMATCH;
-
-    /**
      * Get the kind property: Inference type.
      *
      * @return the kind value.
@@ -66,5 +56,15 @@ public final class SexMismatchInference extends RadiologyInsightsInference {
     @Override
     public RadiologyInsightsInferenceType getKind() {
         return this.kind;
+    }
+
+    /**
+     * Get the sexIndication property: Sex indication : SNOMED CT code for gender finding.
+     *
+     * @return the sexIndication value.
+     */
+    @Generated
+    public FhirR4CodeableConcept getSexIndication() {
+        return this.sexIndication;
     }
 }

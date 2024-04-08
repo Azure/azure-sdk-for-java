@@ -26,6 +26,14 @@ import java.util.List;
 public final class CompleteOrderDiscrepancyInference extends RadiologyInsightsInference {
 
     /*
+     * Inference type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.COMPLETE_ORDER_DISCREPANCY;
+
+    /*
      * Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or breast.
      */
     @Generated
@@ -58,6 +66,17 @@ public final class CompleteOrderDiscrepancyInference extends RadiologyInsightsIn
     }
 
     /**
+     * Get the kind property: Inference type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RadiologyInsightsInferenceType getKind() {
+        return this.kind;
+    }
+
+    /**
      * Get the orderType property: Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or
      * breast.
      *
@@ -87,24 +106,5 @@ public final class CompleteOrderDiscrepancyInference extends RadiologyInsightsIn
     @Generated
     public List<FhirR4CodeableConcept> getMissingBodyPartMeasurements() {
         return this.missingBodyPartMeasurements;
-    }
-
-    /*
-     * Inference type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.COMPLETE_ORDER_DISCREPANCY;
-
-    /**
-     * Get the kind property: Inference type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public RadiologyInsightsInferenceType getKind() {
-        return this.kind;
     }
 }

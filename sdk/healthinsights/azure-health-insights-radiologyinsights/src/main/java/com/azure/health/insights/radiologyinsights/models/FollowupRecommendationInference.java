@@ -26,6 +26,14 @@ import java.util.List;
 public final class FollowupRecommendationInference extends RadiologyInsightsInference {
 
     /*
+     * Inference type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.FOLLOWUP_RECOMMENDATION;
+
+    /*
      * Date and time are displayed when the procedure is recommended to be done at a specific point in time.
      */
     @Generated
@@ -101,6 +109,17 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
         this.isGuideline = isGuideline;
         this.isHedging = isHedging;
         this.recommendedProcedure = recommendedProcedure;
+    }
+
+    /**
+     * Get the kind property: Inference type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RadiologyInsightsInferenceType getKind() {
+        return this.kind;
     }
 
     /**
@@ -189,24 +208,5 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
     @Generated
     public ProcedureRecommendation getRecommendedProcedure() {
         return this.recommendedProcedure;
-    }
-
-    /*
-     * Inference type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.FOLLOWUP_RECOMMENDATION;
-
-    /**
-     * Get the kind property: Inference type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public RadiologyInsightsInferenceType getKind() {
-        return this.kind;
     }
 }

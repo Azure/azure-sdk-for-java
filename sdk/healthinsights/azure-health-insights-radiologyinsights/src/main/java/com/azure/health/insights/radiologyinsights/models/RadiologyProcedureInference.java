@@ -26,6 +26,14 @@ import java.util.List;
 public final class RadiologyProcedureInference extends RadiologyInsightsInference {
 
     /*
+     * Inference type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.RADIOLOGY_PROCEDURE;
+
+    /*
      * LOINC codes for the procedure.
      */
     @Generated
@@ -45,6 +53,32 @@ public final class RadiologyProcedureInference extends RadiologyInsightsInferenc
     @Generated
     @JsonProperty(value = "orderedProcedure")
     private final OrderedProcedure orderedProcedure;
+
+    /**
+     * Creates an instance of RadiologyProcedureInference class.
+     *
+     * @param imagingProcedures the imagingProcedures value to set.
+     * @param orderedProcedure the orderedProcedure value to set.
+     */
+    @Generated
+    @JsonCreator
+    private RadiologyProcedureInference(
+        @JsonProperty(value = "imagingProcedures") List<ImagingProcedure> imagingProcedures,
+        @JsonProperty(value = "orderedProcedure") OrderedProcedure orderedProcedure) {
+        this.imagingProcedures = imagingProcedures;
+        this.orderedProcedure = orderedProcedure;
+    }
+
+    /**
+     * Get the kind property: Inference type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RadiologyInsightsInferenceType getKind() {
+        return this.kind;
+    }
 
     /**
      * Get the procedureCodes property: LOINC codes for the procedure.
@@ -74,39 +108,5 @@ public final class RadiologyProcedureInference extends RadiologyInsightsInferenc
     @Generated
     public OrderedProcedure getOrderedProcedure() {
         return this.orderedProcedure;
-    }
-
-    /*
-     * Inference type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.RADIOLOGY_PROCEDURE;
-
-    /**
-     * Get the kind property: Inference type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public RadiologyInsightsInferenceType getKind() {
-        return this.kind;
-    }
-
-    /**
-     * Creates an instance of RadiologyProcedureInference class.
-     *
-     * @param imagingProcedures the imagingProcedures value to set.
-     * @param orderedProcedure the orderedProcedure value to set.
-     */
-    @Generated
-    @JsonCreator
-    private RadiologyProcedureInference(
-        @JsonProperty(value = "imagingProcedures") List<ImagingProcedure> imagingProcedures,
-        @JsonProperty(value = "orderedProcedure") OrderedProcedure orderedProcedure) {
-        this.imagingProcedures = imagingProcedures;
-        this.orderedProcedure = orderedProcedure;
     }
 }
