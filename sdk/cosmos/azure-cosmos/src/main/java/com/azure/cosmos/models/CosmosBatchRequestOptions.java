@@ -27,10 +27,14 @@ public final class CosmosBatchRequestOptions {
 
     private CosmosItemSerializer customSerializer;
 
+    /**
+     * Creates an instance of the CosmosBatchRequestOptions class
+     */
     public CosmosBatchRequestOptions() {
     }
 
-    public CosmosBatchRequestOptions(CosmosBatchRequestOptions toBeCloned) {
+
+    CosmosBatchRequestOptions(CosmosBatchRequestOptions toBeCloned) {
         this.consistencyLevel = toBeCloned.consistencyLevel;
         this.sessionToken = toBeCloned.sessionToken;
         this.customOptions = toBeCloned.customOptions;
@@ -222,6 +226,11 @@ public final class CosmosBatchRequestOptions {
                 @Override
                 public List<String> getExcludeRegions(CosmosBatchRequestOptions cosmosBatchRequestOptions) {
                     return cosmosBatchRequestOptions.excludeRegions;
+                }
+
+                @Override
+                public CosmosBatchRequestOptions clone(CosmosBatchRequestOptions toBeCloned) {
+                    return new CosmosBatchRequestOptions(toBeCloned);
                 }
             }
         );

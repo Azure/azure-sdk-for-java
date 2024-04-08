@@ -1426,9 +1426,9 @@ public final class CosmosEncryptionAsyncContainer {
 
         CosmosBatch encryptedCosmosBatch = CosmosBatch.createCosmosBatch(cosmosBatch.getPartitionKeyValue());
 
-        CosmosBatchRequestOptions batchRequestOptionsWithDefaultSerializer =
-            new CosmosBatchRequestOptions(cosmosBatchRequestOptions)
-                .setCustomSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
+        CosmosBatchRequestOptions batchRequestOptionsWithDefaultSerializer = cosmosBatchRequestOptionsAccessor
+            .clone(cosmosBatchRequestOptions)
+            .setCustomSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
 
         return encryptedOperationListMono.flatMap(itemBatchOperations -> {
             cosmosBatchAccessor.getOperationsInternal(encryptedCosmosBatch).addAll(itemBatchOperations);
