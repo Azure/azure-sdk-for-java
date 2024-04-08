@@ -74,6 +74,20 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
     private static final String METADATA_POLL_DELAY_MS_CONFIG_DISPLAY = "Metadata polling delay in ms.";
     private static final int DEFAULT_METADATA_POLL_DELAY_MS = 5 * 60 * 1000; // default is every 5 minutes
 
+    private static final String METADATA_STORAGE_TYPE = SOURCE_CONFIG_PREFIX + "metadata.storage.type";
+    private static final String METADATA_STORAGE_TYPE_DOC = "The storage type of the metadata. Two types are supported: Cosmos, Kafka. " +
+        "For ";
+    private static final String METADATA_STORAGE_TYPE_DISPLAY = "The storage source of the metadata.";
+    private static final String DEFAULT_METADATA_STORAGE_TYPE = CosmosMetadataStorageType.KAFKA.getName();
+
+    // TODO [this PR] should we allow using different account for the metadata - no reason no
+    // TODO [this PR] should we create the metadata container if it does not exist
+    private static final String METADATA_STORAGE_CONTAINER = SOURCE_CONFIG_PREFIX + "metadata.storage.container";
+    private static final String METADATA_STORAGE_CONTAINER_DOC = "The name of the container for metadata. The container will be created if it does not already exist,"
+        + " else it will use the pre-created container.";
+    private static final String METADATA_STORAGE_CONTAINER_DISPLAY = "Metadata storage cosmos container.";
+    private static final String DEFAULT_METADATA_STORAGE_CONTAINER = "CosmosMetadata";
+
     private static final String METADATA_STORAGE_TOPIC_CONFIG = SOURCE_CONFIG_PREFIX + "metadata.storage.topic";
     private static final String METADATA_STORAGE_TOPIC_CONFIG_DOC = "The name of the topic where the metadata are stored. "
         + "The metadata topic will be created if it does not already exist, else it will use the pre-created topic.";
@@ -190,6 +204,18 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
                 METADATA_POLL_DELAY_MS_CONFIG_DISPLAY
             )
             .define(
+                METADATA_STORAGE_TYPE,
+                ConfigDef.Type.STRING,
+                DEFAULT_METADATA_STORAGE_TYPE,
+                new CosmosMetadataStorageTypeValidator(),
+                ConfigDef.Importance.MEDIUM,
+                METADATA_STORAGE_TYPE_DOC,
+                metadataGroupName,
+                metadataGroupOrder++,
+                ConfigDef.Width.MEDIUM,
+                METADATA_STORAGE_TYPE_DISPLAY
+            )
+            .define(
                 METADATA_STORAGE_TOPIC_CONFIG,
                 ConfigDef.Type.STRING,
                 DEFAULT_METADATA_STORAGE_TOPIC,
@@ -200,6 +226,17 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
                 metadataGroupOrder++,
                 ConfigDef.Width.LONG,
                 METADATA_STORAGE_TOPIC_CONFIG_DISPLAY
+            )
+            .define(
+                METADATA_STORAGE_CONTAINER,
+                ConfigDef.Type.STRING,
+                DEFAULT_METADATA_STORAGE_CONTAINER,
+                ConfigDef.Importance.MEDIUM,
+                METADATA_STORAGE_CONTAINER_DOC,
+                metadataGroupName,
+                metadataGroupOrder++,
+                ConfigDef.Width.LONG,
+                METADATA_STORAGE_CONTAINER_DISPLAY
             );
     }
 
@@ -299,11 +336,17 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
 
     private CosmosMetadataConfig parseMetadataConfig() {
         int metadataPollDelayInMs = this.getInt(METADATA_POLL_DELAY_MS_CONFIG);
+        CosmosMetadataStorageType metadataStorageType = this.parseMetadataStorageSource();
         String metadataTopicName = this.getString(METADATA_STORAGE_TOPIC_CONFIG);
+        String metadataContainerName = this.getString(METADATA_STORAGE_CONTAINER);
 
-        return new CosmosMetadataConfig(metadataPollDelayInMs, metadataTopicName);
+        return new CosmosMetadataConfig(metadataPollDelayInMs, metadataStorageType, metadataTopicName, metadataContainerName);
     }
 
+    private CosmosMetadataStorageType parseMetadataStorageSource() {
+        String source = this.getString(METADATA_STORAGE_TYPE);
+        return CosmosMetadataStorageType.fromName(source);
+    }
     private CosmosSourceChangeFeedConfig parseChangeFeedConfig() {
         CosmosChangeFeedModes changeFeedModes = this.parseChangeFeedMode();
         CosmosChangeFeedStartFromModes changeFeedStartFromMode = this.parseChangeFeedStartFromMode();
@@ -467,6 +510,27 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
         @Override
         public String toString() {
             return "Value need to be >= 0";
+        }
+    }
+
+    public static class CosmosMetadataStorageTypeValidator implements ConfigDef.Validator {
+        @Override
+        @SuppressWarnings("unchecked")
+        public void ensureValid(String name, Object o) {
+            String storageTypeString = (String) o;
+            if (StringUtils.isEmpty(storageTypeString)) {
+                throw new ConfigException(name, o, "Cosmos metadata storage type can not be empty or null");
+            }
+
+            CosmosMetadataStorageType storageType = CosmosMetadataStorageType.fromName(storageTypeString);
+            if (storageType == null) {
+                throw new ConfigException(name, o, "Invalid CosmosMetadataStorageType, only allow Cosmos or Kafka");
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "CosmosMetadataStorageType. Only allow " + CosmosMetadataStorageType.values();
         }
     }
 }
