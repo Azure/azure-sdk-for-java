@@ -76,7 +76,7 @@ sudo apt update && sudo apt install openjdk-8-jdk -y --no-install-recommends
 az vm run-command invoke -n $DeploymentOutputs['IDENTITY_VM_NAME'] -g $DeploymentOutputs['IDENTITY_RESOURCE_GROUP'] --command-id RunShellScript --scripts "$vmScript"
 
 Write-Host "Getting storage account details"
-$key=az storage account keys list --account-name $DeploymentOutputs['IDENTITY_STORAGE_NAME_1'] --resource-group $DeploymentOutputs['IDENTITY_RESOURCE_GROUP'] --query "[0].value" --output tsv | Write-Host
+$key = $(az storage account keys list --account-name $($DeploymentOutputs['IDENTITY_STORAGE_NAME_1']) --resource-group $($DeploymentOutputs['IDENTITY_RESOURCE_GROUP']) --query "[0].value" --output tsv)
 
 Write-Host "Creating storage container"
 az storage container create --name "vmcontainer" --account-name $DeploymentOutputs['IDENTITY_STORAGE_NAME_1'] --account-key $key --public-access blob | Write-Host
