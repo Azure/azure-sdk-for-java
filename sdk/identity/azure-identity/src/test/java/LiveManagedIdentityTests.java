@@ -21,6 +21,8 @@ import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -115,8 +117,22 @@ public class LiveManagedIdentityTests extends TestBase {
         runCommand(azPath, "login",  "--service-principal", "-u", spClientId, "-p", secret, "--tenant", tenantId);
         runCommand(azPath, "account", "set", "--subscription", subscriptionId);
 
-        String vmBlob = String.format("https://%s.blob.core.windows.net/vmcontainer/testfile.jar", storageAcccountName);
+
+        String storageKey = runCommand(azPath, "storage", "account", "keys", "list", "--account-name", storageAcccountName,
+            "--resource-group", resourceGroup, "--query", "[0].value", "--output", "tsv");
+
+        String expiry = LocalDate.now().plusDays(2).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String sasToken = runCommand(azPath, "storage", "blob", "generate-sas", "--account-name", storageAcccountName,
+            "--account-key", storageKey, "--container-name", "vmcontainer", "--name", "testfile.jar", "--permissions", "r",
+            "--expiry", expiry, "--https-only");
+
+
+
+        String vmBlob = String.format("https://%s.blob.core.windows.net/vmcontainer/testfile.jar?%s", storageAcccountName, sasToken);
         String script = String.format("curl '%s' -o ./testfile.jar && java -jar ./testfile.jar", vmBlob);
+
+
+        System.out.println("Script: " + script);
 
         String output = runCommand(azPath, "vm", "run-command", "invoke", "-n", vmName, "-g", resourceGroup,
             "--command-id", "RunShellScript", "--scripts", script);

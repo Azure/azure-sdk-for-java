@@ -79,11 +79,10 @@ Write-Host "Getting storage account details"
 $key = $(az storage account keys list --account-name $($DeploymentOutputs['IDENTITY_STORAGE_NAME_1']) --resource-group $($DeploymentOutputs['IDENTITY_RESOURCE_GROUP']) --query "[0].value" --output tsv)
 
 Write-Host "Creating storage container"
-az storage container create --name "vmcontainer" --account-name $DeploymentOutputs['IDENTITY_STORAGE_NAME_1'] --account-key $key --public-access blob | Write-Host
+az storage container create --name "vmcontainer" --account-name $DeploymentOutputs['IDENTITY_STORAGE_NAME_1'] --account-key $key | Write-Host
 
 Write-Host "Uploading file to storage"
 az storage blob upload --container-name "vmcontainer" --file "$vmRoot/target/identity-test-vm-1.0-SNAPSHOT-jar-with-dependencies.jar" --name "testfile.jar" --account-name $DeploymentOutputs['IDENTITY_STORAGE_NAME_1'] --account-key $key | Write-Host
-
 
 if ($IsMacOS -eq $true) {
   # Not supported on MacOS agents
