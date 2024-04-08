@@ -777,6 +777,7 @@ public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public <T> T deserialize(Map<String, Object> jsonNodeMap, Class<T> classType) {
             if (jsonNodeMap == null) {
                 return null;
