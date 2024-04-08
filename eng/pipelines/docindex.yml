@@ -83,7 +83,7 @@ jobs:
 
       - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
         parameters:
-          BaseRepoBranch: "jim-PyToC-Test"
+          BaseRepoBranch: "jim-JavaToC-Test"
           BaseRepoOwner: $(DocRepoOwner)
           CommitMsg: "Update docs CI configuration"
           TargetRepoName: $(DocRepoName)
