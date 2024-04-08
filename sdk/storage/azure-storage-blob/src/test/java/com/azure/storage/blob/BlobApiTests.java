@@ -2886,6 +2886,30 @@ public class BlobApiTests extends BlobTestBase {
     }
 
     @Test
+    public void getAccountInfoBase() {
+        StorageAccountInfo info = bc.getAccountInfo();
+
+        assertNotNull(info.getAccountKind());
+        assertNotNull(info.getSkuName());
+        assertFalse(info.isHierarchicalNamespaceEnabled());
+    }
+
+    @Test
+    public void getAccountInfoBaseFail() {
+        BlobServiceClient serviceClient = instrument(new BlobServiceClientBuilder()
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+            .credential(new MockTokenCredential()))
+            .buildClient();
+
+        BlobClient blobClient = serviceClient.getBlobContainerClient(generateContainerName()).getBlobClient(generateBlobName());
+
+        BlobStorageException e = assertThrows(BlobStorageException.class, blobClient::getAccountInfo);
+        assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
+
+    }
+
+
+    @Test
     public void getContainerName() {
         assertEquals(containerName, bc.getContainerName());
     }

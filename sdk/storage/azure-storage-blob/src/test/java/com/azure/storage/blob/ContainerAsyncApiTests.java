@@ -30,6 +30,7 @@ import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.RehydratePriority;
+import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
@@ -2009,6 +2010,35 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @Test
     public void getAccountInfoMin() {
         assertAsyncResponseStatusCode(primaryBlobServiceAsyncClient.getAccountInfoWithResponse(), 200);
+    }
+
+    @Test
+    public void getAccountInfoBase() {
+        ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
+
+        StepVerifier.create(ccAsync.getAccountInfo())
+            .assertNext(r -> {
+                assertNotNull(r.getAccountKind());
+                assertNotNull(r.getSkuName());
+                assertFalse(r.isHierarchicalNamespaceEnabled());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void getAccountInfoBaseFail() {
+        BlobServiceAsyncClient serviceClient = instrument(new BlobServiceClientBuilder()
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+            .credential(new MockTokenCredential()))
+            .buildAsyncClient();
+
+        BlobContainerAsyncClient containerClient = serviceClient.getBlobContainerAsyncClient(generateContainerName());
+
+        StepVerifier.create(containerClient.getAccountInfo())
+            .verifyErrorSatisfies(r -> {
+                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
+                assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
+            });
     }
 
     @Test

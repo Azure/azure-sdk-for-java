@@ -1897,6 +1897,30 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    public void getAccountInfoBase() {
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
+        StorageAccountInfo info = cc.getAccountInfo(null);
+
+        assertNotNull(info.getAccountKind());
+        assertNotNull(info.getSkuName());
+        assertFalse(info.isHierarchicalNamespaceEnabled());
+    }
+
+    @Test
+    public void getAccountInfoBaseFail() {
+        BlobServiceClient serviceClient = instrument(new BlobServiceClientBuilder()
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+            .credential(new MockTokenCredential()))
+            .buildClient();
+
+        BlobContainerClient containerClient = serviceClient.getBlobContainerClient(generateContainerName());
+
+        BlobStorageException e = assertThrows(BlobStorageException.class, () -> containerClient.getAccountInfo(null));
+        assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
+
+    }
+
+    @Test
     public void getContainerName() {
         String containerName = generateContainerName();
         BlobContainerClient newcc = primaryBlobServiceClient.getBlobContainerClient(containerName);
