@@ -110,7 +110,7 @@ function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory)
   $pkgId = $contentXML.project.artifactId
   $docsReadMeName = $pkgId -replace "^azure-" , ""
   $pkgVersion = $contentXML.project.version
-  $groupId = if ($contentXML.project.groupId -eq $null) { $contentXML.project.parent.groupId } else { $contentXML.project.groupId }
+  $groupId = if ($null -eq $contentXML.project.groupId) { $contentXML.project.parent.groupId } else { $contentXML.project.groupId }
   $releaseNotes = ""
   $readmeContent = ""
 
@@ -138,6 +138,32 @@ function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory)
     ReleaseNotes   = $releaseNotes
     ReadmeContent  = $readmeContent
     DocsReadMeName = $docsReadMeName
+  }
+}
+
+# Defined in common.ps1 as:
+# $GetDocsMsDevLanguageSpecificPackageInfoFn = "Get-${Language}-DocsMsDevLanguageSpecificPackageInfo"
+function Get-java-DocsMsDevLanguageSpecificPackageInfo($packageInfo, $packageSourceOverride) {
+    # If the default namespace isn't in the package info then it needs to be added
+  # Can't check if (!$packageInfo.Namespaces) in strict mode because Namespaces won't exist
+  # at all.
+  if (!($packageInfo | Get-Member Namespaces)) {
+    $version = $packageInfo.Version
+    # If the dev version is set, use that
+    if ($packageInfo.DevVersion) {
+      $version = $packageInfo.DevVersion
+    }
+    $namespaces = Fetch-Namespaces-From-Javadoc $packageInfo.Name $packageInfo.Group $version
+    if ($namespaces.Count -gt 0) {
+      $packageInfo | Add-Member -Type NoteProperty -Name "Namespaces" -Value $namespaces
+    } else {
+      # If nothing else, the package name will have "-" instead of "." which should make it evident
+      # that we couldn't find namespaces.
+      LogWarning "Unable to find namespaces for $($packageInfo.Name):$version, using the package name."
+      $tempNamespaces = @()
+      $tempNamespaces += $packageInfo.Name
+      $packageInfo | Add-Member -Type NoteProperty -Name "Namespaces" -Value $tempNamespaces
+    }
   }
 }
 

@@ -287,14 +287,6 @@ stages:
                             - docs-ref-services/
                             - metadata/
                           DocValidationImageId: "$(DocValidationImageId)"
-                      - template: /eng/pipelines/templates/steps/fetch-package-list.yml
-                        parameters:
-                          JavaDocJarLocation: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}"
-                          ArtifactName: ${{artifact.name}}
-                          TargetBranch: $(TargetBranchName)
-                          DocRepoLocation: $(DocRepoLocation)
-                          TargetDocRepoName: ${{parameters.TargetDocRepoName}}
-                          TargetDocRepoOwner: "Azure"
 
           - ${{if ne(artifact.skipPublishDocGithubIo, 'true')}}:
             - deployment: PublishDocs
@@ -494,16 +486,5 @@ stages:
                 - docs-ref-services/
                 - metadata/
               DocValidationImageId: "$(DocValidationImageId)"
-
-          - ${{ each artifact in parameters.Artifacts }}:
-            - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
-              - template: /eng/pipelines/templates/steps/fetch-package-list.yml
-                parameters:
-                  JavaDocJarLocation: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}"
-                  ArtifactName: ${{artifact.name}}
-                  TargetBranch: $(TargetBranchName)
-                  DocRepoLocation: $(DocRepoLocation)
-                  TargetDocRepoName: ${{parameters.TargetDocRepoName}}
-                  TargetDocRepoOwner: "azure-sdk"
 
           - template: /eng/common/pipelines/templates/steps/docsms-ensure-validation.yml
