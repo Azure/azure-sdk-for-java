@@ -62,7 +62,7 @@ public class IdentityClientOptionsTest {
         IdentityClient idClient = new IdentityClientBuilder().identityClientOptions(identityClientOptions).build();
         int retry = 1;
         Queue<Integer> expectedEntries = new LinkedList<>();
-        expectedEntries.addAll(Arrays.asList(800, 1600, 3200, 3200, 3200));
+        expectedEntries.addAll(Arrays.asList(800, 1600, 3200, 6400, 12800));
 
 
         while (retry < identityClientOptions.getMaxRetry()) {

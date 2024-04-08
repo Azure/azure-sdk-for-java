@@ -36,7 +36,7 @@ import java.util.function.Function;
  */
 public final class IdentityClientOptions implements Cloneable {
     private static final ClientLogger LOGGER = new ClientLogger(IdentityClientOptions.class);
-    private static final int MAX_RETRY_DEFAULT_LIMIT = 5;
+    private static final int MAX_RETRY_DEFAULT_LIMIT = 6;
     public static final String AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH = "AZURE_IDENTITY_DISABLE_MULTITENANTAUTH";
     public static final String AZURE_POD_IDENTITY_AUTHORITY_HOST = "AZURE_POD_IDENTITY_AUTHORITY_HOST";
 
@@ -101,19 +101,10 @@ public final class IdentityClientOptions implements Cloneable {
 
     private static Function<Duration, Duration> getIMDSretryTimeoutFunction() {
         return inputDuration -> {
-            // Assuming each retry adds 1 second to inputDuration for tracking
             long retries = inputDuration.getSeconds();
-
-            if (retries <= 1) {
-                // First retry: 0.8 seconds
-                return Duration.ofMillis(800);
-            } else if (retries == 2) {
-                // Second retry: 1.6 seconds
-                return Duration.ofMillis(1600);
-            } else {
-                // Third retry onwards: 3.2 seconds
-                return Duration.ofMillis(3200);
-            }
+            // Calculate the delay as 800ms * (2 ^ (retries - 1)), ensuring retries start at 1 for the first attempt
+            long delay = (long) (800 * Math.pow(2, retries - 1));
+            return Duration.ofMillis(delay);
         };
     }
 
