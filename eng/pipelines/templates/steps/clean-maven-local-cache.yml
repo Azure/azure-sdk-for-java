@@ -7,3 +7,9 @@ steps:
       arguments: >
         -MavenCacheFolder $(MAVEN_CACHE_FOLDER)
     continueOnError: true
+
+  - pwsh: |
+      if (Test-Path -Path .assets) {
+        Remove-Item -Path .assets -Recurse -Force
+      }
+    displayName: 'Remove assets'
