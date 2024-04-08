@@ -3,7 +3,8 @@
 ## 12.22.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added client name field in HandleItem.
+- Added `clientName` property on `HandleItem` that specifies the name of the client machine where the share is being mounted.
+- Added rename support for `listRange` API via `supportRename` in `ShareFileListRangesDiffOptions`.
 
 ### Breaking Changes
 

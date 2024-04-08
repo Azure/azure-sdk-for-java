@@ -10,9 +10,15 @@
 
 ### Other Changes
 
+## 2.9.3 (2024-04-05)
+
+### Other Changes
+
 #### Dependency Updates
 
+- Upgraded `azure-core` from `1.47.0` to `1.48.0`.
 - Upgraded `proton-j` from `0.33.8` to `0.34.1`.
+- Upgraded Reactor Core from `3.4.34` to `3.4.36`.
 
 ## 2.9.2 (2024-03-01)
 
