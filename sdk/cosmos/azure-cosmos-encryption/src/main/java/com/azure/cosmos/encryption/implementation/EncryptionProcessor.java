@@ -249,19 +249,21 @@ public class EncryptionProcessor {
         return encryptionSettings;
     }
 
-    public Mono<byte[]> encrypt(byte[] payload, CosmosItemSerializer itemSerializer) {
+    public Mono<byte[]> encrypt(byte[] payload) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Encrypting byte[] of size [{}] on thread [{}]",
                 payload == null ? null : payload.length,
                 Thread.currentThread().getName());
         }
-        ObjectNode itemJObj = Utils.parse(payload, ObjectNode.class);
-        return encrypt(itemJObj, itemSerializer);
+        ObjectNode itemJObj = Utils.parse(payload, ObjectNode.class, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        return encrypt(itemJObj);
     }
 
-    public Mono<byte[]> encrypt(JsonNode itemJObj, CosmosItemSerializer itemSerializer) {
+    public Mono<byte[]> encrypt(JsonNode itemJObj) {
         return encryptObjectNode(itemJObj).map(
-            encryptedObjectNode -> EncryptionUtils.serializeJsonToByteArray(itemSerializer, encryptedObjectNode));
+            encryptedObjectNode -> EncryptionUtils.serializeJsonToByteArray(
+                CosmosItemSerializer.DEFAULT_SERIALIZER,
+                encryptedObjectNode));
     }
 
     public Mono<JsonNode> encryptPatchNode(JsonNode itemObj, String patchPropertyPath) {
@@ -275,7 +277,8 @@ public class EncryptionProcessor {
 
             for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
                 String propertyName = includedPath.getPath().substring(1);
-                if (patchPropertyPath.substring(1).equals(propertyName)) {
+                String relativePatchPropertyPath = patchPropertyPath.substring(1);
+                if (relativePatchPropertyPath.equals(propertyName) || relativePatchPropertyPath.startsWith(propertyName + "/")) {
                     if (itemObj.isValueNode()) {
                         return this.encryptionSettings.getEncryptionSettingForPropertyAsync(propertyName,
                             this).flatMap(settings -> {
@@ -510,7 +513,7 @@ public class EncryptionProcessor {
             return Mono.empty();
         }
 
-        ObjectNode itemJObj = Utils.parse(input, ObjectNode.class);
+        ObjectNode itemJObj = Utils.parse(input, ObjectNode.class, CosmosItemSerializer.DEFAULT_SERIALIZER);
         return decrypt(itemJObj, itemSerializer);
     }
 

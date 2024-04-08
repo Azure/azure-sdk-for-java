@@ -15,8 +15,6 @@ public final class CosmosBatchItemRequestOptions {
     private String ifNoneMatchETag;
     private String throughputControlGroupName;
 
-    private CosmosItemSerializer customSerializer;
-
     /**
      * Creates a new {@link CosmosBatchItemRequestOptions} object.
      */
@@ -75,33 +73,12 @@ public final class CosmosBatchItemRequestOptions {
         return this;
     }
 
-    /**
-     * Gets the custom item serializer defined for this instance of request options
-     * @return the custom item serializer
-     */
-    public CosmosItemSerializer getCustomSerializer() {
-        return this.customSerializer;
-    }
-
-    /**
-     * Allows specifying a custom item serializer to be used for this operation. If the serializer
-     * on the request options is null, the serializer on CosmosClientBuilder is used. If both serializers
-     * are null (the default), an internal Jackson ObjectMapper is ued for serialization/deserialization.
-     * @param itemSerializerOverride the custom item serializer for this operation
-     * @return  the CosmosItemRequestOptions.
-     */
-    public CosmosBatchItemRequestOptions setCustomSerializer(CosmosItemSerializer itemSerializerOverride) {
-        this.customSerializer = itemSerializerOverride;
-
-        return this;
-    }
 
     RequestOptions toRequestOptions() {
         final RequestOptions requestOptions = new RequestOptions();
         requestOptions.setIfMatchETag(this.ifMatchETag);
         requestOptions.setIfNoneMatchETag(this.ifNoneMatchETag);
         requestOptions.setThroughputControlGroupName(throughputControlGroupName);
-        requestOptions.setEffectiveItemSerializer(this.customSerializer);
         return requestOptions;
     }
 }

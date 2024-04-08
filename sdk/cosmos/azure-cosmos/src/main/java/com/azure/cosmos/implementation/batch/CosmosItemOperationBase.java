@@ -19,26 +19,26 @@ public abstract class CosmosItemOperationBase implements CosmosItemOperation {
         this.serializedOperation = new AtomicReference<>(null);
     }
 
-    public abstract CosmosItemSerializer getEffectiveItemSerializer();
+    public abstract CosmosItemSerializer getEffectiveItemSerializerForResult();
 
-    abstract JsonSerializable getSerializedOperationInternal(CosmosItemSerializer clientItemSerializer);
+    abstract JsonSerializable getSerializedOperationInternal(CosmosItemSerializer effectiveItemSerializer);
 
-    public JsonSerializable getSerializedOperation(CosmosItemSerializer clientItemSerializer) {
+    public JsonSerializable getSerializedOperation(CosmosItemSerializer effectiveItemSerializer) {
         if (this.serializedOperation.get() == null) {
-            this.serializedOperation.compareAndSet(null, this.getSerializedOperationInternal(clientItemSerializer));
+            this.serializedOperation.compareAndSet(null, this.getSerializedOperationInternal(effectiveItemSerializer));
         }
         return this.serializedOperation.get();
     }
 
-    public int getSerializedLength(CosmosItemSerializer clientItemSerializer) {
+    public int getSerializedLength(CosmosItemSerializer effectiveItemSerializer) {
         if (this.serializedLengthReference.get() == null) {
-            this.serializedLengthReference.compareAndSet(null, this.getSerializedLengthInternal(clientItemSerializer));
+            this.serializedLengthReference.compareAndSet(null, this.getSerializedLengthInternal(effectiveItemSerializer));
         }
         return this.serializedLengthReference.get();
     }
 
-    private int getSerializedLengthInternal(CosmosItemSerializer clientItemSerializer) {
-        JsonSerializable operationSerializable = this.getSerializedOperation(clientItemSerializer);
+    private int getSerializedLengthInternal(CosmosItemSerializer effectiveItemSerializer) {
+        JsonSerializable operationSerializable = this.getSerializedOperation(effectiveItemSerializer);
         String serializedValue = operationSerializable.toString();
         return serializedValue.codePointCount(0, serializedValue.length());
     }

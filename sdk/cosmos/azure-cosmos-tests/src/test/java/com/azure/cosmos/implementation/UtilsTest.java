@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.RandomStringUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,14 +20,14 @@ public class UtilsTest {
     @Test(groups = {"unit"})
     public void parsingByteArrayAsObjectNode() {
         byte[] source = "{ 'a' : 'b' }".getBytes(StandardCharsets.UTF_8);
-        ObjectNode objectNode = Utils.parse(source, ObjectNode.class);
+        ObjectNode objectNode = Utils.parse(source, ObjectNode.class, CosmosItemSerializer.DEFAULT_SERIALIZER);
         assertThat(objectNode.get("a").asText()).isEqualTo("b");
     }
 
     @Test(groups = {"unit"})
     public void parsingByteArrayAsJsonNode() {
         byte[] source = "5".getBytes(StandardCharsets.UTF_8);
-        JsonNode jsonNode = Utils.parse(source, JsonNode.class);
+        JsonNode jsonNode = Utils.parse(source, JsonNode.class, CosmosItemSerializer.DEFAULT_SERIALIZER);
         assertThat(jsonNode.asInt()).isEqualTo(5);
     }
 
@@ -37,7 +38,7 @@ public class UtilsTest {
         System.arraycopy(source, 0, data, 0, data.length);
 
         try {
-            Utils.parse(data, ObjectNode.class);
+            Utils.parse(data, ObjectNode.class, CosmosItemSerializer.DEFAULT_SERIALIZER);
             fail("expected to fail");
         } catch (Exception e) {
             assertThat(e.getMessage()).isEqualTo("Failed to parse byte-array " + new String(data, StandardCharsets.UTF_8) + " to POJO.");

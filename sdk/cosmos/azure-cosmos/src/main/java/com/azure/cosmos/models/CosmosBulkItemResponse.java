@@ -33,7 +33,7 @@ public final class CosmosBulkItemResponse {
     private final int subStatusCode;
     private final Map<String, String> responseHeaders;
     private final CosmosDiagnostics cosmosDiagnostics;
-    private final CosmosItemSerializer effectiveItemSerializer;
+    private CosmosItemSerializer effectiveItemSerializer;
 
     /**
      * Initializes a new instance of the {@link CosmosBulkItemResponse} class.
@@ -72,7 +72,6 @@ public final class CosmosBulkItemResponse {
 
     /**
      * Gets the entity tag associated with the current item.
-     *
      * ETags are used for concurrency checking when updating resources.
      *
      * @return Entity tag associated with the current item.
@@ -196,6 +195,10 @@ public final class CosmosBulkItemResponse {
         return resourceObject;
     }
 
+    void setEffectiveItemSerializer(CosmosItemSerializer effectiveItemSerializer) {
+        this.effectiveItemSerializer = effectiveItemSerializer;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -212,6 +215,13 @@ public final class CosmosBulkItemResponse {
                 public void setResourceObject(CosmosBulkItemResponse cosmosBulkItemResponse,
                                               ObjectNode objectNode) {
                     cosmosBulkItemResponse.resourceObject = objectNode;
+                }
+
+                @Override
+                public void setEffectiveItemSerializer(CosmosBulkItemResponse cosmosBulkItemResponse,
+                                                       CosmosItemSerializer effectiveItemSerializer) {
+
+                    cosmosBulkItemResponse.setEffectiveItemSerializer(effectiveItemSerializer);
                 }
             });
     }

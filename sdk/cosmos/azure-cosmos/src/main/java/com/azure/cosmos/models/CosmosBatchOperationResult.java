@@ -25,7 +25,7 @@ public final class CosmosBatchOperationResult {
     private final Duration retryAfter;
     private final int subStatusCode;
     private final CosmosItemOperation cosmosItemOperation;
-    private final CosmosItemSerializer effectiveItemSerializer;
+    private CosmosItemSerializer effectiveItemSerializer;
     private ObjectNode resourceObject;
 
     /**
@@ -49,7 +49,7 @@ public final class CosmosBatchOperationResult {
         this.subStatusCode = subStatusCode;
         this.cosmosItemOperation = cosmosItemOperation;
         this.effectiveItemSerializer = cosmosItemOperation instanceof CosmosItemOperationBase
-            ? ((CosmosItemOperationBase)cosmosItemOperation).getEffectiveItemSerializer()
+            ? ((CosmosItemOperationBase)cosmosItemOperation).getEffectiveItemSerializerForResult()
             : CosmosItemSerializer.DEFAULT_SERIALIZER;
     }
 
@@ -143,6 +143,10 @@ public final class CosmosBatchOperationResult {
         return this.effectiveItemSerializer;
     }
 
+    void setEffectiveItemSerializer(CosmosItemSerializer effectiveItemSerializer) {
+        this.effectiveItemSerializer = effectiveItemSerializer;
+    }
+
     /**
      * Gets the original operation for this result.
      *
@@ -167,6 +171,13 @@ public final class CosmosBatchOperationResult {
                 public void setResourceObject(CosmosBatchOperationResult cosmosBatchOperationResult,
                                               ObjectNode objectNode) {
                     cosmosBatchOperationResult.resourceObject = objectNode;
+                }
+
+                @Override
+                public void setEffectiveItemSerializer(CosmosBatchOperationResult cosmosBatchOperationResult,
+                                                       CosmosItemSerializer effectiveItemSerializer) {
+
+                    cosmosBatchOperationResult.setEffectiveItemSerializer(effectiveItemSerializer);
                 }
             });
     }

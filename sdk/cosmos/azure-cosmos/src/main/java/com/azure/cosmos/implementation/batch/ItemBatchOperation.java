@@ -29,7 +29,7 @@ public final class ItemBatchOperation<TInternal> extends CosmosItemOperationBase
     private final PartitionKey partitionKey;
     private final CosmosItemOperationType operationType;
     private final RequestOptions requestOptions;
-    private CosmosItemSerializer effectiveItemSerializer;
+    private CosmosItemSerializer effectiveItemSerializerForResult;
 
     public ItemBatchOperation(
         final CosmosItemOperationType operationType,
@@ -48,25 +48,21 @@ public final class ItemBatchOperation<TInternal> extends CosmosItemOperationBase
     }
 
     @Override
-    public CosmosItemSerializer getEffectiveItemSerializer() {
-        return this.effectiveItemSerializer != null
-            ? this.effectiveItemSerializer
+    public CosmosItemSerializer getEffectiveItemSerializerForResult() {
+        return this.effectiveItemSerializerForResult != null
+            ? this.effectiveItemSerializerForResult
             : CosmosItemSerializer.DEFAULT_SERIALIZER;
     }
 
     /**
      * Writes a single operation to JsonSerializable.
-     * TODO(rakkuma): Similarly for hybrid row, operation needs to be written in Hybrid row.
-     * Issue: https://github.com/Azure/azure-sdk-for-java/issues/15856
      *
-     * @return instance of JsonSerializable containing values for a operation.
+     * @return instance of JsonSerializable containing values for an operation.
      */
     @Override
-    JsonSerializable getSerializedOperationInternal(CosmosItemSerializer clientItemSerializer) {
+    JsonSerializable getSerializedOperationInternal(CosmosItemSerializer effectiveItemSerializer) {
         final JsonSerializable jsonSerializable = new JsonSerializable();
-        this.effectiveItemSerializer = requestOptions != null && requestOptions.getEffectiveItemSerializer() != null
-            ? requestOptions.getEffectiveItemSerializer()
-            : clientItemSerializer != null ? clientItemSerializer : CosmosItemSerializer.DEFAULT_SERIALIZER;
+        this.effectiveItemSerializerForResult = effectiveItemSerializer;
 
         jsonSerializable.set(
             BatchRequestResponseConstants.FIELD_OPERATION_TYPE,

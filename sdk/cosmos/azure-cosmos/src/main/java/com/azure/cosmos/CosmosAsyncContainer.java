@@ -2546,10 +2546,6 @@ public class CosmosAsyncContainer {
                 }).map(ModelBridgeInternal::createThroughputRespose));
     }
 
-    CosmosItemSerializer getItemSerializer() {
-        return getDatabase().getDocClientWrapper().getItemSerializer();
-    }
-
     /**
      * Obtains a list of {@link FeedRange} that can be used to parallelize Feed
      * operations.

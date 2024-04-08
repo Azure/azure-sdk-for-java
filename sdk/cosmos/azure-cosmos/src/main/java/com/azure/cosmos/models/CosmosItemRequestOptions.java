@@ -679,6 +679,11 @@ public class CosmosItemRequestOptions {
 
                     return options.getCosmosEndToEndOperationLatencyPolicyConfig();
                 }
+
+                @Override
+                public CosmosPatchItemRequestOptions clonePatchItemRequestOptions(CosmosPatchItemRequestOptions options) {
+                    return new CosmosPatchItemRequestOptions(options);
+                }
             }
         );
     }

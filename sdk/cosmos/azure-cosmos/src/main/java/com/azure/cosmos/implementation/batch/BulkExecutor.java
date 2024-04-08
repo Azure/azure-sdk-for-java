@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.CosmosSchedulers;
@@ -108,7 +109,8 @@ public final class BulkExecutor<TContext> implements Disposable {
     private final AtomicBoolean isShutdown = new AtomicBoolean(false);
     private final AtomicInteger totalCount;
     private final static Sinks.EmitFailureHandler serializedEmitFailureHandler = new SerializedEmitFailureHandler();
-    private final static Sinks.EmitFailureHandler serializedCompleteEmitFailureHandler = new SerializedCompleteEmitFailureHandler();;
+    private final static Sinks.EmitFailureHandler serializedCompleteEmitFailureHandler =
+        new SerializedCompleteEmitFailureHandler();
     private final Sinks.Many<CosmosItemOperation> mainSink;
     private final List<FluxSink<CosmosItemOperation>> groupSinks;
     private final CosmosAsyncClient cosmosClient;
@@ -116,6 +118,7 @@ public final class BulkExecutor<TContext> implements Disposable {
     private final AtomicReference<Disposable> scheduledFutureForFlush;
     private final String identifier = "BulkExecutor-" + instanceCount.incrementAndGet();
     private final BulkExecutorDiagnosticsTracker diagnosticsTracker;
+    private final CosmosItemSerializer effectiveItemSerializer;
 
     public BulkExecutor(CosmosAsyncContainer container,
                         Flux<CosmosItemOperation> inputOperations,
@@ -136,6 +139,7 @@ public final class BulkExecutor<TContext> implements Disposable {
             .CosmosAsyncDatabaseHelper
             .getCosmosAsyncDatabaseAccessor()
             .getCosmosAsyncClient(container.getDatabase());
+        this.effectiveItemSerializer = this.docClientWrapper.getEffectiveItemSerializer(cosmosBulkOptions.getCustomSerializer());
 
         this.throttlingRetryOptions = docClientWrapper.getConnectionPolicy().getThrottlingRetryOptions();
 
@@ -552,7 +556,7 @@ public final class BulkExecutor<TContext> implements Disposable {
     private int calculateTotalSerializedLength(AtomicInteger currentTotalSerializedLength, CosmosItemOperation item) {
         if (item instanceof CosmosItemOperationBase) {
             return currentTotalSerializedLength.accumulateAndGet(
-                ((CosmosItemOperationBase) item).getSerializedLength(this.docClientWrapper.getItemSerializer()),
+                ((CosmosItemOperationBase) item).getSerializedLength(this.effectiveItemSerializer),
                 Integer::sum);
         }
 
@@ -571,7 +575,7 @@ public final class BulkExecutor<TContext> implements Disposable {
 
         String pkRange = thresholds.getPartitionKeyRangeId();
         ServerOperationBatchRequest serverOperationBatchRequest =
-            BulkExecutorUtil.createBatchRequest(operations, pkRange, this.maxMicroBatchPayloadSizeInBytes, docClientWrapper.getItemSerializer());
+            BulkExecutorUtil.createBatchRequest(operations, pkRange, this.maxMicroBatchPayloadSizeInBytes, this.effectiveItemSerializer);
         if (serverOperationBatchRequest.getBatchPendingOperations().size() > 0) {
             serverOperationBatchRequest.getBatchPendingOperations().forEach(groupSink::next);
         }

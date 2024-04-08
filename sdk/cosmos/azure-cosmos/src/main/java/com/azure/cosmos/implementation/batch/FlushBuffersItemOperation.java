@@ -16,7 +16,7 @@ public class FlushBuffersItemOperation extends CosmosItemOperationBase {
     }
 
     @Override
-    public CosmosItemSerializer getEffectiveItemSerializer() {
+    public CosmosItemSerializer getEffectiveItemSerializerForResult() {
         return CosmosItemSerializer.DEFAULT_SERIALIZER;
     }
 
@@ -46,7 +46,7 @@ public class FlushBuffersItemOperation extends CosmosItemOperationBase {
     }
 
     @Override
-    JsonSerializable getSerializedOperationInternal(CosmosItemSerializer clientItemSerializer) {
+    JsonSerializable getSerializedOperationInternal(CosmosItemSerializer effectiveItemSerializer) {
         throw new UnsupportedOperationException("Not supported.");
     }
 

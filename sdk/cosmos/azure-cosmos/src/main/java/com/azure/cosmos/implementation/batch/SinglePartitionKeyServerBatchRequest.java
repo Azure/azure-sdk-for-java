@@ -37,13 +37,13 @@ public final class SinglePartitionKeyServerBatchRequest extends ServerBatchReque
     static SinglePartitionKeyServerBatchRequest createBatchRequest(
         final PartitionKey partitionKey,
         final List<CosmosItemOperation> operations,
-        final CosmosItemSerializer clientItemSerializer) {
+        final CosmosItemSerializer effectiveItemSerializer) {
 
         checkNotNull(partitionKey, "expected non-null partitionKey");
         checkNotNull(operations, "expected non-null operations");
 
         final SinglePartitionKeyServerBatchRequest request = new SinglePartitionKeyServerBatchRequest(partitionKey);
-        request.createBodyOfBatchRequest(operations, clientItemSerializer);
+        request.createBodyOfBatchRequest(operations, effectiveItemSerializer);
 
         return request;
     }

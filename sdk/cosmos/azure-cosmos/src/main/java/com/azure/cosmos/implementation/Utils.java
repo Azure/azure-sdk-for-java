@@ -546,13 +546,21 @@ public class Utils {
         }
     }
 
-    public static <T> T parse(byte[] item, Class<T> itemClassType) {
+    public static <T> T parse(byte[] item, Class<T> itemClassType, CosmosItemSerializer itemSerializer) {
         if (Utils.isEmpty(item)) {
             return null;
         }
 
         try {
-            return getSimpleObjectMapper().readValue(item, itemClassType);
+            ObjectNode jsonTree = getSimpleObjectMapper().readValue(item, ObjectNode.class);
+            CosmosItemSerializer effectiveSerializer = itemSerializer != null
+                ? itemSerializer
+                : CosmosItemSerializer.DEFAULT_SERIALIZER;
+
+            T result = effectiveSerializer.deserialize(
+                getSimpleObjectMapper().convertValue(jsonTree, ObjectNodeMap.JACKSON_MAP_TYPE),
+                itemClassType);
+            return result;
         } catch (IOException e) {
             throw new IllegalStateException(
                 String.format("Failed to parse byte-array %s to POJO.", new String(item, StandardCharsets.UTF_8)), e);

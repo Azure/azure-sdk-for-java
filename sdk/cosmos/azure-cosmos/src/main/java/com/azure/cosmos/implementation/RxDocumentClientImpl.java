@@ -5164,12 +5164,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             logger.warn("Already shutdown!");
         }
     }
-
-    @Override
-    public CosmosItemSerializer getItemSerializer() {
-        return this.defaultCustomSerializer;
-    }
-
     @Override
     public synchronized void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono) {
         checkNotNull(group, "Throughput control group can not be null");

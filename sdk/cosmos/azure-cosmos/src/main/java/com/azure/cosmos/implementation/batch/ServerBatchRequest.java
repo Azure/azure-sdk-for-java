@@ -52,7 +52,7 @@ public abstract class ServerBatchRequest {
      */
     final List<CosmosItemOperation> createBodyOfBatchRequest(
         final List<CosmosItemOperation> operations,
-        final CosmosItemSerializer clientItemSerializer) {
+        final CosmosItemSerializer effectiveItemSerializer) {
 
         checkNotNull(operations, "expected non-null operations");
 
@@ -66,8 +66,8 @@ public abstract class ServerBatchRequest {
             int operationSerializedLength;
 
             if (operation instanceof CosmosItemOperationBase) {
-                operationJsonSerializable = ((CosmosItemOperationBase) operation).getSerializedOperation(clientItemSerializer);
-                operationSerializedLength = ((CosmosItemOperationBase) operation).getSerializedLength(clientItemSerializer);
+                operationJsonSerializable = ((CosmosItemOperationBase) operation).getSerializedOperation(effectiveItemSerializer);
+                operationSerializedLength = ((CosmosItemOperationBase) operation).getSerializedLength(effectiveItemSerializer);
             } else {
                 throw new UnsupportedOperationException("Unknown CosmosItemOperation.");
             }

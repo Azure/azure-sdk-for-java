@@ -53,6 +53,24 @@ public final class CosmosChangeFeedRequestOptions {
     private List<String> excludeRegions;
     private CosmosItemSerializer customSerializer;
 
+    CosmosChangeFeedRequestOptions(CosmosChangeFeedRequestOptions topBeCloned) {
+        this.continuationState = topBeCloned.continuationState;
+        this.feedRangeInternal = topBeCloned.feedRangeInternal;
+        this.properties = topBeCloned.properties;
+        this.maxItemCount = topBeCloned.maxItemCount;
+        this.maxPrefetchPageCount = topBeCloned.maxPrefetchPageCount;
+        this.mode = topBeCloned.mode;
+        this.startFromInternal = topBeCloned.startFromInternal;
+        this.isSplitHandlingDisabled = topBeCloned.isSplitHandlingDisabled;
+        this.quotaInfoEnabled = topBeCloned.quotaInfoEnabled;
+        this.throughputControlGroupName = topBeCloned.throughputControlGroupName;
+        this.customOptions = topBeCloned.customOptions;
+        this.operationContextAndListenerTuple = topBeCloned.operationContextAndListenerTuple;
+        this.thresholds = topBeCloned.thresholds;
+        this.excludeRegions = topBeCloned.excludeRegions;
+        this.customSerializer = topBeCloned.customSerializer;
+    }
+
     private CosmosChangeFeedRequestOptions(
         FeedRangeInternal feedRange,
         ChangeFeedStartFromInternal startFromInternal,
@@ -290,7 +308,6 @@ public final class CosmosChangeFeedRequestOptions {
     /***
      * Creates a new {@link CosmosChangeFeedRequestOptions} instance to start processing
      * change feed items based on a previous continuation.
-     *
      * ONLY used by Kafka connector.
      *
      * @param continuation The continuation that was retrieved from a previously retrieved FeedResponse
@@ -661,6 +678,11 @@ public final class CosmosChangeFeedRequestOptions {
                     String continuationLsn) {
 
                     return CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(continuation, targetRange, continuationLsn);
+                }
+
+                @Override
+                public CosmosChangeFeedRequestOptions clone(CosmosChangeFeedRequestOptions toBeCloned) {
+                    return new CosmosChangeFeedRequestOptions(toBeCloned);
                 }
             });
     }

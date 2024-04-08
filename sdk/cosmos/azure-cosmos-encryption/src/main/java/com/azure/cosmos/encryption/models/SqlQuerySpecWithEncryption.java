@@ -28,8 +28,8 @@ import java.util.List;
  * Represents a SQL query with encryption parameters in the Azure Cosmos DB database service.
  */
 public final class SqlQuerySpecWithEncryption {
-    private SqlQuerySpec sqlQuerySpec;
-    private HashMap<String, SqlParameter> encryptionParamMap = new HashMap<>();
+    private final SqlQuerySpec sqlQuerySpec;
+    private final HashMap<String, SqlParameter> encryptionParamMap = new HashMap<>();
     private final EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncContainerHelper.CosmosEncryptionAsyncContainerAccessor cosmosEncryptionAsyncContainerAccessor = EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncContainerHelper.getCosmosEncryptionAsyncContainerAccessor();
 
     /**
@@ -86,7 +86,7 @@ public final class SqlQuerySpecWithEncryption {
                                 byte[] valueByte =
                                     EncryptionUtils.serializeJsonToByteArray(CosmosItemSerializer.DEFAULT_SERIALIZER,
                                         sqlParameter.getValue(Object.class));
-                                JsonNode itemJObj = Utils.parse(valueByte, JsonNode.class);
+                                JsonNode itemJObj = Utils.parse(valueByte, JsonNode.class, CosmosItemSerializer.DEFAULT_SERIALIZER);
                                 Pair<EncryptionProcessor.TypeMarker, byte[]> typeMarkerPair =
                                     EncryptionProcessor.toByteArray(itemJObj);
                                 byte[] cipherText =

@@ -3,33 +3,35 @@
  * Licensed under the MIT License.
  *
  */
+package com.azure.cosmos.encryption;
 
-package com.azure.cosmos;
-
+import com.azure.core.cryptography.KeyEncryptionKeyResolver;
+import com.azure.cosmos.CosmosClient;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.models.ClientEncryptionIncludedPath;
+import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosBatch;
-import com.azure.cosmos.models.CosmosBatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
-import com.azure.cosmos.models.CosmosBulkItemRequestOptions;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
-import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -54,23 +56,24 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.testng.AssertJUnit.fail;
 
-public class CosmosItemSerializerTest extends TestSuiteBase {
+public class CosmosEncryptionItemSerializerTest extends TestSuiteBase {
     private final static ObjectMapper objectMapper = new ObjectMapper()
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
         .configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true)
         .configure(JsonParser.Feature.ALLOW_TRAILING_COMMA, true)
         .configure(DeserializationFeature.ACCEPT_FLOAT_AS_INT, false);
 
-    private CosmosClient client;
-    private CosmosContainer container;
+    private CosmosEncryptionClient client;
+    private CosmosEncryptionContainer container;
     private final boolean isContentOnWriteEnabled;
     private final boolean nonIdempotentWriteRetriesEnabled;
     private final boolean useTrackingIdForCreateAndReplace;
 
+    private final static String containerIdWithEncryption  = "enc_" + UUID.randomUUID();
+
     @Factory(dataProvider = "clientBuildersWithDirectSessionIncludeComputeGatewayAndDifferentItemSerializers")
-    public CosmosItemSerializerTest(
+    public CosmosEncryptionItemSerializerTest(
         CosmosClientBuilder clientBuilder,
         boolean inContentOnWriteEnabled,
         boolean nonIdempotentWriteRetriesEnabled,
@@ -105,7 +108,6 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
 
                         Object[][] originalProviders = clientBuildersWithDirectSession(
                             isContentResponseOnWriteEnabled,
-                            true,
                             toArray(protocols));
                         List<Object[]> providersCurrentTestCase = new ArrayList<>();
 
@@ -118,20 +120,6 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
                             injectedProviderParameters[3] = trackingIdUsageForWriteRetriesEnabled;
                             providersCurrentTestCase.add(injectedProviderParameters);
                         }
-
-                        CosmosClientBuilder builder = createGatewayRxDocumentClient(
-                            TestConfigurations.HOST.replace(ROUTING_GATEWAY_EMULATOR_PORT, COMPUTE_GATEWAY_EMULATOR_PORT),
-                            ConsistencyLevel.SESSION,
-                            false,
-                            null,
-                            isContentResponseOnWriteEnabled,
-                            true);
-                        Object[] injectedProviderParameters = new Object[4];
-                        injectedProviderParameters[0] = builder;
-                        injectedProviderParameters[1] = isContentResponseOnWriteEnabled;
-                        injectedProviderParameters[2] = nonIdempotentWriteRetriesEnabled;
-                        injectedProviderParameters[3] = trackingIdUsageForWriteRetriesEnabled;
-                        providersCurrentTestCase.add(injectedProviderParameters);
 
                         for (Object[] wrappedProvider : providersCurrentTestCase) {
                             CosmosClientBuilder clientBuilder = (CosmosClientBuilder) wrappedProvider[0];
@@ -152,17 +140,60 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         return providers.toArray(array);
     }
 
-    @BeforeClass(groups = { "fast", "emulator" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "encryption" }, timeOut = SETUP_TIMEOUT)
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
-        this.client = getClientBuilder().buildClient();
-        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
-        container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+        CosmosClient client = getClientBuilder().buildClient();
+        KeyEncryptionKeyResolver keyEncryptionKeyResolver = new TestKeyEncryptionKeyResolver();
+        CosmosEncryptionClient cosmosEncryptionClient = new CosmosEncryptionClientBuilder().cosmosClient(client).keyEncryptionKeyResolver(
+            keyEncryptionKeyResolver).keyEncryptionKeyResolverName("TEST_KEY_RESOLVER").buildClient();
+
+        CosmosEncryptionDatabase cosmosEncryptionDatabase = getSharedEncryptionDatabase(cosmosEncryptionClient);
+        List<ClientEncryptionIncludedPath> encryptedProperties= new ArrayList<>();
+        encryptedProperties.add(new ClientEncryptionIncludedPath()
+            .setClientEncryptionKeyId("key1")
+            .setPath("/someStringArray")
+            .setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName())
+            .setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName())
+        );
+
+        encryptedProperties.add(new ClientEncryptionIncludedPath()
+            .setClientEncryptionKeyId("key1")
+            .setPath("/someNumber")
+            .setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName())
+            .setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName())
+        );
+
+        encryptedProperties.add(new ClientEncryptionIncludedPath()
+            .setClientEncryptionKeyId("key1")
+            .setPath("/wrappedContent")
+            .setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName())
+            .setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName())
+        );
+
+        CosmosEncryptionContainer originalContainer = getSharedEncryptionContainer(cosmosEncryptionClient);
+        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(encryptedProperties, 2);
+        CosmosContainerProperties properties = originalContainer.getCosmosContainer().read().getProperties();
+        logger.info("Original container: {}, container with encryption: {}",
+            originalContainer.getCosmosContainer().getId(), containerIdWithEncryption);
+        properties.setClientEncryptionPolicy(clientEncryptionPolicy);
+        properties.setId(containerIdWithEncryption);
+        try {
+            cosmosEncryptionDatabase.getCosmosDatabase().createContainerIfNotExists(properties);
+            logger.info("Ensured existence of Container: {}", properties.getId());
+        } catch (CosmosException error) {
+            logger.error("Can't create container with encrypted properties.", error);
+
+            throw error;
+        }
+        this.client = cosmosEncryptionClient;
+        this.container = cosmosEncryptionDatabase.getCosmosEncryptionContainer(containerIdWithEncryption);
     }
 
-    @AfterClass(groups = { "fast", "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {  "encryption" }, timeOut = 100 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
+        CosmosEncryptionDatabase sharedEncDatabase = getSharedEncryptionDatabase(this.client);
         this.client.close();
     }
 
@@ -198,13 +229,17 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
             prefix += "RequestOptions_" + requestOptionsSerializer.getClass().getSimpleName();
         }
 
-        if (this.getClientBuilder().getCustomSerializer() == null) {
+        CosmosItemSerializer customSerializer = ImplementationBridgeHelpers
+            .CosmosClientBuilderHelper
+            .getCosmosClientBuilderAccessor()
+            .getDefaultCustomSerializer(this.getClientBuilder());
+        if (customSerializer == null) {
             return prefix + "|Client_NULL";
-        } else if (this.getClientBuilder().getCustomSerializer() == CosmosItemSerializer.DEFAULT_SERIALIZER) {
+        } else if (customSerializer == CosmosItemSerializer.DEFAULT_SERIALIZER) {
             return prefix + "|Client_DEFAULT";
         }
 
-        return prefix + "|Client_" + this.getClientBuilder().getCustomSerializer().getClass().getSimpleName();
+        return prefix + "|Client_" + customSerializer.getClass().getSimpleName();
     }
 
     @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
@@ -272,11 +307,16 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         CosmosItemSerializer requestLevelSerializer,
         Class<T> classType) {
 
+        CosmosItemSerializer customSerializer = ImplementationBridgeHelpers
+            .CosmosClientBuilderHelper
+            .getCosmosClientBuilderAccessor()
+            .getDefaultCustomSerializer(this.getClientBuilder());
+
         boolean useEnvelopeWrapper =
             requestLevelSerializer == EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION
                 || (requestLevelSerializer == null
-                && this.getClientBuilder()
-                       .getCustomSerializer() == EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION);
+                && customSerializer == EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION);
+
         if (requestLevelSerializer == EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION
             && isContentOnWriteEnabled
             && nonIdempotentWriteRetriesEnabled
@@ -353,12 +393,6 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         assertThat(results).isNotNull();
         assertThat(results).hasSize(1);
         assertSameDocument(doc, results.get(0));
-
-        results = container.readAllItems(new PartitionKey(id), queryRequestOptions, classType)
-                           .stream().collect(Collectors.toList());
-        assertThat(results).isNotNull();
-        assertThat(results).hasSize(1);
-        assertSameDocument(doc, results.get(0));
     }
 
     @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
@@ -396,7 +430,6 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
             String id = UUID.randomUUID().toString();
             T doc = docGenerator.apply(id);
             inputItems.put(id, doc);
-
             bulkOperations.add(CosmosBulkOperations.getCreateItemOperation(
                 doc,
                 new PartitionKey(id),
@@ -421,6 +454,8 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
             }
         }
 
+        // TODO - re-enable the read many validation after adding readMany API for azure-cosmos-encryption
+        /*
         List<CosmosItemIdentity> readManyTuples = new ArrayList<>();
         for (String id: inputItems.keySet().stream().limit(3).toArray(count -> new String[count])) {
             readManyTuples.add(new CosmosItemIdentity(new PartitionKey(id), id));
@@ -449,6 +484,7 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
                 fail("Unexpected response item type '" + responseItem.getClass().getSimpleName() + "'.");
             }
         }
+        */
     }
 
     @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
@@ -470,7 +506,6 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
             TestDocument.class
         );
     }
-
 
     private <T> void runBatchAndChangeFeedTestCase(
         Function<String, T> docGenerator,
@@ -636,7 +671,7 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         assertThat(doc).isNotNull();
         assertThat(deserializedDoc).isNotNull();
 
-        return hasSameId(TestDocument.parse(doc), TestDocument.parse(deserializedDoc));
+        return doc.get("id").textValue().equals(deserializedDoc.get("id").textValue());
     }
 
     private static void assertSameDocument(ObjectNode doc, ObjectNode deserializedDoc) {

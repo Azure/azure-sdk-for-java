@@ -59,6 +59,7 @@ import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMetricName;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosReadManyRequestOptions;
@@ -356,6 +357,8 @@ public class ImplementationBridgeHelpers {
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosChangeFeedRequestOptions options);
             List<String> getExcludeRegions(CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions);
             CosmosChangeFeedRequestOptions createForProcessingFromContinuation(String continuation, FeedRange targetRange, String continuationLsn);
+
+            CosmosChangeFeedRequestOptions clone(CosmosChangeFeedRequestOptions toBeCloned);
         }
     }
 
@@ -407,6 +410,8 @@ public class ImplementationBridgeHelpers {
 
             CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(
                 CosmosItemRequestOptions options);
+
+            CosmosPatchItemRequestOptions clonePatchItemRequestOptions(CosmosPatchItemRequestOptions options);
         }
     }
 
@@ -480,6 +485,8 @@ public class ImplementationBridgeHelpers {
             int getMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
             void setDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, BulkExecutorDiagnosticsTracker tracker);
             BulkExecutorDiagnosticsTracker getDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
+
+            CosmosBulkExecutionOptions clone(CosmosBulkExecutionOptions toBeCloned);
         }
     }
 
@@ -1075,6 +1082,8 @@ public class ImplementationBridgeHelpers {
         public interface CosmosBatchOperationResultAccessor {
             ObjectNode getResourceObject(CosmosBatchOperationResult cosmosBatchOperationResult);
             void setResourceObject(CosmosBatchOperationResult cosmosBatchOperationResult, ObjectNode objectNode);
+            void setEffectiveItemSerializer(CosmosBatchOperationResult cosmosBatchOperationResult,
+                                            CosmosItemSerializer effectiveItemSerializer);
         }
     }
 
@@ -1183,6 +1192,9 @@ public class ImplementationBridgeHelpers {
 
             void setResourceObject(CosmosBulkItemResponse cosmosBulkItemResponse,
                                    ObjectNode objectNode);
+
+            void setEffectiveItemSerializer(CosmosBulkItemResponse cosmosBulkItemResponse,
+                                            CosmosItemSerializer effectiveItemSerializer);
         }
     }
 

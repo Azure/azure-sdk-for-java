@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class CosmosEncryptionQueryTransformer<T> implements Transformer<T> {
     private final Scheduler encryptionScheduler;
     private final EncryptionProcessor encryptionProcessor;
-    private final CosmosItemSerializer effectiveItemSerializer;
     private final Class<T> classType;
     private final boolean isChangeFeed;
 
@@ -39,20 +39,23 @@ public class CosmosEncryptionQueryTransformer<T> implements Transformer<T> {
         checkNotNull(effectiveItemSerializer, "Argument 'effectiveItemSerializer' must not be null.");
         this.encryptionScheduler = encryptionScheduler;
         this.encryptionProcessor = encryptionProcessor;
-        this.effectiveItemSerializer = effectiveItemSerializer;
         this.classType = classType;
         this.isChangeFeed = isChangeFeed;
     }
 
     @Override
-    public Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> transform(Function<CosmosPagedFluxOptions, Flux<FeedResponse<JsonNode>>> func) {
-        return queryDecryptionTransformer(this.classType, this.isChangeFeed, func);
+    public Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> transform(
+        Function<CosmosPagedFluxOptions, Flux<FeedResponse<JsonNode>>> func,
+        CosmosItemSerializer effectiveSerializer) {
+
+        return queryDecryptionTransformer(this.classType, this.isChangeFeed, func, effectiveSerializer);
     }
 
-    private <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryDecryptionTransformer(
-        Class<T> classType,
+    private <TTransform> Function<CosmosPagedFluxOptions, Flux<FeedResponse<TTransform>>> queryDecryptionTransformer(
+        Class<TTransform> classType,
         boolean isChangeFeed,
-        Function<CosmosPagedFluxOptions, Flux<FeedResponse<JsonNode>>> func) {
+        Function<CosmosPagedFluxOptions, Flux<FeedResponse<JsonNode>>> func,
+        CosmosItemSerializer effectiveSerializer) {
         return func.andThen(flux ->
             flux.publishOn(encryptionScheduler)
                 .flatMap(
@@ -62,14 +65,24 @@ public class CosmosEncryptionQueryTransformer<T> implements Transformer<T> {
                             ModelBridgeInternal.getNoChangesFromFeedResponse(page)
                             : false;
                         List<Mono<JsonNode>> jsonNodeArrayMonoList =
-                            page.getResults().stream().map(jsonNode -> decryptResponseNode(jsonNode)).collect(Collectors.toList());
+                            page.getResults().stream().map(jsonNode -> decryptResponseNode(jsonNode))
+                                .collect(Collectors.toList());
                         return Flux.concat(jsonNodeArrayMonoList).map(
                             item -> {
+                                Map<String, Object> decryptedJsonTree;
+
                                 if (item instanceof ObjectNode) {
-                                    return this.effectiveItemSerializer.deserialize(new ObjectNodeMap((ObjectNode) item), classType);
+                                    decryptedJsonTree = new ObjectNodeMap((ObjectNode)item);
+                                } else {
+                                    decryptedJsonTree = Utils.getSimpleObjectMapper()
+                                                             .convertValue(
+                                                                 item,
+                                                                 ObjectNodeMap.JACKSON_MAP_TYPE);
                                 }
 
-                                return Utils.getSimpleObjectMapper().convertValue(item, classType);
+                                return effectiveSerializer.deserialize(
+                                    decryptedJsonTree,
+                                    classType);
                             }
                         ).collectList().map(itemList -> BridgeInternal.createFeedResponseWithQueryMetrics(itemList,
                             page.getResponseHeaders(),

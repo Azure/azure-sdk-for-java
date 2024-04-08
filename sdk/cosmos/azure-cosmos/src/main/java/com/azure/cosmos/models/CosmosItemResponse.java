@@ -273,7 +273,6 @@ public class CosmosItemResponse<T> {
     /**
      * Gets the ETag from the response headers.
      * This is only relevant when getting response from the server.
-     *
      * Null in case of delete operation.
      *
      * @return ETag
@@ -333,7 +332,7 @@ public class CosmosItemResponse<T> {
                                                                           CosmosItemSerializer serializer) {
                     return new CosmosItemResponse<>(
                         response.resourceResponse,
-                        Utils.parse(response.getItemAsByteArray(), classType),
+                        Utils.parse(response.getItemAsByteArray(), classType, serializer),
                         response.itemBodyOverride,
                         classType,
                         serializer);

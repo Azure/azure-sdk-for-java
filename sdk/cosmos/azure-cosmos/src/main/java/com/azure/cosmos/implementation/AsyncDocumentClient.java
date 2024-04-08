@@ -1585,8 +1585,6 @@ public interface AsyncDocumentClient {
      */
     void close();
 
-    CosmosItemSerializer getItemSerializer();
-
     CosmosItemSerializer getEffectiveItemSerializer(CosmosItemSerializer requestOptionsItemSerializer);
 
     /**
