@@ -10,6 +10,7 @@
   <suppress files="com.azure.storage.file.datalake.implementation.ServicesImpl.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.storage.file.datalake.implementation.models.InternalDataLakeFileOpenInputStreamResult.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.storage.file.datalake.implementation.util.AccessorUtility.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.storage.file.datalake.implementation.util.BuilderHelper.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.storage.file.datalake.implementation.util.ModelHelper.java" checks="MissingJavadocMethodCheck" />

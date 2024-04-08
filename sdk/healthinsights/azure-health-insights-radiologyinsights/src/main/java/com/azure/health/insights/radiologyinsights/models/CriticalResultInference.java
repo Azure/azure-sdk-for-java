@@ -22,7 +22,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     visible = true)
 @JsonTypeName("criticalResult")
 @Immutable
-public final class CriticalResultInference extends FhirR4Extendible1 {
+public final class CriticalResultInference extends RadiologyInsightsInference {
+
+    /*
+     * Inference type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.CRITICAL_RESULT;
 
     /*
      * The complete Critical Result, as outlined below, will be reused for the recommendation.
@@ -43,24 +51,6 @@ public final class CriticalResultInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the result property: The complete Critical Result, as outlined below, will be reused for the recommendation.
-     *
-     * @return the result value.
-     */
-    @Generated
-    public CriticalResult getResult() {
-        return this.result;
-    }
-
-    /*
-     * Inference type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.CRITICAL_RESULT;
-
-    /**
      * Get the kind property: Inference type.
      *
      * @return the kind value.
@@ -69,5 +59,15 @@ public final class CriticalResultInference extends FhirR4Extendible1 {
     @Override
     public RadiologyInsightsInferenceType getKind() {
         return this.kind;
+    }
+
+    /**
+     * Get the result property: The complete Critical Result, as outlined below, will be reused for the recommendation.
+     *
+     * @return the result value.
+     */
+    @Generated
+    public CriticalResult getResult() {
+        return this.result;
     }
 }
