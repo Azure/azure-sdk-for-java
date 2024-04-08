@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Service config response. */
+/**
+ * Service config response.
+ */
 @Fluent
 public class ServiceConfigListResultProperties {
     /*
@@ -63,13 +65,15 @@ public class ServiceConfigListResultProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ServiceConfigListResultValueEntity> defaultKeys;
 
-    /** Creates an instance of ServiceConfigListResultProperties class. */
+    /**
+     * Creates an instance of ServiceConfigListResultProperties class.
+     */
     public ServiceConfigListResultProperties() {
     }
 
     /**
      * Get the serviceName property: Service Config Name.
-     *
+     * 
      * @return the serviceName value.
      */
     public String serviceName() {
@@ -78,7 +82,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Set the serviceName property: Service Config Name.
-     *
+     * 
      * @param serviceName the serviceName value to set.
      * @return the ServiceConfigListResultProperties object itself.
      */
@@ -89,7 +93,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Get the fileName property: File Name.
-     *
+     * 
      * @return the fileName value.
      */
     public String fileName() {
@@ -98,7 +102,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Set the fileName property: File Name.
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the ServiceConfigListResultProperties object itself.
      */
@@ -109,7 +113,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Get the content property: Content in the service config file.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -118,7 +122,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Set the content property: Content in the service config file.
-     *
+     * 
      * @param content the content value to set.
      * @return the ServiceConfigListResultProperties object itself.
      */
@@ -129,7 +133,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Get the componentName property: Component Name.
-     *
+     * 
      * @return the componentName value.
      */
     public String componentName() {
@@ -138,7 +142,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Set the componentName property: Component Name.
-     *
+     * 
      * @param componentName the componentName value to set.
      * @return the ServiceConfigListResultProperties object itself.
      */
@@ -149,7 +153,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Get the type property: Config type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -158,7 +162,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Set the type property: Config type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ServiceConfigListResultProperties object itself.
      */
@@ -169,7 +173,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Get the path property: Config file path.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -178,7 +182,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Set the path property: Config file path.
-     *
+     * 
      * @param path the path value to set.
      * @return the ServiceConfigListResultProperties object itself.
      */
@@ -189,7 +193,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Get the customKeys property: The custom keys.
-     *
+     * 
      * @return the customKeys value.
      */
     public Map<String, String> customKeys() {
@@ -198,7 +202,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Set the customKeys property: The custom keys.
-     *
+     * 
      * @param customKeys the customKeys value to set.
      * @return the ServiceConfigListResultProperties object itself.
      */
@@ -209,7 +213,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Get the defaultKeys property: The default keys.
-     *
+     * 
      * @return the defaultKeys value.
      */
     public Map<String, ServiceConfigListResultValueEntity> defaultKeys() {
@@ -218,49 +222,40 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Set the defaultKeys property: The default keys.
-     *
+     * 
      * @param defaultKeys the defaultKeys value to set.
      * @return the ServiceConfigListResultProperties object itself.
      */
-    public ServiceConfigListResultProperties withDefaultKeys(
-        Map<String, ServiceConfigListResultValueEntity> defaultKeys) {
+    public ServiceConfigListResultProperties
+        withDefaultKeys(Map<String, ServiceConfigListResultValueEntity> defaultKeys) {
         this.defaultKeys = defaultKeys;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serviceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serviceName in model ServiceConfigListResultProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property serviceName in model ServiceConfigListResultProperties"));
         }
         if (fileName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fileName in model ServiceConfigListResultProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property fileName in model ServiceConfigListResultProperties"));
         }
         if (componentName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property componentName in model ServiceConfigListResultProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property componentName in model ServiceConfigListResultProperties"));
         }
         if (defaultKeys() != null) {
-            defaultKeys()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            defaultKeys().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 

@@ -5,10 +5,18 @@
 ### Features Added
 
 ### Breaking Changes
+#### Behavioral Breaking Changes
+- The timeout interval for IMDS probing has been adjusted from 0.5 seconds to 1 second. This update is designed to enhance the system's reliability without affecting user applications. [#38345](https://github.com/Azure/azure-sdk-for-java/issues/38345)
+- The default retry logic of Managed Identity has been updated to retry 5 times, the retry delay increases exponentially, starting at 800 milliseconds and doubling with each subsequent retry, up to 5 retries. This change is designed to optimize the retry mechanism, reducing the likelihood of congestion and improving the overall stability of service connections under varying network conditions. [#38345](https://github.com/Azure/azure-sdk-for-java/issues/38345)
+- The `DefaultAzureCredential` caches the last working credential by default and tries it directly on subsequent attempts. This change is designed to improve the performance of the `DefaultAzureCredential` by reducing the number of attempts required to acquire a token. [#36867](https://github.com/Azure/azure-sdk-for-java/issues/36867)
 
 ### Bugs Fixed
+- Changed log level of an informational message in token acquisition. [#39063](https://github.com/Azure/azure-sdk-for-java/issues/39063)
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `msal4j` from `1.14.3` to version `1.15.0`.
 
 ## 1.11.4 (2024-03-14)
 

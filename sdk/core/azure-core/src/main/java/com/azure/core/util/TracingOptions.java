@@ -42,11 +42,10 @@ public class TracingOptions {
      * @param tracerProvider The type of the {@link TracerProvider} implementation that should be used to construct an instance of
      * {@link Tracer}.
      *
-     * If the value isn't set or is an empty string the first {@link TracerProvider} resolved by {@link java.util.ServiceLoader} will
+     * If the value is not set (or {@code null}), then the first {@link TracerProvider} resolved by {@link java.util.ServiceLoader} will
      * be used to create an instance of {@link Tracer}. If the value is set and doesn't match any
-     * {@link TracerProvider}resolved by {@link java.util.ServiceLoader} an {@link IllegalStateException} will be thrown when
+     * {@link TracerProvider} resolved by {@link java.util.ServiceLoader} an {@link IllegalStateException} will be thrown when
      *  attempting to create an instance of {@link Tracer}.
-     *
      */
     protected TracingOptions(Class<? extends TracerProvider> tracerProvider) {
         this.tracerProvider = tracerProvider;
@@ -62,10 +61,9 @@ public class TracingOptions {
     /**
      * Loads tracing options from the configuration.
      *
-     *
-     * @param configuration The {@link Configuration} that is used to load proxy configurations from the environment. If
+     * @param configuration The {@link Configuration} instance containing tracing options. If
      * {@code null} is passed then {@link Configuration#getGlobalConfiguration()} will be used.
-     * @return A {@link TracingOptions} reflecting a tracing options loaded from the configuration,
+     * @return A {@link TracingOptions} reflecting updated tracing options loaded from the configuration,
      * if no tracing options are found, default (enabled) tracing options will be returned.
      */
     public static TracingOptions fromConfiguration(Configuration configuration) {

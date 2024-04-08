@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperations;
 import org.testng.annotations.Test;
 
 import java.util.Random;
@@ -56,5 +57,20 @@ public class PartitionScopeThresholdsTest {
 
         assertThat(thresholds.getPartitionKeyRangeId()).isEqualTo(pkRangeId);
         assertThat(thresholds.getTargetMicroBatchSizeSnapshot()).isEqualTo(1);
+    }
+
+    @Test(groups = { "unit" })
+    public void initialTargetMicroBatchSize() {
+        String pkRangeId = UUID.randomUUID().toString();
+        PartitionScopeThresholds thresholds =
+            new PartitionScopeThresholds(pkRangeId, new CosmosBulkExecutionOptions());
+        assertThat(thresholds.getTargetMicroBatchSizeSnapshot())
+            .isEqualTo(BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);
+
+        // initial targetBatchSize should be capped by maxBatchSize
+        int maxBatchSize = 5;
+        CosmosBulkExecutionOptions bulkOperations = new CosmosBulkExecutionOptions().setMaxMicroBatchSize(maxBatchSize);
+        thresholds = new PartitionScopeThresholds(pkRangeId, bulkOperations);
+        assertThat(thresholds.getTargetMicroBatchSizeSnapshot()).isEqualTo(maxBatchSize);
     }
 }

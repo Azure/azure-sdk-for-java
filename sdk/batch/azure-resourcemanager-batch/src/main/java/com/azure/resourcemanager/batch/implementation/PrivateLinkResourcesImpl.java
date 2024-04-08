@@ -30,14 +30,14 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
     public PagedIterable<PrivateLinkResource> listByBatchAccount(String resourceGroupName, String accountName) {
         PagedIterable<PrivateLinkResourceInner> inner
             = this.serviceClient().listByBatchAccount(resourceGroupName, accountName);
-        return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PrivateLinkResource> listByBatchAccount(String resourceGroupName, String accountName,
         Integer maxresults, Context context) {
         PagedIterable<PrivateLinkResourceInner> inner
             = this.serviceClient().listByBatchAccount(resourceGroupName, accountName, maxresults, context);
-        return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
     public Response<PrivateLinkResource> getWithResponse(String resourceGroupName, String accountName,

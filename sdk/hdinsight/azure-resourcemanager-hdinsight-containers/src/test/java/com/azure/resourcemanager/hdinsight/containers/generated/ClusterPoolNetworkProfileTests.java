@@ -6,20 +6,31 @@ package com.azure.resourcemanager.hdinsight.containers.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolNetworkProfile;
+import com.azure.resourcemanager.hdinsight.containers.models.OutboundType;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class ClusterPoolNetworkProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterPoolNetworkProfile model =
-            BinaryData.fromString("{\"subnetId\":\"vwryoqpso\"}").toObject(ClusterPoolNetworkProfile.class);
-        Assertions.assertEquals("vwryoqpso", model.subnetId());
+        ClusterPoolNetworkProfile model = BinaryData.fromString(
+            "{\"subnetId\":\"oginuvamiheognar\",\"outboundType\":\"loadBalancer\",\"enablePrivateApiServer\":false,\"apiServerAuthorizedIpRanges\":[\"tusivyevcciqihn\"]}")
+            .toObject(ClusterPoolNetworkProfile.class);
+        Assertions.assertEquals("oginuvamiheognar", model.subnetId());
+        Assertions.assertEquals(OutboundType.LOAD_BALANCER, model.outboundType());
+        Assertions.assertEquals(false, model.enablePrivateApiServer());
+        Assertions.assertEquals("tusivyevcciqihn", model.apiServerAuthorizedIpRanges().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterPoolNetworkProfile model = new ClusterPoolNetworkProfile().withSubnetId("vwryoqpso");
+        ClusterPoolNetworkProfile model = new ClusterPoolNetworkProfile().withSubnetId("oginuvamiheognar")
+            .withOutboundType(OutboundType.LOAD_BALANCER).withEnablePrivateApiServer(false)
+            .withApiServerAuthorizedIpRanges(Arrays.asList("tusivyevcciqihn"));
         model = BinaryData.fromObject(model).toObject(ClusterPoolNetworkProfile.class);
-        Assertions.assertEquals("vwryoqpso", model.subnetId());
+        Assertions.assertEquals("oginuvamiheognar", model.subnetId());
+        Assertions.assertEquals(OutboundType.LOAD_BALANCER, model.outboundType());
+        Assertions.assertEquals(false, model.enablePrivateApiServer());
+        Assertions.assertEquals("tusivyevcciqihn", model.apiServerAuthorizedIpRanges().get(0));
     }
 }
