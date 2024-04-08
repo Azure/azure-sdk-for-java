@@ -89,7 +89,7 @@ public class PartitionKeyRange extends Resource {
     }
 
     public Range<String> toRange() {
-        return new Range<String>(this.getMinInclusive(), this.getMaxExclusive(), true, false);
+        return new Range<>(this.getMinInclusive(), this.getMaxExclusive(), true, false);
     }
 
     @Override

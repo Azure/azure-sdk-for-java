@@ -59,7 +59,7 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
             { UUID.randomUUID().toString()} ,
 
             // with special characters in the name.
-            {"+ -_,:.|~" + UUID.randomUUID().toString() + " +-_,:.|~"} ,
+            {"+ -_,:.|~" + UUID.randomUUID() + " +-_,:.|~"} ,
         };
     }
 

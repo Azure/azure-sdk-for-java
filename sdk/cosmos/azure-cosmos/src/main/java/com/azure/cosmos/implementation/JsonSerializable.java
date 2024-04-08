@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.directconnectivity.Address;
-import com.azure.cosmos.implementation.guava25.primitives.Primitives;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfoInternal;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.QueryItem;

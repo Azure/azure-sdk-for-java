@@ -55,10 +55,10 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class EncryptionProcessor {
     private final static Logger LOGGER = LoggerFactory.getLogger(EncryptionProcessor.class);
-    private CosmosEncryptionAsyncClient encryptionCosmosClient;
-    private CosmosAsyncContainer cosmosAsyncContainer;
-    private EncryptionSettings encryptionSettings;
-    private AtomicBoolean isEncryptionSettingsInitDone;
+    private final CosmosEncryptionAsyncClient encryptionCosmosClient;
+    private final CosmosAsyncContainer cosmosAsyncContainer;
+    private final EncryptionSettings encryptionSettings;
+    private final AtomicBoolean isEncryptionSettingsInitDone;
     private ClientEncryptionPolicy clientEncryptionPolicy;
     private String containerRid;
     private String databaseRid;

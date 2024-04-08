@@ -21,8 +21,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-
 /**
  * Encapsulates options that can be specified for a request issued to the Azure Cosmos DB database service.
  */
