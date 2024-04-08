@@ -48,6 +48,10 @@ extends:
   parameters:
     ServiceDirectory: openai
     EnableBatchRelease: true
+    # Error in VerifyTypeSpecCodeGeneration temporary ignored.
+    # There is a formatting conflict between typespec-java and codesnippet tool.
+    # Tracking issue to re-enable https://github.com/Azure/azure-sdk-for-java/issues/39539
+    IgnoreVerifyTypeSpecCodeGenerationError: true 
     Artifacts:
       - name: azure-ai-openai
         groupId: com.azure

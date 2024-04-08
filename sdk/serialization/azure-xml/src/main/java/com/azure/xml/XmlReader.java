@@ -172,8 +172,18 @@ public final class XmlReader implements AutoCloseable {
     /**
      * Gets the {@link QName} for the current XML element.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.xml.XmlReader.getElementName -->
+     * <pre>
+     * QName qName = xmlReader.getElementName&#40;&#41;;
+     * String localPart = qName.getLocalPart&#40;&#41;; &#47;&#47; The name of the XML element.
+     * String namespaceUri = qName.getNamespaceURI&#40;&#41;; &#47;&#47; The namespace of the XML element.
+     * </pre>
+     * <!-- end com.azure.xml.XmlReader.getElementName -->
+     *
      * @return The {@link QName} for the current XML element.
-     * @throws IllegalStateException If the {@link #currentToken()} {@link XmlToken#START_ELEMENT} or
+     * @throws IllegalStateException If the {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT} or
      * {@link XmlToken#END_ELEMENT}.
      */
     public QName getElementName() {
@@ -280,11 +290,11 @@ public final class XmlReader implements AutoCloseable {
      *
      *     &#47;&#47; Get the value of the attribute &quot;attribute&quot; as an Integer in a way that allows for the attribute to be
      *     &#47;&#47; missing or have a null value.
-     *     assertEquals&#40;1234, &#40;int&#41; reader.getNullableAttribute&#40;null, &quot;attribute&quot;, Integer::parseInt&#41;&#41;;
+     *     Objects.equals&#40;1234, reader.getNullableAttribute&#40;null, &quot;attribute&quot;, Integer::parseInt&#41;&#41;;
      *
      *     &#47;&#47; This attribute doesn't exist, so null is returned without causing a NumberFormatException &#40;which is what
      *     &#47;&#47; Integer.parseInt throws on a null string being passed&#41;.
-     *     assertNull&#40;reader.getNullableAttribute&#40;null, &quot;nonExistentAttribute&quot;, Integer::parseInt&#41;&#41;;
+     *     Objects.isNull&#40;reader.getNullableAttribute&#40;null, &quot;nonExistentAttribute&quot;, Integer::parseInt&#41;&#41;;
      * &#125; catch &#40;XMLStreamException ex&#41; &#123;
      *     &#47;&#47; Do something with the exception
      * &#125;
@@ -465,13 +475,13 @@ public final class XmlReader implements AutoCloseable {
      *
      *     &#47;&#47; Get the value of the element &quot;element&quot; as an Integer in a way that allows for the element to be missing
      *     &#47;&#47; or have a null value.
-     *     assertEquals&#40;1234, &#40;int&#41; reader.getNullableElement&#40;Integer::parseInt&#41;&#41;; &#47;&#47; 1234
+     *     Objects.equals&#40;1234, reader.getNullableElement&#40;Integer::parseInt&#41;&#41;; &#47;&#47; 1234
      *
      *     reader.nextElement&#40;&#41;; &#47;&#47; Progress to &lt;emptyElement&gt;
      *
      *     &#47;&#47; This element doesn't exist, so null is returned without causing a NumberFormatException &#40;which is what
      *     &#47;&#47; Integer.parseInt throws on a null string being passed&#41;.
-     *     assertNull&#40;reader.getNullableElement&#40;Integer::parseInt&#41;&#41;;
+     *     Objects.isNull&#40;reader.getNullableElement&#40;Integer::parseInt&#41;&#41;;
      * &#125; catch &#40;XMLStreamException ex&#41; &#123;
      *     &#47;&#47; Do something with the exception
      * &#125;

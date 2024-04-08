@@ -26,6 +26,14 @@ import java.util.List;
 public final class FhirR4Observation extends FhirR4DomainResource {
 
     /*
+     * resourceType
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "resourceType")
+    private String resourceType = "Observation";
+
+    /*
      * Business Identifier for observation
      */
     @Generated
@@ -250,6 +258,17 @@ public final class FhirR4Observation extends FhirR4DomainResource {
         super(resourceType);
         this.status = status;
         this.code = code;
+    }
+
+    /**
+     * Get the resourceType property: resourceType.
+     *
+     * @return the resourceType value.
+     */
+    @Generated
+    @Override
+    public String getResourceType() {
+        return this.resourceType;
     }
 
     /**
@@ -966,24 +985,5 @@ public final class FhirR4Observation extends FhirR4DomainResource {
     public FhirR4Observation setLanguage(String language) {
         super.setLanguage(language);
         return this;
-    }
-
-    /*
-     * resourceType
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "resourceType")
-    private String resourceType = "Observation";
-
-    /**
-     * Get the resourceType property: resourceType.
-     *
-     * @return the resourceType value.
-     */
-    @Generated
-    @Override
-    public String getResourceType() {
-        return this.resourceType;
     }
 }
