@@ -746,7 +746,8 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
 
     static protected void safeDeleteAllCollections(CosmosDatabase database) {
         if (database != null) {
-            List<CosmosContainerProperties> collections = database.readAllContainers().stream().toList();
+            List<CosmosContainerProperties> collections =
+                database.readAllContainers().stream().collect(Collectors.toList());
 
             for (CosmosContainerProperties collection : collections) {
                 safeDeleteCollection(database.getContainer(collection.getId()));
