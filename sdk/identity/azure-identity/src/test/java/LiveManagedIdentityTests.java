@@ -122,7 +122,7 @@ public class LiveManagedIdentityTests extends TestBase {
             "--command-id", "RunShellScript", "--scripts", script);
 
         Assertions.assertTrue(output.contains("Successfully retrieved managed identity tokens"),
-            "Failed to get response from AKS");
+            "Failed to get response from VM");
     }
 
     @Test
