@@ -870,6 +870,71 @@ public final class JobRouterAsyncClient {
     }
 
     /**
+     * Unassign a job.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     suspendMatching: Boolean (Optional)
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     jobId: String (Required)
+     *     unassignmentCount: int (Required)
+     * }
+     * }</pre>
+     *
+     * @param jobId Id of a job.
+     * @param assignmentId Id of a job assignment.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response payload after a job has been successfully unassigned along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> unassignJobWithResponse(String jobId, String assignmentId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.unassignJobWithResponseAsync(jobId, assignmentId, requestOptions);
+    }
+
+    /**
+     * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     assignmentId: String (Required)
+     *     jobId: String (Required)
+     *     workerId: String (Required)
+     * }
+     * }</pre>
+     *
+     * @param workerId Id of a worker.
+     * @param offerId Id of an offer.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response containing ids for the worker, job, and assignment from an accepted offer along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> acceptJobOfferWithResponse(String workerId, String offerId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.acceptJobOfferWithResponseAsync(workerId, offerId, requestOptions);
+    }
+
+    /**
      * Declines an offer to work on a job.
      * <p>
      * <strong>Request Body Schema</strong>
@@ -1592,6 +1657,27 @@ public final class JobRouterAsyncClient {
     }
 
     /**
+     * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
+     *
+     * @param jobId Id of a job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response payload from cancelling a job on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<CancelJobResultInternal> cancelJob(String jobId) {
+        // Generated convenience method for cancelJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return cancelJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(CancelJobResultInternal.class));
+    }
+
+    /**
      * Retrieves list of jobs based on filter parameters.
      *
      * @param status If specified, filter jobs by status.
@@ -1696,6 +1782,51 @@ public final class JobRouterAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getQueuePositionWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(RouterJobPositionDetails.class));
+    }
+
+    /**
+     * Unassign a job.
+     *
+     * @param jobId Id of a job.
+     * @param assignmentId Id of a job assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response payload after a job has been successfully unassigned on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UnassignJobResult> unassignJob(String jobId, String assignmentId) {
+        // Generated convenience method for unassignJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return unassignJobWithResponse(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(UnassignJobResult.class));
+    }
+
+    /**
+     * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
+     *
+     * @param workerId Id of a worker.
+     * @param offerId Id of an offer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing ids for the worker, job, and assignment from an accepted offer on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AcceptJobOfferResult> acceptJobOffer(String workerId, String offerId) {
+        // Generated convenience method for acceptJobOfferWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return acceptJobOfferWithResponse(workerId, offerId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AcceptJobOfferResult.class));
     }
 
     /**
@@ -1859,6 +1990,32 @@ public final class JobRouterAsyncClient {
     }
 
     /**
+     * Unassign a job.
+     *
+     * @param jobId Id of a job.
+     * @param assignmentId Id of a job assignment.
+     * @param options Request body for unassign route.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response payload after a job has been successfully unassigned on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UnassignJobResult> unassignJob(String jobId, String assignmentId, UnassignJobOptions options) {
+        // Generated convenience method for unassignJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (options != null) {
+            requestOptions.setBody(BinaryData.fromObject(options));
+        }
+        return unassignJobWithResponse(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(UnassignJobResult.class));
+    }
+
+    /**
      * Completes an assigned job.
      * <p>
      * <strong>Request Body Schema</strong>
@@ -1998,229 +2155,6 @@ public final class JobRouterAsyncClient {
 
     /**
      * Reclassify a job.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * { }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * { }
-     * }</pre>
-     *
-     * @param jobId Id of a job.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response payload from reclassifying a job along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> reclassifyWithResponse(String jobId, RequestOptions requestOptions) {
-        return this.serviceClient.reclassifyWithResponseAsync(jobId, requestOptions);
-    }
-
-    /**
-     * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     note: String (Optional)
-     *     dispositionCode: String (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * { }
-     * }</pre>
-     *
-     * @param jobId Id of a job.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response payload from cancelling a job along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> cancelWithResponse(String jobId, RequestOptions requestOptions) {
-        return this.serviceClient.cancelWithResponseAsync(jobId, requestOptions);
-    }
-
-    /**
-     * Completes an assigned job.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     note: String (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * { }
-     * }</pre>
-     *
-     * @param jobId Id of a job.
-     * @param assignmentId Id of a job assignment.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response payload from completing a job along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> completeWithResponse(String jobId, String assignmentId, RequestOptions requestOptions) {
-        return this.serviceClient.completeWithResponseAsync(jobId, assignmentId, requestOptions);
-    }
-
-    /**
-     * Closes a completed job.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     dispositionCode: String (Optional)
-     *     closeAt: OffsetDateTime (Optional)
-     *     note: String (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * { }
-     * }</pre>
-     *
-     * @param jobId Id of a job.
-     * @param assignmentId Id of a job assignment.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response payload from closing a job along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> closeWithResponse(String jobId, String assignmentId, RequestOptions requestOptions) {
-        return this.serviceClient.closeWithResponseAsync(jobId, assignmentId, requestOptions);
-    }
-
-    /**
-     * Unassign a job.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     suspendMatching: Boolean (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     jobId: String (Required)
-     *     unassignmentCount: int (Required)
-     * }
-     * }</pre>
-     *
-     * @param jobId Id of a job.
-     * @param assignmentId Id of a job assignment.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response payload after a job has been successfully unassigned along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> unassignWithResponse(String jobId, String assignmentId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.unassignWithResponseAsync(jobId, assignmentId, requestOptions);
-    }
-
-    /**
-     * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     assignmentId: String (Required)
-     *     jobId: String (Required)
-     *     workerId: String (Required)
-     * }
-     * }</pre>
-     *
-     * @param workerId Id of a worker.
-     * @param offerId Id of an offer.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response containing ids for the worker, job, and assignment from an accepted offer along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> acceptWithResponse(String workerId, String offerId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.acceptWithResponseAsync(workerId, offerId, requestOptions);
-    }
-
-    /**
-     * Declines an offer to work on a job.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     retryOfferAt: OffsetDateTime (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * { }
-     * }</pre>
-     *
-     * @param workerId Id of a worker.
-     * @param offerId Id of an offer.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response payload from declining a job along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> declineWithResponse(String workerId, String offerId, RequestOptions requestOptions) {
-        return this.serviceClient.declineWithResponseAsync(workerId, offerId, requestOptions);
-    }
-
-    /**
-     * Reclassify a job.
      *
      * @param jobId Id of a job.
      * @param options Request object for reclassifying a job.
@@ -2234,13 +2168,13 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ReclassifyJobResultInternal> reclassify(String jobId, ReclassifyJobOptionsInternal options) {
-        // Generated convenience method for reclassifyWithResponse
+    Mono<ReclassifyJobResultInternal> reclassifyJob(String jobId, ReclassifyJobOptionsInternal options) {
+        // Generated convenience method for reclassifyJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (options != null) {
             requestOptions.setBody(BinaryData.fromObject(options));
         }
-        return reclassifyWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
+        return reclassifyJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ReclassifyJobResultInternal.class));
     }
 
@@ -2258,10 +2192,10 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ReclassifyJobResultInternal> reclassify(String jobId) {
-        // Generated convenience method for reclassifyWithResponse
+    Mono<ReclassifyJobResultInternal> reclassifyJob(String jobId) {
+        // Generated convenience method for reclassifyJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return reclassifyWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
+        return reclassifyJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ReclassifyJobResultInternal.class));
     }
 
@@ -2280,34 +2214,13 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CancelJobResultInternal> cancel(String jobId, CancelJobOptionsInternal options) {
-        // Generated convenience method for cancelWithResponse
+    Mono<CancelJobResultInternal> cancelJob(String jobId, CancelJobOptionsInternal options) {
+        // Generated convenience method for cancelJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (options != null) {
             requestOptions.setBody(BinaryData.fromObject(options));
         }
-        return cancelWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(CancelJobResultInternal.class));
-    }
-
-    /**
-     * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
-     *
-     * @param jobId Id of a job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response payload from cancelling a job on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CancelJobResultInternal> cancel(String jobId) {
-        // Generated convenience method for cancelWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return cancelWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
+        return cancelJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(CancelJobResultInternal.class));
     }
 
@@ -2327,13 +2240,13 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CompleteJobResultInternal> complete(String jobId, String assignmentId, CompleteJobOptionsInternal options) {
-        // Generated convenience method for completeWithResponse
+    Mono<CompleteJobResultInternal> completeJob(String jobId, String assignmentId, CompleteJobOptionsInternal options) {
+        // Generated convenience method for completeJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (options != null) {
             requestOptions.setBody(BinaryData.fromObject(options));
         }
-        return completeWithResponse(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono)
+        return completeJobWithResponse(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(CompleteJobResultInternal.class));
     }
 
@@ -2352,10 +2265,10 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CompleteJobResultInternal> complete(String jobId, String assignmentId) {
-        // Generated convenience method for completeWithResponse
+    Mono<CompleteJobResultInternal> completeJob(String jobId, String assignmentId) {
+        // Generated convenience method for completeJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return completeWithResponse(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono)
+        return completeJobWithResponse(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(CompleteJobResultInternal.class));
     }
 
@@ -2375,13 +2288,13 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CloseJobResultInternal> close(String jobId, String assignmentId, CloseJobOptionsInternal options) {
-        // Generated convenience method for closeWithResponse
+    Mono<CloseJobResultInternal> closeJob(String jobId, String assignmentId, CloseJobOptionsInternal options) {
+        // Generated convenience method for closeJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (options != null) {
             requestOptions.setBody(BinaryData.fromObject(options));
         }
-        return closeWithResponse(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono)
+        return closeJobWithResponse(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(CloseJobResultInternal.class));
     }
 
@@ -2400,82 +2313,11 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CloseJobResultInternal> close(String jobId, String assignmentId) {
-        // Generated convenience method for closeWithResponse
+    Mono<CloseJobResultInternal> closeJob(String jobId, String assignmentId) {
+        // Generated convenience method for closeJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return closeWithResponse(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono)
+        return closeJobWithResponse(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(CloseJobResultInternal.class));
-    }
-
-    /**
-     * Unassign a job.
-     *
-     * @param jobId Id of a job.
-     * @param assignmentId Id of a job assignment.
-     * @param options Request body for unassign route.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response payload after a job has been successfully unassigned on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnassignJobResult> unassign(String jobId, String assignmentId, UnassignJobOptions options) {
-        // Generated convenience method for unassignWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (options != null) {
-            requestOptions.setBody(BinaryData.fromObject(options));
-        }
-        return unassignWithResponse(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(UnassignJobResult.class));
-    }
-
-    /**
-     * Unassign a job.
-     *
-     * @param jobId Id of a job.
-     * @param assignmentId Id of a job assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response payload after a job has been successfully unassigned on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnassignJobResult> unassign(String jobId, String assignmentId) {
-        // Generated convenience method for unassignWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return unassignWithResponse(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(UnassignJobResult.class));
-    }
-
-    /**
-     * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
-     *
-     * @param workerId Id of a worker.
-     * @param offerId Id of an offer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing ids for the worker, job, and assignment from an accepted offer on successful
-     * completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcceptJobOfferResult> accept(String workerId, String offerId) {
-        // Generated convenience method for acceptWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return acceptWithResponse(workerId, offerId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AcceptJobOfferResult.class));
     }
 
     /**
@@ -2494,36 +2336,14 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DeclineJobOfferResultInternal> decline(String workerId, String offerId,
+    Mono<DeclineJobOfferResultInternal> declineJobOffer(String workerId, String offerId,
         DeclineJobOfferOptionsInternal options) {
-        // Generated convenience method for declineWithResponse
+        // Generated convenience method for declineJobOfferWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (options != null) {
             requestOptions.setBody(BinaryData.fromObject(options));
         }
-        return declineWithResponse(workerId, offerId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DeclineJobOfferResultInternal.class));
-    }
-
-    /**
-     * Declines an offer to work on a job.
-     *
-     * @param workerId Id of a worker.
-     * @param offerId Id of an offer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response payload from declining a job on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DeclineJobOfferResultInternal> decline(String workerId, String offerId) {
-        // Generated convenience method for declineWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return declineWithResponse(workerId, offerId, requestOptions).flatMap(FluxUtil::toMono)
+        return declineJobOfferWithResponse(workerId, offerId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(DeclineJobOfferResultInternal.class));
     }
 }
