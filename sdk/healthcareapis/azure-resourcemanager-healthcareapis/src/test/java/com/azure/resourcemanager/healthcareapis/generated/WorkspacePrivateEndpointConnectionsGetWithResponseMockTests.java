@@ -32,7 +32,7 @@ public final class WorkspacePrivateEndpointConnectionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"gegydcwboxjum\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"lihrraiouaubr\",\"actionsRequired\":\"loqxfuojrngif\"},\"provisioningState\":\"Succeeded\"},\"id\":\"pasccbi\",\"name\":\"imzdlyj\",\"type\":\"fqwmkyoquf\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"dxmeb\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"jpahlxvea\",\"actionsRequired\":\"qxnmwmqt\"},\"provisioningState\":\"Succeeded\"},\"id\":\"yijddtvqcttad\",\"name\":\"jaeukmrsieekpn\",\"type\":\"zaapmudqmeqwi\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,11 +50,12 @@ public final class WorkspacePrivateEndpointConnectionsGetWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateEndpointConnectionDescription response = manager.workspacePrivateEndpointConnections()
-            .getWithResponse("uncuw", "qspkcdqzhlctd", "unqndyfpchrqb", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("cjmeislstvasy", "wxdzaumweoohgu", "fuzboyjathwtzolb", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("lihrraiouaubr", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("loqxfuojrngif", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("jpahlxvea", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("qxnmwmqt", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

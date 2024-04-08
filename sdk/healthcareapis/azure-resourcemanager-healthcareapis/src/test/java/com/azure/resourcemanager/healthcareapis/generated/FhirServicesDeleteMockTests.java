@@ -45,7 +45,8 @@ public final class FhirServicesDeleteMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.fhirServices().delete("kpn", "zaapmudqmeqwi", "pibudqwyxebeybpm", com.azure.core.util.Context.NONE);
+        manager.fhirServices().delete("jpxtxsuwprtuj", "sawddjibabxvi", "itvtzeexavo",
+            com.azure.core.util.Context.NONE);
 
     }
 }

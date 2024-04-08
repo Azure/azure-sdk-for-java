@@ -34,7 +34,7 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"tymoxoftp\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"yczuhxacpq\",\"actionsRequired\":\"ihhyuspskasd\"},\"provisioningState\":\"Succeeded\"},\"id\":\"fwdgzxulucvp\",\"name\":\"mrsreuzvxurisjnh\",\"type\":\"ytxifqjzgxmrh\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"yybyc\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"jsrtk\",\"actionsRequired\":\"wnopqgikyzirtx\"},\"provisioningState\":\"Succeeded\"},\"id\":\"x\",\"name\":\"ejnt\",\"type\":\"sewgioilqukr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -51,16 +51,16 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PrivateEndpointConnectionDescription response = manager.privateEndpointConnections().define("yo")
-            .withExistingService("pjbi", "gjmfxumvfcl").withPrivateEndpoint(new PrivateEndpoint())
+        PrivateEndpointConnectionDescription response = manager.privateEndpointConnections().define("atiz")
+            .withExistingService("fcdmqnrojlpijn", "rxfrddhc").withPrivateEndpoint(new PrivateEndpoint())
             .withPrivateLinkServiceConnectionState(
                 new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                    .withDescription("zbomvzzbtdcqvpni").withActionsRequired("jviylwdshfs"))
+                    .withDescription("hftwesgog").withActionsRequired("honnxkrlgnyhmos"))
             .create();
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("yczuhxacpq", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("ihhyuspskasd", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("jsrtk", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("wnopqgikyzirtx", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

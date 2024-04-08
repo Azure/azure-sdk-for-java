@@ -32,7 +32,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"nsvbuswdv\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"ycnunvjsrtk\",\"actionsRequired\":\"wnopqgikyzirtx\"},\"provisioningState\":\"Deleting\"},\"id\":\"x\",\"name\":\"ejnt\",\"type\":\"sewgioilqukr\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"htywubxcbihwq\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"ntwjch\",\"actionsRequired\":\"goihx\"},\"provisioningState\":\"Succeeded\"},\"id\":\"ctondz\",\"name\":\"luudfdlwggytsb\",\"type\":\"tov\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,11 +50,11 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateEndpointConnectionDescription response = manager.privateEndpointConnections()
-            .getWithResponse("jbdhqxvc", "gf", "pdso", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("coolsttpkiwkkb", "ujrywvtyl", "fpncurdo", com.azure.core.util.Context.NONE).getValue();
 
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ycnunvjsrtk", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("wnopqgikyzirtx", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("ntwjch", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("goihx", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

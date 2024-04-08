@@ -30,7 +30,7 @@ public final class OperationResultsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"id\":\"elisdjub\",\"name\":\"bqigkx\",\"status\":\"Requested\",\"startTime\":\"zgakgacyrcmj\",\"endTime\":\"spofapvuhry\",\"properties\":\"dataiofrzgbzjedmstk\"}";
+            = "{\"id\":\"yprotwyp\",\"name\":\"d\",\"status\":\"Failed\",\"startTime\":\"ugcmjkavlgorb\",\"endTime\":\"tp\",\"properties\":\"datatzfjltf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -47,8 +47,8 @@ public final class OperationResultsGetWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        OperationResultsDescription response = manager.operationResults()
-            .getWithResponse("vxkdivqihebwtswb", "uwfmduragegizvc", com.azure.core.util.Context.NONE).getValue();
+        OperationResultsDescription response
+            = manager.operationResults().getWithResponse("vmqfoud", "rhc", com.azure.core.util.Context.NONE).getValue();
 
     }
 }

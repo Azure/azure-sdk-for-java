@@ -14,20 +14,20 @@ public final class IotFhirDestinationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IotFhirDestinationProperties model = BinaryData.fromString(
-            "{\"resourceIdentityResolutionType\":\"Lookup\",\"fhirServiceResourceId\":\"wgdrjervnaenqp\",\"fhirMapping\":{\"content\":\"dataindoygmifthnzd\"},\"provisioningState\":\"Accepted\"}")
+            "{\"resourceIdentityResolutionType\":\"Create\",\"fhirServiceResourceId\":\"bnxknalaulppg\",\"fhirMapping\":{\"content\":\"datatpnapnyiropuhpig\"},\"provisioningState\":\"Creating\"}")
             .toObject(IotFhirDestinationProperties.class);
-        Assertions.assertEquals(IotIdentityResolutionType.LOOKUP, model.resourceIdentityResolutionType());
-        Assertions.assertEquals("wgdrjervnaenqp", model.fhirServiceResourceId());
+        Assertions.assertEquals(IotIdentityResolutionType.CREATE, model.resourceIdentityResolutionType());
+        Assertions.assertEquals("bnxknalaulppg", model.fhirServiceResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IotFhirDestinationProperties model
-            = new IotFhirDestinationProperties().withResourceIdentityResolutionType(IotIdentityResolutionType.LOOKUP)
-                .withFhirServiceResourceId("wgdrjervnaenqp")
-                .withFhirMapping(new IotMappingProperties().withContent("dataindoygmifthnzd"));
+            = new IotFhirDestinationProperties().withResourceIdentityResolutionType(IotIdentityResolutionType.CREATE)
+                .withFhirServiceResourceId("bnxknalaulppg")
+                .withFhirMapping(new IotMappingProperties().withContent("datatpnapnyiropuhpig"));
         model = BinaryData.fromObject(model).toObject(IotFhirDestinationProperties.class);
-        Assertions.assertEquals(IotIdentityResolutionType.LOOKUP, model.resourceIdentityResolutionType());
-        Assertions.assertEquals("wgdrjervnaenqp", model.fhirServiceResourceId());
+        Assertions.assertEquals(IotIdentityResolutionType.CREATE, model.resourceIdentityResolutionType());
+        Assertions.assertEquals("bnxknalaulppg", model.fhirServiceResourceId());
     }
 }

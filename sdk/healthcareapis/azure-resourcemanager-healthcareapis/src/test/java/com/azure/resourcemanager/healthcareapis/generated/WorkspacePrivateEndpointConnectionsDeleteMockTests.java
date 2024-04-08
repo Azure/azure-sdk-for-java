@@ -45,7 +45,7 @@ public final class WorkspacePrivateEndpointConnectionsDeleteMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.workspacePrivateEndpointConnections().delete("prlpy", "nuciqdsmexiit", "fuxtyasiibmiybnn",
+        manager.workspacePrivateEndpointConnections().delete("erbdk", "lvidizozs", "bccxjmonfdgn",
             com.azure.core.util.Context.NONE);
 
     }

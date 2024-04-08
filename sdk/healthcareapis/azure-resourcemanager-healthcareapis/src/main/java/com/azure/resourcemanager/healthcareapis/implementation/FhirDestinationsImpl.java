@@ -29,14 +29,14 @@ public final class FhirDestinationsImpl implements FhirDestinations {
         String iotConnectorName) {
         PagedIterable<IotFhirDestinationInner> inner
             = this.serviceClient().listByIotConnector(resourceGroupName, workspaceName, iotConnectorName);
-        return Utils.mapPage(inner, inner1 -> new IotFhirDestinationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new IotFhirDestinationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<IotFhirDestination> listByIotConnector(String resourceGroupName, String workspaceName,
         String iotConnectorName, Context context) {
         PagedIterable<IotFhirDestinationInner> inner
             = this.serviceClient().listByIotConnector(resourceGroupName, workspaceName, iotConnectorName, context);
-        return Utils.mapPage(inner, inner1 -> new IotFhirDestinationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new IotFhirDestinationImpl(inner1, this.manager()));
     }
 
     private FhirDestinationsClient serviceClient() {

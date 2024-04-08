@@ -32,7 +32,7 @@ public final class IotConnectorsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Verifying\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"iut\",\"consumerGroup\":\"apzhyrpetoge\",\"fullyQualifiedEventHubNamespace\":\"oxslh\"},\"deviceMapping\":{\"content\":\"datalabrqnkkzjcjbtr\"}},\"identity\":{\"type\":\"None\",\"principalId\":\"d78ae8dd-217a-4a15-9ccd-85e5b8452f9f\",\"tenantId\":\"0284beaa-26e5-4181-b468-2dda2dc544c5\",\"userAssignedIdentities\":{\"jj\":{\"principalId\":\"c2bb81f9-9bfd-4608-8098-c12d94265257\",\"clientId\":\"0654e397-b4f6-4435-93a6-c5400cde3391\"},\"qbeitpkxztmoob\":{\"principalId\":\"907053a4-86fa-45d9-bb81-8cc6a0c89451\",\"clientId\":\"0a48781e-b687-45ca-92b8-b9f0e4736c40\"}}},\"tags\":{\"pimaqxzhemjyh\":\"tidgfcwq\"},\"location\":\"uj\",\"etag\":\"t\",\"id\":\"kozzwculkb\",\"name\":\"wpfaj\",\"type\":\"jwltlwtjjgu\"}";
+            = "{\"properties\":{\"provisioningState\":\"Warned\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"obfirclnpk\",\"consumerGroup\":\"ayzri\",\"fullyQualifiedEventHubNamespace\":\"hya\"},\"deviceMapping\":{\"content\":\"datajlb\"}},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"157b547e-f9d7-40a0-9c12-60327dbebffd\",\"tenantId\":\"a9381501-05f0-462b-8cc6-32d742988b87\",\"userAssignedIdentities\":{\"omdynhdwdigum\":{\"principalId\":\"4ee46fc7-c9e2-4a94-87db-ef7141f2e663\",\"clientId\":\"6c459971-967f-4d57-aa77-de244860a9e0\"}}},\"tags\":{\"hezwwvaiq\":\"aauzzptjazysd\",\"hqyikvy\":\"uvvfonkp\"},\"location\":\"uyav\",\"etag\":\"wmn\",\"id\":\"sttijfybvp\",\"name\":\"ekrsgs\",\"type\":\"b\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,14 +50,14 @@ public final class IotConnectorsGetWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IotConnector response = manager.iotConnectors()
-            .getWithResponse("qcuubgqibrta", "metttwgd", "lqxihhrmooiz", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("riglaec", "ndtic", "kpvzmlq", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("t", response.etag());
-        Assertions.assertEquals("uj", response.location());
-        Assertions.assertEquals("tidgfcwq", response.tags().get("pimaqxzhemjyh"));
-        Assertions.assertEquals(ServiceManagedIdentityType.NONE, response.identity().type());
-        Assertions.assertEquals("iut", response.ingestionEndpointConfiguration().eventHubName());
-        Assertions.assertEquals("apzhyrpetoge", response.ingestionEndpointConfiguration().consumerGroup());
-        Assertions.assertEquals("oxslh", response.ingestionEndpointConfiguration().fullyQualifiedEventHubNamespace());
+        Assertions.assertEquals("wmn", response.etag());
+        Assertions.assertEquals("uyav", response.location());
+        Assertions.assertEquals("aauzzptjazysd", response.tags().get("hezwwvaiq"));
+        Assertions.assertEquals(ServiceManagedIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("obfirclnpk", response.ingestionEndpointConfiguration().eventHubName());
+        Assertions.assertEquals("ayzri", response.ingestionEndpointConfiguration().consumerGroup());
+        Assertions.assertEquals("hya", response.ingestionEndpointConfiguration().fullyQualifiedEventHubNamespace());
     }
 }

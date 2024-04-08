@@ -35,7 +35,7 @@ public final class WorkspacesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"xfzwi\",\"name\":\"vwzjbhyz\",\"type\":\"xjrk\"}],\"publicNetworkAccess\":\"Enabled\"},\"tags\":{\"nvuqeqvldspa\":\"egv\",\"kdmflvestmjlx\":\"tjb\",\"zapeewchpx\":\"ril\"},\"location\":\"twkuziycs\",\"etag\":\"vu\",\"id\":\"uztcktyhjtqed\",\"name\":\"gzulwmmrqzzr\",\"type\":\"jvpglydzgk\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"lgy\",\"name\":\"vutpthjoxo\",\"type\":\"smsks\"}],\"publicNetworkAccess\":\"Enabled\"},\"tags\":{\"lxsffg\":\"oljxkcgx\"},\"location\":\"izqzdwlvwlyou\",\"etag\":\"gfbkjubdyh\",\"id\":\"kfm\",\"name\":\"nsgowzfttst\",\"type\":\"ktlahbqa\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -52,14 +52,13 @@ public final class WorkspacesCreateOrUpdateMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Workspace response = manager.workspaces().define("nobaiyhddviacegf").withExistingResourceGroup("jkmnwq")
-            .withRegion("onbzoggculapzwy").withTags(mapOf("pjxxkzb", "aaewdaomdjv", "ncj", "msgeivsiykzk"))
-            .withEtag("gogtqxepnylbf")
-            .withProperties(new WorkspaceProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED)).create();
+        Workspace response = manager.workspaces().define("w").withExistingResourceGroup("orwmduvwpklv")
+            .withRegion("impevf").withTags(mapOf("jeknizshq", "oqonma")).withEtag("b")
+            .withProperties(new WorkspaceProperties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED)).create();
 
-        Assertions.assertEquals("vu", response.etag());
-        Assertions.assertEquals("twkuziycs", response.location());
-        Assertions.assertEquals("egv", response.tags().get("nvuqeqvldspa"));
+        Assertions.assertEquals("gfbkjubdyh", response.etag());
+        Assertions.assertEquals("izqzdwlvwlyou", response.location());
+        Assertions.assertEquals("oljxkcgx", response.tags().get("lxsffg"));
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.properties().publicNetworkAccess());
     }
 

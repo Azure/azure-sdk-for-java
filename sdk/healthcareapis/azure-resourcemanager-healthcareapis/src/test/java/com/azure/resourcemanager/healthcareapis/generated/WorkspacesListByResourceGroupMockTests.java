@@ -33,7 +33,7 @@ public final class WorkspacesListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deprovisioned\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"fi\",\"name\":\"ndieuzaofj\",\"type\":\"hvcyyysfg\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"biipuip\",\"name\":\"oqonma\",\"type\":\"jeknizshq\"}],\"publicNetworkAccess\":\"Enabled\"},\"tags\":{\"dxsm\":\"vfgmblrrilby\"},\"location\":\"cwrwfs\",\"etag\":\"fnynszqujizdvoqy\",\"id\":\"ibyowbblgyavutp\",\"name\":\"hjoxo\",\"type\":\"smsks\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Moving\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"x\",\"name\":\"tczheydbsdshmkx\",\"type\":\"aehvbbxuri\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"htba\",\"name\":\"kgxywr\",\"type\":\"kpyklyhp\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"vruu\",\"name\":\"lgzi\",\"type\":\"thost\"}],\"publicNetworkAccess\":\"Disabled\"},\"tags\":{\"lhpl\":\"dxeclzedqbcvh\",\"lkxt\":\"dqkdlwwqfbu\"},\"location\":\"jfsmlmbtxhwgfwsr\",\"etag\":\"wcoezbrhub\",\"id\":\"kh\",\"name\":\"dyg\",\"type\":\"ookk\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -51,12 +51,12 @@ public final class WorkspacesListByResourceGroupMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Workspace> response
-            = manager.workspaces().listByResourceGroup("wjhhgdnhxmsivf", com.azure.core.util.Context.NONE);
+            = manager.workspaces().listByResourceGroup("jpr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fnynszqujizdvoqy", response.iterator().next().etag());
-        Assertions.assertEquals("cwrwfs", response.iterator().next().location());
-        Assertions.assertEquals("vfgmblrrilby", response.iterator().next().tags().get("dxsm"));
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED,
+        Assertions.assertEquals("wcoezbrhub", response.iterator().next().etag());
+        Assertions.assertEquals("jfsmlmbtxhwgfwsr", response.iterator().next().location());
+        Assertions.assertEquals("dxeclzedqbcvh", response.iterator().next().tags().get("lhpl"));
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED,
             response.iterator().next().properties().publicNetworkAccess());
     }
 }

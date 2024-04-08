@@ -38,7 +38,7 @@ public final class IotConnectorsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"mewip\",\"consumerGroup\":\"ekdxuku\",\"fullyQualifiedEventHubNamespace\":\"sjjxundxgketw\"},\"deviceMapping\":{\"content\":\"datazjhfjmhvv\"}},\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"principalId\":\"b1b61bb2-8b2b-4b88-b806-97655f4eaa7f\",\"tenantId\":\"6ca7f7f2-b933-4535-a8d7-0a6c0280b935\",\"userAssignedIdentities\":{\"sx\":{\"principalId\":\"90e7fbd7-1731-4869-b59e-d5f3b89282fa\",\"clientId\":\"0f20c557-1dd6-49b7-b1d2-90a7f71c3d0c\"},\"fbuzjyihs\":{\"principalId\":\"e5d0a9da-1768-4b01-a548-496c90b18ad9\",\"clientId\":\"523aabec-8c5a-4611-aec2-75616dcfbde1\"}}},\"tags\":{\"nsqyrpfoobrltt\":\"hudypohyuemsl\"},\"location\":\"sjnygqdnfwqzdzgt\",\"etag\":\"axhnfh\",\"id\":\"lyvijouwiv\",\"name\":\"xoyzunbix\",\"type\":\"rtikvcpwpg\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"mieknlraria\",\"consumerGroup\":\"iuagydwqfbylyrfg\",\"fullyQualifiedEventHubNamespace\":\"gtcojocqwo\"},\"deviceMapping\":{\"content\":\"datazjvusfzldmo\"}},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"cbb8b26a-84fa-4170-9bdb-6b1f72a21c46\",\"tenantId\":\"228c903b-64f1-4a4b-a77e-17edd6b93856\",\"userAssignedIdentities\":{\"adpysownbt\":{\"principalId\":\"3ae7c2b2-6aaa-45f9-b0d6-543b6c29c127\",\"clientId\":\"84dc51c9-de1c-46af-9ef4-28fae4f5cc55\"},\"u\":{\"principalId\":\"f0d6ace3-f3ce-4ce4-a72a-7af7df249fe7\",\"clientId\":\"8890c9e0-aa47-4a3e-8937-4f1a458126bc\"},\"qctojcmisof\":{\"principalId\":\"0d67b923-5e70-4a16-bfc1-5cf92f718538\",\"clientId\":\"72821caa-d769-4b02-a77a-da2a39110019\"},\"pe\":{\"principalId\":\"97af239a-1202-489b-8108-c187ac0de255\",\"clientId\":\"f8f42d56-4e5d-4b31-aff8-5e17339ba8f9\"}}},\"tags\":{\"hihihlhzdsqtzbsr\":\"yqdhcuplcplcw\"},\"location\":\"o\",\"etag\":\"jhf\",\"id\":\"mvec\",\"name\":\"ctxmwoteyowcluq\",\"type\":\"vekqvgqo\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -55,24 +55,23 @@ public final class IotConnectorsCreateOrUpdateMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        IotConnector response = manager.iotConnectors().define("jhlfzswpchwahf").withExistingWorkspace("cse", "hwwn")
-            .withRegion("xgsg").withTags(mapOf("uvyinzqodfvpgs", "fiwrxgkn")).withEtag("fgzdjtxvz")
+        IotConnector response = manager.iotConnectors().define("frbbc").withExistingWorkspace("tppn", "dxzxhi")
+            .withRegion("kiscvwmzhwpl")
+            .withTags(mapOf("ud", "unzo", "hmfdnbzydvfvfcj", "cxgkmoyxcdyui", "gorf", "aeoisrvh")).withEtag("a")
             .withIdentity(new ServiceManagedIdentityIdentity().withType(ServiceManagedIdentityType.NONE)
-                .withUserAssignedIdentities(
-                    mapOf("jzh", new UserAssignedIdentity(), "xfpxtgqscja", new UserAssignedIdentity(),
-                        "juhdqazkmtgguwpi", new UserAssignedIdentity(), "jcivmmg", new UserAssignedIdentity())))
-            .withIngestionEndpointConfiguration(
-                new IotEventHubIngestionEndpointConfiguration().withEventHubName("epgfew")
-                    .withConsumerGroup("wlyxgncxyk").withFullyQualifiedEventHubNamespace("djhlimm"))
-            .withDeviceMapping(new IotMappingProperties().withContent("dataf")).create();
+                .withUserAssignedIdentities(mapOf("ckh", new UserAssignedIdentity(), "vdff", new UserAssignedIdentity(),
+                    "fqroudas", new UserAssignedIdentity(), "ehhr", new UserAssignedIdentity())))
+            .withIngestionEndpointConfiguration(new IotEventHubIngestionEndpointConfiguration().withEventHubName("ltd")
+                .withConsumerGroup("fkqojpy").withFullyQualifiedEventHubNamespace("gtrd"))
+            .withDeviceMapping(new IotMappingProperties().withContent("datafmzzsdymbrny")).create();
 
-        Assertions.assertEquals("axhnfh", response.etag());
-        Assertions.assertEquals("sjnygqdnfwqzdzgt", response.location());
-        Assertions.assertEquals("hudypohyuemsl", response.tags().get("nsqyrpfoobrltt"));
-        Assertions.assertEquals(ServiceManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("mewip", response.ingestionEndpointConfiguration().eventHubName());
-        Assertions.assertEquals("ekdxuku", response.ingestionEndpointConfiguration().consumerGroup());
-        Assertions.assertEquals("sjjxundxgketw",
+        Assertions.assertEquals("jhf", response.etag());
+        Assertions.assertEquals("o", response.location());
+        Assertions.assertEquals("yqdhcuplcplcw", response.tags().get("hihihlhzdsqtzbsr"));
+        Assertions.assertEquals(ServiceManagedIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("mieknlraria", response.ingestionEndpointConfiguration().eventHubName());
+        Assertions.assertEquals("iuagydwqfbylyrfg", response.ingestionEndpointConfiguration().consumerGroup());
+        Assertions.assertEquals("gtcojocqwo",
             response.ingestionEndpointConfiguration().fullyQualifiedEventHubNamespace());
     }
 

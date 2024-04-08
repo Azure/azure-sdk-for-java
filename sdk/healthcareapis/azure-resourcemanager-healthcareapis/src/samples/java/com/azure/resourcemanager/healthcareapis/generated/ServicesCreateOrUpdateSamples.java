@@ -24,7 +24,7 @@ import java.util.Map;
 public final class ServicesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/legacy/
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/legacy/
      * ServiceCreate.json
      */
     /**
@@ -60,7 +60,7 @@ public final class ServicesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/legacy/
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/legacy/
      * ServiceCreateInDataSovereignRegionWithCmkEnabled.json
      */
     /**
@@ -97,7 +97,7 @@ public final class ServicesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/legacy/
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/legacy/
      * ServiceCreateMinimum.json
      */
     /**

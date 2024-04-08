@@ -31,7 +31,7 @@ public final class PrivateLinkResourcesListByServiceWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"jqgwzp\",\"requiredMembers\":[\"n\",\"cypsxjv\",\"oimwkslirc\",\"zjxvydfcea\"],\"requiredZoneNames\":[\"hvygdyftumr\",\"wnawjslbiw\",\"ojgcyzt\"]},\"id\":\"fmznba\",\"name\":\"qphchqnrnrpxehuw\",\"type\":\"ykqgaifmvik\"},{\"properties\":{\"groupId\":\"vkhbejdznx\",\"requiredMembers\":[\"srhnjivo\",\"v\"],\"requiredZoneNames\":[\"v\",\"fzg\"]},\"id\":\"mjdftu\",\"name\":\"jltduceam\",\"type\":\"mczuo\"},{\"properties\":{\"groupId\":\"cwwqiokn\",\"requiredMembers\":[\"mojmsvpkjprvkw\",\"fz\",\"ljyxgtczhe\"],\"requiredZoneNames\":[\"sdshmkxmaehvb\",\"xu\",\"iplt\",\"n\"]},\"id\":\"tbaxk\",\"name\":\"xywr\",\"type\":\"kpyklyhp\"},{\"properties\":{\"groupId\":\"pvruudlg\",\"requiredMembers\":[\"thost\"],\"requiredZoneNames\":[\"stvdxeclz\",\"dqbcvhzlhplod\",\"kdl\",\"wqfbumlkxtrqjfsm\"]},\"id\":\"mbtxhwgf\",\"name\":\"srtawcoezbr\",\"type\":\"ubskhudygoookkq\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"rvk\",\"requiredMembers\":[\"vjzhpjbib\",\"jmfxumvf\",\"luyovwxnbkfezzx\",\"cy\"],\"requiredZoneNames\":[\"dgirujbzbom\",\"zzbtdcqvpniyujvi\"]},\"id\":\"l\",\"name\":\"dshf\",\"type\":\"snrbgyefrymsgao\"},{\"properties\":{\"groupId\":\"nc\",\"requiredMembers\":[\"rfh\",\"rctym\",\"xoftpipiwyczu\"],\"requiredZoneNames\":[\"cpqjlihhyu\"]},\"id\":\"pskasdvlmfwdg\",\"name\":\"x\",\"type\":\"lucvpam\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,8 +49,8 @@ public final class PrivateLinkResourcesListByServiceWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateLinkResourceListResultDescription response = manager.privateLinkResources()
-            .listByServiceWithResponse("blwpcesutrgj", "pauutpw", com.azure.core.util.Context.NONE).getValue();
+            .listByServiceWithResponse("dxtqmieoxo", "ggufhyaomtb", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("hvygdyftumr", response.value().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("dgirujbzbom", response.value().get(0).requiredZoneNames().get(0));
     }
 }

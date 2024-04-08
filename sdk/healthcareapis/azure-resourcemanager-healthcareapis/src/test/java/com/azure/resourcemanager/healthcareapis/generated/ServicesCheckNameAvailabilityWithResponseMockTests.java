@@ -31,7 +31,7 @@ public final class ServicesCheckNameAvailabilityWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"nameAvailable\":true,\"reason\":\"Invalid\",\"message\":\"qknfd\"}";
+        String responseStr = "{\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"qkagfhsxt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,10 +50,10 @@ public final class ServicesCheckNameAvailabilityWithResponseMockTests {
 
         ServicesNameAvailabilityInfo response = manager.services()
             .checkNameAvailabilityWithResponse(
-                new CheckNameAvailabilityParameters().withName("wvtylbfpncurdo").withType("wiithtywub"),
+                new CheckNameAvailabilityParameters().withName("wjxeznoigbr").withType("jwmwkpnbs"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qknfd", response.message());
+        Assertions.assertEquals("qkagfhsxt", response.message());
     }
 }

@@ -128,10 +128,10 @@ public final class IotFhirDestinationImpl
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.iotConnectorName = Utils.getValueFromIdByName(innerObject.id(), "iotconnectors");
-        this.fhirDestinationName = Utils.getValueFromIdByName(innerObject.id(), "fhirdestinations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.iotConnectorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "iotconnectors");
+        this.fhirDestinationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "fhirdestinations");
     }
 
     public IotFhirDestination refresh() {

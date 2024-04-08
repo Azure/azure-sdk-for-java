@@ -17,18 +17,18 @@ public final class ServiceManagedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceManagedIdentity model = BinaryData.fromString(
-            "{\"identity\":{\"type\":\"None\",\"principalId\":\"c59b8d35-ac7b-40e5-a236-d9fae11ad60f\",\"tenantId\":\"e382ebb8-46e2-45f3-a35a-6096a07dfc81\",\"userAssignedIdentities\":{\"pvecxgodeb\":{\"principalId\":\"54d55307-b09f-47c2-b786-7f663349531e\",\"clientId\":\"245c1057-5157-45cb-b1d3-a57076b9203b\"}}}}")
+            "{\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"principalId\":\"72e403a3-5466-4557-9b69-ff98a4d9b7da\",\"tenantId\":\"7becf843-496f-4a0b-aef0-ed4882a7e1c5\",\"userAssignedIdentities\":{\"rbmpukgri\":{\"principalId\":\"8632c7a9-8e0c-4bbd-a7b5-fd955e17f6f8\",\"clientId\":\"79647dac-acdd-4952-a077-1c78f5f6c1aa\"},\"zlfbxzpuzycispnq\":{\"principalId\":\"9b4ca9c0-4686-4121-b0fd-d56b9dd1554f\",\"clientId\":\"c2cce1da-2c71-4254-94bb-e197eb320e87\"}}}}")
             .toObject(ServiceManagedIdentity.class);
-        Assertions.assertEquals(ServiceManagedIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals(ServiceManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceManagedIdentity model = new ServiceManagedIdentity()
-            .withIdentity(new ServiceManagedIdentityIdentity().withType(ServiceManagedIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("pvecxgodeb", new UserAssignedIdentity())));
+        ServiceManagedIdentity model = new ServiceManagedIdentity().withIdentity(new ServiceManagedIdentityIdentity()
+            .withType(ServiceManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED).withUserAssignedIdentities(
+                mapOf("rbmpukgri", new UserAssignedIdentity(), "zlfbxzpuzycispnq", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(ServiceManagedIdentity.class);
-        Assertions.assertEquals(ServiceManagedIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals(ServiceManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
     // Use "Map.of" if available

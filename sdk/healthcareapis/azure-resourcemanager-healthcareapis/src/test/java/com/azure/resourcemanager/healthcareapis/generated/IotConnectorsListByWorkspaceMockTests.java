@@ -33,7 +33,7 @@ public final class IotConnectorsListByWorkspaceMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"ogfnzjvusf\",\"consumerGroup\":\"dmozu\",\"fullyQualifiedEventHubNamespace\":\"lfsbtkadpysow\"},\"deviceMapping\":{\"content\":\"datagkbugrjqct\"}},\"identity\":{\"type\":\"None\",\"principalId\":\"3f82d37a-4df2-4924-89a5-a9c92f3283a8\",\"tenantId\":\"2b92efa9-288e-4e47-a976-6254e012463c\",\"userAssignedIdentities\":{\"ypefojyqdhcupl\":{\"principalId\":\"61ccb15a-2a2c-42b9-8e3c-8957de0b2cf2\",\"clientId\":\"aa1fd0cc-df27-4312-b4cf-a7f74775d946\"},\"cwkhihi\":{\"principalId\":\"d4ed73c9-4efb-4fee-8573-a797972c376a\",\"clientId\":\"e4c5cde5-ac0c-4845-9795-108bce58e9e4\"},\"zdsqtzbsrgnow\":{\"principalId\":\"728d72db-8d68-4604-b75d-7ab8b741bd35\",\"clientId\":\"5264019b-0820-4ad5-b1f8-423c21e30067\"},\"fgmvecactxmwo\":{\"principalId\":\"289bffa9-ea93-471d-ab02-fe66abf9092f\",\"clientId\":\"6704adc3-1cd2-471b-8b83-9fc80082b40a\"}}},\"tags\":{\"ekqvgqouwif\":\"owcluqo\"},\"location\":\"pjwyiv\",\"etag\":\"kfxcvhrfs\",\"id\":\"huagrttikteusqc\",\"name\":\"kvyklxubyjaffmm\",\"type\":\"bl\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Moving\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"wiivwzjbhyzsx\",\"consumerGroup\":\"kambtrnegvmnvuqe\",\"fullyQualifiedEventHubNamespace\":\"lds\"},\"deviceMapping\":{\"content\":\"datatjb\"}},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"3cd62f20-d432-425e-b5dd-98b611982066\",\"tenantId\":\"367cee32-14a5-4c7b-b8ec-b2cf2118b1e5\",\"userAssignedIdentities\":{\"mjlxrrilozapeewc\":{\"principalId\":\"2ecbb90c-9c22-414d-9bfc-167d86961cd0\",\"clientId\":\"a981b056-8bef-4630-a8ba-818feb6a6209\"}}},\"tags\":{\"f\":\"lktwkuziycslev\",\"tqedcgzulwm\":\"ztcktyh\",\"rjvpglydzgkrvqee\":\"rqzz\"},\"location\":\"oepry\",\"etag\":\"nwy\",\"id\":\"pzdm\",\"name\":\"vzvfvaawzqadfl\",\"type\":\"z\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -51,16 +51,18 @@ public final class IotConnectorsListByWorkspaceMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<IotConnector> response
-            = manager.iotConnectors().listByWorkspace("ydwqfbylyrf", "iagtc", com.azure.core.util.Context.NONE);
+            = manager.iotConnectors().listByWorkspace("fmo", "uxrkjp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kfxcvhrfs", response.iterator().next().etag());
-        Assertions.assertEquals("pjwyiv", response.iterator().next().location());
-        Assertions.assertEquals("owcluqo", response.iterator().next().tags().get("ekqvgqouwif"));
-        Assertions.assertEquals(ServiceManagedIdentityType.NONE, response.iterator().next().identity().type());
-        Assertions.assertEquals("ogfnzjvusf",
+        Assertions.assertEquals("nwy", response.iterator().next().etag());
+        Assertions.assertEquals("oepry", response.iterator().next().location());
+        Assertions.assertEquals("lktwkuziycslev", response.iterator().next().tags().get("f"));
+        Assertions.assertEquals(ServiceManagedIdentityType.SYSTEM_ASSIGNED,
+            response.iterator().next().identity().type());
+        Assertions.assertEquals("wiivwzjbhyzsx",
             response.iterator().next().ingestionEndpointConfiguration().eventHubName());
-        Assertions.assertEquals("dmozu", response.iterator().next().ingestionEndpointConfiguration().consumerGroup());
-        Assertions.assertEquals("lfsbtkadpysow",
+        Assertions.assertEquals("kambtrnegvmnvuqe",
+            response.iterator().next().ingestionEndpointConfiguration().consumerGroup());
+        Assertions.assertEquals("lds",
             response.iterator().next().ingestionEndpointConfiguration().fullyQualifiedEventHubNamespace());
     }
 }

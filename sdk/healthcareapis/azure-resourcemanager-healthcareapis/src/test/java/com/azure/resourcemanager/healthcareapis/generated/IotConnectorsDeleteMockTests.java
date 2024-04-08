@@ -45,7 +45,7 @@ public final class IotConnectorsDeleteMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.iotConnectors().delete("talhsnvkcdmxzr", "oaimlnw", "aaomylweazu", com.azure.core.util.Context.NONE);
+        manager.iotConnectors().delete("huzqgn", "dgkynscliqhzvhxn", "omtkub", com.azure.core.util.Context.NONE);
 
     }
 }
