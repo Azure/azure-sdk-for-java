@@ -31,7 +31,7 @@ $azSerRootPom = "$PSScriptRoot/../serialization" | Resolve-Path
 
 $azStorageRootPom = "$PSScriptRoot/../storage" | Resolve-Path
 
-$azIdentityRoot = "$PSScriptRoot/azure-identity" | Resolve-Path
+$azIdentityRoot = "$PSScriptRoot" | Resolve-Path
 
 $azIdentityRootPom = "$PSScriptRoot/azure-identity/pom.xml" | Resolve-Path
 

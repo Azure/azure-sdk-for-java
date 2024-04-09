@@ -1,5 +1,7 @@
 package com.azure.virtualmachine;
 
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.core.credential.TokenRequestContext;
@@ -11,6 +13,8 @@ import com.azure.core.credential.AccessToken;
 public class Program {
 
     public static void main(String[] args) {
+
+
         ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder().build();
         try {
             AccessToken accessToken = managedIdentityCredential
