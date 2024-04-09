@@ -87,6 +87,25 @@ Write-Host "Uploading file to storage"
 az storage blob upload --container-name "vmcontainer" --file "$vmRoot/target/identity-test-vm-1.0-SNAPSHOT-jar-with-dependencies.jar" --name "testfile.jar" --account-name $DeploymentOutputs['IDENTITY_STORAGE_NAME_1'] --account-key $key | Write-Host
 
 if ($IsMacOS -eq $true) {
+
+    # Define a list of root directories
+    $rootDirs = @(
+        $azSerRootPom,
+        $azCoreRootPom,
+        $azStorageRootPom,
+        $azIdentityRootPom
+    )
+
+    foreach ($rootDir in $rootDirs) {
+        Get-ChildItem -Path $rootDir -Directory | ForEach-Object {
+            $targetDir = Join-Path -Path $_.FullName -ChildPath "target"
+            Write-Host "Removing $targetDir"
+            if (Test-Path -Path $targetDir) {
+                Write-Host "Removing $targetDir"
+                Remove-Item -Path $targetDir -Recurse -Force
+            }
+        }
+    }
   # Not supported on MacOS agents
   az logout
   return
