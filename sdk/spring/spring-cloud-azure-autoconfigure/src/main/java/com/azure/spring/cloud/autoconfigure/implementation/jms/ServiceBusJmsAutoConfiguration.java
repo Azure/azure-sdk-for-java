@@ -52,7 +52,7 @@ import java.util.function.BiFunction;
 @ConditionalOnProperty(value = "spring.jms.servicebus.enabled", matchIfMissing = true)
 @ConditionalOnClass({ ConnectionFactory.class, JmsConnectionFactory.class, JmsTemplate.class })
 @EnableConfigurationProperties({ JmsProperties.class })
-@Import({ServiceBusJmsConnectionFactoryConfiguration.class, ServiceBusJmsContainerConfiguration.class })
+@Import({ ServiceBusJmsConnectionFactoryConfiguration.class, ServiceBusJmsContainerConfiguration.class })
 public class ServiceBusJmsAutoConfiguration {
 
     @Bean
@@ -66,16 +66,18 @@ public class ServiceBusJmsAutoConfiguration {
     @SuppressWarnings("unchecked")
     AzureServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer(ObjectProvider<AzureServiceBusJmsCredentialSupplier> azureServiceBusJmsCredentialSupplier) {
         return factory -> {
-            JmsConnectionFactory jmsFactory = (JmsConnectionFactory)ReflectionUtils.getField(ServiceBusJmsConnectionFactory.class, "factory", factory);
-            EnumMap<JmsConnectionExtensions, BiFunction<Connection, URI, Object>> extensionMap = (EnumMap)ReflectionUtils.getField(JmsConnectionFactory.class, "extensionMap", jmsFactory);
+            JmsConnectionFactory jmsFactory = (JmsConnectionFactory) ReflectionUtils.getField(ServiceBusJmsConnectionFactory.class, "factory", factory);
+            EnumMap<JmsConnectionExtensions, BiFunction<Connection, URI, Object>> extensionMap =
+                (EnumMap) ReflectionUtils.getField(JmsConnectionFactory.class, "extensionMap", jmsFactory);
 
-            if (extensionMap.containsKey(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES) ) {
+            if (extensionMap.containsKey(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES)) {
                 Map<String, Object> properties = (Map) extensionMap.get(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES).apply(null, null);
                 if (properties.containsKey("com.microsoft:is-client-provider")) {
                     jmsFactory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),
                         (connection, uri) -> {
                             properties.remove("com.microsoft:is-client-provider");
-                            return properties;            });
+                            return properties;
+                        });
                 }
             }
         };
