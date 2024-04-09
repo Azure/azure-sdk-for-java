@@ -8,12 +8,17 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Customer Certificate used for https. */
+/**
+ * Customer Certificate used for https.
+ */
 @Fluent
 public final class CustomerCertificate extends Certificate {
     /*
      * Resource reference to the Azure Key Vault certificate. Expected to be in format of
-     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
+     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}
+     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}
+     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}
+     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
      */
     @JsonProperty(value = "secretSource")
     private ResourceReference secretSource;
@@ -48,14 +53,17 @@ public final class CustomerCertificate extends Certificate {
     @JsonProperty(value = "thumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbprint;
 
-    /** Creates an instance of CustomerCertificate class. */
+    /**
+     * Creates an instance of CustomerCertificate class.
+     */
     public CustomerCertificate() {
     }
 
     /**
-     * Get the secretSource property: Resource reference to the Azure Key Vault certificate. Expected to be in format of
+     * Get the secretSource property: Resource reference to the Azure Key Vault certificate. Expected to be in format
+     * of
      * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
-     *
+     * 
      * @return the secretSource value.
      */
     public ResourceReference secretSource() {
@@ -63,9 +71,10 @@ public final class CustomerCertificate extends Certificate {
     }
 
     /**
-     * Set the secretSource property: Resource reference to the Azure Key Vault certificate. Expected to be in format of
+     * Set the secretSource property: Resource reference to the Azure Key Vault certificate. Expected to be in format
+     * of
      * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
-     *
+     * 
      * @param secretSource the secretSource value to set.
      * @return the CustomerCertificate object itself.
      */
@@ -76,7 +85,7 @@ public final class CustomerCertificate extends Certificate {
 
     /**
      * Get the secretVersion property: Certificate version.
-     *
+     * 
      * @return the secretVersion value.
      */
     public String secretVersion() {
@@ -85,7 +94,7 @@ public final class CustomerCertificate extends Certificate {
 
     /**
      * Set the secretVersion property: Certificate version.
-     *
+     * 
      * @param secretVersion the secretVersion value to set.
      * @return the CustomerCertificate object itself.
      */
@@ -96,7 +105,7 @@ public final class CustomerCertificate extends Certificate {
 
     /**
      * Get the certificateAuthority property: Certificate issuing authority.
-     *
+     * 
      * @return the certificateAuthority value.
      */
     public String certificateAuthority() {
@@ -105,7 +114,7 @@ public final class CustomerCertificate extends Certificate {
 
     /**
      * Get the useLatestVersion property: Whether to use the latest version for the certificate.
-     *
+     * 
      * @return the useLatestVersion value.
      */
     public Boolean useLatestVersion() {
@@ -114,7 +123,7 @@ public final class CustomerCertificate extends Certificate {
 
     /**
      * Set the useLatestVersion property: Whether to use the latest version for the certificate.
-     *
+     * 
      * @param useLatestVersion the useLatestVersion value to set.
      * @return the CustomerCertificate object itself.
      */
@@ -125,7 +134,7 @@ public final class CustomerCertificate extends Certificate {
 
     /**
      * Get the subjectAlternativeNames property: The list of SANs.
-     *
+     * 
      * @return the subjectAlternativeNames value.
      */
     public List<String> subjectAlternativeNames() {
@@ -134,7 +143,7 @@ public final class CustomerCertificate extends Certificate {
 
     /**
      * Set the subjectAlternativeNames property: The list of SANs.
-     *
+     * 
      * @param subjectAlternativeNames the subjectAlternativeNames value to set.
      * @return the CustomerCertificate object itself.
      */
@@ -145,14 +154,16 @@ public final class CustomerCertificate extends Certificate {
 
     /**
      * Get the thumbprint property: Certificate thumbprint.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
         return this.thumbprint;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomerCertificate withType(SecretType type) {
         super.withType(type);
@@ -161,7 +172,7 @@ public final class CustomerCertificate extends Certificate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
