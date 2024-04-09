@@ -185,4 +185,5 @@ steps:
   - task: PublishCodeCoverageResults@2
     inputs:
       summaryFileLocation: target/site/test-coverage/jacoco.xml
+      pathToSources: sdk/
     condition: eq(variables['RunAggregateReports'], 'true')
