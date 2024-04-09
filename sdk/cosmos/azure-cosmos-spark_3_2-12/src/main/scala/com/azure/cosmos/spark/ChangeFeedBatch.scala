@@ -129,7 +129,7 @@ private class ChangeFeedBatch
       }
 
       // Calculates the Input partitions based on start Lsn and latest Lsn
-      val latestOffset = CosmosPartitionPlanner.getLatestOffset(
+      var latestOffset = CosmosPartitionPlanner.getLatestOffset(
         config,
         ChangeFeedOffset(initialOffsetJson, None),
         changeFeedConfig.toReadLimit,
@@ -154,15 +154,17 @@ private class ChangeFeedBatch
         if (!metadataLog.add(0, latestOffsetJson)) {
           val existingLatestOffset = metadataLog.get(0).get
 
-          val msg = s"Cannot update latest offset at location '$latestOffsetLocation' for batchId: $batchId " +
-            s"-> existing latestOffset: '$existingLatestOffset' failed to persist " +
-            s"new latestOffset: '$latestOffsetJson'."
-
           if (existingLatestOffset != latestOffsetJson) {
-            log.logError(msg)
+            val msg = s"Cannot update latest offset at location '$latestOffsetLocation' for batchId: $batchId " +
+              s"-> existing latestOffset: '$existingLatestOffset' failed to persist " +
+              s"new latestOffset: '$latestOffsetJson'- will continue with existing latest offset."
+            log.logWarning(msg)
 
-            throw new IllegalStateException(msg)
+            latestOffset = ChangeFeedOffset.fromJson(existingLatestOffset)
           } else {
+            val msg = s"Cannot update latest offset at location '$latestOffsetLocation' for batchId: $batchId " +
+              s"-> existing latestOffset: '$existingLatestOffset' failed to persist " +
+              s"new latestOffset: '$latestOffsetJson'."
             log.logDebug(msg)
           }
         } else {
