@@ -2,15 +2,14 @@ package com.azure.communication.callautomation.models;
 
 /** The AzureCommunicationRecordingStorage model. */
 public class AzureBlobContainerRecordingStorage extends RecordingStorage {
-    private String recordingDestinationContainerUrl;
 
     /** Creates an instance of AzureCommunicationRecordingStorage class. 
      * 
      * @param recordingDestinationContainerUrl the recordingDestinationContainerUrl value to set.
     */
     public AzureBlobContainerRecordingStorage(String recordingDestinationContainerUrl) {
-        this.recordingStorageType = RecordingStorageType.fromString("AzureCommunicationServices");
-        this.recordingDestinationContainerUrl = recordingDestinationContainerUrl;
+        this.setRecordingStorageType(RecordingStorageType.fromString("AzureCommunicationServices"));
+        this.setRecordingDestinationContainerUrl(recordingDestinationContainerUrl);
     }
 
     /**
@@ -19,7 +18,7 @@ public class AzureBlobContainerRecordingStorage extends RecordingStorage {
      * @return the recordingDestinationContainerUrl value.
      */
     public String getRecordingDestinationContainerUrl() {
-        return recordingDestinationContainerUrl;
+        return this.getRecordingDestinationContainerUrl();
     }
 
     /**
@@ -29,7 +28,17 @@ public class AzureBlobContainerRecordingStorage extends RecordingStorage {
      * @return the StorageInternal object itself.
      */
     public RecordingStorage setRecordingDestinationContainerUrl(String recordingDestinationContainerUrl) {
-        this.recordingDestinationContainerUrl = recordingDestinationContainerUrl;
+        this.setRecordingDestinationContainerUrl(recordingDestinationContainerUrl);
         return this;
+    }
+
+    /**
+     * Get the recordingStorageType property: Defines the kind of external storage.
+     *
+     * @return the recordingStorageType value.
+     */
+    @Override
+    public RecordingStorageType getRecordingStorageType() {
+        return this.getRecordingStorageType();
     }
 }
