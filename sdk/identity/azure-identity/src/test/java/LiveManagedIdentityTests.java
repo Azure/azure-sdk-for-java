@@ -131,6 +131,10 @@ public class LiveManagedIdentityTests extends TestBase {
 
         System.out.println("Script: " + script);
 
+        String script3 = "\"sudo apt update && sudo apt install openjdk-8-jdk -y --no-install-recommends\"";
+        String output3 = runCommand(azPath, "vm", "run-command", "invoke", "-n", vmName, "-g", resourceGroup,
+            "--command-id", "RunShellScript", "--scripts", script3);
+
         String script2 = "\"java -version\"";
 
         String output2 = runCommand(azPath, "vm", "run-command", "invoke", "-n", vmName, "-g", resourceGroup,
