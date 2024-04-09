@@ -2,8 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository;
 
-import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.core.util.Context;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -11,10 +12,12 @@ import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
-import com.azure.spring.data.cosmos.core.MultiTenantDBCosmosFactory;
+import com.azure.spring.data.cosmos.core.mapping.EnableCosmosAuditing;
 import com.azure.spring.data.cosmos.core.mapping.event.SimpleCosmosMappingEventListener;
 import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
 import com.azure.spring.data.cosmos.repository.config.EnableReactiveCosmosRepositories;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,14 +25,17 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.util.StringUtils;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 @Configuration
 @PropertySource(value = { "classpath:application.properties" })
 @EnableCosmosRepositories
+@EnableCosmosAuditing(dateTimeProviderRef = "auditingDateTimeProvider")
 @EnableReactiveCosmosRepositories
-public class MultiTenantTestRepositoryConfig extends AbstractCosmosConfiguration {
+public class TestRepositoryNoMetricsConfig extends AbstractCosmosConfiguration {
     @Value("${cosmos.uri:}")
     private String cosmosDbUri;
 
@@ -66,6 +72,9 @@ public class MultiTenantTestRepositoryConfig extends AbstractCosmosConfiguration
     @Value("${cosmos.diagnosticsThresholds.payloadSizeThresholdInBytes}")
     private int payloadSizeThresholdInBytes;
 
+    private static final Logger logger = LoggerFactory.getLogger(TestRepositoryNoMetricsConfig.class);
+
+    public static final CapturingLogger capturingLogger = new CapturingLogger();
 
     @Bean
     public ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils() {
@@ -80,27 +89,20 @@ public class MultiTenantTestRepositoryConfig extends AbstractCosmosConfiguration
             .contentResponseOnWriteEnabled(true)
             .clientTelemetryConfig(
                 new CosmosClientTelemetryConfig()
-                    .diagnosticsThresholds(
-                        new CosmosDiagnosticsThresholds()
-                            .setNonPointOperationLatencyThreshold(Duration.ofMillis(nonPointOperationLatencyThresholdInMS))
-                            .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
-                            .setPayloadSizeThreshold(payloadSizeThresholdInBytes)
-                            .setRequestChargeThreshold(requestChargeThresholdInRU)
-                    )
-                    .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));
-    }
-
-    @Bean
-    public MultiTenantDBCosmosFactory cosmosFactory(CosmosAsyncClient cosmosAsyncClient) {
-        return new MultiTenantDBCosmosFactory(cosmosAsyncClient, getDatabaseName());
+                .diagnosticsThresholds(
+                    new CosmosDiagnosticsThresholds()
+                        .setNonPointOperationLatencyThreshold(Duration.ofMillis(10))
+                        .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
+                        .setPayloadSizeThreshold(payloadSizeThresholdInBytes)
+                        .setRequestChargeThreshold(requestChargeThresholdInRU)
+                )
+                .diagnosticsHandler(capturingLogger));
     }
 
     @Bean
     @Override
     public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
-                           .enableQueryMetrics(queryMetricsEnabled)
-                           .enableIndexMetrics(indexMetricsEnabled)
                            .maxDegreeOfParallelism(maxDegreeOfParallelism)
                            .maxBufferedItemCount(maxBufferedItemCount)
                            .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
@@ -113,6 +115,16 @@ public class MultiTenantTestRepositoryConfig extends AbstractCosmosConfiguration
         return StringUtils.hasText(this.database) ? this.database : TestConstants.DB_NAME;
     }
 
+    @Bean(name = "auditingDateTimeProvider")
+    public StubDateTimeProvider stubDateTimeProvider() {
+        return new StubDateTimeProvider();
+    }
+
+    @Bean
+    public StubAuditorProvider auditorProvider() {
+        return new StubAuditorProvider();
+    }
+
     @Override
     protected Collection<String> getMappingBasePackages() {
         final Package mappingBasePackage = getClass().getPackage();
@@ -123,5 +135,33 @@ public class MultiTenantTestRepositoryConfig extends AbstractCosmosConfiguration
     @Bean
     SimpleCosmosMappingEventListener simpleMappingEventListener() {
         return new SimpleCosmosMappingEventListener();
+    }
+
+    public static class CapturingLogger implements CosmosDiagnosticsHandler {
+        public List<String> loggedMessages = new ArrayList<>();
+        public CapturingLogger() {
+            super();
+        }
+
+        @Override
+        public void handleDiagnostics(CosmosDiagnosticsContext ctx, Context traceContext) {
+            logger.info("--> log - ctx: {}", ctx);
+            String msg = String.format(
+                "Account: %s -> DB: %s, Col:%s, StatusCode: %d:%d Diagnostics: %s",
+                ctx.getAccountName(),
+                ctx.getDatabaseName(),
+                ctx.getContainerName(),
+                ctx.getStatusCode(),
+                ctx.getSubStatusCode(),
+                ctx);
+
+            this.loggedMessages.add(msg);
+
+            logger.info(msg);
+        }
+
+        public List<String> getLoggedMessages() {
+            return this.loggedMessages;
+        }
     }
 }
