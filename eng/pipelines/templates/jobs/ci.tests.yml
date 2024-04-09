@@ -165,21 +165,12 @@ jobs:
         displayName: 'Clean after tests for From Source run'
         inputs:
           mavenPomFile: ClientFromSourcePom.xml
-          # For the "From Source" runs we don't want the -am switch as we don't care about running tests for our
-          # dependencies, but we do want the -amd switch because we want to run tests on things that depend on us.
-          ${{ if eq(parameters.IsLiveTest, 'true') }}:
-            options: $(DefaultTestOptions) ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}
-          ${{ else }}:
-            options: $(DefaultTestOptions) ${{ parameters.TestOptions }} -amd -T ${{ parameters.TestParallelization }}
+          options: $(DefaultTestOptions) ${{ parameters.TestOptions }} -amd -T ${{ parameters.TestParallelization }}
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-          # The "From Source" runs only care about running tests for libraries within an SDK/area
-          # as well as libraries which depend on them and not the other stages in the Maven
-          # lifecycle that test or verify targets would execute. The libraries were already
-          # compiled and installed in the previous task, this tasks only runs tests.
           goals: 'clean'
         condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
