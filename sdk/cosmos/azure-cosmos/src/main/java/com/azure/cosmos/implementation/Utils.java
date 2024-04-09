@@ -552,15 +552,20 @@ public class Utils {
         }
 
         try {
-            ObjectNode jsonTree = getSimpleObjectMapper().readValue(item, ObjectNode.class);
-            CosmosItemSerializer effectiveSerializer = itemSerializer != null
-                ? itemSerializer
-                : CosmosItemSerializer.DEFAULT_SERIALIZER;
+            JsonNode jsonNode = getSimpleObjectMapper().readValue(item, JsonNode.class);
+            if (jsonNode instanceof ObjectNode) {
+                ObjectNode jsonTree = (ObjectNode)jsonNode;
+                CosmosItemSerializer effectiveSerializer = itemSerializer != null
+                    ? itemSerializer
+                    : CosmosItemSerializer.DEFAULT_SERIALIZER;
 
-            T result = effectiveSerializer.deserialize(
-                getSimpleObjectMapper().convertValue(jsonTree, ObjectNodeMap.JACKSON_MAP_TYPE),
-                itemClassType);
-            return result;
+                T result = effectiveSerializer.deserialize(
+                    getSimpleObjectMapper().convertValue(jsonTree, ObjectNodeMap.JACKSON_MAP_TYPE),
+                    itemClassType);
+                return result;
+            }
+
+            return getSimpleObjectMapper().convertValue(jsonNode, itemClassType);
         } catch (IOException e) {
             throw new IllegalStateException(
                 String.format("Failed to parse byte-array %s to POJO.", new String(item, StandardCharsets.UTF_8)), e);

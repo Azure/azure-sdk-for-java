@@ -6,6 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.ObjectNodeMap;
+import com.azure.cosmos.implementation.PrimitiveJsonNodeMap;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.query.Transformer;
 import com.azure.cosmos.models.FeedResponse;
@@ -73,11 +74,13 @@ public class CosmosEncryptionQueryTransformer<T> implements Transformer<T> {
 
                                 if (item instanceof ObjectNode) {
                                     decryptedJsonTree = new ObjectNodeMap((ObjectNode)item);
+                                } else if (item.isValueNode()) {
+                                    decryptedJsonTree = new PrimitiveJsonNodeMap(item);
                                 } else {
-                                    decryptedJsonTree = Utils.getSimpleObjectMapper()
+                                    return Utils.getSimpleObjectMapper()
                                                              .convertValue(
                                                                  item,
-                                                                 ObjectNodeMap.JACKSON_MAP_TYPE);
+                                                                 classType);
                                 }
 
                                 return effectiveSerializer.deserialize(

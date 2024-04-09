@@ -106,6 +106,10 @@ public abstract class CosmosItemSerializer {
             try {
                 if (jsonNodeMap instanceof ObjectNodeMap) {
                     jsonNode = ((ObjectNodeMap)jsonNodeMap).getObjectNode();
+                } else if (jsonNodeMap instanceof PrimitiveJsonNodeMap) {
+                    return objectMapper.convertValue(
+                        ((PrimitiveJsonNodeMap)jsonNodeMap).getPrimitiveJsonNode(),
+                        classType);
                 } else {
                     jsonNode = objectMapper.convertValue(jsonNodeMap, ObjectNode.class);
                 }
