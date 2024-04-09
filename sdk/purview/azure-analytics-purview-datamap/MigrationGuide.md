@@ -26,7 +26,7 @@ Previously in `azure-analytics-purview-catalog`, to create a glossary client, us
 
 ```java
 GlossaryClient client = new GlossaryClientBuilder()
-    .endpoint(System.getenv("<account-name>.purview.azure.com"))
+    .endpoint("https://<account-name>.purview.azure.com")
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
@@ -35,7 +35,7 @@ Now in `azure-analytics-purview-datamap`, users should create a DataMapClient fi
 
 ```java
 DataMapClientBuilder clientBuilder = new DataMapClientBuilder()
-    .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+    .endpoint("https://<account-name>.purview.azure.com")
     .credential(new DefaultAzureCredentialBuilder().build());
 GlossaryClient client = clientBuilder.buildGlossaryClient();
 ```
