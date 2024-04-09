@@ -4,6 +4,7 @@
 package com.azure.cosmos.kafka.connect.implementation.source;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 
 import java.util.HashMap;
 import java.util.Map;

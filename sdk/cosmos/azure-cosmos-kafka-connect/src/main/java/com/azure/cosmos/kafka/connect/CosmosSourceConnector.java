@@ -18,6 +18,7 @@ import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeContinuatio
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeTaskUnit;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangesMetadataTopicOffset;
 import com.azure.cosmos.kafka.connect.implementation.source.KafkaCosmosChangeFeedState;
+import com.azure.cosmos.kafka.connect.implementation.source.MetadataCosmosProducer;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataMonitorThread;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataTaskUnit;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -82,7 +83,40 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
     public List<Map<String, String>> taskConfigs(int maxTasks) {
         // For now, we start with copying data by feed range
         // but in the future, we can have more optimization based on the data size etc.
-        return this.getTaskConfigs(maxTasks);
+        Pair<MetadataTaskUnit, List<FeedRangeTaskUnit>> taskUnits = this.getAllTaskUnits();
+        List<Map<String, String>> taskConfigs = this.getFeedRangeTaskConfigs(taskUnits.getRight(), maxTasks);
+
+        // Depending on where the metadata storage type is, we have different handling here.
+        switch (taskUnits.getLeft().getStorageType()) {
+            // If CosmosDB container is being used as the storage type, then we are going to create the metadata records in connector
+            case COSMOS:
+                updateMetadataRecordsInCosmos(taskUnits.getLeft());
+                break;
+            case KAFKA:
+                // Else if using kafka topic as the storage type, then we are going to allocate the metadata records creation to one of the task. - Two issues/limitations exists:
+                //   - a. The metadata topic can only be created on the same cluster as the other topics
+                //   - b. As the metadata records are not created before all the feedRange tasks started, there is a rare edge cases that data from CosmosDB can be read twice (split/merge happens when writing the metadat records and the records failed to be persisted)
+                //
+                // NOTE: we choose the current approach to avoid maintaining a producer by ourselves and also #b only happen for very rare cases.
+                //
+                // The metadataTaskUnit is a one time only task when the connector starts/restarts,
+                // so there is no need to assign a dedicated task thread for it,
+                // we are just going to assign it to the last of the task config as it has the least number of feedRange task units
+                taskConfigs
+                    .get(taskConfigs.size() - 1)
+                    .putAll(CosmosSourceTaskConfig.getMetadataTaskUnitConfigMap(taskUnits.getLeft()));
+                break;
+            default:
+                throw new IllegalArgumentException("StorageType " + taskUnits.getLeft().getStorageType() + " is not supported");
+        }
+
+
+        return taskConfigs;
+    }
+
+    private void updateMetadataRecordsInCosmos(MetadataTaskUnit metadataTaskUnit) {
+        MetadataCosmosProducer cosmosProducer = new MetadataCosmosProducer(this.cosmosClient);
+        cosmosProducer.executeMetadataTask(metadataTaskUnit);
     }
 
     @Override
@@ -109,41 +143,32 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
         return KafkaCosmosConstants.CURRENT_VERSION;
     }
 
-    private List<Map<String, String>> getTaskConfigs(int maxTasks) {
-        Pair<MetadataTaskUnit, List<FeedRangeTaskUnit>> taskUnits = this.getAllTaskUnits();
+    private List<Map<String, String>> getFeedRangeTaskConfigs(List<FeedRangeTaskUnit> taskUnits, int maxTasks) {
 
-        // The metadataTaskUnit is a one time only task when the connector starts/restarts,
-        // so there is no need to assign a dedicated task thread for it
-        // we are just going to assign it to one of the tasks which processing feedRanges tasks
         List<List<FeedRangeTaskUnit>> partitionedTaskUnits = new ArrayList<>();
-        if (taskUnits.getRight().size() <= maxTasks) {
+        if (taskUnits.size() <= maxTasks) {
             partitionedTaskUnits.addAll(
-                taskUnits.getRight().stream().map(taskUnit -> Arrays.asList(taskUnit)).collect(Collectors.toList()));
+                taskUnits.stream().map(taskUnit -> Arrays.asList(taskUnit)).collect(Collectors.toList()));
         } else {
             // using round-robin fashion to assign tasks to each buckets
             for (int i = 0; i < maxTasks; i++) {
                 partitionedTaskUnits.add(new ArrayList<>());
             }
 
-            for (int i = 0; i < taskUnits.getRight().size(); i++) {
-                partitionedTaskUnits.get(i % maxTasks).add(taskUnits.getRight().get(i));
+            for (int i = 0; i < taskUnits.size(); i++) {
+                partitionedTaskUnits.get(i % maxTasks).add(taskUnits.get(i));
             }
         }
 
-        List<Map<String, String>> allSourceTaskConfigs = new ArrayList<>();
+        List<Map<String, String>> feedRangeTaskConfigs = new ArrayList<>();
         partitionedTaskUnits.forEach(feedRangeTaskUnits -> {
             Map<String, String> taskConfigs = this.config.originalsStrings();
             taskConfigs.putAll(
                 CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(feedRangeTaskUnits));
-            allSourceTaskConfigs.add(taskConfigs);
+            feedRangeTaskConfigs.add(taskConfigs);
         });
 
-        // assign the metadata task to the last of the task config as it has least number of feedRange task units
-        allSourceTaskConfigs
-            .get(allSourceTaskConfigs.size() - 1)
-            .putAll(CosmosSourceTaskConfig.getMetadataTaskUnitConfigMap(taskUnits.getLeft()));
-
-        return allSourceTaskConfigs;
+        return feedRangeTaskConfigs;
     }
 
     private Pair<MetadataTaskUnit, List<FeedRangeTaskUnit>> getAllTaskUnits() {
@@ -183,7 +208,8 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
                 this.config.getContainersConfig().getDatabaseName(),
                 allContainers.stream().map(CosmosContainerProperties::getResourceId).collect(Collectors.toList()),
                 updatedContainerToFeedRangesMap,
-                this.config.getMetadataConfig().getMetadataTopicName());
+                this.config.getMetadataConfig().getStorageName(),
+                this.config.getMetadataConfig().getStorageType());
 
         return Pair.of(metadataTaskUnit, allFeedRangeTaskUnits);
     }

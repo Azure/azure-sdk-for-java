@@ -59,7 +59,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                 new ArrayList<String>());
 
         CosmosMetadataConfig metadataConfig =
-            new CosmosMetadataConfig(500, CosmosMetadataStorageType.KAFKA, "_cosmos.metadata.topic", "CosmosMetadata");
+            new CosmosMetadataConfig(500, CosmosMetadataStorageType.KAFKA, "_cosmos.metadata.topic");
         SourceConnectorContext sourceConnectorContext = Mockito.mock(SourceConnectorContext.class);
         InMemoryStorageReader inMemoryStorageReader = new InMemoryStorageReader();
         CosmosSourceOffsetStorageReader sourceOffsetStorageReader = new CosmosSourceOffsetStorageReader(inMemoryStorageReader);
@@ -108,11 +108,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                 Arrays.asList(multiPartitionContainerName),
                 new ArrayList<String>());
         CosmosMetadataConfig metadataConfig =
-            new CosmosMetadataConfig(
-                500,
-                CosmosMetadataStorageType.KAFKA,
-                "_cosmos.metadata.topic",
-                "CosmosMetadata");
+            new CosmosMetadataConfig(500, CosmosMetadataStorageType.KAFKA, "_cosmos.metadata.topic");
         SourceConnectorContext sourceConnectorContext = Mockito.mock(SourceConnectorContext.class);
 
         InMemoryStorageReader inMemoryStorageReader = new InMemoryStorageReader();
@@ -183,11 +179,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                 Arrays.asList(singlePartitionContainerName),
                 new ArrayList<String>());
         CosmosMetadataConfig metadataConfig =
-            new CosmosMetadataConfig(
-                500,
-                CosmosMetadataStorageType.KAFKA,
-                "_cosmos.metadata.topic",
-                "CosmosMetadata");
+            new CosmosMetadataConfig(500, CosmosMetadataStorageType.KAFKA, "_cosmos.metadata.topic");
         SourceConnectorContext sourceConnectorContext = Mockito.mock(SourceConnectorContext.class);
 
         InMemoryStorageReader inMemoryStorageReader = new InMemoryStorageReader();

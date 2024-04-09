@@ -10,44 +10,30 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 public class CosmosMetadataConfig {
     private final int metadataPollDelayInMs;
     private final CosmosMetadataStorageType storageType;
-    private final String topicName;
-    private final String containerName;
+    private final String storageName;
 
     public CosmosMetadataConfig(
         int metadataPollDelayInMs,
         CosmosMetadataStorageType metadataStorageType,
-        String metadataTopicName,
-        String metadataContainerName) {
+        String storageName) {
 
         checkArgument(metadataPollDelayInMs > 0, "Argument 'metadataPollDelayInMs' should be larger than 0");
-
-        if (metadataStorageType == CosmosMetadataStorageType.KAFKA) {
-            checkArgument(StringUtils.isNotEmpty(metadataTopicName), "Argument 'metadataTopicName' should not be null");
-        }
-
-        if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
-            checkArgument(StringUtils.isNotEmpty(metadataContainerName), "Argument 'metadataContainerName' should not be null");
-        }
+        checkArgument(StringUtils.isNotEmpty(storageName), "Argument 'storageName' should not be null");
 
         this.metadataPollDelayInMs = metadataPollDelayInMs;
         this.storageType = metadataStorageType;
-        this.topicName = metadataTopicName;
-        this.containerName = metadataContainerName;
+        this.storageName = storageName;
     }
 
     public int getMetadataPollDelayInMs() {
         return metadataPollDelayInMs;
     }
 
-    public String getMetadataTopicName() {
-        return topicName;
+    public String getStorageName() {
+        return storageName;
     }
 
     public CosmosMetadataStorageType getStorageType() {
         return storageType;
-    }
-
-    public String getContainerName() {
-        return containerName;
     }
 }
