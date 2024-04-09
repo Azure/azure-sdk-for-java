@@ -4,7 +4,7 @@
 package com.azure.storage.file.datalake.stress;
 
 import com.azure.perf.test.core.PerfStressProgram;
-import com.azure.storage.file.datalake.stress.utils.TelemetryHelper;
+import com.azure.storage.stress.TelemetryHelper;
 
 public class App {
     public static void main(String[] args) {

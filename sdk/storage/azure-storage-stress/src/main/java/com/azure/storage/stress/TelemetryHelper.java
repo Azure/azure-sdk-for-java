@@ -1,13 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file.datalake.stress.utils;
+package com.azure.storage.stress;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
-import com.azure.storage.file.datalake.DataLakeServiceClientBuilder;
-import com.azure.storage.stress.StorageStressOptions;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
@@ -49,12 +47,14 @@ public class TelemetryHelper {
     private static final AttributeKey<String> SCENARIO_NAME_ATTRIBUTE = AttributeKey.stringKey("scenario_name");
     private static final AttributeKey<String> ERROR_TYPE_ATTRIBUTE = AttributeKey.stringKey("error.type");
     private static final AttributeKey<Boolean> SAMPLE_IN_ATTRIBUTE = AttributeKey.booleanKey("sample.in");
-    private static OpenTelemetry OTEL;
+    private static final OpenTelemetry OTEL;
     private final String scenarioName;
     private final Meter meter;
     private final DoubleHistogram runDuration;
     private final Attributes commonAttributes;
     private final Attributes canceledAttributes;
+    private final String packageType;
+    private final String packageVersion;
 
     private final AtomicLong successfulRuns = new AtomicLong();
     private final AtomicLong failedRuns = new AtomicLong();
@@ -79,6 +79,17 @@ public class TelemetryHelper {
             .build();
         this.commonAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName);
         this.canceledAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, "cancelled");
+        this.packageType = scenarioClass.getPackage().toString();
+        // Since packageVersion is not obtainable, hardcoding the values based on the package type.
+        if (packageType.contains("blob")) {
+            this.packageVersion = "12.25.1";
+        } else if (packageType.contains("datalake")) {
+            this.packageVersion = "12.18.1";
+        } else if (packageType.contains(("share"))) {
+            this.packageVersion =  "12.21.1";
+        } else {
+            this.packageVersion = null;
+        }
     }
 
     /**
@@ -139,7 +150,7 @@ public class TelemetryHelper {
         Instant start = Instant.now();
         Span span = tracer.spanBuilder("run").startSpan();
         try (Scope s = span.makeCurrent()) {
-            com.azure.core.util.Context ctx = new com.azure.core.util.Context(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY, Context.current());
+            com.azure.core.util.Context ctx = new com.azure.core.util.Context(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current());
             oneRun.run(ctx);
             trackSuccess(start, span);
         } catch (Throwable e) {
@@ -162,11 +173,11 @@ public class TelemetryHelper {
             Instant start = Instant.now();
             Span span = tracer.spanBuilder("runAsync").startSpan();
             try (Scope s = span.makeCurrent()) {
-                com.azure.core.util.Context ctx = new com.azure.core.util.Context(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY, Context.current());
+                com.azure.core.util.Context ctx = new com.azure.core.util.Context(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current());
                 return runAsync.apply(ctx).doOnError(e -> trackFailure(start, e, span))
                     .doOnCancel(() -> trackCancellation(start, span))
                     .doOnSuccess(v -> trackSuccess(start, span))
-                    .contextWrite(reactor.util.context.Context.of(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY, Context.current()));
+                    .contextWrite(reactor.util.context.Context.of(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current()));
             }
         });
     }
@@ -178,8 +189,8 @@ public class TelemetryHelper {
             .log("run ended");
 
         runDuration.record(getDuration(start), commonAttributes);
-        span.end();
         successfulRuns.incrementAndGet();
+        span.end();
         logger.info("track success");
     }
 
@@ -222,27 +233,15 @@ public class TelemetryHelper {
      * @param options test parameters
      */
     public void recordStart(StorageStressOptions options) {
-        String storageDataLakePackageVersion = "storagePackageVersion";
-        String packageVersion = "12.18.1";
-        // Figure out the version of the storage package implementation version returns as null. Hardcoding the version
-        // for now.
-        storageDataLakePackageVersion += "/" + packageVersion;
-//        try {
-//            Class<?> storageDatalakePackage = Class.forName(DataLakeServiceClientBuilder.class.getName());
-//            storageDataLakePackageVersion = storageDatalakePackage.getPackage().getImplementationVersion();
-//
-//            if (storageDataLakePackageVersion == null) {
-//                storageDataLakePackageVersion = "null";
-//            }
-//        } catch (ClassNotFoundException e) {
-//            logger.warning("could not find DataLakeServiceClientBuilder class", e);
-//        }
+        // Version of the storage package implementation version returns as null. Hardcoding the value for now.
+        String storagePackageVersion = packageType + "/" + packageVersion;
+        System.out.println("storagePackageVersion: " + storagePackageVersion);
 
         Span before = startSampledInSpan("before run");
         before.setAttribute(AttributeKey.longKey("durationSec"), options.getDuration());
         before.setAttribute(AttributeKey.stringKey("scenarioName"), scenarioName);
         before.setAttribute(AttributeKey.longKey("concurrency"), options.getParallel());
-        before.setAttribute(AttributeKey.stringKey("storagePackageVersion"), storageDataLakePackageVersion);
+        before.setAttribute(AttributeKey.stringKey("storagePackageVersion"), storagePackageVersion);
         before.setAttribute(AttributeKey.booleanKey("sync"), options.isSync());
         before.setAttribute(AttributeKey.longKey("payloadSize"), options.getSize());
         before.setAttribute(AttributeKey.stringKey("hostname"), System.getenv().get("HOSTNAME"));
@@ -253,17 +252,16 @@ public class TelemetryHelper {
         before.setAttribute(AttributeKey.stringKey("jreVendor"), System.getProperty("java.vendor"));
         before.end();
 
+        // be  sure to remove logging afterwards
         logger.atInfo()
             .addKeyValue("duration", options.getDuration())
-            //.addKeyValue("blobName", options.getBlobName())
             .addKeyValue("payloadSize", options.getSize())
             .addKeyValue("concurrency", options.getParallel())
             .addKeyValue("faultInjectionForDownloads", options.isFaultInjectionEnabledForDownloads())
             .addKeyValue("faultInjectionForUploads", options.isFaultInjectionEnabledForUploads())
-            .addKeyValue("storagePackageVersion", storageDataLakePackageVersion)
+            .addKeyValue("storagePackageVersion", storagePackageVersion)
             .addKeyValue("sync", options.isSync())
             .addKeyValue("scenarioName", scenarioName)
-            //.addKeyValue("connectionStringProvided", !CoreUtils.isNullOrEmpty(options.getConnectionString()))
             .log("starting test");
         logger.log(LogLevel.INFORMATIONAL, () -> "starting test");
     }
@@ -279,6 +277,7 @@ public class TelemetryHelper {
         after.setAttribute(AttributeKey.longKey("durationMs"), Instant.now().toEpochMilli() - startTime.toEpochMilli());
         after.end();
 
+        // be sure to remove logging afterwards
         logger.atInfo()
             .addKeyValue("scenarioName", scenarioName)
             .addKeyValue("succeeded", successfulRuns.get())
@@ -303,4 +302,5 @@ public class TelemetryHelper {
     public interface ThrowingFunction {
         void run(com.azure.core.util.Context context) throws Exception;
     }
+
 }

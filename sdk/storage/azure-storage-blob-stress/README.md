@@ -217,7 +217,7 @@ Below is the current structure of project:
 [helm]: https://helm.sh/docs/intro/install/
 [azure_cli]: https://docs.microsoft.com/cli/azure/install-azure-cli
 [powershell]: https://docs.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-7
-[enable_application_insights]: https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-enable?tabs=java#enable-azure-monitor-application-insights#enable-azure-monitor-application-insights
+[enable_application_insights]: https://learn.microsoft.com/azure/azure-monitor/app/opentelemetry-enable?tabs=java#enable-azure-monitor-application-insights#enable-azure-monitor-application-insights
 [logback_xml]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus-stress/src/main/resources/logback.xml
 [deploy_stress_test]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#deploying-a-stress-test
 [stress_test_layout]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#layout
@@ -225,5 +225,5 @@ Below is the current structure of project:
 [telemtery-helper]: https://github.com/Azure/azure-sdk-for-java/blob/storage/stress-dev/sdk/storage/azure-storage-blob-stress/src/main/java/com/azure/storage/blob/stress/utils/TelemetryHelper.java
 [blob-scenario-base]: https://github.com/Azure/azure-sdk-for-java/blob/storage/stress-dev/sdk/storage/azure-storage-blob-stress/src/main/java/com/azure/storage/blob/stress/BlobScenarioBase.java
 [storage-workbook]: https://ms.portal.azure.com/#blade/AppInsightsExtension/UsageNotebookBlade/ComponentId/%2Fsubscriptions%2Ffaa080af-c1d8-40ad-9cce-e1a450ca5b57%2FresourceGroups%2Frg-stress-cluster-pg%2Fproviders%2FMicrosoft.Insights%2Fcomponents%2Fstress-pg-ai-s7b6dif73rup6/ConfigurationId/%2Fsubscriptions%2Ffaa080af-c1d8-40ad-9cce-e1a450ca5b57%2Fresourcegroups%2Frg-stress-cluster-pg%2Fproviders%2Fmicrosoft.insights%2Fworkbooks%2Fa6fc3414-4c15-4651-8517-6f74cbe0d0fe/Type/workbook/WorkbookTemplateName/Storage%20stress%20tests
-[application-insights-logging]: https://learn.microsoft.com/en-us/azure/azure-monitor/app/java-standalone-config#autocollected-logging
+[application-insights-logging]: https://learn.microsoft.com/azure/azure-monitor/app/java-standalone-config#autocollected-logging
 [logging-azure-sdk]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
