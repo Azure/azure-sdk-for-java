@@ -19,7 +19,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = SexMismatchInference.class, visible = true)
 @JsonTypeName("sexMismatch")
 @Immutable
-public final class SexMismatchInference extends FhirR4Extendible1 {
+public final class SexMismatchInference extends RadiologyInsightsInference {
+
+    /*
+     * Inference type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.SEX_MISMATCH;
 
     /*
      * Sex indication : SNOMED CT code for gender finding.
@@ -40,24 +48,6 @@ public final class SexMismatchInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the sexIndication property: Sex indication : SNOMED CT code for gender finding.
-     *
-     * @return the sexIndication value.
-     */
-    @Generated
-    public FhirR4CodeableConcept getSexIndication() {
-        return this.sexIndication;
-    }
-
-    /*
-     * Inference type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.SEX_MISMATCH;
-
-    /**
      * Get the kind property: Inference type.
      *
      * @return the kind value.
@@ -66,5 +56,15 @@ public final class SexMismatchInference extends FhirR4Extendible1 {
     @Override
     public RadiologyInsightsInferenceType getKind() {
         return this.kind;
+    }
+
+    /**
+     * Get the sexIndication property: Sex indication : SNOMED CT code for gender finding.
+     *
+     * @return the sexIndication value.
+     */
+    @Generated
+    public FhirR4CodeableConcept getSexIndication() {
+        return this.sexIndication;
     }
 }
