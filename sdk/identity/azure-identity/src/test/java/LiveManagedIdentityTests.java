@@ -124,7 +124,7 @@ public class LiveManagedIdentityTests extends TestBase {
         String expiry = LocalDate.now().plusDays(2).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String sasToken = runCommand(azPath, "storage", "blob", "generate-sas", "--account-name", storageAcccountName,
             "--account-key", storageKey, "--container-name", "vmcontainer", "--name", "testfile.jar", "--permissions", "r",
-            "--expiry", expiry, "--https-only");
+            "--expiry", expiry, "--https-only", "--output", "tsv");
 
 
 

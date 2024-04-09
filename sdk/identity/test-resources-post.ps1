@@ -49,6 +49,8 @@ mvn clean install -DskipTests "-Drevapi.skip" "-Dcheckstyle.skip" "-Dspotbugs.sk
 mvn clean install -DskipTests "-Drevapi.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" -f "$azCoreRootPom/azure-core-test/pom.xml" | Write-Host
 mvn clean install -DskipTests "-Drevapi.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" -f "$azCoreRootPom/azure-core-http-netty/pom.xml" | Write-Host
 mvn clean install -DskipTests "-Drevapi.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" -f "$azCoreRootPom/azure-core-http-okhttp/pom.xml" | Write-Host
+mvn clean install -DskipTests "-Drevapi.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" -f "$azCoreRootPom/azure-core-http-vertx/pom.xml" | Write-Host
+mvn clean install -DskipTests "-Drevapi.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" -f "$azCoreRootPom/azure-core-http-jdk-httpclient/pom.xml" | Write-Host
 mvn clean install -DskipTests "-Drevapi.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" -f $azIdentityRootPom | Write-Host
 mvn clean install -DskipTests "-Drevapi.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" -f "$azStorageRootPom/azure-storage-common/pom.xml" | Write-Host
 mvn clean install -DskipTests "-Drevapi.skip" "-Dcheckstyle.skip" "-Dspotbugs.skip" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" -f "$azStorageRootPom/azure-storage-internal-avro/pom.xml" | Write-Host
