@@ -101,7 +101,6 @@ public class TextTranslationClientBase extends TestProxyTestBase {
     TextTranslationClient getTranslationClientWithToken() throws IOException {
         TextTranslationClientBuilder textTranslationClientbuilder = new TextTranslationClientBuilder()
             .credential(getTokenCredential())
-            .region(getRegion())
             .endpoint(getEndpoint())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
