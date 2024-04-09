@@ -11,11 +11,7 @@
 
 ### Breaking Changes
 
-#### `models.IstioEgressGateway` was modified
-
-* `nodeSelector()` and `withNodeSelector(java.util.Map<java.lang.String, java.lang.String>)` was removed
-
-### Bugs Fixed
+- `nodeSelector` is removed from `IstioEgressGateway` class.
 
 ### Other Changes
 
