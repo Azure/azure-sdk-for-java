@@ -127,7 +127,7 @@ public class LiveManagedIdentityTests extends TestBase {
             "--expiry", expiry, "--https-only", "--output", "tsv").trim();
 
         String vmBlob = String.format("https://%s.blob.core.windows.net/vmcontainer/testfile.jar?%s", storageAcccountName, sasToken);
-        String script = String.format("\"curl '%s' -o ./testfile.jar && java -jar ./testfile.jar\"", vmBlob);
+        String script = String.format("curl \'%s\' -o ./testfile.jar && java -jar ./testfile.jar", vmBlob);
 
         System.out.println("Script: " + script);
 
@@ -135,7 +135,7 @@ public class LiveManagedIdentityTests extends TestBase {
         String output3 = runCommand(azPath, "vm", "run-command", "invoke", "-n", vmName, "-g", resourceGroup,
             "--command-id", "RunShellScript", "--scripts", script3);
 
-        String script2 = "\"java -version\"";
+        String script2 = "java -version";
 
         String output2 = runCommand(azPath, "vm", "run-command", "invoke", "-n", vmName, "-g", resourceGroup,
             "--command-id", "RunShellScript", "--scripts", script2);
