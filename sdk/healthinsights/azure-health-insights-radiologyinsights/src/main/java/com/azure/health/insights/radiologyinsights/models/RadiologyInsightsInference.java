@@ -25,8 +25,12 @@ import java.util.List;
  * - RadiologyProcedure
  * - FollowupCommunication.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = FhirR4Extendible1.class, visible = true)
-@JsonTypeName("Fhir_R4_Extendible1")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = RadiologyInsightsInference.class,
+    visible = true)
+@JsonTypeName("RadiologyInsightsInference")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ageMismatch", value = AgeMismatchInference.class),
     @JsonSubTypes.Type(name = "sexMismatch", value = SexMismatchInference.class),
@@ -39,7 +43,15 @@ import java.util.List;
     @JsonSubTypes.Type(name = "followupRecommendation", value = FollowupRecommendationInference.class),
     @JsonSubTypes.Type(name = "followupCommunication", value = FollowupCommunicationInference.class) })
 @Immutable
-public class FhirR4Extendible1 {
+public class RadiologyInsightsInference {
+
+    /*
+     * Inference type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind;
 
     /*
      * Additional Content defined by implementations
@@ -49,11 +61,21 @@ public class FhirR4Extendible1 {
     private List<FhirR4Extension> extension;
 
     /**
-     * Creates an instance of FhirR4Extendible1 class.
+     * Creates an instance of RadiologyInsightsInference class.
      */
     @Generated
-    protected FhirR4Extendible1() {
-        this.kind = RadiologyInsightsInferenceType.fromString("Fhir_R4_Extendible1");
+    protected RadiologyInsightsInference() {
+        this.kind = RadiologyInsightsInferenceType.fromString("RadiologyInsightsInference");
+    }
+
+    /**
+     * Get the kind property: Inference type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    public RadiologyInsightsInferenceType getKind() {
+        return this.kind;
     }
 
     /**
@@ -64,23 +86,5 @@ public class FhirR4Extendible1 {
     @Generated
     public List<FhirR4Extension> getExtension() {
         return this.extension;
-    }
-
-    /*
-     * Inference type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private RadiologyInsightsInferenceType kind;
-
-    /**
-     * Get the kind property: Inference type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    public RadiologyInsightsInferenceType getKind() {
-        return this.kind;
     }
 }

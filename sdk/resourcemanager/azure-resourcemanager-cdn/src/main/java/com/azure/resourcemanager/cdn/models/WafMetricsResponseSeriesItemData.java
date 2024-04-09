@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The WafMetricsResponseSeriesItemData model. */
+/**
+ * The WafMetricsResponseSeriesItemData model.
+ */
 @Fluent
 public final class WafMetricsResponseSeriesItemData {
     /*
@@ -23,13 +25,15 @@ public final class WafMetricsResponseSeriesItemData {
     @JsonProperty(value = "value")
     private Float value;
 
-    /** Creates an instance of WafMetricsResponseSeriesItemData class. */
+    /**
+     * Creates an instance of WafMetricsResponseSeriesItemData class.
+     */
     public WafMetricsResponseSeriesItemData() {
     }
 
     /**
      * Get the dateTime property: The dateTime property.
-     *
+     * 
      * @return the dateTime value.
      */
     public OffsetDateTime dateTime() {
@@ -38,7 +42,7 @@ public final class WafMetricsResponseSeriesItemData {
 
     /**
      * Set the dateTime property: The dateTime property.
-     *
+     * 
      * @param dateTime the dateTime value to set.
      * @return the WafMetricsResponseSeriesItemData object itself.
      */
@@ -49,7 +53,7 @@ public final class WafMetricsResponseSeriesItemData {
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public Float value() {
@@ -58,7 +62,7 @@ public final class WafMetricsResponseSeriesItemData {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the WafMetricsResponseSeriesItemData object itself.
      */
@@ -69,7 +73,7 @@ public final class WafMetricsResponseSeriesItemData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

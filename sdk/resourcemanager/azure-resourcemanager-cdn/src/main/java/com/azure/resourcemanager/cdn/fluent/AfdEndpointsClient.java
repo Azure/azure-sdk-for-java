@@ -23,14 +23,16 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AfdEndpointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AfdEndpointsClient.
+ */
 public interface AfdEndpointsClient {
     /**
      * Lists existing AzureFrontDoor endpoints.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -41,10 +43,10 @@ public interface AfdEndpointsClient {
 
     /**
      * Lists existing AzureFrontDoor endpoints.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -55,10 +57,10 @@ public interface AfdEndpointsClient {
 
     /**
      * Lists existing AzureFrontDoor endpoints.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -71,34 +73,34 @@ public interface AfdEndpointsClient {
     /**
      * Gets an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
      * resource group and profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
-     *     resource group and profile along with {@link Response} on successful completion of {@link Mono}.
+     * resource group and profile along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AfdEndpointInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName);
+    Mono<Response<AfdEndpointInner>> getWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName);
 
     /**
      * Gets an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
      * resource group and profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
-     *     resource group and profile on successful completion of {@link Mono}.
+     * resource group and profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AfdEndpointInner> getAsync(String resourceGroupName, String profileName, String endpointName);
@@ -106,35 +108,35 @@ public interface AfdEndpointsClient {
     /**
      * Gets an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
      * resource group and profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
-     *     resource group and profile along with {@link Response}.
+     * resource group and profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AfdEndpointInner> getWithResponse(
-        String resourceGroupName, String profileName, String endpointName, Context context);
+    Response<AfdEndpointInner> getWithResponse(String resourceGroupName, String profileName, String endpointName,
+        Context context);
 
     /**
      * Gets an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
      * resource group and profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
-     *     resource group and profile.
+     * resource group and profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AfdEndpointInner get(String resourceGroupName, String profileName, String endpointName);
@@ -142,68 +144,68 @@ public interface AfdEndpointsClient {
     /**
      * Creates a new AzureFrontDoor endpoint with the specified endpoint name under the specified subscription, resource
      * group and profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointParam Endpoint properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Front Door endpoint is the entity within a Azure Front Door profile containing configuration
-     *     information such as origin, protocol, content caching and delivery behavior along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * information such as origin, protocol, content caching and delivery behavior along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName, AfdEndpointInner endpointParam);
+    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, AfdEndpointInner endpointParam);
 
     /**
      * Creates a new AzureFrontDoor endpoint with the specified endpoint name under the specified subscription, resource
      * group and profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointParam Endpoint properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of azure Front Door endpoint is the entity within a Azure Front Door
-     *     profile containing configuration information such as origin, protocol, content caching and delivery behavior.
+     * profile containing configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<AfdEndpointInner>, AfdEndpointInner> beginCreateAsync(
-        String resourceGroupName, String profileName, String endpointName, AfdEndpointInner endpointParam);
+    PollerFlux<PollResult<AfdEndpointInner>, AfdEndpointInner> beginCreateAsync(String resourceGroupName,
+        String profileName, String endpointName, AfdEndpointInner endpointParam);
 
     /**
      * Creates a new AzureFrontDoor endpoint with the specified endpoint name under the specified subscription, resource
      * group and profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointParam Endpoint properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of azure Front Door endpoint is the entity within a Azure Front Door
-     *     profile containing configuration information such as origin, protocol, content caching and delivery behavior.
+     * profile containing configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AfdEndpointInner>, AfdEndpointInner> beginCreate(
-        String resourceGroupName, String profileName, String endpointName, AfdEndpointInner endpointParam);
+    SyncPoller<PollResult<AfdEndpointInner>, AfdEndpointInner> beginCreate(String resourceGroupName, String profileName,
+        String endpointName, AfdEndpointInner endpointParam);
 
     /**
      * Creates a new AzureFrontDoor endpoint with the specified endpoint name under the specified subscription, resource
      * group and profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointParam Endpoint properties.
      * @param context The context to associate with this operation.
@@ -211,62 +213,58 @@ public interface AfdEndpointsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of azure Front Door endpoint is the entity within a Azure Front Door
-     *     profile containing configuration information such as origin, protocol, content caching and delivery behavior.
+     * profile containing configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AfdEndpointInner>, AfdEndpointInner> beginCreate(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        AfdEndpointInner endpointParam,
-        Context context);
+    SyncPoller<PollResult<AfdEndpointInner>, AfdEndpointInner> beginCreate(String resourceGroupName, String profileName,
+        String endpointName, AfdEndpointInner endpointParam, Context context);
 
     /**
      * Creates a new AzureFrontDoor endpoint with the specified endpoint name under the specified subscription, resource
      * group and profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointParam Endpoint properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Front Door endpoint is the entity within a Azure Front Door profile containing configuration
-     *     information such as origin, protocol, content caching and delivery behavior on successful completion of
-     *     {@link Mono}.
+     * information such as origin, protocol, content caching and delivery behavior on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AfdEndpointInner> createAsync(
-        String resourceGroupName, String profileName, String endpointName, AfdEndpointInner endpointParam);
+    Mono<AfdEndpointInner> createAsync(String resourceGroupName, String profileName, String endpointName,
+        AfdEndpointInner endpointParam);
 
     /**
      * Creates a new AzureFrontDoor endpoint with the specified endpoint name under the specified subscription, resource
      * group and profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointParam Endpoint properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Front Door endpoint is the entity within a Azure Front Door profile containing configuration
-     *     information such as origin, protocol, content caching and delivery behavior.
+     * information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AfdEndpointInner create(
-        String resourceGroupName, String profileName, String endpointName, AfdEndpointInner endpointParam);
+    AfdEndpointInner create(String resourceGroupName, String profileName, String endpointName,
+        AfdEndpointInner endpointParam);
 
     /**
      * Creates a new AzureFrontDoor endpoint with the specified endpoint name under the specified subscription, resource
      * group and profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointParam Endpoint properties.
      * @param context The context to associate with this operation.
@@ -274,98 +272,85 @@ public interface AfdEndpointsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Front Door endpoint is the entity within a Azure Front Door profile containing configuration
-     *     information such as origin, protocol, content caching and delivery behavior.
+     * information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AfdEndpointInner create(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        AfdEndpointInner endpointParam,
-        Context context);
+    AfdEndpointInner create(String resourceGroupName, String profileName, String endpointName,
+        AfdEndpointInner endpointParam, Context context);
 
     /**
      * Updates an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
      * resource group and profile. Only tags can be updated after creating an endpoint. To update origins, use the
      * Update Origin operation. To update origin groups, use the Update Origin group operation. To update domains, use
      * the Update Custom Domain operation.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointUpdateProperties Endpoint update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Front Door endpoint is the entity within a Azure Front Door profile containing configuration
-     *     information such as origin, protocol, content caching and delivery behavior along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * information such as origin, protocol, content caching and delivery behavior along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        AfdEndpointUpdateParameters endpointUpdateProperties);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, AfdEndpointUpdateParameters endpointUpdateProperties);
 
     /**
      * Updates an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
      * resource group and profile. Only tags can be updated after creating an endpoint. To update origins, use the
      * Update Origin operation. To update origin groups, use the Update Origin group operation. To update domains, use
      * the Update Custom Domain operation.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointUpdateProperties Endpoint update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of azure Front Door endpoint is the entity within a Azure Front Door
-     *     profile containing configuration information such as origin, protocol, content caching and delivery behavior.
+     * profile containing configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<AfdEndpointInner>, AfdEndpointInner> beginUpdateAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        AfdEndpointUpdateParameters endpointUpdateProperties);
+    PollerFlux<PollResult<AfdEndpointInner>, AfdEndpointInner> beginUpdateAsync(String resourceGroupName,
+        String profileName, String endpointName, AfdEndpointUpdateParameters endpointUpdateProperties);
 
     /**
      * Updates an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
      * resource group and profile. Only tags can be updated after creating an endpoint. To update origins, use the
      * Update Origin operation. To update origin groups, use the Update Origin group operation. To update domains, use
      * the Update Custom Domain operation.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointUpdateProperties Endpoint update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of azure Front Door endpoint is the entity within a Azure Front Door
-     *     profile containing configuration information such as origin, protocol, content caching and delivery behavior.
+     * profile containing configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AfdEndpointInner>, AfdEndpointInner> beginUpdate(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        AfdEndpointUpdateParameters endpointUpdateProperties);
+    SyncPoller<PollResult<AfdEndpointInner>, AfdEndpointInner> beginUpdate(String resourceGroupName, String profileName,
+        String endpointName, AfdEndpointUpdateParameters endpointUpdateProperties);
 
     /**
      * Updates an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
      * resource group and profile. Only tags can be updated after creating an endpoint. To update origins, use the
      * Update Origin operation. To update origin groups, use the Update Origin group operation. To update domains, use
      * the Update Custom Domain operation.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointUpdateProperties Endpoint update properties.
      * @param context The context to associate with this operation.
@@ -373,39 +358,32 @@ public interface AfdEndpointsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of azure Front Door endpoint is the entity within a Azure Front Door
-     *     profile containing configuration information such as origin, protocol, content caching and delivery behavior.
+     * profile containing configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AfdEndpointInner>, AfdEndpointInner> beginUpdate(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        AfdEndpointUpdateParameters endpointUpdateProperties,
-        Context context);
+    SyncPoller<PollResult<AfdEndpointInner>, AfdEndpointInner> beginUpdate(String resourceGroupName, String profileName,
+        String endpointName, AfdEndpointUpdateParameters endpointUpdateProperties, Context context);
 
     /**
      * Updates an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
      * resource group and profile. Only tags can be updated after creating an endpoint. To update origins, use the
      * Update Origin operation. To update origin groups, use the Update Origin group operation. To update domains, use
      * the Update Custom Domain operation.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointUpdateProperties Endpoint update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Front Door endpoint is the entity within a Azure Front Door profile containing configuration
-     *     information such as origin, protocol, content caching and delivery behavior on successful completion of
-     *     {@link Mono}.
+     * information such as origin, protocol, content caching and delivery behavior on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AfdEndpointInner> updateAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
+    Mono<AfdEndpointInner> updateAsync(String resourceGroupName, String profileName, String endpointName,
         AfdEndpointUpdateParameters endpointUpdateProperties);
 
     /**
@@ -413,23 +391,20 @@ public interface AfdEndpointsClient {
      * resource group and profile. Only tags can be updated after creating an endpoint. To update origins, use the
      * Update Origin operation. To update origin groups, use the Update Origin group operation. To update domains, use
      * the Update Custom Domain operation.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointUpdateProperties Endpoint update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Front Door endpoint is the entity within a Azure Front Door profile containing configuration
-     *     information such as origin, protocol, content caching and delivery behavior.
+     * information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AfdEndpointInner update(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
+    AfdEndpointInner update(String resourceGroupName, String profileName, String endpointName,
         AfdEndpointUpdateParameters endpointUpdateProperties);
 
     /**
@@ -437,10 +412,10 @@ public interface AfdEndpointsClient {
      * resource group and profile. Only tags can be updated after creating an endpoint. To update origins, use the
      * Update Origin operation. To update origin groups, use the Update Origin group operation. To update domains, use
      * the Update Custom Domain operation.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointUpdateProperties Endpoint update properties.
      * @param context The context to associate with this operation.
@@ -448,23 +423,19 @@ public interface AfdEndpointsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Front Door endpoint is the entity within a Azure Front Door profile containing configuration
-     *     information such as origin, protocol, content caching and delivery behavior.
+     * information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AfdEndpointInner update(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        AfdEndpointUpdateParameters endpointUpdateProperties,
-        Context context);
+    AfdEndpointInner update(String resourceGroupName, String profileName, String endpointName,
+        AfdEndpointUpdateParameters endpointUpdateProperties, Context context);
 
     /**
      * Deletes an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
      * resource group and profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -472,16 +443,16 @@ public interface AfdEndpointsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName);
 
     /**
      * Deletes an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
      * resource group and profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -489,16 +460,16 @@ public interface AfdEndpointsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String profileName, String endpointName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String profileName,
+        String endpointName);
 
     /**
      * Deletes an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
      * resource group and profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -511,10 +482,10 @@ public interface AfdEndpointsClient {
     /**
      * Deletes an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
      * resource group and profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -523,16 +494,16 @@ public interface AfdEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String profileName, String endpointName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName, String endpointName,
+        Context context);
 
     /**
      * Deletes an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
      * resource group and profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -545,10 +516,10 @@ public interface AfdEndpointsClient {
     /**
      * Deletes an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
      * resource group and profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -560,10 +531,10 @@ public interface AfdEndpointsClient {
     /**
      * Deletes an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
      * resource group and profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -575,71 +546,71 @@ public interface AfdEndpointsClient {
 
     /**
      * Removes a content from AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param contents The list of paths to the content and the list of linked domains to be purged. Path can be a full
-     *     URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g.
-     *     '/pictures/*' which removes all folders and files in the directory.
+     * URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g. '/pictures/*'
+     * which removes all folders and files in the directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> purgeContentWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName, AfdPurgeParameters contents);
+    Mono<Response<Flux<ByteBuffer>>> purgeContentWithResponseAsync(String resourceGroupName, String profileName,
+        String endpointName, AfdPurgeParameters contents);
 
     /**
      * Removes a content from AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param contents The list of paths to the content and the list of linked domains to be purged. Path can be a full
-     *     URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g.
-     *     '/pictures/*' which removes all folders and files in the directory.
+     * URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g. '/pictures/*'
+     * which removes all folders and files in the directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginPurgeContentAsync(
-        String resourceGroupName, String profileName, String endpointName, AfdPurgeParameters contents);
+    PollerFlux<PollResult<Void>, Void> beginPurgeContentAsync(String resourceGroupName, String profileName,
+        String endpointName, AfdPurgeParameters contents);
 
     /**
      * Removes a content from AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param contents The list of paths to the content and the list of linked domains to be purged. Path can be a full
-     *     URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g.
-     *     '/pictures/*' which removes all folders and files in the directory.
+     * URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g. '/pictures/*'
+     * which removes all folders and files in the directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPurgeContent(
-        String resourceGroupName, String profileName, String endpointName, AfdPurgeParameters contents);
+    SyncPoller<PollResult<Void>, Void> beginPurgeContent(String resourceGroupName, String profileName,
+        String endpointName, AfdPurgeParameters contents);
 
     /**
      * Removes a content from AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param contents The list of paths to the content and the list of linked domains to be purged. Path can be a full
-     *     URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g.
-     *     '/pictures/*' which removes all folders and files in the directory.
+     * URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g. '/pictures/*'
+     * which removes all folders and files in the directory.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -647,42 +618,38 @@ public interface AfdEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPurgeContent(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        AfdPurgeParameters contents,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginPurgeContent(String resourceGroupName, String profileName,
+        String endpointName, AfdPurgeParameters contents, Context context);
 
     /**
      * Removes a content from AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param contents The list of paths to the content and the list of linked domains to be purged. Path can be a full
-     *     URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g.
-     *     '/pictures/*' which removes all folders and files in the directory.
+     * URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g. '/pictures/*'
+     * which removes all folders and files in the directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> purgeContentAsync(
-        String resourceGroupName, String profileName, String endpointName, AfdPurgeParameters contents);
+    Mono<Void> purgeContentAsync(String resourceGroupName, String profileName, String endpointName,
+        AfdPurgeParameters contents);
 
     /**
      * Removes a content from AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param contents The list of paths to the content and the list of linked domains to be purged. Path can be a full
-     *     URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g.
-     *     '/pictures/*' which removes all folders and files in the directory.
+     * URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g. '/pictures/*'
+     * which removes all folders and files in the directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -692,33 +659,29 @@ public interface AfdEndpointsClient {
 
     /**
      * Removes a content from AzureFrontDoor.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param contents The list of paths to the content and the list of linked domains to be purged. Path can be a full
-     *     URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g.
-     *     '/pictures/*' which removes all folders and files in the directory.
+     * URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g. '/pictures/*'
+     * which removes all folders and files in the directory.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void purgeContent(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        AfdPurgeParameters contents,
+    void purgeContent(String resourceGroupName, String profileName, String endpointName, AfdPurgeParameters contents,
         Context context);
 
     /**
      * Checks the quota and actual usage of endpoints under the given Azure Front Door profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -730,10 +693,10 @@ public interface AfdEndpointsClient {
 
     /**
      * Checks the quota and actual usage of endpoints under the given Azure Front Door profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -745,10 +708,10 @@ public interface AfdEndpointsClient {
 
     /**
      * Checks the quota and actual usage of endpoints under the given Azure Front Door profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -757,15 +720,15 @@ public interface AfdEndpointsClient {
      * @return the list usages operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UsageInner> listResourceUsage(
-        String resourceGroupName, String profileName, String endpointName, Context context);
+    PagedIterable<UsageInner> listResourceUsage(String resourceGroupName, String profileName, String endpointName,
+        Context context);
 
     /**
      * Validates the custom domain mapping to ensure it maps to the correct Azure Front Door endpoint in DNS.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainProperties Custom domain to be validated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -774,18 +737,15 @@ public interface AfdEndpointsClient {
      * @return output of custom domain validation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ValidateCustomDomainOutputInner>> validateCustomDomainWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        ValidateCustomDomainInput customDomainProperties);
+    Mono<Response<ValidateCustomDomainOutputInner>> validateCustomDomainWithResponseAsync(String resourceGroupName,
+        String profileName, String endpointName, ValidateCustomDomainInput customDomainProperties);
 
     /**
      * Validates the custom domain mapping to ensure it maps to the correct Azure Front Door endpoint in DNS.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainProperties Custom domain to be validated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -794,18 +754,15 @@ public interface AfdEndpointsClient {
      * @return output of custom domain validation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ValidateCustomDomainOutputInner> validateCustomDomainAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        ValidateCustomDomainInput customDomainProperties);
+    Mono<ValidateCustomDomainOutputInner> validateCustomDomainAsync(String resourceGroupName, String profileName,
+        String endpointName, ValidateCustomDomainInput customDomainProperties);
 
     /**
      * Validates the custom domain mapping to ensure it maps to the correct Azure Front Door endpoint in DNS.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainProperties Custom domain to be validated.
      * @param context The context to associate with this operation.
@@ -815,19 +772,15 @@ public interface AfdEndpointsClient {
      * @return output of custom domain validation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ValidateCustomDomainOutputInner> validateCustomDomainWithResponse(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        ValidateCustomDomainInput customDomainProperties,
-        Context context);
+    Response<ValidateCustomDomainOutputInner> validateCustomDomainWithResponse(String resourceGroupName,
+        String profileName, String endpointName, ValidateCustomDomainInput customDomainProperties, Context context);
 
     /**
      * Validates the custom domain mapping to ensure it maps to the correct Azure Front Door endpoint in DNS.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainProperties Custom domain to be validated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -836,9 +789,6 @@ public interface AfdEndpointsClient {
      * @return output of custom domain validation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateCustomDomainOutputInner validateCustomDomain(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        ValidateCustomDomainInput customDomainProperties);
+    ValidateCustomDomainOutputInner validateCustomDomain(String resourceGroupName, String profileName,
+        String endpointName, ValidateCustomDomainInput customDomainProperties);
 }

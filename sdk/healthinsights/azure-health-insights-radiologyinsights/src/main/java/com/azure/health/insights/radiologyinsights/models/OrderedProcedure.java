@@ -12,7 +12,7 @@ import java.util.List;
  * Procedure information.
  */
 @Fluent
-public final class FhirR4Extendible {
+public final class OrderedProcedure {
 
     /*
      * Additional Content defined by implementations
@@ -36,10 +36,10 @@ public final class FhirR4Extendible {
     private String description;
 
     /**
-     * Creates an instance of FhirR4Extendible class.
+     * Creates an instance of OrderedProcedure class.
      */
     @Generated
-    public FhirR4Extendible() {
+    public OrderedProcedure() {
     }
 
     /**
@@ -56,10 +56,10 @@ public final class FhirR4Extendible {
      * Set the extension property: Additional Content defined by implementations.
      *
      * @param extension the extension value to set.
-     * @return the FhirR4Extendible object itself.
+     * @return the OrderedProcedure object itself.
      */
     @Generated
-    public FhirR4Extendible setExtension(List<FhirR4Extension> extension) {
+    public OrderedProcedure setExtension(List<FhirR4Extension> extension) {
         this.extension = extension;
         return this;
     }
@@ -78,10 +78,10 @@ public final class FhirR4Extendible {
      * Set the code property: Procedure code.
      *
      * @param code the code value to set.
-     * @return the FhirR4Extendible object itself.
+     * @return the OrderedProcedure object itself.
      */
     @Generated
-    public FhirR4Extendible setCode(FhirR4CodeableConcept code) {
+    public OrderedProcedure setCode(FhirR4CodeableConcept code) {
         this.code = code;
         return this;
     }
@@ -100,10 +100,10 @@ public final class FhirR4Extendible {
      * Set the description property: Procedure description.
      *
      * @param description the description value to set.
-     * @return the FhirR4Extendible object itself.
+     * @return the OrderedProcedure object itself.
      */
     @Generated
-    public FhirR4Extendible setDescription(String description) {
+    public OrderedProcedure setDescription(String description) {
         this.description = description;
         return this;
     }

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cdn.fluent.models.OriginGroupUpdatePropertiesPa
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Origin group properties needed for origin group creation or update. */
+/**
+ * Origin group properties needed for origin group creation or update.
+ */
 @Fluent
 public final class OriginGroupUpdateParameters {
     /*
@@ -18,13 +20,15 @@ public final class OriginGroupUpdateParameters {
     @JsonProperty(value = "properties")
     private OriginGroupUpdatePropertiesParameters innerProperties;
 
-    /** Creates an instance of OriginGroupUpdateParameters class. */
+    /**
+     * Creates an instance of OriginGroupUpdateParameters class.
+     */
     public OriginGroupUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the origin group.
-     *
+     * 
      * @return the innerProperties value.
      */
     private OriginGroupUpdatePropertiesParameters innerProperties() {
@@ -32,9 +36,9 @@ public final class OriginGroupUpdateParameters {
     }
 
     /**
-     * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
-     * the origin.
-     *
+     * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health
+     * of the origin.
+     * 
      * @return the healthProbeSettings value.
      */
     public HealthProbeParameters healthProbeSettings() {
@@ -42,9 +46,9 @@ public final class OriginGroupUpdateParameters {
     }
 
     /**
-     * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
-     * the origin.
-     *
+     * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health
+     * of the origin.
+     * 
      * @param healthProbeSettings the healthProbeSettings value to set.
      * @return the OriginGroupUpdateParameters object itself.
      */
@@ -58,7 +62,7 @@ public final class OriginGroupUpdateParameters {
 
     /**
      * Get the origins property: The source of the content being delivered via CDN within given origin group.
-     *
+     * 
      * @return the origins value.
      */
     public List<ResourceReference> origins() {
@@ -67,7 +71,7 @@ public final class OriginGroupUpdateParameters {
 
     /**
      * Set the origins property: The source of the content being delivered via CDN within given origin group.
-     *
+     * 
      * @param origins the origins value to set.
      * @return the OriginGroupUpdateParameters object itself.
      */
@@ -83,12 +87,11 @@ public final class OriginGroupUpdateParameters {
      * Get the trafficRestorationTimeToHealedOrNewEndpointsInMinutes property: Time in minutes to shift the traffic to
      * the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins.
      * This property is currently not supported.
-     *
+     * 
      * @return the trafficRestorationTimeToHealedOrNewEndpointsInMinutes value.
      */
     public Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes() {
-        return this.innerProperties() == null
-            ? null
+        return this.innerProperties() == null ? null
             : this.innerProperties().trafficRestorationTimeToHealedOrNewEndpointsInMinutes();
     }
 
@@ -96,9 +99,9 @@ public final class OriginGroupUpdateParameters {
      * Set the trafficRestorationTimeToHealedOrNewEndpointsInMinutes property: Time in minutes to shift the traffic to
      * the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins.
      * This property is currently not supported.
-     *
+     * 
      * @param trafficRestorationTimeToHealedOrNewEndpointsInMinutes the
-     *     trafficRestorationTimeToHealedOrNewEndpointsInMinutes value to set.
+     * trafficRestorationTimeToHealedOrNewEndpointsInMinutes value to set.
      * @return the OriginGroupUpdateParameters object itself.
      */
     public OriginGroupUpdateParameters withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
@@ -106,29 +109,26 @@ public final class OriginGroupUpdateParameters {
         if (this.innerProperties() == null) {
             this.innerProperties = new OriginGroupUpdatePropertiesParameters();
         }
-        this
-            .innerProperties()
-            .withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
-                trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
+        this.innerProperties().withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
+            trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
         return this;
     }
 
     /**
      * Get the responseBasedOriginErrorDetectionSettings property: The JSON object that contains the properties to
      * determine origin health using real requests/responses. This property is currently not supported.
-     *
+     * 
      * @return the responseBasedOriginErrorDetectionSettings value.
      */
     public ResponseBasedOriginErrorDetectionParameters responseBasedOriginErrorDetectionSettings() {
-        return this.innerProperties() == null
-            ? null
+        return this.innerProperties() == null ? null
             : this.innerProperties().responseBasedOriginErrorDetectionSettings();
     }
 
     /**
      * Set the responseBasedOriginErrorDetectionSettings property: The JSON object that contains the properties to
      * determine origin health using real requests/responses. This property is currently not supported.
-     *
+     * 
      * @param responseBasedOriginErrorDetectionSettings the responseBasedOriginErrorDetectionSettings value to set.
      * @return the OriginGroupUpdateParameters object itself.
      */
@@ -143,7 +143,7 @@ public final class OriginGroupUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

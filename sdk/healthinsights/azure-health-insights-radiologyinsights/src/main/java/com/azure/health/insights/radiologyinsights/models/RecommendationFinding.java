@@ -13,7 +13,7 @@ import java.util.List;
  * Finding reference for recommendation.
  */
 @Immutable
-public final class FhirR4Extendible2 {
+public final class RecommendationFinding {
 
     /*
      * Additional Content defined by implementations
@@ -44,13 +44,13 @@ public final class FhirR4Extendible2 {
     private final RecommendationFindingStatusType recommendationFindingStatus;
 
     /**
-     * Creates an instance of FhirR4Extendible2 class.
+     * Creates an instance of RecommendationFinding class.
      *
      * @param recommendationFindingStatus the recommendationFindingStatus value to set.
      */
     @Generated
     @JsonCreator
-    private FhirR4Extendible2(@JsonProperty(
+    private RecommendationFinding(@JsonProperty(
         value = "recommendationFindingStatus") RecommendationFindingStatusType recommendationFindingStatus) {
         this.recommendationFindingStatus = recommendationFindingStatus;
     }

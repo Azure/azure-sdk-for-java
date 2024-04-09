@@ -19,14 +19,16 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SecurityPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SecurityPoliciesClient.
+ */
 public interface SecurityPoliciesClient {
     /**
      * Lists security policies associated with the profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -37,10 +39,10 @@ public interface SecurityPoliciesClient {
 
     /**
      * Lists security policies associated with the profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -51,10 +53,10 @@ public interface SecurityPoliciesClient {
 
     /**
      * Lists security policies associated with the profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -66,27 +68,27 @@ public interface SecurityPoliciesClient {
 
     /**
      * Gets an existing security policy within a profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing security policy within a profile along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SecurityPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, String securityPolicyName);
+    Mono<Response<SecurityPolicyInner>> getWithResponseAsync(String resourceGroupName, String profileName,
+        String securityPolicyName);
 
     /**
      * Gets an existing security policy within a profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -98,10 +100,10 @@ public interface SecurityPoliciesClient {
 
     /**
      * Gets an existing security policy within a profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -110,15 +112,15 @@ public interface SecurityPoliciesClient {
      * @return an existing security policy within a profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SecurityPolicyInner> getWithResponse(
-        String resourceGroupName, String profileName, String securityPolicyName, Context context);
+    Response<SecurityPolicyInner> getWithResponse(String resourceGroupName, String profileName,
+        String securityPolicyName, Context context);
 
     /**
      * Gets an existing security policy within a profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -130,28 +132,28 @@ public interface SecurityPoliciesClient {
 
     /**
      * Creates a new security policy within the specified profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @param securityPolicy The security policy properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return securityPolicy association for AzureFrontDoor profile along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String profileName, String securityPolicyName, SecurityPolicyInner securityPolicy);
+    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String profileName,
+        String securityPolicyName, SecurityPolicyInner securityPolicy);
 
     /**
      * Creates a new security policy within the specified profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @param securityPolicy The security policy properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,15 +162,15 @@ public interface SecurityPoliciesClient {
      * @return the {@link PollerFlux} for polling of securityPolicy association for AzureFrontDoor profile.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginCreateAsync(
-        String resourceGroupName, String profileName, String securityPolicyName, SecurityPolicyInner securityPolicy);
+    PollerFlux<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginCreateAsync(String resourceGroupName,
+        String profileName, String securityPolicyName, SecurityPolicyInner securityPolicy);
 
     /**
      * Creates a new security policy within the specified profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @param securityPolicy The security policy properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -177,15 +179,15 @@ public interface SecurityPoliciesClient {
      * @return the {@link SyncPoller} for polling of securityPolicy association for AzureFrontDoor profile.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginCreate(
-        String resourceGroupName, String profileName, String securityPolicyName, SecurityPolicyInner securityPolicy);
+    SyncPoller<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginCreate(String resourceGroupName,
+        String profileName, String securityPolicyName, SecurityPolicyInner securityPolicy);
 
     /**
      * Creates a new security policy within the specified profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @param securityPolicy The security policy properties.
      * @param context The context to associate with this operation.
@@ -195,19 +197,15 @@ public interface SecurityPoliciesClient {
      * @return the {@link SyncPoller} for polling of securityPolicy association for AzureFrontDoor profile.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginCreate(
-        String resourceGroupName,
-        String profileName,
-        String securityPolicyName,
-        SecurityPolicyInner securityPolicy,
-        Context context);
+    SyncPoller<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginCreate(String resourceGroupName,
+        String profileName, String securityPolicyName, SecurityPolicyInner securityPolicy, Context context);
 
     /**
      * Creates a new security policy within the specified profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @param securityPolicy The security policy properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -216,15 +214,15 @@ public interface SecurityPoliciesClient {
      * @return securityPolicy association for AzureFrontDoor profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SecurityPolicyInner> createAsync(
-        String resourceGroupName, String profileName, String securityPolicyName, SecurityPolicyInner securityPolicy);
+    Mono<SecurityPolicyInner> createAsync(String resourceGroupName, String profileName, String securityPolicyName,
+        SecurityPolicyInner securityPolicy);
 
     /**
      * Creates a new security policy within the specified profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @param securityPolicy The security policy properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -233,15 +231,15 @@ public interface SecurityPoliciesClient {
      * @return securityPolicy association for AzureFrontDoor profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityPolicyInner create(
-        String resourceGroupName, String profileName, String securityPolicyName, SecurityPolicyInner securityPolicy);
+    SecurityPolicyInner create(String resourceGroupName, String profileName, String securityPolicyName,
+        SecurityPolicyInner securityPolicy);
 
     /**
      * Creates a new security policy within the specified profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @param securityPolicy The security policy properties.
      * @param context The context to associate with this operation.
@@ -251,40 +249,33 @@ public interface SecurityPoliciesClient {
      * @return securityPolicy association for AzureFrontDoor profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityPolicyInner create(
-        String resourceGroupName,
-        String profileName,
-        String securityPolicyName,
-        SecurityPolicyInner securityPolicy,
-        Context context);
+    SecurityPolicyInner create(String resourceGroupName, String profileName, String securityPolicyName,
+        SecurityPolicyInner securityPolicy, Context context);
 
     /**
      * Updates an existing security policy within a profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @param securityPolicyUpdateProperties Security policy update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return securityPolicy association for AzureFrontDoor profile along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> patchWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String securityPolicyName,
-        SecurityPolicyUpdateParameters securityPolicyUpdateProperties);
+    Mono<Response<Flux<ByteBuffer>>> patchWithResponseAsync(String resourceGroupName, String profileName,
+        String securityPolicyName, SecurityPolicyUpdateParameters securityPolicyUpdateProperties);
 
     /**
      * Updates an existing security policy within a profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @param securityPolicyUpdateProperties Security policy update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -293,18 +284,15 @@ public interface SecurityPoliciesClient {
      * @return the {@link PollerFlux} for polling of securityPolicy association for AzureFrontDoor profile.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginPatchAsync(
-        String resourceGroupName,
-        String profileName,
-        String securityPolicyName,
-        SecurityPolicyUpdateParameters securityPolicyUpdateProperties);
+    PollerFlux<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginPatchAsync(String resourceGroupName,
+        String profileName, String securityPolicyName, SecurityPolicyUpdateParameters securityPolicyUpdateProperties);
 
     /**
      * Updates an existing security policy within a profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @param securityPolicyUpdateProperties Security policy update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -313,18 +301,15 @@ public interface SecurityPoliciesClient {
      * @return the {@link SyncPoller} for polling of securityPolicy association for AzureFrontDoor profile.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginPatch(
-        String resourceGroupName,
-        String profileName,
-        String securityPolicyName,
-        SecurityPolicyUpdateParameters securityPolicyUpdateProperties);
+    SyncPoller<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginPatch(String resourceGroupName,
+        String profileName, String securityPolicyName, SecurityPolicyUpdateParameters securityPolicyUpdateProperties);
 
     /**
      * Updates an existing security policy within a profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @param securityPolicyUpdateProperties Security policy update properties.
      * @param context The context to associate with this operation.
@@ -334,19 +319,16 @@ public interface SecurityPoliciesClient {
      * @return the {@link SyncPoller} for polling of securityPolicy association for AzureFrontDoor profile.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginPatch(
-        String resourceGroupName,
-        String profileName,
-        String securityPolicyName,
-        SecurityPolicyUpdateParameters securityPolicyUpdateProperties,
+    SyncPoller<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginPatch(String resourceGroupName,
+        String profileName, String securityPolicyName, SecurityPolicyUpdateParameters securityPolicyUpdateProperties,
         Context context);
 
     /**
      * Updates an existing security policy within a profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @param securityPolicyUpdateProperties Security policy update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -355,18 +337,15 @@ public interface SecurityPoliciesClient {
      * @return securityPolicy association for AzureFrontDoor profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SecurityPolicyInner> patchAsync(
-        String resourceGroupName,
-        String profileName,
-        String securityPolicyName,
+    Mono<SecurityPolicyInner> patchAsync(String resourceGroupName, String profileName, String securityPolicyName,
         SecurityPolicyUpdateParameters securityPolicyUpdateProperties);
 
     /**
      * Updates an existing security policy within a profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @param securityPolicyUpdateProperties Security policy update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -375,18 +354,15 @@ public interface SecurityPoliciesClient {
      * @return securityPolicy association for AzureFrontDoor profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityPolicyInner patch(
-        String resourceGroupName,
-        String profileName,
-        String securityPolicyName,
+    SecurityPolicyInner patch(String resourceGroupName, String profileName, String securityPolicyName,
         SecurityPolicyUpdateParameters securityPolicyUpdateProperties);
 
     /**
      * Updates an existing security policy within a profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @param securityPolicyUpdateProperties Security policy update properties.
      * @param context The context to associate with this operation.
@@ -396,19 +372,15 @@ public interface SecurityPoliciesClient {
      * @return securityPolicy association for AzureFrontDoor profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityPolicyInner patch(
-        String resourceGroupName,
-        String profileName,
-        String securityPolicyName,
-        SecurityPolicyUpdateParameters securityPolicyUpdateProperties,
-        Context context);
+    SecurityPolicyInner patch(String resourceGroupName, String profileName, String securityPolicyName,
+        SecurityPolicyUpdateParameters securityPolicyUpdateProperties, Context context);
 
     /**
      * Deletes an existing security policy within profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -416,15 +388,15 @@ public interface SecurityPoliciesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, String securityPolicyName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName,
+        String securityPolicyName);
 
     /**
      * Deletes an existing security policy within profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -432,15 +404,15 @@ public interface SecurityPoliciesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String profileName, String securityPolicyName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String profileName,
+        String securityPolicyName);
 
     /**
      * Deletes an existing security policy within profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -448,15 +420,15 @@ public interface SecurityPoliciesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String profileName, String securityPolicyName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
+        String securityPolicyName);
 
     /**
      * Deletes an existing security policy within profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -465,15 +437,15 @@ public interface SecurityPoliciesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String profileName, String securityPolicyName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
+        String securityPolicyName, Context context);
 
     /**
      * Deletes an existing security policy within profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -485,10 +457,10 @@ public interface SecurityPoliciesClient {
 
     /**
      * Deletes an existing security policy within profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -499,10 +471,10 @@ public interface SecurityPoliciesClient {
 
     /**
      * Deletes an existing security policy within profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
+     * within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
