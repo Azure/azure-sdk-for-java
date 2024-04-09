@@ -74,8 +74,7 @@ class ServiceBusJmsConnectionFactoryFactory {
                                           new ServiceBusJmsConnectionFactorySettings());
             }
             return factory;
-        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException |
-                 IllegalArgumentException | InvocationTargetException ex) {
+        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             throw new IllegalStateException("Unable to create JmsConnectionFactory", ex);
         }
     }
