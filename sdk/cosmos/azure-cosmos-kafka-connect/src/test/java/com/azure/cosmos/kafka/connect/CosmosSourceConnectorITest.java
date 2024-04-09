@@ -89,7 +89,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             kafkaConsumer.subscribe(
                 Arrays.asList(
                     topicName,
-                    sourceConfig.getMetadataConfig().getMetadataTopicName()));
+                    sourceConfig.getMetadataConfig().getStorageName()));
 
             List<ConsumerRecord<String, JsonNode>> metadataRecords = new ArrayList<>();
             List<ConsumerRecord<String, JsonNode>> itemRecords = new ArrayList<>();
@@ -100,7 +100,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
                     .forEachRemaining(consumerRecord -> {
                         if (consumerRecord.topic().equals(topicName)) {
                             itemRecords.add(consumerRecord);
-                        } else if (consumerRecord.topic().equals(sourceConfig.getMetadataConfig().getMetadataTopicName())) {
+                        } else if (consumerRecord.topic().equals(sourceConfig.getMetadataConfig().getStorageName())) {
                             metadataRecords.add(consumerRecord);
                         }
                     });

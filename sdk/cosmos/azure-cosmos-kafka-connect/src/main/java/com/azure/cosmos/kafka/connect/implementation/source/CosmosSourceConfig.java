@@ -80,8 +80,6 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
     private static final String METADATA_STORAGE_TYPE_DISPLAY = "The storage source of the metadata.";
     private static final String DEFAULT_METADATA_STORAGE_TYPE = CosmosMetadataStorageType.KAFKA.getName();
 
-    // TODO [this PR] should we allow using different account for the metadata - no reason no
-    // TODO [this PR] should we create the metadata container if it does not exist
     private static final String METADATA_STORAGE_NAME = SOURCE_CONFIG_PREFIX + "metadata.storage.name";
     private static final String METADATA_STORAGE_NAME_DOC = "The resource name of the metadata storage. If metadata storage type is Kafka topic, then this config refers to kafka topic name, the metadata topic will be created if it does not already exist, else it will use the pre-created topic."
         + " If metadata storage type is CosmosDB container, then this config refers to container name, please pre-create the metadata container partitioned by /id.";
@@ -319,9 +317,9 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
     private CosmosMetadataConfig parseMetadataConfig() {
         int pollDelayInMs = this.getInt(METADATA_POLL_DELAY_MS_CONFIG);
         CosmosMetadataStorageType storageType = this.parseMetadataStorageSource();
-        String name = this.getString(METADATA_STORAGE_NAME);
+        String storageName = this.getString(METADATA_STORAGE_NAME);
 
-        return new CosmosMetadataConfig(pollDelayInMs, storageType, name);
+        return new CosmosMetadataConfig(pollDelayInMs, storageType, storageName);
     }
 
     private CosmosMetadataStorageType parseMetadataStorageSource() {

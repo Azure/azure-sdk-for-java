@@ -89,7 +89,7 @@ public class MetadataTaskUnit implements ITaskUnit {
 
     public List<Pair<FeedRangesMetadataTopicPartition, FeedRangesMetadataTopicOffset>> getFeedRangesMetadataList() {
 
-        List<Pair<FeedRangesMetadataTopicPartition, FeedRangesMetadataTopicOffset>> feedRangesMetadataList  = new ArrayList();
+        List<Pair<FeedRangesMetadataTopicPartition, FeedRangesMetadataTopicOffset>> feedRangesMetadataList = new ArrayList<>();
 
         for (String containerRid : this.containersEffectiveRangesMap.keySet()) {
             FeedRangesMetadataTopicPartition feedRangesMetadataTopicPartition =

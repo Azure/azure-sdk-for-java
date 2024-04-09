@@ -11,14 +11,15 @@ import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
-import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceOffsetStorageReader;
+import com.azure.cosmos.kafka.connect.implementation.source.IMetadataReader;
+import com.azure.cosmos.kafka.connect.implementation.source.MetadataKafkaStorageManager;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTask;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTaskConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeContinuationTopicOffset;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeTaskUnit;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangesMetadataTopicOffset;
 import com.azure.cosmos.kafka.connect.implementation.source.KafkaCosmosChangeFeedState;
-import com.azure.cosmos.kafka.connect.implementation.source.MetadataCosmosProducer;
+import com.azure.cosmos.kafka.connect.implementation.source.MetadataCosmosStorageManager;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataMonitorThread;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataTaskUnit;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -55,23 +56,42 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
     private CosmosSourceConfig config;
     private CosmosAsyncClient cosmosClient;
     private MetadataMonitorThread monitorThread;
-    private CosmosSourceOffsetStorageReader offsetStorageReader;
+    private MetadataKafkaStorageManager kafkaOffsetStorageReader;
+    private IMetadataReader metadataReader;
 
     @Override
     public void start(Map<String, String> props) {
         LOGGER.info("Starting the kafka cosmos source connector");
         this.config = new CosmosSourceConfig(props);
         this.cosmosClient = CosmosClientStore.getCosmosClient(this.config.getAccountConfig());
-        this.offsetStorageReader = new CosmosSourceOffsetStorageReader(this.context().offsetStorageReader());
+
+        // IMPORTANT: sequence matters
+        this.kafkaOffsetStorageReader = new MetadataKafkaStorageManager(this.context().offsetStorageReader());
+        this.metadataReader = this.getMetadataReader();
         this.monitorThread = new MetadataMonitorThread(
             this.config.getContainersConfig(),
             this.config.getMetadataConfig(),
             this.context(),
-            this.offsetStorageReader,
+            this.metadataReader,
             this.cosmosClient
         );
 
         this.monitorThread.start();
+    }
+
+    private IMetadataReader getMetadataReader() {
+        switch (this.config.getMetadataConfig().getStorageType()) {
+            case KAFKA:
+                return this.kafkaOffsetStorageReader;
+            case COSMOS:
+                CosmosAsyncContainer metadataContainer =
+                    this.cosmosClient
+                        .getDatabase(this.config.getContainersConfig().getDatabaseName())
+                        .getContainer(this.config.getMetadataConfig().getStorageName());
+                return new MetadataCosmosStorageManager(metadataContainer);
+            default:
+                throw new IllegalArgumentException("Metadata storage type " + this.config.getMetadataConfig().getStorageType() + " is not supported");
+        }
     }
 
     @Override
@@ -115,7 +135,11 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
     }
 
     private void updateMetadataRecordsInCosmos(MetadataTaskUnit metadataTaskUnit) {
-        MetadataCosmosProducer cosmosProducer = new MetadataCosmosProducer(this.cosmosClient);
+        CosmosAsyncContainer container =
+            this.cosmosClient
+                .getDatabase(metadataTaskUnit.getDatabaseName())
+                .getContainer(metadataTaskUnit.getStorageName());
+        MetadataCosmosStorageManager cosmosProducer = new MetadataCosmosStorageManager(container);
         cosmosProducer.executeMetadataTask(metadataTaskUnit);
     }
 
@@ -229,7 +253,9 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
         List<FeedRange> containerFeedRanges = this.getFeedRanges(containerProperties);
 
         FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffset =
-            this.offsetStorageReader.getFeedRangesMetadataOffset(databaseName, containerProperties.getResourceId());
+            this.metadataReader
+                .getFeedRangesMetadataOffset(databaseName, containerProperties.getResourceId())
+                .block().v;
 
         Map<FeedRange, KafkaCosmosChangeFeedState> effectiveFeedRangesContinuationMap = new LinkedHashMap<>();
         CosmosAsyncContainer container = this.cosmosClient.getDatabase(databaseName).getContainer(containerProperties.getId());
@@ -266,7 +292,7 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
 
         //first try to find out whether there is exact feedRange matching
         FeedRangeContinuationTopicOffset feedRangeContinuationTopicOffset =
-            this.offsetStorageReader.getFeedRangeContinuationOffset(databaseName, containerRid, containerFeedRange);
+            this.kafkaOffsetStorageReader.getFeedRangeContinuationOffset(databaseName, containerRid, containerFeedRange);
 
         Map<FeedRange, KafkaCosmosChangeFeedState> effectiveContinuationMap = new LinkedHashMap<>();
         if (feedRangeContinuationTopicOffset != null) {
@@ -304,7 +330,7 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
                             effectiveContinuationMap.put(
                                 containerFeedRange,
                                 this.getContinuationStateFromOffset(
-                                    this.offsetStorageReader.getFeedRangeContinuationOffset(databaseName, containerRid, overlappedFeedRangesFromOffset.get(0)),
+                                    this.kafkaOffsetStorageReader.getFeedRangeContinuationOffset(databaseName, containerRid, overlappedFeedRangesFromOffset.get(0)),
                                     containerFeedRange));
                             return Mono.just(effectiveContinuationMap);
                         }
@@ -315,7 +341,7 @@ public class CosmosSourceConnector extends SourceConnector implements AutoClosea
                                 effectiveContinuationMap.put(
                                     overlappedRangeFromOffset,
                                     this.getContinuationStateFromOffset(
-                                        this.offsetStorageReader.getFeedRangeContinuationOffset(databaseName, containerRid, overlappedRangeFromOffset),
+                                        this.kafkaOffsetStorageReader.getFeedRangeContinuationOffset(databaseName, containerRid, overlappedRangeFromOffset),
                                         overlappedRangeFromOffset));
                             }
 

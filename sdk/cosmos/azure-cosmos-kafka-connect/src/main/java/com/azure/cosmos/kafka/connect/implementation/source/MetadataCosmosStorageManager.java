@@ -1,46 +1,44 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.kafka.connect.implementation.source;
 
-import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
+import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
-public class MetadataCosmosProducer {
-    private final CosmosAsyncClient client;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-    public MetadataCosmosProducer(CosmosAsyncClient client) {
-        this.client = client;
-    }
+public class MetadataCosmosStorageManager implements IMetadataReader {
+    private final CosmosAsyncContainer metadataContainer;
 
-    public CosmosAsyncClient getClient() {
-        return client;
+    public MetadataCosmosStorageManager(CosmosAsyncContainer metadataContainer) {
+        checkNotNull(metadataContainer, "Argument 'metadataContainer' can not be null");
+        this.metadataContainer = metadataContainer;
     }
 
     public void executeMetadataTask(MetadataTaskUnit metadataTaskUnit) {
-        CosmosAsyncContainer container =
-            this.client
-                .getDatabase(metadataTaskUnit.getDatabaseName())
-                .getContainer(metadataTaskUnit.getStorageName());
-
         // To be as consistent as what will be persisted to kafka topic if kafka being the storage type
         // we created the cosmos metadata item from the kafka topic records
 
         // add the containers metadata record - it tracks the databaseName -> List[containerRid] mapping
         this.createContainersMetadataItem(
-            container,
             metadataTaskUnit.getContainersMetadata().getLeft(),
             metadataTaskUnit.getContainersMetadata().getRight());
 
         // add the container feedRanges metadata record - it tracks the containerRid -> List[FeedRange] mapping
         for (Pair<FeedRangesMetadataTopicPartition, FeedRangesMetadataTopicOffset> feedRangesMetadata : metadataTaskUnit.getFeedRangesMetadataList()) {
-            this.createFeedRangesMetadataItem(container, feedRangesMetadata.getLeft(), feedRangesMetadata.getRight());
+            this.createFeedRangesMetadataItem(feedRangesMetadata.getLeft(), feedRangesMetadata.getRight());
         }
     }
 
-    private void createContainersMetadataItem(
-        CosmosAsyncContainer container,
+    public void createContainersMetadataItem(
         ContainersMetadataTopicPartition topicPartition,
         ContainersMetadataTopicOffset topicOffset) {
 
@@ -49,19 +47,51 @@ public class MetadataCosmosProducer {
                 topicPartition.getDatabaseName(),
                 ContainersMetadataTopicOffset.toMap(topicOffset));
 
-        container.upsertItem(containersMetadataItem).block();
+        this.metadataContainer.upsertItem(containersMetadataItem).block();
     }
 
-    private void createFeedRangesMetadataItem(
-        CosmosAsyncContainer container,
+    public void createFeedRangesMetadataItem(
         FeedRangesMetadataTopicPartition topicPartition,
         FeedRangesMetadataTopicOffset topicOffset) {
 
-        String recordId = topicPartition.getDatabaseName() + "_" + topicPartition.getContainerRid();
+        String itemId = getFeedRangesMetadataItemId(topicPartition.getDatabaseName(), topicPartition.getContainerRid());
         FeedRangesMetadataItem feedRangesMetadataItem =
-            new FeedRangesMetadataItem(recordId, FeedRangesMetadataTopicOffset.toMap(topicOffset));
+            new FeedRangesMetadataItem(itemId, FeedRangesMetadataTopicOffset.toMap(topicOffset));
 
-        container.upsertItem(feedRangesMetadataItem).block();
+        this.metadataContainer.upsertItem(feedRangesMetadataItem).block();
+    }
+
+    private String getFeedRangesMetadataItemId(String databaseName, String collectionRid) {
+        return databaseName + "_" + collectionRid;
+    }
+
+    @Override
+    public Mono<Utils.ValueHolder<ContainersMetadataTopicOffset>> getContainersMetadataOffset(String databaseName) {
+        return this.metadataContainer
+            .readItem(databaseName, new PartitionKey(databaseName), ContainersMetadataItem.class)
+            .map(itemResponse -> new Utils.ValueHolder<>(ContainersMetadataTopicOffset.fromMap(itemResponse.getItem().getMetadata())))
+            .onErrorResume(throwable -> {
+                if (KafkaCosmosExceptionsHelper.isNotFoundException(throwable)) {
+                    return Mono.just(new Utils.ValueHolder<>(null));
+                }
+
+                return Mono.error(throwable);
+            });
+    }
+
+    @Override
+    public Mono<Utils.ValueHolder<FeedRangesMetadataTopicOffset>> getFeedRangesMetadataOffset(String databaseName, String collectionRid) {
+        String itemId = this.getFeedRangesMetadataItemId(databaseName, collectionRid);
+        return this.metadataContainer
+            .readItem(itemId, new PartitionKey(itemId), FeedRangesMetadataItem.class)
+            .map(itemResponse -> new Utils.ValueHolder<>(FeedRangesMetadataTopicOffset.fromMap(itemResponse.getItem().getMetadata())))
+            .onErrorResume(throwable -> {
+                if (KafkaCosmosExceptionsHelper.isNotFoundException(throwable)) {
+                    return Mono.just(new Utils.ValueHolder<>(null));
+                }
+
+                return Mono.error(throwable);
+            });
     }
 
     private static class ContainersMetadataItem {

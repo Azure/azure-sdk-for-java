@@ -67,7 +67,8 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
                 databaseName,
                 Arrays.asList(testContainer.getResourceId()),
                 containersEffectiveRangesMap,
-                testContainerName);
+                testContainerName,
+                CosmosMetadataStorageType.KAFKA);
             taskConfigMap.putAll(CosmosSourceTaskConfig.getMetadataTaskUnitConfigMap(metadataTaskUnit));
 
             // define feedRanges task
@@ -121,6 +122,8 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             for (int i = 0; i < 3; i++) {
                 sourceRecords.addAll(sourceTask.poll());
             }
+            System.out.println("All source records " + sourceRecords);
+            System.out.println("All created items " + createdItems.stream().map(TestItem::getId).collect(Collectors.toList()));
             validateFeedRangeRecords(sourceRecords, createdItems);
         } finally {
             if (client != null) {
