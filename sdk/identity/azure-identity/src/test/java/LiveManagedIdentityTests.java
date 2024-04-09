@@ -119,20 +119,22 @@ public class LiveManagedIdentityTests extends TestBase {
 
 
         String storageKey = runCommand(azPath, "storage", "account", "keys", "list", "--account-name", storageAcccountName,
-            "--resource-group", resourceGroup, "--query", "[0].value", "--output", "tsv");
+            "--resource-group", resourceGroup, "--query", "[0].value", "--output", "tsv").trim();
 
         String expiry = LocalDate.now().plusDays(2).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String sasToken = runCommand(azPath, "storage", "blob", "generate-sas", "--account-name", storageAcccountName,
-            "--account-key", storageKey, "--container-name", "vmcontainer", "--name", "testfile.jar", "--permissions", "r",
+            "--account-key", "\"" + storageKey + "\"", "--container-name", "vmcontainer", "--name", "testfile.jar", "--permissions", "r",
             "--expiry", expiry, "--https-only", "--output", "tsv").trim();
-
-
 
         String vmBlob = String.format("https://%s.blob.core.windows.net/vmcontainer/testfile.jar?%s", storageAcccountName, sasToken);
         String script = String.format("\"curl '%s' -o ./testfile.jar && java -jar ./testfile.jar\"", vmBlob);
 
-
         System.out.println("Script: " + script);
+
+        String script2 = "\"java -version\"";
+
+        String output2 = runCommand(azPath, "vm", "run-command", "invoke", "-n", vmName, "-g", resourceGroup,
+            "--command-id", "RunShellScript", "--scripts", script2);
 
         String output = runCommand(azPath, "vm", "run-command", "invoke", "-n", vmName, "-g", resourceGroup,
             "--command-id", "RunShellScript", "--scripts", script);
