@@ -119,4 +119,94 @@ public final class EmbeddingsOptions {
     public List<String> getInput() {
         return this.input;
     }
+
+    /*
+     * When using Azure OpenAI, specifies the input type to use for embedding search.
+     */
+    @Generated
+    @JsonProperty(value = "input_type")
+    private String inputType;
+
+    /**
+     * Get the inputType property: When using Azure OpenAI, specifies the input type to use for embedding search.
+     *
+     * @return the inputType value.
+     */
+    @Generated
+    public String getInputType() {
+        return this.inputType;
+    }
+
+    /**
+     * Set the inputType property: When using Azure OpenAI, specifies the input type to use for embedding search.
+     *
+     * @param inputType the inputType value to set.
+     * @return the EmbeddingsOptions object itself.
+     */
+    @Generated
+    public EmbeddingsOptions setInputType(String inputType) {
+        this.inputType = inputType;
+        return this;
+    }
+
+    /*
+     * The number of dimensions the resulting output embeddings should have. Only supported in `text-embedding-3` and
+     * later models.
+     */
+    @Generated
+    @JsonProperty(value = "dimensions")
+    private Integer dimensions;
+
+    /**
+     * Get the dimensions property: The number of dimensions the resulting output embeddings should have. Only
+     * supported in `text-embedding-3` and later models.
+     *
+     * @return the dimensions value.
+     */
+    @Generated
+    public Integer getDimensions() {
+        return this.dimensions;
+    }
+
+    /**
+     * Set the dimensions property: The number of dimensions the resulting output embeddings should have. Only
+     * supported in `text-embedding-3` and later models.
+     *
+     * @param dimensions the dimensions value to set.
+     * @return the EmbeddingsOptions object itself.
+     */
+    @Generated
+    public EmbeddingsOptions setDimensions(Integer dimensions) {
+        this.dimensions = dimensions;
+        return this;
+    }
+
+    /*
+     * The response encoding format to use for embedding data.
+     */
+    @Generated
+    @JsonProperty(value = "encoding_format")
+    private EmbeddingEncodingFormat encodingFormat;
+
+    /**
+     * Get the encodingFormat property: The response encoding format to use for embedding data.
+     *
+     * @return the encodingFormat value.
+     */
+    @Generated
+    EmbeddingEncodingFormat getEncodingFormat() {
+        return this.encodingFormat;
+    }
+
+    /**
+     * Set the encodingFormat property: The response encoding format to use for embedding data.
+     *
+     * @param encodingFormat the encodingFormat value to set.
+     * @return the EmbeddingsOptions object itself.
+     */
+    @Generated
+    EmbeddingsOptions setEncodingFormat(EmbeddingEncodingFormat encodingFormat) {
+        this.encodingFormat = encodingFormat;
+        return this;
+    }
 }

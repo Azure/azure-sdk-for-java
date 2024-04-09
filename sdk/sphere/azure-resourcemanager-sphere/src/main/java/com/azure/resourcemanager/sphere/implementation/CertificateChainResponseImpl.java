@@ -12,8 +12,8 @@ public final class CertificateChainResponseImpl implements CertificateChainRespo
 
     private final com.azure.resourcemanager.sphere.AzureSphereManager serviceManager;
 
-    CertificateChainResponseImpl(
-        CertificateChainResponseInner innerObject, com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
+    CertificateChainResponseImpl(CertificateChainResponseInner innerObject,
+        com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

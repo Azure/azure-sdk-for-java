@@ -3,14 +3,16 @@
 
 package com.azure.core.test.utils;
 
+import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveInputStream;
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
-import org.apache.commons.compress.utils.IOUtils;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -22,7 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Locale;
 import java.util.zip.GZIPInputStream;
@@ -35,7 +37,9 @@ public final class TestProxyDownloader {
     private static final Path PROXY_PATH = Paths.get(System.getProperty("java.io.tmpdir"), "test-proxy");
 
     private static String testProxyTag;
-    private TestProxyDownloader() { }
+
+    private TestProxyDownloader() {
+    }
 
     /**
      * Reports the directory the test proxy was installed to.
@@ -62,27 +66,24 @@ public final class TestProxyDownloader {
         Path zipFile = getZipFileLocation(platformInfo.getExtension());
         if (Files.exists(PROXY_PATH)) {
             try {
-                Files.walk(PROXY_PATH)
-                    .sorted(Comparator.reverseOrder())
-                    .map(Path::toFile)
-                    .forEach(File::delete);
+                Files.walk(PROXY_PATH).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
             } catch (IOException e) {
-                throw new RuntimeException(String.format("Could not delete old test proxy zip file %s", zipFile.toString()), e);
+                throw new RuntimeException(String.format("Could not delete old test proxy zip file %s", zipFile), e);
             }
         }
 
         try {
             if (platformInfo.extension.equals("tar.gz")) {
                 try (InputStream file = Files.newInputStream(zipFile);
-                     InputStream buffer = new BufferedInputStream(file);
-                     GZIPInputStream gzipInputStream = new GZIPInputStream(buffer);
-                     ArchiveInputStream archive = new TarArchiveInputStream(gzipInputStream)) {
+                    InputStream buffer = new BufferedInputStream(file);
+                    GZIPInputStream gzipInputStream = new GZIPInputStream(buffer);
+                    ArchiveInputStream<TarArchiveEntry> archive = new TarArchiveInputStream(gzipInputStream)) {
                     decompress(archive);
                 }
             } else {
                 try (InputStream file = Files.newInputStream(zipFile);
-                     InputStream buffer = new BufferedInputStream(file);
-                     ArchiveInputStream archive = new ZipArchiveInputStream(buffer)) {
+                    InputStream buffer = new BufferedInputStream(file);
+                    ArchiveInputStream<ZipArchiveEntry> archive = new ZipArchiveInputStream(buffer)) {
                     decompress(archive);
                 }
             }
@@ -91,7 +92,7 @@ public final class TestProxyDownloader {
         }
     }
 
-    private static void decompress(ArchiveInputStream archive) {
+    private static void decompress(ArchiveInputStream<?> archive) {
         try {
             ArchiveEntry entry = archive.getNextEntry();
 
@@ -108,7 +109,7 @@ public final class TestProxyDownloader {
                         throw new RuntimeException("Could not create all required directories");
                     }
                     try (OutputStream outputStream = Files.newOutputStream(outputFile.toPath())) {
-                        IOUtils.copy(archive, outputStream);
+                        TestingHelpers.copy(archive, outputStream);
                         if (outputFile.getName().equals(TestProxyUtils.getProxyProcessName())) {
                             outputFile.setExecutable(true, false);
                         }
@@ -125,14 +126,12 @@ public final class TestProxyDownloader {
         return new File(PROXY_PATH.toFile(), entry.getName());
     }
 
-
     private static void downloadProxy(PlatformInfo platformInfo) {
         LOGGER.log(LogLevel.INFORMATIONAL, () -> "Downloading test proxy. This may take a few moments.");
 
         try {
             URL url = UrlBuilder.parse(getProxyDownloadUrl(platformInfo)).toUrl();
-            Files.copy(url.openStream(),
-                getZipFileLocation(platformInfo.getExtension()),
+            Files.copy(url.openStream(), getZipFileLocation(platformInfo.getExtension()),
                 StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new RuntimeException("Could not save test proxy download", e);
@@ -148,7 +147,7 @@ public final class TestProxyDownloader {
     private static void updateDownloadedFileVersion() {
         Path filePath = getFileVersionPath();
         try {
-            Files.write(filePath, Arrays.asList(testProxyTag));
+            Files.write(filePath, Collections.singletonList(testProxyTag));
         } catch (IOException e) {
             throw new RuntimeException("Failed to write version data to file", e);
         }
@@ -173,18 +172,15 @@ public final class TestProxyDownloader {
     }
 
     private static String getProxyDownloadUrl(PlatformInfo platformInfo) {
-        return String.format("https://github.com/Azure/azure-sdk-tools/releases/download/Azure.Sdk.Tools.TestProxy_%s/test-proxy-standalone-%s-%s.%s",
-            testProxyTag,
-            platformInfo.getPlatform(),
-            platformInfo.getArchitecture(),
-            platformInfo.getExtension());
+        return String.format(
+            "https://github.com/Azure/azure-sdk-tools/releases/download/Azure.Sdk.Tools.TestProxy_%s/test-proxy-standalone-%s-%s.%s",
+            testProxyTag, platformInfo.getPlatform(), platformInfo.getArchitecture(), platformInfo.getExtension());
     }
 
     private static class PlatformInfo {
         private final String platform;
         private final String extension;
         private final String architecture;
-
 
         PlatformInfo() {
             String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);

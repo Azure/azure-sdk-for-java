@@ -6,21 +6,23 @@ package com.azure.resourcemanager.cosmosdbforpostgresql.generated;
 
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.NameAvailabilityRequest;
 
-/** Samples for Clusters CheckNameAvailability. */
+/**
+ * Samples for Clusters CheckNameAvailability.
+ */
 public final class ClustersCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/CheckNameAvailability.json
+     * x-ms-original-file:
+     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
+     * CheckNameAvailability.json
      */
     /**
      * Sample code: Check name availability.
-     *
+     * 
      * @param manager Entry point to CosmosDBForPostgreSqlManager.
      */
-    public static void checkNameAvailability(
-        com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager
-            .clusters()
-            .checkNameAvailabilityWithResponse(
-                new NameAvailabilityRequest().withName("name1"), com.azure.core.util.Context.NONE);
+    public static void
+        checkNameAvailability(com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
+        manager.clusters().checkNameAvailabilityWithResponse(new NameAvailabilityRequest().withName("name1"),
+            com.azure.core.util.Context.NONE);
     }
 }

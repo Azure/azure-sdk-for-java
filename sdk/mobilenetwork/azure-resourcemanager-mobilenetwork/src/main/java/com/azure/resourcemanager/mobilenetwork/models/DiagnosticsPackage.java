@@ -7,60 +7,62 @@ package com.azure.resourcemanager.mobilenetwork.models;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.DiagnosticsPackageInner;
 
-/** An immutable client-side representation of DiagnosticsPackage. */
+/**
+ * An immutable client-side representation of DiagnosticsPackage.
+ */
 public interface DiagnosticsPackage {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the provisioningState property: The provisioning state of the diagnostics package resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the status property: The status of the diagnostics package collection.
-     *
+     * 
      * @return the status value.
      */
     DiagnosticsPackageStatus status();
 
     /**
      * Gets the reason property: The reason for the current state of the diagnostics package collection.
-     *
+     * 
      * @return the reason value.
      */
     String reason();
 
     /**
      * Gets the inner com.azure.resourcemanager.mobilenetwork.fluent.models.DiagnosticsPackageInner object.
-     *
+     * 
      * @return the inner object.
      */
     DiagnosticsPackageInner innerModel();

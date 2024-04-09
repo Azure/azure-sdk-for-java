@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class VirtualMachineImagesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineImageExamples/VirtualMachineImage_Get_MinimumSet_Gen.json
      */
     /**
@@ -25,7 +25,7 @@ public final class VirtualMachineImagesGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineImageExamples/VirtualMachineImage_Get_MaximumSet_Gen.json
      */
     /**

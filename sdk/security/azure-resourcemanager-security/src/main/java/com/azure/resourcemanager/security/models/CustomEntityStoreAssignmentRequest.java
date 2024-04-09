@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.security.fluent.models.CustomEntityStoreAssignmentRequestProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** describes the custom entity store assignment request. */
+/**
+ * describes the custom entity store assignment request.
+ */
 @Fluent
 public final class CustomEntityStoreAssignmentRequest {
     /*
@@ -17,13 +19,15 @@ public final class CustomEntityStoreAssignmentRequest {
     @JsonProperty(value = "properties")
     private CustomEntityStoreAssignmentRequestProperties innerProperties;
 
-    /** Creates an instance of CustomEntityStoreAssignmentRequest class. */
+    /**
+     * Creates an instance of CustomEntityStoreAssignmentRequest class.
+     */
     public CustomEntityStoreAssignmentRequest() {
     }
 
     /**
      * Get the innerProperties property: describes properties of custom entity store assignment request.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CustomEntityStoreAssignmentRequestProperties innerProperties() {
@@ -31,9 +35,9 @@ public final class CustomEntityStoreAssignmentRequest {
     }
 
     /**
-     * Get the principal property: The principal assigned with entity store. If not provided, will use caller principal.
-     * Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId].
-     *
+     * Get the principal property: The principal assigned with entity store. If not provided, will use caller
+     * principal. Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId].
+     * 
      * @return the principal value.
      */
     public String principal() {
@@ -41,9 +45,9 @@ public final class CustomEntityStoreAssignmentRequest {
     }
 
     /**
-     * Set the principal property: The principal assigned with entity store. If not provided, will use caller principal.
-     * Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId].
-     *
+     * Set the principal property: The principal assigned with entity store. If not provided, will use caller
+     * principal. Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId].
+     * 
      * @param principal the principal value to set.
      * @return the CustomEntityStoreAssignmentRequest object itself.
      */
@@ -57,7 +61,7 @@ public final class CustomEntityStoreAssignmentRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

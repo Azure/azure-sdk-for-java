@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The action type. */
+/**
+ * The action type.
+ */
 public final class ScaleActionType extends ExpandableStringEnum<ScaleActionType> {
-    /** Static value scaleup for ScaleActionType. */
+    /**
+     * Static value scaleup for ScaleActionType.
+     */
     public static final ScaleActionType SCALEUP = fromString("scaleup");
 
-    /** Static value scaledown for ScaleActionType. */
+    /**
+     * Static value scaledown for ScaleActionType.
+     */
     public static final ScaleActionType SCALEDOWN = fromString("scaledown");
 
     /**
      * Creates a new instance of ScaleActionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ScaleActionType extends ExpandableStringEnum<ScaleActionType>
 
     /**
      * Creates or finds a ScaleActionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScaleActionType.
      */
@@ -38,7 +44,7 @@ public final class ScaleActionType extends ExpandableStringEnum<ScaleActionType>
 
     /**
      * Gets known ScaleActionType values.
-     *
+     * 
      * @return known ScaleActionType values.
      */
     public static Collection<ScaleActionType> values() {

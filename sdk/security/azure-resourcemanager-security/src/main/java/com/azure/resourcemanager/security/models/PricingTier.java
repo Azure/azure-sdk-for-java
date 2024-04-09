@@ -9,19 +9,24 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The pricing tier value. Microsoft Defender for Cloud is provided in two pricing tiers: free and standard. The
- * standard tier offers advanced security capabilities, while the free tier offers basic security features.
+ * Indicates whether the Defender plan is enabled on the selected scope. Microsoft Defender for Cloud is provided in two
+ * pricing tiers: free and standard. The standard tier offers advanced security capabilities, while the free tier offers
+ * basic security features.
  */
 public final class PricingTier extends ExpandableStringEnum<PricingTier> {
-    /** Static value Free for PricingTier. */
+    /**
+     * Static value Free for PricingTier.
+     */
     public static final PricingTier FREE = fromString("Free");
 
-    /** Static value Standard for PricingTier. */
+    /**
+     * Static value Standard for PricingTier.
+     */
     public static final PricingTier STANDARD = fromString("Standard");
 
     /**
      * Creates a new instance of PricingTier value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +35,7 @@ public final class PricingTier extends ExpandableStringEnum<PricingTier> {
 
     /**
      * Creates or finds a PricingTier from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PricingTier.
      */
@@ -41,7 +46,7 @@ public final class PricingTier extends ExpandableStringEnum<PricingTier> {
 
     /**
      * Gets known PricingTier values.
-     *
+     * 
      * @return known PricingTier values.
      */
     public static Collection<PricingTier> values() {

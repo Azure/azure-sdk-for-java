@@ -31,6 +31,7 @@ Synchronous:
 - [Audio Transcription][sample_audio_transcription]
 - [Audio Translation][sample_audio_translation]
 - [Chat with Images][sample_chat_with_images]
+- [Text to Speech][sample_text_to_speech]
 - [Tool Calls][sample_tool_calls]
 
 Asynchronous:
@@ -41,6 +42,7 @@ Asynchronous:
 - [Audio Transcription][async_sample_audio_transcription]
 - [Audio Translation][async_sample_audio_translation]
 - [Chat with Images][async_sample_chat_with_images]
+- [Text to Speech][async_sample_text_to_speech]
 - [Tool Calls][async_sample_tool_calls]
 
 Cookbook:
@@ -78,6 +80,7 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [async_sample_audio_transcription]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/AudioTranscriptionAsyncSample.java
 [async_sample_audio_translation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/AudioTranslationAsyncSample.java
 [async_sample_chat_with_images]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsVisionAsyncSample.java
+[async_sample_text_to_speech]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/TextToSpeechAsyncSample.java
 [async_sample_tool_calls]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsToolCallAsyncSample.java
 
 [sample_get_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetCompletionsSample.java
@@ -87,6 +90,7 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [sample_audio_transcription]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/AudioTranscriptionSample.java
 [sample_audio_translation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/AudioTranslationSample.java
 [sample_chat_with_images]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsVisionSample.java
+[sample_text_to_speech]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/TextToSpeechSample.java
 [sample_tool_calls]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsToolCallSample.java
 
 [cookbook_chat_bot]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatbotSample.java

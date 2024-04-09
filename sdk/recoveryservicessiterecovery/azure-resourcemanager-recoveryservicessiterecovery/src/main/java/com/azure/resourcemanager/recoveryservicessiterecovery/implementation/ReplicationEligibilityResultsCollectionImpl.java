@@ -17,8 +17,7 @@ public final class ReplicationEligibilityResultsCollectionImpl implements Replic
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    ReplicationEligibilityResultsCollectionImpl(
-        ReplicationEligibilityResultsCollectionInner innerObject,
+    ReplicationEligibilityResultsCollectionImpl(ReplicationEligibilityResultsCollectionInner innerObject,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class ReplicationEligibilityResultsCollectionImpl implements Replic
     public List<ReplicationEligibilityResults> value() {
         List<ReplicationEligibilityResultsInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ReplicationEligibilityResultsImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new ReplicationEligibilityResultsImpl(inner1, this.manager()))
+                    .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * Helper class containing utility methods.
@@ -33,12 +34,12 @@ public final class Utility {
     // the SDK will fall back to using the JDK implementations.
     private static final List<String> REQUIRED_NETTY_VERSION_ARTIFACTS = Arrays.asList("netty-common", "netty-handler",
         "netty-handler-proxy", "netty-buffer", "netty-codec", "netty-codec-http", "netty-codec-http2");
-    private static final List<String> OPTIONAL_NETTY_VERSION_ARTIFACTS = Arrays.asList(
-        "netty-transport-native-unix-common", "netty-transport-native-epoll", "netty-transport-native-kqueue");
+    private static final List<String> OPTIONAL_NETTY_VERSION_ARTIFACTS = Arrays
+        .asList("netty-transport-native-unix-common", "netty-transport-native-epoll", "netty-transport-native-kqueue");
 
     // List of Netty artifacts that should match the 'netty-tcnative.version' property in the pom.xml file.
-    private static final List<String> NETTY_TCNATIVE_VERSION_ARTIFACTS = Collections.singletonList(
-        "netty-tcnative-boringssl-static");
+    private static final List<String> NETTY_TCNATIVE_VERSION_ARTIFACTS
+        = Collections.singletonList("netty-tcnative-boringssl-static");
 
     /**
      * Deep copies the passed {@link ByteBuf} into a {@link ByteBuffer}.
@@ -89,6 +90,10 @@ public final class Utility {
      * warning will contain the versions found in runtime and the expected versions to be used by the SDK.
      */
     public static void validateNettyVersions() {
+        validateNettyVersions(LOGGER::warning);
+    }
+
+    static void validateNettyVersions(Consumer<String> logger) {
         Map<String, String> pomVersions = CoreUtils.getProperties(PROPERTIES_FILE_NAME);
         String nettyVersion = pomVersions.get(NETTY_VERSION_PROPERTY);
         String nettyTcnativeVersion = pomVersions.get(NETTY_TCNATIVE_VERSION_PROPERTY);
@@ -132,7 +137,7 @@ public final class Utility {
         }
 
         if (!versionMismatches.isEmpty()) {
-            LOGGER.warning("The following Netty dependencies have versions that do not match the versions specified in "
+            logger.accept("The following Netty dependencies have versions that do not match the versions specified in "
                 + "the azure-core-http-netty pom.xml file. This may result in unexpected behavior. If your application "
                 + "runs without issue this message can be ignored, otherwise please update the Netty dependencies to "
                 + "match the versions specified in the pom.xml file. Versions found in runtime: "

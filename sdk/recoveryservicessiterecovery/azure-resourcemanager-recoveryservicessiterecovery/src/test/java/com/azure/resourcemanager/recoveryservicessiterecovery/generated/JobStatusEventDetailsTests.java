@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class JobStatusEventDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobStatusEventDetails model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"JobStatus\",\"jobId\":\"wkaupwhlz\",\"jobFriendlyName\":\"kremgjl\",\"jobStatus\":\"vdorsirx\",\"affectedObjectType\":\"yrkqa\"}")
-                .toObject(JobStatusEventDetails.class);
+        JobStatusEventDetails model = BinaryData.fromString(
+            "{\"instanceType\":\"JobStatus\",\"jobId\":\"wkaupwhlz\",\"jobFriendlyName\":\"kremgjl\",\"jobStatus\":\"vdorsirx\",\"affectedObjectType\":\"yrkqa\"}")
+            .toObject(JobStatusEventDetails.class);
         Assertions.assertEquals("wkaupwhlz", model.jobId());
         Assertions.assertEquals("kremgjl", model.jobFriendlyName());
         Assertions.assertEquals("vdorsirx", model.jobStatus());
@@ -24,12 +22,8 @@ public final class JobStatusEventDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobStatusEventDetails model =
-            new JobStatusEventDetails()
-                .withJobId("wkaupwhlz")
-                .withJobFriendlyName("kremgjl")
-                .withJobStatus("vdorsirx")
-                .withAffectedObjectType("yrkqa");
+        JobStatusEventDetails model = new JobStatusEventDetails().withJobId("wkaupwhlz").withJobFriendlyName("kremgjl")
+            .withJobStatus("vdorsirx").withAffectedObjectType("yrkqa");
         model = BinaryData.fromObject(model).toObject(JobStatusEventDetails.class);
         Assertions.assertEquals("wkaupwhlz", model.jobId());
         Assertions.assertEquals("kremgjl", model.jobFriendlyName());

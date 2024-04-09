@@ -6,7 +6,6 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -72,7 +71,6 @@ public final class DocumentAnalysisFeature extends ExpandableStringEnum<Document
      * @return the corresponding DocumentAnalysisFeature.
      */
     @Generated
-    @JsonCreator
     public static DocumentAnalysisFeature fromString(String name) {
         return fromString(name, DocumentAnalysisFeature.class);
     }

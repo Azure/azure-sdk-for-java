@@ -17,10 +17,10 @@ public final class ScriptActivityTypePropertiesLogSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptActivityTypePropertiesLogSettings model = BinaryData.fromString(
-            "{\"logDestination\":\"ActivityOutput\",\"logLocationSettings\":{\"linkedServiceName\":{\"referenceName\":\"fbeott\",\"parameters\":{\"ut\":\"dataonejpjzqb\",\"atfalhnixo\":\"datanlow\"}},\"path\":\"dataqobngjbeihcaxkiv\"}}")
+            "{\"logDestination\":\"ActivityOutput\",\"logLocationSettings\":{\"linkedServiceName\":{\"referenceName\":\"yyxhzgxkwc\",\"parameters\":{\"fylbokbriy\":\"datarrmlkrroqsdvxdd\",\"buravswnnsb\":\"datarxae\"}},\"path\":\"dataum\"}}")
             .toObject(ScriptActivityTypePropertiesLogSettings.class);
         Assertions.assertEquals(ScriptActivityLogDestination.ACTIVITY_OUTPUT, model.logDestination());
-        Assertions.assertEquals("fbeott", model.logLocationSettings().linkedServiceName().referenceName());
+        Assertions.assertEquals("yyxhzgxkwc", model.logLocationSettings().linkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,12 +28,12 @@ public final class ScriptActivityTypePropertiesLogSettingsTests {
         ScriptActivityTypePropertiesLogSettings model = new ScriptActivityTypePropertiesLogSettings()
             .withLogDestination(ScriptActivityLogDestination.ACTIVITY_OUTPUT)
             .withLogLocationSettings(new LogLocationSettings()
-                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("fbeott")
-                    .withParameters(mapOf("ut", "dataonejpjzqb", "atfalhnixo", "datanlow")))
-                .withPath("dataqobngjbeihcaxkiv"));
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("yyxhzgxkwc")
+                    .withParameters(mapOf("fylbokbriy", "datarrmlkrroqsdvxdd", "buravswnnsb", "datarxae")))
+                .withPath("dataum"));
         model = BinaryData.fromObject(model).toObject(ScriptActivityTypePropertiesLogSettings.class);
         Assertions.assertEquals(ScriptActivityLogDestination.ACTIVITY_OUTPUT, model.logDestination());
-        Assertions.assertEquals("fbeott", model.logLocationSettings().linkedServiceName().referenceName());
+        Assertions.assertEquals("yyxhzgxkwc", model.logLocationSettings().linkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

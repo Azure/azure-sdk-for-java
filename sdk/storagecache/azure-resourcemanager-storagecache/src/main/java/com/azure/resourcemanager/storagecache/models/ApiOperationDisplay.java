@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The object that represents the operation. */
+/**
+ * The object that represents the operation.
+ */
 @Fluent
 public final class ApiOperationDisplay {
     /*
@@ -34,13 +36,15 @@ public final class ApiOperationDisplay {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of ApiOperationDisplay class. */
+    /**
+     * Creates an instance of ApiOperationDisplay class.
+     */
     public ApiOperationDisplay() {
     }
 
     /**
      * Get the operation property: Operation type: Read, write, delete, etc.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -49,7 +53,7 @@ public final class ApiOperationDisplay {
 
     /**
      * Set the operation property: Operation type: Read, write, delete, etc.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the ApiOperationDisplay object itself.
      */
@@ -60,7 +64,7 @@ public final class ApiOperationDisplay {
 
     /**
      * Get the provider property: Service provider: Microsoft.StorageCache.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -69,7 +73,7 @@ public final class ApiOperationDisplay {
 
     /**
      * Set the provider property: Service provider: Microsoft.StorageCache.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the ApiOperationDisplay object itself.
      */
@@ -80,7 +84,7 @@ public final class ApiOperationDisplay {
 
     /**
      * Get the resource property: Resource on which the operation is performed: Cache, etc.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -89,7 +93,7 @@ public final class ApiOperationDisplay {
 
     /**
      * Set the resource property: Resource on which the operation is performed: Cache, etc.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the ApiOperationDisplay object itself.
      */
@@ -100,7 +104,7 @@ public final class ApiOperationDisplay {
 
     /**
      * Get the description property: The description of the operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -109,7 +113,7 @@ public final class ApiOperationDisplay {
 
     /**
      * Set the description property: The description of the operation.
-     *
+     * 
      * @param description the description value to set.
      * @return the ApiOperationDisplay object itself.
      */
@@ -120,7 +124,7 @@ public final class ApiOperationDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

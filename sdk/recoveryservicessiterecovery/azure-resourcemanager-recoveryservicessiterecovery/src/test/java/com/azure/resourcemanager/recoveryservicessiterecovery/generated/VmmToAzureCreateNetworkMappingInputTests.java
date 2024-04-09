@@ -10,10 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.VmmToAzureC
 public final class VmmToAzureCreateNetworkMappingInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VmmToAzureCreateNetworkMappingInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"VmmToAzure\"}")
-                .toObject(VmmToAzureCreateNetworkMappingInput.class);
+        VmmToAzureCreateNetworkMappingInput model = BinaryData.fromString("{\"instanceType\":\"VmmToAzure\"}")
+            .toObject(VmmToAzureCreateNetworkMappingInput.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -4,17 +4,23 @@
 package com.azure.communication.jobrouter.implementation.models;
 
 import com.azure.communication.jobrouter.models.FunctionRouterRuleCredential;
+import com.azure.communication.jobrouter.models.RouterRuleKind;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A rule providing a binding to an HTTP Triggered Azure Function.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = FunctionRouterRuleInternal.class,
+    visible = true)
 @JsonTypeName("function")
 @Fluent
 public final class FunctionRouterRuleInternal extends RouterRuleInternal {
@@ -24,7 +30,7 @@ public final class FunctionRouterRuleInternal extends RouterRuleInternal {
      */
     @Generated
     @JsonProperty(value = "functionUri")
-    private String functionUri;
+    private final String functionUri;
 
     /*
      * Credentials used to access Azure function rule.
@@ -74,5 +80,24 @@ public final class FunctionRouterRuleInternal extends RouterRuleInternal {
     public FunctionRouterRuleInternal setCredential(FunctionRouterRuleCredential credential) {
         this.credential = credential;
         return this;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of RouterRule
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RouterRuleKind kind = RouterRuleKind.FUNCTION;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of RouterRule.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RouterRuleKind getKind() {
+        return this.kind;
     }
 }

@@ -12,19 +12,20 @@ public final class OracleSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OracleSource model = BinaryData.fromString(
-            "{\"type\":\"OracleSource\",\"oracleReaderQuery\":\"datatfkkiupmdaj\",\"queryTimeout\":\"datadvvzb\",\"partitionOption\":\"dataxxokif\",\"partitionSettings\":{\"partitionNames\":\"datawdyzse\",\"partitionColumnName\":\"datamvtqhn\",\"partitionUpperBound\":\"dataiju\",\"partitionLowerBound\":\"datarkqywybxgayomse\"},\"additionalColumns\":\"datacxl\",\"sourceRetryCount\":\"datavqf\",\"sourceRetryWait\":\"datasizxpo\",\"maxConcurrentConnections\":\"datasaploexhimvlocdx\",\"disableMetricsCollection\":\"datakobidhhipntrddy\",\"\":{\"dgmqscijlfulxg\":\"dataanv\"}}")
+            "{\"type\":\"OracleSource\",\"oracleReaderQuery\":\"datanknnqlty\",\"queryTimeout\":\"dataeyxmuwgnwxt\",\"partitionOption\":\"datawgen\",\"partitionSettings\":{\"partitionNames\":\"dataswcxlgzquqx\",\"partitionColumnName\":\"datasvqpifzavctywa\",\"partitionUpperBound\":\"dataaczprzrs\",\"partitionLowerBound\":\"datau\"},\"additionalColumns\":\"datanp\",\"sourceRetryCount\":\"dataqlanuhmsrnp\",\"sourceRetryWait\":\"dataaghoeqiwpdxpd\",\"maxConcurrentConnections\":\"dataoajqxyplhsto\",\"disableMetricsCollection\":\"datayb\",\"\":{\"gqjdoglec\":\"datasvpi\",\"iniidaxbesbwci\":\"datafgyivsiirxcxppqp\",\"uasjrs\":\"datayjch\"}}")
             .toObject(OracleSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OracleSource model = new OracleSource().withSourceRetryCount("datavqf").withSourceRetryWait("datasizxpo")
-            .withMaxConcurrentConnections("datasaploexhimvlocdx").withDisableMetricsCollection("datakobidhhipntrddy")
-            .withOracleReaderQuery("datatfkkiupmdaj").withQueryTimeout("datadvvzb").withPartitionOption("dataxxokif")
-            .withPartitionSettings(
-                new OraclePartitionSettings().withPartitionNames("datawdyzse").withPartitionColumnName("datamvtqhn")
-                    .withPartitionUpperBound("dataiju").withPartitionLowerBound("datarkqywybxgayomse"))
-            .withAdditionalColumns("datacxl");
+        OracleSource model = new OracleSource().withSourceRetryCount("dataqlanuhmsrnp")
+            .withSourceRetryWait("dataaghoeqiwpdxpd").withMaxConcurrentConnections("dataoajqxyplhsto")
+            .withDisableMetricsCollection("datayb").withOracleReaderQuery("datanknnqlty")
+            .withQueryTimeout("dataeyxmuwgnwxt").withPartitionOption("datawgen")
+            .withPartitionSettings(new OraclePartitionSettings().withPartitionNames("dataswcxlgzquqx")
+                .withPartitionColumnName("datasvqpifzavctywa").withPartitionUpperBound("dataaczprzrs")
+                .withPartitionLowerBound("datau"))
+            .withAdditionalColumns("datanp");
         model = BinaryData.fromObject(model).toObject(OracleSource.class);
     }
 }

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Azure specific reprotect input. */
+/**
+ * Azure specific reprotect input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("A2A")
 @Fluent
@@ -51,13 +53,15 @@ public final class A2AReprotectInput extends ReverseReplicationProviderSpecificI
     @JsonProperty(value = "policyId")
     private String policyId;
 
-    /** Creates an instance of A2AReprotectInput class. */
+    /**
+     * Creates an instance of A2AReprotectInput class.
+     */
     public A2AReprotectInput() {
     }
 
     /**
      * Get the recoveryContainerId property: The recovery container Id.
-     *
+     * 
      * @return the recoveryContainerId value.
      */
     public String recoveryContainerId() {
@@ -66,7 +70,7 @@ public final class A2AReprotectInput extends ReverseReplicationProviderSpecificI
 
     /**
      * Set the recoveryContainerId property: The recovery container Id.
-     *
+     * 
      * @param recoveryContainerId the recoveryContainerId value to set.
      * @return the A2AReprotectInput object itself.
      */
@@ -77,7 +81,7 @@ public final class A2AReprotectInput extends ReverseReplicationProviderSpecificI
 
     /**
      * Get the vmDisks property: The list of vm disk details.
-     *
+     * 
      * @return the vmDisks value.
      */
     public List<A2AVmDiskInputDetails> vmDisks() {
@@ -86,7 +90,7 @@ public final class A2AReprotectInput extends ReverseReplicationProviderSpecificI
 
     /**
      * Set the vmDisks property: The list of vm disk details.
-     *
+     * 
      * @param vmDisks the vmDisks value to set.
      * @return the A2AReprotectInput object itself.
      */
@@ -97,7 +101,7 @@ public final class A2AReprotectInput extends ReverseReplicationProviderSpecificI
 
     /**
      * Get the recoveryResourceGroupId property: The recovery resource group Id. Valid for V2 scenarios.
-     *
+     * 
      * @return the recoveryResourceGroupId value.
      */
     public String recoveryResourceGroupId() {
@@ -106,7 +110,7 @@ public final class A2AReprotectInput extends ReverseReplicationProviderSpecificI
 
     /**
      * Set the recoveryResourceGroupId property: The recovery resource group Id. Valid for V2 scenarios.
-     *
+     * 
      * @param recoveryResourceGroupId the recoveryResourceGroupId value to set.
      * @return the A2AReprotectInput object itself.
      */
@@ -117,7 +121,7 @@ public final class A2AReprotectInput extends ReverseReplicationProviderSpecificI
 
     /**
      * Get the recoveryCloudServiceId property: The recovery cloud service Id. Valid for V1 scenarios.
-     *
+     * 
      * @return the recoveryCloudServiceId value.
      */
     public String recoveryCloudServiceId() {
@@ -126,7 +130,7 @@ public final class A2AReprotectInput extends ReverseReplicationProviderSpecificI
 
     /**
      * Set the recoveryCloudServiceId property: The recovery cloud service Id. Valid for V1 scenarios.
-     *
+     * 
      * @param recoveryCloudServiceId the recoveryCloudServiceId value to set.
      * @return the A2AReprotectInput object itself.
      */
@@ -137,7 +141,7 @@ public final class A2AReprotectInput extends ReverseReplicationProviderSpecificI
 
     /**
      * Get the recoveryAvailabilitySetId property: The recovery availability set.
-     *
+     * 
      * @return the recoveryAvailabilitySetId value.
      */
     public String recoveryAvailabilitySetId() {
@@ -146,7 +150,7 @@ public final class A2AReprotectInput extends ReverseReplicationProviderSpecificI
 
     /**
      * Set the recoveryAvailabilitySetId property: The recovery availability set.
-     *
+     * 
      * @param recoveryAvailabilitySetId the recoveryAvailabilitySetId value to set.
      * @return the A2AReprotectInput object itself.
      */
@@ -157,7 +161,7 @@ public final class A2AReprotectInput extends ReverseReplicationProviderSpecificI
 
     /**
      * Get the policyId property: The Policy Id.
-     *
+     * 
      * @return the policyId value.
      */
     public String policyId() {
@@ -166,7 +170,7 @@ public final class A2AReprotectInput extends ReverseReplicationProviderSpecificI
 
     /**
      * Set the policyId property: The Policy Id.
-     *
+     * 
      * @param policyId the policyId value to set.
      * @return the A2AReprotectInput object itself.
      */
@@ -177,7 +181,7 @@ public final class A2AReprotectInput extends ReverseReplicationProviderSpecificI
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

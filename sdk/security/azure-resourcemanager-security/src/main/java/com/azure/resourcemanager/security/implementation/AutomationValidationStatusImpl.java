@@ -12,8 +12,7 @@ public final class AutomationValidationStatusImpl implements AutomationValidatio
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    AutomationValidationStatusImpl(
-        AutomationValidationStatusInner innerObject,
+    AutomationValidationStatusImpl(AutomationValidationStatusInner innerObject,
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

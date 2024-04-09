@@ -33,10 +33,8 @@ public class HttpPipelinePolicyTests {
         SyncAsyncPolicy policy2 = new SyncAsyncPolicy();
         URL url = createUrl("http://localhost/");
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
-            .policies(policy1, policy2)
-            .build();
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().httpClient(new NoOpHttpClient()).policies(policy1, policy2).build();
 
         pipeline.send(new HttpRequest(HttpMethod.GET, url)).block();
         assertEquals(1, policy1.asyncCalls.get());
@@ -51,11 +49,8 @@ public class HttpPipelinePolicyTests {
         SyncAsyncPolicy policy2 = new SyncAsyncPolicy();
         URL url = createUrl("http://localhost/");
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
-            .policies(policy1, policy2)
-            .build();
-
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().httpClient(new NoOpHttpClient()).policies(policy1, policy2).build();
 
         pipeline.sendSync(new HttpRequest(HttpMethod.GET, url), Context.NONE);
         assertEquals(0, policy1.asyncCalls.get());
@@ -69,8 +64,7 @@ public class HttpPipelinePolicyTests {
         DefaultImplementationSyncPolicy policyWithDefaultSyncImplementation = new DefaultImplementationSyncPolicy();
         URL url = createUrl("http://localhost/");
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
             .policies(policyWithDefaultSyncImplementation)
             .build();
 
@@ -89,21 +83,18 @@ public class HttpPipelinePolicyTests {
     @Test
     public void doesntThrowThatThreadIsNonBlocking() throws MalformedURLException {
         SyncAsyncPolicy policy1 = new SyncAsyncPolicy();
-        HttpPipelinePolicy badPolicy1 = (context, next) -> Mono.delay(Duration.ofMillis(10))
-            .flatMap(l -> next.process());
-        HttpPipelinePolicy badPolicy2 = (context, next) -> Mono.delay(Duration.ofMillis(10))
-            .flatMap(l -> next.process());
+        HttpPipelinePolicy badPolicy1
+            = (context, next) -> Mono.delay(Duration.ofMillis(10)).flatMap(l -> next.process());
+        HttpPipelinePolicy badPolicy2
+            = (context, next) -> Mono.delay(Duration.ofMillis(10)).flatMap(l -> next.process());
         HttpClient badClient = request -> Mono.delay(Duration.ofMillis(10)).flatMap(i -> Mono.empty());
         URL url = createUrl("http://localhost/");
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(badClient)
-            .policies(policy1, badPolicy1, badPolicy2)
-            .build();
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().httpClient(badClient).policies(policy1, badPolicy1, badPolicy2).build();
 
         pipeline.sendSync(new HttpRequest(HttpMethod.GET, url), Context.NONE);
     }
-
 
     private static class SyncAsyncPolicy implements HttpPipelinePolicy {
         final AtomicInteger asyncCalls = new AtomicInteger();

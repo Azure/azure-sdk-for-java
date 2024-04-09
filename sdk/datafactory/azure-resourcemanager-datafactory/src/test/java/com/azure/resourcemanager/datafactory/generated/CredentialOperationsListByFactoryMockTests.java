@@ -32,7 +32,7 @@ public final class CredentialOperationsListByFactoryMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"ManagedIdentity\",\"typeProperties\":{\"resourceId\":\"xamsgfvuffd\"},\"description\":\"k\",\"annotations\":[\"datamd\"],\"\":{\"efwxcuzu\":\"datagmjpc\",\"ypr\":\"datalby\",\"nos\":\"datakjiiivbvkvo\"}},\"name\":\"krhrnv\",\"type\":\"judgwdsflitmm\",\"etag\":\"uzofuebabrs\",\"id\":\"vaj\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"ManagedIdentity\",\"typeProperties\":{\"resourceId\":\"tuxwfwlfqbg\"},\"description\":\"vrwnweiwkbkhdxq\",\"annotations\":[\"datadzbdjottzuk\",\"datasxgaojwulatq\"],\"\":{\"yfdjzefkzcajav\":\"datavkyrslifcwj\"}},\"name\":\"okaqnuy\",\"type\":\"gymbefvuutlirzr\",\"etag\":\"lbdezvmfuhearh\",\"id\":\"hyugjx\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,10 +50,10 @@ public final class CredentialOperationsListByFactoryMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ManagedIdentityCredentialResource> response
-            = manager.credentialOperations().listByFactory("wv", "p", com.azure.core.util.Context.NONE);
+            = manager.credentialOperations().listByFactory("mn", "tdboru", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vaj", response.iterator().next().id());
-        Assertions.assertEquals("k", response.iterator().next().properties().description());
-        Assertions.assertEquals("xamsgfvuffd", response.iterator().next().properties().resourceId());
+        Assertions.assertEquals("hyugjx", response.iterator().next().id());
+        Assertions.assertEquals("vrwnweiwkbkhdxq", response.iterator().next().properties().description());
+        Assertions.assertEquals("tuxwfwlfqbg", response.iterator().next().properties().resourceId());
     }
 }

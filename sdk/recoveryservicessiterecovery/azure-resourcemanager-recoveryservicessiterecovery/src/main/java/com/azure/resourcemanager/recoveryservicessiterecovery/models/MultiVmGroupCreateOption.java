@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Whether Multi VM group is auto created or specified by user. */
+/**
+ * Whether Multi VM group is auto created or specified by user.
+ */
 public final class MultiVmGroupCreateOption extends ExpandableStringEnum<MultiVmGroupCreateOption> {
-    /** Static value AutoCreated for MultiVmGroupCreateOption. */
+    /**
+     * Static value AutoCreated for MultiVmGroupCreateOption.
+     */
     public static final MultiVmGroupCreateOption AUTO_CREATED = fromString("AutoCreated");
 
-    /** Static value UserSpecified for MultiVmGroupCreateOption. */
+    /**
+     * Static value UserSpecified for MultiVmGroupCreateOption.
+     */
     public static final MultiVmGroupCreateOption USER_SPECIFIED = fromString("UserSpecified");
 
     /**
      * Creates a new instance of MultiVmGroupCreateOption value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class MultiVmGroupCreateOption extends ExpandableStringEnum<MultiVm
 
     /**
      * Creates or finds a MultiVmGroupCreateOption from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MultiVmGroupCreateOption.
      */
@@ -38,7 +44,7 @@ public final class MultiVmGroupCreateOption extends ExpandableStringEnum<MultiVm
 
     /**
      * Gets known MultiVmGroupCreateOption values.
-     *
+     * 
      * @return known MultiVmGroupCreateOption values.
      */
     public static Collection<MultiVmGroupCreateOption> values() {

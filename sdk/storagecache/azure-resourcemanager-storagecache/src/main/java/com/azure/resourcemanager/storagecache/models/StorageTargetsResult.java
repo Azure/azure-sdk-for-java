@@ -9,7 +9,9 @@ import com.azure.resourcemanager.storagecache.fluent.models.StorageTargetInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of Storage Targets. */
+/**
+ * A list of Storage Targets.
+ */
 @Fluent
 public final class StorageTargetsResult {
     /*
@@ -24,13 +26,15 @@ public final class StorageTargetsResult {
     @JsonProperty(value = "value")
     private List<StorageTargetInner> value;
 
-    /** Creates an instance of StorageTargetsResult class. */
+    /**
+     * Creates an instance of StorageTargetsResult class.
+     */
     public StorageTargetsResult() {
     }
 
     /**
      * Get the nextLink property: The URI to fetch the next page of Storage Targets.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +43,7 @@ public final class StorageTargetsResult {
 
     /**
      * Set the nextLink property: The URI to fetch the next page of Storage Targets.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the StorageTargetsResult object itself.
      */
@@ -50,7 +54,7 @@ public final class StorageTargetsResult {
 
     /**
      * Get the value property: The list of Storage Targets defined for the cache.
-     *
+     * 
      * @return the value value.
      */
     public List<StorageTargetInner> value() {
@@ -59,7 +63,7 @@ public final class StorageTargetsResult {
 
     /**
      * Set the value property: The list of Storage Targets defined for the cache.
-     *
+     * 
      * @param value the value value to set.
      * @return the StorageTargetsResult object itself.
      */
@@ -70,7 +74,7 @@ public final class StorageTargetsResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

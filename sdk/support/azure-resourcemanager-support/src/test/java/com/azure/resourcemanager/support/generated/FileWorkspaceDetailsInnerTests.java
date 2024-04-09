@@ -10,11 +10,9 @@ import com.azure.resourcemanager.support.fluent.models.FileWorkspaceDetailsInner
 public final class FileWorkspaceDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FileWorkspaceDetailsInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"createdOn\":\"2021-04-01T15:36:07Z\",\"expirationTime\":\"2021-10-21T03:09:33Z\"},\"id\":\"erscdntne\",\"name\":\"fiwjmygtdssls\",\"type\":\"tmweriofzpyq\"}")
-                .toObject(FileWorkspaceDetailsInner.class);
+        FileWorkspaceDetailsInner model = BinaryData.fromString(
+            "{\"properties\":{\"createdOn\":\"2021-10-11T05:43:38Z\",\"expirationTime\":\"2021-09-02T16:03:41Z\"},\"id\":\"lpichk\",\"name\":\"ymkcdyhb\",\"type\":\"kkpwdreqnovvq\"}")
+            .toObject(FileWorkspaceDetailsInner.class);
     }
 
     @org.junit.jupiter.api.Test

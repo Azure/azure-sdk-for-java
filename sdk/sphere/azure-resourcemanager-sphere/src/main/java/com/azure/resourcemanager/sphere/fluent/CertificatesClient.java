@@ -14,11 +14,13 @@ import com.azure.resourcemanager.sphere.fluent.models.CertificateInner;
 import com.azure.resourcemanager.sphere.fluent.models.ProofOfPossessionNonceResponseInner;
 import com.azure.resourcemanager.sphere.models.ProofOfPossessionNonceRequest;
 
-/** An instance of this class provides access to all the operations defined in CertificatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CertificatesClient.
+ */
 public interface CertificatesClient {
     /**
      * List Certificate resources by Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +33,7 @@ public interface CertificatesClient {
 
     /**
      * List Certificate resources by Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param filter Filter the result list using the given expression.
@@ -45,18 +47,12 @@ public interface CertificatesClient {
      * @return the response of a Certificate list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CertificateInner> listByCatalog(
-        String resourceGroupName,
-        String catalogName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
-        Context context);
+    PagedIterable<CertificateInner> listByCatalog(String resourceGroupName, String catalogName, String filter,
+        Integer top, Integer skip, Integer maxpagesize, Context context);
 
     /**
      * Get a Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -67,12 +63,12 @@ public interface CertificatesClient {
      * @return a Certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CertificateInner> getWithResponse(
-        String resourceGroupName, String catalogName, String serialNumber, Context context);
+    Response<CertificateInner> getWithResponse(String resourceGroupName, String catalogName, String serialNumber,
+        Context context);
 
     /**
      * Get a Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -86,7 +82,7 @@ public interface CertificatesClient {
 
     /**
      * Retrieves cert chain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -97,12 +93,12 @@ public interface CertificatesClient {
      * @return the certificate chain response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CertificateChainResponseInner> retrieveCertChainWithResponse(
-        String resourceGroupName, String catalogName, String serialNumber, Context context);
+    Response<CertificateChainResponseInner> retrieveCertChainWithResponse(String resourceGroupName, String catalogName,
+        String serialNumber, Context context);
 
     /**
      * Retrieves cert chain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -116,7 +112,7 @@ public interface CertificatesClient {
 
     /**
      * Gets the proof of possession nonce.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -128,16 +124,13 @@ public interface CertificatesClient {
      * @return the proof of possession nonce along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProofOfPossessionNonceResponseInner> retrieveProofOfPossessionNonceWithResponse(
-        String resourceGroupName,
-        String catalogName,
-        String serialNumber,
-        ProofOfPossessionNonceRequest proofOfPossessionNonceRequest,
+    Response<ProofOfPossessionNonceResponseInner> retrieveProofOfPossessionNonceWithResponse(String resourceGroupName,
+        String catalogName, String serialNumber, ProofOfPossessionNonceRequest proofOfPossessionNonceRequest,
         Context context);
 
     /**
      * Gets the proof of possession nonce.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -148,9 +141,6 @@ public interface CertificatesClient {
      * @return the proof of possession nonce.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProofOfPossessionNonceResponseInner retrieveProofOfPossessionNonce(
-        String resourceGroupName,
-        String catalogName,
-        String serialNumber,
-        ProofOfPossessionNonceRequest proofOfPossessionNonceRequest);
+    ProofOfPossessionNonceResponseInner retrieveProofOfPossessionNonce(String resourceGroupName, String catalogName,
+        String serialNumber, ProofOfPossessionNonceRequest proofOfPossessionNonceRequest);
 }

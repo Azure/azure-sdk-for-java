@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Model that represents a discrete action. */
+/**
+ * Model that represents a discrete action.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("discrete")
 @Fluent
@@ -28,13 +30,15 @@ public final class DiscreteAction extends ChaosExperimentAction {
     @JsonProperty(value = "selectorId", required = true)
     private String selectorId;
 
-    /** Creates an instance of DiscreteAction class. */
+    /**
+     * Creates an instance of DiscreteAction class.
+     */
     public DiscreteAction() {
     }
 
     /**
      * Get the parameters property: List of key value pairs.
-     *
+     * 
      * @return the parameters value.
      */
     public List<KeyValuePair> parameters() {
@@ -43,7 +47,7 @@ public final class DiscreteAction extends ChaosExperimentAction {
 
     /**
      * Set the parameters property: List of key value pairs.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DiscreteAction object itself.
      */
@@ -54,7 +58,7 @@ public final class DiscreteAction extends ChaosExperimentAction {
 
     /**
      * Get the selectorId property: String that represents a selector.
-     *
+     * 
      * @return the selectorId value.
      */
     public String selectorId() {
@@ -63,7 +67,7 @@ public final class DiscreteAction extends ChaosExperimentAction {
 
     /**
      * Set the selectorId property: String that represents a selector.
-     *
+     * 
      * @param selectorId the selectorId value to set.
      * @return the DiscreteAction object itself.
      */
@@ -72,7 +76,9 @@ public final class DiscreteAction extends ChaosExperimentAction {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DiscreteAction withName(String name) {
         super.withName(name);
@@ -81,23 +87,21 @@ public final class DiscreteAction extends ChaosExperimentAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (parameters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property parameters in model DiscreteAction"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property parameters in model DiscreteAction"));
         } else {
             parameters().forEach(e -> e.validate());
         }
         if (selectorId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property selectorId in model DiscreteAction"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property selectorId in model DiscreteAction"));
         }
     }
 

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for configuring Azure OpenAI Pinecone chat extensions.
+ * Parameters for configuring Azure OpenAI Pinecone chat extensions. The supported authentication type is APIKey.
  */
 @Fluent
 public final class PineconeChatExtensionParameters {
@@ -30,14 +30,14 @@ public final class PineconeChatExtensionParameters {
      * The configured top number of documents to feature for the configured query.
      */
     @Generated
-    @JsonProperty(value = "topNDocuments")
+    @JsonProperty(value = "top_n_documents")
     private Integer topNDocuments;
 
     /*
      * Whether queries should be restricted to use of indexed data.
      */
     @Generated
-    @JsonProperty(value = "inScope")
+    @JsonProperty(value = "in_scope")
     private Boolean inScope;
 
     /*
@@ -54,7 +54,7 @@ public final class PineconeChatExtensionParameters {
      * limit for it, and it counts against the overall token limit.
      */
     @Generated
-    @JsonProperty(value = "roleInformation")
+    @JsonProperty(value = "role_information")
     private String roleInformation;
 
     /*
@@ -68,39 +68,22 @@ public final class PineconeChatExtensionParameters {
      * The name of the Pinecone database index.
      */
     @Generated
-    @JsonProperty(value = "indexName")
+    @JsonProperty(value = "index_name")
     private String indexName;
 
     /*
      * Customized field mapping behavior to use when interacting with the search index.
      */
     @Generated
-    @JsonProperty(value = "fieldsMapping")
+    @JsonProperty(value = "fields_mapping")
     private PineconeFieldMappingOptions fieldsMapping;
 
     /*
      * The embedding dependency for vector search.
      */
     @Generated
-    @JsonProperty(value = "embeddingDependency")
+    @JsonProperty(value = "embedding_dependency")
     private OnYourDataVectorizationSource embeddingDependency;
-
-    /**
-     * Creates an instance of PineconeChatExtensionParameters class.
-     *
-     * @param environment the environment value to set.
-     * @param indexName the indexName value to set.
-     * @param fieldsMapping the fieldsMapping value to set.
-     */
-    @Generated
-    @JsonCreator
-    public PineconeChatExtensionParameters(@JsonProperty(value = "environment") String environment,
-        @JsonProperty(value = "indexName") String indexName,
-        @JsonProperty(value = "fieldsMapping") PineconeFieldMappingOptions fieldsMapping) {
-        this.environment = environment;
-        this.indexName = indexName;
-        this.fieldsMapping = fieldsMapping;
-    }
 
     /**
      * Get the authentication property: The authentication method to use when accessing the defined data source.
@@ -269,14 +252,22 @@ public final class PineconeChatExtensionParameters {
     }
 
     /**
-     * Set the embeddingDependency property: The embedding dependency for vector search.
+     * Creates an instance of PineconeChatExtensionParameters class.
      *
+     * @param environment the environment value to set.
+     * @param indexName the indexName value to set.
+     * @param fieldsMapping the fieldsMapping value to set.
      * @param embeddingDependency the embeddingDependency value to set.
-     * @return the PineconeChatExtensionParameters object itself.
      */
     @Generated
-    public PineconeChatExtensionParameters setEmbeddingDependency(OnYourDataVectorizationSource embeddingDependency) {
+    @JsonCreator
+    public PineconeChatExtensionParameters(@JsonProperty(value = "environment") String environment,
+        @JsonProperty(value = "index_name") String indexName,
+        @JsonProperty(value = "fields_mapping") PineconeFieldMappingOptions fieldsMapping,
+        @JsonProperty(value = "embedding_dependency") OnYourDataVectorizationSource embeddingDependency) {
+        this.environment = environment;
+        this.indexName = indexName;
+        this.fieldsMapping = fieldsMapping;
         this.embeddingDependency = embeddingDependency;
-        return this;
     }
 }

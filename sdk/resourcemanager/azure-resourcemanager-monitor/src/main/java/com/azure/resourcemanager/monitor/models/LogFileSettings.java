@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Settings for different log file formats. */
+/**
+ * Settings for different log file formats.
+ */
 @Fluent
 public class LogFileSettings {
     /*
@@ -16,13 +18,15 @@ public class LogFileSettings {
     @JsonProperty(value = "text")
     private LogFileSettingsText text;
 
-    /** Creates an instance of LogFileSettings class. */
+    /**
+     * Creates an instance of LogFileSettings class.
+     */
     public LogFileSettings() {
     }
 
     /**
      * Get the text property: Text settings.
-     *
+     * 
      * @return the text value.
      */
     public LogFileSettingsText text() {
@@ -31,7 +35,7 @@ public class LogFileSettings {
 
     /**
      * Set the text property: Text settings.
-     *
+     * 
      * @param text the text value to set.
      * @return the LogFileSettings object itself.
      */
@@ -42,7 +46,7 @@ public class LogFileSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

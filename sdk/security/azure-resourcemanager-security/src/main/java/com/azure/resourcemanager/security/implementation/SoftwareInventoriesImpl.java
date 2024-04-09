@@ -21,71 +21,52 @@ public final class SoftwareInventoriesImpl implements SoftwareInventories {
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public SoftwareInventoriesImpl(
-        SoftwareInventoriesClient innerClient, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    public SoftwareInventoriesImpl(SoftwareInventoriesClient innerClient,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Software> listByExtendedResource(
-        String resourceGroupName, String resourceNamespace, String resourceType, String resourceName) {
-        PagedIterable<SoftwareInner> inner =
-            this
-                .serviceClient()
-                .listByExtendedResource(resourceGroupName, resourceNamespace, resourceType, resourceName);
-        return Utils.mapPage(inner, inner1 -> new SoftwareImpl(inner1, this.manager()));
+    public PagedIterable<Software> listByExtendedResource(String resourceGroupName, String resourceNamespace,
+        String resourceType, String resourceName) {
+        PagedIterable<SoftwareInner> inner = this.serviceClient().listByExtendedResource(resourceGroupName,
+            resourceNamespace, resourceType, resourceName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SoftwareImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Software> listByExtendedResource(
-        String resourceGroupName, String resourceNamespace, String resourceType, String resourceName, Context context) {
-        PagedIterable<SoftwareInner> inner =
-            this
-                .serviceClient()
-                .listByExtendedResource(resourceGroupName, resourceNamespace, resourceType, resourceName, context);
-        return Utils.mapPage(inner, inner1 -> new SoftwareImpl(inner1, this.manager()));
+    public PagedIterable<Software> listByExtendedResource(String resourceGroupName, String resourceNamespace,
+        String resourceType, String resourceName, Context context) {
+        PagedIterable<SoftwareInner> inner = this.serviceClient().listByExtendedResource(resourceGroupName,
+            resourceNamespace, resourceType, resourceName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SoftwareImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Software> list() {
         PagedIterable<SoftwareInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new SoftwareImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SoftwareImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Software> list(Context context) {
         PagedIterable<SoftwareInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new SoftwareImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SoftwareImpl(inner1, this.manager()));
     }
 
-    public Response<Software> getWithResponse(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String softwareName,
-        Context context) {
-        Response<SoftwareInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(
-                    resourceGroupName, resourceNamespace, resourceType, resourceName, softwareName, context);
+    public Response<Software> getWithResponse(String resourceGroupName, String resourceNamespace, String resourceType,
+        String resourceName, String softwareName, Context context) {
+        Response<SoftwareInner> inner = this.serviceClient().getWithResponse(resourceGroupName, resourceNamespace,
+            resourceType, resourceName, softwareName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SoftwareImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Software get(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
+    public Software get(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName,
         String softwareName) {
-        SoftwareInner inner =
-            this.serviceClient().get(resourceGroupName, resourceNamespace, resourceType, resourceName, softwareName);
+        SoftwareInner inner
+            = this.serviceClient().get(resourceGroupName, resourceNamespace, resourceType, resourceName, softwareName);
         if (inner != null) {
             return new SoftwareImpl(inner, this.manager());
         } else {

@@ -101,8 +101,8 @@ public class ConnectionOptions {
         AmqpRetryOptions retryOptions, ProxyOptions proxyOptions, Scheduler scheduler, ClientOptions clientOptions,
         SslDomain.VerifyMode verifyMode, String product, String clientVersion, String hostname, int port) {
 
-        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
-            "'fullyQualifiedNamespace' is required.");
+        this.fullyQualifiedNamespace
+            = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' is required.");
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' is required.");
         this.authorizationType = Objects.requireNonNull(authorizationType, "'authorizationType' is required.");
         this.authorizationScope = Objects.requireNonNull(authorizationScope, "'authorizationScope' is required.");
@@ -252,11 +252,13 @@ public class ConnectionOptions {
         switch (transport) {
             case AMQP:
                 return ConnectionHandler.AMQPS_PORT;
+
             case AMQP_WEB_SOCKETS:
                 return WebSocketsConnectionHandler.HTTPS_PORT;
+
             default:
-                throw LOGGER.logThrowableAsError(
-                    new IllegalArgumentException("Transport Type is not supported: " + transport));
+                throw LOGGER
+                    .logThrowableAsError(new IllegalArgumentException("Transport Type is not supported: " + transport));
         }
     }
 }

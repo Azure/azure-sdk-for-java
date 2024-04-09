@@ -3,13 +3,37 @@
 ## 12.22.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added client name field in HandleItem.
+- Added `clientName` property on `HandleItem` that specifies the name of the client machine where the share is being mounted.
+- Added rename support for `listRange` API via `supportRename` in `ShareFileListRangesDiffOptions`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+
+## 12.21.3 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.24.2` to version `12.24.3`.
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+
+
+## 12.21.2 (2024-02-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.24.1` to version `12.24.2`.
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+
 
 ## 12.21.1 (2023-12-04)
 

@@ -8,23 +8,25 @@ import com.azure.resourcemanager.hdinsight.containers.models.ClusterPool;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ClusterPools UpdateTags. */
+/**
+ * Samples for ClusterPools UpdateTags.
+ */
 public final class ClusterPoolsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-06-01-preview/examples/PatchClusterPool.json
+     * x-ms-original-file:
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/
+     * PatchClusterPool.json
      */
     /**
      * Sample code: ClusterPoolsPatchTags.
-     *
+     * 
      * @param manager Entry point to HDInsightContainersManager.
      */
-    public static void clusterPoolsPatchTags(
-        com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager manager) {
-        ClusterPool resource =
-            manager
-                .clusterPools()
-                .getByResourceGroupWithResponse("hiloResourcegroup", "clusterpool1", com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        clusterPoolsPatchTags(com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager manager) {
+        ClusterPool resource = manager.clusterPools()
+            .getByResourceGroupWithResponse("hiloResourcegroup", "clusterpool1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

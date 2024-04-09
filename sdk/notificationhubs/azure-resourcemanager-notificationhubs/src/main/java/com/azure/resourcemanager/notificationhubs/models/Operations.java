@@ -7,25 +7,29 @@ package com.azure.resourcemanager.notificationhubs.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Operations. */
+/**
+ * Resource collection API of Operations.
+ */
 public interface Operations {
     /**
-     * Lists all of the available NotificationHubs REST API operations.
-     *
+     * Lists all available Notification Hubs operations.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list NotificationHubs operations.
+     * @return result of the request to list NotificationHubs operations as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Operation> list();
 
     /**
-     * Lists all of the available NotificationHubs REST API operations.
-     *
+     * Lists all available Notification Hubs operations.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list NotificationHubs operations.
+     * @return result of the request to list NotificationHubs operations as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Operation> list(Context context);
 }

@@ -127,11 +127,24 @@ public final class CosmosBulkExecutionOptions {
         return this;
     }
 
-    int getMaxMicroBatchSize() {
+    /**
+     * The maximum batch size for bulk operations. Once queued docs exceed this value, the micro
+     * batch will be flushed to the wire.
+     *
+     * @return the max micro batch size.
+     */
+    public int getMaxMicroBatchSize() {
         return maxMicroBatchSize;
     }
 
-    CosmosBulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
+    /**
+     * The maximum batch size for bulk operations. Once queued docs exceed this value, the micro
+     * batch will be flushed to the wire.
+     *
+     * @param maxMicroBatchSize maximum batching size.
+     * @return the bulk processing options.
+     */
+    public CosmosBulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
         this.maxMicroBatchSize = maxMicroBatchSize;
         return this;
     }
@@ -440,11 +453,6 @@ public final class CosmosBulkExecutionOptions {
                     }
 
                     return cosmosBulkExecutionOptions.getMaxMicroBatchSize();
-                }
-
-                @Override
-                public void setMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, int maxMicroBatchSize) {
-                    cosmosBulkExecutionOptions.setMaxMicroBatchSize(maxMicroBatchSize);
                 }
 
                 @Override

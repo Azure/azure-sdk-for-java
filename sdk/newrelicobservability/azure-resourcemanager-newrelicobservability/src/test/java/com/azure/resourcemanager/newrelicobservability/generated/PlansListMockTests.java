@@ -35,45 +35,33 @@ public final class PlansListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"planData\":{\"usageType\":\"PAYG\",\"billingCycle\":\"YEARLY\",\"planDetails\":\"jmquxvypomgk\",\"effectiveDate\":\"2021-08-12T00:08:05Z\"},\"orgCreationSource\":\"NEWRELIC\",\"accountCreationSource\":\"LIFTR\"},\"id\":\"pajqgxysm\",\"name\":\"cmbqfqvmk\",\"type\":\"xozap\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"planData\":{\"usageType\":\"PAYG\",\"billingCycle\":\"MONTHLY\",\"planDetails\":\"ft\",\"effectiveDate\":\"2021-05-16T02:46:56Z\"},\"orgCreationSource\":\"NEWRELIC\",\"accountCreationSource\":\"NEWRELIC\"},\"id\":\"zvqtmnubexkp\",\"name\":\"ksmond\",\"type\":\"mquxvypo\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NewRelicObservabilityManager manager =
-            NewRelicObservabilityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<PlanDataResource> response =
-            manager.plans().list("yzvqt", "nubexk", com.azure.core.util.Context.NONE);
+        PagedIterable<PlanDataResource> response
+            = manager.plans().list("dggkzzlvmbmpa", "modfvuefywsbpfvm", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(UsageType.PAYG, response.iterator().next().planData().usageType());
-        Assertions.assertEquals(BillingCycle.YEARLY, response.iterator().next().planData().billingCycle());
-        Assertions.assertEquals("jmquxvypomgk", response.iterator().next().planData().planDetails());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-08-12T00:08:05Z"), response.iterator().next().planData().effectiveDate());
+        Assertions.assertEquals(BillingCycle.MONTHLY, response.iterator().next().planData().billingCycle());
+        Assertions.assertEquals("ft", response.iterator().next().planData().planDetails());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-16T02:46:56Z"),
+            response.iterator().next().planData().effectiveDate());
         Assertions.assertEquals(OrgCreationSource.NEWRELIC, response.iterator().next().orgCreationSource());
-        Assertions.assertEquals(AccountCreationSource.LIFTR, response.iterator().next().accountCreationSource());
+        Assertions.assertEquals(AccountCreationSource.NEWRELIC, response.iterator().next().accountCreationSource());
     }
 }

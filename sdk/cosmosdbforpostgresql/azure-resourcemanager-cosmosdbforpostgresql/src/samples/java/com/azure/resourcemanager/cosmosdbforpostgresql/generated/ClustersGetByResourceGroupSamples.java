@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.cosmosdbforpostgresql.generated;
 
-/** Samples for Clusters GetByResourceGroup. */
+/**
+ * Samples for Clusters GetByResourceGroup.
+ */
 public final class ClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ClusterGet.json
+     * x-ms-original-file:
+     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
+     * ClusterGet.json
      */
     /**
      * Sample code: Get the cluster.
-     *
+     * 
      * @param manager Entry point to CosmosDBForPostgreSqlManager.
      */
-    public static void getTheCluster(
-        com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager
-            .clusters()
-            .getByResourceGroupWithResponse("TestGroup", "testcluster1", com.azure.core.util.Context.NONE);
+    public static void
+        getTheCluster(com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
+        manager.clusters().getByResourceGroupWithResponse("TestGroup", "testcluster1",
+            com.azure.core.util.Context.NONE);
     }
 }

@@ -288,6 +288,7 @@ $PackageExclusions = @{
   "azure-cosmos-spark_3-2_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-spark_3-3_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-spark_3-4_2-12" = "Javadoc dependency issue.";
+  "azure-cosmos-spark_3-5_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-test" = "Don't want to include the test framework package.";
   "azure-aot-graalvm-support-netty" = "No Javadocs for the package.";
   "azure-aot-graalvm-support" = "No Javadocs for the package.";
@@ -296,7 +297,6 @@ $PackageExclusions = @{
   "azure-sdk-template-three" = "Depends on unreleased core.";
   "azure-ai-personalizer" = "No java docs in this package.";
   "azure-sdk-build-tool" = "Do not release docs for this package.";
-  "azure-applicationinsights-query" = "Cannot find namespaces in javadoc package.";
   "azure-resourcemanager-voiceservices" = "Doc build attempts to download a package that does not have published sources.";
   "azure-resourcemanager-storagemover" = "Attempts to azure-sdk-build-tool and fails";
   "azure-security-keyvault-jca" = "Consistently hangs docs build, might be a spring package https://github.com/Azure/azure-sdk-for-java/issues/35389";
@@ -656,7 +656,7 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
   # Filter for package in "com.azure*" groupid.
   $artifactPath = Join-Path $artifactDir "com.azure*" $pkgName
   Write-Host "Checking for source jar in artifact path $($artifactPath)"
-  $files = Get-ChildItem -Recurse "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")}
+  $files = @(Get-ChildItem -Recurse "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")})
   if (!$files)
   {
     Write-Host "$($artifactPath) does not have any package"

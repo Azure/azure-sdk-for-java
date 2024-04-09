@@ -15,33 +15,24 @@ import org.junit.jupiter.api.Assertions;
 public final class AutomationRuleSetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutomationRuleSet model =
-            BinaryData
-                .fromString(
-                    "{\"rules\":[{\"propertyJPath\":\"hvygdyftumr\",\"propertyType\":\"Boolean\",\"expectedValue\":\"wjslbiwkojgcyzt\",\"operator\":\"LesserThan\"}]}")
-                .toObject(AutomationRuleSet.class);
-        Assertions.assertEquals("hvygdyftumr", model.rules().get(0).propertyJPath());
-        Assertions.assertEquals(PropertyType.BOOLEAN, model.rules().get(0).propertyType());
-        Assertions.assertEquals("wjslbiwkojgcyzt", model.rules().get(0).expectedValue());
-        Assertions.assertEquals(Operator.LESSER_THAN, model.rules().get(0).operator());
+        AutomationRuleSet model = BinaryData.fromString(
+            "{\"rules\":[{\"propertyJPath\":\"wvxysl\",\"propertyType\":\"Number\",\"expectedValue\":\"fxoblytkb\",\"operator\":\"Contains\"}]}")
+            .toObject(AutomationRuleSet.class);
+        Assertions.assertEquals("wvxysl", model.rules().get(0).propertyJPath());
+        Assertions.assertEquals(PropertyType.NUMBER, model.rules().get(0).propertyType());
+        Assertions.assertEquals("fxoblytkb", model.rules().get(0).expectedValue());
+        Assertions.assertEquals(Operator.CONTAINS, model.rules().get(0).operator());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationRuleSet model =
-            new AutomationRuleSet()
-                .withRules(
-                    Arrays
-                        .asList(
-                            new AutomationTriggeringRule()
-                                .withPropertyJPath("hvygdyftumr")
-                                .withPropertyType(PropertyType.BOOLEAN)
-                                .withExpectedValue("wjslbiwkojgcyzt")
-                                .withOperator(Operator.LESSER_THAN)));
+        AutomationRuleSet model
+            = new AutomationRuleSet().withRules(Arrays.asList(new AutomationTriggeringRule().withPropertyJPath("wvxysl")
+                .withPropertyType(PropertyType.NUMBER).withExpectedValue("fxoblytkb").withOperator(Operator.CONTAINS)));
         model = BinaryData.fromObject(model).toObject(AutomationRuleSet.class);
-        Assertions.assertEquals("hvygdyftumr", model.rules().get(0).propertyJPath());
-        Assertions.assertEquals(PropertyType.BOOLEAN, model.rules().get(0).propertyType());
-        Assertions.assertEquals("wjslbiwkojgcyzt", model.rules().get(0).expectedValue());
-        Assertions.assertEquals(Operator.LESSER_THAN, model.rules().get(0).operator());
+        Assertions.assertEquals("wvxysl", model.rules().get(0).propertyJPath());
+        Assertions.assertEquals(PropertyType.NUMBER, model.rules().get(0).propertyType());
+        Assertions.assertEquals("fxoblytkb", model.rules().get(0).expectedValue());
+        Assertions.assertEquals(Operator.CONTAINS, model.rules().get(0).operator());
     }
 }

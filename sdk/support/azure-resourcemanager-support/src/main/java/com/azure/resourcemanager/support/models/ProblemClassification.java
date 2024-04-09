@@ -6,33 +6,36 @@ package com.azure.resourcemanager.support.models;
 
 import com.azure.resourcemanager.support.fluent.models.ProblemClassificationInner;
 import java.util.List;
+import java.util.Map;
 
-/** An immutable client-side representation of ProblemClassification. */
+/**
+ * An immutable client-side representation of ProblemClassification.
+ */
 public interface ProblemClassification {
     /**
      * Gets the id property: Id of the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: Name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: Type of the resource 'Microsoft.Support/problemClassification'.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the displayName property: Localized name of problem classification.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
@@ -40,14 +43,29 @@ public interface ProblemClassification {
     /**
      * Gets the secondaryConsentEnabled property: This property indicates whether secondary consent is present for
      * problem classification.
-     *
+     * 
      * @return the secondaryConsentEnabled value.
      */
     List<SecondaryConsentEnabled> secondaryConsentEnabled();
 
     /**
+     * Gets the metadata property: String-to-string dictionary for additional metadata.
+     * 
+     * @return the metadata value.
+     */
+    Map<String, String> metadata();
+
+    /**
+     * Gets the parentProblemClassification property: Reference to the parent problem classification which has same
+     * structure as problem classification.
+     * 
+     * @return the parentProblemClassification value.
+     */
+    ProblemClassification parentProblemClassification();
+
+    /**
      * Gets the inner com.azure.resourcemanager.support.fluent.models.ProblemClassificationInner object.
-     *
+     * 
      * @return the inner object.
      */
     ProblemClassificationInner innerModel();

@@ -94,6 +94,31 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.compute.models.ScheduledEventsPolicy",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.compute.models.UserInitiatedRedeploy",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.compute.models.UserInitiatedReboot",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.compute.models.ScheduledEventsAdditionalPublishingTargets",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.compute.models.EventGridAndResourceGraph",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.compute.models.AutomaticRepairsPolicy",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -2794,6 +2819,11 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.compute.models.ResourceIdOptionsForGetCapacityReservationGroups",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.compute.models.CapacityReservationInstanceViewTypes",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -2815,6 +2845,11 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.compute.models.DiskCreateOption",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.compute.models.ProvisionedBandwidthCopyOption",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -3114,12 +3149,12 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.compute.models.ComponentNames",
+  "name" : "com.azure.resourcemanager.compute.models.PassNames",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.compute.models.PassNames",
+  "name" : "com.azure.resourcemanager.compute.models.ComponentNames",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true

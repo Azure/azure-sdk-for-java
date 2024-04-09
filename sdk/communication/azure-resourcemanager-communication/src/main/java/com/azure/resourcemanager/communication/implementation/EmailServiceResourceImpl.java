@@ -127,8 +127,8 @@ public final class EmailServiceResourceImpl
         com.azure.resourcemanager.communication.CommunicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.emailServiceName = Utils.getValueFromIdByName(innerObject.id(), "emailServices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.emailServiceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "emailServices");
     }
 
     public EmailServiceResource refresh() {

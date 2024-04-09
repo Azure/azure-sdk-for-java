@@ -8,63 +8,99 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The migration status. */
+/**
+ * The migration status.
+ */
 public final class MigrationState extends ExpandableStringEnum<MigrationState> {
-    /** Static value None for MigrationState. */
+    /**
+     * Static value None for MigrationState.
+     */
     public static final MigrationState NONE = fromString("None");
 
-    /** Static value EnableMigrationInProgress for MigrationState. */
+    /**
+     * Static value EnableMigrationInProgress for MigrationState.
+     */
     public static final MigrationState ENABLE_MIGRATION_IN_PROGRESS = fromString("EnableMigrationInProgress");
 
-    /** Static value EnableMigrationFailed for MigrationState. */
+    /**
+     * Static value EnableMigrationFailed for MigrationState.
+     */
     public static final MigrationState ENABLE_MIGRATION_FAILED = fromString("EnableMigrationFailed");
 
-    /** Static value DisableMigrationInProgress for MigrationState. */
+    /**
+     * Static value DisableMigrationInProgress for MigrationState.
+     */
     public static final MigrationState DISABLE_MIGRATION_IN_PROGRESS = fromString("DisableMigrationInProgress");
 
-    /** Static value DisableMigrationFailed for MigrationState. */
+    /**
+     * Static value DisableMigrationFailed for MigrationState.
+     */
     public static final MigrationState DISABLE_MIGRATION_FAILED = fromString("DisableMigrationFailed");
 
-    /** Static value InitialSeedingInProgress for MigrationState. */
+    /**
+     * Static value InitialSeedingInProgress for MigrationState.
+     */
     public static final MigrationState INITIAL_SEEDING_IN_PROGRESS = fromString("InitialSeedingInProgress");
 
-    /** Static value InitialSeedingFailed for MigrationState. */
+    /**
+     * Static value InitialSeedingFailed for MigrationState.
+     */
     public static final MigrationState INITIAL_SEEDING_FAILED = fromString("InitialSeedingFailed");
 
-    /** Static value Replicating for MigrationState. */
+    /**
+     * Static value Replicating for MigrationState.
+     */
     public static final MigrationState REPLICATING = fromString("Replicating");
 
-    /** Static value MigrationInProgress for MigrationState. */
+    /**
+     * Static value MigrationInProgress for MigrationState.
+     */
     public static final MigrationState MIGRATION_IN_PROGRESS = fromString("MigrationInProgress");
 
-    /** Static value MigrationSucceeded for MigrationState. */
+    /**
+     * Static value MigrationSucceeded for MigrationState.
+     */
     public static final MigrationState MIGRATION_SUCCEEDED = fromString("MigrationSucceeded");
 
-    /** Static value MigrationFailed for MigrationState. */
+    /**
+     * Static value MigrationFailed for MigrationState.
+     */
     public static final MigrationState MIGRATION_FAILED = fromString("MigrationFailed");
 
-    /** Static value ResumeInProgress for MigrationState. */
+    /**
+     * Static value ResumeInProgress for MigrationState.
+     */
     public static final MigrationState RESUME_IN_PROGRESS = fromString("ResumeInProgress");
 
-    /** Static value ResumeInitiated for MigrationState. */
+    /**
+     * Static value ResumeInitiated for MigrationState.
+     */
     public static final MigrationState RESUME_INITIATED = fromString("ResumeInitiated");
 
-    /** Static value SuspendingProtection for MigrationState. */
+    /**
+     * Static value SuspendingProtection for MigrationState.
+     */
     public static final MigrationState SUSPENDING_PROTECTION = fromString("SuspendingProtection");
 
-    /** Static value ProtectionSuspended for MigrationState. */
+    /**
+     * Static value ProtectionSuspended for MigrationState.
+     */
     public static final MigrationState PROTECTION_SUSPENDED = fromString("ProtectionSuspended");
 
-    /** Static value MigrationCompletedWithInformation for MigrationState. */
-    public static final MigrationState MIGRATION_COMPLETED_WITH_INFORMATION =
-        fromString("MigrationCompletedWithInformation");
+    /**
+     * Static value MigrationCompletedWithInformation for MigrationState.
+     */
+    public static final MigrationState MIGRATION_COMPLETED_WITH_INFORMATION
+        = fromString("MigrationCompletedWithInformation");
 
-    /** Static value MigrationPartiallySucceeded for MigrationState. */
+    /**
+     * Static value MigrationPartiallySucceeded for MigrationState.
+     */
     public static final MigrationState MIGRATION_PARTIALLY_SUCCEEDED = fromString("MigrationPartiallySucceeded");
 
     /**
      * Creates a new instance of MigrationState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -73,7 +109,7 @@ public final class MigrationState extends ExpandableStringEnum<MigrationState> {
 
     /**
      * Creates or finds a MigrationState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MigrationState.
      */
@@ -84,7 +120,7 @@ public final class MigrationState extends ExpandableStringEnum<MigrationState> {
 
     /**
      * Gets known MigrationState values.
-     *
+     * 
      * @return known MigrationState values.
      */
     public static Collection<MigrationState> values() {

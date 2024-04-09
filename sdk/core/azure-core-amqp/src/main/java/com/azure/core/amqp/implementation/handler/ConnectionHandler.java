@@ -64,7 +64,7 @@ public class ConnectionHandler extends Handler {
      */
     @Deprecated
     public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,
-                             SslPeerDetails peerDetails) {
+        SslPeerDetails peerDetails) {
         this(connectionId, connectionOptions, peerDetails,
             new AmqpMetricsProvider(null, connectionOptions.getFullyQualifiedNamespace(), null));
     }
@@ -93,9 +93,8 @@ public class ConnectionHandler extends Handler {
         this.connectionProperties.put(FRAMEWORK.toString(), ClientConstants.FRAMEWORK_INFO);
 
         final ClientOptions clientOptions = connectionOptions.getClientOptions();
-        final String applicationId = !CoreUtils.isNullOrEmpty(clientOptions.getApplicationId())
-            ? clientOptions.getApplicationId()
-            : null;
+        final String applicationId
+            = !CoreUtils.isNullOrEmpty(clientOptions.getApplicationId()) ? clientOptions.getApplicationId() : null;
         final String userAgent = UserAgentUtil.toUserAgentString(applicationId, connectionOptions.getProduct(),
             connectionOptions.getClientVersion(), null);
 
@@ -156,7 +155,8 @@ public class ConnectionHandler extends Handler {
             try {
                 defaultSslContext = SSLContext.getDefault();
             } catch (NoSuchAlgorithmException e) {
-                throw logger.logExceptionAsError(new RuntimeException("Default SSL algorithm not found in JRE. Please check your JRE setup.", e));
+                throw logger.logExceptionAsError(
+                    new RuntimeException("Default SSL algorithm not found in JRE. Please check your JRE setup.", e));
             }
         }
 
@@ -177,8 +177,8 @@ public class ConnectionHandler extends Handler {
             logger.warning("'{}' is not secure.", verifyMode);
             sslDomain.setPeerAuthentication(SslDomain.VerifyMode.ANONYMOUS_PEER);
         } else {
-            throw logger.logExceptionAsError(new UnsupportedOperationException(
-                "verifyMode is not supported: " + verifyMode));
+            throw logger
+                .logExceptionAsError(new UnsupportedOperationException("verifyMode is not supported: " + verifyMode));
         }
 
         transport.ssl(sslDomain);
@@ -355,7 +355,8 @@ public class ConnectionHandler extends Handler {
         }
 
         if (condition == null) {
-            throw logger.logExceptionAsError(new IllegalStateException("notifyErrorContext does not have an ErrorCondition."));
+            throw logger
+                .logExceptionAsError(new IllegalStateException("notifyErrorContext does not have an ErrorCondition."));
         }
 
         // if the remote-peer abruptly closes the connection without issuing close frame issue one
@@ -366,8 +367,6 @@ public class ConnectionHandler extends Handler {
     }
 
     private void logErrorCondition(String eventName, Connection connection, ErrorCondition error) {
-        addErrorCondition(logger.atInfo(), error)
-            .addKeyValue(HOSTNAME_KEY, connection.getHostname())
-            .log(eventName);
+        addErrorCondition(logger.atInfo(), error).addKeyValue(HOSTNAME_KEY, connection.getHostname()).log(eventName);
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.security.models.State;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Regulatory compliance assessment data. */
+/**
+ * Regulatory compliance assessment data.
+ */
 @Fluent
 public final class RegulatoryComplianceAssessmentProperties {
     /*
@@ -59,13 +61,15 @@ public final class RegulatoryComplianceAssessmentProperties {
     @JsonProperty(value = "unsupportedResources", access = JsonProperty.Access.WRITE_ONLY)
     private Integer unsupportedResources;
 
-    /** Creates an instance of RegulatoryComplianceAssessmentProperties class. */
+    /**
+     * Creates an instance of RegulatoryComplianceAssessmentProperties class.
+     */
     public RegulatoryComplianceAssessmentProperties() {
     }
 
     /**
      * Get the description property: The description of the regulatory compliance assessment.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -74,7 +78,7 @@ public final class RegulatoryComplianceAssessmentProperties {
 
     /**
      * Get the assessmentType property: The expected type of assessment contained in the AssessmentDetailsLink.
-     *
+     * 
      * @return the assessmentType value.
      */
     public String assessmentType() {
@@ -84,7 +88,7 @@ public final class RegulatoryComplianceAssessmentProperties {
     /**
      * Get the assessmentDetailsLink property: Link to more detailed assessment results data. The response type will be
      * according to the assessmentType field.
-     *
+     * 
      * @return the assessmentDetailsLink value.
      */
     public String assessmentDetailsLink() {
@@ -93,7 +97,7 @@ public final class RegulatoryComplianceAssessmentProperties {
 
     /**
      * Get the state property: Aggregative state based on the assessment's scanned resources states.
-     *
+     * 
      * @return the state value.
      */
     public State state() {
@@ -102,7 +106,7 @@ public final class RegulatoryComplianceAssessmentProperties {
 
     /**
      * Set the state property: Aggregative state based on the assessment's scanned resources states.
-     *
+     * 
      * @param state the state value to set.
      * @return the RegulatoryComplianceAssessmentProperties object itself.
      */
@@ -113,7 +117,7 @@ public final class RegulatoryComplianceAssessmentProperties {
 
     /**
      * Get the passedResources property: The given assessment's related resources count with passed state.
-     *
+     * 
      * @return the passedResources value.
      */
     public Integer passedResources() {
@@ -122,7 +126,7 @@ public final class RegulatoryComplianceAssessmentProperties {
 
     /**
      * Get the failedResources property: The given assessment's related resources count with failed state.
-     *
+     * 
      * @return the failedResources value.
      */
     public Integer failedResources() {
@@ -131,7 +135,7 @@ public final class RegulatoryComplianceAssessmentProperties {
 
     /**
      * Get the skippedResources property: The given assessment's related resources count with skipped state.
-     *
+     * 
      * @return the skippedResources value.
      */
     public Integer skippedResources() {
@@ -140,7 +144,7 @@ public final class RegulatoryComplianceAssessmentProperties {
 
     /**
      * Get the unsupportedResources property: The given assessment's related resources count with unsupported state.
-     *
+     * 
      * @return the unsupportedResources value.
      */
     public Integer unsupportedResources() {
@@ -149,7 +153,7 @@ public final class RegulatoryComplianceAssessmentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

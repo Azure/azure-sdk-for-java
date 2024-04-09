@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class A2AVmDiskInputDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        A2AVmDiskInputDetails model =
-            BinaryData
-                .fromString(
-                    "{\"diskUri\":\"qdx\",\"recoveryAzureStorageAccountId\":\"urnpnuhzafccnuh\",\"primaryStagingAzureStorageAccountId\":\"i\"}")
-                .toObject(A2AVmDiskInputDetails.class);
+        A2AVmDiskInputDetails model = BinaryData.fromString(
+            "{\"diskUri\":\"qdx\",\"recoveryAzureStorageAccountId\":\"urnpnuhzafccnuh\",\"primaryStagingAzureStorageAccountId\":\"i\"}")
+            .toObject(A2AVmDiskInputDetails.class);
         Assertions.assertEquals("qdx", model.diskUri());
         Assertions.assertEquals("urnpnuhzafccnuh", model.recoveryAzureStorageAccountId());
         Assertions.assertEquals("i", model.primaryStagingAzureStorageAccountId());
@@ -23,11 +21,8 @@ public final class A2AVmDiskInputDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        A2AVmDiskInputDetails model =
-            new A2AVmDiskInputDetails()
-                .withDiskUri("qdx")
-                .withRecoveryAzureStorageAccountId("urnpnuhzafccnuh")
-                .withPrimaryStagingAzureStorageAccountId("i");
+        A2AVmDiskInputDetails model = new A2AVmDiskInputDetails().withDiskUri("qdx")
+            .withRecoveryAzureStorageAccountId("urnpnuhzafccnuh").withPrimaryStagingAzureStorageAccountId("i");
         model = BinaryData.fromObject(model).toObject(A2AVmDiskInputDetails.class);
         Assertions.assertEquals("qdx", model.diskUri());
         Assertions.assertEquals("urnpnuhzafccnuh", model.recoveryAzureStorageAccountId());

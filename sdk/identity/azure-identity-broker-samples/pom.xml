@@ -19,8 +19,6 @@
     <javaModulesSurefireArgLine>
       --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <javadoc.sourcepath>${basedir}/src/main/java:${basedir}/../../core/azure-core/src/main/java</javadoc.sourcepath>
-    <javadoc.excludePackageNames>com.azure.core.*</javadoc.excludePackageNames>
   </properties>
 
   <parent>
@@ -34,12 +32,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+      <version>1.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity-broker</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-broker;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-broker;current} -->
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
@@ -117,7 +115,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <skipMain>true</skipMain>
               <skip>true</skip>
@@ -127,7 +125,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>
@@ -192,7 +190,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <testRelease>11</testRelease>
             </configuration>

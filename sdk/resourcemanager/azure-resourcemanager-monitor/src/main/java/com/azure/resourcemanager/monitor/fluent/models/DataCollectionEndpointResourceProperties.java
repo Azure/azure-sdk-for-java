@@ -10,44 +10,58 @@ import com.azure.resourcemanager.monitor.models.DataCollectionEndpointConfigurat
 import com.azure.resourcemanager.monitor.models.DataCollectionEndpointLogsIngestion;
 import com.azure.resourcemanager.monitor.models.DataCollectionEndpointNetworkAcls;
 
-/** Resource properties. */
+/**
+ * Resource properties.
+ */
 @Fluent
 public final class DataCollectionEndpointResourceProperties extends DataCollectionEndpoint {
-    /** Creates an instance of DataCollectionEndpointResourceProperties class. */
+    /**
+     * Creates an instance of DataCollectionEndpointResourceProperties class.
+     */
     public DataCollectionEndpointResourceProperties() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataCollectionEndpointResourceProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataCollectionEndpointResourceProperties withImmutableId(String immutableId) {
         super.withImmutableId(immutableId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public DataCollectionEndpointResourceProperties withConfigurationAccess(
-        DataCollectionEndpointConfigurationAccess configurationAccess) {
+    public DataCollectionEndpointResourceProperties
+        withConfigurationAccess(DataCollectionEndpointConfigurationAccess configurationAccess) {
         super.withConfigurationAccess(configurationAccess);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public DataCollectionEndpointResourceProperties withLogsIngestion(
-        DataCollectionEndpointLogsIngestion logsIngestion) {
+    public DataCollectionEndpointResourceProperties
+        withLogsIngestion(DataCollectionEndpointLogsIngestion logsIngestion) {
         super.withLogsIngestion(logsIngestion);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataCollectionEndpointResourceProperties withNetworkAcls(DataCollectionEndpointNetworkAcls networkAcls) {
         super.withNetworkAcls(networkAcls);
@@ -56,7 +70,7 @@ public final class DataCollectionEndpointResourceProperties extends DataCollecti
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -8,17 +8,22 @@ import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -192,6 +197,16 @@ public final class CosmosChangeFeedRequestOptions {
         return this;
     }
 
+    /**
+     * Gets the diagnostic thresholds used as an override for a specific operation. If no operation specific
+     * diagnostic threshold has been specified, this method will return null, although at runtime the default
+     * thresholds specified at the client-level will be used.
+     * @return the diagnostic thresholds used as an override for a specific operation.
+     */
+    public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
+        return this.thresholds;
+    }
+
     boolean isSplitHandlingDisabled() {
         return this.isSplitHandlingDisabled;
     }
@@ -250,6 +265,48 @@ public final class CosmosChangeFeedRequestOptions {
         final ChangeFeedState changeFeedState = ChangeFeedState.fromString(continuation);
 
         return createForProcessingFromContinuation(changeFeedState);
+    }
+
+    /***
+     * Creates a new {@link CosmosChangeFeedRequestOptions} instance to start processing
+     * change feed items based on a previous continuation.
+     *
+     * ONLY used by Kafka connector.
+     *
+     * @param continuation The continuation that was retrieved from a previously retrieved FeedResponse
+     * @param targetRange the new target range
+     * @param continuationLsn the new continuation lsn
+     * @return a new {@link CosmosChangeFeedRequestOptions} instance
+     */
+    static CosmosChangeFeedRequestOptions createForProcessingFromContinuation(
+        String continuation, FeedRange targetRange, String continuationLsn) {
+        if (targetRange instanceof FeedRangeEpkImpl) {
+            Range<String> normalizedRange =
+                FeedRangeInternal.normalizeRange(((FeedRangeEpkImpl) targetRange).getRange());
+
+            final ChangeFeedState changeFeedState = ChangeFeedState.fromString(continuation);
+
+            if (StringUtils.isEmpty(continuationLsn)) {
+                continuationLsn = changeFeedState.getContinuation().getCurrentContinuationToken().getToken();
+            }
+
+            ChangeFeedState targetChangeFeedState =
+                new ChangeFeedStateV1(
+                    changeFeedState.getContainerRid(),
+                    (FeedRangeEpkImpl) targetRange,
+                    changeFeedState.getMode(),
+                    changeFeedState.getStartFromSettings(),
+                    FeedRangeContinuation.create(
+                        changeFeedState.getContainerRid(),
+                        (FeedRangeEpkImpl) targetRange,
+                        Arrays.asList(new CompositeContinuationToken(continuationLsn, normalizedRange))
+                    )
+                );
+
+            return createForProcessingFromContinuation(targetChangeFeedState);
+        }
+
+        throw new IllegalStateException("createForProcessingFromContinuation does not support feedRange type " + targetRange.getClass());
     }
 
     static CosmosChangeFeedRequestOptions createForProcessingFromContinuation(
@@ -598,6 +655,15 @@ public final class CosmosChangeFeedRequestOptions {
                 @Override
                 public List<String> getExcludeRegions(CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions) {
                     return cosmosChangeFeedRequestOptions.excludeRegions;
+                }
+
+                @Override
+                public CosmosChangeFeedRequestOptions createForProcessingFromContinuation(
+                    String continuation,
+                    FeedRange targetRange,
+                    String continuationLsn) {
+
+                    return CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(continuation, targetRange, continuationLsn);
                 }
             });
     }

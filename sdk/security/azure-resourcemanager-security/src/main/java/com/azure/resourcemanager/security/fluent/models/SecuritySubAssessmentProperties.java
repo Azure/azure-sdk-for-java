@@ -11,7 +11,9 @@ import com.azure.resourcemanager.security.models.SubAssessmentStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Describes properties of an sub-assessment. */
+/**
+ * Describes properties of an sub-assessment.
+ */
 @Fluent
 public final class SecuritySubAssessmentProperties {
     /*
@@ -74,13 +76,15 @@ public final class SecuritySubAssessmentProperties {
     @JsonProperty(value = "additionalData")
     private AdditionalData additionalData;
 
-    /** Creates an instance of SecuritySubAssessmentProperties class. */
+    /**
+     * Creates an instance of SecuritySubAssessmentProperties class.
+     */
     public SecuritySubAssessmentProperties() {
     }
 
     /**
      * Get the id property: Vulnerability ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -89,7 +93,7 @@ public final class SecuritySubAssessmentProperties {
 
     /**
      * Get the displayName property: User friendly display name of the sub-assessment.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -98,7 +102,7 @@ public final class SecuritySubAssessmentProperties {
 
     /**
      * Get the status property: Status of the sub-assessment.
-     *
+     * 
      * @return the status value.
      */
     public SubAssessmentStatus status() {
@@ -107,7 +111,7 @@ public final class SecuritySubAssessmentProperties {
 
     /**
      * Set the status property: Status of the sub-assessment.
-     *
+     * 
      * @param status the status value to set.
      * @return the SecuritySubAssessmentProperties object itself.
      */
@@ -118,7 +122,7 @@ public final class SecuritySubAssessmentProperties {
 
     /**
      * Get the remediation property: Information on how to remediate this sub-assessment.
-     *
+     * 
      * @return the remediation value.
      */
     public String remediation() {
@@ -127,7 +131,7 @@ public final class SecuritySubAssessmentProperties {
 
     /**
      * Get the impact property: Description of the impact of this sub-assessment.
-     *
+     * 
      * @return the impact value.
      */
     public String impact() {
@@ -136,7 +140,7 @@ public final class SecuritySubAssessmentProperties {
 
     /**
      * Get the category property: Category of the sub-assessment.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -145,7 +149,7 @@ public final class SecuritySubAssessmentProperties {
 
     /**
      * Get the description property: Human readable description of the assessment status.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -154,7 +158,7 @@ public final class SecuritySubAssessmentProperties {
 
     /**
      * Get the timeGenerated property: The date and time the sub-assessment was generated.
-     *
+     * 
      * @return the timeGenerated value.
      */
     public OffsetDateTime timeGenerated() {
@@ -163,7 +167,7 @@ public final class SecuritySubAssessmentProperties {
 
     /**
      * Get the resourceDetails property: Details of the resource that was assessed.
-     *
+     * 
      * @return the resourceDetails value.
      */
     public ResourceDetails resourceDetails() {
@@ -172,7 +176,7 @@ public final class SecuritySubAssessmentProperties {
 
     /**
      * Set the resourceDetails property: Details of the resource that was assessed.
-     *
+     * 
      * @param resourceDetails the resourceDetails value to set.
      * @return the SecuritySubAssessmentProperties object itself.
      */
@@ -183,7 +187,7 @@ public final class SecuritySubAssessmentProperties {
 
     /**
      * Get the additionalData property: Details of the sub-assessment.
-     *
+     * 
      * @return the additionalData value.
      */
     public AdditionalData additionalData() {
@@ -192,7 +196,7 @@ public final class SecuritySubAssessmentProperties {
 
     /**
      * Set the additionalData property: Details of the sub-assessment.
-     *
+     * 
      * @param additionalData the additionalData value to set.
      * @return the SecuritySubAssessmentProperties object itself.
      */
@@ -203,7 +207,7 @@ public final class SecuritySubAssessmentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

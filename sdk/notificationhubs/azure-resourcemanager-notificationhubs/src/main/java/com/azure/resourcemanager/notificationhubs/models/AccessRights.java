@@ -4,47 +4,55 @@
 
 package com.azure.resourcemanager.notificationhubs.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
-/** Defines values for AccessRights. */
-public enum AccessRights {
-    /** Enum value Manage. */
-    MANAGE("Manage"),
+/**
+ * Defines values for AccessRights.
+ */
+public final class AccessRights extends ExpandableStringEnum<AccessRights> {
+    /**
+     * Static value Manage for AccessRights.
+     */
+    public static final AccessRights MANAGE = fromString("Manage");
 
-    /** Enum value Send. */
-    SEND("Send"),
+    /**
+     * Static value Send for AccessRights.
+     */
+    public static final AccessRights SEND = fromString("Send");
 
-    /** Enum value Listen. */
-    LISTEN("Listen");
+    /**
+     * Static value Listen for AccessRights.
+     */
+    public static final AccessRights LISTEN = fromString("Listen");
 
-    /** The actual serialized value for a AccessRights instance. */
-    private final String value;
-
-    AccessRights(String value) {
-        this.value = value;
+    /**
+     * Creates a new instance of AccessRights value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AccessRights() {
     }
 
     /**
-     * Parses a serialized value to a AccessRights instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed AccessRights object, or null if unable to parse.
+     * Creates or finds a AccessRights from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding AccessRights.
      */
     @JsonCreator
-    public static AccessRights fromString(String value) {
-        AccessRights[] items = AccessRights.values();
-        for (AccessRights item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static AccessRights fromString(String name) {
+        return fromString(name, AccessRights.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * Gets known AccessRights values.
+     * 
+     * @return known AccessRights values.
+     */
+    public static Collection<AccessRights> values() {
+        return values(AccessRights.class);
     }
 }

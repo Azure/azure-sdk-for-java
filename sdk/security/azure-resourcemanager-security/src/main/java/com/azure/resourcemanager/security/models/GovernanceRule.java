@@ -8,46 +8,48 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.GovernanceRuleInner;
 import java.util.List;
 
-/** An immutable client-side representation of GovernanceRule. */
+/**
+ * An immutable client-side representation of GovernanceRule.
+ */
 public interface GovernanceRule {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the tenantId property: The tenantId (GUID).
-     *
+     * 
      * @return the tenantId value.
      */
     String tenantId();
 
     /**
      * Gets the displayName property: Display name of the governance rule.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
 
     /**
      * Gets the description property: Description of the governance rule.
-     *
+     * 
      * @return the description value.
      */
     String description();
@@ -55,14 +57,14 @@ public interface GovernanceRule {
     /**
      * Gets the remediationTimeframe property: Governance rule remediation timeframe - this is the time that will affect
      * on the grace-period duration e.g. 7.00:00:00 - means 7 days.
-     *
+     * 
      * @return the remediationTimeframe value.
      */
     String remediationTimeframe();
 
     /**
      * Gets the isGracePeriod property: Defines whether there is a grace period on the governance rule.
-     *
+     * 
      * @return the isGracePeriod value.
      */
     Boolean isGracePeriod();
@@ -70,28 +72,28 @@ public interface GovernanceRule {
     /**
      * Gets the rulePriority property: The governance rule priority, priority to the lower number. Rules with the same
      * priority on the same scope will not be allowed.
-     *
+     * 
      * @return the rulePriority value.
      */
     int rulePriority();
 
     /**
      * Gets the isDisabled property: Defines whether the rule is active/inactive.
-     *
+     * 
      * @return the isDisabled value.
      */
     Boolean isDisabled();
 
     /**
      * Gets the ruleType property: The rule type of the governance rule, defines the source of the rule e.g. Integrated.
-     *
+     * 
      * @return the ruleType value.
      */
     GovernanceRuleType ruleType();
 
     /**
      * Gets the sourceResourceType property: The governance rule source, what the rule affects, e.g. Assessments.
-     *
+     * 
      * @return the sourceResourceType value.
      */
     GovernanceRuleSourceResourceType sourceResourceType();
@@ -99,14 +101,14 @@ public interface GovernanceRule {
     /**
      * Gets the excludedScopes property: Excluded scopes, filter out the descendants of the scope (on management
      * scopes).
-     *
+     * 
      * @return the excludedScopes value.
      */
     List<String> excludedScopes();
 
     /**
      * Gets the conditionSets property: The governance rule conditionSets - see examples.
-     *
+     * 
      * @return the conditionSets value.
      */
     List<Object> conditionSets();
@@ -114,7 +116,7 @@ public interface GovernanceRule {
     /**
      * Gets the includeMemberScopes property: Defines whether the rule is management scope rule (master connector as a
      * single scope or management scope).
-     *
+     * 
      * @return the includeMemberScopes value.
      */
     Boolean includeMemberScopes();
@@ -122,7 +124,7 @@ public interface GovernanceRule {
     /**
      * Gets the ownerSource property: The owner source for the governance rule - e.g. Manually by user@contoso.com - see
      * example.
-     *
+     * 
      * @return the ownerSource value.
      */
     GovernanceRuleOwnerSource ownerSource();
@@ -130,438 +132,521 @@ public interface GovernanceRule {
     /**
      * Gets the governanceEmailNotification property: The email notifications settings for the governance rule, states
      * whether to disable notifications for mangers and owners.
-     *
+     * 
      * @return the governanceEmailNotification value.
      */
     GovernanceRuleEmailNotification governanceEmailNotification();
 
     /**
      * Gets the metadata property: The governance rule metadata.
-     *
+     * 
      * @return the metadata value.
      */
     GovernanceRuleMetadata metadata();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.GovernanceRuleInner object.
-     *
+     * 
      * @return the inner object.
      */
     GovernanceRuleInner innerModel();
 
-    /** The entirety of the GovernanceRule definition. */
+    /**
+     * The entirety of the GovernanceRule definition.
+     */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithScope, DefinitionStages.WithCreate {
     }
-    /** The GovernanceRule definition stages. */
+
+    /**
+     * The GovernanceRule definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the GovernanceRule definition. */
+        /**
+         * The first stage of the GovernanceRule definition.
+         */
         interface Blank extends WithScope {
         }
-        /** The stage of the GovernanceRule definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the GovernanceRule definition allowing to specify parent resource.
+         */
         interface WithScope {
             /**
              * Specifies scope.
-             *
+             * 
              * @param scope The scope of the Governance rules. Valid scopes are: management group (format:
-             *     'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-             *     'subscriptions/{subscriptionId}'), or security connector (format:
-             *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+             * 'providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+             * 'subscriptions/{subscriptionId}'), or security connector (format:
+             * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
              * @return the next definition stage.
              */
             WithCreate withExistingScope(String scope);
         }
+
         /**
          * The stage of the GovernanceRule definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithDisplayName,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithRemediationTimeframe,
-                DefinitionStages.WithIsGracePeriod,
-                DefinitionStages.WithRulePriority,
-                DefinitionStages.WithIsDisabled,
-                DefinitionStages.WithRuleType,
-                DefinitionStages.WithSourceResourceType,
-                DefinitionStages.WithExcludedScopes,
-                DefinitionStages.WithConditionSets,
-                DefinitionStages.WithIncludeMemberScopes,
-                DefinitionStages.WithOwnerSource,
-                DefinitionStages.WithGovernanceEmailNotification,
-                DefinitionStages.WithMetadata {
+        interface WithCreate extends DefinitionStages.WithDisplayName, DefinitionStages.WithDescription,
+            DefinitionStages.WithRemediationTimeframe, DefinitionStages.WithIsGracePeriod,
+            DefinitionStages.WithRulePriority, DefinitionStages.WithIsDisabled, DefinitionStages.WithRuleType,
+            DefinitionStages.WithSourceResourceType, DefinitionStages.WithExcludedScopes,
+            DefinitionStages.WithConditionSets, DefinitionStages.WithIncludeMemberScopes,
+            DefinitionStages.WithOwnerSource, DefinitionStages.WithGovernanceEmailNotification,
+            DefinitionStages.WithMetadata {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             GovernanceRule create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             GovernanceRule create(Context context);
         }
-        /** The stage of the GovernanceRule definition allowing to specify displayName. */
+
+        /**
+         * The stage of the GovernanceRule definition allowing to specify displayName.
+         */
         interface WithDisplayName {
             /**
              * Specifies the displayName property: Display name of the governance rule.
-             *
+             * 
              * @param displayName Display name of the governance rule.
              * @return the next definition stage.
              */
             WithCreate withDisplayName(String displayName);
         }
-        /** The stage of the GovernanceRule definition allowing to specify description. */
+
+        /**
+         * The stage of the GovernanceRule definition allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: Description of the governance rule.
-             *
+             * 
              * @param description Description of the governance rule.
              * @return the next definition stage.
              */
             WithCreate withDescription(String description);
         }
-        /** The stage of the GovernanceRule definition allowing to specify remediationTimeframe. */
+
+        /**
+         * The stage of the GovernanceRule definition allowing to specify remediationTimeframe.
+         */
         interface WithRemediationTimeframe {
             /**
              * Specifies the remediationTimeframe property: Governance rule remediation timeframe - this is the time
              * that will affect on the grace-period duration e.g. 7.00:00:00 - means 7 days.
-             *
+             * 
              * @param remediationTimeframe Governance rule remediation timeframe - this is the time that will affect on
-             *     the grace-period duration e.g. 7.00:00:00 - means 7 days.
+             * the grace-period duration e.g. 7.00:00:00 - means 7 days.
              * @return the next definition stage.
              */
             WithCreate withRemediationTimeframe(String remediationTimeframe);
         }
-        /** The stage of the GovernanceRule definition allowing to specify isGracePeriod. */
+
+        /**
+         * The stage of the GovernanceRule definition allowing to specify isGracePeriod.
+         */
         interface WithIsGracePeriod {
             /**
              * Specifies the isGracePeriod property: Defines whether there is a grace period on the governance rule.
-             *
+             * 
              * @param isGracePeriod Defines whether there is a grace period on the governance rule.
              * @return the next definition stage.
              */
             WithCreate withIsGracePeriod(Boolean isGracePeriod);
         }
-        /** The stage of the GovernanceRule definition allowing to specify rulePriority. */
+
+        /**
+         * The stage of the GovernanceRule definition allowing to specify rulePriority.
+         */
         interface WithRulePriority {
             /**
              * Specifies the rulePriority property: The governance rule priority, priority to the lower number. Rules
              * with the same priority on the same scope will not be allowed.
-             *
+             * 
              * @param rulePriority The governance rule priority, priority to the lower number. Rules with the same
-             *     priority on the same scope will not be allowed.
+             * priority on the same scope will not be allowed.
              * @return the next definition stage.
              */
             WithCreate withRulePriority(int rulePriority);
         }
-        /** The stage of the GovernanceRule definition allowing to specify isDisabled. */
+
+        /**
+         * The stage of the GovernanceRule definition allowing to specify isDisabled.
+         */
         interface WithIsDisabled {
             /**
              * Specifies the isDisabled property: Defines whether the rule is active/inactive.
-             *
+             * 
              * @param isDisabled Defines whether the rule is active/inactive.
              * @return the next definition stage.
              */
             WithCreate withIsDisabled(Boolean isDisabled);
         }
-        /** The stage of the GovernanceRule definition allowing to specify ruleType. */
+
+        /**
+         * The stage of the GovernanceRule definition allowing to specify ruleType.
+         */
         interface WithRuleType {
             /**
              * Specifies the ruleType property: The rule type of the governance rule, defines the source of the rule
              * e.g. Integrated.
-             *
+             * 
              * @param ruleType The rule type of the governance rule, defines the source of the rule e.g. Integrated.
              * @return the next definition stage.
              */
             WithCreate withRuleType(GovernanceRuleType ruleType);
         }
-        /** The stage of the GovernanceRule definition allowing to specify sourceResourceType. */
+
+        /**
+         * The stage of the GovernanceRule definition allowing to specify sourceResourceType.
+         */
         interface WithSourceResourceType {
             /**
              * Specifies the sourceResourceType property: The governance rule source, what the rule affects, e.g.
              * Assessments.
-             *
+             * 
              * @param sourceResourceType The governance rule source, what the rule affects, e.g. Assessments.
              * @return the next definition stage.
              */
             WithCreate withSourceResourceType(GovernanceRuleSourceResourceType sourceResourceType);
         }
-        /** The stage of the GovernanceRule definition allowing to specify excludedScopes. */
+
+        /**
+         * The stage of the GovernanceRule definition allowing to specify excludedScopes.
+         */
         interface WithExcludedScopes {
             /**
              * Specifies the excludedScopes property: Excluded scopes, filter out the descendants of the scope (on
              * management scopes).
-             *
+             * 
              * @param excludedScopes Excluded scopes, filter out the descendants of the scope (on management scopes).
              * @return the next definition stage.
              */
             WithCreate withExcludedScopes(List<String> excludedScopes);
         }
-        /** The stage of the GovernanceRule definition allowing to specify conditionSets. */
+
+        /**
+         * The stage of the GovernanceRule definition allowing to specify conditionSets.
+         */
         interface WithConditionSets {
             /**
              * Specifies the conditionSets property: The governance rule conditionSets - see examples.
-             *
+             * 
              * @param conditionSets The governance rule conditionSets - see examples.
              * @return the next definition stage.
              */
             WithCreate withConditionSets(List<Object> conditionSets);
         }
-        /** The stage of the GovernanceRule definition allowing to specify includeMemberScopes. */
+
+        /**
+         * The stage of the GovernanceRule definition allowing to specify includeMemberScopes.
+         */
         interface WithIncludeMemberScopes {
             /**
              * Specifies the includeMemberScopes property: Defines whether the rule is management scope rule (master
              * connector as a single scope or management scope).
-             *
+             * 
              * @param includeMemberScopes Defines whether the rule is management scope rule (master connector as a
-             *     single scope or management scope).
+             * single scope or management scope).
              * @return the next definition stage.
              */
             WithCreate withIncludeMemberScopes(Boolean includeMemberScopes);
         }
-        /** The stage of the GovernanceRule definition allowing to specify ownerSource. */
+
+        /**
+         * The stage of the GovernanceRule definition allowing to specify ownerSource.
+         */
         interface WithOwnerSource {
             /**
              * Specifies the ownerSource property: The owner source for the governance rule - e.g. Manually by
              * user@contoso.com - see example.
-             *
+             * 
              * @param ownerSource The owner source for the governance rule - e.g. Manually by user@contoso.com - see
-             *     example.
+             * example.
              * @return the next definition stage.
              */
             WithCreate withOwnerSource(GovernanceRuleOwnerSource ownerSource);
         }
-        /** The stage of the GovernanceRule definition allowing to specify governanceEmailNotification. */
+
+        /**
+         * The stage of the GovernanceRule definition allowing to specify governanceEmailNotification.
+         */
         interface WithGovernanceEmailNotification {
             /**
              * Specifies the governanceEmailNotification property: The email notifications settings for the governance
              * rule, states whether to disable notifications for mangers and owners.
-             *
+             * 
              * @param governanceEmailNotification The email notifications settings for the governance rule, states
-             *     whether to disable notifications for mangers and owners.
+             * whether to disable notifications for mangers and owners.
              * @return the next definition stage.
              */
             WithCreate withGovernanceEmailNotification(GovernanceRuleEmailNotification governanceEmailNotification);
         }
-        /** The stage of the GovernanceRule definition allowing to specify metadata. */
+
+        /**
+         * The stage of the GovernanceRule definition allowing to specify metadata.
+         */
         interface WithMetadata {
             /**
              * Specifies the metadata property: The governance rule metadata.
-             *
+             * 
              * @param metadata The governance rule metadata.
              * @return the next definition stage.
              */
             WithCreate withMetadata(GovernanceRuleMetadata metadata);
         }
     }
+
     /**
      * Begins update for the GovernanceRule resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     GovernanceRule.Update update();
 
-    /** The template for GovernanceRule update. */
-    interface Update
-        extends UpdateStages.WithDisplayName,
-            UpdateStages.WithDescription,
-            UpdateStages.WithRemediationTimeframe,
-            UpdateStages.WithIsGracePeriod,
-            UpdateStages.WithRulePriority,
-            UpdateStages.WithIsDisabled,
-            UpdateStages.WithRuleType,
-            UpdateStages.WithSourceResourceType,
-            UpdateStages.WithExcludedScopes,
-            UpdateStages.WithConditionSets,
-            UpdateStages.WithIncludeMemberScopes,
-            UpdateStages.WithOwnerSource,
-            UpdateStages.WithGovernanceEmailNotification,
-            UpdateStages.WithMetadata {
+    /**
+     * The template for GovernanceRule update.
+     */
+    interface Update extends UpdateStages.WithDisplayName, UpdateStages.WithDescription,
+        UpdateStages.WithRemediationTimeframe, UpdateStages.WithIsGracePeriod, UpdateStages.WithRulePriority,
+        UpdateStages.WithIsDisabled, UpdateStages.WithRuleType, UpdateStages.WithSourceResourceType,
+        UpdateStages.WithExcludedScopes, UpdateStages.WithConditionSets, UpdateStages.WithIncludeMemberScopes,
+        UpdateStages.WithOwnerSource, UpdateStages.WithGovernanceEmailNotification, UpdateStages.WithMetadata {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         GovernanceRule apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         GovernanceRule apply(Context context);
     }
-    /** The GovernanceRule update stages. */
+
+    /**
+     * The GovernanceRule update stages.
+     */
     interface UpdateStages {
-        /** The stage of the GovernanceRule update allowing to specify displayName. */
+        /**
+         * The stage of the GovernanceRule update allowing to specify displayName.
+         */
         interface WithDisplayName {
             /**
              * Specifies the displayName property: Display name of the governance rule.
-             *
+             * 
              * @param displayName Display name of the governance rule.
              * @return the next definition stage.
              */
             Update withDisplayName(String displayName);
         }
-        /** The stage of the GovernanceRule update allowing to specify description. */
+
+        /**
+         * The stage of the GovernanceRule update allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: Description of the governance rule.
-             *
+             * 
              * @param description Description of the governance rule.
              * @return the next definition stage.
              */
             Update withDescription(String description);
         }
-        /** The stage of the GovernanceRule update allowing to specify remediationTimeframe. */
+
+        /**
+         * The stage of the GovernanceRule update allowing to specify remediationTimeframe.
+         */
         interface WithRemediationTimeframe {
             /**
              * Specifies the remediationTimeframe property: Governance rule remediation timeframe - this is the time
              * that will affect on the grace-period duration e.g. 7.00:00:00 - means 7 days.
-             *
+             * 
              * @param remediationTimeframe Governance rule remediation timeframe - this is the time that will affect on
-             *     the grace-period duration e.g. 7.00:00:00 - means 7 days.
+             * the grace-period duration e.g. 7.00:00:00 - means 7 days.
              * @return the next definition stage.
              */
             Update withRemediationTimeframe(String remediationTimeframe);
         }
-        /** The stage of the GovernanceRule update allowing to specify isGracePeriod. */
+
+        /**
+         * The stage of the GovernanceRule update allowing to specify isGracePeriod.
+         */
         interface WithIsGracePeriod {
             /**
              * Specifies the isGracePeriod property: Defines whether there is a grace period on the governance rule.
-             *
+             * 
              * @param isGracePeriod Defines whether there is a grace period on the governance rule.
              * @return the next definition stage.
              */
             Update withIsGracePeriod(Boolean isGracePeriod);
         }
-        /** The stage of the GovernanceRule update allowing to specify rulePriority. */
+
+        /**
+         * The stage of the GovernanceRule update allowing to specify rulePriority.
+         */
         interface WithRulePriority {
             /**
              * Specifies the rulePriority property: The governance rule priority, priority to the lower number. Rules
              * with the same priority on the same scope will not be allowed.
-             *
+             * 
              * @param rulePriority The governance rule priority, priority to the lower number. Rules with the same
-             *     priority on the same scope will not be allowed.
+             * priority on the same scope will not be allowed.
              * @return the next definition stage.
              */
             Update withRulePriority(int rulePriority);
         }
-        /** The stage of the GovernanceRule update allowing to specify isDisabled. */
+
+        /**
+         * The stage of the GovernanceRule update allowing to specify isDisabled.
+         */
         interface WithIsDisabled {
             /**
              * Specifies the isDisabled property: Defines whether the rule is active/inactive.
-             *
+             * 
              * @param isDisabled Defines whether the rule is active/inactive.
              * @return the next definition stage.
              */
             Update withIsDisabled(Boolean isDisabled);
         }
-        /** The stage of the GovernanceRule update allowing to specify ruleType. */
+
+        /**
+         * The stage of the GovernanceRule update allowing to specify ruleType.
+         */
         interface WithRuleType {
             /**
              * Specifies the ruleType property: The rule type of the governance rule, defines the source of the rule
              * e.g. Integrated.
-             *
+             * 
              * @param ruleType The rule type of the governance rule, defines the source of the rule e.g. Integrated.
              * @return the next definition stage.
              */
             Update withRuleType(GovernanceRuleType ruleType);
         }
-        /** The stage of the GovernanceRule update allowing to specify sourceResourceType. */
+
+        /**
+         * The stage of the GovernanceRule update allowing to specify sourceResourceType.
+         */
         interface WithSourceResourceType {
             /**
              * Specifies the sourceResourceType property: The governance rule source, what the rule affects, e.g.
              * Assessments.
-             *
+             * 
              * @param sourceResourceType The governance rule source, what the rule affects, e.g. Assessments.
              * @return the next definition stage.
              */
             Update withSourceResourceType(GovernanceRuleSourceResourceType sourceResourceType);
         }
-        /** The stage of the GovernanceRule update allowing to specify excludedScopes. */
+
+        /**
+         * The stage of the GovernanceRule update allowing to specify excludedScopes.
+         */
         interface WithExcludedScopes {
             /**
              * Specifies the excludedScopes property: Excluded scopes, filter out the descendants of the scope (on
              * management scopes).
-             *
+             * 
              * @param excludedScopes Excluded scopes, filter out the descendants of the scope (on management scopes).
              * @return the next definition stage.
              */
             Update withExcludedScopes(List<String> excludedScopes);
         }
-        /** The stage of the GovernanceRule update allowing to specify conditionSets. */
+
+        /**
+         * The stage of the GovernanceRule update allowing to specify conditionSets.
+         */
         interface WithConditionSets {
             /**
              * Specifies the conditionSets property: The governance rule conditionSets - see examples.
-             *
+             * 
              * @param conditionSets The governance rule conditionSets - see examples.
              * @return the next definition stage.
              */
             Update withConditionSets(List<Object> conditionSets);
         }
-        /** The stage of the GovernanceRule update allowing to specify includeMemberScopes. */
+
+        /**
+         * The stage of the GovernanceRule update allowing to specify includeMemberScopes.
+         */
         interface WithIncludeMemberScopes {
             /**
              * Specifies the includeMemberScopes property: Defines whether the rule is management scope rule (master
              * connector as a single scope or management scope).
-             *
+             * 
              * @param includeMemberScopes Defines whether the rule is management scope rule (master connector as a
-             *     single scope or management scope).
+             * single scope or management scope).
              * @return the next definition stage.
              */
             Update withIncludeMemberScopes(Boolean includeMemberScopes);
         }
-        /** The stage of the GovernanceRule update allowing to specify ownerSource. */
+
+        /**
+         * The stage of the GovernanceRule update allowing to specify ownerSource.
+         */
         interface WithOwnerSource {
             /**
              * Specifies the ownerSource property: The owner source for the governance rule - e.g. Manually by
              * user@contoso.com - see example.
-             *
+             * 
              * @param ownerSource The owner source for the governance rule - e.g. Manually by user@contoso.com - see
-             *     example.
+             * example.
              * @return the next definition stage.
              */
             Update withOwnerSource(GovernanceRuleOwnerSource ownerSource);
         }
-        /** The stage of the GovernanceRule update allowing to specify governanceEmailNotification. */
+
+        /**
+         * The stage of the GovernanceRule update allowing to specify governanceEmailNotification.
+         */
         interface WithGovernanceEmailNotification {
             /**
              * Specifies the governanceEmailNotification property: The email notifications settings for the governance
              * rule, states whether to disable notifications for mangers and owners.
-             *
+             * 
              * @param governanceEmailNotification The email notifications settings for the governance rule, states
-             *     whether to disable notifications for mangers and owners.
+             * whether to disable notifications for mangers and owners.
              * @return the next definition stage.
              */
             Update withGovernanceEmailNotification(GovernanceRuleEmailNotification governanceEmailNotification);
         }
-        /** The stage of the GovernanceRule update allowing to specify metadata. */
+
+        /**
+         * The stage of the GovernanceRule update allowing to specify metadata.
+         */
         interface WithMetadata {
             /**
              * Specifies the metadata property: The governance rule metadata.
-             *
+             * 
              * @param metadata The governance rule metadata.
              * @return the next definition stage.
              */
             Update withMetadata(GovernanceRuleMetadata metadata);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     GovernanceRule refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -569,7 +654,7 @@ public interface GovernanceRule {
 
     /**
      * Execute a governance rule.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -577,7 +662,7 @@ public interface GovernanceRule {
 
     /**
      * Execute a governance rule.
-     *
+     * 
      * @param executeGovernanceRuleParams Execute governance rule over a given scope.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

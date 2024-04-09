@@ -395,6 +395,32 @@ public final class NonAzureOpenAIClientImpl {
                 @BodyParam("multipart/form-data") BinaryData audioTranslationOptions,
                 RequestOptions requestOptions,
                 Context context);
+
+        @Post("/audio/speech")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> generateSpeechFromText(
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData speechGenerationOptions,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/audio/speech")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> generateSpeechFromTextSync(
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData speechGenerationOptions,
+                RequestOptions requestOptions,
+                Context context);
     }
 
     /**
@@ -451,18 +477,19 @@ public final class NonAzureOpenAIClientImpl {
 
         // modelId is part of the request body in nonAzure OpenAI
         try {
-            BinaryData embeddingsOptionsUpdated = addModelIdJson(embeddingsOptions, modelId);
-            return FluxUtil.withContext(
-                context ->
-                    service.getEmbeddings(
-                        OPEN_AI_ENDPOINT,
-                        accept,
-                        embeddingsOptionsUpdated,
-                        requestOptions,
-                        context));
+            embeddingsOptions = addModelIdJson(embeddingsOptions, modelId);
         } catch (JsonProcessingException e) {
             return Mono.error(e);
         }
+        final BinaryData embeddingsOptionsUpdated = embeddingsOptions;
+        return FluxUtil.withContext(
+                context ->
+                        service.getEmbeddings(
+                                OPEN_AI_ENDPOINT,
+                                accept,
+                                embeddingsOptionsUpdated,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -519,16 +546,17 @@ public final class NonAzureOpenAIClientImpl {
 
         // modelId is part of the request body in nonAzure OpenAI
         try {
-            BinaryData embeddingsOptionsUpdated = addModelIdJson(embeddingsOptions, modelId);
-            return service.getEmbeddingsSync(
+            embeddingsOptions = addModelIdJson(embeddingsOptions, modelId);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        BinaryData embeddingsOptionsUpdated = embeddingsOptions;
+        return service.getEmbeddingsSync(
                 OPEN_AI_ENDPOINT,
                 accept,
                 embeddingsOptionsUpdated,
                 requestOptions,
                 Context.NONE);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     /**
@@ -1058,7 +1086,7 @@ public final class NonAzureOpenAIClientImpl {
      * @param modelId The LLM model ID to be injected in the JSON
      * @return an updated version of the JSON with the key "model" and its corresponding value "modelId" added
      */
-    private static BinaryData addModelIdJson(BinaryData inputJson, String modelId) throws JsonProcessingException {
+    public static BinaryData addModelIdJson(BinaryData inputJson, String modelId) throws JsonProcessingException {
         JsonNode jsonNode = JSON_MAPPER.readTree(inputJson.toString());
         if (jsonNode instanceof ObjectNode) {
             ObjectNode objectNode = (ObjectNode) jsonNode;
@@ -1511,5 +1539,80 @@ public final class NonAzureOpenAIClientImpl {
                 audioTranslationOptions,
                 requestOptions,
                 Context.NONE);
+    }
+
+    /**
+     * Generates text-to-speech audio from the input text.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     input: String (Required)
+     *     voice: String(alloy/echo/fable/onyx/nova/shimmer) (Required)
+     *     response_format: String(mp3/opus/aac/flac) (Optional)
+     *     speed: Double (Optional)
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * BinaryData
+     * }</pre>
+     *
+     * @param modelId Specifies either the model name to use for this request.
+     * @param speechGenerationOptions A representation of the request options that control the behavior of a
+     * text-to-speech operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> generateSpeechFromTextWithResponseAsync(String modelId,
+        BinaryData speechGenerationOptions, RequestOptions requestOptions) {
+        final String accept = "application/octet-stream, application/json";
+        return FluxUtil.withContext(context -> service.generateSpeechFromText(
+                    OPEN_AI_ENDPOINT, accept, speechGenerationOptions, requestOptions, context));
+    }
+
+    /**
+     * Generates text-to-speech audio from the input text.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     input: String (Required)
+     *     voice: String(alloy/echo/fable/onyx/nova/shimmer) (Required)
+     *     response_format: String(mp3/opus/aac/flac) (Optional)
+     *     speed: Double (Optional)
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * BinaryData
+     * }</pre>
+     *
+     * @param speechGenerationOptions A representation of the request options that control the behavior of a
+     * text-to-speech operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> generateSpeechFromTextWithResponse(BinaryData speechGenerationOptions,
+                                                                   RequestOptions requestOptions) {
+        final String accept = "application/octet-stream, application/json";
+        return service.generateSpeechFromTextSync(OPEN_AI_ENDPOINT, accept, speechGenerationOptions,
+                requestOptions, Context.NONE);
     }
 }
