@@ -11,9 +11,13 @@
 
 ### Breaking Changes
 
-### Bugs Fixed
+- `nodeSelector` is removed from `IstioEgressGateway` class.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-02-01`.
 
 ## 2.37.0 (2024-03-22)
 
