@@ -18,7 +18,7 @@ public final class HoldOptions {
     /**
      * Audio to play while on hold.
      */
-    private PlaySource playSourceInfo;
+    private PlaySource playSource;
 
     /**
      * Operation context.
@@ -26,9 +26,9 @@ public final class HoldOptions {
     private String operationContext;
 
     /**
-     * operationCallbackUri.
+     * operationCallbackUrl.
      */
-    private String operationCallbackUri;
+    private String operationCallbackUrl;
 
     /**
      * Create a new HoldOptions object.
@@ -47,20 +47,20 @@ public final class HoldOptions {
     }
 
     /**
-     * Get PlaySourceInfo
-     * @return the playSourceInfo.
+     * Get PlaySource
+     * @return the playSource.
      */
-    public PlaySource getPlaySourceInfo() {
-        return playSourceInfo;
+    public PlaySource getPlaySource() {
+        return playSource;
     }
 
     /**
-     * Sets the playSourceInfo.
-     * @param playSourceInfo playSourceInfo
+     * Sets the playSource.
+     * @param playSource playSource
      * @return The HoldOptions object.
      */
-    public HoldOptions setPlaySourceInfo(PlaySource playSourceInfo) {
-        this.playSourceInfo = playSourceInfo;
+    public HoldOptions setPlaySource(PlaySource playSource) {
+        this.playSource = playSource;
         return this;
     }
 
@@ -83,20 +83,20 @@ public final class HoldOptions {
     }
 
     /**
-     * Get the operationCallbackUri.
-     * @return operationCallbackUri.
+     * Get the operationCallbackUrl.
+     * @return operationCallbackUrl.
      */
-    public String getOperationCallbackUri() {
-        return operationCallbackUri;
+    public String getOperationCallbackUrl() {
+        return operationCallbackUrl;
     }
 
     /**
-     * Sets the operationCallbackUri.
-     * @param operationCallbackUri operationCallbackUri
+     * Sets the operationCallbackUrl.
+     * @param operationCallbackUrl operationCallbackUrl
      * @return The HoldOptions object.
      */
-    public HoldOptions setOperationCallbackUri(String operationCallbackUri) {
-        this.operationCallbackUri = operationCallbackUri;
+    public HoldOptions setOperationCallbackUrl(String operationCallbackUrl) {
+        this.operationCallbackUrl = operationCallbackUrl;
         return this;
     }
 }

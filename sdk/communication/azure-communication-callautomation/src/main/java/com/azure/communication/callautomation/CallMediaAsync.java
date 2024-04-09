@@ -702,11 +702,36 @@ public final class CallMediaAsync {
         return holdInternal(targetParticipant, Context.NONE).then();
     }
 
+     /**
+     * Holds participant in call.
+     * @param targetParticipant the target.
+     * @param playSource A {@link PlaySource} representing the source to play.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> hold(CommunicationIdentifier targetParticipant, PlaySource playSource) {
+        return holdInternal(targetParticipant, playSource, Context.NONE).then();
+    }
+
     Mono<Response<Void>> holdInternal(CommunicationIdentifier targetParticipant, Context context) {
         try {
             context = context == null ? Context.NONE : context;
             HoldRequest request = new HoldRequest()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant));
+
+            return contentsInternal
+                .holdWithResponseAsync(callConnectionId, request, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Void>> holdInternal(CommunicationIdentifier targetParticipant, PlaySource playSource, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            HoldRequest request = new HoldRequest()
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
+                .setPlaySourceInfo(convertPlaySourceToPlaySourceInternal(playSource));
 
             return contentsInternal
                 .holdWithResponseAsync(callConnectionId, request, context);
@@ -731,9 +756,9 @@ public final class CallMediaAsync {
             context = context == null ? Context.NONE : context;
             HoldRequest request = new HoldRequest()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(options.getTargetParticipant()))
-                .setPlaySourceInfo(convertPlaySourceToPlaySourceInternal(options.getPlaySourceInfo()))
+                .setPlaySourceInfo(convertPlaySourceToPlaySourceInternal(options.getPlaySource()))
                 .setOperationContext(options.getOperationContext())
-                .setOperationCallbackUri(options.getOperationCallbackUri());
+                .setOperationCallbackUri(options.getOperationCallbackUrl());
 
             return contentsInternal
                 .holdWithResponseAsync(callConnectionId, request, context);

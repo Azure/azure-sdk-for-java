@@ -386,7 +386,7 @@ public class CallMediaAsyncUnitTests {
         callMedia = getMockCallMedia(200);
         HoldOptions options = new HoldOptions(
             new CommunicationUserIdentifier("id"))
-            .setPlaySourceInfo(new TextSource().setText("audio to play"));
+            .setPlaySource(new TextSource().setText("audio to play"));
         StepVerifier.create(
                 callMedia.holdWithResponse(options))
             .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
@@ -399,7 +399,7 @@ public class CallMediaAsyncUnitTests {
         callMedia = getMockCallMedia(200);
         HoldOptions options = new HoldOptions(
             new CommunicationUserIdentifier("id"))
-            .setPlaySourceInfo(new TextSource().setText("audio to play"));
+            .setPlaySource(new TextSource().setText("audio to play"));
         StepVerifier.create(
                 callMedia.holdWithResponse(options))
             .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))

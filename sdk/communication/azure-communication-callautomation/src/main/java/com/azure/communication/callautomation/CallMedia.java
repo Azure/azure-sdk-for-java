@@ -221,11 +221,20 @@ public final class CallMedia {
     /**
      * Holds participant in call.
      * @param targetParticipant the target.
-     * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void hold(CommunicationIdentifier targetParticipant) {
-        return callMediaAsync.hold(targetParticipant).block();
+    public void hold(CommunicationIdentifier targetParticipant) {
+        callMediaAsync.hold(targetParticipant).block();
+    }
+
+     /**
+     * Holds participant in call.
+     * @param targetParticipant the target.
+     * @param playSource A {@link PlaySource} representing the source to play.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void hold(CommunicationIdentifier targetParticipant, PlaySource playSource) {
+        callMediaAsync.hold(targetParticipant, playSource).block();
     }
 
     /**
@@ -243,11 +252,10 @@ public final class CallMedia {
     /**
      * Removes hold from participant in call.
      * @param targetParticipant the target.
-     * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void unhold(CommunicationIdentifier targetParticipant) {
-        return callMediaAsync.unhold(targetParticipant).block();
+    public void unhold(CommunicationIdentifier targetParticipant) {
+        callMediaAsync.unhold(targetParticipant).block();
     }
 
     /**
