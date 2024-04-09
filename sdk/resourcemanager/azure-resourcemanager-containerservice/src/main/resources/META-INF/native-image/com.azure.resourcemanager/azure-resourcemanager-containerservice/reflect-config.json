@@ -224,6 +224,11 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.containerservice.models.AgentPoolWindowsProfile",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -510,6 +515,16 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.containerservice.models.IstioPluginCertificateAuthority",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.containerservice.models.ManagedClusterMetricsProfile",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.containerservice.models.ManagedClusterCostAnalysis",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true

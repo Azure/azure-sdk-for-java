@@ -125,7 +125,6 @@ public final class AtlasTypeDef implements JsonSerializable<AtlasTypeDef> {
      * If a list of entityTypes are supplied, where one inherits
      * from another, this will be rejected. This should encourage cleaner
      * classificationsDefs.
-     * 
      */
     @Generated
     private List<String> entityTypes;

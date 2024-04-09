@@ -4,22 +4,20 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-/** Samples for Rules Get. */
+/**
+ * Samples for Rules Get.
+ */
 public final class RulesGetSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Rules_Get.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/Rules_Get.json
      */
     /**
      * Sample code: Rules_Get.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void rulesGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cdnProfiles()
-            .manager()
-            .serviceClient()
-            .getRules()
-            .getWithResponse("RG", "profile1", "ruleSet1", "rule1", com.azure.core.util.Context.NONE);
+        azure.cdnProfiles().manager().serviceClient().getRules().getWithResponse("RG", "profile1", "ruleSet1", "rule1",
+            com.azure.core.util.Context.NONE);
     }
 }

@@ -26,6 +26,14 @@ import java.util.List;
 public final class FhirR4Condition extends FhirR4DomainResource {
 
     /*
+     * resourceType
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "resourceType")
+    private String resourceType = "Condition";
+
+    /*
      * External Ids for this condition
      */
     @Generated
@@ -181,6 +189,17 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     @JsonCreator
     public FhirR4Condition(@JsonProperty(value = "resourceType") String resourceType) {
         super(resourceType);
+    }
+
+    /**
+     * Get the resourceType property: resourceType.
+     *
+     * @return the resourceType value.
+     */
+    @Generated
+    @Override
+    public String getResourceType() {
+        return this.resourceType;
     }
 
     /**
@@ -725,24 +744,5 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     public FhirR4Condition setLanguage(String language) {
         super.setLanguage(language);
         return this;
-    }
-
-    /*
-     * resourceType
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "resourceType")
-    private String resourceType = "Condition";
-
-    /**
-     * Get the resourceType property: resourceType.
-     *
-     * @return the resourceType value.
-     */
-    @Generated
-    @Override
-    public String getResourceType() {
-        return this.resourceType;
     }
 }
